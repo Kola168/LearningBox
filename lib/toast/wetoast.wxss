@@ -1,0 +1,79 @@
+/**toast.wxss**/
+
+.wetoast {
+  display: none;
+}
+
+.wetoast_show {
+  display: block;
+}
+
+.wetoast__mask {
+  position: fixed;
+  z-index: 9999999;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+}
+
+.wetoast__bd {
+  opacity: 0;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  z-index: 5000;
+  top: 50%;
+  left: 50%;
+  padding: 30rpx;
+  box-sizing: border-box;
+  transform: translate(-50%, -50%);
+  background: rgba(40, 40, 40, 0.7);
+  border-radius: 10rpx;
+  color: #FFFFFF;
+  word-wrap: break-word;
+  word-break: break-all;
+  align-items: center;
+  justify-content: space-around;
+  min-width: 200rpx;
+  max-width: 500rpx;
+}
+
+/* .custom {
+  width: 60%;
+} */
+
+.wetoast__bd__img {
+  margin-top: 3px;
+}
+
+.wetoast__bd__img_desc {
+  width: 70rpx;
+  height: 70rpx;
+  vertical-align: middle;
+}
+
+/* .custom .wetoast__bd__img {
+  width: 100%;
+} */
+
+/* .custom .wetoast__bd__img_desc {
+  width: 100%;
+  height: auto;
+} */
+
+.wetoast__bd__title {
+  margin-top: 24rpx;
+  font-size: 26rpx;
+}
+
+
+/* .wetoast__bd__btn {
+  background: #ffe27a;
+  font-size: 28rpx;
+  color: #fff;
+  margin-top: 24rpx;
+  padding: 2rpx 10rpx;
+  border-radius: 4rpx;
+  color: #333;
+} */
