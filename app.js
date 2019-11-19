@@ -1,9 +1,7 @@
 
 "use strict"
 
-let {
-	WeToast
-} = require('lib/toast/wetoast.js')
+
 const regeneratorRuntime = require('lib/co/runtime')
 const co = require('lib/co/co')
 const util = require('utils/util')
@@ -22,7 +20,6 @@ const checkSession = util.promisify(wx.checkSession)
 
 
 App({
-	WeToast,
 	version: '2.1.2',
 
 

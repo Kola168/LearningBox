@@ -1,0 +1,17 @@
+<!--pages/gallery/component/multiphoto/test.wxml-->
+<view class="photo-edit-area">
+    <more-photo id="mymulti" mode-info="{{templateInfo}}" mode-paper="{{paperSize}}" img-path="{{photoPath}}" show-change="true"></more-photo>
+</view>
+<view class="templateBox">
+    <view class="theme-box">
+        <view wx:for="{{modeTemplate}}" wx:key="modetheme" data-index="{{index}}" bindtap="chooseTheme" class="theme-item">
+            {{item.templateNAme}}
+        </view>
+    </view>
+    <view class="mode-box">
+        <image wx:for="{{modeTemplate[themeSelectedIndex].templateArr}}" wx:key="modearr" data-index="{{index}}" bindtap="chooseMode" src="{{item.modeSrc}}" mode="widthFix" class="mode-item"></image>
+    </view>
+</view>
+<view class="bottom-but" bindtap="getComponentData" style="color:#333">
+    完成
+</view>

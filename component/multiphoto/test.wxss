@@ -1,0 +1,55 @@
+/* pages/gallery/component/multiphoto/test.wxss */
+page {
+    border-top: 1rpx solid #efefef;
+}
+
+.photo-edit-area {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+#mymulti {
+    border: 1rpx solid #eaeaea;
+    margin-top: 30rpx;
+}
+
+.bottom-but {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    line-height: 100rpx;
+    text-align: center;
+    font-size: 34rpx;
+    font-weight: 500;
+    background: #fae100;
+}
+
+.templateBox {
+    width: 100%;
+}
+
+.theme-box {
+    width: 100%;
+    overflow: auto;
+    display:flex;
+    flex-wrap:nowrap;
+}
+
+.theme-box::-webkit-scrollbar {
+    display: none
+}
+
+.theme-item{
+    color:#666;
+    font-size:32rpx;
+    padding:5rpx 10rpx;
+}
+
+.mode-item{
+    width:120rpx;
+    margin-top:10rpx;
+    margin-left:20rpx;
+    border:1rpx solid #dfdfdf;
+}

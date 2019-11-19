@@ -1,0 +1,6 @@
+{
+    "usingComponents": {
+        "more-photo": "index"
+    },
+    "disableScroll":true
+}
