@@ -1,4 +1,5 @@
 <!--logs.wxml-->
+<nav-bar background="#ffe27a" title="小白智慧打印"></nav-bar>
 <view class="container log-list">
   <block wx:for="{{logs}}" wx:for-item="log">
     <text class="log-item">{{index + 1}}. {{log}}</text>

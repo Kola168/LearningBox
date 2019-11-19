@@ -1,4 +1,5 @@
 <!--index.wxml-->
+<nav-bar background="#ffe27a" title="小白智慧打印"></nav-bar>
 <view class="container">
   <view class="userinfo">
     <button wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像昵称 </button>
@@ -11,3 +12,7 @@
     <text class="user-motto">{{motto}}</text>
   </view>
 </view>
+
+<!-- loading -->
+<import src="/lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />
