@@ -1,0 +1,155 @@
+/* pages/gallery/component/multiphoto/index.wxss */
+page {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+image {
+    display: inline-block;
+}
+
+.mode-box-size {
+    position: relative;
+}
+
+.mode-cover {
+    width: 100%;
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 99;
+}
+
+.img-area {
+    position: absolute;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.addimg {
+    width: 50%;
+    height: 50%;
+}
+
+.border-cover{
+    position: absolute;
+    overflow: hidden;
+    z-index: 900;
+    box-sizing:border-box;
+}
+
+.img-area-cover {
+    position: absolute;
+    overflow: hidden;
+    z-index: 999;
+}
+
+/**拍照功能**/
+.component-choosePhoto {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 99999;
+}
+
+.component-choosePhoto-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    animation: alp 0.5s ease;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.component-choosePhoto-content {
+    width: 100%;
+    background: #efeff5;
+    animation: chooseBottom 0.3s ease;
+    position: relative;
+}
+
+.component-choosePhotoItem {
+    width: 100%;
+    height: 90rpx;
+    border-bottom: 1rpx solid #efeff5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #fff;
+}
+
+.component-choosePhotoItem-text {
+    color: #333;
+    font-size: 34rpx;
+}
+
+.canvas-style {
+    position: fixed;
+    z-index: -999;
+    left: -99999px;
+    right: -999999px;
+}
+
+.img-edit-box{
+    width:100%;
+    height:100%;
+    position:absolute;
+    top:0;
+    left:0;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:rgba(0,0,0,0.3);
+}
+
+.icon-box{
+    display:flex;
+    height:100%;
+    flex:1;
+    justify-content:center;
+    align-items:center;
+    position:relative;
+    z-index:1999;
+}
+
+.img-icon-style{
+    font-size:80rpx;
+    color:#fae100;
+}
+
+.line{
+    width:2rpx;
+    height:100%;
+    background:#fae100;
+}
+
+.iconfont {
+    font-family: "iconfont" !important;
+    font-style: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-swap:before {
+    content: "\e7f2";
+}
+
+.icon-close:before {
+    content: "\e7fc";
+}
+
+@font-face {
+    font-family: 'iconfont';
+    src: url(data:application/font-woff2;charset=utf-8;base64,d09GMgABAAAAAALEAA0AAAAABwgAAAJwAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP0ZGVE0cGh4GVgCCShEICoFogU4LDAABNgIkAxIEIAWFCAc3G/oFEZWb4ci+SMjmkNWt04asvLwdX0xt1U8jWzWuiYf/XxO7788EmhQJHQApQMWOgFVPdWtJ0QIptqsTAP83t7+Bl3QhzSKvQ9d8ahOrk/gMkOf/+1M1EzCA7zwXlz2ANyaeXQoXK1DBbYvGAixYrVj7zDXuoLu5/JlXl3UUAr7cV4YfNi5Qnx2oi+ZIQiYXciRELk4rkI6kDzgF3h//GhxlkkJGXTh747T1Jv7Zn2cHaweXy5j7E4AMGdoKMFUm0FauJ4pyIRWNajUw+paNWpYFQBQJQCQk+OcRwEtHrSaBAqggw1QsAOQASKJx44576p9v6kKzBvPPX6hWj7VYdO3movqLLl2sVI42nX/5RrcGl1rExZ2bfOHipXp0vtmG9SnDZUsgwkvNh8XAt7g4trh6xak3XUYWZpWmPf7yevrPbU2Mzw05UBhJsdnFb77HtNJsxAsqx3z37fuBQLBk4d4uqxqM/b9czTXZ3Y7pmO1Ov6MsgaCZNXKQ7eb+N0CeA3LkHPNOoKCrBBIqKqgBNParADTTV4BQNl+ApGSzAJmyQwLkyu4KUFD1XoCisj8EqOgTkwWoahIXZSKvg944EBqaDEl9KyDT0G48p09DQXPPoKihz1Cx0D+Lq7rHFhVTlEGQSWNxRHeuYSnKOdOd+y662JuJv62PZ3IhejvAW6jZkwH+Sps0/eQi9y+G0VRRWzWwypq9rZq82CuM+Ufrecq4qG6aJJJDCuhZBgrhfUJ5SFawqYID+vK4qG6a5LpMvI0qLo7Uf3s/B6CnKT/qWlZcrVgKsGh2ZG5x3NEGtmngztafgEKKsjgcx5XkU88P) format('woff2'),
+        url(data:application/font-woff;charset=utf-8;base64,d09GRgABAAAAAATIAA0AAAAABwgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABGRlRNAAAErAAAABoAAAAciHAns0dERUYAAASMAAAAHgAAAB4AKQALT1MvMgAAAaAAAABDAAAAVj5gSe5jbWFwAAAB+AAAAEYAAAFK6Bvrp2dhc3AAAASEAAAACAAAAAj//wADZ2x5ZgAAAkwAAADDAAAA6Dpigb9oZWFkAAABMAAAAC8AAAA2FepEp2hoZWEAAAFgAAAAHQAAACQHUwOFaG10eAAAAeQAAAARAAAAEgzCAItsb2NhAAACQAAAAAwAAAAMADwAdG1heHAAAAGAAAAAHgAAACABEQAwbmFtZQAAAxAAAAFJAAACiCnmEVVwb3N0AAAEXAAAACUAAAA35QBA03jaY2BkYGAA4syw8up4fpuvDNwsDCBwM40hFE53MygwlzI9AHI5GJhAogD5AgiZAHjaY2BkYGBu+N/AEMPCAALMpQyMDKiABQBPpQLhAAAAeNpjYGRgYGBlUGFgYgABEMkFhAwM/8F8BgAMgwFCAAB42mNgZGFgnMDAysDA1Ml0hoGBoR9CM75mMGLkAIoysDIzYAUBaa4pDA7PPz3/w9zwv4EhhrmBoQEozAiSAwABhA3LAHjaY2GAABYI7mY4BAAC/QFaAAAAeNpjYGBgZoBgGQZGBhBwAfIYwXwWBg0gzQakGRmYnn96/uf/fwYGCC0hKMEBVQ8EjGwMcA4jE5BgYkAFjAzDHgAA3KIMjQAAAAAAAAAAAAAAPAB0eNpFjT8OAUEUh99vZmdeNiQoUChYklVoRNiJf9HS7QUcQ6/XuIPKCagV3EBW5wIuIDExuzZRffl9L3kfCdpRS27EkyrUIUKguVqrB6xrUwwWiEITmCjsoV2Cdj4yo1DGnyUDLNZ76akVq2OxLD+H/6iKs7ujD54xTp6v75X2KydSSS5EF5rIubhSk8hHluACUui6jyxvGkgRdcUQ2n2PWSUPxbHyJLR9/8wjyc0WY5ewFkL7nr3Zm1sQ1rpF9AWOUii7AHjafZA9TgMxEIWf8wckEkIgqF1RANr8lCkTKfQIpaNINt6QaNdeeZ1IOQEtFQeg5RgcgBsg0XIKXpZJkyJr7ejzm5nnsQGc4xsK/98l7oQVjvEoXMERMuEq9RfhGvlduI4WPoUb1H+Em7hVA+EWLtQbHVTthLub0m3LCmcYCFdwiifhKvWVcI38KlzHFT6EG9S/hJsY41e4hWtlqQzhYTBBYJxBY4oN4wIxHCySMgbWoTn0ZhLMTE83ehE7mzgbKO9XYpcDHmg554Ap7T23Zr5KJ/5gy4HUmG4eBUu2KY0uInQoG18snNXdqHOw/Z7ttrTYv2uBNcfsUQ1s1Pw92zPSSGwMr5CSNfIyt6QSU49oa6zxu2cp1vNeCIlOvMv0iMeaNHU6925p4sDi5/KMHH20uZI996gcPmNZCHm/3U7EIIpdhj+T2HEZAAAAeNpjYGKAAC4wyciADljBokyMTIzMLMXliQWsyTn5xakAGNkD9wAAAAAAAAH//wACAAEAAAAMAAAAFgAAAAIAAQADAAQAAQAEAAAAAgAAAAB42mNgYGBkAIKrS9Q5QPTNNIZQGA0ANsEE0gAA) format('woff'),
+        url('iconfont.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
