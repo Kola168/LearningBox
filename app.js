@@ -47,7 +47,8 @@ App({
     this.isIpx = model.indexOf("iphone x") > -1 ? true : false
     this.rpxPixel = 750 / this.sysInfo.windowWidth
   },
-  // 获取导航栏信息
+ 
+	// 获取导航栏信息
   getNavBarInfo() {
     let sysInfo = this.sysInfo ? this.sysInfo : wx.getSystemInfoSync()
     let rect = wx.getMenuButtonBoundingClientRect ? wx.getMenuButtonBoundingClientRect() : null
