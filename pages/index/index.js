@@ -16,6 +16,8 @@ Page({
     motto: 'Hello World',
     userInfo: {},
     hasUserInfo: false,
+    blockSize: 10,
+    audioType:'circle',
     canIUse: wx.canIUse('button.open-type.getUserInfo')
   },
 
@@ -23,7 +25,6 @@ Page({
   bindViewTap: function() {
     wxNav.navigateTo('/pages/logs/logs')
   },
-
   onLoad: function() {
     logger.error('123456789')
     logger.warn('123456789')

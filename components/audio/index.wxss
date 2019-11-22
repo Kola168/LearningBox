@@ -1,0 +1,79 @@
+.controls-audio-box {
+  background: #fff;
+  width: 100%;
+  padding: 20rpx 0;
+}
+
+.audio-box-control,
+.audio-box-progress {
+  display: flex;
+  align-items: center;
+  font-size: 30rpx;
+}
+
+.audio-box-progress {
+  padding-top: 32rpx;
+}
+
+.audio-box-control {
+  width: 60%;
+  margin: 20rpx auto 0;
+  display: flex;
+  justify-content: space-around;
+}
+
+slider {
+  margin: 0;
+  width: calc(100% - 100rpx);
+}
+
+.box-progress-time {
+  width: 100rpx;
+  text-align: center;
+  color: #999;
+  font-size: 24rpx;
+}
+
+.box-control-btn {
+  width: 15%;
+}
+
+.box-control-play{
+  width: 24%;
+}
+
+
+/* 圆形进度条 */
+.circle-audio-box {
+  position: relative;
+}
+
+.circle-audio-box image {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.audio-box-left,
+.audio-box-right {
+  width: 100rpx;
+  height: 100%;
+  position: relative;
+}
+
+.audio-box-left {
+  background: red;
+  border-top-left-radius: 100rpx;
+  border-bottom-left-radius: 100rpx;
+  z-index: 20;
+}
+
+.audio-box-right {
+  background: blue;
+  border-top-right-radius: 100rpx;
+  border-bottom-right-radius: 100rpx;
+  transform-origin: center left;
+  z-index: 1;
+}
