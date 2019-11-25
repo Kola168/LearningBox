@@ -68,6 +68,7 @@ Component({
       // })
 
       innerAudioContext.onPlay(() => {
+        this.isEnd = false
         this.setData({
           isPlay: true
         })
@@ -197,6 +198,9 @@ Component({
       if (this.data.isPlay) {
         this.innerAudioContext.pause()
       } else {
+        if(this.isEnd){
+          this.innerAudioContext.seek(0)
+        }
         this.innerAudioContext.play()
       }
     },
