@@ -2,29 +2,30 @@
  * 自定义头部导航组件
  *
  * 组件属性列表
- * backImage      {string}	back按钮的图标地址
- * homeImage      {string}	home按钮的图标地址
- * bindback	      {eventhandler}	点击back按钮触发此事件响应函数
- * bindBackHome   {eventhandler}	点击home按钮触发此事件响应函数
- * title	        {string}	导航标题，如果不提供为空
- * background	    {string}	导航背景色，默认#ffffff
- * color	        {string}	导航字体颜色
- * clickBackTop   {boolean}	是否开启双击返回顶部功能，默认true
- * searchObj      {	搜索设置
- *  isSearch:false,	是否是搜索
- *  url:'',	搜索跳转路径
- *  textColor:'',	字体颜色
- *  background:''	背景色
- *  placeText:''	默认占位文字
- * }
  *
- * isOnlyStatusBar{boolean}	只显示状态栏，默认false
- * slotLeft	      {boolean}	左侧区域是否使用slot内容，默认false
- * slotCenter	    {boolean}	中间区域是否使用slot内容，默认false
+ * @param {String} backImage          back按钮的图标地址
+ * @param {String} homeImage          home按钮的图标地址
+ * @param {eventhandler} bindback     点击back按钮触发此事件响应函数
+ * @param {eventhandler} bindBackHome 点击home按钮触发此事件响应函数
+ * @param {String} title              导航标题，如果不提供为空
+ * @param {String} background         导航背景色，默认#ffffff
+ * @param {String} color              导航字体颜色
+ * @param {Boolean} clickBackTop      是否开启双击返回顶部功能，默认true
+ * @param {Object} searchObj          {搜索设置
+ *                                      isSearch:false,是否是搜索
+ *                                      url:'',搜索跳转路径
+ *                                      textColor:'',字体颜色
+ *                                      background:''背景色
+ *                                      placeText:''默认占位文字
+ *                                    }
+ *
+ * @param {Boolean} isOnlyStatusBar   只显示状态栏,默认false
+ * @param {Boolean} slotLeft          左侧区域是否使用slot内容，默认false
+ * @param {Boolean} slotCenter        中间区域是否使用slot内容，默认false
  *
  * Slot Name
- * left	          左侧slot，在back按钮位置显示，当left属性为true的时候有效
- * center	        标题slot，在标题位置显示，当center属性为true的时候有效
+ * left                               左侧slot，在back按钮位置显示，当left属性为true的时候有效
+ * center                             标题slot，在标题位置显示，当center属性为true的时候有效
  *
  */
 import wxNav from '../../utils/nav.js'

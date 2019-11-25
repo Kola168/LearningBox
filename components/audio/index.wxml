@@ -1,7 +1,7 @@
 <view class="controls-audio-box" wx:if="{{audioType==='controls'}}">
     <view class="audio-box-progress">
         <view class="box-progress-time">{{currentTime?currentTime:'00:00'}}</view>
-        <slider bindchange="timeSliderChanged" bindchanging='timeSliderChanging' max="{{progressMax}}" min="0" value="{{progressValue}}" block-size="{{blockSize}}" backgroundColor="#eaeaea" activeColor="#ffe27a" block-color="#ffe27a" />
+        <slider bindchange="timeSliderChanged" bindchanging='timeSliderChanging' max="{{progressMax}}" min="0" value="{{progressValue}}" block-size="{{blockSize}}" backgroundColor="{{sliderBackgroundColor}}" activeColor="{{sliderActiveColor}}" block-color="{{sliderBlockColor}}" />
         <view class="box-progress-time">{{allTime?allTime:'00:00'}}</view>
     </view>
     <view class="audio-box-control">

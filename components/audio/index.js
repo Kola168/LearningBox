@@ -2,11 +2,14 @@
  * audio组件
  *
  * 组件属性列表
- * @param {Boolean} autoplay 是否自动播放
- * @param {String} audioUrl 音频地址 required
- * @param	{String} audioType 组件类型 可选项：circle,controls
- * @param {Number} circleSize circle类型 播放按钮大小
- * @param	{Number} blockSize controls类型，滑块大小
+ * @param {Boolean} autoplay               是否自动播放，默认:false
+ * @param {String} audioUrl                音频地址 required
+ * @param	{String} audioType               组件类型 可选项：circle,controls 默认:circle
+ * @param {Number} circleSize              circle类型 播放按钮大小 默认:50px
+ * @param	{Number} blockSize               controls类型，滑块大小 默认:15
+ * @param	{String} sliderBackgroundColor   进度条背景颜色，默认:#eaeaea
+ * @param	{String} sliderActiveColor       controls类型，默认:#ffe27a
+ * @param	{String} sliderBlockColor        controls类型，默认:#ffe27a
  *
  */
 
@@ -31,6 +34,18 @@ Component({
     blockSize: {
       type: Number,
       value: 15
+    },
+    sliderBackgroundColor: {
+      type: String,
+      value: '#eaeaea'
+    },
+    sliderActiveColor: {
+      type: String,
+      value: '#ffe27a'
+    },
+    sliderBlockColor: {
+      type: String,
+      value: '#ffe27a'
     }
   },
   data: {
@@ -48,9 +63,9 @@ Component({
       innerAudioContext.autoplay = this.data.autoplay
       innerAudioContext.src = this.data.audioUrl
 
-      innerAudioContext.onCanplay(() => {
-        wx.hideLoading()
-      })
+      // innerAudioContext.onCanplay(() => {
+      //   wx.hideLoading()
+      // })
 
       innerAudioContext.onPlay(() => {
         this.setData({
@@ -129,7 +144,8 @@ Component({
         }
       })
     } catch (e) {
-      wx.hideLoading()
+      console.log(e)
+      // wx.hideLoading()
     }
   },
   methods: {
