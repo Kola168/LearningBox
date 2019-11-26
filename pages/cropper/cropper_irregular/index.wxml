@@ -1,0 +1,12 @@
+<!--index.wxml-->
+
+<import src="welCropper.wxml" />
+
+<template is="welCropper" data="{{cropperData:cropperData, cropperMovableItems:cropperMovableItems, cropperChangableData:cropperChangableData}}" style="margin-top:50px;"></template>
+
+<!-- <button bindtap='selectTap' data-mode='rectangle'>规则矩形</button>
+<view class="line"></view>
+<button bindtap='selectTap' data-mode='quadrectangle'>不规则矩形</button> -->
+
+<import src="../../lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />

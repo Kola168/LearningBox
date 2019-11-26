@@ -193,19 +193,35 @@ function _getSuiteValuesFull(imgWidth, imgHeight, areaWidth, areaHeight) {
 }
 
 function promisify(fn) {
-  return function(obj = {}) {
+  return function (obj = {}) {
     return new Promise((resolve, reject) => {
-      obj.success = function(res) {
+      obj.success = function (res) {
         resolve(res)
       }
 
-      obj.fail = function(res) {
+      obj.fail = function (res) {
         reject(res)
       }
 
       fn(obj)
     })
   }
+}
+
+function showError(e) {
+  let title, content
+  if (e && e.message) {
+    title = e.title || '提示'
+    content = e.message
+  } else if (e && e.errors && e.errors[0]) {
+    content = e.errors[0].message || ''
+  }
+  wx.showModal({
+    title: title || '提示',
+    content: content || '网络异常',
+    showCancel: false,
+    confirmColor: '#2086ee'
+  })
 }
 
 
