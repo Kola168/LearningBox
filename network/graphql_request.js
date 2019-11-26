@@ -1,3 +1,11 @@
+/*
+ * @Author: your name
+ * @Date: 2019-11-19 14:39:00
+ * @LastEditTime: 2019-11-26 14:52:13
+ * @LastEditors: your name
+ * @Description: In User Settings Edit
+ * @FilePath: /LearningBox/network/graphql_request.js
+ */
 var app = getApp()
 var gqwxappGraphql = require('./wxgql')
 var GraphQL = gqwxappGraphql.GraphQL
