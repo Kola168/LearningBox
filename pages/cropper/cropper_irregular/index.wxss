@@ -1,8 +1,0 @@
-/**index.wxss**/
-
-@import "welCropper.wxss";
-.line {
-    width: 100%;
-    height: 2rpx;
-    background: #434343;
-}
