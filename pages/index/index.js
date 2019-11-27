@@ -18,7 +18,11 @@ Page({
     hasUserInfo: false,
     blockSize: 10,
     audioType:'circle',
-    canIUse: wx.canIUse('button.open-type.getUserInfo')
+    canIUse: wx.canIUse('button.open-type.getUserInfo'),
+    bannerUrls:[{
+      url:'http://gfd-i.memeyin.com/e-FlXfVks1do_li3DqrLWVHjr-0IPr'
+    }]
+
   },
 
   //事件处理函数
