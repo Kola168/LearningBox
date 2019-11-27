@@ -2,18 +2,22 @@
   "pages": [
     "pages/index/index",
     "pages/logs/logs",
-    "components/multiphoto/test"
+    "components/multiphoto/test",
+    "pages/network/index/index",
+    "pages/network/tips/step1",
+    "pages/network/tips/step2",
+    "pages/network/tips/step3"
   ],
   "window": {
-		"backgroundTextStyle": "light",
-		"navigationBarBackgroundColor": "#fff",
-		"navigationBarTitleText": "小白智慧打印",
-		"navigationBarTextStyle": "black",
-		"navigationStyle": "custom"
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "小白智慧打印",
+    "navigationBarTextStyle": "black",
+    "navigationStyle": "custom"
   },
   "usingComponents": {
-		"nav-bar": "components/nav-bar/index"
-	},
+    "nav-bar": "components/nav-bar/index"
+  },
   "style": "v2",
   "sitemapLocation": "sitemap.json"
 }
