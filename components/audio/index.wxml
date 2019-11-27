@@ -1,0 +1,16 @@
+<view class="controls-audio-box" wx:if="{{audioType==='controls'}}">
+    <view class="audio-box-progress">
+        <view class="box-progress-time">{{currentTime?currentTime:'00:00'}}</view>
+        <slider bindchange="timeSliderChanged" bindchanging='timeSliderChanging' max="{{progressMax}}" min="0" value="{{progressValue}}" block-size="{{blockSize}}" backgroundColor="{{sliderBackgroundColor}}" activeColor="{{sliderActiveColor}}" block-color="{{sliderBlockColor}}" />
+        <view class="box-progress-time">{{allTime?allTime:'00:00'}}</view>
+    </view>
+    <view class="audio-box-control">
+        <image src="/images/back.png" bindtap="back" mode="widthFix" class="box-control-btn" />
+        <image src="/images/{{isPlay?'pause':'play'}}.png" bindtap="playAudio" mode="widthFix" class="box-control-play" />
+        <image src="/images/forward.png" bindtap="forward" mode="widthFix" class="box-control-btn" />
+    </view>
+</view>
+<view class="circle-audio-box" wx:if="{{audioType==='circle'}}" style="width:{{circleSize}}px;height:{{circleSize}}px;">
+    <image src="/images/{{isPlay?'pause':'play'}}.png" />
+    <canvas style="width: {{circleSize}}px; height: {{circleSize}}px;" canvas-id="audioCanvas" bindtap="playAudio"></canvas>
+</view>

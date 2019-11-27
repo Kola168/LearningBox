@@ -1,3 +1,4 @@
+import gfdConfig from './gfdConfig.js'
 /**
  *ERROR level指出虽然发生错误事件，但仍然不影响系统的继续运行。
  *WARN level表明会出现潜在错误的情形。
@@ -6,7 +7,6 @@
  */
 const machine = "real";//real 真机，simulator 模拟器
 const loggerlevel = "INFO"; //日志打印级别 ERROR、WARN、INFO、DEBUG
-
 function getLogger(inamespace) {
   const level = loggerlevel.toUpperCase();
   const namespace = inamespace == undefined || inamespace == null ? '' : inamespace;
@@ -33,6 +33,9 @@ function getLogger(inamespace) {
 }
 
 function consoleTemplate() {
+
+	if(!gfdConfig.debug)  return  //线上模式不允许输出日志
+	   
   console.log(
     "[%c%s%c] Line%i %c%s%c   %s:", "color:" + arguments[0],
     loggerformatTime(new Date()), "color:black", arguments[5].length,  "color:" + arguments[1],
@@ -98,7 +101,6 @@ const loggerformatTime = date => {
   const millisecond = date.getMilliseconds()
   return [year, month, day].map(formatNumber).join('-') + ' ' + [hour, minute, second, millisecond].map(formatNumber).join(':')
 }
-
 module.exports = {
-  GetLogger: getLogger
+  getLogger: getLogger
 }
