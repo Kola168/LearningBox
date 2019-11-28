@@ -208,6 +208,64 @@ function promisify(fn) {
   }
 }
 
+function deleteItem(array, item) {
+  Array.prototype.indexOf = function(val) {
+    for (var i = 0; i < this.length; i++) {
+      if (this[i] == val) return i;
+    }
+    return -1;
+    
+  };
+  Array.prototype.remove = function(val) {
+    var index = this.indexOf(val);
+    if (index > -1) {
+      this.splice(index, 1);
+    }
+  };
+  return array.remove(item)
+
+}
+
+//过滤不可打印的文档
+function clearFile(array) {
+  let tempArray = _(array).clone()
+  for (var i = 0; i < tempArray.length; i++) {
+    if (tempArray[i].name.match(/\.(doc|docx|ppt|pptx|pdf|xls|xlsx)$/i)) {
+      if (((tempArray[i].size) / 1024 / 1024) > 50) {
+        deleteItem(array, tempArray[i])
+      }
+    } else {
+      deleteItem(array, tempArray[i])
+    }
+  }
+  return array
+}
+
+function compareVersion(v1, v2) { //兼容性比较
+  v1 = v1.split('.')
+  v2 = v2.split('.')
+  var len = Math.max(v1.length, v2.length)
+
+  while (v1.length < len) {
+    v1.push('0')
+  }
+  while (v2.length < len) {
+    v2.push('0')
+  }
+
+  for (var i = 0; i < len; i++) {
+    var num1 = parseInt(v1[i])
+    var num2 = parseInt(v2[i])
+
+    if (num1 > num2) {
+      return true
+    } else if (num1 < num2) {
+      return false
+    }
+  }
+  return false
+}
+
 
 
 module.exports = {
@@ -221,5 +279,6 @@ module.exports = {
   _snapToAngle: _snapToAngle,
   _getSuiteValues: _getSuiteValues,
   _getSuiteValuesFull: _getSuiteValuesFull,
-
+  clearFile: clearFile,
+  compareVersion: compareVersion,
 }

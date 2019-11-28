@@ -1,0 +1,11 @@
+<nav-bar background="#fff" title="文档列表" />
+<view class="intro">
+	<image src='https://cdn.gongfudou.com/miniapp/ec/app_intro1.png' style='width:100%' mode='widthFix' />
+	<image src='https://cdn.gongfudou.com/miniapp/ec/app_intro2.png' style='width:100%' mode='widthFix' />
+	<image src='https://cdn.gongfudou.com/miniapp/ec/app_intro3.png' style='width:100%' mode='widthFix' />
+
+</view>
+<view class="document-conf-box" bindtap="copy">
+	复制下载链接
+</view>
+

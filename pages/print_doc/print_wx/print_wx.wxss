@@ -1,0 +1,199 @@
+page {
+  padding: 25rpx;
+  box-sizing: border-box;
+}
+
+.title-content {
+    display: flex;
+    align-items: center;
+}
+
+.title-modal {
+    background: #FFDC5E;
+    width: 3px;
+    height: 14px;
+    margin-right: 8rpx;
+}
+
+.title {
+    font-size: 32rpx;
+    font-weight: 500;
+}
+
+.total {
+  display: flex;
+  justify-content: space-between;
+  margin: 35rpx 0;
+}
+
+.border {
+    width: 540rpx;
+    height: 76rpx;
+    border: 2rpx solid #999;
+    border-radius: 8rpx;
+    display: flex;
+    align-items: center;
+}
+
+input {
+    width: 90%;
+    box-sizing: border-box;
+    padding-left: 10rpx;
+    color: #2086EE;
+    font-size: 24rpx
+}
+
+.btn {
+    width: 140rpx;
+    height: 76rpx;
+    background: #FFDC5E;
+    border-radius: 12rpx;
+}
+
+.button {
+    height: 76rpx;
+    line-height: 76rpx;
+    color: #000;
+    font-size: 28rpx;
+    font-weight: 500;
+}
+
+.text {
+    font-size: 24rpx;
+    color: #999;
+    text-align: center;
+    border-bottom: 2rpx solid #999;
+    margin: 0 150rpx;
+}
+
+.total1 {
+  display: flex;
+  justify-content: space-between;
+  margin: 70rpx 0 30rpx;
+}
+
+.subscribe {
+    font-size: 26rpx;
+    color: #999;
+    margin-right: 10rpx;
+}
+
+.arrow-right-gray {
+  width: 13rpx;
+}
+
+.subscribe_account {
+    font-size: 24rpx;
+    color: #999;
+}
+
+.subscribe_time {
+    font-size: 24rpx;
+    color: #999;
+    padding-left: 30rpx;
+}
+
+.list {
+  overflow-x: hidden;
+}
+.item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.left {
+  display: flex;
+  width: 80%;
+  align-items: center;
+}
+
+.url {
+  width: 90rpx;
+  /* height: 90rpx; */
+}
+
+.left_text {
+  margin-left:20rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 80%;
+}
+
+.text_title {
+  font-size: 32rpx;
+  padding-bottom: 10rpx;
+}
+
+.print {
+  display: flex;
+}
+
+.btn1 {
+    width: 120rpx;
+    height: 50rpx;
+    background: #FFDC5E;
+    border-radius: 12rpx;
+}
+
+.button1 {
+  font-size: 28rpx;
+  height: 50rpx;
+  line-height: 50rpx;
+}
+
+.type1 {
+  width: 95%;
+  white-space: nowrap;
+  color: #999;
+  font-size: 32rpx;
+  font-weight: 500;
+  box-sizing: border-box;
+  margin: 0 0 20rpx 20rpx;
+  height: 70rpx;
+  background: #fff;
+}
+
+.tab-item {
+  position: relative;
+  margin-right: 40rpx;
+}
+
+.activeType {
+  color: #FFDC5E;
+}
+
+.active-border {
+  position: absolute;
+  top: 50rpx;
+  left: 25%;
+  width: 50%;
+  height: 4rpx;
+}
+
+.activeType .active-border {
+  margin: 4rpx auto 0;
+  background: #FFDC5E;
+  width: 50%;
+}
+
+.border-bold {
+    width: calc(100% + 60rpx);
+    height:5rpx;
+    background: #f5f5f5;
+    margin: 30rpx -30rpx;
+}
+
+.consumables-icon {
+  width: 100rpx;
+  height: 104rpx;
+  position: fixed;
+  bottom: 130rpx;
+  right: 30rpx;
+  z-index: 10000;
+}
+
+.intro {
+  margin: 70rpx 0 0 0;
+}

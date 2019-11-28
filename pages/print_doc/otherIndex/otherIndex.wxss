@@ -1,0 +1,28 @@
+.other-box {
+  padding-top: 30rpx;
+}
+.box_item {
+  display: flex;
+  align-items: center;
+  width: 686rpx;
+  height: 164rpx;
+  border-radius: 8rpx;
+  margin: 0 32rpx 30rpx;
+  box-shadow: #CCC 0 2rpx 8rpx 0;
+}
+
+.text {
+  display: flex;
+  flex-direction: column;
+}
+.img {
+  width: 100rpx;
+  padding: 30rpx;
+}
+.name {
+  font-size: 32rpx;
+}
+.intro {
+  font-size: 24rpx;
+  color: #666;
+}

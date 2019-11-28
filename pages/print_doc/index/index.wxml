@@ -1,0 +1,28 @@
+<nav-bar background="#fff" title="文档打印" />
+<view class="entry-main">
+	<view class="main-entry flex flex-m-axis-between">
+		<view
+		 class="module-item"
+		 wx:for="{{mainEntry}}"
+		 wx:key="index"
+		 bind:tap="toEntry"
+		 data-url="{{item.url}}"
+		 data-query="{{item.query}}"
+		 data-key="{{item.key}}"
+		>
+			<image src="{{item.icon}}" mode="widthFix" />
+			<view class="name">{{item.name}}</view>
+			<view class="recommend">{{item.recommend}}</view>
+		</view>
+	</view>
+	<view class="minor-entry flex flex-m-axis-between">
+		<view class="{{item ? 'module-item' : ''}}" wx:for="{{minorEntry}}" wx:key="index">
+			<image src="{{item.icon}}" mode="widthFix" wx:if="{{item.icon}}" />
+			<view class="name" wx:if="{{item.name}}">{{item.name}}</view>
+			<view class="recommend" wx:if="{{item.recommend}}">{{item.recommend}}</view>
+		</view>
+	</view>
+</view>
+<import src="../../../lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />
+

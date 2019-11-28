@@ -1,0 +1,6 @@
+{
+  "usingComponents": {
+    "nav-bar":"../../../components/nav-bar",
+    "consumables": "../../../components/consumables/index"
+  }
+}

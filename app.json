@@ -2,18 +2,32 @@
   "pages": [
     "pages/index/index",
     "pages/logs/logs",
-    "components/multiphoto/test"
+    "components/multiphoto/test",
+    "pages/print_doc/doc_list/doc_list",
+    "pages/print_doc/index/index",
+    "pages/print_doc/function_list/function_list",
+    "pages/print_doc/start/start",
+    "pages/print_doc/start_intro/start_intro",
+    "pages/print_doc/otherIntro/otherIntro",
+    "pages/print_doc/otherIndex/otherIndex",
+    "pages/print_doc/appIntro/appIntro",
+    "pages/print_doc/print_wx/print_wx",
+    "pages/print_doc/print_wx_introduction/print_wx_introduction",
+    "pages/print_doc/print_wx_setting/print_wx_setting",
+    "pages/print_doc/print_wx_subscribe/print_wx_subscribe",
+    "pages/print_doc/print_invoice/print_invoice",
+    "pages/print_doc/print_invoice_list/print_invoice_list"
   ],
   "window": {
-		"backgroundTextStyle": "light",
-		"navigationBarBackgroundColor": "#fff",
-		"navigationBarTitleText": "小白智慧打印",
-		"navigationBarTextStyle": "black",
-		"navigationStyle": "custom"
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "小白智慧打印",
+    "navigationBarTextStyle": "black",
+    "navigationStyle": "custom"
   },
   "usingComponents": {
-		"nav-bar": "components/nav-bar/index"
-	},
+    "nav-bar": "components/nav-bar/index"
+  },
   "style": "v2",
   "sitemapLocation": "sitemap.json"
 }

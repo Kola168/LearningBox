@@ -1,0 +1,24 @@
+/* pages/print_doc/start_intro/start_intro.wxss */
+
+.img-box {
+  text-align: center;
+}
+
+.image {
+  width: 100%;
+  margin-bottom: 80rpx;
+}
+
+btn {
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+}
+
+.btn-yellow {
+  background: #FFDC5E;
+}
+
+.btn-yellow > button {
+  color: #454545;
+}

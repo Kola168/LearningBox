@@ -1,0 +1,8 @@
+{
+  "disableScroll": false,
+  "enablePullDownRefresh": false,
+  "navigationBarTitleText": "打印设置",
+  "usingComponents": {
+    "confirm-print": "../../../components/confirm-print"
+  }
+}

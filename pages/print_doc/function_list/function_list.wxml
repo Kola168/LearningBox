@@ -1,0 +1,32 @@
+<nav-bar background="#fff" title="文档打印" />
+<view class="doc-container">
+	<view class="item-print local-top" bindtap="toNext" id="longPress">
+		<image class="item-print-icon" mode="widthFix" src="/images/print_doc/doc_more_long.png" />
+		<view class="item-print-text">
+			<text class="title">长按文档打印</text>
+			<text class="content text-top">最便捷的微信文档打印方式</text>
+		</view>
+		<image class="item-arrow" src="/images/print_doc/doc_item_arrow.png" mode="widthFix" />
+	</view>
+	<view class="item-print local-top" bindtap="toNext" id="baiduPrint">
+		<image class="item-print-icon" mode="widthFix" src="/images/print_doc/doc_more_baidu.png" />
+		<view class="item-print-text">
+			<text class="title">百度网盘文档打印</text>
+			<text class="content text-top">大容量轻便捷的打印方式</text>
+		</view>
+		<image class="item-arrow" src="/images/print_doc/doc_item_arrow.png" mode="widthFix" />
+	</view>
+	<view class="item-print local-top" bindtap="otherPrint">
+		<image class="item-print-icon" mode="widthFix" src="/images/print_doc/doc_more_other_app.png" />
+		<view class="item-print-text">
+			<text class="title">其它APP内的文档打印</text>
+			<text class="content text-top">QQ,邮箱,WPS等应用内文件打印</text>
+		</view>
+		<image class="item-arrow" src="/images/print_doc/doc_item_arrow.png" mode="widthFix" />
+	</view>
+</view>
+
+<import src="../../../lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />
+<!-- <consumables class="modify" bind:myevent="onMyEvent" supply_types="{{supply_types}}" consumables-icon="consumables-icon" medium_recommend="{{mediumRecommend}}" find="common"></consumables> -->
+
