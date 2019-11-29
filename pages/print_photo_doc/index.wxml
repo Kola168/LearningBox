@@ -1,0 +1,104 @@
+<!-- print_photo_doc -->
+<block wx:if="{{showArea}}">
+    <block wx:if="{{!showIndex}}">
+        <view class="wrap">
+            <view class="image-main">
+                <view class="image-item">
+                    <!-- 删除图片 -->
+                    <image class="delete" src="../../images/close-edit.png" mode="widthFix" bindtap="deleteImg" id="{{index}}"></image>
+                    <view class="mainImage">
+                        <image class="photo" src="{{item.url}}" mode="widthFix" id="{{index}}"></image>
+                    </view>
+                    <!-- 数量增减 -->
+                    <view class="count">
+                        <!-- 编辑按钮 -->
+                        <text class="moreEdit">编辑</text>
+                        <view>
+                            <image class="count-button" src="../../images/decrease.png" mode="widthFix" id="{{index}}"></image>
+                            <view class="count-num">{{item.count}}</view>
+                            <image class="count-button" src="../../images/increase.png" mode="widthFix" id="{{index}}"></image>                
+                        </view>
+                    </view>
+                </view>
+                <!-- 添加图片 -->
+                <view class="image-item upload-btn" bindtap="openPopWindow">
+                    <image src="/images/btn_add_pic.png"></image>
+                    <text class="text">上传照片</text>
+                </view>
+                <!-- 页面无图片 -->
+                <block wx:if="{{!images.length}}">
+                    <view class="empty-image">
+                        <image class="upload-m-icon" src="https://cdn.gongfudou.com/miniapp/ec/upload_m_icon.png" mode="widthFix" bindtap="openPopWindeo"></image>
+                    </view>
+                    <text>点击此处上传照片吧</text>
+                    <image class="use-handbook" src="https://cdn.gongfudou.com/miniapp/ec/use_handbook.png" mode="widthFix"></image>
+                </block>
+            </view>
+            <!-- 底部按钮 -->
+            <view class="bottom">
+                <view class="bottom-left" bindtap="openPopWindow">
+                    <text>上传照片</text>
+                </view>
+                <view class="bottom-right">
+                    <form bindsubmit="confirm">
+                        <button>确认打印</button>
+                    </form>
+                </view>
+            </view>
+            <!-- 自定义遮罩上传进度条/照片过滤提示 -->
+            <view class="progress">
+                <!-- 上传进度显示 -->
+                <view class="progress-content">
+                    <view class="progress-count">
+                        正在上传(
+                            <text class="complete">{{completeCount}}</text>
+                            <text class="allCount">{{count}}</text>
+                        )
+                    </view>
+                    <text>正在上传照片，请耐心等候</text>
+                    <progress class="progress-bar" percent="{{percent}}" activeColor="#ffe27a" backgroundColor="#eff0f5" stroke-width="6"></progress>
+                    <image class="progress-loading" src="../../images/loading.gif" mode="widthFix"></image>
+                    <button class="cancel-upload" bindtap="cancelUpload">取消</button>
+                </view>
+                <!-- 图片过滤提示 -->
+                <view class="showInterceptModal">{{showInterceptModal}}</view>
+                <!-- 选择图片 -->
+                <view class="choosePhoto">
+                    <view class="choosePhoto-container" catchtap="closePopWindow">
+                        <view class="choosePhoto-content">
+                            <view class="choosePhotoItem" bindtap="chooseImg" id="takePhoto">
+                                <text>拍照</text>
+                            </view>
+                            <view class="choosePhotoItem" bindtap="chooseImg" id="localAlbum">
+                                <text>手机相册</text>
+                            </view>
+                            <view class="choosePhotoItem" bindtap="chooseImg" id="wechatAlbum">
+                                <text>微信聊天记录</text>
+                            </view>
+                            <view class="choosePhotoItem">
+                                <text>取消</text>
+                            </view>
+                        </view>
+                    </view>
+                </view>
+                <!-- 打印确认框 -->
+                <confirm-print bindconfirm="userConfirm" modal="{{confirmModal}}"></confirm-print>
+
+
+
+            </view>
+        </view>
+    </block>
+    <block wx:else>
+        <image class="photo-doc" src="https://cdn.gongfudou.com/miniapp/ec/pic_to_doc_desc_a.png" mode="widthFix"></image>
+        <image class="photo-doc photo-last" src="https://cdn.gongfudou.com/miniapp/ec/pic_to_doc_desc_b.png" mode="widthFix"></image>
+        <view class="btn" bindtap="toUse">
+            <button hover-class="none">开始使用</button>
+        </view>
+        <!-- 选择图片 -->
+        <consumables class="modify" bind:myevent="onMyEvent" supply_types="{{supply_types}}" consumables-icon="consumables-icon" medium_recommend="{{mediumRecommend}}" find="common"></consumables>
+    </block>
+</block>
+<!-- loading -->
+<import src="/lib/toast/wetoast.wxml"></import>
+<template is="wetoast" data="{{...__wetoast__}}"></template>

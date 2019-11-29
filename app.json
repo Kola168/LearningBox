@@ -2,7 +2,8 @@
   "pages": [
     "pages/index/index",
     "pages/logs/logs",
-    "components/multiphoto/test"
+    "components/multiphoto/test",
+    "pages/print_photo_doc/index"
   ],
   "window": {
 		"backgroundTextStyle": "light",
