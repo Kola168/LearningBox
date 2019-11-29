@@ -6,7 +6,8 @@
     "pages/network/index/index",
     "pages/network/tips/step1",
     "pages/network/tips/step2",
-    "pages/network/tips/step3"
+    "pages/network/tips/step3",
+    "pages/network/wificonnect/list"
   ],
   "window": {
     "backgroundTextStyle": "light",

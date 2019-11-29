@@ -8,7 +8,7 @@ Page({
   },
 
   onLoad: function(options) {
-
+    console.log(options)
   },
   nextStep: function() {
     wxNav.navigateTo('/pages/network/tips/step3')

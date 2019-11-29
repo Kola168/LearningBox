@@ -5,7 +5,7 @@ import wxNav from '../../../utils/nav.js'
 Page({
 
   data: {
-    
+
   },
 
   onLoad: function(options) {
@@ -17,7 +17,7 @@ Page({
   },
 
   nextStep:function(){
-    wxNav.navigateTo('/pages/network/tips/step2')
+    wxNav.navigateTo('/pages/network/tips/step2',{asd:1})
   }
 
 })

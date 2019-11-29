@@ -1,2 +1,16 @@
 <!--pages/network/tips/step3.wxml-->
-<text>pages/network/tips/step3.wxml</text>
+<nav-bar title="搜索设备"></nav-bar>
+
+<block wx:if="{{isIphone}}">
+  <image src="/images/network_iphone1.png" mode="widthFix" class="tips-img"></image>
+  <image src="/images/network_iphone2.png" mode="widthFix" class="tips-img"></image>
+</block>
+<block wx:else>
+  <image src="/images/network_android1.png" mode="widthFix" class="tips-img"></image>
+  <image src="/images/network_android2.png" mode="widthFix" class="tips-img"></image>
+</block>
+<view class="common-button-bg bottom-button" bindtap="loopCheck">
+  下一步
+</view>
+<import src="/lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />
