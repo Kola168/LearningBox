@@ -1,0 +1,16 @@
+<nav-bar title="我的设备"></nav-bar>
+<view class="container">
+  <view class="device-add">添加打印机</view>
+  <view class="device-list">
+    <view>设备列表</view>
+    <view class="list-item" wx:for="{{devices}}" wx:key="{{item.id}}" id="{{item.id}}" bindtap="toIndex">
+      <view class="item-left">
+        <image src="{{item.url}}" />
+      </view>
+      <view class="item-right text-overflow-points">{{item.name}}</view>
+    </view>
+  </view>
+</view>
+<!-- loading -->
+<import src="/lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />
