@@ -8,7 +8,57 @@
     </swiper-item>
   </block>
 </swiper>
-
+<view class="print-nomal">
+  <image src="/images/home/print_photo.png" mode="widthFix">
+    <view>照片打印</view>
+  </image>
+  <image src="/images/home/print_doc.png" mode="widthFix">
+    <view>文档打印</view>
+  </image>
+  <image src="/images/home/print_more.png" mode="widthFix">
+    <view>更多打印</view>
+  </image>
+</view>
+<view class="home-title">智能学习工具</view>
+<view class="tool-wrap">
+  <view class="tool-item">
+    <image src="/images/home/icon_shizika.png" mode="widthFix"></image>
+    <view>识字卡</view>
+  </view>
+  <view class="tool-item">
+    <image src="/images/home/icon_voice.png" mode="widthFix"></image>
+    <view>童音录制</view>
+  </view>
+  <view class="tool-item">
+    <image src="/images/home/icon_test.png" mode="widthFix"></image>
+    <view>宝贝测评</view>
+  </view>
+  <view class="tool-item">
+    <image src="/images/home/icon_miaohong.png" mode="widthFix"></image>
+    <view>幼儿描红</view>
+  </view>
+  <view class="tool-item">
+  </view>
+</view>
+<view class="home-title">
+  <view>宝贝学习计划</view>
+  <view>
+    <text>更多</text>
+    <image src="/images/home/icon_more.png" mode="widthFix"></image>
+  </view>
+</view>
+<view class="study-plan">
+  <image src="/images/home/study_plan_none.png" mode="widthFix" class="study-plan-image"></image>
+  <view>
+    <view>快去定制宝宝的学习计划吧~</view>
+    <view class="add-plan">
+      <view>新增计划</view>
+    </view>
+  </view>
+</view>
+<view class="home-title">家庭早教</view>
+<view class="home-title">轻松带娃</view>
+<view class="home-title">入园早准备</view>
 <!-- loading -->
 <import src="/lib/toast/wetoast.wxml" />
 <template is="wetoast" data="{{...__wetoast__}}" />
