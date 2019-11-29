@@ -4,7 +4,7 @@ const regeneratorRuntime = require('../../../lib/co/runtime')
 const co = require('../../../lib/co/co')
 const util = require('../../../utils/util')
 const request = util.promisify(wx.request)
-var mta = require('../../../utils/mta_analysis.js');
+// var mta = require('../../../utils/mta_analysis.js')
 
 Page({
   data: {

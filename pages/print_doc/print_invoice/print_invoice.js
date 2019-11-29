@@ -5,7 +5,7 @@ const app = getApp()
 const regeneratorRuntime = require('../../../lib/co/runtime')
 const co = require('../../../lib/co/co')
 const util = require('../../../utils/util')
-const mta = require('../../../utils/mta_analysis.js');
+// const mta = require('../../../utils/mta_analysis.js');
 const showModal = util.promisify(wx.showModal)
 const chooseMessageFile = util.promisify(wx.chooseMessageFile)
 import router from '../../../utils/nav'

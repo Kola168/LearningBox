@@ -2,10 +2,10 @@
 "use strict"
 
 const app = getApp()
-const regeneratorRuntime = require('../../lib/co/runtime')
+const regeneratorRuntime = require('../../../lib/co/runtime')
 const co = require('../../../lib/co/co')
 const util = require('../../../utils/util')
-import api from '../../../network/api'
+import api from '../../../network/restful_request'
 // import commonRequest from '../../utils/common_request.js'
 import router from '../../../utils/nav'
 Page({
@@ -14,10 +14,10 @@ Page({
         mediumRecommend: ''
     },
     onLoad: co.wrap(function* (options) {
-      var media_type = '_docA4'
-      this.setData({
-        mediumRecommend: media_type
-      })
+      // var media_type = '_docA4'
+      // this.setData({
+      //   mediumRecommend: media_type
+      // })
       // commonRequest.getSupplyBefore(media_type).then( (res)=>{
       //   this.setData({
       //       supply_types: res.supply_types
@@ -38,8 +38,8 @@ Page({
             //     url: '../error_book/pages/baidu_print/choose?type=doclist'
             // })
           } else {
-            router.navigateTo('/pages/error_book/pages/baidu_print/choose', {
-              arrayFile: encodeURIComponent(JSON.stringify(res.tempFiles))
+            router.navigateTo('/pages/print_doc/start_intro/start_intro', {
+              type: type
             })
             // wx.navigateTo({
             //     url: `../print_doc/start_intro?type=${type}`
@@ -49,7 +49,7 @@ Page({
             util.showErr(error)
         }
       } else {
-        router.navigateTo('/pages/error_book/pages/baidu_print/choose')
+        router.navigateTo('/pages/print_doc/start/start')
         // wx.navigateTo({
         //     url: `../print_doc/start`
         // })

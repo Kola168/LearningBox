@@ -4,8 +4,8 @@ const app = getApp()
 const regeneratorRuntime = require('../../../lib/co/runtime')
 const co = require('../../../lib/co/co')
 const util = require('../../../utils/util')
-var mta = require('../../../utils/mta_analysis.js');
-import graphql from '../../../utils/graphql_request'
+// var mta = require('../../../utils/mta_analysis.js');
+import graphql from '../../../network/graphql_request'
 
 const showModal = util.promisify(wx.showModal)
 const request = util.promisify(wx.request)

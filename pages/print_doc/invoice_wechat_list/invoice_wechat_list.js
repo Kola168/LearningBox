@@ -1,15 +1,19 @@
 "use strict"
 const app = getApp()
 
-import api from '../../../network/api'
-import {
-  regeneratorRuntime,
-  co,
-  util,
-  _,
-  uploadFormId,
-  common_util
-} from '../../../utils/common_import'
+import api from '../../../network/restful_request'
+const regeneratorRuntime = require('../../../lib/co/runtime')
+const co = require('../../../lib/co/co')
+// import {
+//   regeneratorRuntime,
+//   co,
+//   util,
+//   _,
+//   uploadFormId,
+//   common_util
+// } from '../../../utils/common_import'
+const util = require('../../../utils/util')
+const _ = require('../../../lib/underscore/we-underscore')
 import storage from '../../../utils/storage'
 import router from '../../../utils/nav'
 import Logger from '../../../utils/logger.js'

@@ -5,11 +5,11 @@ const app = getApp()
 const regeneratorRuntime = require('../../../lib/co/runtime')
 const co = require('../../../lib/co/co')
 const util = require('../../../utils/util')
-var mta = require('../../../utils/mta_analysis.js');
+// var mta = require('../../../utils/mta_analysis.js');
 
 const request = util.promisify(wx.request)
 const event = require('../../../lib/event/event')
-import graphql from '../../../utils/graphql_request'
+import graphql from '../../../network/graphql_request'
 
 import storage from '../../../utils/storage'
 import router from '../../../utils/nav'
@@ -30,7 +30,7 @@ Page({
     isAndroid: false,
     isMember: false
   },
-  
+
   onLoad: co.wrap(function* (options) {
     if (options.scene) {
       let scene = options.scene.split('_')

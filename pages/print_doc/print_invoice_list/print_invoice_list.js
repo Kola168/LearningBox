@@ -1,14 +1,14 @@
 "use strict"
 const app = getApp()
-const regeneratorRuntime = require('../../lib/co/runtime')
-const co = require('../../lib/co/co')
-const util = require('../../utils/util')
-var mta = require('../../utils/mta_analysis.js');
-const uploadFormId = require('../../utils/gfd-formid-upload')
+const regeneratorRuntime = require('../../../lib/co/runtime')
+const co = require('../../../lib/co/co')
+const util = require('../../../utils/util')
+// var mta = require('../../../utils/mta_analysis.js');
+// const uploadFormId = require('../../utils/gfd-formid-upload')
 
 const request = util.promisify(wx.request)
 const showModal = util.promisify(wx.showModal)
-const _ = require('../../lib/underscore/we-underscore')
+const _ = require('../../../lib/underscore/we-underscore')
 import storage from '../../../utils/storage'
 import router from '../../../utils/nav'
 import Logger from '../../../utils/logger.js'

@@ -5,15 +5,15 @@ const app = getApp()
 const regeneratorRuntime = require('../../../lib/co/runtime')
 const co = require('../../../lib/co/co')
 const util = require('../../../utils/util')
-var mta = require('../../../utils/mta_analysis.js');
-import api from '../../../network/api'
-import graphql from '../../../utils/graphql_request'
+import api from '../../../network/restful_request'
+import graphql from '../../../network/graphql_request'
 // import commonRequest from '../../../utils/common_request.js'
 
 import storage from '../../../utils/storage'
 import router from '../../../utils/nav'
 import Logger from '../../../utils/logger.js'
 const logger = new Logger.getLogger('pages/print_doc/library_play_preview/library_play_preview')
+// var mta = require('../../../utils/mta_analysis.js');
 
 const request = util.promisify(wx.request)
 const showModal = util.promisify(wx.showModal)

@@ -2,17 +2,16 @@
 "use strict"
 
 const app = getApp()
-const regeneratorRuntime = require('../../lib/co/runtime')
+const regeneratorRuntime = require('../../../lib/co/runtime')
 const co = require('../../../lib/co/co')
 const util = require('../../../utils/util')
 const request = util.promisify(wx.request)
-const showModal = util.promisify(wx.showModal)
-const uploadFormId = require('../../../utils/gfd-formid-upload')
-var mta = require('../../../utils/mta_analysis.js');
+// const uploadFormId = require('../../../utils/gfd-formid-upload')
+// var mta = require('../../../utils/mta_analysis.js');
 import storage from '../../../utils/storage'
 import router from '../../../utils/nav'
 import Logger from '../../../utils/logger.js'
-const logger = new Logger.getLogger('pages/print_wx_setting/print_wx_setting')
+const logger = new Logger.getLogger('pages/print_doc/print_wx_setting/print_wx_setting')
 Page({
   data: {
     img1: '/images/print_doc/noselected.png',

@@ -9,8 +9,9 @@ const showModal = util.promisify(wx.showModal)
 const scanCode = util.promisify(wx.scanCode)
 const _ = require('../../../lib/underscore/we-underscore')
 import api from '../../../network/restful_request'
-import commonRequest from '../../../utils/common_request.js'
+// import commonRequest from '../../../utils/common_request.js'
 import { getLogger } from '../../../utils/logger'
+const logger = new getLogger('pages/print_doc/doc_list/doc_list')
 import router from '../../../utils/nav'
 import storage from '../../../utils/storage'
 Page({
@@ -25,6 +26,7 @@ Page({
 	},
 
 	onLoad: co.wrap(function *(options){
+		return
 		try {
 			this.longToast = new app.weToast()
 			var docFiles = JSON.parse(decodeURIComponent(options.arrayFile))
@@ -392,5 +394,5 @@ Page({
       util.showErr(error)
     }
 	})
-	
+
 })
