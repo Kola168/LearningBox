@@ -16,7 +16,11 @@
     "pages/print_doc/print_wx_setting/print_wx_setting",
     "pages/print_doc/print_wx_subscribe/print_wx_subscribe",
     "pages/print_doc/print_invoice/print_invoice",
-    "pages/print_doc/print_invoice_list/print_invoice_list"
+    "pages/print_doc/print_invoice_list/print_invoice_list",
+    "pages/print_doc/invoice_wechat_list/invoice_wechat_list",
+    "pages/print_doc/library/library",
+    "pages/print_doc/library_play_preview/library_play_preview",
+    "pages/print_doc/content_pay/content_pay"
   ],
   "window": {
     "backgroundTextStyle": "light",

@@ -1,7 +1,4 @@
 {
   "disableScroll": false,
-  "enablePullDownRefresh": false,
-  "usingComponents": {
-    "nav-bar":"../../../components/nav-bar"
-  }
+  "enablePullDownRefresh": false
 }

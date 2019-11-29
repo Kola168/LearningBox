@@ -1,24 +1,24 @@
 <nav-bar background="#fff" title="发票打印" />
 
 <view class="doc-container">
-    <view class="item-print wechat-top" bindtap="invoice">
-        <image class="item-print-icon" mode="widthFix" src="/images/icon_wechat_card.png"></image>
-        <view class="item-print-text">
-            <text class="title">微信卡包</text>
-            <text class="content text-top">从微信卡包添加发票</text>
-        </view>
-        <image class="item-arrow" src="/images/gfd_con_arrow_right.png" mode="widthFix"></image>
-    </view>
-    <view class="item-print local-top" bindtap="chooseFromWeChat">
-        <image class="item-print-icon" mode="widthFix" src="/images/icon_wechat_invoice.png"></image>
-        <view class="item-print-text">
-            <text class="title">微信文件</text>
-            <text class="content text-top">从微信聊天记录中选择发票</text>
-        </view>
-        <image class="item-arrow" src="/images/gfd_con_arrow_right.png" mode="widthFix"></image>
-    </view>
+	<view class="item-print wechat-top" bindtap="invoice">
+		<image class="item-print-icon" mode="widthFix" src="/images/print_doc/icon_wechat_card.png" />
+		<view class="item-print-text">
+			<text class="title">微信卡包</text>
+			<text class="content text-top">从微信卡包添加发票</text>
+		</view>
+		<image class="item-arrow" src="/images/print_doc/doc_item_arrow.png" mode="widthFix" />
+	</view>
+	<view class="item-print local-top" bindtap="chooseFromWeChat">
+		<image class="item-print-icon" mode="widthFix" src="/images/print_doc/icon_wechat_invoice.png" />
+		<view class="item-print-text">
+			<text class="title">微信文件</text>
+			<text class="content text-top">从微信聊天记录中选择发票</text>
+		</view>
+		<image class="item-arrow" src="/images/print_doc/doc_item_arrow.png" mode="widthFix" />
+	</view>
 </view>
 
-<consumables class="modify" bind:myevent="onMyEvent" supply_types="{{supply_types}}" consumables-icon="consumables-icon" medium_recommend="{{mediumRecommend}}" find="common"></consumables>
-<import src="../../lib/toast/wetoast.wxml" />
+<import src="../../../lib/toast/wetoast.wxml" />
 <template is="wetoast" data="{{...__wetoast__}}" />
+

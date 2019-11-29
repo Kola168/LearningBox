@@ -266,6 +266,23 @@ function compareVersion(v1, v2) { //兼容性比较
   return false
 }
 
+//删除数组某一项元素
+function deleteOneId(array, item) {
+  Array.prototype.indexOf = function(val) {
+    for (var i = 0; i < this.length; i++) {
+      if (this[i] == val) return i;
+    }
+    return -1;
+  };
+  Array.prototype.remove = function(val) {
+    var index = this.indexOf(val);
+    if (index > -1) {
+      this.splice(index, 1);
+    }
+  };
+  return array.remove(item)
+}
+
 
 
 module.exports = {
@@ -281,4 +298,5 @@ module.exports = {
   _getSuiteValuesFull: _getSuiteValuesFull,
   clearFile: clearFile,
   compareVersion: compareVersion,
+  deleteOneId: deleteOneId,
 }

@@ -1,5 +1,4 @@
 /* pages/print_doc/start_intro/start_intro.wxss */
-
 .img-box {
   text-align: center;
 }

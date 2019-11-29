@@ -1,0 +1,84 @@
+<nav-bar background="#fff" title="文档打印" />
+
+<view class="app-bottom-tip" wx:if="{{from_temp}}" bindtap="backToHome">返回首页</view>
+<view class="tabs">
+	<scroll-view
+	 scroll-x="true"
+	 class="type"
+	 scroll-with-animation
+	 scroll-into-view="{{'_'+tabId}}"
+	>
+		<text wx:for="{{typeList}}" wx:key="{{index}}" id="{{'_'+index}}"
+            class="tab-item {{tabId == index ? 'activeType' : ''}}" bindtap="changeTab">{{item.name}}<text
+                class="active-border"></text>
+		</text>
+	</scroll-view>
+	<view class="see-all" bindtap="openTypeModal">
+		<image src="/images/print_doc/arrow-bottom-gray-6.png" mode="widthFix" />
+	</view>
+</view>
+
+<block wx:for="{{playList}}" wx:key="{{index}}">
+	<!-- 不带缩略图的文档 -->
+	<block wx:if="{{typeList[1].show_type == 'vertical'}}">
+		<view class='item' bindtap='playPreview' id="{{index}}">
+			<image src='{{item.icon_url}}' class='url' mode="aspectFill" />
+			<view>
+				<view class='title'>
+					<image src='/images/print_doc/icon_fee_square.png' mode="widthFix" wx:if="{{item.sale_price>0}}" />
+					<view>{{item.title}}</view>
+				</view>
+				<view class='print'>
+					<view>
+						<image src='/images/print_doc/print_icon.png' class='print_icon' mode='widthFix' />
+						<text class='print_num'>{{item. print_count}}</text>
+					</view>
+
+					<view style="margin-left:20rpx">
+						<image src='/images/print_doc/discover_pages.png' class='print_icon' mode='widthFix' />
+						<text class='print_num'>共{{item.total_page}}页</text>
+					</view>
+				</view>
+			</view>
+		</view>
+	</block>
+	<!-- 带缩略图 -->
+	<block wx:if="{{typeList[1].show_type=='horizontal'}}">
+		<view class="item-3" bindtap='playPreview' id="{{index}}">
+			<image src='{{item.icon_url}}' class='url-3' mode="aspectFill">
+				<image
+				 src='{{item.discount_url}}'
+				 mode="widthFix"
+				 wx:if="{{item.discount_url && isMember}}"
+				 class="url-3-free"
+				/>
+				<image
+				 src='{{item.non_vip_discount_url}}'
+				 mode="widthFix"
+				 wx:if="{{item.non_vip_discount_url && !isMember}}"
+				 class="url-3-free"
+				/>
+			</image>
+			<view class='title-3'>{{item.title}}</view>
+			<view class='print print-3'>
+				<view>
+					<image src='/images/print_doc/print_icon.png' class='print_icon' mode='widthFix'/>
+					<text class='print_num'>{{item.print_count}}</text>
+				</view>
+				<view class="pages">共{{item.total_page}}页</view>
+			</view>
+		</view>
+	</block>
+</block>
+<view class="type-modal" wx:if="{{showTypeModal}}" bindtap="closeTypeModal">
+	<view catchtap="back">
+		<view wx:for="{{typeList}}" wx:key="{{index}}" id="{{'_'+index}}">
+			<text id="{{'_'+index}}" class="tab-item {{tabId == index ? 'activeType' : ''}}"
+                catchtap="changeTab">{{item.name}}<text class="active-border"></text>
+			</text>
+		</view>
+	</view>
+</view>
+<import src="../../../lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />
+

@@ -8,7 +8,6 @@ const util = require('../../../utils/util')
 const mta = require('../../../utils/mta_analysis.js');
 const showModal = util.promisify(wx.showModal)
 const chooseMessageFile = util.promisify(wx.chooseMessageFile)
-import commonRequest from '../../utils/common_request.js'
 import router from '../../../utils/nav'
 import Logger from '../../../utils/logger.js'
 const logger = new Logger.getLogger('pages/print_doc/print_invoice/print_invoice')
@@ -22,21 +21,7 @@ Page({
     mediumRecommend: ''
   },
   onLoad: co.wrap(function* (options) {
-    this.longToast = new app.WeToast()
     mta.Page.init()
-    // let media_type = 'invoice'
-    // this.setData({
-    //   mediumRecommend: media_type
-    // })
-    // let getSupplyBefore = commonRequest.getSupplyBefore(media_type)
-    // let that = this
-    // getSupplyBefore.then(function (res) {
-    //   const supply_types = res.supply_types
-    //   console.log(supply_types)
-    //   that.setData({
-    //     supply_types: supply_types
-    //   })
-    // })
   }),
 
   scopeInvoice: co.wrap(function* () {
@@ -58,7 +43,7 @@ Page({
             mta.Event.stat('fapiaodayin', {
               'media': 'card'
             })
-            router.navigateTo('/pages/print_invoice_list/print_invoice_list', {
+            router.navigateTo('/pages/print_doc/print_invoice_list/print_invoice_list', {
               invoiceList: encodeURIComponent(JSON.stringify(list))
             })
            
@@ -83,7 +68,7 @@ Page({
       const resInfo = wx.getSystemInfoSync()
       SDKVersion = resInfo.SDKVersion
     } catch (e) {
-      console.log(e)
+      logger.info(e)
     }
     if (util.compareVersion(SDKVersion, '2.5.0')) {
       const file = yield chooseMessageFile({
@@ -91,8 +76,8 @@ Page({
         count: 5,
       })
       const list = file.tempFiles
-      wx.navigateTo({
-        url: `/pages/print_invoice/list_wechat?arrayFile=${encodeURIComponent(JSON.stringify(list))}`
+      router.navigateTo('/pages/print_doc/invoice_weChat_list/invoice_weChat_list', {
+        arrayFile: encodeURIComponent(JSON.stringify(list))
       })
     } else {
       //请升级到最新的微信版本

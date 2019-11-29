@@ -110,7 +110,6 @@ input {
 
 .url {
   width: 90rpx;
-  /* height: 90rpx; */
 }
 
 .left_text {
