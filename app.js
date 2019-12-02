@@ -31,7 +31,7 @@ App({
   rpxPixel: 0.5,
   onLaunch: co.wrap(function*() {
     yield this.getSystemInfo()
-    this.getNavBarInfo()
+    this.navBarInfo = this.getNavBarInfo()
     this.isIpx()
   }),
   //获取系统信息
@@ -47,7 +47,7 @@ App({
     this.isIpx = model.indexOf("iphone x") > -1 ? true : false
     this.rpxPixel = 750 / this.sysInfo.windowWidth
   },
- 
+
 	// 获取导航栏信息
   getNavBarInfo() {
     let sysInfo = this.sysInfo ? this.sysInfo : wx.getSystemInfoSync()
@@ -58,7 +58,7 @@ App({
         navBarHeight = 2 * gap + rect.height,
         navBarPadding = sysInfo.screenWidth - rect.right,
         topBarHeight = navBarHeight + statusBarHeight
-      this.navBarInfo = {
+      return {
         statusBarHeight,
         navBarHeight,
         topBarHeight,
@@ -67,7 +67,6 @@ App({
         menuWidth: rect.width,
         menuHeight: rect.height
       }
-      return this.navBarInfo
     }
   },
 })
