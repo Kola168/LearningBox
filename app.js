@@ -1,3 +1,11 @@
+/*
+ * @Author: your name
+ * @Date: 2019-11-26 09:19:30
+ * @LastEditTime: 2019-11-26 15:00:50
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: /LearningBox/app.js
+ */
 "use strict"
 let { weToast } = require('lib/toast/wetoast.js')
 const regeneratorRuntime = require('lib/co/runtime')
@@ -68,5 +76,23 @@ App({
         menuHeight: rect.height
       }
     }
-  },
+	},
+	preventMoreTap: function (e) {
+		if (_.isEmpty(e)) {
+			return false
+		}
+		try {
+			var globaTime = this.globalLastTapTime;
+			var time = e.timeStamp;
+			if (Math.abs(time - globaTime) < 500 && globaTime != 0) {
+				this.globalLastTapTime = time;
+				return true;
+			} else {
+				this.globalLastTapTime = time;
+				return false;
+			}
+		} catch (e) {
+			console.log(e)
+		}
+	},
 })
