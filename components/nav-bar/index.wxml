@@ -10,10 +10,12 @@
         <block wx:if="{{slotLeft}}">
           <slot name="left"></slot>
         </block>
-        <view class="nav-bar-left__inner" wx:if="{{showBack&&!slotLeft}}" style="height:{{menuHeight-2}}px;border-radius:{{(menuHeight-2)/2}}px;">
-          <image src="{{backImage}}" bindtap="navigateBack" />
-          <view class="nav-bar-left__line">|</view>
-          <image src="{{homeImage}}" bindtap="switchIndex" />
+        <view class="nav-bar-left__inner" wx:if="{{(showNavCapsuleBack||showNavCapsuleHome)&&!slotLeft}}" style="height:{{menuHeight-2}}px;border-radius:{{(menuHeight-2)/2}}px;">
+          <block wx:if="{{showNavCapsuleBack}}">
+            <image src="{{backImage}}" bindtap="navigateBack" />
+            <view class="nav-bar-left__line">|</view>
+          </block>
+          <image src="{{homeImage}}" wx:if="{{showNavCapsuleHome}}" bindtap="switchIndex" />
         </view>
       </view>
       <view class="nav-bar-center" bindtap="backTop" style="width:{{titleWidth}}px;">

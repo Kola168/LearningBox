@@ -1,0 +1,37 @@
+.container {
+  padding: 0 24rpx 30rpx;
+}
+
+.device-add {
+  padding: 40rpx 0;
+  text-align: center;
+  background: #999;
+  margin: 32rpx 0;
+  border-radius: 10rpx;
+}
+
+.device-list {}
+
+.list-item {
+  display: flex;
+  align-items: center;
+  margin-top: 32rpx;
+  border: 2rpx solid #e7e7e7;
+  border-radius: 8rpx;
+}
+
+.item-left {
+  width: 20%;
+  align-items: center;
+  justify-content: center;
+}
+
+.item-left image {
+  width: 120rpx;
+  height: 120rpx;
+}
+
+.item-right {
+  width: 80%;
+  text-align: left;
+}
