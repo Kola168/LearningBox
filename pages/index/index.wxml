@@ -11,7 +11,7 @@
   <view class="usermotto">
     <text class="user-motto">{{motto}}</text>
   </view> -->
-  <audio-player autoplay="{{true}}" audioUrl="http://cdn.gongfudou.com/pciup/2019/9/5/f177dc0d-4fa8-4d16-b712-19e854f43f99" blockSize="{{blockSize}}" audioType="controls" circleSize="{{40}}"></audio-player>
+  <!-- <audio-player autoplay="{{true}}" audioUrl="http://cdn.gongfudou.com/pciup/2019/9/5/f177dc0d-4fa8-4d16-b712-19e854f43f99" blockSize="{{blockSize}}" audioType="controls" circleSize="{{40}}"></audio-player> -->
 </view>
 
 <button bindtap="nextTo">跳转到下一个页面测试标题栏</button>
