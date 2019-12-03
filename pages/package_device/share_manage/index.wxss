@@ -1,0 +1,33 @@
+.container {
+  padding: 0 24rpx 140rpx;
+}
+
+.share-top {
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+  padding-top: 40rpx;
+}
+
+.top-left {
+  font-size: 32rpx;
+  color: #454545;
+}
+
+.top-right {
+  font-size: 32rpx;
+  color: #FFA200;
+}
+
+.stop-share {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+  background: #FFDC5E;
+  font-size: 36rpx;
+  color: #454545;
+  height: 100rpx;
+  line-height: 100rpx;
+}

@@ -18,7 +18,7 @@
       <view class="item-right">
         <view class="right-btn">分享</view>
         <view class="right-arrow">
-          <image src="/images/arrow_right.png" />
+          <image src="../images/arrow_right.png" />
         </view>
       </view>
     </view>
@@ -35,7 +35,7 @@
       <view class="item-right">
         <view class="right-btn">切换</view>
         <view class="right-arrow">
-          <image src="/images/arrow_right.png" />
+          <image src="../images/arrow_right.png" />
         </view>
       </view>
     </view>
@@ -49,7 +49,7 @@
       <view class="item-right">
         <view class="right-btn">切换</view>
         <view class="right-arrow">
-          <image src="/images/arrow_right.png" />
+          <image src="../images/arrow_right.png" />
         </view>
       </view>
     </view>
@@ -63,7 +63,7 @@
       <view class="item-right">
         <view class="right-btn">切换</view>
         <view class="right-arrow">
-          <image src="/images/arrow_right.png" />
+          <image src="../images/arrow_right.png" />
         </view>
       </view>
     </view>

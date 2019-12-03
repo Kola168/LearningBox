@@ -1,7 +1,0 @@
-<nav-bar title="设备离线"></nav-bar>
-<view class="container">
-  <image src="/images/offline_intro_1.png" mode="widthFix" />
-  <image src="/images/offline_intro_2.png" mode="widthFix" />
-  <image src="/images/offline_intro_3.png" mode="widthFix" />
-  <view class="back" bindtap="back">返回上一页</view>
-</view>

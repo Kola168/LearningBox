@@ -1,16 +1,16 @@
 <nav-bar title="设备管理"></nav-bar>
 <view class="container">
   <view class="device-base border-bottom">
-    <image src="/images/info_icon.png" class="device-img" mode="widthFix" />
+    <image src="../images/info_icon.png" class="device-img" mode="widthFix" />
     <view class="device-name">
       <view class="text-overflow-points">给小可乐的3115</view>
       <view class="device-flag"></view>
       <view class="device-status">
         <text>在线</text>
-        <image src="/images/offline_tip.png" bindtap="toOfflineSolve" mode="widthFix" />
+        <image src="../images/offline_tip.png" bindtap="toOfflineSolve" mode="widthFix" />
       </view>
     </view>
-    <image src="/images/share_btn_normal.png" class="share-device" mode="widthFix" />
+    <image src="../images/share_btn_normal.png" class="share-device" mode="widthFix" />
   </view>
   <view class="device-setting">
     <view class="setting-tab">
@@ -33,7 +33,7 @@
         <view class="setting-item">
           <view class="item-left" bindtap="showModal" id="noaduit">
             <view class="left-label">免审核打印</view>
-            <image src="/images/info_icon.png" class="left-explain" mode="widthFix" />
+            <image src="../images/info_icon.png" class="left-explain" mode="widthFix" />
           </view>
           <view class="item-right">
             <image src="/images/switch_off.png" class="right-switch" />
@@ -44,7 +44,7 @@
             <view class="left-label">分享管理</view>
           </view>
           <view class="item-right">
-            <image src="/images/arrow_right.png" class="right-arrow" />
+            <image src="../images/arrow_right.png" class="right-arrow" />
           </view>
         </view>
         <view class="setting-item" bindtap="showModal" id="rename">
@@ -52,16 +52,16 @@
             <view class="left-label">重命名</view>
           </view>
           <view class="item-right">
-            <image src="/images/arrow_right.png" class="right-arrow" />
+            <image src="../images/arrow_right.png" class="right-arrow" />
           </view>
         </view>
         <view class="setting-item">
           <view class="item-left" bindtap="showModal" id="longPrint">
             <view class="left-label">长按打印设置</view>
-            <image src="/images/info_icon.png" class="left-explain" mode="widthFix" />
+            <image src="../images/info_icon.png" class="left-explain" mode="widthFix" />
           </view>
           <view class="item-right">
-            <image src="/images/arrow_right.png" class="right-arrow" />
+            <image src="../images/arrow_right.png" class="right-arrow" />
           </view>
         </view>
       </view>
@@ -95,7 +95,7 @@
             <view class="left-label">重新配网</view>
           </view>
           <view class="item-right">
-            <image src="/images/arrow_right.png" class="right-arrow" />
+            <image src="../images/arrow_right.png" class="right-arrow" />
           </view>
         </view>
       </view>
@@ -149,7 +149,7 @@
             <view class="left-label">设备维护</view>
           </view>
           <view class="item-right">
-            <image src="/images/arrow_right.png" class="right-arrow" />
+            <image src="../images/arrow_right.png" class="right-arrow" />
           </view>
         </view>
       </view>
