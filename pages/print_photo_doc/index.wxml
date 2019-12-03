@@ -6,17 +6,17 @@
                 <view class="image-item">
                     <!-- 删除图片 -->
                     <image class="delete" src="../../images/close-edit.png" mode="widthFix" bindtap="deleteImg" id="{{index}}"></image>
-                    <view class="mainImage">
-                        <image class="photo" src="{{item.url}}" mode="widthFix" id="{{index}}"></image>
+                    <view class="mainImage" style="height:{{height}}px">
+                        <image class="photo" src="{{item.url}}" mode="widthFix" id="{{index}}" bindload="{{realCount == images.length ? 'hideToast' : ''}}" binderror="errImage" catchtap="previewImg"></image>
                     </view>
                     <!-- 数量增减 -->
                     <view class="count">
                         <!-- 编辑按钮 -->
-                        <text class="moreEdit">编辑</text>
+                        <text class="moreEdit" bindtap="toMoreEdit" id="{{index}}" key="1">编辑</text>
                         <view>
-                            <image class="count-button" src="../../images/decrease.png" mode="widthFix" id="{{index}}"></image>
+                            <image class="count-button" src="{{item.count < 2 ? '../../images/decrease.png' : '../../images/decrease_click_yellow.png'}}" mode="widthFix" id="{{index}}" bindtap="decrease"></image>
                             <view class="count-num">{{item.count}}</view>
-                            <image class="count-button" src="../../images/increase.png" mode="widthFix" id="{{index}}"></image>                
+                            <image class="count-button" src="{{item.count < 49 && item.count !== 0 ? '../../images/increase_click_yellow.png' : '../../images/increase.png' }}" mode="widthFix" id="{{index}}" bindtap="increase"></image>                
                         </view>
                     </view>
                 </view>
