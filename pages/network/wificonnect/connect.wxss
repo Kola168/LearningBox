@@ -1,0 +1,94 @@
+/* pages/network/wificonnect/connect.wxss */
+@import '../tips/step1.wxss';
+
+view {
+  box-sizing: border-box;
+}
+
+.connect-title {
+  margin-top: 90rpx;
+  font-size: 36rpx;
+  color: #333;
+}
+
+.connect-equip {
+  width: 230rpx;
+  margin-top: 44rpx;
+  margin-bottom: 70rpx;
+}
+
+.connect-psd-list {
+  width: 100%;
+  padding: 0 20rpx;
+  display: flex;
+  align-items: center;
+  margin-top: 30rpx;
+}
+
+.connect-wifi-icon {
+  width: 44rpx;
+}
+
+.connect-lock-icon {
+  width: 36rpx;
+}
+
+.connect-psd-name {
+  flex: 1;
+  margin-left: 30rpx;
+  border-bottom: 1px solid #E7E7E7;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.holder-color {
+  color: #999;
+}
+
+.wifi-name {
+  color: #333;
+  font-size: 34rpx;
+  line-height: 60rpx;
+}
+
+.wifi-change {
+  font-size: 28rpx;
+  color: #FFA200;
+  margin-right: 24rpx;
+}
+
+.psd-style {
+  width:100%;
+  font-size: 34rpx;
+  line-height: 60rpx;
+}
+
+.connect-tips {
+  width: 100%;
+  padding-left:23rpx;
+  display: flex;
+  align-items: center;
+  margin-top:40rpx;
+}
+
+.connect-tips-icon {
+  width: 28rpx;
+}
+
+.connect-tips-text{
+  font-size:24rpx;
+  color:#999;
+  margin-left:15rpx;
+}
+
+.conf-button{
+  width:600rpx;
+  line-height:100rpx;
+  border-radius:50rpx;
+  text-align:center;
+  background:#FFDC5E;
+  font-size:36rpx;
+  color:#333;
+  margin-top:80rpx;
+}

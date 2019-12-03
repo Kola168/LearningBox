@@ -1,3 +1,11 @@
+/*
+ * @Author: your name
+ * @Date: 2019-11-26 09:19:56
+ * @LastEditTime: 2019-11-26 16:48:31
+ * @LastEditors: your name
+ * @Description: In User Settings Edit
+ * @FilePath: /LearningBox/pages/index/index.js
+ */
 const app = getApp()
 import wxNav from '../../utils/nav.js'
 import Logger from '../../utils/logger.js'
@@ -38,5 +46,9 @@ Page({
       type: "loading",
       duration: 3000
     })
-  }
+	},
+	nextTo:function(){
+    storage.remove('hello')
+		wxNav.navigateTo('/pages/logs/logs')
+	}
 })

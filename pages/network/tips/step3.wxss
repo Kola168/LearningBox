@@ -1,0 +1,10 @@
+/* pages/network/tips/step3.wxss */
+@import 'step1.wxss';
+
+page{
+  padding-bottom:280rpx;
+}
+
+.tips-img{
+  width:100%;
+}
