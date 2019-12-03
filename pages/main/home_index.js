@@ -34,7 +34,8 @@ Page({
     }, {
       title: '入园早准备',
       url: 'http://gfd-i.memeyin.com/e-FlXfVks1do_li3DqrLWVHjr-0IPr'
-    }, ]
+    }, ],
+    showAuth:false//登录
 
   },
 
@@ -51,6 +52,30 @@ Page({
 
     this.longToast = new app.weToast()
   },
+  onShow: co.wrap(function* () {
+		yield this.getUnion() //授权
+	}),
+  getUnion: co.wrap(function* () {
+		try {
+			let unionId = wx.getStorageSync('unionId')
+			let openId = wx.getStorageSync('openId')
+			if (unionId && openId) {
+				this.setData({
+					showAuth: false
+				})
+				app.openId = openId
+			}
+			if (!unionId) {
+				this.setData({
+					showAuth: true,
+				})
+			}
+		} catch (e) {
+			util.showErr({
+				message: '请重新打开小程序'
+			})
+		}
+	}),
   checkSession: co.wrap(function* () {
 		try {
 			yield checkSession()
@@ -106,75 +131,18 @@ Page({
         throw (resp.data)
       }
       wx.setStorageSync('authToken', resp.data.res.auth_token)
-      console.log('授权', resp.data)
-      console.log('resp.data.res.union_id=========', resp.data.res.unionid)
       wx.setStorageSync('unionId', resp.data.res.unionid)
-      if (resp.data.res.selected_stage.sn) {
-        wx.setStorageSync('selectedStage', resp.data.res.selected_stage.sn)
-        wx.setStorageSync('selectedStageName', resp.data.res.selected_stage.name)
-        // wx.setStorageSync('authToken', resp.data.res.auth_token)
-        let priodIdIndex
-        switch (resp.data.res.selected_stage.name) {
-          case '学龄前':
-            priodIdIndex = 0
-            break
-          case '小学':
-            priodIdIndex = 1
-            break
-          case '初高中':
-            priodIdIndex = 2
-            break
-          default:
-            priodIdIndex = 0
-            break
-        }
-        this.setData({
-          activePriodIdIndex: priodIdIndex
-        })
-        this.getPriodContent()
-
-      }
-
-      if (resp.data.res.phone) {
-        app.hasPhoneNum = true
-        app.globalPhoneNum = resp.data.res.phone
-        wx.setStorageSync("phonenum", resp.data.res.phone)
-      }
+    
+      // if (resp.data.res.phone) {
+      //   app.hasPhoneNum = true
+      //   app.globalPhoneNum = resp.data.res.phone
+      //   wx.setStorageSync("phonenum", resp.data.res.phone)
+      // }
 
       this.setData({
-        showAuth: false,
-        showAuthModal: false
+        showAuth: false
       })
-
-      this.loopUploadOpenId() //上报formid
-      this.userId = resp.data.res.user_id
-      try {
-        this.loopGrowingOpenId(resp.data.res.unionid)
-      } catch (error) {}
-
-      if (this.deviceId) {
-        yield this.bindShareDevice() //绑定分享打印机
-      }
-
-      // 首页功能区
-      this.getHomeFunctionList()
-
-      yield this.getDevice()
-      if (!app.activeDevice) {
-        return this.longToast.toast()
-      }
-
       this.longToast.toast()
-      console.log('授权跳转111111=====', this.redirect_url)
-      if (this.redirect_url) {
-        // yield this.getBindOpenId()
-        // this.longToast.toast()
-        if (this.tag != 'index') {
-          wx.navigateTo({
-            url: '/' + this.redirect_url
-          })
-        }
-      }
     } catch (e) {
       console.log(e)
       yield app.login()
@@ -186,8 +154,7 @@ Page({
         showCancel: false
       })
       this.setData({
-        showAuth: true,
-        showAuthModal: true
+        showAuth: true
       })
       this.longToast.toast()
       util.showErr(e)

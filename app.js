@@ -80,7 +80,7 @@ App({
   getOpenId: co.wrap(function* () {
 		try {
 			const storage = yield getStorage({
-				key: 'openid'
+				key: 'openId'
 			})
 			this.openId = storage.data
 		} catch (e) {
@@ -102,7 +102,7 @@ App({
       if (loginInfo.data.code !== 0) {
         throw (loginInfo.data)
       }
-      wx.setStorageSync('openid', loginInfo.data.res.openid)
+      wx.setStorageSync('openId', loginInfo.data.res.openid)
 
       this.openId = loginInfo.data.res.openid
     } catch (e) {
