@@ -1,0 +1,106 @@
+/* pages/print_doc/duplicate/index.wxss */
+page{
+  border-top:2rpx solid #e4e4e4;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  padding-top:95rpx;
+  box-sizing:border-box;
+  padding:0 30rpx;
+}
+
+view{
+  box-sizing:border-box;
+}
+
+.wh100{
+  width:100%;
+}
+
+.doc-box{
+  width:100%;
+  height:240rpx;
+  margin-top:28rpx;
+}
+
+.doc-icon{
+  width:115rpx;
+}
+
+.text-box{
+  margin-left:20rpx;
+  display:flex;
+  flex-direction:column;
+}
+
+.text-title{
+  font-size:36rpx;
+  font-weight:500;
+  color:#333;
+}
+
+.text-content{
+  font-size:28rpx;
+  color:#333;
+  margin-top:15rpx;
+}
+
+.other-copy-box{
+  width:100%;
+  flex-wrap:wrap;
+}
+
+.copy-item{
+  width:328rpx;
+  height:200rpx;
+  margin-top:30rpx;
+  flex-shrink:0;
+  flex-direction:column;
+}
+
+.copy-item-icon{
+  width:98rpx;
+}
+
+.boxshadow {
+  box-shadow: 0 0 12px 1px #dfdfdf
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex-ac {
+  display: flex;
+  justify-content: center;
+}
+
+.flex-ab {
+  display: flex;
+  justify-content: space-between;
+}
+
+.flex-pc {
+  display: flex;
+  align-items: center;
+}
+
+.flex-ca {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.media-box{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow: 0 0 12px 1px #dfdfdf;
+  border-radius:15rpx;
+}
+
+.media-box image {
+  height: auto;
+}

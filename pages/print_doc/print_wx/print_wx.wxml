@@ -1,0 +1,37 @@
+<gio-marketing/>
+<nav-bar background="#fff" title="微信文章"/>
+<view class="title-content">
+	<view class="title-modal" />
+	<text class="title">复制链接打印</text>
+</view>
+<view class="total">
+	<view class="border">
+		<input
+		 value='{{input}}'
+		 bindblur="input"
+		 bindinput="input"
+		 cursor-spacing="20"
+		 maxlength="-1"
+		 placeholder="请将微信公众号文章的链接粘贴在此处"
+		 placeholder-style="font-size:26rpx;color:#999"
+		/>
+	</view>
+	<view class="btn" bindtap="next">
+		<button hover-class="none" class='button'>下一步</button>
+	</view>
+</view>
+<view class="text" bindtap="introduction">如何获取微信公众号文章的链接？>></view>
+
+<view class="intro">
+	<image
+	 wx:for="{{imgList}}"
+	 src="{{item}}"
+	 wx:key="{{index}}"
+	 style="width:100%;vertical-align:top"
+	 mode="widthFix"
+	/>
+</view>
+
+<import src="../../../lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />
+

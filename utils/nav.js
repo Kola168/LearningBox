@@ -7,12 +7,24 @@
  * wxNav.navigateBack([, delta [, cb]])
  */
 
+function relative2AbsolutePath(nextUrl) {
+  let pages = getCurrentPages(),
+    curUrl = pages[pages.length - 1].route,
+    nextUrlArr = nextUrl.split('../'),
+    isRelativePathLen = nextUrlArr.length - 1
+  if (isRelativePathLen) {
+    let curUrlArr = curUrl.split('/')
+    return curUrlArr.splice(0, curUrlArr.length - 1 - isRelativePathLen).join('/') + '/' + nextUrlArr[nextUrlArr.length - 1]
+  } else {
+    return nextUrl
+  }
+}
 
 function parseObj2QueryStr() {
   let query = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-  return Object.keys(query).reduce(function(acc, key) {
-    return "".concat(acc).concat(key, "=").concat(query[key], "&")
-  }, "&")
+  return Object.keys(query).reduce(function(acc, key, index) {
+    return acc.concat(index === 0 ? '' : '&', key, '=', query[key])
+  }, '')
 }
 
 function safeWxApiTargetUrl(url) {
@@ -100,6 +112,7 @@ const MAX_PAGES_LENGTH = 10
 
 const navigateTo = (url, query = {}, cb = emptyFn) => {
   let pages = getCurrentPages()
+  url = relative2AbsolutePath(url)
   let routeLocation = findLastUrlAndQueryDelta(url, query)
   if (routeLocation) { //已存在页面栈
     let delta = routeLocation.delta
@@ -121,6 +134,7 @@ const navigateTo = (url, query = {}, cb = emptyFn) => {
   }
 }
 const redirectTo = (url, query = {}, cb = emptyFn) => {
+  url = relative2AbsolutePath(url)
   wx.redirectTo({
     url: joinUrlAndQuery(url, query),
     success: function success() {
@@ -145,6 +159,7 @@ const navigateBack = (delta = 1, cb = emptyFn) => {
 }
 
 const switchTab = (url, cb = emptyFn) => {
+  url = relative2AbsolutePath(url)
   wx.switchTab({
     url: safeWxApiTargetUrl(url).split("?")[0],
     success: function success() {
@@ -158,7 +173,7 @@ const switchTab = (url, cb = emptyFn) => {
 
 const reLaunch = (url, query = {}, cb = emptyFn) => {
   let pages = getCurrentPages()
-
+  url = relative2AbsolutePath(url)
   if (pages.length <= 1) {
     // 1. redirect
     redirectTo(url, query, cb)

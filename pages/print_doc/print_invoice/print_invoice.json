@@ -1,0 +1,7 @@
+{
+  "disableScroll": true,
+  "enablePullDownRefresh": false,
+  "navigationBarTitleText": "发票打印",
+  "usingComponents": {
+  }
+}

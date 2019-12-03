@@ -1,9 +1,8 @@
 @import "./lib/toast/wetoast.wxss";
 
-image{
-    width:0;
-    height:0;
-    display:inline-block;
+image {
+	height: auto;
+	display:inline-block;
 }
 
 .common-button-bg{
@@ -11,15 +10,22 @@ image{
 }
 
 .is-ipx {
-    bottom: 60rpx !important;
+  bottom: 60rpx !important;
 }
 
 .is-ipx::after {
-    position: absolute;
-    left: 0;
-    bottom: -60rpx;
-    content: '';
-    width: 100%;
-    height: 60rpx;
-    background: #FFF;
+  position: absolute;
+  left: 0;
+  bottom: -60rpx;
+  content: '';
+  width: 100%;
+  height: 60rpx;
+  background: #FFF;
+}
+
+/* 文字超出单行省略号 */
+.text-overflow-points {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }

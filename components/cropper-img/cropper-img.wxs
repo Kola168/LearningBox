@@ -1,0 +1,30 @@
+var cropperTempStyle = function (tempData) {
+	// return 'width:'+ tempData.width +'px; height:'+ tempData.height +'px; top:'+ tempData.top +'px;left: calc( ( 100vw - '+ tempData.width +'px ) / 2 )'
+	return 'width:' + tempData.width + 'px; height:' + tempData.height + 'px; top:' + tempData.top + 'px;left:' + tempData.left + 'px;'
+}
+
+
+var canvasPicStyle = function (tempInfo) {
+	return 'width:' + tempInfo.width + 'px; height:' + tempInfo.tempInfo + 'px;'
+}
+
+var cropperImgStyle = function (previewImageInfo, rotateDegrees) {
+	return 'left:' + previewImageInfo.x + 'px; top:' + previewImageInfo.y + 'px; width:' + previewImageInfo.w + 'px; height:' + previewImageInfo.h + 'px; transform:rotate(' + rotateDegrees + 'deg);'
+}
+
+var cropperCanvasContainStyle = function (scaleSize, cropperData) {
+	return 'width:' + (scaleSize.width + cropperData.itemLength) + 'px;height:' + (scaleSize.height + cropperData.itemLength) + 'px;'
+}
+
+
+var canvasPicStyles = function (originalSize) {
+	return 'width:' + originalSize.width + 'px;height:' + originalSize.height + 'px;'
+}
+
+module.exports = {
+	cropperTempStyle: cropperTempStyle,
+	canvasPicStyle: canvasPicStyle,
+	cropperImgStyle: cropperImgStyle,
+	canvasPicStyles: canvasPicStyles,
+	cropperCanvasContainStyle: cropperCanvasContainStyle,
+}

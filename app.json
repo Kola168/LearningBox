@@ -1,16 +1,85 @@
 {
   "pages": [
-    "pages/index/index",
-    "pages/logs/logs",
-    "components/multiphoto/test",
-    "pages/network/index/index",
+    "pages/main/home_index",
+		"pages/devices/list/index",
+    "pages/devices/setting/index",
+		"components/multiphoto/test",
+		"pages/network/index/index",
     "pages/network/tips/step1",
     "pages/network/tips/step2",
     "pages/network/tips/step3",
     "pages/network/wificonnect/list",
     "pages/network/wificonnect/connect",
+    "pages/print_doc/doc_list/doc_list",
+    "pages/print_doc/index/index",
+    "pages/print_doc/function_list/function_list",
+    "pages/print_doc/start/start",
+    "pages/print_doc/start_intro/start_intro",
+    "pages/print_doc/otherIntro/otherIntro",
+    "pages/print_doc/otherIndex/otherIndex",
+    "pages/print_doc/print_wx/print_wx",
+    "pages/print_doc/print_wx_introduction/print_wx_introduction",
+    "pages/print_doc/print_wx_setting/print_wx_setting",
+    "pages/print_doc/print_wx_subscribe/print_wx_subscribe",
+    "pages/print_doc/print_invoice/print_invoice",
+    "pages/print_doc/print_invoice_list/print_invoice_list",
+    "pages/print_doc/invoice_wechat_list/invoice_wechat_list",
+    "pages/print_doc/library/library",
+    "pages/print_doc/library_play_preview/library_play_preview",
+    "pages/print_doc/content_pay/content_pay",
+    "pages/print_doc/doc_setting/doc_setting",
+    "pages/print_doc/doc_local_setting/doc_local_setting",
+    "pages/print_doc/duplicate/index",
+    "pages/print_doc/duplicate_edit/duplicate_edit",
+    "pages/print_doc/duplicate_idcard/duplicate_idcard",
+		"pages/print_doc/duplicate_preview/duplicate_preview",
+		"pages/print_photo_doc/index",
     "pages/printphoto/mediachoose"
-  ],
+	],
+	"subPackages": [
+		{
+		 "root": "pages/package_common",
+		 "pages": [
+
+		 ]
+		},
+		{
+		 "root": "pages/package_course",
+		 "pages": [
+
+		 ]
+		},
+		{
+		 "root": "pages/package_feature",
+		 "pages": [
+
+		 ]
+		},
+		{
+		 "root": "pages/package_member",
+		 "pages": [
+
+		 ]
+		},
+		{
+		 "root": "pages/package_other",
+		 "pages": [
+
+		 ]
+		},
+		{
+		 "root": "pages/package_preschool",
+		 "pages": [
+
+		 ]
+		},
+		{
+		 "root": "pages/package_subject",
+		 "pages": [
+
+		 ]
+		}
+	 ],
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
@@ -22,5 +91,37 @@
     "nav-bar": "components/nav-bar/index"
   },
   "style": "v2",
-  "sitemapLocation": "sitemap.json"
+  "sitemapLocation": "sitemap.json",
+  "tabBar": {
+    "color": "#BFBFBF",
+    "selectedColor": "#333",
+    "backgroundColor": "#fff",
+    "borderStyle": "black",
+    "position": "bottom",
+    "list": [{
+        "pagePath": "pages/main/home_index",
+        "text": "首页",
+        "iconPath": "images/home/icon_tab_home_unselected.png",
+        "selectedIconPath":"images/home/icon_tab_home_selected.png"
+      },
+      {
+        "pagePath": "pages/main/home_index",
+        "text": "学习",
+        "iconPath": "images/home/icon_tab_study_unselected.png",
+        "selectedIconPath": "images/home/icon_tab_study_selected.png"
+      },
+      {
+        "pagePath": "pages/main/home_index",
+        "text": "商城",
+        "iconPath": "images/home/icon_tab_shop_unselected.png",
+        "selectedIconPath":"images/home/icon_tab_shop_selected.png"
+      },
+      {
+        "pagePath": "pages/main/home_index",
+        "text": "我的",
+        "iconPath":"images/home/icon_tab_account_unselected.png",
+        "selectedIconPath":"images/home/icon_tab_account_selected.png"
+      }
+    ]
+  }
 }

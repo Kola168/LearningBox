@@ -1,0 +1,267 @@
+/* pages/print_doc/duplicate_idcard/duplicate_idcard.wxss */
+page {
+  height: 100%;
+  width: 100%;
+  background: #fff;
+  box-sizing: border-box;
+  color: #333;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+view {
+  box-sizing: border-box;
+}
+
+.block {
+  position: relative;
+  border-radius: 10rpx;
+  border: 2rpx solid #cecece;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 15px;
+  overflow: hidden;
+}
+
+.type {
+  position: absolute;
+  left: 0;
+  top: 22rpx;
+  width: 115rpx;
+  height: 60rpx;
+  line-height: 60rpx;
+  background: #7f7f7f;
+  font-size: 26rpx;
+  font-weight: 500;
+  text-align: center;
+  color: #fff;
+  border-radius: 0 25rpx 25rpx 0;
+}
+
+.no-image {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 32rpx;
+  color: #333;
+}
+
+.no-image>image {
+  width: 120rpx;
+  height: 120rpx;
+  margin-bottom: 20rpx;
+}
+
+/* 选择照片方式 */
+.choosePhoto {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 99999;
+}
+
+.choosePhoto-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  animation: alp 0.5s ease;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.choosePhoto-content {
+  width: 100%;
+  background: #efeff5;
+  animation: chooseBottom 0.3s ease;
+  position: relative;
+}
+
+.choosePhotoItem {
+  width: 100%;
+  height: 90rpx;
+  border-bottom: 1rpx solid #efeff5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #fff;
+}
+
+.choosePhotoItem text {
+  color: #333;
+  font-size: 34rpx;
+}
+
+.id-image {
+  width: 100%;
+}
+
+.id-delete {
+  position: absolute;
+  right: 20rpx;
+  top: 20rpx;
+  width: 50rpx;
+  height: 50rpx;
+}
+
+.bottom {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 100rpx;
+  background: #FFE27A;
+  color: #000;
+  width: 100%;
+  line-height: 100rpx;
+  text-align: center;
+}
+
+.tips-box {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.tips-cont {
+  padding: 43rpx 34rpx;
+  background: #fff;
+  border-radius: 10rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.tips-title {
+  color: #333;
+  font-weight: 500;
+  font-size: 37rpx;
+  margin: 10rpx 0 57rpx;
+}
+
+.tips-icon {
+  width: 544rpx;
+}
+
+.tips-but {
+  width: 100%;
+  line-height: 80rpx;
+  text-align: center;
+  color: #000;
+  font-size: 32rpx;
+  font-weight: 500;
+  background: #FFE27A;
+  border-radius: 5rpx;
+  margin-top: 50rpx;
+}
+
+.top-box {
+  width: 100%;
+  position: relative;
+  font-size: 0;
+  margin-bottom: 80rpx;
+}
+
+.top-bg {
+  width: 100%;
+}
+
+.top-text {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 60rpx;
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-size: 26rpx;
+  color: #FF6262;
+  text-align: center;
+  background-color: #FFFAE9;
+}
+
+.animation-view {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 75%;
+  height: 60rpx;
+  /* animation: scroll 10s cubic-bezier(0.17, 0.67, 0.48, 1.28) infinite; */
+}
+
+
+
+.animation-view image {
+  height: 38rpx;
+}
+
+.btn-edit {
+  width: 128rpx;
+  height: 60rpx;
+  line-height: 60rpx;
+  text-align: center;
+  font-size: 28rpx;
+  color: #333333;
+  background: #FFE27A;
+  position: absolute;
+  border-radius: 30rpx;
+  left: 50%;
+  bottom: 36rpx;
+  margin-left: -64rpx;
+}
+
+.id-card-date-info {
+  display: flex;
+  width: 100%;
+  padding: 0 24rpx 120rpx 24rpx;
+  box-sizing: border-box;
+  justify-content: space-between;
+}
+
+.id-card-date-info .nav-title {
+  flex: 1;
+  font-size: 32rpx;
+  color: #333333;
+}
+
+.select-list {
+  display: flex;
+  align-items: center;
+}
+
+.zero-mb {
+  margin-bottom: 40rpx;
+}
+
+.select-list image {
+  width: 40rpx;
+  height: 40rpx;
+  border-radius: 40rpx;
+}
+
+
+
+.r-text {
+  display: flex;
+  align-items: center;
+  font-size: 28rpx;
+  color: #666666;
+  justify-content: space-between;
+  margin-left: 20rpx;
+}
+
+.f-line {
+  width: 110rpx;
+  height: 40rpx;
+  border-bottom: 1px solid #666666;
+}

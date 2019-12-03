@@ -1,0 +1,170 @@
+<!--pages/library/content_pay.wxml-->
+<block wx:if="{{!showSetting}}">
+	<view class="top">
+		<image class="thumbnail" src='{{detail.iconUrl}}' mode="aspectFill" />
+		<view class="top-right">
+			<view class="title">{{title}}</view>
+			<view class="price" wx:if="{{!(discountType == 'free' && !isAndroid && isMember)}}">￥{{discount.amountY}}</view>
+			<view class="price" wx:if="{{discountType == 'free' && !isAndroid && isMember}}">免费</view>
+		</view>
+	</view>
+	<view class="ios-member" wx:if="{{discountType == 'free' && !isAndroid && isMember}}">
+		<image src='/images/doc_member_circle.png' mode="widthFix" />
+		<view>
+			<view class="right-top">会员专享免费</view>
+			<view class="right-bottom">此内容享受会员专属免费打印</view>
+		</view>
+	</view>
+	<!-- 会员折扣 -->
+	<block wx:if="{{!(discountType == 'free' && !isAndroid && isMember)}}">
+		<view class="item" wx:if="{{discountType == 'promotion'|| discountType == 'discount_price' || discountType == 'free'}}">
+			<view class="item-left">
+				<view>{{discount.discountTitle}}</view>
+				<image
+				 wx:if="{{isMember}}"
+				 class="item-left-discount"
+				 src='/images/doc_icon_play_member_bg.png'
+				 mode="widthFix"
+				>
+					<view>
+						<image src='/images/doc_icon_play_member.png' mode="widthFix" />
+					</view>
+				</image>
+			</view>
+			<view class="item-right red">-￥{{discount.discountAmountY}}</view>
+		</view>
+		<!-- discount.resourceCanPoint 是否开启抵扣 -->
+		<view class="item deduction" wx:if="{{discount.resourceCanPoint}}">
+			<view class="item-left">
+				<view style="{{!discount.canPoint?'color:#999':''}}">印豆抵扣</view>
+				<view wx:if="{{discount.canPoint}}">抵扣{{discount.point}}个印豆</view>
+				<view wx:if="{{!discount.canPoint}}" wx:if="{{!discount.canPoint}}">印豆不足，暂时无法抵扣</view>
+			</view>
+			<image
+			 src='/images/doc_noselected.png'
+			 mode="widthFix"
+			 class="item-right-image"
+			 wx:if="{{discount.canPoint&&!choosePoint}}"
+			 bindtap="checkPoint"
+			/>
+			<image
+			 src='/images/doc_icon_play_selected_green.png'
+			 mode="widthFix"
+			 class="item-right-image"
+			 wx:if="{{discount.canPoint&&choosePoint}}"
+			 bindtap="checkPoint"
+			/>
+
+			<image
+			 src='/images/doc_icon_play_selected_forbidden.png'
+			 mode="widthFix"
+			 class="item-right-image"
+			 wx:if="{{!discount.canPoint}}"
+			/>
+
+		</view>
+	</block>
+	<view class="item member-tip" wx:if="{{!isMember}}" bindtap="toMember">
+		<view class="item-left">{{memberExpiresAt ? '开通会员，一年预计可省上千元' : '30天会员权限，1元即可体验'}}</view>
+		<view class="item-right">
+			<view>{{memberExpiresAt ? '' : '￥1' }}</view>
+			<view>开通</view>
+		</view>
+	</view>
+	<view class="bottom">
+		<view class="left" wx:if="{{!(discountType=='free' && !isAndroid && isMember)}}">
+			合计：
+			<text>￥{{choosePoint ? discount.pointPriceY : discount.priceY}}</text>
+		</view>
+		<view class="right" bindtap="toPay" wx:if="{{!(discountType == 'free' && !isAndroid && isMember)}}">立即支付</view>
+		<view class="right ios-pay" bindtap="toPay" wx:if="{{discountType == 'free' && !isAndroid && isMember}}">去打印</view>
+	</view>
+</block>
+<view wx:else>
+	<view class="document-title">
+		<view>{{title}}</view>
+	</view>
+	<view class="doc-setting">
+		<view class="setting-item">
+			<view class="item-label">打印份数</view>
+			<view class="item-main">
+				<image
+				 src="{{documentPrintNum== 1 ? '/images/doc_document_cut.png' : '/images/doc_minus_y.png'}}"
+				 mode="aspectFit"
+				 class="print-num"
+				 bindtap="cutPrintNum"
+				/>
+				<text class="document-print-num">{{documentPrintNum}}</text>
+				<image
+				 src="{{documentPrintNum >= 30 ? '/images/doc_document_add_gray.png' : '/images/doc_plus_y.png'}}"
+				 mode="aspectFit"
+				 class="print-num"
+				 bindtap="addPrintNum"
+				/>
+			</view>
+		</view>
+		<view class="setting-item" wx:if="{{type!='_learning'}}">
+			<view class="item-label">打印范围</view>
+			<view class="item-main">
+				<input
+				 id="1"
+				 class="page-input"
+				 type="number"
+				 bindinput="inputStartPage"
+				 bindblur="startPageJudge"
+				 value="{{startPrintPage}}"
+				/>
+				<text class="page-text">至</text>
+				<input
+				 id="2"
+				 class="page-input"
+				 type="number"
+				 bindinput="inputEndPage"
+				 bindblur="endPageJudge"
+				 value="{{endPrintPage}}"
+				/>
+				<text class="page-text">页</text>
+			</view>
+		</view>
+		<view class="setting-item" wx:if="{{isColorPrinter}}">
+			<view class="item-label">色彩选择</view>
+			<view class="item-main">
+				<view class="color-check-box" data-style="Mono" bindtap="colorCheck">
+					<text class="color-type">黑白</text>
+					<image src="{{colorcheck!='Color' ? '/images/doc_document_checked.png' : '/images/doc_noselected.png'}}" mode="widthFix" class="color-check" />
+				</view>
+				<view class="color-check-box" data-style="Color" bindtap="colorCheck">
+					<text class="color-type">全彩</text>
+					<image src="{{colorcheck=='Color'?'/images/doc_document_checked.png':'/images/doc_noselected.png'}}" mode="widthFix" class="color-check" />
+				</view>
+			</view>
+		</view>
+		<view class="setting-item" wx:if="{{isDuplex && is_doc}}">
+			<view class="item-label">双面打印</view>
+			<view class="item-main">
+				<view class="color-check-box" data-style="0" bindtap="duplexCheck">
+					<text class="color-type">单面</text>
+					<image src="{{duplexcheck?'/images/doc_noselected.png':'/images/doc_document_checked.png'}}" mode="widthFix" class="color-check" />
+				</view>
+				<view class="color-check-box" data-style="1" bindtap="duplexCheck">
+					<text class="color-type">双面</text>
+					<image src="{{duplexcheck?'/images/doc_document_checked.png':'/images/doc_noselected.png'}}" mode="widthFix" class="color-check" />
+				</view>
+			</view>
+		</view>
+	</view>
+	<view class="conf-box-left" bindtap="cancelcheck">取消</view>
+	<button
+	 class="conf-box-right"
+	 bindtap="confCheck"
+	 open-type="{{hasAuthPhoneNum ? '' : 'getPhoneNumber'}}"
+	 bindgetphonenumber="{{hasAuthPhoneNum ? '' : 'getPhoneNumber'}}"
+	>确认
+	</button>
+</view>
+<!-- 打印确认框 -->
+<confirm-print bindconfirm="print" modal="{{confirmModal}}" />
+
+<import src="../../../lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />
+

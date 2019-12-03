@@ -1,0 +1,111 @@
+<!--pages/print_doc/duplicate_idcard/duplicate_idcard.wxml-->
+<nav-bar background="#fff" title="智能复印" />
+<wxs src="index.wxs" module="foo" />
+<view class="top-box">
+	<view class="top-text">
+		<view class="animation-view">
+			<image class="" src="https://cdn.gongfudou.com/miniapp/ec/doc_card_hint.gif" mode="aspectFit" />
+		</view>
+
+	</view>
+</view>
+
+<!-- 图片列表 -->
+<view
+ wx:for="{{typeInfo}}"
+ wx:key="type"
+ class="block"
+ style="{{foo.height(item)}}"
+>
+	<block wx:if="{{!item.url}}">
+		<!-- 导航标示  -->
+		<view class="type" wx:if="{{typeInfo.length > 1 && item.key != 'n_hr'}}">{{index ? '反面' : '正面'}}</view>
+		<!-- 内容为空引导  -->
+		<view class="no-image">
+			<image
+			 bindtap="chooseImage"
+			 src="https://cdn.gongfudou.com/miniapp/ec/doc_idcard_add.png"
+			 mode="widthFix"
+			 data-index="{{index}}"
+			/>
+			<text>{{item.tipText}}</text>
+		</view>
+	</block>
+	<block wx:else>
+		<image
+		 class="id-delete"
+		 src="/images/doc_close_dark.png"
+		 mode="widthFix"
+		 bindtap="deleteImg"
+		 data-index="{{index}}"
+		/>
+		<image
+		 class="id-image"
+		 src="{{foo.addProcess(item.url,'/resize,w_500')}}"
+		 mode="widthFix"
+		 data-index="{{index}}"
+		 bindtap="toEdit"
+		/>
+		<view class="btn-edit" data-index="{{index}}" bindtap="toEdit">编辑</view>
+	</block>
+</view>
+
+<!-- 身份证扩展区域 start-->
+<view class="id-card-date-info" wx:if="{{type == 'id' || type == 'n_hr' || type == 'bc'}}">
+	<view class="nav-title">添加水印</view>
+	<view class="watermark-main">
+		<view
+		 class='select-list {{index ? "" : "zero-mb"}}'
+		 wx:for="{{watermark}}"
+		 wx:key="index"
+		 bindtap="selectIndex"
+		 data-index="{{index}}"
+		>
+			<image src="{{item.is_select ? select_icon : no_select_icon}}" mode="aspectFit" />
+			<view class="r-text" wx:if="{{!index}}">
+				<text>仅限</text>
+				<view class="f-line" />
+				<text>使用</text>
+			</view>
+			<view class="r-text" wx:else>当天日期</view>
+		</view>
+	</view>
+</view>
+<!-- 身份证扩展区域 start-->
+
+<view class="bottom" bindtap="confirm">确认</view>
+
+<view class="choosePhoto" wx:if="{{popWindow}}">
+	<view class="choosePhoto-container" catchtap="closePopWindow">
+		<view class="choosePhoto-content">
+			<view class="choosePhotoItem" data-type="messagefile" catchtap="checkAddTip">
+				<text>微信聊天记录</text>
+			</view>
+			<view class="choosePhotoItem" data-type="takephoto" catchtap="checkAddTip">
+				<text>拍照</text>
+			</view>
+			<view class="choosePhotoItem" data-type="localAlbum" catchtap="checkAddTip">
+				<text>手机相册</text>
+			</view>
+			<view class="choosePhotoItem" style="margin-top:20rpx;" catchtap="closePopWindow">
+				<text>取消</text>
+			</view>
+		</view>
+	</view>
+</view>
+
+<view wx:if="{{tipsWindow}}" class="tips-box">
+	<view class="tips-cont">
+		<view class="tips-title">
+			证件上传示例
+		</view>
+		<image src="{{checkedIndex==1?'https://cdn.gongfudou.com/miniapp/ec/doc_id_tips_back.png':'https://cdn.gongfudou.com/miniapp/ec/doc_id_tips_face.png'}}" mode="widthFix" class="tips-icon" />
+		<view class="tips-but" bindtap="toChooseImg">
+			知道了
+		</view>
+	</view>
+</view>
+
+<import src="../../../../../lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />
+

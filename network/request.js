@@ -1,3 +1,4 @@
+var app = getApp()
 var Fly = require("../lib/net/wx.umd.min.js")
 var request = new Fly()
 
