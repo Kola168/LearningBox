@@ -112,7 +112,7 @@ Page({
       }]
     },
     select_icon: '/images/doc_selected_check.png',
-    no_select_icon: '/images/doc_noselected.png',
+    no_select_icon: '/images/radio_off.png',
     watermark: [{
         key: 'define',
         is_select: false,
@@ -182,7 +182,7 @@ Page({
   },
 
   toChooseImg() {
-    storage.set('showIdTip' + this.checkedIndex, 'showed')
+    storage.put('showIdTip' + this.checkedIndex, 'showed')
    
     this.setData({
       tipsWindow: false,

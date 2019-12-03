@@ -8,7 +8,7 @@
 <cropper-img croppers="{{croppers}}" id="cropper"></cropper-img>
 <!-- <template is="welCropper" data="{{cropperData:cropperData, cropperMovableItems:cropperMovableItems, cropperChangableData:cropperChangableData}}" /> -->
 <view class="btn">
-	<form report-submit="true" bindsubmit="{{cropperChangableData.canCrop ? 'cropImage' : ''}}">
+	<form report-submit="true" bindsubmit="cropImage">
 		<button formType="submit" hover-class="none">确认</button>
 	</form>
 </view>

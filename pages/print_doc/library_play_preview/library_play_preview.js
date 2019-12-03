@@ -47,7 +47,7 @@ Page({
 		confirmModal: {
 			isShow: false,
 			title: '请正确放置A4打印纸',
-			image: 'https://cdn.gongfudou.com/miniapp/ec/doc_confirm_print_a4_new.png'
+			image: 'https://cdn-h.gongfudou.com/LearningBox/main/doc_confirm_print_a4_new.png'
 		},
 		isAndroid: false,
 		isMember: false,
@@ -58,6 +58,7 @@ Page({
     title: null,
 	},
 	onLoad: co.wrap(function* (options) {
+		this.longToast = new app.weToast()
     logger.info('99999预览模板id', options)
 		this.setData({
 			title: options.title,
@@ -85,10 +86,9 @@ Page({
 				toMoreList: true
 			})
 		}
-	this.setData({
+		this.setData({
 			title: options.title
 		})
-		this.longToast = new app.WeToast()
 		let unionId = storage.get('unionId')
 		if (unionId) {
 			yield this.loopGetOpenId()
@@ -161,7 +161,7 @@ Page({
 					if (resp.data.code != 0) {
 						throw (resp.data)
           }
-          storage.set('authToken', resp.data.auth_token)
+          storage.put('authToken', resp.data.auth_token)
 					let res = yield graphql.isMember()
 					this.setData({
 						isMember: res.user && res.user.isMember || false,
@@ -622,7 +622,7 @@ Page({
 			memberExpiresAt:this.data.memberExpiresAt
     }
     router.navigateTo('/pages/print_doc/content_pay/content_pay', {
-      params: JSON.stringify(params)
+      params: encodeURIComponent(JSON.stringify(params))
     })
 	
 	},
@@ -904,19 +904,13 @@ Page({
 		let loopCount = 0
 		let _this = this
 		if (app.openId) {
-			console.log('loopGrowingOpenId openId++++++++++++----', app.openId, unionId)
-			// console.log(app.gio)
-			app.gio('identify', app.openId, unionId)
-			console.log('11111111111111122222222')
+			
 		} else {
 			setTimeout(function () {
 				loopCount++
 				if (loopCount <= 100) {
-					console.log('openId not found loop getting...')
 					_this.loopGrowingOpenId()
-				} else {
-					console.log('loop too long, stop')
-				}
+				} 
 			}, 2000)
 		}
 	}),

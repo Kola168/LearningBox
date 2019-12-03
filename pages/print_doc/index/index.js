@@ -1,15 +1,16 @@
 // pages/print_doc/index/index.js
-const app = getApp()
 const regeneratorRuntime = require('../../../lib/co/runtime')
 const co = require('../../../lib/co/co')
 const util = require('../../../utils/util')
-import { getLogger } from '../../../utils/logger'
+import {
+  getLogger
+} from '../../../utils/logger'
 const logger = new getLogger('pages/print_doc/index/index')
 import router from '../../../utils/nav'
+
 Page({
   data: {
-    mainEntry: [
-      {
+    mainEntry: [{
         name: '微信文档',
         recommend: '选择微信聊天文档打印',
         icon: '/images/doc_weixin_icon.png',
@@ -23,8 +24,7 @@ Page({
         key: 'more'
       }
     ],
-    minorEntry: [
-      {
+    minorEntry: [{
         name: '复印',
         recommend: '多种证件复印',
         icon: '/images/doc_copy_icon.png',
@@ -43,7 +43,9 @@ Page({
         icon: '/images/doc_normal_icon.png',
         key: 'normal',
         url: '/pages/print_doc/library/library',
-        query: {sn: '1307275099676115'}
+        query: {
+          sn: '1307275099676115'
+        }
       },
       {
         name: '公众号文章',
@@ -61,19 +63,25 @@ Page({
       }
     ]
   },
-  onLoad (options) {
+  onLoad(options) {
 
   },
-  onShow () {
-
-  },
-  toEntry: function({currentTarget: {dataset: {url, query, key}}}) {
+  
+  toEntry: function ({
+    currentTarget: {
+      dataset: {
+        url,
+        query,
+        key
+      }
+    }
+  }) {
     try {
       if (key === 'weChatDoc') {
         return this.chooseWeChatFile()
       }
       router.navigateTo(url, query || '')
-    }catch(err) {
+    } catch (err) {
       logger.info('err', err)
     }
 
@@ -81,45 +89,38 @@ Page({
 
   // 选择微信文档
   chooseWeChatFile: co.wrap(function* () {
-      var SDKVersion
-      try {
-        const res = wx.getSystemInfoSync()
-        SDKVersion = res.SDKVersion
-        if (util.compareVersion(SDKVersion, '2.5.0')) {
-          wx.chooseMessageFile({
-            type: 'file',
-            count: 5, //暂定最多5个文档
-            success: (res) => {
-                router.navigateTo('/pages/print_doc/doc_list/doc_list', {
-                  arrayFile: encodeURIComponent(JSON.stringify(res.tempFiles))
-                })
-            },
-            fail: function () {
-                util.showErr({message: '文件获取失败，请重试~'})
-            }
-          })
-        } else {
-          //请升级到最新的微信版本
-          yield showModal({
-            title: '微信版本过低',
-            content: '请升级到最新的微信版本',
-            confirmColor: '#2086ee',
-            confirmText: "确认",
-            showCancel: false
-          })
-        }
-      } catch (e) {
-          console.log(e)
+    var SDKVersion
+    try {
+      const res = wx.getSystemInfoSync()
+      SDKVersion = res.SDKVersion
+      if (util.compareVersion(SDKVersion, '2.5.0')) {
+        wx.chooseMessageFile({
+          type: 'file',
+          count: 5, //暂定最多5个文档
+          success: (res) => {
+            router.navigateTo('/pages/print_doc/doc_list/doc_list', {
+              arrayFile: encodeURIComponent(JSON.stringify(res.tempFiles))
+            })
+          },
+          fail: function () {
+            util.showErr({
+              message: '文件获取失败，请重试~'
+            })
+          }
+        })
+      } else {
+        //请升级到最新的微信版本
+        yield showModal({
+          title: '微信版本过低',
+          content: '请升级到最新的微信版本',
+          confirmColor: '#2086ee',
+          confirmText: "确认",
+          showCancel: false
+        })
       }
-     
+    } catch (err) {
+      logger.info('err', err)
+    }
+
   }),
-
-  onPullDownRefresh () {
-
-  },
-
-  onShareAppMessage () {
-
-  }
- 
 })

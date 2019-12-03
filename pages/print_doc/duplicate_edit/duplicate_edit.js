@@ -277,6 +277,9 @@ Page({
 
   },
 
+  /**
+   * @methods 图片绘制入口
+   */
   selectTap: co.wrap(function* () {
     try {
       this.longToast.toast({
@@ -337,38 +340,34 @@ Page({
           param: params,
         })
       }
-      var ctx = that.selectComponent('#cropper')
-
-      ctx.startCropper({
+      _this.ctx = _this.selectComponent('#cropper')
+      // 开始图片绘制
+      _this.ctx.startCropper({ 
         src: editPath,  //图片地址
         mode: mode, // 模式
         sizeType: ['original'], //图片压缩
         maxLength: 2000, //限制最大像素为2500像素
-        callback: (res)=>{
-          console.log(res, '====res====')
-        }
       })
-      // _this.showCropper({
-      //   src: editPath,
-      //   mode: mode,
-      //   sizeType: ['original'],
-      //   maxLength: 2000, //限制最大像素为2500像素
-      //   pointData: this.data.pointData,
-      //   callback: (res) => {
-      //     if (mode == 'rectangle') {
-      //       // _this.uploadImage(res)
-      //     } else {
-      //       _this.getPic(res, tempFilePath)
-      //     }
-      //   }
-      // })
-
+    
     } catch (err) {
-      throw err
+      logger.info(err)
     }
   }),
 
-  //非规则矩形裁切做透视变换
+  /**
+   * @methods 图片裁剪
+   */
+  cropImage: co.wrap(function*() {
+    var _this = this
+    var tempFilePath = _this.options.url
+    _this.ctx.cropImage((res)=>{
+      _this.getPic(res, tempFilePath)
+    })
+  }),
+
+  /**
+   * @methods 非规则矩形裁切做透视变换
+   */
   getPic: co.wrap(function* (res, imgUrl) {
     this.longToast.toast({
       type: 'loading',

@@ -6,9 +6,9 @@ const _ = require('../../../lib/underscore/we-underscore')
 const showModal = util.promisify(wx.showModal)
 // import commonRequest from '../../../utils/common_request.js'
 import { getLogger } from '../../../utils/logger'
-const logger = new getLogger('pages/print_doc/doc_list/doc_list')
+const logger = new getLogger('pages/print_doc/doc_setting/doc_setting')
 import router from '../../../utils/nav'
-
+import event from '../../../lib/event'
 Page({
 
   data: {
@@ -253,10 +253,7 @@ Page({
       postData.start_page = 0
       postData.end_page = 0
     }
-
-    let pages = getCurrentPages();
-    let prevPage = pages[pages.length - 2]
-    prevPage.setPostData(postData)
+    event.emit('setPreData', postData)
     router.navigateBack()
   },
 

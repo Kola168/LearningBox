@@ -8,6 +8,7 @@ const util = require('../../../utils/util')
 const _ = require('../../../lib/underscore/we-underscore')
 import storage from '../../../utils/storage'
 import router from '../../../utils/nav'
+import { uploadDocs } from '../../../utils/upload'
 import Logger from '../../../utils/logger.js'
 const logger = new Logger.getLogger('pages/print_doc/invoice_wechat_list/invoice_wechat_list')
 
@@ -27,7 +28,7 @@ Page({
     confirmModal: {
       isShow: false,
       title: '请正确放置A4打印纸',
-      image: 'https://cdn.gongfudou.com/miniapp/ec/doc_confirm_print_a4_new.png'
+      image: 'https://cdn-h.gongfudou.com/LearningBox/main/doc_confirm_print_a4_new.png'
     }
   },
 
@@ -79,12 +80,14 @@ Page({
     var _this = this
     let uploadFiles = []
     try {
-      yield app.uploadFile(urls, function (url, name) {
-        logger.info('返回来的url,name====', url, name)
+      yield uploadDocs(urls, function (url, name) {
         let fileItem = {
           url: url,
           filename: name
         }
+
+        logger.info('返回来的url,name====', url, name)
+
         if (url != '') {
           uploadFiles.push(fileItem)
           let cloneFiles = _(_this.data.files).clone()
@@ -94,6 +97,7 @@ Page({
           })
         }
         logger.info('uploadFiles=======', uploadFiles, uploadFiles.length, cloneUrls.length)
+
         if (uploadFiles.length == cloneUrls.length) {
           logger.info('uploadFiles=======', uploadFiles)
           _this.setData({
@@ -112,7 +116,7 @@ Page({
   }),
 
   covertPdf: co.wrap(function* () {
-    let covertUrls = util.getFields(this.data.files, "url")
+    let covertUrls = this.data.files.map(item=>item.url)
     logger.info('covertUrls=====', covertUrls)
     try {
       const resp = yield api.covertInvoiceToPdf(app.openId, covertUrls)
@@ -138,7 +142,7 @@ Page({
   }),
 
   chooseFile: co.wrap(function* () {
-    if (this.data.files.length == 5) {
+    if (this.data.files.length >= 5) {
       return wx.showModal({
         content: '每次最多选择5个文档',
         confirmColor: '#2086ee',
@@ -146,12 +150,12 @@ Page({
         showCancel: false
       })
     }
-    let leftLength = 5 - this.data.files.length
-    const file = yield chooseMessageFile({
+    var leftLength = 5 - this.data.files.length
+    var files = yield chooseMessageFile({
       type: 'file',
       count: leftLength
     })
-    this.beforeUpload(file.tempFiles)
+    this.beforeUpload(files.tempFiles)
 
   }),
 
@@ -160,7 +164,7 @@ Page({
       return
     }
 
-    if (this.data.allCount == 0) {
+    if (this.data.allCount <= 0) {
       return wx.showModal({
         content: '至少选择一个文档打印',
         confirmColor: '#2086ee',
@@ -177,9 +181,10 @@ Page({
       })
     }
   }),
+
   getPhoneNumber: co.wrap(function* (e) {
     yield app.getPhoneNum(e)
-    storage.set("hasAuthPhoneNum", true)
+    storage.put("hasAuthPhoneNum", true)
     this.hasAuthPhoneNum = true
     this.setData({
       hasAuthPhoneNum: true

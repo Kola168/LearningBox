@@ -13,6 +13,8 @@ import { getLogger } from '../../../utils/logger'
 const logger = new getLogger('pages/print_doc/doc_list/doc_list')
 import router from '../../../utils/nav'
 import storage from '../../../utils/storage'
+import { uploadDocs } from '../../../utils/upload'
+import event from '../../../lib/event'
 Page({
 	data: {
 		allCount: 0, //上传总数
@@ -25,7 +27,7 @@ Page({
 		confirmModal: {
 			isShow: false,
 			title: '请正确放置A4打印纸',
-			image: 'https://cdn.gongfudou.com/miniapp/ec/doc_confirm_print_a4_new.png'
+			image: 'https://cdn-h.gongfudou.com/LearningBox/main/doc_confirm_print_a4_new.png'
 		}
 	},
 
@@ -51,6 +53,10 @@ Page({
 					mediaType: "doc"
 				},
 				allCount: docFiles.length,
+			})
+
+			event.on('setPreData', this, (postData)=>{
+				this.setPostData(postData)
 			})
 
 		} catch(err) {
@@ -94,7 +100,7 @@ Page({
 				docFiles: docFiles || []
 			})
 		} catch(err) {
-			logger.error(err)
+			logger.info(err)
 		}
 	},
 
@@ -123,13 +129,12 @@ Page({
     try {
 			this.longToast.toast({
 				type:'loading',
-				title: '正在上传',
-				duration: 0
+				title: '正在上传'
 			})
 			var _this = this
 			var urlList = _(urls).clone()
-			var uploadFiles = []
-      yield app.uploadFile(urls, function(url, name) {
+			var uploadFileList = []
+      yield uploadDocs(urls, function(url, name) {
         var file = {
           url: url,
           filename: name,
@@ -142,15 +147,15 @@ Page({
           display: 1
         }
         if (url) {
-          uploadFiles.push(file)
+          uploadFileList.push(file)
           var tempFiles = _(_this.data.files).clone()
 					_this.setData({
 						files: [...tempFiles, file]
 					})
         }
-        if (uploadFiles.length == urlList.length) {
+        if (uploadFileList.length == urlList.length) {
           _this.setData({
-            allCount: _this.data.allCount + uploadFiles.length,
+            allCount: _this.data.allCount + uploadFileList.length,
           })
           if (_this.data.isCleared) {
 						_this.longToast.toast({
@@ -396,6 +401,28 @@ Page({
 			this.longToast.hide()
       util.showErr(error)
     }
-	})
+	}),
+
+	//设置回传参数
+	setPostData: function(postData) {
+		let tempFiles = _(this.data.files).clone()
+		tempFiles[postData.fileIndex].number = postData.number
+		tempFiles[postData.fileIndex].start_page = postData.start_page
+		tempFiles[postData.fileIndex].skip_gs = postData.skip_gs
+		tempFiles[postData.fileIndex].extract = postData.extract
+		tempFiles[postData.fileIndex].end_page = postData.end_page
+		tempFiles[postData.fileIndex].color = postData.color
+		tempFiles[postData.fileIndex].duplex = postData.duplex
+		tempFiles[postData.fileIndex].display = postData.display
+		tempFiles[postData.fileIndex].media_size = (postData.medium == 'a4') ? '0' : '3'
+		tempFiles[postData.fileIndex].isSetting = true
+		this.setData({
+			files: tempFiles
+		})
+	},
+
+	onUnload() {
+		event.remove('setPreData', this)
+	},
 
 })

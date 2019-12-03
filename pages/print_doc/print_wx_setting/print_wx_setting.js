@@ -12,11 +12,20 @@ import Logger from '../../../utils/logger.js'
 const logger = new Logger.getLogger('pages/print_doc/print_wx_setting/print_wx_setting')
 Page({
   data: {
-    img1: '/images/doc_noselected.png',
-    img2: '/images/doc_document_checked.png',
-    img3: '/images/doc_document_checked.png',
-    img4: '/images/doc_noselected.png',
-    isColor: true,
+    img3: '/images/radio_on.png',
+    img4: '/images/radio_off.png',
+    colorList: [
+      {
+        name: '黑白',
+        color: 'Mono',
+        checked: false
+      },
+      {
+        name: '全彩',
+        color: 'Color',
+        checked: true
+      }
+    ],
     color: 'Color',
     link: '',
     converted_url: '',
@@ -29,7 +38,7 @@ Page({
     confirmModal: {
       isShow: false,
       title: '请正确放置A4打印纸',
-      image: 'https://cdn.gongfudou.com/miniapp/ec/doc_confirm_print_a4_new.png'
+      image: 'https://cdn-h.gongfudou.com/LearningBox/main/doc_confirm_print_a4_new.png'
     }
   },
   
@@ -70,15 +79,18 @@ Page({
       })
       if (resp.data.code == 1001) {
         this.longToast.hide()
-        this.setData({
+
+        return this.setData({
           start_page: 1,
           end_page: this.pages,
-          page_count: this.pages
+          page_count: this.pages,
+          colorList: [{
+            name: '黑白',
+            color: 'Mono',
+            checked: true
+          }]
         })
-        return this.setData({
-          isColor: false,
-          img1: '/images/doc_document_checked.png',
-        })
+       
       } else if (resp.data.code != 0) {
         throw (resp.data)
       }
@@ -86,8 +98,11 @@ Page({
       let color_length = resp.data.print_capability.color_modes.length
       if (color_length == 1) {
         this.setData({
-          isColor: false,
-          img1: '/images/doc_document_checked.png',
+          colorList: [{
+            name: '黑白',
+            color: 'Mono',
+            checked: true
+          }]
         })
       }
       let page_count = resp.data.print_capability.page_count
@@ -105,34 +120,44 @@ Page({
     }
   }),
 
-  chooseColor1 (e) {
+  chooseColors: ({currentTarget: {dataset: {index}}}) => {
+    var newColors = this.data.colorList.map((items, idx)=>{
+      items.checked = index === idx ? true : false
+      return items
+    })
     this.setData({
-      img1: '/images/doc_document_checked.png',
-      img2: '/images/doc_noselected.png',
-      color: 'Mono'
+      colorList: newColors
     })
   },
 
-  chooseColor2 (e) {
-    this.setData({
-      img1: '/images/doc_document_checked.png',
-      img2: '/images/doc_document_checked.png',
-      color: 'Color'
-    })
-  },
+  // chooseColor1 (e) {
+  //   this.setData({
+  //     img1: '/images/radio_on.png',
+  //     img2: '/images/radio_off.png',
+  //     color: 'Mono'
+  //   })
+  // },
+
+  // chooseColor2 (e) {
+  //   this.setData({
+  //     img1: '/images/radio_off.png',
+  //     img2: '/images/radio_on.png',
+  //     color: 'Color'
+  //   })
+  // },
 
   chooseColor3 (e) {
     this.setData({
-      img3: '/images/doc_document_checked.png',
-      img4: '/images/doc_noselected.png',
+      img3: '/images/radio_on.png',
+      img4: '/images/radio_off.png',
       duplex: false
     })
   },
 
   chooseColor4 (e) {
     this.setData({
-      img3: '/images/doc_noselected.png',
-      img4: '/images/doc_document_checked.png',
+      img3: '/images/radio_off.png',
+      img4: '/images/radio_on.png',
       duplex: true
     })
   },
@@ -215,11 +240,12 @@ Page({
       type: 'loading',
       title: '正在提交'
     })
-    let params = {
+    var [colors] = this.data.colorList.filter(item=>item.checked)
+    var params = {
       openid: app.openId,
       urls: [{
         url: this.data.converted_url,
-        color: this.data.color,
+        color: colors.color,
         number: 1,
         start_page: this.data.start_page,
         end_page: this.data.end_page,
@@ -238,7 +264,7 @@ Page({
         throw (resp.data)
       } else {
         this.longToast.hide()
-        router.redirectTo('../finish/index', {
+        router.redirectTo('/pages/finish/index', {
           type: 'wx',
           media_type: 'page2doc',
           state: resp.data.order.state

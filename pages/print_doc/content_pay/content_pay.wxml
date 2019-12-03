@@ -41,7 +41,7 @@
 				<view wx:if="{{!discount.canPoint}}" wx:if="{{!discount.canPoint}}">印豆不足，暂时无法抵扣</view>
 			</view>
 			<image
-			 src='/images/doc_noselected.png'
+			 src='/images/radio_off.png'
 			 mode="widthFix"
 			 class="item-right-image"
 			 wx:if="{{discount.canPoint&&!choosePoint}}"
@@ -131,11 +131,11 @@
 			<view class="item-main">
 				<view class="color-check-box" data-style="Mono" bindtap="colorCheck">
 					<text class="color-type">黑白</text>
-					<image src="{{colorcheck!='Color' ? '/images/doc_document_checked.png' : '/images/doc_noselected.png'}}" mode="widthFix" class="color-check" />
+					<image src="{{colorcheck!='Color' ? '/images/radio_on.png' : '/images/radio_off.png'}}" mode="widthFix" class="color-check" />
 				</view>
 				<view class="color-check-box" data-style="Color" bindtap="colorCheck">
 					<text class="color-type">全彩</text>
-					<image src="{{colorcheck=='Color'?'/images/doc_document_checked.png':'/images/doc_noselected.png'}}" mode="widthFix" class="color-check" />
+					<image src="{{colorcheck=='Color'?'/images/radio_on.png':'/images/radio_off.png'}}" mode="widthFix" class="color-check" />
 				</view>
 			</view>
 		</view>
@@ -144,11 +144,11 @@
 			<view class="item-main">
 				<view class="color-check-box" data-style="0" bindtap="duplexCheck">
 					<text class="color-type">单面</text>
-					<image src="{{duplexcheck?'/images/doc_noselected.png':'/images/doc_document_checked.png'}}" mode="widthFix" class="color-check" />
+					<image src="{{duplexcheck?'/images/radio_off.png':'/images/radio_on.png'}}" mode="widthFix" class="color-check" />
 				</view>
 				<view class="color-check-box" data-style="1" bindtap="duplexCheck">
 					<text class="color-type">双面</text>
-					<image src="{{duplexcheck?'/images/doc_document_checked.png':'/images/doc_noselected.png'}}" mode="widthFix" class="color-check" />
+					<image src="{{duplexcheck?'/images/radio_on.png':'/images/radio_off.png'}}" mode="widthFix" class="color-check" />
 				</view>
 			</view>
 		</view>

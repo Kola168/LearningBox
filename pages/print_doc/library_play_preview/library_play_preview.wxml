@@ -4,7 +4,7 @@
 	<view class="app-top-tip" wx:if="{{backHome}}" bindtap="backToHome">更多内容</view>
 	<view class="app-top-tip" wx:if="{{toMoreList}}" bindtap="backToHome">更多内容</view>
 	<!-- 开会员提示 -->
-	<view class="to-member" wx:if="{{!isMember&&discount!=null&&isAndroid}}" bindtap="toMember">
+	<!-- <view class="to-member" wx:if="{{!isMember&&discount!=null&&isAndroid}}" bindtap="toMember">
 		<view class="left">
 			<image src='/images/doc_play_member.png' class='to-member-image' />
 			<view>{{memberExpiresAt?'开通会员，免费畅享打印':'一元开通会员，免费打印'}}</view>
@@ -13,7 +13,7 @@
 			<view>点击开通</view>
 			<image src='/images/doc_play_member_arrow.png' class='to-member-image' mode="widthFix" />
 		</view>
-	</view>
+	</view> -->
 
 	<!-- iOS提示 -->
 	<view class="ios-tip" wx:if="{{showIosTip}}">
@@ -36,13 +36,13 @@
 			<block wx:for="{{detail.preview_urls}}" wx:key="{{index}}">
 				<swiper-item style="overflow-y:scroll;overflow-x:hidden;">
 					<image style="width:100%" mode="widthFix" src="{{item}}">
-						<image src='https://cdn.gongfudou.com/miniapp/ec/doc_shuiyin_new.png' class='watermark' />
+						<image src='https://cdn-h.gongfudou.com/LearningBox/main/doc_shuiyin_new.png' class='watermark' />
 					</image>
 				</swiper-item>
 			</block>
 		</swiper>
 		<view wx:if="{{detail.preview_urls.length==0}}" class="study-none">
-			<image src="https://cdn.gongfudou.com/miniapp/ec/doc_study_detail_none.png" mode="widthFix" />
+			<image src="https://cdn-h.gongfudou.com/LearningBox/main/doc_study_detail_none.png" mode="widthFix" />
 		</view>
 		<!--翻页-->
 		<view class="turn" wx:if="{{detail.preview_urls.length>0}}">
@@ -213,11 +213,11 @@
 			<view class="item_main">
 				<view class="color_check_box" data-style="Mono" bindtap="colorCheck">
 					<text class="color_type">黑白</text>
-					<image src="{{colorcheck != 'Color' ? '/images/doc_document_checked.png' : '/images/doc_noselected.png'}}" mode="widthFix" class="color_check" />
+					<image src="{{colorcheck != 'Color' ? '/images/radio_on.png' : '/images/radio_off.png'}}" mode="widthFix" class="color_check" />
 				</view>
 				<view class="color_check_box" data-style="Color" bindtap="colorCheck">
 					<text class="color_type">全彩</text>
-					<image src="{{colorcheck == 'Color' ? '/images/doc_document_checked.png' : '/images/doc_noselected.png'}}" mode="widthFix" class="color_check" />
+					<image src="{{colorcheck == 'Color' ? '/images/radio_on.png' : '/images/radio_off.png'}}" mode="widthFix" class="color_check" />
 				</view>
 			</view>
 		</view>
@@ -226,11 +226,11 @@
 			<view class="item_main">
 				<view class="color_check_box" data-style="0" bindtap="duplexCheck">
 					<text class="color_type">单面</text>
-					<image src="{{duplexcheck ? '/images/doc_noselected.png' : '/images/doc_document_checked.png'}}" mode="widthFix" class="color_check" />
+					<image src="{{duplexcheck ? '/images/radio_off.png' : '/images/radio_on.png'}}" mode="widthFix" class="color_check" />
 				</view>
 				<view class="color_check_box" data-style="1" bindtap="duplexCheck">
 					<text class="color_type">双面</text>
-					<image src="{{duplexcheck ? '/images/doc_document_checked.png' : '/images/doc_noselected.png'}}" mode="widthFix" class="color_check" />
+					<image src="{{duplexcheck ? '/images/radio_on.png' : '/images/radio_off.png'}}" mode="widthFix" class="color_check" />
 				</view>
 			</view>
 		</view>

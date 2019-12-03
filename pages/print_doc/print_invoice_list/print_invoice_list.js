@@ -20,12 +20,12 @@ Page({
     confirmModal: {
       isShow: false,
       title: '请正确放置A4打印纸',
-      image: 'https://cdn.gongfudou.com/miniapp/ec/doc_confirm_print_a4_new.png'
+      image: 'https://cdn-h.gongfudou.com/LearningBox/main/doc_confirm_print_a4_new.png'
     }
   },
 
   onLoad: function (options) {
-    this.longToast = new app.WeToast()
+    this.longToast = new app.weToast()
     var invoiceList = JSON.parse(decodeURIComponent(options.invoiceList)) //解析得到集合
 
     this.getDetail(invoiceList)
@@ -99,7 +99,7 @@ Page({
 
   getPhoneNumber: co.wrap(function* (e) {
     yield app.getPhoneNum(e)
-    storage.set("hasAuthPhoneNum", true)
+    storage.put("hasAuthPhoneNum", true)
     this.hasAuthPhoneNum = true
     this.setData({
       hasAuthPhoneNum: true

@@ -5,9 +5,11 @@ const util = require('../../../utils/util')
 const _ = require('../../../lib/underscore/we-underscore')
 const showModal = util.promisify(wx.showModal)
 // import commonRequest from '../../utils/common_request'
-// import api from '../../network/api'
-import { getLogger } from '../../../utils/logger'
-const logger = new getLogger('pages/print_doc/doc_list/doc_list')
+import api from '../../../network/restful_request'
+import {
+  getLogger
+} from '../../../utils/logger'
+const logger = new getLogger('pages/print_doc/doc_local_setting/doc_local_setting')
 import router from '../../../utils/nav'
 import storage from '../../../utils/storage'
 Page({
@@ -38,16 +40,17 @@ Page({
     showConfirm: false,
     checkOpen: false,
     extract: 'all',
-    fileTitle:null,
-    hasAuthPhoneNum:false,
+    fileTitle: null,
+    hasAuthPhoneNum: false,
     confirmModal: {
-        isShow: false,
-        title: '请正确放置A4打印纸',
-        image: 'https://cdn.gongfudou.com/miniapp/ec/doc_confirm_print_a4_new.png'
+      isShow: false,
+      title: '请正确放置A4打印纸',
+      image: 'https://cdn-h.gongfudou.com/LearningBox/main/doc_confirm_print_a4_new.png'
     }
   },
 
-  onLoad: co.wrap(function*(options) {
+  onLoad: co.wrap(function* (options) {
+    this.longToast = new app.weToast()
     try {
       const MAX_PAGE = 150;
       const arrayFile = this.data.arrayFile = JSON.parse(decodeURIComponent(options.file))
@@ -87,7 +90,7 @@ Page({
 
   }),
 
-  onShow:function(){
+  onShow: function () {
     let hasAuthPhoneNum = Boolean(storage.get('hasAuthPhoneNum'))
     this.hasAuthPhoneNum = hasAuthPhoneNum
     this.setData({
@@ -99,10 +102,9 @@ Page({
     const rgx = "(.xlsx|.xls|.xlsm|.xltx|.xltm)$";
     const reg = new RegExp(rgx);
     return reg.test(name);
-
   },
 
-  setStatus: co.wrap(function*() {
+  setStatus: co.wrap(function* () {
     //设置是否支持多面打印
     if (this.data.media_sizes[0].duplex) {
       this.setData({
@@ -127,7 +129,7 @@ Page({
   }),
 
   //减少份数
-  cutPrintNum: function() {
+  cutPrintNum: function () {
     if (this.data.documentPrintNum <= 1) {
       return wx.showModal({
         content: '最少要1份才可以打印哦~',
@@ -167,22 +169,20 @@ Page({
     this.data.startPage = e.detail.value
   },
 
-  startPageJudge: function(e) {
-    console.log('起始页===', parseInt(e.detail.value), typeof(e.detail.value))
+  startPageJudge: function (e) {
     if (parseInt(e.detail.value) > parseInt(this.data.endPrintPage) || parseInt(e.detail.value) <= 0) {
       this.setData({
         startPrintPage: 1,
         startPage: 1
       })
-      wx.showModal({
+      return x.showModal({
         content: '请输入正确的起始页',
         confirmColor: '#2086ee',
         confirmText: "确认",
         showCancel: false
       })
-      return
+
     } else {
-      console.log('打印起始页===', e.detail.value)
       this.data.startPrintPage = e.detail.value
     }
   },
@@ -206,7 +206,7 @@ Page({
         confirmText: "确认",
         showCancel: false
       })
-      
+
     } else {
       this.data.endPrintPage = e.detail.value
     }
@@ -221,7 +221,6 @@ Page({
 
   //选择单双面打印模式
   duplexCheck(e) {
-    console.log(e)
     let duplexcheck = e.currentTarget.dataset.style == 0 ? false : true
     this.setData({
       duplexcheck: duplexcheck
@@ -230,7 +229,7 @@ Page({
 
   //确认按钮提交
   confCheck(e) {
-    if(!this.hasAuthPhoneNum && !app.hasPhoneNum){
+    if (!this.hasAuthPhoneNum && !app.hasPhoneNum) {
       return
     }
     if (parseInt(this.data.startPage) > parseInt(this.data.endPage) || parseInt(this.data.startPage) <= 0) {
@@ -260,25 +259,26 @@ Page({
 
     }
     let hideConfirmPrintBox = Boolean(storage.get("hideConfirmPrintBox"))
-    if(hideConfirmPrintBox){
-        this.print()
+    if (hideConfirmPrintBox) {
+      this.print()
     } else {
-        this.setData({
-            ['confirmModal.isShow']: true
-        })
+      this.setData({
+        ['confirmModal.isShow']: true
+      })
     }
   },
-  getPhoneNumber:co.wrap(function*(e){
+
+  getPhoneNumber: co.wrap(function* (e) {
     yield app.getPhoneNum(e)
-    storage.set("hasAuthPhoneNum", true)
+    storage.put("hasAuthPhoneNum", true)
     this.hasAuthPhoneNum = true
     this.setData({
-      hasAuthPhoneNum:true
+      hasAuthPhoneNum: true
     })
     this.confCheck(e)
   }),
 
-  print: co.wrap(function*() {
+  print: co.wrap(function* () {
     let extract = this.data.extract
     let tempObj = {
       url: this.data.arrayFile.url,
@@ -299,26 +299,28 @@ Page({
       tempObj.end_page = 0
     }
     let files = [tempObj];
-
-    wx.showLoading({
-      title: '正在提交',
-      mask: true
+    this.longToast.toast({
+      type: 'loading',
+      title: '正在提交'
     })
+
     try {
       const resp = yield api.printInvoice(app.openId, '_docA4', files)
       if (resp.code != 0) {
         throw (resp)
       }
-      console.log('提交打印成功', resp)
-      wx.hideLoading()
-      wx.redirectTo({
-        url: `../finish/index?type=doc&state=${resp.order.state}`
+      this.longToast.hide()
+      router.redirectTo('/pages/finish/index', {
+        type: 'doc',
+        state: resp.order.state
       })
+
     } catch (e) {
-      wx.hideLoading()
+      this.longToast.hide()
       util.showErr(e)
     }
   }),
+
   // 选择缩印模式
   chooseZoomType(e) {
     let zoomType = Number(e.currentTarget.id)
@@ -330,6 +332,7 @@ Page({
       totalPage: endPage
     })
   },
+
   preview() {
     let url = this.data.previewUrl,
       display = this.data.zoomType,
@@ -337,35 +340,27 @@ Page({
       extract = this.data.extract
     commonRequest.previewDocument(url, display, skip_gs, extract)
   },
-  operaRepair: function() {
+
+  operaRepair() {
     this.setData({
       checkOpen: !this.data.checkOpen,
       showConfirm: this.data.checkOpen ? false : true,
     })
   },
+
   cancelRepair() {
     this.setData({
       checkOpen: false,
       showConfirm: false,
     })
   },
-  openRepair: co.wrap(function*() {
+
+  openRepair: co.wrap(function* () {
     this.setData({
       showConfirm: false
     })
   }),
-  // 选择打印范围类型奇、偶、范围
-  // chooseRangeType(e) {
-  //   let type = e.currentTarget.id
-  //   if (type !== 'all') {
-  //     this.setData({
-  //       zoomType: 1
-  //     })
-  //   }
-  //   this.setData({
-  //     extract: type
-  //   })
-  // },
+
   chooseRangeType(e) {
     let type = e.currentTarget.id,
       endMaxPage = this.data.endMaxPage,

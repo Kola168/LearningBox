@@ -8,6 +8,8 @@ const util = require('../../../utils/util')
 
 const request = util.promisify(wx.request)
 import router from '../../../utils/nav'
+import Logger from '../../../utils/logger.js'
+const logger = new Logger.getLogger('pages/print_doc/print_wx/print_wx')
 // import commonRequest from '../../utils/common_request.js'
 Page({
   data: {
@@ -20,9 +22,9 @@ Page({
     textList: '',
     subscription: '',
     imgList: [
-      'https://cdn.gongfudou.com/miniapp/ec/doc_wx_article1.png',
-      'https://cdn.gongfudou.com/miniapp/ec/doc_wx_article2.png',
-      'https://cdn.gongfudou.com/miniapp/ec/doc_wx_article3.png'
+      'https://cdn-h.gongfudou.com/LearningBox/main/doc_wx_article1.png',
+      'https://cdn-h.gongfudou.com/LearningBox/main/doc_wx_article2.png',
+      'https://cdn-h.gongfudou.com/LearningBox/main/doc_wx_article3.png'
     ]
   },
   onLoad: co.wrap(function* () {
@@ -86,7 +88,7 @@ Page({
   },
 
   input: function (e) {
-    console.log(e, '===e====')
+    logger.info("===输入的input===", e)
     this.setData({
       input: e.detail.value
     })
@@ -105,7 +107,6 @@ Page({
 
   next: co.wrap(function* () {
     var input = this.data.input
-    console.log(input, '======0')
 
     if (input == '') {
       return util.showErr({
@@ -114,12 +115,10 @@ Page({
     }
     if (input.indexOf("https://mp.weixin.qq.com") == 0) {
       
-      console.log(input, '======1.1')
       this.longToast.toast({
         type: 'loading',
         title: '请稍候'
       })
-      console.log(input, '======1.2')
       try {
         var resp = yield request({
           url: app.apiServer + `/ec/v2/wx_files`,
@@ -203,10 +202,11 @@ Page({
       if (resp.data.code !== 0) {
         throw (resp.data)
       }
-      this.longToast.hide()
       this.setData({
         subscription: resp.data.data
       })
+      this.longToast.hide()
+
     } catch (e) {
       this.longToast.hide()
       util.showErr(e)
@@ -218,7 +218,6 @@ Page({
       type: 'loading',
       title: '请稍候',
     })
-    console.log("this.page", this.page)
     if (this.page == 1) {
       this.setData({
         textList: []
@@ -244,7 +243,6 @@ Page({
       if (resp.data.code !== 0) {
         throw (resp.data)
       }
-      this.longToast.hide()
       if (resp.data.data.length < 10) {
         this.pageEnd = true
       }
@@ -254,9 +252,10 @@ Page({
       this.setData({
         textList: this.data.textList.concat(resp.data.data)
       })
+      this.longToast.hide()
       this.page++
     } catch (e) {
-      this.longToast.toast()
+      this.longToast.hide()
       util.showErr(e)
     }
   }),
@@ -264,21 +263,20 @@ Page({
   playPreview: co.wrap(function* (e) {
     this.longToast.toast({
       type: 'loading',
-      title: '请稍候',
-      duration: 0
+      title: '请稍候'
     })
     var id = parseInt(e.currentTarget.id)
-    let pdf = this.data.textList[id].pdf_url
-    this.setData({
+    var pdf = this.data.textList[id].pdf_url
+    var _this = this
+
+    _this.setData({
       pdf: pdf
     })
-    let _this = this
     wx.downloadFile({
       url: _this.data.pdf,
       success(res) {
         if (res.statusCode === 200) {
-          console.log(res.tempFilePath)
-          _this.longToast.toast()
+          _this.longToast.hide()
           wx.openDocument({
             filePath: res.tempFilePath
           })
@@ -288,34 +286,5 @@ Page({
         // console.log('e=====', e)
       }
     })
-  }),
-
-  controlModal: co.wrap(function* (e) {
-    this.setData({
-      showGetModal: true
-    })
-  }),
-  hideModal: co.wrap(function* (e) {
-    this.setData({
-      showGetModal: false
-    })
-  }),
-
-  setFirst: co.wrap(function* (e) {
-    wx.setStorageSync('isFisrt', '1')
-  }),
-
-  isFirst: co.wrap(function* (e) {
-    var isFir = wx.getStorageSync('isFisrt')
-    if (isFir) {
-      this.setData({
-        showGetModal: false
-      })
-    } else {
-      this.setData({
-        showGetModal: true
-      })
-    }
-  }),
-
+  })
 })

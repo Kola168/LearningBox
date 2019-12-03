@@ -28,7 +28,7 @@ Page({
     confirmModal: {
       isShow: false,
       title: '请正确放置A4打印纸',
-      image: 'https://cdn.gongfudou.com/miniapp/ec/doc_confirm_print_a4_new.png'
+      image: 'https://cdn-h.gongfudou.com/LearningBox/main/doc_confirm_print_a4_new.png'
     },
     isMember: false,
     isAndroid: false,
@@ -42,17 +42,14 @@ Page({
   onLoad: co.wrap(function* (options) {
     try {
       this.longToast = new app.weToast()
-      this.options = JSON.parse(options.params)
+      this.options = JSON.parse(decodeURIComponent(options.params))
       this.id = this.options.id
-      this.isColorPrinter = this.options.isColorPrinter
-      this.isDuplex = this.options.isDuplex
       this.sn = this.options.sn
-      this.title = this.options.title
       this.setData({
         isMember: this.options.isMember,
-        isDuplex: this.isDuplex,
-        isColorPrinter: this.isColorPrinter,
-        title: this.title,
+        isDuplex: this.options.isDuplex,
+        isColorPrinter:  this.options.isColorPrinter,
+        title: this.options.title,
         memberExpiresAt: this.options.memberExpiresAt
       })
       let systemInfo = wx.getSystemInfoSync()
@@ -133,10 +130,12 @@ Page({
 
     this.data.startPrintPage = value
   },
+
   //输入打印结束页
   inputEndPage ({detail: {value}}) {
     this.data.endPrintPage = value
   },
+
   endPageJudge (e) {
     if (parseInt(e.detail.value) < parseInt(this.data.startPrintPage) || parseInt(e.detail.value) > this.data.detail.preview_urls.length) {
       this.setData({
@@ -202,14 +201,16 @@ Page({
       })
     }
   },
+
   cancelcheck() {
     this.setData({
       showSetting: false
     })
   },
+
   getPhoneNumber: co.wrap(function* (e) {
     yield app.getPhoneNum(e)
-    storage.set("hasAuthPhoneNum", true)
+    storage.put("hasAuthPhoneNum", true)
     this.hasAuthPhoneNum = true
     this.setData({
       hasAuthPhoneNum: true
@@ -228,6 +229,7 @@ Page({
       choosePoint
     })
   },
+
   getDetail: co.wrap(function* () {
     this.longToast.toast({
       type: 'loading',
@@ -254,6 +256,7 @@ Page({
       util.showErr(e)
     }
   }),
+
   toPay: co.wrap(function* () {
     if (!app.activeDevice) {
       return util.showErr({message: '您还未绑定打印机，快去绑定吧'})
@@ -294,6 +297,7 @@ Page({
       util.showErr(e)
     }
   }),
+  
   print: co.wrap(function* (e) {
     try {
       if (!app.activeDevice) {

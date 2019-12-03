@@ -4,7 +4,7 @@
 <view class="top-box">
 	<view class="top-text">
 		<view class="animation-view">
-			<image class="" src="https://cdn.gongfudou.com/miniapp/ec/doc_card_hint.gif" mode="aspectFit" />
+			<image class="" src="https://cdn-h.gongfudou.com/LearningBox/main/doc_card_hint.gif" mode="aspectFit" />
 		</view>
 
 	</view>
@@ -24,7 +24,7 @@
 		<view class="no-image">
 			<image
 			 bindtap="chooseImage"
-			 src="https://cdn.gongfudou.com/miniapp/ec/doc_idcard_add.png"
+			 src="https://cdn-h.gongfudou.com/LearningBox/main/doc_idcard_add.png"
 			 mode="widthFix"
 			 data-index="{{index}}"
 			/>
@@ -99,7 +99,7 @@
 		<view class="tips-title">
 			证件上传示例
 		</view>
-		<image src="{{checkedIndex== 1 ? 'https://cdn.gongfudou.com/miniapp/ec/doc_id_tips_back.png' : 'https://cdn.gongfudou.com/miniapp/ec/doc_id_tips_face.png'}}" mode="widthFix" class="tips-icon" />
+		<image src="{{checkedIndex== 1 ? 'https://cdn-h.gongfudou.com/LearningBox/main/doc_id_tips_back.png' : 'https://cdn-h.gongfudou.com/LearningBox/main/doc_id_tips_face.png'}}" mode="widthFix" class="tips-icon" />
 		<view class="tips-but" bindtap="toChooseImg">
 			知道了
 		</view>
