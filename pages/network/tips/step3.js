@@ -90,7 +90,7 @@ Page({
       if (resp.data.code == 0) {
         this.longToast.toast()
         let that = this
-        wxNav.redirectTo('/pages/network/wificonnect',{equipInfo:`${encodeURIComponent(JSON.stringify(resp.data.data))}`})
+        wxNav.redirectTo('/pages/network/wificonnect/list',{equipInfo:`${encodeURIComponent(JSON.stringify(resp.data.data))}`})
       }
       return
     } catch (e) {
