@@ -1,0 +1,60 @@
+/* pages/network/tips/index.wxss */
+page{
+  width:100%;
+  box-sizing:border-box;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+
+.step{
+  width:100%;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  margin-top:30rpx;
+}
+
+.bg-gray{
+  width:48rpx;
+  height:48rpx;
+  border-radius:50%;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-size:24rpx;
+  color:#999;
+  background:#eaeaea;
+}
+
+.line{
+  width:90rpx;
+  height:1px;
+  background:#eaeaea;
+}
+
+.bg-yellow{
+  background:#ffdc5e;
+  color:#333;
+}
+
+.tips-title{
+  margin-top:56rpx;
+  margin-bottom:80rpx;
+}
+
+.step-img{
+  width:700rpx;
+}
+
+.bottom-button{
+  width:600rpx;
+  line-height:100rpx;
+  color:#333;
+  font-size:36rpx;
+  text-align:center;
+  border-radius:50rpx;
+  position:fixed;
+  bottom:176rpx;
+  font-weight:500;
+}

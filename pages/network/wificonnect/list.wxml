@@ -1,0 +1,16 @@
+<!--pages/network/wificonnect/list.wxml-->
+<nav-bar title="配置网络"></nav-bar>
+
+<view wx:if="{{wifiList.length>0}}" class="wifilist-box">
+  <view class="wifilist-tips">
+    请选择要连接的WiFi网络
+  </view>
+  <view wx:for="{{wifiList}}" wx:key="wifilist" class="wifilist" data-index="{{index}}" bindtap="connect">
+    <text class="wifi-name">{{item.SSID}}</text><text class="iconfont icon-wifi"></text>
+  </view>
+</view>
+<view wx:else class="nowifi-tips">
+  未搜索到wifi
+</view>
+<import src="/lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />

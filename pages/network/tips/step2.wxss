@@ -1,0 +1,2 @@
+/* pages/network/tips/step2.wxss */
+@import 'step1.wxss';
