@@ -1,0 +1,4 @@
+<nav-bar title="分享管理"></nav-bar>
+<view class="container">
+  <view class="stop-share {{isIpx?'is-ipx':''}}">停止分享</view>
+</view>

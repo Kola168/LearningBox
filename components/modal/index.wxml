@@ -2,10 +2,12 @@
   <view class="confirm-modal-wrap" catchtap="tapModal">
     <view class="confirm-modal-title">{{modal.title}}</view>
     <view class="content-box">
-      <block wx:if="{{soltContent}}"></block>
+      <block wx:if="{{modal.slotContent}}">
+        <slot></slot>
+      </block>
       <block wx:else>
-        <image src="{{modal.image}}" mode="widthFix" wx:if="{{modal.image}}"></image>
         <view class="box-text" wx:if="{{modal.content}}">{{modal.content}}</view>
+        <image src="{{modal.image}}" mode="widthFix" wx:if="{{modal.image}}"></image>
       </block>
     </view>
     <view class="button">

@@ -169,7 +169,7 @@
 .right-btn {
   color: #666;
   border: 2rpx solid #e7e7e7;
-  font-size:20rpx;
+  font-size: 20rpx;
   height: 40rpx;
   line-height: 40rpx;
   border-radius: 20rpx;
@@ -179,4 +179,43 @@
 .flex-column {
   flex-direction: column;
   align-items: flex-start;
+}
+
+.noaduit-item {
+  font-size: 28rpx;
+  color: #333;
+  margin-bottom: 16rpx;
+}
+
+.noaduit-item>text:first-child {
+  display: inline-block;
+  font-size: 22rpx;
+  padding: 8rpx 12rpx;
+  border-radius: 4rpx;
+}
+
+.noaduit-manager>text:first-child {
+  color: #C68C13;
+  background: #FFF8E3;
+}
+
+.noaduit-user>text:first-child {
+  color: #78B8FF;
+  background: #EBF6FB;
+}
+
+.modal-rename input {
+  text-align: center;
+  width: 90%;
+  margin: 0 auto;
+  height: 68rpx;
+  background: #F7F7F7;
+  font-size: 28rpx;
+}
+
+.rename-tip {
+  color: #FB5130;
+  font-size: 20rpx;
+  text-align: center;
+  margin-top: 26rpx;
 }

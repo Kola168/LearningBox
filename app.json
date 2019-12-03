@@ -3,7 +3,9 @@
     "pages/index/index",
     "pages/logs/logs",
     "pages/devices/list/index",
-    "pages/devices/setting/index"
+    "pages/devices/setting/index",
+    "pages/devices/offline/index",
+    "pages/devices/share_manage/index"
   ],
   "window": {
 		"backgroundTextStyle": "light",
