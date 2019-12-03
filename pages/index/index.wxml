@@ -1,5 +1,11 @@
 <!--index.wxml-->
 <nav-bar background="#fff" title="小白智慧打印"></nav-bar>
+
+
+<button open-type="getUserInfo" bindgetuserinfo="userInfoHandler" form-type='submit' hover-class="none"
+  class="auth-button">登录</button>
+
+
 <swiper class="swiper" indicator-dots indicator-active-color="#2086ee" autoplay="{{autoplay}}" interval="{{interval}}"
   circular bindchange="changeSwiper" bindtap="clickAds">
   <block wx:for="{{bannerUrls}}" wx:key="{{index}}">
@@ -56,9 +62,22 @@
     </view>
   </view>
 </view>
-<view class="home-title">家庭早教</view>
-<view class="home-title">轻松带娃</view>
-<view class="home-title">入园早准备</view>
+
+<view class="content-list" wx:for="{{contentList}}" wx:key="{{idnex}}" id="{{idnex}}">
+  <view class="home-title">{{item.title}}</view>
+  <image src="{{item.url}}" class="content-image" mode="widthFix" id="{{index}}" />
+</view>
+<view class="tips">
+  <view>
+    <image src="/images/home/icon_book.png" mode="widthFix" id="{{index}}" />
+    <view>什么是纸质学习法？</view>
+  </view>
+  <view>
+      <image src="/images/home/icon_teacher.png" mode="widthFix" id="{{index}}" />
+      <view>小白老师是谁？</view>
+    </view>
+</view>
+
 <!-- loading -->
 <import src="/lib/toast/wetoast.wxml" />
 <template is="wetoast" data="{{...__wetoast__}}" />
