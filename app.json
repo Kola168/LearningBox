@@ -3,7 +3,51 @@
     "pages/index/index",
     "pages/logs/logs",
     "components/multiphoto/test"
-  ],
+	],
+	"subPackages": [
+		{
+			"root": "pages/package_common",
+			"pages": [
+			
+			]
+		},
+		{
+			"root": "pages/package_course",
+			"pages": [
+			
+			]
+		},
+		{
+			"root": "pages/package_feature",
+			"pages": [
+		
+			]
+		},
+		{
+			"root": "pages/package_member",
+			"pages": [
+		
+			]
+		},
+		{
+			"root": "pages/package_other",
+			"pages": [
+		
+			]
+		},
+		{
+			"root": "pages/package_preschool",
+			"pages": [
+		
+			]
+		},
+		{
+			"root": "pages/package_subject",
+			"pages": [
+		
+			]
+		}
+	],
   "window": {
 		"backgroundTextStyle": "light",
 		"navigationBarBackgroundColor": "#fff",
