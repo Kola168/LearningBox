@@ -21,13 +21,8 @@
 		}
 	},
 	"compileType": "miniprogram",
-<<<<<<< HEAD
 	"libVersion": "2.9.4",
 	"appid": "wxd9af039dfbb43124",
-=======
-	"libVersion": "2.9.3",
-	"appid": "wxde848be28728999c",
->>>>>>> f2c91b3285632f33ef96e5073f178437f8456986
 	"projectname": "LearningBox",
 	"debugOptions": {
 		"hidedInDevtools": []
