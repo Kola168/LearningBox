@@ -7,7 +7,6 @@ const co = require('../../../lib/co/co')
 const util = require('../../../utils/util')
 
 const request = util.promisify(wx.request)
-// var mta = require('../../../utils/mta_analysis.js');
 import router from '../../../utils/nav'
 // import commonRequest from '../../utils/common_request.js'
 Page({
@@ -27,8 +26,7 @@ Page({
     ]
   },
   onLoad: co.wrap(function* (options) {
-    mta.Page.init()
-    this.longToast = new app.WeToast()
+    this.longToast = new app.weToast()
     this.page = 1
     this.pageEnd = false
     this.getLink()
@@ -56,9 +54,6 @@ Page({
   }),
   changeTab: co.wrap(function* (e) {
     var id = e.currentTarget.id
-    mta.Event.stat("wxarticletype", {
-      'wxarticletype': this.data.publicType[parseInt(id)]
-    })
     this.page = 1
     this.pageEnd = false
     this.setData({
@@ -73,9 +68,6 @@ Page({
     wx.getClipboardData({
       success(res) {
         if (res.data.indexOf("https://mp.weixin.qq.com") == 0) {
-          mta.Event.stat('copywxarticle', {
-            'copywxarticle': 'true'
-          })
           _this.setData({
             input: res.data
           })
@@ -94,6 +86,7 @@ Page({
   },
 
   input: function (e) {
+    console.log(e, '===e====')
     this.setData({
       input: e.detail.value
     })
@@ -101,9 +94,6 @@ Page({
 
   toSetting: co.wrap(function* ({currentTarget: {id}}) {
     var pdf = this.data.textList[id].pdf_url
-    mta.Event.stat("wxarticleindexlistprint", {
-      'wxarticleindexlistprint': this.data.textList[id].article_title
-    })
     this.setData({
       pdf: pdf
     })
@@ -115,20 +105,21 @@ Page({
 
   next: co.wrap(function* () {
     var input = this.data.input
+    console.log(input, '======0')
+
     if (input == '') {
       return util.showErr({
         message: '请输入微信文章链接'
       })
     }
     if (input.indexOf("https://mp.weixin.qq.com") == 0) {
-      mta.Event.stat("wxarticlenext", {
-        'wxarticlenext': 'true'
-      })
-
+      
+      console.log(input, '======1.1')
       this.longToast.toast({
         type: 'loading',
         title: '请稍候'
       })
+      console.log(input, '======1.2')
       try {
         var resp = yield request({
           url: app.apiServer + `/ec/v2/wx_files`,
@@ -280,9 +271,6 @@ Page({
     let pdf = this.data.textList[id].pdf_url
     this.setData({
       pdf: pdf
-    })
-    mta.Event.stat("wxarticleindexlistpreview", {
-      'wxarticleindexlistpreview': this.data.textList[id].article_title
     })
     let _this = this
     wx.downloadFile({

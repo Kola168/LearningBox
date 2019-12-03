@@ -1,0 +1,63 @@
+<!--pages/print_doc/duplicate_preview/duplicate_preview.wxml-->
+
+<nav-bar background="#fff" title="智能复印" />
+<view class="preview" style="height:{{height}}px;width:{{width}}px">
+	<image mode="widthFix" src="{{preUrl}}" />
+</view>
+<view class="line" style="width:{{width}}px" />
+
+<view class="bottom-main">
+	<view class="number">
+		<view>打印份数</view>
+		<view class="count">
+			<image
+			 bindtap="reduce"
+			 class="btn-c"
+			 mode="widthFix"
+			 src="{{count > 1 ? '/images/doc_minus_y.png' :'/images/doc_document_cut.png'}}"
+			/>
+			<text>{{count}}</text>
+			<image
+			 bindtap="add"
+			 class="btn-c"
+			 mode="widthFix"
+			 src="/images/{{number > 49 ? 'doc_document_add_gray' : 'doc_plus_y'}}.png"
+			/>
+		</view>
+	</view>
+	<view class="choose">
+		<text class='title'>打印效果</text>
+		<view class='color'>
+			<block wx:for="{{colorList}}" wx:key="*this">
+				<view class='kind'>
+					<text class='type'>{{item.name}}</text>
+					<image
+					 src='{{item.is_select ? select_icon : no_select_icon}}'
+					 class='selected'
+					 mode='widthFix'
+					 data-index="{{index}}"
+					 bindtap="chooseColor"
+					/>
+				</view>
+			</block>
+		</view>
+	</view>
+	<view class="bottom">
+		<view class="btn-left" bindtap="backPrepage">返回</view>
+		<form report-submit="true" bindsubmit="confirm">
+			<button
+			 class="btn-print"
+			 open-type="{{hasAuthPhoneNum ? '' : 'getPhoneNumber'}}"
+			 bindgetphonenumber="{{hasAuthPhoneNum ? '' : 'getPhoneNumber'}}"
+			 formType="submit"
+			>确认打印
+			</button>
+		</form>
+	</view>
+</view>
+
+<!-- 打印确认框 -->
+<confirm-print bindconfirm="print" modal="{{confirmModal}}" />
+<import src="../../../lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />
+

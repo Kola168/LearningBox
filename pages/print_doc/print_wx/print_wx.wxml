@@ -8,6 +8,7 @@
 	<view class="border">
 		<input
 		 value='{{input}}'
+		 bindblur="input"
 		 bindinput="input"
 		 cursor-spacing="20"
 		 maxlength="-1"

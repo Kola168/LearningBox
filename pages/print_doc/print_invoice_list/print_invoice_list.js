@@ -3,8 +3,6 @@ const app = getApp()
 const regeneratorRuntime = require('../../../lib/co/runtime')
 const co = require('../../../lib/co/co')
 const util = require('../../../utils/util')
-// var mta = require('../../../utils/mta_analysis.js');
-// const uploadFormId = require('../../utils/gfd-formid-upload')
 
 const request = util.promisify(wx.request)
 const showModal = util.promisify(wx.showModal)
@@ -34,7 +32,6 @@ Page({
     this.setData({
       invoiceList: invoiceList
     })
-    mta.Page.init()
   },
 
   onShow: function () {
@@ -76,8 +73,6 @@ Page({
 
 
   confirm: co.wrap(function* (e) {
-    uploadFormId.dealFormIds(e.detail.formId, `print_invoice`)
-    uploadFormId.upload()
     if (!this.hasAuthPhoneNum && !app.hasPhoneNum) {
       return
     }
@@ -100,9 +95,6 @@ Page({
         ['confirmModal.isShow']: true
       })
     }
-    mta.Event.stat('fapiaodayin', {
-      'confprint': 'card'
-    })
   }),
 
   getPhoneNumber: co.wrap(function* (e) {
@@ -116,9 +108,6 @@ Page({
   }),
   print: co.wrap(function* () {
     logger.info('请求参数===', this.data.invoiceList)
-    mta.Event.stat('fapiaodayin', {
-      'startprint': 'card'
-    })
     this.longToast.toast({
       type: 'loading',
       title: '正在提交'

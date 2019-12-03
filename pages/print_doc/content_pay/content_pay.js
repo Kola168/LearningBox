@@ -4,7 +4,6 @@ const app = getApp()
 const regeneratorRuntime = require('../../../lib/co/runtime')
 const co = require('../../../lib/co/co')
 const util = require('../../../utils/util')
-// var mta = require('../../../utils/mta_analysis.js');
 import graphql from '../../../network/graphql_request'
 
 const showModal = util.promisify(wx.showModal)
@@ -42,7 +41,7 @@ Page({
   },
   onLoad: co.wrap(function* (options) {
     try {
-      this.longToast = new app.WeToast()
+      this.longToast = new app.weToast()
       this.options = JSON.parse(options.params)
       this.id = this.options.id
       this.isColorPrinter = this.options.isColorPrinter
@@ -171,7 +170,7 @@ Page({
   },
 
   //确认按钮提交
-  confcheck() {
+  confCheck() {
     if (!this.hasAuthPhoneNum && !app.hasPhoneNum) {
       return
     }
@@ -215,7 +214,7 @@ Page({
     this.setData({
       hasAuthPhoneNum: true
     })
-    this.confcheck()
+    this.confCheck()
   }),
 
   checkPoint: function () {

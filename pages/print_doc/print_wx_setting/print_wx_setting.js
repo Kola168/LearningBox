@@ -6,18 +6,16 @@ const regeneratorRuntime = require('../../../lib/co/runtime')
 const co = require('../../../lib/co/co')
 const util = require('../../../utils/util')
 const request = util.promisify(wx.request)
-// const uploadFormId = require('../../../utils/gfd-formid-upload')
-// var mta = require('../../../utils/mta_analysis.js');
 import storage from '../../../utils/storage'
 import router from '../../../utils/nav'
 import Logger from '../../../utils/logger.js'
 const logger = new Logger.getLogger('pages/print_doc/print_wx_setting/print_wx_setting')
 Page({
   data: {
-    img1: '/images/print_doc/noselected.png',
-    img2: '/images/print_doc/selected_yellow.png',
-    img3: '/images/print_doc/selected_yellow.png',
-    img4: '/images/print_doc/noselected.png',
+    img1: '/images/doc_noselected.png',
+    img2: '/images/doc_document_checked.png',
+    img3: '/images/doc_document_checked.png',
+    img4: '/images/doc_noselected.png',
     isColor: true,
     color: 'Color',
     link: '',
@@ -36,8 +34,7 @@ Page({
   },
   
   onLoad: co.wrap(function* (options) {
-    mta.Page.init()
-    this.longToast = new app.WeToast()
+    this.longToast = new app.weToast()
     this.setData({
       link: options.link ? JSON.parse(decodeURIComponent(options.link)) : '',
       converted_url: JSON.parse(decodeURIComponent(options.converted_url))
@@ -80,7 +77,7 @@ Page({
         })
         return this.setData({
           isColor: false,
-          img1: '/images/print_doc/selected_yellow.png',
+          img1: '/images/doc_document_checked.png',
         })
       } else if (resp.data.code != 0) {
         throw (resp.data)
@@ -90,7 +87,7 @@ Page({
       if (color_length == 1) {
         this.setData({
           isColor: false,
-          img1: '/images/print_doc/selected_yellow.png',
+          img1: '/images/doc_document_checked.png',
         })
       }
       let page_count = resp.data.print_capability.page_count
@@ -110,32 +107,32 @@ Page({
 
   chooseColor1 (e) {
     this.setData({
-      img1: '/images/print_doc/selected_yellow.png',
-      img2: '/images/print_doc/noselected.png',
+      img1: '/images/doc_document_checked.png',
+      img2: '/images/doc_noselected.png',
       color: 'Mono'
     })
   },
 
   chooseColor2 (e) {
     this.setData({
-      img1: '/images/print_doc/noselected.png',
-      img2: '/images/print_doc/selected_yellow.png',
+      img1: '/images/doc_document_checked.png',
+      img2: '/images/doc_document_checked.png',
       color: 'Color'
     })
   },
 
   chooseColor3 (e) {
     this.setData({
-      img3: '/images/print_doc/selected_yellow.png',
-      img4: '/images/print_doc/noselected.png',
+      img3: '/images/doc_document_checked.png',
+      img4: '/images/doc_noselected.png',
       duplex: false
     })
   },
 
   chooseColor4 (e) {
     this.setData({
-      img3: '/images/print_doc/noselected.png',
-      img4: '/images/print_doc/selected_yellow.png',
+      img3: '/images/doc_noselected.png',
+      img4: '/images/doc_document_checked.png',
       duplex: true
     })
   },
@@ -153,15 +150,6 @@ Page({
   },
 
   preview (e) {
-    if (this.from == 'next') {
-      mta.Event.stat('wxArticlePreview', {
-        'wxarticlenextpreview': 'true'
-      })
-    } else {
-      mta.Event.stat('wxArticlePreview', {
-        'wxarticlelistpreview': 'true'
-      })
-    }
     this.longToast.toast({
       type: 'loading',
       title: '请稍候',
@@ -185,8 +173,6 @@ Page({
   },
 
   confirm (e) {
-    uploadFormId.dealFormIds(e.detail.formId, `print_page2doc`)
-    uploadFormId.upload()
     if (!this.hasAuthPhoneNum && !app.hasPhoneNum) {
       return
     }
@@ -225,15 +211,6 @@ Page({
   }),
 
   print: co.wrap(function* (e) {
-    if (this.from == 'next') {
-      mta.Event.stat('wxArticlePrint', {
-        'wxarticlenextprint': 'true'
-      })
-    } else {
-      mta.Event.stat('wxArticlePrint', {
-        'wxarticlelistprint': 'true'
-      })
-    }
     this.longToast.toast({
       type: 'loading',
       title: '正在提交'

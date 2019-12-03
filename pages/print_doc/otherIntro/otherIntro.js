@@ -42,10 +42,6 @@ Page({
       platform: platform
     })
   },
-
-  downloadApp: function () {
-    router.navigateTo('/pages/print_doc/appIntro/appIntro')
-  },
   
   localPrint: function () {
     let web_url = `${app.apiServer}/web/file_select/epbox_qq?openid=${app.openId}`;

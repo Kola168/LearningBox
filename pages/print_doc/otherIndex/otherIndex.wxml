@@ -1,24 +1,28 @@
+<nav-bar background="#fff" title="文档打印" />
 <view class='other-box'>
 	<view class='box-item' bindtap='toOtherIntro' id="qq">
-		<image src='/images/print_doc/qq.png' class='img' mode='widthFix' />
+		<image src='/images/doc_document_qq.png' class='img' mode='widthFix' />
 		<view class='text'>
 			<view class='name'>QQ</view>
 			<view class='intro'>将QQ里的文档导入微信</view>
 		</view>
+		<image class="arrow-right" mode="widthFix" src="/images/doc_item_arrow.png" />
 	</view>
 	<view class='box-item' bindtap='toOtherIntro' id="email">
-		<image src='/images/print_doc/email.png' class='img' mode='widthFix' />
+		<image src='/images/doc_email.png' class='img' mode='widthFix' />
 		<view class='text'>
 			<view class='name'>QQ邮箱</view>
 			<view class='intro'>将QQ邮箱里的文档导入微信</view>
 		</view>
+		<image class="arrow-right" mode="widthFix" src="/images/doc_item_arrow.png" />
 	</view>
 	<view class='box-item' bindtap='toOtherIntro' id="wps">
-		<image src='/images/print_doc/wps.png' class='img' mode='widthFix' />
+		<image src='/images/doc_document_wps.png' class='img' mode='widthFix' />
 		<view class='text'>
 			<view class='name'>WPS</view>
 			<view class='intro'>将WPS里的文档导入微信</view>
 		</view>
+		<image class="arrow-right" mode="widthFix" src="/images/doc_item_arrow.png" />
 	</view>
 </view>
 

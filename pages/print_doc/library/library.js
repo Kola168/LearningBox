@@ -5,12 +5,9 @@ const app = getApp()
 const regeneratorRuntime = require('../../../lib/co/runtime')
 const co = require('../../../lib/co/co')
 const util = require('../../../utils/util')
-// var mta = require('../../../utils/mta_analysis.js');
-
 const request = util.promisify(wx.request)
 const event = require('../../../lib/event/event')
 import graphql from '../../../network/graphql_request'
-
 import storage from '../../../utils/storage'
 import router from '../../../utils/nav'
 import Logger from '../../../utils/logger.js'
@@ -38,7 +35,7 @@ Page({
     } else {
       this.id = options.sn //益智一级分类
     }
-    this.longToast = new app.WeToast()
+    this.longToast = new app.weToast()
     this.page = 1
     this.pageEnd = false
     var systemInfo = wx.getSystemInfoSync()
@@ -53,12 +50,8 @@ Page({
     event.on('Authorize', this, function (data) {
       this.loopGetOpenId()
     })
-    mta.Page.init()
     let refer = wx.getLaunchOptionsSync()
     if (refer.scene === 1014) {
-      mta.Event.stat('order_push', {
-        'order_push_play': 'true'
-      })
       this.setData({
         from_temp: true
       })
@@ -73,23 +66,21 @@ Page({
   backToHome: function () {
     try {
       router.switchTab('/pages/index/index')
-      // wx.switchTab({
-      //   url: '../index/index'
-      // })
-    } catch (e) {
-      logger.info(e)
+    } catch (err) {
+      logger.info(err)
     }
-
   },
 
   onShow: co.wrap(function* (options) {
     let unionId = storage.get('unionId')
     logger.info('应用二维码参数传参', this.share_user_id, this.way)
     if (!unionId) {
-      logger.info('执行到play授权===========')
-      let url = this.share_user_id ? `/pages/authorize/index?url=${url}&share_user_id=${this.share_user_id}&way=${this.way}` : `/pages/authorize/index`
-      router.navigateTo(url)
-      
+      let url = this.share_user_id ? `/pages/authorize/index` : `/pages/authorize/index`
+      router.navigateTo(url, this.share_user_id ? {
+        url: url,
+        share_user_id: this.share_user_id,
+        way: this.way
+      } : null)
     }
   }),
 
@@ -111,53 +102,6 @@ Page({
           logger.info('loop too long, stop')
         }
       }, 2000)
-    }
-  }),
-
-  member: co.wrap(function* () {
-    let authToken = storage.get('authToken')
-    let unionId = storage.get('unionId')
-
-    if (authToken) {
-      let res = yield graphql.isMember()
-      this.setData({
-        isMember: res.user && res.user.isMember || false,
-        memberExpiresAt: res.user.selectedPrinter.memberExpiresAt
-      })
-    }
-    if (!authToken && unionId) {
-      if (app.openId) {
-        try {
-          const resp = yield request({
-            url: app.apiServer + `/ec/v2/users/user_id`,
-            method: 'GET',
-            dataType: 'json',
-            data: {
-              openid: app.openId
-            }
-          })
-          if (resp.data.code != 0) {
-            throw (resp.data)
-          }
-          storage.set("authToken", resp.data.auth_token)
-          let res = yield graphql.isMember()
-          this.setData({
-            isMember: res.user != null && res.user.isMember ? res.user.isMember : false,
-            memberExpiresAt: res.user.selectedPrinter.memberExpiresAt
-          })
-        } catch (e) {
-          util.showErr(e)
-        }
-      } else {
-        setTimeout(function () {
-          loopCount++
-          if (loopCount <= 100) {
-            _this.member()
-          } else {
-            logger.info('loop too long, stop')
-          }
-        }, 2000)
-      }
     }
   }),
 
@@ -307,10 +251,7 @@ Page({
     let index = e.currentTarget.id
     let title = this.data.playList[index].title
     let id = this.data.playList[index].sn
-    mta.Event.stat('librarycontent', {
-      'tabcont': `type_${this.data.typeList[Number(this.data.tabId)].name}-title_${title}-id_${id}-type_id_${this.id}`
-    })
-    console.log(this.data.typeList[this.data.tabId])
+ 
     let parentSn = this.data.typeList[this.data.tabId].sn || this.data.playList[index].category_sn
     router.navigateTo('/pages/print_doc/library_play_preview/library_play_preview', {
       title: title,

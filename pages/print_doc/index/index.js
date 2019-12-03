@@ -3,6 +3,8 @@ const app = getApp()
 const regeneratorRuntime = require('../../../lib/co/runtime')
 const co = require('../../../lib/co/co')
 const util = require('../../../utils/util')
+import { getLogger } from '../../../utils/logger'
+const logger = new getLogger('pages/print_doc/index/index')
 import router from '../../../utils/nav'
 Page({
   data: {
@@ -10,13 +12,13 @@ Page({
       {
         name: '微信文档',
         recommend: '选择微信聊天文档打印',
-        icon: '/images/print_doc/doc_weixin_icon.png',
+        icon: '/images/doc_weixin_icon.png',
         key: 'weChatDoc'
       },
       {
         name: '更多打印方式',
         recommend: '可选qq、百度打印',
-        icon: '/images/print_doc/doc_more_icon.png',
+        icon: '/images/doc_more_icon.png',
         url: '/pages/print_doc/function_list/function_list',
         key: 'more'
       }
@@ -25,32 +27,37 @@ Page({
       {
         name: '复印',
         recommend: '多种证件复印',
-        icon: '/images/print_doc/doc_copy_icon.png',
-        key: 'copy'
+        icon: '/images/doc_copy_icon.png',
+        key: 'copy',
+        url: '/pages/print_doc/duplicate/index',
       },
       {
         name: '文字速印',
         recommend: '输入文字快速印',
-        icon: '/images/print_doc/doc_font_print_icon.png',
+        icon: '/images/doc_font_print_icon.png',
         key: 'font'
       },
       {
         name: '常用文档',
         recommend: '家庭常用归纳',
-        icon: '/images/print_doc/doc_normal_icon.png',
-        key: 'normal'
+        icon: '/images/doc_normal_icon.png',
+        key: 'normal',
+        url: '/pages/print_doc/library/library',
+        query: {sn: '1307275099676115'}
       },
       {
         name: '公众号文章',
         recommend: '复制链接快速打',
-        icon: '/images/print_doc/doc_official_icon.png',
-        key: 'weChatArticle'
+        icon: '/images/doc_official_icon.png',
+        key: 'weChatArticle',
+        url: '/pages/print_doc/print_wx/print_wx'
       },
       {
         name: '电子发票',
         recommend: '电子发票随时打',
-        icon: '/images/print_doc/doc_invoice_icon.png',
-        key: 'invoice'
+        icon: '/images/doc_invoice_icon.png',
+        key: 'invoice',
+        url: '/pages/print_doc/print_invoice/print_invoice'
       }
     ]
   },
@@ -61,12 +68,14 @@ Page({
 
   },
   toEntry: function({currentTarget: {dataset: {url, query, key}}}) {
-    console.log('xxxxxx', key)
-    if (key === 'weChatDoc') {
-      return this.chooseWeChatFile()
+    try {
+      if (key === 'weChatDoc') {
+        return this.chooseWeChatFile()
+      }
+      router.navigateTo(url, query || '')
+    }catch(err) {
+      logger.info('err', err)
     }
-
-    router.navigateTo(url, query)
 
   },
 
@@ -112,4 +121,5 @@ Page({
   onShareAppMessage () {
 
   }
+ 
 })

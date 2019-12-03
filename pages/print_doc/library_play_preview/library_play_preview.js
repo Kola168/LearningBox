@@ -13,8 +13,6 @@ import storage from '../../../utils/storage'
 import router from '../../../utils/nav'
 import Logger from '../../../utils/logger.js'
 const logger = new Logger.getLogger('pages/print_doc/library_play_preview/library_play_preview')
-// var mta = require('../../../utils/mta_analysis.js');
-
 const request = util.promisify(wx.request)
 const showModal = util.promisify(wx.showModal)
 const requestPayment = util.promisify(wx.requestPayment)
@@ -96,8 +94,6 @@ Page({
 			yield this.loopGetOpenId()
 		}
 
-		mta.Page.init()
-
 		//授权成功后回调
 		event.on('Authorize', this, function (data) {
 			this.updateDetail()
@@ -107,15 +103,6 @@ Page({
 		this.setData({
 			mediumRecommend: resource_category_sn
 		})
-		// let getSupplyBeforeFind = commonRequest.getSupplyBeforeFindSn(resource_category_sn)
-		// let that = this
-		// getSupplyBeforeFind.then(function (res) {
-		// 	const supply_types = res.supply_types
-		// 	console.log(supply_types)
-		// 	that.setData({
-		// 		supply_types: supply_types
-		// 	})
-		// })
 
 		if (unionId) {
 			try {
@@ -136,8 +123,11 @@ Page({
 			yield this.getDevice()
 		}
 		if (this.data.type == '_learning') {
+			
 			yield this.getShijuanDetail()
+
 		} else {
+			
 			yield this.getDetail()
 		}
 
@@ -251,6 +241,7 @@ Page({
 		}
 
 	}),
+
 	getDevice: co.wrap(function* () {
 		try {
 			const resp = yield request({
@@ -281,12 +272,14 @@ Page({
 			util.showErr(e)
 		}
 	}),
+
 	tab_slide: function (e) {
     logger.info(e.detail.current)
 		this.setData({
 			num: e.detail.current
 		})
 	},
+
 	turnImg: co.wrap(function* (e) {
 		let num = this.data.num;
 		let turn = e.currentTarget.dataset.turn;
@@ -308,6 +301,7 @@ Page({
 			turn: turn
 		})
 	}),
+
 	loopGetOpenId: co.wrap(function* () {
 		let loopCount = 0
 		let _this = this
@@ -345,6 +339,7 @@ Page({
 			}, 2000)
 		}
 	}),
+
 	getUserId: co.wrap(function* () {
 		try {
 			const resp = yield request({
@@ -384,6 +379,9 @@ Page({
 		// })
 	},
 
+	/**
+	 * @method   获取内容详情
+	 */
 	getDetail: co.wrap(function* () {
 		this.longToast.toast({
 			type: 'loading',
@@ -391,7 +389,8 @@ Page({
 		})
 		try {
 			const resp = yield graphql.getContentDetail(this.sn, this.id)
-      this.longToast.hide()
+			this.longToast.hide()
+			
       logger.info('===内容单条详情===', resp)
       
 			resp.resource.preview_urls = JSON.parse(resp.resource.preview_urls)
@@ -409,7 +408,7 @@ Page({
 		} catch (e) {
       logger.info(e)
 			this.longToast.hide()
-			util.showGraphqlErr(e)
+			util.showErr(e)
 		}
 	}),
 	getShijuanDetail: co.wrap(function* () {
@@ -651,10 +650,12 @@ Page({
         category_sn: that,sn
       }
 
-			var setting = {}
-			setting.duplex = that.data.duplexcheck
-			setting.color = that.data.colorcheck
-			setting.number = that.data.documentPrintNum
+			var setting = {
+				duplex: that.data.duplexcheck,
+				color: that.data.colorcheck,
+				number: that.data.documentPrintNum
+			}
+			
 			if (that.data.type != '_learning') {
 				setting.start_page = that.data.startPrintPage
 				setting.end_page = that.data.endPrintPage
@@ -666,6 +667,7 @@ Page({
 				resourceable,
 				setting: setting,
 			}
+			
 			if (that.data.type != '_learning') {
 				params.is_vip = true
 			}
@@ -716,7 +718,6 @@ Page({
       } : '')
     }
     router.switchTab('/pages/index/index')
-		
 	},
 
 	//获取打印能力
@@ -741,7 +742,8 @@ Page({
       }
       logger.info('获取打印能力成功', resp.data)
 
-      this.longToast.hide()
+			this.longToast.hide()
+			
 			this.setData({
 				isColorPrinter: resp.data.print_capability.color_modes.length == 2 ? true : false,
 				isDuplex: resp.data.print_capability.media_sizes[0].duplex ? true : false
@@ -784,6 +786,7 @@ Page({
 		}
 
 	}),
+
 	//输入打印起始页
 	inputStartPage: function (e) {
 		this.data.startPrintPage = e.detail.value
@@ -795,22 +798,24 @@ Page({
 			this.setData({
 				startPrintPage: 1
 			})
-			wx.showModal({
+			return wx.showModal({
 				content: '请输入正确的起始页',
 				confirmColor: '#2086ee',
 				confirmText: "确认",
 				showCancel: false    
 			})
-			return
+			
 		} else {
       logger.info('==打印起始页===', e.detail.value)
 			this.data.startPrintPage = e.detail.value
 		}
 	},
+
 	//输入打印结束页
 	inputEndPage(e) {
 		this.data.endPrintPage = e.detail.value
 	},
+
 	endPageJudge(e) {
 		if (parseInt(e.detail.value) < parseInt(this.data.startPrintPage) || parseInt(e.detail.value) > this.data.detail.preview_urls.length) {
 			console.log('结束页===', parseInt(e.detail.value), typeof (e.detail.value))
@@ -845,7 +850,7 @@ Page({
 	},
 
 	//确认按钮提交
-	confcheck() {
+	confCheck() {
 		if (!this.hasAuthPhoneNum && !app.hasPhoneNum) {
 			return
 		}
@@ -878,6 +883,7 @@ Page({
 			})
 		}
 	},
+
 	getPhoneNumber: co.wrap(function* (e) {
 		yield app.getPhoneNum(e)
 		wx.setStorageSync("hasAuthPhoneNum", true)
@@ -885,14 +891,15 @@ Page({
 		this.setData({
 			hasAuthPhoneNum: true
 		})
-		this.confcheck()
+		this.confCheck()
 	}),
 
-	cancelcheck() {
+	cancelCheck() {
 		this.setData({
 			showSetting: false
 		})
 	},
+
 	loopGrowingOpenId: co.wrap(function* (unionId) {
 		let loopCount = 0
 		let _this = this
@@ -913,6 +920,7 @@ Page({
 			}, 2000)
 		}
 	}),
+
 	onUnload: function () {
 		event.remove('Authorize', this)
 	}

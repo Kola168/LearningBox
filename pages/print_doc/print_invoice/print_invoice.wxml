@@ -2,20 +2,20 @@
 
 <view class="doc-container">
 	<view class="item-print wechat-top" bindtap="invoice">
-		<image class="item-print-icon" mode="widthFix" src="/images/print_doc/icon_wechat_card.png" />
+		<image class="item-print-icon" mode="widthFix" src="/images/doc_icon_wechat_card.png" />
 		<view class="item-print-text">
 			<text class="title">微信卡包</text>
 			<text class="content text-top">从微信卡包添加发票</text>
 		</view>
-		<image class="item-arrow" src="/images/print_doc/doc_item_arrow.png" mode="widthFix" />
+		<image class="item-arrow" src="/images/doc_item_arrow.png" mode="widthFix" />
 	</view>
 	<view class="item-print local-top" bindtap="chooseFromWeChat">
-		<image class="item-print-icon" mode="widthFix" src="/images/print_doc/icon_wechat_invoice.png" />
+		<image class="item-print-icon" mode="widthFix" src="/images/doc_icon_wechat_invoice.png" />
 		<view class="item-print-text">
 			<text class="title">微信文件</text>
 			<text class="content text-top">从微信聊天记录中选择发票</text>
 		</view>
-		<image class="item-arrow" src="/images/print_doc/doc_item_arrow.png" mode="widthFix" />
+		<image class="item-arrow" src="/images/doc_item_arrow.png" mode="widthFix" />
 	</view>
 </view>
 

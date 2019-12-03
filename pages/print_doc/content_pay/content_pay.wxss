@@ -224,8 +224,9 @@ page {
   background: #FFDC5E;
   justify-content: center;
 }
+
 /* 打印设置 */
-.document_title {
+.document-title {
   width: calc(100% + 48rpx);
   display: flex;
   align-items: center;
@@ -235,7 +236,7 @@ page {
   border-bottom: 20rpx solid #f5f5f5;
 }
 
-.document_title>view {
+.document-title>view {
   color: #333;
   font-size: 35rpx;
   font-weight: 500;
@@ -246,7 +247,7 @@ page {
   font-weight: bold;
 }
 
-.setting_item {
+.setting-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -254,34 +255,34 @@ page {
   border-bottom: 1rpx solid #cecece;
 }
 
-.item_label {
+.item-label {
   font-size: 32rpx;
 }
 
-.item_main {
+.item-main {
   display: flex;
   flex-direction: row;
   align-items: center;
   color: #999;
 }
 
-.print_num {
+.print-num {
   width: 30rpx;
   height: 30rpx;
 }
 
-.document_print_num {
+.document-print-num {
   min-width: 40rpx;
   text-align: center;
   margin: 0 10rpx;
   font-size: 30rpx;
 }
 
-.page_text {
+.page-text {
   font-size: 26rpx;
 }
 
-.page_input {
+.page-input {
   width: 80rpx;
   height: 45rpx;
   margin: 0 15rpx;
@@ -293,33 +294,33 @@ page {
   overflow: hidden;
 }
 
-.color_check_box {
+.color-check-box {
   display: flex;
   align-items: center;
   margin-left: 10rpx;
 }
 
-.color_check {
+.color-check {
   width: 42rpx;
 }
 
-.color_type {
+.color-type {
   font-size: 28rpx;
   margin: 0 16rpx;
 }
 
-.zoom_view {
+.zoom-view {
   padding: 36rpx 30rpx 100rpx;
 }
 
-.view_title {
+.view-title {
   display: flex;
   justify-content: space-between;
   font-size: 32rpx;
   color: #333;
 }
 
-.view_title>view:last-child {
+.view-title>view:last-child {
   font-size: 20rpx;
   color: #000;
   height: 44rpx;
@@ -329,13 +330,13 @@ page {
   background: #FFDC5E;
 }
 
-.view_content {
+.view-content {
   padding: 30rpx 46rpx;
   display: flex;
   flex-wrap: wrap;
 }
 
-.content_item {
+.content-item {
   width: 26%;
   display: flex;
   flex-direction: column;
@@ -345,31 +346,31 @@ page {
   margin-bottom: 32rpx;
 }
 
-.content_item:nth-child(3n-1) {
+.content-item:nth-child(3n-1) {
   margin: 0 11%;
 }
 
-.content_item image:first-child {
+.content-item image:first-child {
   width: 100%;
 }
 
-.item_img {
+.item-img {
   position: relative;
   margin-bottom: 4rpx;
 }
 
-.item_check_active {
+.item-check-active {
   border: 4rpx solid #FFDC5E;
 }
 
-.item_check {
+.item-check {
   position: absolute;
   right: 8rpx;
   bottom: 32rpx;
   width: 36rpx;
 }
 
-.conf_box-left {
+.conf-box-left {
   color: #454545;
   width: 50%;
   background: #fff;
@@ -381,7 +382,7 @@ page {
   border-top: 3rpx solid #cecece;
 }
 
-.conf_box-right {
+.conf-box-right {
   color: #454545;
   width: 50%;
   background: #FFDC5E;
@@ -393,28 +394,29 @@ page {
   border-top: 3rpx solid #cecece;
 }
 
-.ios-pay{
-  width:100%!important;
+.ios-pay {
+  width: 100% !important;
 }
 
-.ios-member{
-  margin-top:70rpx;
+.ios-member {
+  margin-top: 70rpx;
   display: flex;
   align-items: center;
 }
-.ios-member image{
-  width:60rpx;
-  height:60rpx;
-  margin-right:20rpx;
+
+.ios-member image {
+  width: 60rpx;
+  height: 60rpx;
+  margin-right: 20rpx;
 }
 
-.right-top{
-  color:#FFDC5E;
+.right-top {
+  color: #FFDC5E;
   font-size: 32rpx;
 }
 
-.right-bottom{
-  color:#999;
+.right-bottom {
+  color: #999;
   font-size: 24rpx;
-  margin-top:14rpx;
+  margin-top: 14rpx;
 }

@@ -283,6 +283,23 @@ function deleteOneId(array, item) {
   return array.remove(item)
 }
 
+//发票打印只保留pdf文档
+function clearPdfFile(array) {
+  let tempArray = _(array).clone()
+  for (var i = 0; i < tempArray.length; i++) {
+    let names = tempArray[i].name.split('.')
+    let name = names[names.length - 1].toLowerCase()
+    if (name == 'pdf') {
+      if (((tempArray[i].size) / 1024 / 1024) > 50) {
+        deleteItem(array, tempArray[i])
+      }
+    } else {
+      deleteItem(array, tempArray[i])
+    }
+  }
+  return array
+}
+
 
 
 module.exports = {
@@ -299,4 +316,5 @@ module.exports = {
   clearFile: clearFile,
   compareVersion: compareVersion,
   deleteOneId: deleteOneId,
+  clearPdfFile: clearPdfFile,
 }

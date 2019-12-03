@@ -16,7 +16,7 @@
 				 class="close"
 				 mode="widthFix"
 				 bindtap="delete"
-				 src="/images/print_doc/gfd-invoice-bg-window-close.png"
+				 src="/images/doc_gfd_invoice_bg_window_close.png"
 				 id="{{index}}"
 				/>
 			</view>

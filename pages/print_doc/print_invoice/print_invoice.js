@@ -5,7 +5,6 @@ const app = getApp()
 const regeneratorRuntime = require('../../../lib/co/runtime')
 const co = require('../../../lib/co/co')
 const util = require('../../../utils/util')
-// const mta = require('../../../utils/mta_analysis.js');
 const showModal = util.promisify(wx.showModal)
 const chooseMessageFile = util.promisify(wx.chooseMessageFile)
 import router from '../../../utils/nav'
@@ -21,7 +20,6 @@ Page({
     mediumRecommend: ''
   },
   onLoad: co.wrap(function* (options) {
-    mta.Page.init()
   }),
 
   scopeInvoice: co.wrap(function* () {
@@ -32,17 +30,11 @@ Page({
         wx.chooseInvoice({
           success(res) {
             logger.info('chooseInvoice', res)
-            mta.Event.stat('fapiaodayin', {
-              'invoicechoice': 'card'
-            })
             if (res.choose_invoice_info != undefined) {
               list = res.choose_invoice_info
             } else {
               list = res.invoiceInfo
             }
-            mta.Event.stat('fapiaodayin', {
-              'media': 'card'
-            })
             router.navigateTo('/pages/print_doc/print_invoice_list/print_invoice_list', {
               invoiceList: encodeURIComponent(JSON.stringify(list))
             })
@@ -70,31 +62,32 @@ Page({
     } catch (e) {
       logger.info(e)
     }
-    if (util.compareVersion(SDKVersion, '2.5.0')) {
-      const file = yield chooseMessageFile({
-        type: 'file',
-        count: 5,
-      })
-      const list = file.tempFiles
-      router.navigateTo('/pages/print_doc/invoice_weChat_list/invoice_weChat_list', {
-        arrayFile: encodeURIComponent(JSON.stringify(list))
-      })
-    } else {
-      //请升级到最新的微信版本
-      yield showModal({
-        title: '微信版本过低',
-        content: '请升级到最新的微信版本',
-        confirmColor: '#2086ee',
-        confirmText: "确认",
-        showCancel: false
-      })
+    try {
+      if (util.compareVersion(SDKVersion, '2.5.0')) {
+        const file = yield chooseMessageFile({
+          type: 'file',
+          count: 5,
+        })
+        var list = file.tempFiles
+        router.navigateTo('/pages/print_doc/invoice_wechat_list/invoice_wechat_list', {
+          arrayFile: encodeURIComponent(JSON.stringify(list))
+        })
+      } else {
+        //请升级到最新的微信版本
+        yield showModal({
+          title: '微信版本过低',
+          content: '请升级到最新的微信版本',
+          confirmColor: '#2086ee',
+          confirmText: "确认",
+          showCancel: false
+        })
+      }
+    } catch(err) {
+      logger.info(err)
     }
   }),
 
   invoice: co.wrap(function* () {
-    mta.Event.stat('fapiaodayin', {
-      'media': 'card'
-    })
     if (this.checkBaseVersion('2.3.0')) {
       yield this.forceAuth()
     } else {

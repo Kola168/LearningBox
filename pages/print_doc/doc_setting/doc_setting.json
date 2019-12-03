@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "打印设置",
+  "usingComponents": {
+      "newmodal": "../../../components/newmodal"
+  }
+}

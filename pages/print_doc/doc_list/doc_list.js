@@ -5,7 +5,6 @@ const co = require('../../../lib/co/co')
 const util = require('../../../utils/util')
 // const uploadFormId = require('../../../utils/gfd-formid-upload')
 
-const showModal = util.promisify(wx.showModal)
 const scanCode = util.promisify(wx.scanCode)
 const _ = require('../../../lib/underscore/we-underscore')
 import api from '../../../network/restful_request'
@@ -23,14 +22,18 @@ Page({
 		files: [], //文件列表
 		showSecurityModal: false,
 		checkboxFlag: false,
+		confirmModal: {
+			isShow: false,
+			title: '请正确放置A4打印纸',
+			image: 'https://cdn.gongfudou.com/miniapp/ec/confirm_print_a4_new.png'
+		}
 	},
 
 	onLoad: co.wrap(function *(options){
-		return
 		try {
 			this.longToast = new app.weToast()
 			var docFiles = JSON.parse(decodeURIComponent(options.arrayFile))
-			var type = options.type //打印类型
+			var type = options.type || '' //打印类型
 			this.getPrinterCapability() //获取打印能力数据
 
 			if (['baidu', 'security'].indexOf(type) > -1) {
@@ -51,7 +54,7 @@ Page({
 			})
 
 		} catch(err) {
-			logger(err).error()
+			logger.error(err)
 		}
 
 	}),
@@ -70,7 +73,7 @@ Page({
 			duplex: false, //单双面面
 			number: 1, // 份数
 		}
-		var resp = yield commonRequest.getPrinterCapability() //获取打印能力数据
+		// var resp = yield commonRequest.getPrinterCapability() //获取打印能力数据
 		this.initPms.color = resp && resp.color_modes[0] || 'Color'
 	}),
 
@@ -91,7 +94,7 @@ Page({
 				docFiles: docFiles || []
 			})
 		} catch(err) {
-			logger(err).error()
+			logger.error(err)
 		}
 	},
 

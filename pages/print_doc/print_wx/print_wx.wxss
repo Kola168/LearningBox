@@ -4,20 +4,20 @@ page {
 }
 
 .title-content {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 .title-modal {
-    background: #FFDC5E;
-    width: 3px;
-    height: 14px;
-    margin-right: 8rpx;
+  background: #FFDC5E;
+  width: 3px;
+  height: 14px;
+  margin-right: 8rpx;
 }
 
 .title {
-    font-size: 32rpx;
-    font-weight: 500;
+  font-size: 32rpx;
+  font-weight: 500;
 }
 
 .total {
@@ -27,43 +27,48 @@ page {
 }
 
 .border {
-    width: 540rpx;
-    height: 76rpx;
-    border: 2rpx solid #999;
-    border-radius: 8rpx;
-    display: flex;
-    align-items: center;
+  width: 540rpx;
+  height: 76rpx;
+  border: 2rpx solid #999;
+  border-radius: 8rpx;
+  display: flex;
+  align-items: center;
 }
 
 input {
-    width: 90%;
-    box-sizing: border-box;
-    padding-left: 10rpx;
-    color: #2086EE;
-    font-size: 24rpx
+  width: 90%;
+  box-sizing: border-box;
+  padding-left: 10rpx;
+  color: #2086EE;
+  font-size: 24rpx
 }
 
 .btn {
-    width: 140rpx;
-    height: 76rpx;
-    background: #FFDC5E;
-    border-radius: 12rpx;
+  width: 140rpx;
+  height: 76rpx;
+  background: #FFDC5E;
+  border-radius: 12rpx;
 }
 
 .button {
-    height: 76rpx;
-    line-height: 76rpx;
-    color: #000;
-    font-size: 28rpx;
-    font-weight: 500;
+  width: 100%!important;
+  height: 76rpx;
+  line-height: 76rpx;
+  color: #000;
+  font-size: 28rpx;
+  font-weight: 500;
+  background: none;
+  padding: 0;
+  margin: 0;
+  font-size: 28rpx;
 }
 
 .text {
-    font-size: 24rpx;
-    color: #999;
-    text-align: center;
-    border-bottom: 2rpx solid #999;
-    margin: 0 150rpx;
+  font-size: 24rpx;
+  color: #999;
+  text-align: center;
+  border-bottom: 2rpx solid #999;
+  margin: 0 150rpx;
 }
 
 .total1 {
@@ -73,9 +78,9 @@ input {
 }
 
 .subscribe {
-    font-size: 26rpx;
-    color: #999;
-    margin-right: 10rpx;
+  font-size: 26rpx;
+  color: #999;
+  margin-right: 10rpx;
 }
 
 .arrow-right-gray {
@@ -83,19 +88,20 @@ input {
 }
 
 .subscribe_account {
-    font-size: 24rpx;
-    color: #999;
+  font-size: 24rpx;
+  color: #999;
 }
 
 .subscribe_time {
-    font-size: 24rpx;
-    color: #999;
-    padding-left: 30rpx;
+  font-size: 24rpx;
+  color: #999;
+  padding-left: 30rpx;
 }
 
 .list {
   overflow-x: hidden;
 }
+
 .item {
   display: flex;
   align-items: center;
@@ -113,7 +119,7 @@ input {
 }
 
 .left_text {
-  margin-left:20rpx;
+  margin-left: 20rpx;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -130,10 +136,10 @@ input {
 }
 
 .btn1 {
-    width: 120rpx;
-    height: 50rpx;
-    background: #FFDC5E;
-    border-radius: 12rpx;
+  width: 120rpx;
+  height: 50rpx;
+  background: #FFDC5E;
+  border-radius: 12rpx;
 }
 
 .button1 {
@@ -178,10 +184,10 @@ input {
 }
 
 .border-bold {
-    width: calc(100% + 60rpx);
-    height:5rpx;
-    background: #f5f5f5;
-    margin: 30rpx -30rpx;
+  width: calc(100% + 60rpx);
+  height: 5rpx;
+  background: #f5f5f5;
+  margin: 30rpx -30rpx;
 }
 
 .consumables-icon {

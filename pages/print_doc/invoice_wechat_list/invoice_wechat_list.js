@@ -4,14 +4,6 @@ const app = getApp()
 import api from '../../../network/restful_request'
 const regeneratorRuntime = require('../../../lib/co/runtime')
 const co = require('../../../lib/co/co')
-// import {
-//   regeneratorRuntime,
-//   co,
-//   util,
-//   _,
-//   uploadFormId,
-//   common_util
-// } from '../../../utils/common_import'
 const util = require('../../../utils/util')
 const _ = require('../../../lib/underscore/we-underscore')
 import storage from '../../../utils/storage'
@@ -40,10 +32,11 @@ Page({
   },
 
   onLoad: co.wrap(function* (options) {
-    this.longToast = new app.WeToast()
-    let arrayFile = common_util.decodeLongParams(options.arrayFile)
+    this.longToast = new app.weToast()
+    let arrayFile = JSON.parse(decodeURIComponent(options.arrayFile))
     this.beforeUpload(arrayFile)
   }),
+
   onShow: function () {
     let hasAuthPhoneNum = Boolean(storage.get('hasAuthPhoneNum'))
     this.hasAuthPhoneNum = hasAuthPhoneNum
@@ -51,6 +44,7 @@ Page({
       hasAuthPhoneNum: app.hasPhoneNum || hasAuthPhoneNum
     })
   },
+
   filterNotify: function () {
     let _this = this
     _this.setData({
@@ -91,7 +85,6 @@ Page({
           url: url,
           filename: name
         }
-        uploadFiles
         if (url != '') {
           uploadFiles.push(fileItem)
           let cloneFiles = _(_this.data.files).clone()
@@ -113,7 +106,7 @@ Page({
         }
       })
     } catch (e) {
-      _this.longToast.toast()
+      _this.longToast.hide()
       util.showErr(e)
     }
   }),
@@ -137,19 +130,22 @@ Page({
       this.setData({
         files: tempFiles
       })
-      this.longToast.toast()
+      this.longToast.hide()
     } catch (e) {
-      this.longToast.toast()
+      this.longToast.hide()
       util.showErr(e)
     }
   }),
 
   chooseFile: co.wrap(function* () {
     if (this.data.files.length == 5) {
-      util.showConfirmNotify('每次最多选择5个文档')
-      return
+      return wx.showModal({
+        content: '每次最多选择5个文档',
+        confirmColor: '#2086ee',
+        confirmText: "确认",
+        showCancel: false
+      })
     }
-    let that = this
     let leftLength = 5 - this.data.files.length
     const file = yield chooseMessageFile({
       type: 'file',
@@ -160,17 +156,19 @@ Page({
   }),
 
   confirm: co.wrap(function* (e) {
-    uploadFormId.dealFormIds(e.detail.formId, `print_invoice`)
-    uploadFormId.upload()
     if (!this.hasAuthPhoneNum && !app.hasPhoneNum) {
       return
     }
 
     if (this.data.allCount == 0) {
-      util.showConfirmNotify('至少选择一个文档打印')
-      return
+      return wx.showModal({
+        content: '至少选择一个文档打印',
+        confirmColor: '#2086ee',
+        confirmText: "确认",
+        showCancel: false
+      })
     }
-    let hideConfirmPrintBox = Boolean(wx.getStorageSync("hideConfirmPrintBox"))
+    var hideConfirmPrintBox = Boolean(storage.get("hideConfirmPrintBox"))
     if (hideConfirmPrintBox) {
       this.print()
     } else {
@@ -181,7 +179,7 @@ Page({
   }),
   getPhoneNumber: co.wrap(function* (e) {
     yield app.getPhoneNum(e)
-    wx.setStorageSync("hasAuthPhoneNum", true)
+    storage.set("hasAuthPhoneNum", true)
     this.hasAuthPhoneNum = true
     this.setData({
       hasAuthPhoneNum: true
@@ -192,8 +190,7 @@ Page({
   print: co.wrap(function* () {
     this.longToast.toast({
       type: 'loading',
-      title: '请稍候',
-      duration: 0
+      title: '请稍候'
     })
     try {
       logger.info('发票提交打印参数=====', this.data.files)
@@ -202,7 +199,7 @@ Page({
         throw (resp)
       }
       logger.info('提交打印成功=====', resp)
-      this.longToast.toast()
+      this.longToast.hide()
       router.redirectTo('', {
         type: 'invoice',
         media_type: 'invoice',
@@ -220,8 +217,7 @@ Page({
   preview: co.wrap(function* (e) {
     this.longToast.toast({
       type: 'loading',
-      title: '请稍候',
-      duration: 0
+      title: '请稍候'
     })
     try {
       let previewObj = yield downloadFile({

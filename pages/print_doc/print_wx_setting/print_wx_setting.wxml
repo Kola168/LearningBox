@@ -1,3 +1,4 @@
+<nav-bar background="#fff" title="文档打印" />
 <view class='top'>
 	<view class='choose'>
 		<text class='title'>色彩选择</text>
@@ -58,10 +59,10 @@
 	</view>
 </view>
 <view class='bottom'>
-	<image src='/images/print_doc/preview_page.png' mode='widthFix' class='preview_page' />
+	<image src='/images/doc_preview_page.png' mode='widthFix' class='preview_page' />
 	<view class="btn">
 		<button class='preview' hover-class="none" bindtap='preview'>
-			<image src='/images/print_doc/setting_preview.png' class='preview_icon' mode='widthFix' />
+			<image src='/images/doc_setting_preview.png' class='preview_icon' mode='widthFix' />
 			<text>打印预览</text>
 		</button>
 		<form report-submit="true" bindsubmit="confirm" class='confirm'>

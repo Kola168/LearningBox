@@ -4,7 +4,6 @@ const regeneratorRuntime = require('../../../lib/co/runtime')
 const co = require('../../../lib/co/co')
 const util = require('../../../utils/util')
 const request = util.promisify(wx.request)
-// var mta = require('../../../utils/mta_analysis.js')
 
 Page({
   data: {
@@ -12,8 +11,7 @@ Page({
   },
 
   onLoad: function (options) {
-    mta.Page.init()
-    this.longToast = new app.WeToast()
+    this.longToast = new app.weToast()
     this.user_id = options.user_id
     this.setData({
       type: JSON.parse(options.publicType)
@@ -36,7 +34,6 @@ Page({
         }
       }
     }
-    mta.Event.stat('subscribe',{'cancel':'true'})
     if (con.length >= 2) {
       content.is_subscription = 0
       this.setData({
@@ -74,7 +71,6 @@ Page({
   }),
 
   toSub: co.wrap(function* (e) {
-    mta.Event.stat('subscribe',{'confirm':'true'})
     var parentIndex = e.currentTarget.dataset.type
     var index = e.currentTarget.id
     var content = this.data.type[parentIndex].content[index]

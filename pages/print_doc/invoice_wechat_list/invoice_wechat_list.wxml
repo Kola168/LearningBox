@@ -1,5 +1,4 @@
 <nav-bar background="#fff" title="发票打印" />
-<import src="../../../lib/toast/wetoast.wxml" />
 <view class="list-container">
 	<view
 	 class="doc-item-container"
@@ -14,7 +13,7 @@
 				 class="close"
 				 mode="widthFix"
 				 bindtap="close"
-				 src="/images/print_doc/gfd-invoice-bg-window-close.png"
+				 src="/images/doc_gfd_invoice_bg_window_close.png"
 				 id="{{index}}"
 				/>
 			</view>
@@ -41,7 +40,7 @@
 			<button
 			 class="{{allCount == 0 ? 'button-gray' : ''}}"
 			 formType="submit"
-			 open-type="{{hasAuthPhoneNum?'':'getPhoneNumber'}}"
+			 open-type="{{hasAuthPhoneNum ? '' : 'getPhoneNumber'}}"
 			 bindgetphonenumber="{{hasAuthPhoneNum ? '' : 'getPhoneNumber'}}"
 			>确认打印
 			</button>
@@ -66,7 +65,7 @@
 		</view>
 		<text class="">正在上传文档，请耐心等候</text>
 		<progress
-		 wx:if="{{canUseProgressBar==true}}"
+		 wx:if="{{canUseProgressBar == true}}"
 		 class="progress-bar"
 		 percent="{{percent}}"
 		 activeColor="#2086ee"
@@ -86,5 +85,5 @@
 		{{showInterceptModal}}
 	</view>
 </view>
-
+<import src="../../../lib/toast/wetoast.wxml" />
 <template is="wetoast" data="{{...__wetoast__}}" />
