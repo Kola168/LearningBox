@@ -73,8 +73,8 @@ swiper-item {
 }
 
 .home-title>view>image {
-  width: 24rpx;
-  height: 24rpx;
+  width: 16rpx;
+  height: 16rpx;
 }
 
 .tool-wrap {
