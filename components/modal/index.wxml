@@ -1,0 +1,25 @@
+<view class="confirm-modal" wx:if="{{modal.isShow}}" bindtap="hideModal" catchtouchmove>
+  <view class="confirm-modal-wrap" catchtap="tapModal">
+    <view class="confirm-modal-title">{{modal.title}}</view>
+    <view class="content-box">
+      <block wx:if="{{soltContent}}"></block>
+      <block wx:else>
+        <image src="{{modal.image}}" mode="widthFix" wx:if="{{modal.image}}"></image>
+        <view class="box-text" wx:if="{{modal.content}}">{{modal.content}}</view>
+      </block>
+    </view>
+    <view class="button">
+      <block wx:if="{{modal.hasCancel}}">
+        <view class="cancel" data-modal="cancel" catchtap="clickCancel">
+          {{modal.cancelText||'取消'}}
+        </view>
+        <view data-modal="confirm" catchtap="clickConfirm">{{modal.confirmText||'确认'}}</view>
+      </block>
+      <block wx:else>
+        <view class="confirm" data-modal="confirm" catchtap="clickConfirm">
+          {{modal.confirmText||'确认'}}
+        </view>
+      </block>
+    </view>
+  </view>
+</view>

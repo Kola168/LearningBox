@@ -37,26 +37,27 @@ App({
   sysInfo: null,
   navBarInfo: null,
   rpxPixel: 0.5,
+  isIpx: false,
   onLaunch: co.wrap(function*() {
     yield this.getSystemInfo()
     this.navBarInfo = this.getNavBarInfo()
-    this.isIpx()
+    this.handleDevice()
   }),
   //获取系统信息
   getSystemInfo: co.wrap(function*() {
     let res = yield getSystemInfo()
     this.sysInfo = res
     this.handleDevice()
-	}),
+  }),
 
-	// 是否为iPhone X，rpxPixel
+  // 是否为iPhone X，rpxPixel
   handleDevice() {
     let model = this.sysInfo.model.toLowerCase()
     this.isIpx = model.indexOf("iphone x") > -1 ? true : false
     this.rpxPixel = 750 / this.sysInfo.windowWidth
   },
 
-	// 获取导航栏信息
+  // 获取导航栏信息
   getNavBarInfo() {
     let sysInfo = this.sysInfo ? this.sysInfo : wx.getSystemInfoSync()
     let rect = wx.getMenuButtonBoundingClientRect ? wx.getMenuButtonBoundingClientRect() : null
@@ -76,23 +77,23 @@ App({
         menuHeight: rect.height
       }
     }
-	},
-	preventMoreTap: function (e) {
-		if (_.isEmpty(e)) {
-			return false
-		}
-		try {
-			var globaTime = this.globalLastTapTime;
-			var time = e.timeStamp;
-			if (Math.abs(time - globaTime) < 500 && globaTime != 0) {
-				this.globalLastTapTime = time;
-				return true;
-			} else {
-				this.globalLastTapTime = time;
-				return false;
-			}
-		} catch (e) {
-			console.log(e)
-		}
-	},
+  },
+  preventMoreTap: function(e) {
+    if (_.isEmpty(e)) {
+      return false
+    }
+    try {
+      var globaTime = this.globalLastTapTime;
+      var time = e.timeStamp;
+      if (Math.abs(time - globaTime) < 500 && globaTime != 0) {
+        this.globalLastTapTime = time;
+        return true;
+      } else {
+        this.globalLastTapTime = time;
+        return false;
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  },
 })
