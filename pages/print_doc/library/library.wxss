@@ -1,0 +1,241 @@
+page {
+  position: relative;
+  box-shadow: none;
+  width: 100%;
+  height: 100%;
+  padding: 0 20rpx;
+  padding-top: 70rpx;
+  box-sizing: border-box;
+}
+
+.tabs {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  padding: 0 24rpx;
+  width: 100%;
+  height: 70rpx;
+  font-size: 32rpx;
+}
+
+
+.type {
+  z-index: 1000;
+  width: calc(100% - 60rpx);
+  white-space: nowrap;
+  font-size: 32rpx;
+  box-sizing: border-box;
+  height: 70rpx;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  color: #666;
+}
+
+.see-all {
+  width: 60rpx;
+  text-align: right;
+  font-size: 22rpx;
+  height: 70rpx;
+  line-height: 44rpx;
+  background: #fff;
+}
+
+.see-all image {
+  width: 30rpx;
+  height: 30rpx;
+}
+
+.wrap {
+  width: 100%;
+  height: 100%;
+  overflow-y: scroll;
+  padding: 0 20rpx;
+  padding-top: 70rpx;
+  box-sizing: border-box;
+}
+
+.tab-item {
+  position: relative;
+  margin-right: 60rpx;
+}
+
+.activeType {
+  color: #FFDC5E!important;
+}
+
+.active-border {
+  position: absolute;
+  top: 56rpx;
+  left: 25%;
+  width: 50%;
+  height: 4rpx;
+}
+
+.activeType .active-border {
+  margin: 4rpx auto 0;
+  background: #FFDC5E;
+  width: 50%;
+}
+
+.url {
+  width: 120rpx;
+  height: 120rpx;
+  padding-right: 26rpx;
+  margin: 28rpx 0 60rpx 20rpx;
+}
+
+.title {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  color: #333;
+  font-size: 32rpx;
+  margin-top: 42rpx;
+}
+
+.title image {
+  margin-right: 10rpx;
+  width: 54rpx;
+  height: 30rpx;
+}
+
+.title view {
+  width: calc(100% - 64rpx);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.item {
+  display: flex;
+}
+
+.item > view {
+  width: calc(100% - 220rpx);
+}
+
+.print {
+  display: flex;
+  align-items: center;
+  margin-top: 20rpx;
+}
+
+.print_icon {
+  width: 26rpx;
+  padding-right: 8rpx;
+}
+
+.print_num {
+  font-size: 24rpx;
+  color: #666;
+}
+
+.item-3 {
+  width: calc(100% / 3);
+  display: inline-block;
+  text-align: center;
+  margin: 36rpx 0 15rpx;
+}
+
+.url-3 {
+  position: relative;
+  width: 200rpx;
+  height: 200rpx;
+}
+
+.url-3-image {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 60rpx;
+  height: 40rpx;
+}
+
+.url-3-free {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 120rpx;
+  height: 32rpx;
+}
+
+.url-4-image {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 80%;
+  height: 32rpx;
+}
+
+.title-3 {
+  color: #333;
+  margin-top: 42rpx;
+  font-size: 28rpx;
+  width: 200rpx;
+  margin: 0;
+  margin: 0 auto;
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.print-3 {
+  width: 200rpx;
+  margin: 0 auto;
+  margin-top: 10rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.print-3 > view {
+  display: flex;
+  align-items: center;
+}
+
+.pages {
+  font-size: 20rpx;
+  color: #666;
+}
+
+.type-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.type-modal > view {
+  display: flex;
+  padding: 30rpx 50rpx 0;
+  width: 100%;
+  flex-wrap: wrap;
+  box-sizing: border-box;
+  text-align: center;
+  background: #fff;
+}
+
+.type-modal>view>view {
+  width: calc(100% / 3);
+  margin-bottom: 50rpx;
+}
+
+.type-modal .tab-item {
+  margin-right: 0;
+  text-align: center;
+  font-size: 30rpx;
+  font-family: PingFang SC;
+  color: #666;
+}

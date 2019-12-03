@@ -9,7 +9,13 @@ const api = {
   }, {
     baseURL: `${app.apiServer}/ec/v2/`
   }),
-  
+   //invoice print interface
+   printInvoice: (mediaType, invoiceUrls) => request.post(`orders`, {
+    media_type: mediaType,
+    urls: invoiceUrls
+  }, {
+    baseURL: `${app.apiServer}/ec/v2/`
+  }),
 }
 
 export default api

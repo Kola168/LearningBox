@@ -1,0 +1,183 @@
+/* pages/print_doc/duplicate_preview/duplicate_preview.wxss */
+page {
+  width: 100%;
+  height: 100%;
+  padding: 15px 0;
+  box-sizing: border-box;
+  font-size: 32rpx;
+  margin: 0 auto;
+  border-top: 1rpx solid #bfbfbf;
+}
+
+.preview {
+  width: 100%;
+  background: #fff;
+  margin: 0 auto;
+  border: 1px solid #cecece;
+}
+
+.preview>image {
+  width: 100%;
+  height: 100%;
+}
+
+.print-count {
+  margin: 0 auto;
+  color: #999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 20rpx 30rpx;
+  box-sizing: border-box;
+  background: #fff;
+}
+
+.color-check {
+  width: 100%;
+  box-sizing: border-box;
+
+  display: flex;
+  justify-content: center;
+}
+
+.color-style {
+  color: #cecece;
+  padding: 0 30rpx;
+  line-height: 60rpx;
+  border: 1rpx solid #cecece;
+  border-radius: 5rpx;
+  text-align: center;
+  font-size: 28rpx;
+  margin: 10rpx;
+}
+
+.color-checked {
+  color: #333;
+  background: #fedf65;
+  border: 1rpx solid #fedf65;
+}
+
+.line {
+  margin: 0 auto;
+}
+
+.count {
+  display: flex;
+  align-items: center;
+}
+
+.count-sub {
+  height: 60rpx;
+  width: 60rpx;
+  margin-right: 20rpx;
+}
+
+.count-sup {
+  height: 60rpx;
+  width: 60rpx;
+  margin-left: 20rpx;
+}
+
+.bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 100rpx;
+  color: #333;
+  font-size: 36rpx;
+  border-top: 1px solid #cecece;
+}
+
+.btn-left {
+  flex: 1;
+  color: #666666;
+  font-size: 36rpx;
+  text-align: center;
+}
+
+.bottom form {
+  flex: 1;
+}
+
+.bottom button {
+  height: 100rpx;
+  padding: 0;
+  line-height: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #000;
+  background: #FFE27A;
+}
+
+.choose {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 30rpx;
+  height: 100rpx;
+  align-items: center;
+}
+
+.choose .title {
+  font-size: 32rpx;
+  color: #333;
+}
+
+.choose .color {
+  display: flex;
+  align-items: center;
+}
+
+
+.choose .kind {
+  display: flex;
+  align-items: center;
+  padding-left: 30rpx;
+}
+
+.choose .type {
+  font-size: 28rpx;
+  padding-right: 15rpx;
+}
+
+.choose .selected {
+  width: 45rpx;
+}
+
+.number {
+  margin: 0 30rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100rpx;
+  align-items: center;
+  border-bottom: 1px solid #cecece;
+}
+
+.count>text {
+  margin: 0 10rpx;
+  font-family: PingFangSC-Regular;
+  font-size: 32rpx;
+  color: #666666;
+  letter-spacing: -1.22rpx;
+  text-align: center;
+  margin: 0 26rpx;
+}
+
+.btn-c {
+  width: 40rpx;
+  height: 40rpx;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+
+.bottom-main {
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 1000;
+}

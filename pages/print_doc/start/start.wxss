@@ -1,0 +1,38 @@
+/* pages/print_doc/start.wxss */
+Page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.open-longpress {
+  width: 699rpx;
+  margin-top: 30rpx;
+}
+.image-text {
+  width: 160rpx;
+  height: 60rpx;
+  margin: 26rpx 0 100rpx 535rpx;
+}
+.btn {
+  width: 80%;
+  background: #FFDC5E;
+  border-radius: 50rpx;
+}
+view button {
+  color: #000;
+  font-size: 36rpx;
+}
+.tip {
+  display: flex;
+  align-items: center;
+  margin-top: 34rpx;
+}
+.bang {
+  width: 24rpx;
+  padding-right: 10rpx;
+}
+.text {
+  font-size: 24rpx;
+  color: #999;
+  border-bottom: 3rpx solid #999;
+}
