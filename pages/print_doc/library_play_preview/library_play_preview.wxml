@@ -36,13 +36,13 @@
 			<block wx:for="{{detail.preview_urls}}" wx:key="{{index}}">
 				<swiper-item style="overflow-y:scroll;overflow-x:hidden;">
 					<image style="width:100%" mode="widthFix" src="{{item}}">
-						<image src='https://cdn.gongfudou.com/miniapp/ec/shuiyin_new.png' class='watermark' />
+						<image src='https://cdn.gongfudou.com/miniapp/ec/doc_shuiyin_new.png' class='watermark' />
 					</image>
 				</swiper-item>
 			</block>
 		</swiper>
 		<view wx:if="{{detail.preview_urls.length==0}}" class="study-none">
-			<image src="https://cdn.gongfudou.com/miniapp/ec/study_detail_none.png" mode="widthFix" />
+			<image src="https://cdn.gongfudou.com/miniapp/ec/doc_study_detail_none.png" mode="widthFix" />
 		</view>
 		<!--翻页-->
 		<view class="turn" wx:if="{{detail.preview_urls.length>0}}">

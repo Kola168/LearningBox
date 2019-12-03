@@ -8,7 +8,7 @@ const showModal = util.promisify(wx.showModal)
 import { getLogger } from '../../../utils/logger'
 const logger = new getLogger('pages/print_doc/doc_list/doc_list')
 import router from '../../../utils/nav'
-import storage from '../../../utils/storage'
+
 Page({
 
   data: {

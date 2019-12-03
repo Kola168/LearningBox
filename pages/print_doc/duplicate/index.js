@@ -6,22 +6,22 @@ Page({
     cardList: [{
         name: '户口本复印',
         key: 'n_hr',
-        src: 'https://cdn.gongfudou.com/miniapp/ec/copy_household.png'
+        src: 'https://cdn.gongfudou.com/miniapp/ec/doc_copy_household.png'
       },
       {
         name: '银行卡复印',
         key: 'bc',
-        src: 'https://cdn.gongfudou.com/miniapp/ec/bank_card.png'
+        src: 'https://cdn.gongfudou.com/miniapp/ec/doc_bank_card.png'
       },
       {
         name: '营业执照',
         key: 'bl',
-        src: 'https://cdn.gongfudou.com/miniapp/ec/copy_license.png'
+        src: 'https://cdn.gongfudou.com/miniapp/ec/doc_copy_license.png'
       },
       {
         name: '驾驶证/行驶证复印',
         key: 'dl',
-        src: 'https://cdn.gongfudou.com/miniapp/ec/copy_driverlicense.png'
+        src: 'https://cdn.gongfudou.com/miniapp/ec/doc_copy_driverlicense.png'
       }
     ]
   },

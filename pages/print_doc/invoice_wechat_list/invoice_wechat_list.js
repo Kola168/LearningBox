@@ -27,7 +27,7 @@ Page({
     confirmModal: {
       isShow: false,
       title: '请正确放置A4打印纸',
-      image: 'https://cdn.gongfudou.com/miniapp/ec/confirm_print_a4_new.png'
+      image: 'https://cdn.gongfudou.com/miniapp/ec/doc_confirm_print_a4_new.png'
     }
   },
 

@@ -20,12 +20,12 @@ Page({
     textList: '',
     subscription: '',
     imgList: [
-      'https://cdn.gongfudou.com/miniapp/ec/wx_article1.png',
-      'https://cdn.gongfudou.com/miniapp/ec/wx_article2.png',
-      'https://cdn.gongfudou.com/miniapp/ec/wx_article3.png'
+      'https://cdn.gongfudou.com/miniapp/ec/doc_wx_article1.png',
+      'https://cdn.gongfudou.com/miniapp/ec/doc_wx_article2.png',
+      'https://cdn.gongfudou.com/miniapp/ec/doc_wx_article3.png'
     ]
   },
-  onLoad: co.wrap(function* (options) {
+  onLoad: co.wrap(function* () {
     this.longToast = new app.weToast()
     this.page = 1
     this.pageEnd = false

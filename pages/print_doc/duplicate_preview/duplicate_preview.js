@@ -37,7 +37,7 @@ Page({
     confirmModal: {
       isShow: false,
       title: '请正确放置A4打印纸',
-      image: 'https://cdn.gongfudou.com/miniapp/ec/confirm_print_a4_new.png'
+      image: 'https://cdn.gongfudou.com/miniapp/ec/doc_confirm_print_a4_new.png'
     }
   },
   onLoad: function (options) {
@@ -152,13 +152,13 @@ Page({
         title: '请稍后'
       })
       try {
-        let param = {
+        var param = {
           media_type: 'copy',
           openid: app.openId,
           urls: [{
             number: this.data.count, //数量
-            pre_convert_url: this.data.img_url, //图片原始url
-            url: this.data.img_url, //图片原始url
+            pre_convert_url: this.data.img_url, //图片编辑后url
+            url: this.data.preUrl, //图片原始url
             rotate: false,
             thumb_url: this.data.preUrl, //图片url
             color: this.data.color, //色彩
@@ -186,6 +186,7 @@ Page({
       }
     }
   }),
+
   onShareAppMessage() {
     return app.share
   }

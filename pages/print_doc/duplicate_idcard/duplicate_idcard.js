@@ -12,6 +12,7 @@ const request = util.promisify(wx.request)
 const showModal = util.promisify(wx.showModal)
 const chooseMessageFile = util.promisify(wx.chooseMessageFile)
 import router from '../../../utils/nav'
+import storage from '../../../utils/storage'
 Page({
   data: {
     cardHeight: 0,
@@ -181,10 +182,8 @@ Page({
   },
 
   toChooseImg() {
-    wx.setStorage({
-      key: 'showidtip' + this.checkedIndex,
-      data: 'showed',
-    })
+    storage.set('showIdTip' + this.checkedIndex, 'showed')
+   
     this.setData({
       tipsWindow: false,
     })
@@ -193,33 +192,25 @@ Page({
 
   checkAddTip(e) {
     this.checkedType = e.currentTarget.dataset.type
-    let that = this
-    this.setData({
+    let _this = this
+    _this.setData({
       popWindow: false
     })
-    if (this.data.type == 'id') {
-      wx.getStorage({
-        key: 'showidtip' + that.checkedIndex,
-        success: function (res) {
-          if (res.data == 'showed') {
-            that.setData({
-              tipsWindow: false,
-            })
-            that.toCheckPhoto()
-          } else {
-            that.setData({
-              tipsWindow: true
-            })
-          }
-        },
-        fail: function (res) {
-          that.setData({
-            tipsWindow: true
-          })
-        }
-      })
+    if (_this.data.type == 'id') {
+      var showIdTip = storage.get('showIdTip' + _this.checkedIndex)
+      
+      if (showIdTip == 'showed') {
+        _this.setData({
+          tipsWindow: false
+        })
+        _this.toCheckPhoto()
+      } else {
+        _this.setData({
+          tipsWindow: true
+        })
+      }
     } else {
-      that.toCheckPhoto()
+      _this.toCheckPhoto()
     }
   },
 
@@ -363,7 +354,6 @@ Page({
       let params = ['img_top', 'img_bottom'];
       let imgArr = _.pluck(this.data.typeInfo, 'url')
       _.each(imgArr, function (value, index, list) {
-        console.log(value)
         if (value) {
           list[index] = imginit.mediaResize(value, 'copy')
         }

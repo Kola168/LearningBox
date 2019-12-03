@@ -99,13 +99,13 @@
 		<view class="tips-title">
 			证件上传示例
 		</view>
-		<image src="{{checkedIndex==1?'https://cdn.gongfudou.com/miniapp/ec/doc_id_tips_back.png':'https://cdn.gongfudou.com/miniapp/ec/doc_id_tips_face.png'}}" mode="widthFix" class="tips-icon" />
+		<image src="{{checkedIndex== 1 ? 'https://cdn.gongfudou.com/miniapp/ec/doc_id_tips_back.png' : 'https://cdn.gongfudou.com/miniapp/ec/doc_id_tips_face.png'}}" mode="widthFix" class="tips-icon" />
 		<view class="tips-but" bindtap="toChooseImg">
 			知道了
 		</view>
 	</view>
 </view>
 
-<import src="../../../../../lib/toast/wetoast.wxml" />
+<import src="../../../lib/toast/wetoast.wxml" />
 <template is="wetoast" data="{{...__wetoast__}}" />
 

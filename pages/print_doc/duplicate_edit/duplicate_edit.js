@@ -36,6 +36,7 @@ Page({
     scale: 1,
     originalUrl: '',
     pointData: null,
+    croppers: null
   },
 
   model_data: {
@@ -44,7 +45,18 @@ Page({
 
   onLoad: co.wrap(function* (options) {
     this.longToast = new app.weToast();
-    this.initPage(options);
+    this.initPage(options)
+    this.setData({
+      croppers: {
+        tempInfo: {
+          width: W,
+          height:H,
+          top: TOP,
+          left: 30
+       },
+       mode: 'quadrectangle'
+      }
+    })
   }),
 
   initPage(options) {
@@ -299,7 +311,7 @@ Page({
       if (textObj) {
         _this.longToast.hide()
         yield showModal(textObj)
-        return wx.navigateBack();
+        return router.navigateTo()
       }
 
       //旋转矫正
@@ -325,26 +337,35 @@ Page({
           param: params,
         })
       }
+      var ctx = that.selectComponent('#cropper')
 
-      _this.showCropper({
-        src: editPath,
-        mode: mode,
-        sizeType: ['original'],
+      ctx.startCropper({
+        src: editPath,  //图片地址
+        mode: mode, // 模式
+        sizeType: ['original'], //图片压缩
         maxLength: 2000, //限制最大像素为2500像素
-        pointData: this.data.pointData,
-        callback: (res) => {
-          if (mode == 'rectangle') {
-            // _this.uploadImage(res)
-          } else {
-            _this.getPic(res, tempFilePath)
-          }
+        callback: (res)=>{
+          console.log(res, '====res====')
         }
       })
+      // _this.showCropper({
+      //   src: editPath,
+      //   mode: mode,
+      //   sizeType: ['original'],
+      //   maxLength: 2000, //限制最大像素为2500像素
+      //   pointData: this.data.pointData,
+      //   callback: (res) => {
+      //     if (mode == 'rectangle') {
+      //       // _this.uploadImage(res)
+      //     } else {
+      //       _this.getPic(res, tempFilePath)
+      //     }
+      //   }
+      // })
 
     } catch (err) {
       throw err
     }
-
   }),
 
   //非规则矩形裁切做透视变换

@@ -1,7 +1,7 @@
 <!--pages/print_doc/print_wx_introduction/print_wx_introduction.wxml-->
 
 <nav-bar background="#fff" title="微信文章" />
-<image src="https://cdn.gongfudou.com/miniapp/ec/wx/wx_intro1.png" mode="widthFix" class="intro" />
-<image src="https://cdn.gongfudou.com/miniapp/ec/wx/wx_intro2.png" mode="widthFix" class="intro" />
-<image src="https://cdn.gongfudou.com/miniapp/ec/wx/wx_intro3.png" mode="widthFix" class="intro" />
+<image src="https://cdn.gongfudou.com/miniapp/ec/wx/doc_wx_intro1.png" mode="widthFix" class="intro" />
+<image src="https://cdn.gongfudou.com/miniapp/ec/wx/doc_wx_intro2.png" mode="widthFix" class="intro" />
+<image src="https://cdn.gongfudou.com/miniapp/ec/wx/doc_wx_intro3.png" mode="widthFix" class="intro" />
 

@@ -7,21 +7,21 @@ Page({
     imgArr: {
       qq: [
         [
-          'https://cdn.gongfudou.com/miniapp/ec/qq33.jpeg',
-          'https://cdn.gongfudou.com/miniapp/ec/qq44.jpeg',
-          'https://cdn.gongfudou.com/miniapp/ec/qq55.jpeg'
+          'https://cdn.gongfudou.com/miniapp/ec/doc_qq33.jpeg',
+          'https://cdn.gongfudou.com/miniapp/ec/doc_qq44.jpeg',
+          'https://cdn.gongfudou.com/miniapp/ec/doc_qq55.jpeg'
         ],
         [
-          'https://cdn.gongfudou.com/miniapp/ec/qq_android.png'
+          'https://cdn.gongfudou.com/miniapp/ec/doc_qq_android.png'
         ]
       ],
       email: [
-        'https://cdn.gongfudou.com/miniapp/ec/email11.png',
-        'https://cdn.gongfudou.com/miniapp/ec/email22.png'
+        'https://cdn.gongfudou.com/miniapp/ec/doc_email11.png',
+        'https://cdn.gongfudou.com/miniapp/ec/doc_email22.png'
       ],
       wps: [
-        'https://cdn.gongfudou.com/miniapp/ec/wps11.png',
-        'https://cdn.gongfudou.com/miniapp/ec/wps22.png'
+        'https://cdn.gongfudou.com/miniapp/ec/doc_wps11.png',
+        'https://cdn.gongfudou.com/miniapp/ec/doc_wps22.png'
       ]
     }
   },
