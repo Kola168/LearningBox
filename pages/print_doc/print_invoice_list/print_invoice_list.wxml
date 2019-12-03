@@ -1,0 +1,100 @@
+<nav-bar background="#fff" title="发票打印" />
+<wxs module="filter" src="../../../utils/numbertofix.wxs" />
+
+<view class='list-container'>
+	<view
+	 class='invoice-item-container'
+	 wx:if='{{count != 0}}'
+	 wx:for='{{newInvoice}}'
+	 wx:for-index="index"
+	 wx:for-item="item"
+	>
+		<view class='invoice-item'>
+			<view class='invoice-item-top'>
+				<text class='title'>{{item.payee}}</text>
+				<image
+				 class="close"
+				 mode="widthFix"
+				 bindtap="delete"
+				 src="/images/doc_gfd_invoice_bg_window_close.png"
+				 id="{{index}}"
+				/>
+			</view>
+			<view class='invoice-detail'>
+				<text>金额：{{item.fee / 100}}</text>
+				<text>时间：{{filter.formatDate(item.billing_time*1000,'yyyy-MM-dd')}}</text>
+			</view>
+			<view class='line-dashed' />
+			<text class='company-name'>抬头：{{item.title}}</text>
+			<view class='line' />
+			<view class='item-setting-block'>
+				<view class='item-setting' id="{{index}}">
+					<text class='text-preview preview' bindtap='preview' id='{{index}}'>预览</text>
+				</view>
+			</view>
+		</view>
+		<view class='line-bolder' />
+	</view>
+	<view class='no-invoice' wx:if='{{!count}}'>
+		<text>暂无发票</text>
+	</view>
+</view>
+
+<view class='bottom'>
+	<view class='bottom-left' bindtap='choose'>
+		<text>继续选择</text>
+	</view>
+	<view class='bottom-right'>
+		<form report-submit='true' bindsubmit='confirm'>
+			<button
+			 class="{{count== 0 ? 'button-gray' : ''}}"
+			 open-type="{{hasAuthPhoneNum ? '' : 'getPhoneNumber'}}"
+			 bindgetphonenumber="{{hasAuthPhoneNum ? '' : 'getPhoneNumber'}}"
+			 form-type='submit'
+			>确认打印
+			</button>
+		</form>
+	</view>
+</view>
+
+<import src="../../../lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />
+
+<!-- 打印确认框 -->
+<confirm-print bindconfirm="print" modal="{{confirmModal}}"/>
+
+<!-- 自定义遮罩上传进度条/照片过滤提示 -->
+<view class="progress" wx:if="{{uploadFile || showInterceptModal!==''}}">
+	<!-- 上传进度显示 -->
+	<view class="progress-content" wx:if="{{uploadImg}}">
+		<view class="progress-count">
+			正在上传(
+			<text class="complete">{{completeCount}}</text>
+			/
+			<text class="allCount">{{count}}</text>
+			)
+		</view>
+		<text class="">正在上传文档，请耐心等候</text>
+		<progress
+		 wx:if="{{canUseProgressBar==true}}"
+		 class="progress-bar"
+		 percent="{{percent}}"
+		 activeColor="#2086ee"
+		 backgroundColor="#eff0f5"
+		 stroke-width="6"
+		/>
+		<image
+		 wx:else
+		 class="progress-loading"
+		 src="../../images/loading.gif"
+		 mode="widthFix"
+		/>
+		<button class="cancel-upload" bindtap="cancelUpload">取消</button>
+	</view>
+	<!-- 文档过滤提示 -->
+	<view class="showInterceptModal" wx:if="{{showInterceptModal!==''}}">
+		{{showInterceptModal}}
+	</view>
+</view>
+
+

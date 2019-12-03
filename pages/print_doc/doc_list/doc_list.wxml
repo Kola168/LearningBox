@@ -1,0 +1,80 @@
+<!--pages/doc_doc_list/doc_list.wxml-->
+<nav-bar background="#fff" title="文档列表" />
+<view class="list-container">
+	<view
+	 class="doc-item"
+	 wx:for="{{files}}"
+	 wx:key="{{index}}"
+	 id="{{index}}"
+	>
+		<view class="item-sub">
+			<view class="sub-title">{{item.filename}}</view>
+			<view class="sub-option">
+				<text>{{item.color == "Color" ? "彩色" : "黑白"}}</text>
+				<text>{{item.duplex ? '双面' : '单面'}}</text>
+				<text>{{item.number}}份</text>
+			</view>
+		</view>
+		<view class="item-setting">
+			<view class="setting-left">{{filter.isExcel(item.filename)}}</view>
+			<view class="setting-right">
+				<text class="right-preview" bindtap="preview" id="{{index}}">预览</text>
+				<text class="right-print" bindtap="setting" id="{{index}}">设置</text>
+			</view>
+		</view>
+		<image
+		 class="close"
+		 bindtap="close"
+		 src="/images/doc_gfd-tutorial-bg-window-close.png"
+		 id="{{index}}"
+		/>
+	</view>
+</view>
+
+<!-- 根据type 判断打印操作 -->
+<block wx:if="{{type==='security'}}">
+	<view class="scan-print" bindtap="toScan">扫码打印</view>
+</block>
+<block wx:else>
+	<view class="bottom-tip-medium">
+		<view class="bottom-tip-medium-text">目前只支持doc、docx、ppt、pptx、pdf、xls、xlsx 7种格式</view>
+	</view>
+	<view class="bottom">
+		<view class="bottom-left" bindtap="chooseDocFile">
+			<text>继续选择</text>
+		</view>
+		<view class="bottom-right">
+			<form report-submit="true" bindsubmit="confirm">
+				<button
+				 class="{{allCount > 0 ? '':'button-gray'}}"
+				 open-type="{{hasAuthPhoneNum ? '' : 'getPhoneNumber'}}"
+				 bindgetphonenumber="{{ hasAuthPhoneNum ? '' : 'getPhoneNumber'}}"
+				 formType="submit"
+				>
+					确认
+				</button>
+			</form>
+		</view>
+	</view>
+</block>
+
+<!-- 打印确认框 -->
+<confirm-print bindconfirm="print" modal="{{confirmModal}}" />
+
+<!-- 安全打印弹窗 -->
+<view class="security-modal" wx:if="{{showSecurityModal}}">
+	<view class="modal-main">
+		<view class="main-text">您需要前往打印机旁扫码才可以打印文件哦</view>
+		<checkbox-group class="not-tip" bindchange="checkboxChange">
+			<checkbox checked="{{checkboxFlag}}" color="#FFE27A" id="not-tip" />
+			<label for="not-tip">不再提示</label>
+		</checkbox-group>
+		<view class="main-btns">
+			<view bindtap="cancelScan">继续设置</view>
+			<view class="btn-scan" bindtap="scanPrint">去扫码</view>
+		</view>
+	</view>
+</view>
+<import src="../../../lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />
+

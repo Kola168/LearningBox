@@ -41,16 +41,17 @@ Component({
     navBarPadding: 0,
     menuWidth: 0,
     menuHeight: 0,
-    showBack: false
+    showNavCapsuleBack: false,
+    showNavCapsuleHome: false
   },
   properties: {
     backImage: {
       type: String,
-      value: '/images/preview-turn-left.png'
+      value: '/images/icon-back.png'
     },
     homeImage: {
       type: String,
-      value: '/images/icon-home-blue.png'
+      value: '/images/icon-home.png'
     },
     isOnlyStatusBar: {
       type: Boolean,
@@ -100,7 +101,7 @@ Component({
       type: Function,
       value: () => {
         wxNav.switchTab(
-          "/pages/index/index"
+          "pages/index/index"
         )
       }
     }
@@ -109,11 +110,17 @@ Component({
     let navBarInfo = app.navBarInfo ? app.navBarInfo : app.getNavBarInfo()
     this.setData(navBarInfo)
     let pages = getCurrentPages(),
-    isShare = pages.length === 1 && pages[0].route !== 'pages/index/index'
-    if (pages.length > 1 || isShare) {
-      this.setData({ showBack: true })
-    }
+      tabBars = ['pages/index/index', 'pages/search/index'],
+      len = pages.length,
+      currentPageRoute = pages[len - 1].route,
+      showNavCapsuleBack = pages.length > 1,
+      showNavCapsuleHome = !tabBars.includes(currentPageRoute)
+    this.setData({
+      showNavCapsuleBack,
+      showNavCapsuleHome
+    })
   },
+
   methods: {
     backTop() {
       wx.pageScrollTo({

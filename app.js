@@ -22,7 +22,7 @@ const request = util.promisify(wx.request)
 
 App({
   weToast,
-  version: '2.1.2',
+  version: '0.0.1',
   //线上地址
   // apiServer: 'https://epbox.gongfudou.com',
   // apiWbviewServer: 'https://epbox.gongfudou.com/',
@@ -38,10 +38,11 @@ App({
   onLaunch: co.wrap(function* () {
     yield this.getOpenId()
     yield this.getSystemInfo()
-    this.getNavBarInfo()
-    this.isIpx()
+    this.navBarInfo = this.getNavBarInfo()
+    this.handleDevice()
   }),
-  //获取系统信息
+ 
+	//获取系统信息
   getSystemInfo: co.wrap(function* () {
     let res = yield getSystemInfo()
     this.sysInfo = res
@@ -65,7 +66,7 @@ App({
         navBarHeight = 2 * gap + rect.height,
         navBarPadding = sysInfo.screenWidth - rect.right,
         topBarHeight = navBarHeight + statusBarHeight
-      this.navBarInfo = {
+      return {
         statusBarHeight,
         navBarHeight,
         topBarHeight,
@@ -74,9 +75,28 @@ App({
         menuWidth: rect.width,
         menuHeight: rect.height
       }
-      return this.navBarInfo
     }
-  },
+	},
+	
+	preventMoreTap: function (e) {
+		if (_.isEmpty(e)) {
+			return false
+		}
+		try {
+			var globaTime = this.globalLastTapTime;
+			var time = e.timeStamp;
+			if (Math.abs(time - globaTime) < 500 && globaTime != 0) {
+				this.globalLastTapTime = time;
+				return true;
+			} else {
+				this.globalLastTapTime = time;
+				return false;
+			}
+		} catch (e) {
+			console.log(e)
+		}
+	},
+
   getOpenId: co.wrap(function* () {
 		try {
 			const storage = yield getStorage({
@@ -87,7 +107,8 @@ App({
 			this.login()
 		}
 	}),
-  login: co.wrap(function* () {
+	
+	login: co.wrap(function* () {
     try {
       const loginCode = yield login()
       const loginInfo = yield request({

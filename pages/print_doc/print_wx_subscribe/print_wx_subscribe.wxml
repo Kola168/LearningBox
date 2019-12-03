@@ -1,0 +1,55 @@
+<nav-bar background="#fff" title="微信文章" />
+<view
+ class="play-list"
+ wx:for="{{type}}"
+ wx:key="{{index}}"
+ id="{{index}}"
+ wx:if="{{index!=1}}"
+ class='type'
+>
+	<view class="play-title">
+		<view class="title-modal" />
+		<text>{{item.public_type_name}}</text>
+	</view>
+	<view class="play-item">
+		<view
+		 wx:for="{{item.content}}"
+		 wx:for-item="data"
+		 wx:for-index="i"
+		 wx:key="{{i}}"
+		 id="{{i}}"
+		 data-type="{{index}}"
+		>
+			<view class="play-content">
+				<view class='left'>
+					<image mode="widthFix" src="{{data.public_img}}" class='url' />
+					<text>{{data.public_name}}</text>
+				</view>
+				<view id="{{i}}" data-type="{{index}}" class="{{data.is_subscription==1?'cancel_btn':'subscribe_btn'}}">
+					<button
+					 hover-class="none"
+					 class='cancel_button'
+					 wx:if="{{data.is_subscription==1}}"
+					 bindtap='toCancel'
+					 id="{{i}}"
+					 data-type="{{index}}"
+					>取消订阅
+					</button>
+					<button
+					 hover-class="none"
+					 class='subscribe_button'
+					 wx:if="{{data.is_subscription==0}}"
+					 bindtap='toSub'
+					 id="{{i}}"
+					 data-type="{{index}}"
+					>订阅
+					</button>
+				</view>
+			</view>
+			<view class='border-bold' wx:if="{{i!=item.content.length-1}}" />
+		</view>
+	</view>
+</view>
+<import src="../../lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />
+

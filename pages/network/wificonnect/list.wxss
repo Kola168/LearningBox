@@ -1,0 +1,75 @@
+/* pages/network/wificonnect/list.wxss */
+page {
+  height: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+view {
+  box-sizing: border-box;
+}
+
+.wifilist-box {
+  width: 100%;
+  padding-bottom: 160rpx;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.wifilist-tips {
+  font-size: 36rpx;
+  color: #333;
+  margin: 40rpx 0;
+  width: 100%;
+  text-align: center;
+}
+
+.wifilist {
+  padding: 30rpx 20rpx;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  line-height: 40rpx;
+  font-size: 30rpx;
+  color: #333;
+  justify-content: space-between;
+}
+
+.wifi-name {
+  width:400rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@font-face {
+  font-family: 'iconfont';
+  src: url(data:application/font-woff2;charset=utf-8;base64,d09GMgABAAAAAAMMAA0AAAAABxQAAAK2AAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP0ZGVE0cGh4GVgCCQhEICoIIgXELCgABNgIkAxAEIAWFCAcvGwsGyI7Ctp0zRiiSdALax0ZQP/a6994FCBS76DiUQC4WSEcoVMXxnY6vMJUVliWBEf8n/7I3sVUtgMkGruS/aSXfVXDJ/upMXE5/nj/Y2Pwucwo+juakOAwoSnTaomxMsSygnjTSjBucNx1sS08C90LAhxlfPcCXrYsW9dgInRgGilBVIVEQKZ7SpjyWFzwBr4//VkKPoqlSq3ZOslmQ9muGSWi2N9qRKOA5IAAVFZMQWKUpMEnLLJBS8Gvm7Q3ka08FBEQzAYiCAv08Avh0NBpQQIJWJA6BM6B7DSC7RuztmPP33gQBSS97bFI6apY/9X7wJwgrqzGbpaeeB78xtY2Nerzm/SdDFi8m2q38Ss4+GvS8T2LsT3axaqJdgtHHjxiu+v47vq6VulFBM972aZufaHAbf+XZVRY6/Ik0jPzZqR7dThnpyJjIPIkyIovim4Iy89vCAyMMPUB1+1Hqn5wg9L7JvIhczjJmyfJStjJu9rLy0zONo44zNzIzE2eSN6cS0+MyNyJfowwBBII322JXqmnS/1bDVJ03m9BchRrtQKsCgirYkQD1kvvXAJmARPIKQjqkBQrataMBoN9PCMCQIAiEVgcQKFpcQ6BqdQ+B1Oo1BJp0eAcBmrX6CgHaLUcGINBhINQ0RbZhCWhM6JXBFN2OmapXLZjoENNk2DLTrNd7pt2Rf/M7zIUEDKxRYKPDVMjihqFBzMckJcGZgRnQvruu9HLKL+yjwVYA+usB9rBx1RKhU4A/1Ia1PrwoPsKmoMRvdRMuRBhYfU0eHhLmFNyaLsGmSOchSipcETCMww2HgpSYmxwv8mATEZFyI6MgJcDGhIWArfusUsWNwJizXlNuqSrTJuM/3/cBnMEwmQShQnF8bg3BJCUG02klzsq8SxmPzK5vHO1snAgb2Sh5w+fwAQAA) format('woff2'),
+    url(data:application/font-woff;charset=utf-8;base64,d09GRgABAAAAAATcAA0AAAAABxQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABGRlRNAAAEwAAAABoAAAAciQmoA0dERUYAAASgAAAAHgAAAB4AKQAKT1MvMgAAAaAAAABDAAAAVj0SSJZjbWFwAAAB9AAAAD4AAAFCAA/qT2dhc3AAAASYAAAACAAAAAj//wADZ2x5ZgAAAkAAAADrAAABCPML3pFoZWFkAAABMAAAADAAAAA2Fo7E82hoZWEAAAFgAAAAHQAAACQHSQOFaG10eAAAAeQAAAAPAAAAEAwAAKBsb2NhAAACNAAAAAoAAAAKAIQAAG1heHAAAAGAAAAAHgAAACABEgBhbmFtZQAAAywAAAFJAAACiCnmEVVwb3N0AAAEeAAAAB0AAAAvanltenjaY2BkYGAA4n3+GZfj+W2+MnCzMIDAzU0HauH0AoYa5mymBiCXg4EJJAoAT38Ln3jaY2BkYGBu+N/AEMPCAALM2QyMDKiABQBO5wLXAAAAeNpjYGRgYGBhCAViEGACYi4gZGD4D+YzAAARXwF0AAB42mNgZGFgnMDAysDA1Ml0hoGBoR9CM75mMGLkAIoysDIzYAUBaa4pDA7Pljxbwtzwv4EhhrmBoQEozAiSAwD0XQ0jAHjaY2GAABYIXgAAASAArQB42mNgYGBmgGAZBkYGELAB8hjBfBYGBSDNAoRA/rMl//9DSMl4qEoGRjYGGJOBkQlIMDGgAkaGYQ8A8W0IRAAAAAAAAAAAAAAAhAAAeNpjYGFYwFDDnM3UwMDDoMxgwxDCwKBqxyguxyjKzqakz2iibsdoJAbk8jOyqesxKrGxs6npM6qZAYWNgeJiIhBxZWQJqDgfI5IGE8bbosZijIw6TKxMOhnynsE+8iyMLHycXFI2dlaSrNysPCyMcSY1zp4NxizMghycegW2Vjm6rLws3KyMqZ6bj2z3YmXhYeVhdVm6cbETUDEvy3oBRgFGFqCBTLpM1eKS0pIsPCz8HOwiIsJCzIwsvKy8uVq6RjrM3MyC7GzqWmqqQOt4WPkK7Z1dnYCyQOtYbOxsLEGOYOVmYAAAMJ4hVwB42n2QPU4DMRCFn/MHJBJCIKhdUQDa/JQpEyn0CKWjSDbekGjXXnmdSDkBLRUHoOUYHIAbINFyCl6WSZMia+3o85uZ57EBnOMbCv/fJe6EFY7xKFzBETLhKvUX4Rr5XbiOFj6FG9R/hJu4VQPhFi7UGx1U7YS7m9JtywpnGAhXcIon4Sr1lXCN/CpcxxU+hBvUv4SbGONXuIVrZakM4WEwQWCcQWOKDeMCMRwskjIG1qE59GYSzExPN3oRO5s4GyjvV2KXAx5oOeeAKe09t2a+Sif+YMuB1JhuHgVLtimNLiJ0KBtfLJzV3ahzsP2e7ba02L9rgTXH7FENbNT8Pdsz0khsDK+QkjXyMrekElOPaGus8btnKdbzXgiJTrzL9IjHmjR1OvduaeLA4ufyjBx9tLmSPfeoHD5jWQh5v91OxCCKXYY/k9hxGQAAAHjaY2BigAAuMMnIgA5YwKJMjEws5ZlpmQAG7AHLAAAAAAAAAf//AAIAAQAAAAwAAAAWAAAAAgABAAMAAwABAAQAAAACAAAAAHjaY2BgYGQAgqtL1DlA9M1NB2phNABFeQc6AAA=) format('woff'),
+    url('iconfont.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 50rpx;
+  font-weight: 600;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-wifi:before {
+  content: "\e6a4";
+}
+
+.nowifi-tips {
+  font-size: 36rpx;
+  color: #333;
+  margin-top: 250rpx;
+  width: 100%;
+  text-align: center;
+}

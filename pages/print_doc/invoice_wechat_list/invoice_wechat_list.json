@@ -1,0 +1,8 @@
+{
+  "disableScroll": false,
+  "enablePullDownRefresh": false,
+  "navigationBarTitleText": "发票打印",
+  "usingComponents": {
+    "confirm-print": "../../../components/confirm-print"
+  }
+}

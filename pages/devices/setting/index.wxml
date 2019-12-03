@@ -1,0 +1,158 @@
+<nav-bar title="设备管理"></nav-bar>
+<view class="container">
+  <view class="device-base border-bottom">
+    <image src="/images/info_icon.png" class="device-img" mode="widthFix" />
+    <view class="device-name">
+      <view class="text-overflow-points">给小可乐的3115</view>
+      <view class="device-flag"></view>
+      <view class="device-status">
+        <text>在线</text>
+        <image src="/images/offline_tip.png" mode="widthFix" />
+      </view>
+    </view>
+    <image src="/images/share_btn_normal.png" class="share-device" mode="widthFix" />
+  </view>
+  <view class="device-setting">
+    <view class="setting-tab">
+      <view class="base-setting {{settingType==='base'?'active-setting':''}}" data-type="base" bindtap="changeSettingType">基本设置</view>
+      <view class="print-setting {{settingType==='print'?'active-setting':''}}" data-type="print" bindtap="changeSettingType">打印设置</view>
+    </view>
+    <block wx:if="{{settingType==='base'}}">
+      <view class="setting-box border-bottom">
+        <view class="setting-item">
+          <view class="item-left flex-column">
+            <view class="left-label">盒子编号</view>
+            <view class="label-sub">打印机型号：EPSON L805 版本号：V12</view>
+          </view>
+          <view class="item-right">90123455667</view>
+        </view>
+        <view class="setting-item">
+          <view class="item-left">
+            <view class="left-label">免审核打印</view>
+            <image src="/images/info_icon.png" class="left-explain" mode="widthFix" />
+          </view>
+          <view class="item-right">
+            <image src="/images/switch_off.png" class="right-switch" />
+          </view>
+        </view>
+        <view class="setting-item">
+          <view class="item-left">
+            <view class="left-label">分享管理</view>
+          </view>
+          <view class="item-right">
+            <image src="/images/arrow_right.png" class="right-arrow" />
+          </view>
+        </view>
+        <view class="setting-item">
+          <view class="item-left">
+            <view class="left-label">重命名</view>
+          </view>
+          <view class="item-right">
+            <image src="/images/arrow_right.png" class="right-arrow" />
+          </view>
+        </view>
+        <view class="setting-item">
+          <view class="item-left" bindtap="showModal" id="longPrint">
+            <view class="left-label">长按打印设置</view>
+            <image src="/images/info_icon.png" class="left-explain" mode="widthFix" />
+          </view>
+          <view class="item-right">
+            <image src="/images/arrow_right.png" class="right-arrow" />
+          </view>
+        </view>
+      </view>
+      <view class="setting-box">
+        <view class="setting-item">
+          <view class="item-left">
+            <view class="left-label">切换为电脑打印</view>
+          </view>
+          <view class="item-right">
+            <image src="/images/switch_on.png" class="right-switch" />
+          </view>
+        </view>
+        <view class="setting-item">
+          <view class="item-left">
+            <view class="left-label">清空打印队列</view>
+            <image src="/images/info_icon.png" class="left-explain" mode="widthFix" />
+          </view>
+          <view class="item-right" bindtap="showModal" id="clearQueue">
+            <view class="right-btn">清空</view>
+          </view>
+        </view>
+        <view class="setting-item">
+          <view class="item-left">
+            <view class="left-label">解除绑定</view>
+          </view>
+          <view class="item-right" bindtap="showModal" id="unbindDevice">
+            <view class="right-btn">解绑</view>
+          </view>
+        </view>
+        <view class="setting-item">
+          <view class="item-left">
+            <view class="left-label">重新配网</view>
+          </view>
+          <view class="item-right">
+            <image src="/images/arrow_right.png" class="right-arrow" />
+          </view>
+        </view>
+      </view>
+    </block>
+    <block wx:if="{{settingType==='print'}}">
+      <view class="setting-box">
+        <view class="setting-item">
+          <view class="item-left flex-column">
+            <view class="left-label">无边距打印</view>
+            <view class="label-sub">部分四色打印机暂无法设置边距</view>
+          </view>
+          <view class="item-right">
+            <image src="/images/switch_on.png" class="right-switch" />
+          </view>
+        </view>
+        <view class="setting-item">
+          <view class="item-left">
+            <view class="left-label">照片质量</view>
+          </view>
+          <view class="item-right right-radio">
+            <view>
+              <view>标准</view>
+              <image src="/images/radio_on.png" />
+            </view>
+            <view>
+              <view>高精度</view>
+              <image src="/images/radio_off.png" />
+            </view>
+          </view>
+        </view>
+        <view class="setting-item">
+          <view class="item-left flex-column">
+            <view class="left-label">文档打印顺序</view>
+            <view class="label-sub doc-order-sub" bindtap="showModal" id="positiveReverseOrder">什么是正序逆序？</view>
+          </view>
+          <view class="item-right right-radio">
+            <view>
+              <view>正序</view>
+              <image src="/images/radio_on.png" />
+            </view>
+            <view>
+              <view>逆序</view>
+              <image src="/images/radio_off.png" />
+            </view>
+          </view>
+        </view>
+        <view class="setting-item">
+          <view class="item-left">
+            <view class="left-label">设备维护</view>
+          </view>
+          <view class="item-right">
+            <image src="/images/arrow_right.png" class="right-arrow" />
+          </view>
+        </view>
+      </view>
+    </block>
+  </view>
+</view>
+<!-- modal -->
+<modal modal="{{modalObj}}" bindconfirm="confirmModal"></modal>
+<!-- loading -->
+<import src="/lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />

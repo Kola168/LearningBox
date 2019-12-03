@@ -1,0 +1,27 @@
+.flex {
+  display: flex;
+  display: -webkit-flex;
+}
+
+/* flex direction */
+.flex-dir-column {
+  flex-direction: column;
+}
+
+/* axis display */
+.flex-m-axis-between {
+  justify-content: space-between;
+}
+
+.flex-m-axis-around {
+  justify-content: space-around;
+}
+
+.flex-m-axis-center {
+  justify-content: center;
+}
+
+.flex-cross-axis-center {
+  align-items: center;
+}
+

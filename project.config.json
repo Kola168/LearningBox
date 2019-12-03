@@ -21,7 +21,7 @@
 		}
 	},
 	"compileType": "miniprogram",
-	"libVersion": "2.9.3",
+	"libVersion": "2.9.4",
 	"appid": "wxd9af039dfbb43124",
 	"projectname": "LearningBox",
 	"debugOptions": {
@@ -55,9 +55,24 @@
 			"current": -1,
 			"list": [
 				{
+					"id": 0,
+					"name": "pages/network/index/index",
+					"pathName": "pages/network/index/index",
+					"query": "",
+					"scene": null
+				},
+				{
 					"id": -1,
-					"name": "component/multiphoto/test",
-					"pathName": "component/multiphoto/test",
+					"name": "pages/network/wificonnect/list",
+					"pathName": "pages/network/wificonnect/list",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/network/wificonnect/connect",
+					"pathName": "pages/network/wificonnect/connect",
+					"query": "equipInfo=\"{asd:1}\"&wifiSSID=\"asd\"",
 					"scene": null
 				}
 			]

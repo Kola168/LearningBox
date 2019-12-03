@@ -1,0 +1,9 @@
+
+{
+  "navigationBarTitleText": "订单",
+  "disableScroll": true,
+  "enablePullDownRefresh":false,
+  "usingComponents": {
+    "confirm-print": "../../../components/confirm-print"
+  }
+}

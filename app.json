@@ -1,9 +1,90 @@
 {
   "pages": [
     "pages/main/home_index",
-    "pages/logs/logs",
-    "components/multiphoto/test"
-  ],
+		"pages/devices/list/index",
+    "pages/devices/setting/index",
+		"components/multiphoto/test",
+		"pages/network/index/index",
+    "pages/network/tips/step1",
+    "pages/network/tips/step2",
+    "pages/network/tips/step3",
+    "pages/network/wificonnect/list",
+    "pages/network/wificonnect/connect",
+    "pages/print_doc/doc_list/doc_list",
+    "pages/print_doc/index/index",
+    "pages/print_doc/function_list/function_list",
+    "pages/print_doc/start/start",
+    "pages/print_doc/start_intro/start_intro",
+    "pages/print_doc/otherIntro/otherIntro",
+    "pages/print_doc/otherIndex/otherIndex",
+    "pages/print_doc/print_wx/print_wx",
+    "pages/print_doc/print_wx_introduction/print_wx_introduction",
+    "pages/print_doc/print_wx_setting/print_wx_setting",
+    "pages/print_doc/print_wx_subscribe/print_wx_subscribe",
+    "pages/print_doc/print_invoice/print_invoice",
+    "pages/print_doc/print_invoice_list/print_invoice_list",
+    "pages/print_doc/invoice_wechat_list/invoice_wechat_list",
+    "pages/print_doc/library/library",
+    "pages/print_doc/library_play_preview/library_play_preview",
+    "pages/print_doc/content_pay/content_pay",
+    "pages/print_doc/doc_setting/doc_setting",
+    "pages/print_doc/doc_local_setting/doc_local_setting",
+    "pages/print_doc/duplicate/index",
+    "pages/print_doc/duplicate_edit/duplicate_edit",
+    "pages/print_doc/duplicate_idcard/duplicate_idcard",
+		"pages/print_doc/duplicate_preview/duplicate_preview",
+		"pages/print_photo_doc/index"
+	],
+	"subPackages": [
+		{
+		 "root": "pages/package_common",
+		 "pages": [
+		 
+		 ]
+		},
+		{
+		 "root": "pages/package_course",
+		 "pages": [
+		 
+		 ]
+		},
+		{
+		 "root": "pages/package_feature",
+		 "pages": [
+		
+		 ]
+		},
+		{
+		 "root": "pages/package_member",
+		 "pages": [
+		
+		 ]
+		},
+		{
+		 "root": "pages/package_other",
+		 "pages": [
+		
+		 ]
+		},
+		{
+		 "root": "pages/package_preschool",
+		 "pages": [
+		
+		 ]
+		},
+		{
+		 "root": "pages/package_subject",
+		 "pages": [
+		
+		 ]
+		},
+		{
+			"root": "pages/package_device",
+			"pages": [
+		 
+			]
+		 }
+	 ],
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",

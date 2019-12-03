@@ -1,0 +1,2 @@
+@import "./wxss/choose.wxss";
+@import "./wxss/index.wxss";
