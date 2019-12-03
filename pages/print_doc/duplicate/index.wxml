@@ -1,0 +1,21 @@
+<!--pages/print_doc/duplicate/index.wxml-->
+<nav-bar background="#fff" title="智能复印" />
+<navigator class="media-box doc-box" url="/pages/print_doc/duplicate_idcard/duplicate_idcard?type=id">
+	<image src="https://cdn.gongfudou.com/miniapp/ec/doc_copy_id.png" mode="widthFix" class="doc-icon" />
+	<view class="text-box">
+		<text class="text-title">身份证复印</text>
+		<text class="text-content">将身份证正反面印到一页纸上</text>
+	</view>
+</navigator>
+<view class="flex-ab other-copy-box">
+	<navigator
+	 class="media-box copy-item"
+	 url="/pages/print_doc/duplicate_idcard/duplicate_idcard?type={{item.key}}"
+	 wx:for="{{cardList}}"
+	 wx:key="index"
+	>
+		<image src="{{item.src}}" mode="widthFix" class="copy-item-icon" />
+		<text class="text-content">{{item.name}}</text>
+	</navigator>
+</view>
+

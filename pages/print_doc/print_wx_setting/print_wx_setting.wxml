@@ -1,0 +1,85 @@
+<nav-bar background="#fff" title="文档打印" />
+<view class='top'>
+	<view class='choose'>
+		<text class='title'>色彩选择</text>
+		<view class='color'>
+			<view class='kind'>
+				<text class='type'>黑白</text>
+				<image
+				 src='{{img1}}'
+				 class='selected'
+				 mode='widthFix'
+				 bindtap='chooseColor1'
+				/>
+			</view>
+			<view class='kind' wx:if="{{isColor}}">
+				<text class='type'>全彩</text>
+				<image
+				 src='{{img2}}'
+				 class='selected'
+				 mode='widthFix'
+				 bindtap='chooseColor2'
+				/>
+			</view>
+		</view>
+	</view>
+	<view class='border' />
+	<view class='choose'>
+		<text class='title'>双面打印</text>
+		<view class='color'>
+			<view class='kind'>
+				<text class='type'>单面</text>
+				<image
+				 src='{{img3}}'
+				 class='selected'
+				 mode='widthFix'
+				 bindtap='chooseColor3'
+				/>
+			</view>
+			<view class='kind' wx:if="{{isDuplex}}">
+				<text class='type'>双面</text>
+				<image
+				 src='{{img4}}'
+				 class='selected'
+				 mode='widthFix'
+				 bindtap='chooseColor4'
+				/>
+			</view>
+		</view>
+	</view>
+	<view class='border' />
+	<view class='total'>
+		<text class='title'>打印范围</text>
+		<view class='num'>
+			<input value='{{start_page}}' bindinput="start" type="number" />
+			<text class='number'>至</text>
+			<input value='{{end_page}}' bindinput="end" type="number" />
+			<text class='number'>页</text>
+		</view>
+	</view>
+</view>
+<view class='bottom'>
+	<image src='/images/doc_preview_page.png' mode='widthFix' class='preview_page' />
+	<view class="btn">
+		<button class='preview' hover-class="none" bindtap='preview'>
+			<image src='/images/doc_setting_preview.png' class='preview_icon' mode='widthFix' />
+			<text>打印预览</text>
+		</button>
+		<form report-submit="true" bindsubmit="confirm" class='confirm'>
+			<button
+			 formType="submit"
+			 hover-class="none"
+			 open-type="{{hasAuthPhoneNum ? '' : 'getPhoneNumber'}}"
+			 bindgetphonenumber="{{ hasAuthPhoneNum ? '' : 'getPhoneNumber' }}"
+			>确认打印
+			</button>
+		</form>
+	</view>
+</view>
+
+<!-- 打印确认框 -->
+<confirm-print bindconfirm="print" modal="{{confirmModal}}" />
+
+<import src="../../../lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />
+

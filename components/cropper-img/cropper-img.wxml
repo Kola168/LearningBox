@@ -1,0 +1,44 @@
+<!-- components/cropper-img/cropper-img.wxml -->
+<wxs src="./cropper-img.wxs" module="utils"></wxs>
+<!-- <scroll-view  class="cropper_main_container {{cropperData.hidden?'hidden':''}}"> -->
+<scroll-view class="cropper_main_container">
+	<view class="cropper_container" style="{{croppers && utils.cropperTempStyle(croppers.tempInfo)}}">
+		<!-- 生成的图片画布  默认不在视图区域可视范围内 -->
+		<canvas class="original_canvas" canvas-id="originalCanvas" style="{{utils.canvasPicStyles(cropperChangeableData.originalSize)}}"></canvas>
+		<!-- 显示的原图片 -->
+		<image src="{{cropperData.imageInfo.path}}" class='scale-image cropper_canvas_container_item' mode='aspectFill' bindload="finishLoad" style="{{cropperChangeableData && utils.cropperImgStyle(cropperChangeableData.previewImageInfo, cropperChangeableData.rotateDegree)}}"></image>
+		<!-- 不规则裁剪操作区域 start -->
+		<view class='cropper_canvas_container' wx:if="{{cropperData.mode == 'quadrectangle'}}" style="{{utils.cropperCanvasContainStyle(cropperChangeableData.scaleSize, cropperData)}}">
+			<canvas class="move_canvas cropper_canvas_container_item" canvas-id="moveCanvas"></canvas>
+			<movable-area class="cropper_movable_area_container" style="{{utils.cropperCanvasContainStyle(cropperChangeableData.scaleSize, cropperData)}}">
+				<block wx:if="{{cropperMovableItems}}">
+					<block wx:for="{{cropperMovableItems}}" wx:key="moveItem">
+						<movable-view class="move_item" style="width:{{cropperData.itemLength}}px; height:{{cropperData.itemLength}}px;" direction="all" x="{{item.x}}" y="{{item.y}}" bindtouchmove="touchMove" bindtouchend="touchEnd" data-key="{{index}}"></movable-view>
+					</block>
+				</block>
+			</movable-area>
+		</view>
+		<!-- 不规则裁剪操作区域 end -->
+		<!-- 矩形裁剪操作区域 start -->
+		<view class='cropper_canvas_container' wx:else style="width:{{cropperChangeableData.scaleSize.width}}px;height:{{cropperChangeableData.scaleSize.height}}px;">
+			<canvas class="move_canvas cropper_canvas_container_item" canvas-id="moveCanvas"></canvas>
+			<movable-area class="cropper_movable_area_container" style="width:{{cropperChangeableData.scaleSize.width}}px;height:{{cropperChangeableData.scaleSize.height}}px;">
+				<block>
+					<block wx:if="{{cropperMovableItems}}">
+						<block wx:for="{{cropperMovableItems}}" wx:key="moveItem">
+							<movable-view class="move_item" style="width:{{cropperData.itemLength}}px; height:{{cropperData.itemLength}}px;" direction="all" x="{{item.x-cropperData.itemLength/2}}" y="{{item.y-cropperData.itemLength/2}}" bindtouchmove="touchMove" bindtouchend="touchEnd" data-key="{{index}}"></movable-view>
+						</block>
+					</block>
+					<!-- all -->
+					<movable-view class="move_item_outer" style="width:{{cropperMovableItems[1].x-cropperMovableItems[0].x-26}}px; height:{{cropperMovableItems[3].y-cropperMovableItems[0].y-26}}px;" direction="all" x="{{cropperMovableItems[0].x + 13}}" y="{{cropperMovableItems[0].y + 13}}" bindtouchstart="touchStart" bindtouchmove="touchMove" bindtouchend="touchEnd" data-key="all"></movable-view>
+					<!-- up,right.bottom,left -->
+					<movable-view class="move_item_outer" style="width:{{cropperMovableItems[1].x - cropperMovableItems[0].x-26}}px; height:12px;" direction="all" x="{{cropperMovableItems[0].x + 13}}" y="{{cropperMovableItems[0].y - 6}}" bindtouchmove="touchMove" bindtouchend="touchEnd" data-key="up"></movable-view>
+					<movable-view class="move_item_outer" style="width:12px; height:{{cropperMovableItems[2].y - cropperMovableItems[1].y - 26}}px;" direction="all" x="{{cropperMovableItems[1].x - 6}}" y="{{cropperMovableItems[1].y+13}}" bindtouchmove="touchMove" bindtouchend="touchEnd" data-key="right"></movable-view>
+					<movable-view class="move_item_outer" style="width:{{cropperMovableItems[3].x - cropperMovableItems[2].x - 26}}px; height:12px;" direction="all" x="{{cropperMovableItems[2].x + 13}}" y="{{cropperMovableItems[2].y - 6}}" bindtouchmove="touchMove" bindtouchend="touchEnd" data-key="bottom"></movable-view>
+					<movable-view class="move_item_outer" style="width:12px; height:{{cropperMovableItems[2].y-cropperMovableItems[0].y-26}}px;" direction="all" x="{{cropperMovableItems[0].x-6}}" y="{{cropperMovableItems[0].y+13}}" bindtouchmove="touchMove" bindtouchend="touchEnd" data-key="left"></movable-view>
+				</block>
+			</movable-area>
+		</view>
+		<!-- 矩形裁剪操作区域 end -->
+	</view>
+</scroll-view>

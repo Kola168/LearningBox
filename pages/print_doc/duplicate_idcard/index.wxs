@@ -1,0 +1,39 @@
+var height = function (data) {
+  var width = data.width
+  var height = data.height
+  var imgWidth = 610
+  var imgHeight = imgWidth * (height / width)
+  var style = 'width:' + imgWidth + 'rpx;height:' + imgHeight + 'rpx;'
+  return style
+}
+
+var showtext = function (value = []) {
+  console.log(value, 'value')
+  var text = '请在黑色背景下横屏拍摄证件'
+  for (var i = 0; i < value.length; i++) {
+    if (value[i].url != null) {
+      text = '点击图片可以进行编辑哦'
+    }
+  }
+  return text
+}
+
+function addProcess(imgUrl, process) {
+  if (!process) {
+    process = ''
+  }
+  if (imgUrl.indexOf('?x-image-process=image') < 0) {
+    imgUrl += '?x-image-process=image'
+  }
+  imgUrl += process
+  if (process.indexOf('/resize') >= 0) {
+    process += '/marker,u_plus'
+  }
+  return imgUrl
+}
+
+module.exports = {
+  height: height,
+  showtext: showtext,
+  addProcess: addProcess
+}

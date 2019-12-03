@@ -1,7 +1,12 @@
 @import "./lib/toast/wetoast.wxss";
 
 image {
-  height: auto;
+	height: auto;
+	display:inline-block;
+}
+
+.common-button-bg{
+  background:#ffdc5e;
 }
 
 .is-ipx {
