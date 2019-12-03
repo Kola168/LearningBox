@@ -30,7 +30,7 @@
   <image src="/images/network_connect_tips.png" mode="widthFix" class="connect-tips-icon"></image>
   <text class="connect-tips-text">不支持单频5G的WiFi网络</text>
 </view>
-<view class="conf-button" bindtap="confPsd">
+<view class="conf-button common-button-bg" bindtap="confPsd">
   确认
 </view>
 <import src="/lib/toast/wetoast.wxml" />

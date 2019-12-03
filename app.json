@@ -8,7 +8,8 @@
     "pages/network/tips/step2",
     "pages/network/tips/step3",
     "pages/network/wificonnect/list",
-    "pages/network/wificonnect/connect"
+    "pages/network/wificonnect/connect",
+    "pages/printphoto/mediachoose"
   ],
   "window": {
     "backgroundTextStyle": "light",

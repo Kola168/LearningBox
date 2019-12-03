@@ -74,6 +74,12 @@
 					"pathName": "pages/network/wificonnect/connect",
 					"query": "equipInfo=\"{asd:1}\"&wifiSSID=\"asd\"",
 					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/printphoto/mediachoose",
+					"pathName": "pages/printphoto/mediachoose",
+					"scene": null
 				}
 			]
 		}
