@@ -1,0 +1,182 @@
+.right-radio>view,
+.item-right,
+.setting-item,
+.setting-tab,
+.device-base,
+.device-name {
+  display: flex;
+  align-items: center;
+}
+
+.border-bottom {
+  border-bottom: 20rpx solid #F7F7F7;
+}
+
+.device-base {
+  flex-direction: column;
+  color: #999;
+  font-size: 28rpx;
+  font-weight: normal;
+  padding: 78rpx 0 40rpx;
+  position: relative;
+}
+
+.device-img {
+  width: 270rpx;
+  margin-bottom: 38rpx;
+}
+
+.device-name>view:first-child {
+  max-width: 80%;
+  color: #454545;
+  font-size: 36rpx;
+  font-weight: bold;
+}
+
+.device-flag {
+  width: 12rpx;
+  height: 12rpx;
+  background: #999;
+  border-radius: 6rpx;
+  margin: 0 12rpx 0 20rpx;
+}
+
+.share-device {
+  position: absolute;
+  right: 24rpx;
+  top: 46rpx;
+  width: 160rpx;
+}
+
+.setting-tab {
+  width: 64%;
+  height: 60rpx;
+  margin: 40rpx auto;
+  background: #FFDC5E;
+  border: 2rpx solid #FFDC5E;
+  border-radius: 10rpx;
+  font-size: 32rpx;
+}
+
+.device-status {
+  position: relative;
+}
+
+.device-status image {
+  position: absolute;
+  right: -36rpx;
+  top: 30rpx;
+  width: 360rpx;
+}
+
+.setting-tab>view {
+  width: 50%;
+  height: 60rpx;
+  line-height: 60rpx;
+  text-align: center;
+  background: #fff;
+  color: #666;
+}
+
+.setting-tab .active-setting {
+  background: #FFDC5E;
+  color: #333;
+}
+
+.base-setting {
+  border-top-left-radius: 8rpx;
+  border-bottom-left-radius: 8rpx;
+}
+
+.print-setting {
+  border-top-right-radius: 8rpx;
+  border-bottom-right-radius: 8rpx;
+}
+
+.setting-box {
+  padding: 0 24rpx;
+}
+
+.setting-item {
+  justify-content: space-between;
+  padding: 28rpx 0;
+}
+
+.setting-item:not(:last-child) {
+  border-bottom: 2rpx solid #E7E7E7;
+}
+
+.item-left {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.left-label {
+  color: #454545;
+  font-size: 32rpx;
+}
+
+.left-explain {
+  width: 26rpx;
+  height: 26rpx;
+  margin-left: 20rpx;
+}
+
+.label-sub {
+  font-size: 20rpx;
+  color: #999;
+  margin-top: 4rpx;
+}
+
+.doc-order-sub {
+  color: #FFA200;
+  text-decoration: underline;
+}
+
+.item-right {
+  color: #999;
+  font-size: 28rpx;
+  justify-content: flex-end;
+}
+
+.radio-group {
+  display: flex;
+  align-items: center;
+}
+
+.right-switch {
+  width: 80rpx;
+  height: 40rpx;
+}
+
+.right-radio {
+  justify-content: space-between;
+  width: 300rpx;
+}
+
+.right-radio image {
+  width: 40rpx;
+  height: 40rpx;
+  margin-left: 16rpx;
+}
+
+.right-arrow {
+  width: 14rpx;
+  height: 24rpx;
+}
+
+.right-btn {
+  color: #666;
+  border: 2rpx solid #e7e7e7;
+  font-size:20rpx;
+  height: 40rpx;
+  line-height: 40rpx;
+  border-radius: 20rpx;
+  padding: 0 24rpx;
+}
+
+.flex-column {
+  flex-direction: column;
+  align-items: flex-start;
+}

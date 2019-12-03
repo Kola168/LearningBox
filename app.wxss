@@ -1,4 +1,9 @@
 @import "./lib/toast/wetoast.wxss";
+
+image {
+  height: auto;
+}
+
 .is-ipx {
   bottom: 60rpx !important;
 }

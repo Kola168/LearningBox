@@ -4,27 +4,43 @@ const co = require('../../../lib/co/co')
 import api from '../../../network/restful_request'
 import wxNav from '../../../utils/nav'
 import util from '../../../utils/util'
+const request = util.promisify(wx.request)
 Page({
   data: {
-    devices:[]
+    devices: [],
+    isIpx:false
   },
-  onLoad: function(options) {
+  onLoad: function() {
     this.weToast = new app.weToast()
-    this.getDevices()
+    this.setData({
+      isIpx:app.isIpx
+    })
+    // this.getDevices()
   },
   getDevices: co.wrap(function*() {
     this.weToast.toast({
-      type:'loading'
+      type: 'loading'
     })
     try {
-      let resp = yield api.getDevices('oHTe45c3u5Y5xcUMd2Vw4c2SWjj4')
-      if (resp.code != 0) {
-        throw (resp)
+      let resp = yield request({
+        url: app.apiServer + `/boxapi/v2/printers`,
+        method: 'GET',
+        dataType: 'json',
+        data: {
+          'openid': 'oHTe45c3u5Y5xcUMd2Vw4c2SWjj4',
+        }
+      })
+      console.log(resp.data.res)
+      let tempData = resp.data
+      if (tempData.code != 0) {
+        throw (resp.data)
       }
-      let devices = resp.res.printers
+      let devices = tempData.res.printers,
+      activeDevice = tempData.res.selected_printer
       this.weToast.toast()
       this.setData({
-        devices: devices
+        devices,
+        activeDevice
       })
     } catch (e) {
       this.weToast.toast()
@@ -32,7 +48,7 @@ Page({
       console.log(e)
     }
   }),
-  toIndex(){
+  toIndex() {
     wxNav.navigateTo(`../../logs/logs`)
   }
 })
