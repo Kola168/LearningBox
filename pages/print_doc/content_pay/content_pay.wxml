@@ -1,4 +1,5 @@
 <!--pages/library/content_pay.wxml-->
+<nav-bar background="#fff" title="文档打印" />
 <block wx:if="{{!showSetting}}">
 	<view class="top">
 		<image class="thumbnail" src='{{detail.iconUrl}}' mode="aspectFill" />

@@ -29,14 +29,8 @@
 		<view class="item-label">打印范围（共{{ totalPage }}页）</view>
 		<view class="range-main">
 			<view class="range-options">
-				<view class="options-item {{extract === 'all' ? 'options-item-active' : ''}}" id="all" bindtap="chooseRangeType">
-					打印范围
-				</view>
-				<view class="options-item {{extract=== 'odd' ? 'options-item-active' : ''}}" id="odd" bindtap="chooseRangeType">
-					仅打印奇数页
-				</view>
-				<view class="options-item  {{extract=== 'even' ? 'options-item-active' : ''}}" id="even" bindtap="chooseRangeType">
-					仅打印偶数页
+        <view wx:for="{{rangeList}}" wx:key="{{item._id}}" class="options-item {{extract === item._id ? 'options-item-active' : ''}}" id="{{item._id}}" bindtap="chooseRangeType">
+					{{item.name}}
 				</view>
 			</view>
 			<view class="active-option" hidden="{{extract !== 'all'}}">

@@ -65,7 +65,7 @@ Page({
 
 	}),
 
-	onShow:function(){
+	onShow () {
 		let hasAuthPhoneNum = Boolean(storage.get('hasAuthPhoneNum'))
 		this.hasAuthPhoneNum = hasAuthPhoneNum
 		this.setData({
@@ -73,13 +73,15 @@ Page({
 		})
 	},
 
-	// 获取打印能力数据
+	/**
+	 * @methods 获取打印能力数据
+	 */
 	getPrinterCapability: co.wrap(function*(){
 		this.initPms = {
 			duplex: false, //单双面面
 			number: 1, // 份数
 		}
-		// var resp = yield commonRequest.getPrinterCapability() //获取打印能力数据
+		var resp = yield commonRequest.getPrinterCapability() //获取打印能力数据
 		this.initPms.color = resp && resp.color_modes[0] || 'Color'
 	}),
 
@@ -124,7 +126,9 @@ Page({
 
 	}),
 
-	// 上传文档
+	/**
+	 * @methods 上传文档
+	 */
 	uploadMessageFile: co.wrap(function*(urls) {
     try {
 			this.longToast.toast({
@@ -176,7 +180,9 @@ Page({
     }
 	}),
 
-	//选择文档 
+	/**
+	 * @methods 选择文档 
+	 */ 
 	chooseDocFile: co.wrap(function *(){
 		if (this.data.files.length >= 5) {
 			return wx.showModal({
@@ -187,7 +193,7 @@ Page({
 			})
 		}
 		var _this = this
-		var leftLength = 5 - this.data.files.length
+		var leftLength = 5 - _this.data.files.length
 		wx.chooseMessageFile({
 			type: 'file',
 			count: leftLength, //暂定最多5个文档
@@ -214,10 +220,10 @@ Page({
 		})
 	}),
 
-	//确认
+	/**
+	 * @methods 确认
+	 */
 	confirm: co.wrap(function*(e) {
-		uploadFormId.dealFormIds(e.detail.formId, `print_docA4`)
-		uploadFormId.upload()
 		// 判断是否授权手机号
     if(!this.hasAuthPhoneNum && !app.hasPhoneNum){
       return
@@ -241,7 +247,9 @@ Page({
 		})
 	}),
 	
-	// 获取手机号
+	/**
+	 * @methods 获取手机号
+	 */
 	getPhoneNumber: co.wrap(function*(e){
 		yield app.getPhoneNum(e)
 		storage.put('hasAuthPhoneNum', true)
@@ -252,7 +260,9 @@ Page({
     this.confirm(e)
 	}),
 	
-	// 打印
+	/**
+	 * @methods 打印
+	 */
 	print: co.wrap(function*() {
     try {
 			this.longToast.toast({
@@ -278,7 +288,9 @@ Page({
 		}
 	}),
 	
-	// 预览
+	/**
+	 * @methods 预览
+	 */
 	preview: co.wrap(function*(e) {
     try {
 			if (app.preventMoreTap(e)) {
@@ -291,7 +303,9 @@ Page({
 		}
 	}),
 
-	// 删除当前行文档
+	/**
+	 * @methods 删除当前行文档
+	 */
 	delCurrentDoc: co.wrap(function*(e) {
     util.deleteItem(this.data.files, this.data.files[e.currentTarget.id])
     this.setData({
@@ -300,7 +314,9 @@ Page({
     })
 	}),
 
-	// 设置页面属性
+	/**
+	 * @methods 设置页面属性
+	 */
 	setting: co.wrap(function*(e) {
 		try {
 			if (app.preventMoreTap(e)) {

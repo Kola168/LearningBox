@@ -1,11 +1,11 @@
 <nav-bar background="#fff" title="文档打印" />
-<view class="img-box" style="{{type == 'baiduPrint' ? 'margin:0 auto;width:80%;':''}}">
+<view class="img-box" style="{{type == 'baiduPrint' ? 'margin:0 auto;width:80%;' : ''}}">
 	<image
 	 wx:for="{{imgs[type]}}"
-	 src='{{item}}'
+	 src="{{item}}"
 	 wx:key="{{index}}"
-	 mode='widthFix'
-	 class='image'
+	 mode="widthFix"
+	 class="image"
 	/>
 </view>
 <view class="btn btn-yellow">
@@ -16,7 +16,7 @@
 	 hover-start-time="20"
 	 hover-stay-time="70"
 	>
-		{{type == 'longPress' ? '开启长按打印功能' : '立即绑定帐号'}}
+		{{type == "longPress" ? "开启长按打印功能" : "立即绑定帐号"}}
 	</button> 
 </view>
 

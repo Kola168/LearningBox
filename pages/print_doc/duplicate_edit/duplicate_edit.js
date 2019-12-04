@@ -6,7 +6,7 @@ const regeneratorRuntime = require('../../../lib/co/runtime')
 const co = require('../../../lib/co/co')
 const util = require('../../../utils/util')
 const event = require('../../../lib/event/event')
-// const imginit = require('../../../utils/imginit')
+const imgInit = require('../../../utils/imginit')
 
 const request = util.promisify(wx.request)
 const showModal = util.promisify(wx.showModal)
@@ -78,10 +78,9 @@ Page({
   // /初始化图片上传/
   initImg() {
     try {
-      let _this = this;
+      let _this = this
       let paths = JSON.parse(JSON.stringify(this.queryImages))
       uploadFiles(paths, (index, url) => { 
-        _this.longToast.hide()
         if (index && url) {
           _this.getImageOrientation(url)
         } else {
@@ -92,6 +91,7 @@ Page({
             confirmColor: '#FFDC5E'
           })
         }
+        _this.longToast.hide()
 
       }, () => {})
     } catch (err) {
@@ -112,7 +112,7 @@ Page({
       title: '图片加载中'
     })
     try {
-      let imaPath = yield imginit.imgInit(url, 'vertical')
+      let imaPath = yield imgInit.imgInit(url, 'vertical')
       _this.resetImage(imaPath.imageInfo, imaPath.imgNetPath);
     } catch (e) {
       wx.showModal({
@@ -148,14 +148,14 @@ Page({
     }
 
     _this.images = {
-      url: imginit.addProcess(url, noRotate), // 不做原始，可添加后缀
+      url: imgInit.addProcess(url, noRotate), // 不做原始，可添加后缀
       localUrl: localUrl, // 原始默认图
       width: imageInfo.width, // 图片宽度
       height: imageInfo.height, // 图片高度
       isSmallImage: (imageInfo.width < 600 || imageInfo.height < 600) ? true : false, // 小图标记
     }
 
-    _this.initShowImg(_this.images);
+    _this.initShowImg(_this.images)
   }),
 
   initShowImg: co.wrap(function* (images) {
@@ -293,12 +293,12 @@ Page({
         title: '图片处理中'
       })
       let _this = this;
-      let tempFilePath = this.options.url;
+      let tempFilePath = _this.options.url;
       let mode = this.options.mode;
       let textObj = null;
       let imageInfo = yield getImageInfo({
         src: tempFilePath
-      });
+      })
 
       if (imageInfo.width > 8000 || imageInfo.height > 8000) { // 判断图片过大
         textObj = {
@@ -331,14 +331,14 @@ Page({
 
       let editPath = tempFilePath
       if (imgWidth > 1500 || imgHeight > 1500) {
-        editPath = imginit.addProcess(editPath, `/resize,w_1500,h_1500`)
+        editPath = imgInit.addProcess(editPath, `/resize,w_1500,h_1500`)
         _this.editScale = 1500 / (imgWidth > imgHeight ? imgWidth : imgHeight)
       }
       _this.longToast.hide()
-      const params = yield this.convert(editPath); // 边缘检测合成和图片
-      const newImageInfo = yield getImageInfo({
+      let params = yield this.convert(editPath) // 边缘检测合成和图片
+      let newImageInfo = yield getImageInfo({
         src: editPath
-      }); //图片更新后重新获取宽高，保证一致
+      }) //图片更新后重新获取宽高，保证一致
       if (params.status) {
         this.data.pointData = yield this.judgeConvert({
           imgWidth: newImageInfo.width,
@@ -375,12 +375,12 @@ Page({
    * @methods 非规则矩形裁切做透视变换
    */
   getPic: co.wrap(function* (res, imgUrl) {
-    this.longToast.toast({
+    var _this = this
+    _this.longToast.toast({
       type: 'loading',
       title: '请稍候'
     })
     try {
-      var _this = this
       const resp = yield request({
         url: app.apiServer + '/boxapi/v3/images/edit',
         method: 'POST',
@@ -409,10 +409,10 @@ Page({
         originUrl: imgUrl,
         localUrl: img_src
       })
-      this.longToast.hide()
+      _this.longToast.hide()
       router.navigateBack()
     } catch (e) {
-      this.longToast.hide()
+      _this.longToast.hide()
       util.showErr(e)
     }
   })

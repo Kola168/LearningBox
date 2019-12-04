@@ -34,6 +34,19 @@ Page({
     showConfirm: false,
     checkOpen: false,
     extract: 'all',
+    rangeList: [
+      {
+        name: '打印范围',
+        _id: 'all'
+      },
+      {
+        name: '仅打印奇数页',
+        _id: 'odd'
+      },
+      {
+        name: '仅打印偶数页',
+        _id: 'even'
+    }],
     fileTitle: null,
     hasAuthPhoneNum: false,
     confirmModal: {
@@ -292,14 +305,13 @@ Page({
       tempObj.start_page = 0
       tempObj.end_page = 0
     }
-    let files = [tempObj];
     this.longToast.toast({
       type: 'loading',
       title: '正在提交'
     })
 
     try {
-      const resp = yield api.printInvoice(app.openId, '_docA4', files)
+      const resp = yield api.printInvoice(app.openId, '_docA4', [tempObj])
       if (resp.code != 0) {
         throw (resp)
       }
