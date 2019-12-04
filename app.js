@@ -39,7 +39,6 @@ App({
     yield this.getOpenId()
     yield this.getSystemInfo()
     this.navBarInfo = this.getNavBarInfo()
-    this.handleDevice()
   }),
 
 	//获取系统信息
@@ -49,18 +48,22 @@ App({
     this.handleDevice()
   }),
 
-  // 是否为iPhone X，rpxPixel
+  // 是否为全面屏，rpxPixel
   handleDevice() {
-    let model = this.sysInfo.model.toLowerCase()
-    // 待解决
-    this.isFullScreen = model.indexOf("iphone x") > -1 ? true : false
+    // 暂时的处理
+    this.isFullScreen = this.sysInfo.screenHeight > 750 ? true : false
     this.rpxPixel = 750 / this.sysInfo.windowWidth
   },
 
   // 获取导航栏信息
   getNavBarInfo() {
     let sysInfo = this.sysInfo ? this.sysInfo : wx.getSystemInfoSync()
-    let rect = wx.getMenuButtonBoundingClientRect ? wx.getMenuButtonBoundingClientRect() : null
+    let rect = null
+    try {
+      rect = wx.getMenuButtonBoundingClientRect()
+    } catch (error) {
+      rect = wx.getMenuButtonBoundingClientRect()
+    }
     if (rect) {
       let statusBarHeight = sysInfo.statusBarHeight,
         gap = rect.top - statusBarHeight,
