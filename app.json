@@ -44,13 +44,13 @@
 		{
 		 "root": "pages/package_common",
 		 "pages": [
-		 
+
 		 ]
 		},
 		{
 		 "root": "pages/package_course",
 		 "pages": [
-		 
+
 		 ]
 		},
 		{
@@ -65,31 +65,36 @@
 		{
 		 "root": "pages/package_member",
 		 "pages": [
-		
+
 		 ]
 		},
 		{
 		 "root": "pages/package_other",
 		 "pages": [
-		
+
 		 ]
 		},
 		{
 		 "root": "pages/package_preschool",
 		 "pages": [
-		
+
 		 ]
 		},
 		{
 		 "root": "pages/package_subject",
 		 "pages": [
-		
+
 		 ]
 		},
 		{
 			"root": "pages/package_device",
 			"pages": [
-		 
+        "list/index",
+        "offline/index",
+        "setting/index",
+        "share/index",
+        "share_manage/index",
+        "longpress/index"
 			]
 		 }
 	 ],
@@ -111,14 +116,8 @@
     "backgroundColor": "#fff",
     "borderStyle": "black",
     "position": "bottom",
-<<<<<<< HEAD
-    "list": [
-      {
-        "pagePath": "pages/main/home_index",
-=======
     "list": [{
         "pagePath": "pages/index/index",
->>>>>>> develop-lis
         "text": "首页",
         "iconPath": "images/home/icon_tab_home_unselected.png",
         "selectedIconPath": "images/home/icon_tab_home_selected.png"

@@ -1,21 +1,25 @@
 <nav-bar title="设备管理"></nav-bar>
 <view class="container">
   <view class="device-base border-bottom">
-    <image src="/images/info_icon.png" class="device-img" mode="widthFix" />
+    <image src="../images/info_icon.png" class="device-img" mode="widthFix" />
     <view class="device-name">
       <view class="text-overflow-points">给小可乐的3115</view>
       <view class="device-flag"></view>
       <view class="device-status">
         <text>在线</text>
-        <image src="/images/offline_tip.png" mode="widthFix" />
+        <image src="../images/offline_tip.png" bindtap="toNextPage" data-key="offlineSolve" mode="widthFix" />
       </view>
     </view>
-    <image src="/images/share_btn_normal.png" class="share-device" mode="widthFix" />
+    <image src="../images/share_btn_normal.png" class="share-device" bindtap="toNextPage" data-key="share" mode="widthFix" />
   </view>
   <view class="device-setting">
     <view class="setting-tab">
-      <view class="base-setting {{settingType==='base'?'active-setting':''}}" data-type="base" bindtap="changeSettingType">基本设置</view>
-      <view class="print-setting {{settingType==='print'?'active-setting':''}}" data-type="print" bindtap="changeSettingType">打印设置</view>
+      <view class="base-setting {{settingType==='base'?'active-setting':''}}" data-type="base" bindtap="changeSettingType">
+        基本设置
+      </view>
+      <view class="print-setting {{settingType==='print'?'active-setting':''}}" data-type="print" bindtap="changeSettingType">
+        打印设置
+      </view>
     </view>
     <block wx:if="{{settingType==='base'}}">
       <view class="setting-box border-bottom">
@@ -27,37 +31,37 @@
           <view class="item-right">90123455667</view>
         </view>
         <view class="setting-item">
-          <view class="item-left">
+          <view class="item-left" bindtap="showModal" id="noaduit">
             <view class="left-label">免审核打印</view>
-            <image src="/images/info_icon.png" class="left-explain" mode="widthFix" />
+            <image src="../images/info_icon.png" class="left-explain" mode="widthFix" />
           </view>
           <view class="item-right">
             <image src="/images/switch_off.png" class="right-switch" />
           </view>
         </view>
-        <view class="setting-item">
+        <view class="setting-item" bindtap="toNextPage" data-key="shareManage">
           <view class="item-left">
             <view class="left-label">分享管理</view>
           </view>
           <view class="item-right">
-            <image src="/images/arrow_right.png" class="right-arrow" />
+            <image src="../images/arrow_right.png" class="right-arrow" />
           </view>
         </view>
-        <view class="setting-item">
+        <view class="setting-item" bindtap="showModal" id="rename">
           <view class="item-left">
             <view class="left-label">重命名</view>
           </view>
           <view class="item-right">
-            <image src="/images/arrow_right.png" class="right-arrow" />
+            <image src="../images/arrow_right.png" class="right-arrow" />
           </view>
         </view>
         <view class="setting-item">
           <view class="item-left" bindtap="showModal" id="longPrint">
             <view class="left-label">长按打印设置</view>
-            <image src="/images/info_icon.png" class="left-explain" mode="widthFix" />
+            <image src="../images/info_icon.png" class="left-explain" mode="widthFix" />
           </view>
-          <view class="item-right">
-            <image src="/images/arrow_right.png" class="right-arrow" />
+          <view class="item-right" bindtap="toNextPage" data-key="longpress">
+            <image src="../images/arrow_right.png" class="right-arrow" />
           </view>
         </view>
       </view>
@@ -66,14 +70,13 @@
           <view class="item-left">
             <view class="left-label">切换为电脑打印</view>
           </view>
-          <view class="item-right">
-            <image src="/images/switch_on.png" class="right-switch" />
+          <view class="item-right" bindtap="showModal" id="computerPrint">
+            <image src="/images/switch_{{computerPrintFlag?'on':'off'}}.png" class="right-switch" />
           </view>
         </view>
         <view class="setting-item">
           <view class="item-left">
             <view class="left-label">清空打印队列</view>
-            <image src="/images/info_icon.png" class="left-explain" mode="widthFix" />
           </view>
           <view class="item-right" bindtap="showModal" id="clearQueue">
             <view class="right-btn">清空</view>
@@ -87,12 +90,12 @@
             <view class="right-btn">解绑</view>
           </view>
         </view>
-        <view class="setting-item">
+        <view class="setting-item" bindtap="toNextPage" data-key="reNetwork">
           <view class="item-left">
             <view class="left-label">重新配网</view>
           </view>
           <view class="item-right">
-            <image src="/images/arrow_right.png" class="right-arrow" />
+            <image src="../images/arrow_right.png" class="right-arrow" />
           </view>
         </view>
       </view>
@@ -126,7 +129,9 @@
         <view class="setting-item">
           <view class="item-left flex-column">
             <view class="left-label">文档打印顺序</view>
-            <view class="label-sub doc-order-sub" bindtap="showModal" id="positiveReverseOrder">什么是正序逆序？</view>
+            <view class="label-sub doc-order-sub" bindtap="showModal" id="positiveReverseOrder">
+              什么是正序逆序？
+            </view>
           </view>
           <view class="item-right right-radio">
             <view>
@@ -144,7 +149,7 @@
             <view class="left-label">设备维护</view>
           </view>
           <view class="item-right">
-            <image src="/images/arrow_right.png" class="right-arrow" />
+            <image src="../images/arrow_right.png" class="right-arrow" />
           </view>
         </view>
       </view>
@@ -152,7 +157,23 @@
   </view>
 </view>
 <!-- modal -->
-<modal modal="{{modalObj}}" bindconfirm="confirmModal"></modal>
+<modal modal="{{modalObj}}" bindconfirm="confirmModal">
+  <view wx:if="{{modalType==='rename'}}" class="modal-rename">
+    <input placeholder="1-10个字，支持中英文、数字" value="{{renameVal}}" bindinput="getRenameVal" placeholder-style="color:#999;" />
+    <view class="rename-tip">请先输入名称</view>
+  </view>
+  <view wx:if="{{modalType==='noaduit'}}">
+    <view class="noaduit-manager noaduit-item">
+      <text>管理者</text>
+      <text wx:if="{{printType==='ep300'}}">：通过蓝牙连接绑定打印机的用户</text>
+      <text wx:if="{{printType==='ep400'}}">：通过小白学习盒子绑定流程而绑定设备的用户</text>
+    </view>
+    <view class="noaduit-user noaduit-item">
+      <text>使用者</text>
+      <text>：通过好友分享的链接或扫描分享二维码绑定打印机的用户</text>
+    </view>
+  </view>
+</modal>
 <!-- loading -->
 <import src="/lib/toast/wetoast.wxml" />
 <template is="wetoast" data="{{...__wetoast__}}" />

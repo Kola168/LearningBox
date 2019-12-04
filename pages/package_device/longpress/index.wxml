@@ -1,0 +1,65 @@
+<nav-bar title="{{navBarTitle}}"></nav-bar>
+<view class="container">
+  <view class="longpress-open" wx:if="{{showSetting}}">
+    <view class="open-switch">
+      <view class="">开启默认设置</view>
+      <image src="/images/switch_{{switchFlag?'on':'off'}}.png" mode='widthFix' bindtap="handleLongpressSwitch" />
+    </view>
+    <view class="setting-default" wx:if="{{switchFlag}}">
+      <view class="default-title">文档打印默认选项</view>
+      <view class="default-item border-bottom">
+        <view class="item-label">色彩选择</view>
+        <view class="item-check">
+          <view class="radio-item">
+            <view>黑白</view>
+            <image src="/images/radio_on.png" />
+          </view>
+          <view class="radio-item">
+            <view>全彩</view>
+            <image src="/images/radio_off.png" />
+          </view>
+        </view>
+      </view>
+      <view class="default-item">
+        <view class="item-label">双面打印</view>
+        <view class="item-check">
+          <view class="radio-item">
+            <view>单面</view>
+            <image src="/images/radio_on.png" />
+          </view>
+          <view class="radio-item">
+            <view>双面</view>
+            <image src="/images/radio_off.png" />
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class="longpress-notopen" wx:else>
+    <image class="notopen-image" src='https://cdn.gongfudou.com/miniapp/ec/long_press_index_open.png' mode='widthFix' />
+    <view class="notopen-text">
+      <view class="text-title">您暂未开通长按打印功能</view>
+      <view class="text-triangle"></view>
+      <view class="text-sub">可点击下方按钮开启功能</view>
+    </view>
+    <view class='notopen-btn' bindtap="toSettingLongpress">开启长按打印功能</view>
+  </view>
+  <view class="tips">
+    <view class="function-tip">
+      <view>温馨提示</view>
+      <view wx:if="{{true}}">Excel的文件在发送给小白学习盒子后，需要进入公众号预览打印效果后再确认打印哦～</view>
+      <view wx:else>此状态下，您长按文档发送给小白后，可以进入“小白学习盒子”的公众号设置每条打印任务的分数、打印范围、色彩和单双面</view>
+    </view>
+    <view class="function-explain">
+      <view>功能说明：</view>
+      <view>1. 请您先开启长按打印的功能开启入口：小程序首页依次选择打印文档->开启长按打印功能</view>
+      <view>2. 此设置仅针对在微信对话框中长按文档打印时的操作</view>
+      <view>3. 开启后会按照您的设置选项进行打印，每次打印1 份</view>
+      <view>4. 若关闭自动打印，每次提交任务请打开“小白学习盒子”公众号，设置此条打印任务的份数、打印范围、色彩和单双面的选项</view>
+    </view>
+  </view>
+</view>
+<!-- modal -->
+<modal modal="{{modalObj}}" bindconfirm="confirmModal" bindcancel="cancelModal"></modal>
+<import src="../../../lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />

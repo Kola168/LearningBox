@@ -1,5 +1,5 @@
 .container {
-  padding: 0 24rpx 30rpx;
+  padding: 0 24rpx 160rpx;
 }
 
 .device-active,

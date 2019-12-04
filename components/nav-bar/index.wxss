@@ -46,8 +46,9 @@
   overflow: hidden;
   white-space: nowrap;
   text-align: center;
-  font-size: 30rpx;
+  font-size: 34rpx;
   font-weight: bold;
+  color: #030303;
 }
 
 .nav-bar-left image {
