@@ -5,19 +5,19 @@ let {
 const regeneratorRuntime = require('lib/co/runtime')
 const co = require('lib/co/co')
 const util = require('utils/util')
-// const _ = require('lib/underscore/we-underscore')
+  // const _ = require('lib/underscore/we-underscore')
 import Logger from 'utils/logger.js'
 
 const getSystemInfo = util.promisify(wx.getSystemInfo)
 const getStorage = util.promisify(wx.getStorage)
-// const setStorage = util.promisify(wx.setStorage)
+  // const setStorage = util.promisify(wx.setStorage)
 
 const login = util.promisify(wx.login)
-// const getUserInfo = util.promisify(wx.getUserInfo)
-// const showModal = util.promisify(wx.showModal)
+  // const getUserInfo = util.promisify(wx.getUserInfo)
+  // const showModal = util.promisify(wx.showModal)
 const request = util.promisify(wx.request)
-// const uploadFile = util.promisify(wx.uploadFile)
-// const checkSession = util.promisify(wx.checkSession)
+  // const uploadFile = util.promisify(wx.uploadFile)
+  // const checkSession = util.promisify(wx.checkSession)
 
 
 App({
@@ -41,7 +41,7 @@ App({
     this.navBarInfo = this.getNavBarInfo()
   }),
 
-	//获取系统信息
+  //获取系统信息
   getSystemInfo: co.wrap(function* () {
     let res = yield getSystemInfo()
     this.sysInfo = res
@@ -62,57 +62,85 @@ App({
     try {
       rect = wx.getMenuButtonBoundingClientRect()
     } catch (error) {
-      rect = wx.getMenuButtonBoundingClientRect()
+      rect = this.fixButtonBoundingClientRect()
     }
-    if (rect) {
-      let statusBarHeight = sysInfo.statusBarHeight,
-        gap = rect.top - statusBarHeight,
-        navBarHeight = 2 * gap + rect.height,
-        navBarPadding = sysInfo.screenWidth - rect.right,
-        topBarHeight = navBarHeight + statusBarHeight
-      return {
-        statusBarHeight,
-        navBarHeight,
-        topBarHeight,
-        navBarPadding,
-        titleWidth: sysInfo.screenWidth - navBarPadding * 2 - rect.width * 2,
-        menuWidth: rect.width,
-        menuHeight: rect.height
-      }
+    let statusBarHeight = sysInfo.statusBarHeight,
+      gap = rect.top - statusBarHeight,
+      navBarHeight = 2 * gap + rect.height,
+      navBarPadding = sysInfo.screenWidth - rect.right,
+      topBarHeight = navBarHeight + statusBarHeight
+    return {
+      statusBarHeight,
+      navBarHeight,
+      topBarHeight,
+      navBarPadding,
+      titleWidth: sysInfo.screenWidth - navBarPadding * 2 - rect.width * 2,
+      menuWidth: rect.width,
+      menuHeight: rect.height
     }
-	},
+  },
 
-	preventMoreTap: function (e) {
-		if (_.isEmpty(e)) {
-			return false
-		}
-		try {
-			var globaTime = this.globalLastTapTime;
-			var time = e.timeStamp;
-			if (Math.abs(time - globaTime) < 500 && globaTime != 0) {
-				this.globalLastTapTime = time;
-				return true;
-			} else {
-				this.globalLastTapTime = time;
-				return false;
-			}
-		} catch (e) {
-			console.log(e)
-		}
-	},
+  // 修复wx.getMenuButtonBoundingClientRect接口报错，保证自定义导航栏不错位
+  fixButtonBoundingClientRect() {
+    let sysInfo = this.sysInfo,
+      platform = sysInfo.platform.toLowerCase(),
+      gap = '', //胶囊按钮上下间距 使导航内容居中
+      width = 88 //胶囊的宽度，android大部分96，ios为88
+    if (platform === 'android') {
+      gap = 8
+      width = 96
+    } else if (platform === 'devtools') {
+      let system = sysInfo.system.toLowerCase()
+      if (system.indexOf('ios') > -1) {
+        gap = 5.5 //开发工具中ios手机
+      } else {
+        gap = 7.5 //开发工具中android和其他手机
+      }
+    } else {
+      gap = 4
+      width = 88
+    }
+    return {
+      bottom: sysInfo.statusBarHeight + gap + 32,
+      height: 32,
+      left: sysInfo.windowWidth - width - 10,
+      right: sysInfo.windowWidth - 10,
+      top: sysInfo.statusBarHeight + gap,
+      width: width
+    };
+  },
+
+  preventMoreTap: function (e) {
+    if (_.isEmpty(e)) {
+      return false
+    }
+    try {
+      var globaTime = this.globalLastTapTime;
+      var time = e.timeStamp;
+      if (Math.abs(time - globaTime) < 500 && globaTime != 0) {
+        this.globalLastTapTime = time;
+        return true;
+      } else {
+        this.globalLastTapTime = time;
+        return false;
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  },
 
   getOpenId: co.wrap(function* () {
-		try {
-			const storage = yield getStorage({
-				key: 'openid'
-			})
-			this.openId = storage.data
-		} catch (e) {
-			this.login()
-		}
-	}),
+    try {
+      const storage = yield getStorage({
+        key: 'openid'
+      })
+      this.openId = storage.data
+    } catch (e) {
+      this.login()
+    }
+  }),
 
-	login: co.wrap(function* () {
+  login: co.wrap(function* () {
     try {
       const loginCode = yield login()
       const loginInfo = yield request({
