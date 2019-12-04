@@ -1,0 +1,7 @@
+{
+  "usingComponents": {
+    "nav-bar": "../../components/nav-bar/index",
+    "multi-process":"../../components/process/index",
+    "take-photo-pop":"../../components/checkimg/index"
+  }
+}

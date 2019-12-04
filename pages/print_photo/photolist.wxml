@@ -1,0 +1,46 @@
+<!--pages/print_photo/photolist.wxml-->
+<nav-bar title="{{photoMedia.name}}"></nav-bar>
+<multi-process wx:if="{{showProcess}}" complete-count="{{completeCount}}" count="{{count}}" percent="{{percent}}" bindcancelprocess="cancelImg"></multi-process>
+<take-photo-pop id="checkComponent" bindchooseImg="chooseImgs" imgNum="{{count}}" bindbaidutap="baiduprint"></take-photo-pop>
+
+<wxs src="commonphoto.wxs" module="foo" />
+
+<block wx:if="{{photoList.length>0}}">
+  <view class="top-tips">
+    请先行预览或编辑，未显示部分将不会打印
+  </view>
+  <view class="photo-list-box">
+    <view wx:for="{{photoList}}" wx:key="photoList" class="photo-item-box">
+      <image src="{{foo.shrinkPhoto(item.url,photoMedia.size.shrinksize)}}" mode="widthFix" class="photo-item-img"></image>
+      <image src="/images/print_photo_delete.png" mode="widthFix" class="photo-delete-icon"></image>
+      <view class="photo-edit-box">
+        <view class="photo-edit-but">
+          编辑
+        </view>
+        <view wx:if="{{photoList.length<limitPhoto}}" class="photo-pluss-box">
+          <image src="/images/print_photo_cutimg.png" mode="widthFix" class="photo-pluss-icon"></image>
+          <text class="photo-pluss-num">{{item.number}}</text>
+          <image src="/images/print_photo_plussimg.png" mode="widthFix" class="photo-pluss-icon"></image>
+        </view>
+      </view>
+    </view>
+    <view class="photo-normal-add" style="height:{{addBoxHeight}}rpx" bindtap="showImgCheck">
+      <image src="/images/print_photo_plusicon.png" mode="widthFix" class="photo-add-icon"></image>
+      <text class="photo-add-text">上传图片</text>
+    </view>
+  </view>
+</block>
+
+<view class="nophoto-tips-box" wx:else>
+  <image src="/images/print_photo_addimg.png" mode="widthFix" class="add-img" bindtap="showImgCheck"></image>
+  <text class="add-img-tps-text">点击此处上传照片吧</text>
+  <image src="/images/print_photo_print_tips.png" mode="widthFix" class="add-img-tips"></image>
+</view>
+<view class="bottom-button-box">
+  <view class="bottom-button-style bottom-button-white" bindtap="showImgCheck">
+    继续上传({{photoList.length}}/{{limitPhoto}})
+  </view>
+  <view class="bottom-button-style {{photoList.length>0?'common-button-bg bottom-button-conf':'bottom-button-refuse'}}">
+    确认打印
+  </view>
+</view>

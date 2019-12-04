@@ -5,19 +5,13 @@ let {
 const regeneratorRuntime = require('lib/co/runtime')
 const co = require('lib/co/co')
 const util = require('utils/util')
-  // const _ = require('lib/underscore/we-underscore')
 import Logger from 'utils/logger.js'
 
 const getSystemInfo = util.promisify(wx.getSystemInfo)
-const getStorage = util.promisify(wx.getStorage)
-  // const setStorage = util.promisify(wx.setStorage)
 
 const login = util.promisify(wx.login)
-  // const getUserInfo = util.promisify(wx.getUserInfo)
-  // const showModal = util.promisify(wx.showModal)
 const request = util.promisify(wx.request)
-  // const uploadFile = util.promisify(wx.uploadFile)
-  // const checkSession = util.promisify(wx.checkSession)
+import storage from 'utils/storage.js'
 
 
 App({
@@ -131,10 +125,11 @@ App({
 
   getOpenId: co.wrap(function* () {
     try {
-      const storage = yield getStorage({
-        key: 'openid'
-      })
-      this.openId = storage.data
+      const sto = storage.get('openId')
+      if (!sto) {
+        return this.login()
+      }
+      this.openId = sto
     } catch (e) {
       this.login()
     }
@@ -151,19 +146,16 @@ App({
           'code': loginCode.code
         }
       })
-      console.log('loginInfo.data.=====', loginInfo.data)
       if (loginInfo.data.code !== 0) {
         throw (loginInfo.data)
       }
-      wx.setStorageSync('openid', loginInfo.data.res.openid)
+      storage.put('openId', loginInfo.data.res.openid)
 
       this.openId = loginInfo.data.res.openid
     } catch (e) {
-      yield showModal({
+      util.showErr({
         title: '登录失败',
-        content: e.error,
-        showCancel: false,
-        confirmColor: '#6BA1F6'
+        content: e.error
       })
       return
     }

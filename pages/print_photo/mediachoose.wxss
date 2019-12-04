@@ -1,0 +1,70 @@
+/* pages/print_photo/mediachoose.wxss */
+page {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0 9rpx;
+}
+
+view {
+  box-sizing: border-box;
+}
+
+.media-box {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.photo-media-topbox {
+  width: 336rpx;
+  height: 280rpx;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px 0 rgba(204, 204, 204, 0.40);
+  border-radius: 20rpx;
+  margin: 15rpx;
+}
+
+.photo-media-topicon {
+  width: 112rpx;
+}
+
+.media-toptitle {
+  font-size: 34rpx;
+  color: #333;
+  line-height: 48rpx;
+  margin-top: 20rpx;
+}
+
+.photo-media-box {
+  width: 214rpx;
+  height: 260rpx;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px 0 rgba(204, 204, 204, 0.40);
+  border-radius: 20rpx;
+  margin: 15rpx;
+}
+
+.photo-media-icon {
+  width: 86rpx;
+}
+
+.media-title {
+  font-size: 30rpx;
+  color: #333;
+  line-height: 42rpx;
+  margin-top: 24rpx;
+}
+
+.media-size {
+  font-size: 24rpx;
+  line-height: 34rpx;
+  color: #999;
+}

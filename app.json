@@ -1,8 +1,8 @@
 {
   "pages": [
-    "pages/main/home_index",
-		"components/multiphoto/test",
-		"pages/network/index/index",
+    "pages/index/index",
+    "components/multiphoto/test",
+    "pages/network/index/index",
     "pages/network/tips/step1",
     "pages/network/tips/step2",
     "pages/network/tips/step3",
@@ -31,7 +31,12 @@
     "pages/print_doc/duplicate_edit/duplicate_edit",
     "pages/print_doc/duplicate_idcard/duplicate_idcard",
 		"pages/print_doc/duplicate_preview/duplicate_preview",
-		"pages/print_photo_doc/index"
+		"pages/print_photo_doc/index",
+		"pages/test/index",
+		"pages/print_photo_doc/index",
+    "pages/print_photo/mediachoose",
+    "pages/print_photo/photolist",
+    "components/process/text"
 	],
 	"subPackages": [
 		{
@@ -49,7 +54,10 @@
 		{
 		 "root": "pages/package_feature",
 		 "pages": [
-
+        "id_normal_index",
+        "id_normal_list",
+        "id_normal_mode",
+        "id_normal_edit"
 		 ]
 		},
 		{
@@ -107,28 +115,28 @@
     "borderStyle": "black",
     "position": "bottom",
     "list": [{
-        "pagePath": "pages/main/home_index",
+        "pagePath": "pages/index/index",
         "text": "首页",
         "iconPath": "images/home/icon_tab_home_unselected.png",
-        "selectedIconPath":"images/home/icon_tab_home_selected.png"
+        "selectedIconPath": "images/home/icon_tab_home_selected.png"
       },
       {
-        "pagePath": "pages/main/home_index",
+        "pagePath": "pages/index/index",
         "text": "学习",
         "iconPath": "images/home/icon_tab_study_unselected.png",
         "selectedIconPath": "images/home/icon_tab_study_selected.png"
       },
       {
-        "pagePath": "pages/main/home_index",
+        "pagePath": "pages/index/index",
         "text": "商城",
         "iconPath": "images/home/icon_tab_shop_unselected.png",
-        "selectedIconPath":"images/home/icon_tab_shop_selected.png"
+        "selectedIconPath": "images/home/icon_tab_shop_selected.png"
       },
       {
-        "pagePath": "pages/main/home_index",
+        "pagePath": "pages/index/index",
         "text": "我的",
-        "iconPath":"images/home/icon_tab_account_unselected.png",
-        "selectedIconPath":"images/home/icon_tab_account_selected.png"
+        "iconPath": "images/home/icon_tab_account_unselected.png",
+        "selectedIconPath": "images/home/icon_tab_account_selected.png"
       }
     ]
   }
