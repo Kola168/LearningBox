@@ -1,5 +1,6 @@
 .right-radio>view,
 .item-right,
+.item-left,
 .setting-item,
 .setting-tab,
 .device-base,
@@ -94,22 +95,16 @@
 }
 
 .setting-box {
-  padding: 0 24rpx;
+  padding: 0 24rpx 24rpx;
 }
 
 .setting-item {
   justify-content: space-between;
-  padding: 28rpx 0;
+  height: 100rpx;
 }
 
 .setting-item:not(:last-child) {
   border-bottom: 2rpx solid #E7E7E7;
-}
-
-.item-left {
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
 .left-label {
@@ -138,6 +133,7 @@
   color: #999;
   font-size: 28rpx;
   justify-content: flex-end;
+  width: 40%;
 }
 
 .radio-group {

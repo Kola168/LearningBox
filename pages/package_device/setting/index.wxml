@@ -7,10 +7,10 @@
       <view class="device-flag"></view>
       <view class="device-status">
         <text>在线</text>
-        <image src="../images/offline_tip.png" bindtap="toOfflineSolve" mode="widthFix" />
+        <image src="../images/offline_tip.png" bindtap="toNextPage" data-key="offlineSolve" mode="widthFix" />
       </view>
     </view>
-    <image src="../images/share_btn_normal.png" class="share-device" mode="widthFix" />
+    <image src="../images/share_btn_normal.png" class="share-device" bindtap="toNextPage" data-key="share" mode="widthFix" />
   </view>
   <view class="device-setting">
     <view class="setting-tab">
@@ -39,7 +39,7 @@
             <image src="/images/switch_off.png" class="right-switch" />
           </view>
         </view>
-        <view class="setting-item">
+        <view class="setting-item" bindtap="toNextPage" data-key="shareManage">
           <view class="item-left">
             <view class="left-label">分享管理</view>
           </view>
@@ -60,7 +60,7 @@
             <view class="left-label">长按打印设置</view>
             <image src="../images/info_icon.png" class="left-explain" mode="widthFix" />
           </view>
-          <view class="item-right">
+          <view class="item-right" bindtap="toNextPage" data-key="longpress">
             <image src="../images/arrow_right.png" class="right-arrow" />
           </view>
         </view>
@@ -70,8 +70,8 @@
           <view class="item-left">
             <view class="left-label">切换为电脑打印</view>
           </view>
-          <view class="item-right">
-            <image src="/images/switch_on.png" class="right-switch" />
+          <view class="item-right" bindtap="showModal" id="computerPrint">
+            <image src="/images/switch_{{computerPrintFlag?'on':'off'}}.png" class="right-switch" />
           </view>
         </view>
         <view class="setting-item">
@@ -90,7 +90,7 @@
             <view class="right-btn">解绑</view>
           </view>
         </view>
-        <view class="setting-item">
+        <view class="setting-item" bindtap="toNextPage" data-key="reNetwork">
           <view class="item-left">
             <view class="left-label">重新配网</view>
           </view>

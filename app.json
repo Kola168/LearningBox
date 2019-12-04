@@ -1,8 +1,6 @@
 {
   "pages": [
     "pages/main/home_index",
-		"pages/devices/list/index",
-    "pages/devices/setting/index",
 		"components/multiphoto/test",
 		"pages/network/index/index",
     "pages/network/tips/step1",
@@ -81,7 +79,12 @@
 		{
 			"root": "pages/package_device",
 			"pages": [
-		 
+        "list/index",
+        "offline/index",
+        "setting/index",
+        "share/index",
+        "share_manage/index",
+        "longpress/index"
 			]
 		 }
 	 ],

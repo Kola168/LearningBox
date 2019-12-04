@@ -8,14 +8,14 @@ const request = util.promisify(wx.request)
 Page({
   data: {
     devices: [],
-    isIpx:false
+    isFullScreen: false
   },
   onLoad: function() {
     this.weToast = new app.weToast()
     this.setData({
-      isIpx:app.isIpx
-    })
-    // this.getDevices()
+        isFullScreen: app.isFullScreen
+      })
+      // this.getDevices()
   },
   getDevices: co.wrap(function*() {
     this.weToast.toast({
@@ -36,7 +36,7 @@ Page({
         throw (resp.data)
       }
       let devices = tempData.res.printers,
-      activeDevice = tempData.res.selected_printer
+        activeDevice = tempData.res.selected_printer
       this.weToast.toast()
       this.setData({
         devices,
@@ -48,7 +48,19 @@ Page({
       console.log(e)
     }
   }),
-  toIndex() {
-    wxNav.navigateTo(`../../logs/logs`)
+
+  // 设置打印机
+  toSetting() {
+    wxNav.navigateTo(`../setting/index`)
+  },
+
+  // 分享打印机
+  toShare() {
+    wxNav.navigateTo(`../share/index`)
+  },
+
+  // 切换打印机
+  switchActiveDevice() {
+
   }
 })
