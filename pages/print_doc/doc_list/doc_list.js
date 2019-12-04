@@ -14,7 +14,7 @@ const logger = new getLogger('pages/print_doc/doc_list/doc_list')
 import router from '../../../utils/nav'
 import storage from '../../../utils/storage'
 import { uploadDocs } from '../../../utils/upload'
-import event from '../../../lib/event'
+import event from '../../../lib/event/event'
 Page({
 	data: {
 		allCount: 0, //上传总数
@@ -138,8 +138,8 @@ Page({
         var file = {
           url: url,
           filename: name,
-          color: _this.initOption.color,
-          duplex: _this.initOption.duplex,
+          color: _this.initPms.color,
+          duplex: _this.initPms.duplex,
           number: 1,
           isSetting: false,
           skip_gs: true,
@@ -165,7 +165,8 @@ Page({
 						_this.setData({
 							isCleared: false
 						})
-          }
+					}
+					_this.longToast.hide()
         }
 			})
 		
@@ -180,7 +181,7 @@ Page({
 		if (this.data.files.length >= 5) {
 			return wx.showModal({
 				content: '每次最多选择5个文档',
-				confirmColor: '#2086ee',
+				confirmColor: '#FFDC5E',
 				confirmText: "确认",
 				showCancel: false
 			})
@@ -225,7 +226,7 @@ Page({
     if (this.data.allCount == 0) {
        return wx.showModal({
         content: '至少选择一个文档打印',
-        confirmColor: '#2086ee',
+        confirmColor: '#FFDC5E',
         confirmText: "确认",
         showCancel: false
       })
@@ -291,7 +292,7 @@ Page({
 	}),
 
 	// 删除当前行文档
-	close: co.wrap(function*(e) {
+	delCurrentDoc: co.wrap(function*(e) {
     util.deleteItem(this.data.files, this.data.files[e.currentTarget.id])
     this.setData({
       files: this.data.files,
@@ -332,7 +333,7 @@ Page({
 				postData.extract = currentFile.extract
 			}
 
-			router.navigateTo('/pages/print_doc/setting',
+			router.navigateTo('/pages/print_doc/doc_setting/doc_setting',
 				{
 					postData: encodeURIComponent(JSON.stringify(postData)),
 			})
@@ -342,8 +343,10 @@ Page({
 		}
 	}),
 	
-	// 扫码打印
-	toScan(){
+	/**
+	 * @methods 点击扫码打印
+	 */
+	toScan () {
 		let hideSecurityModal = Boolean(storage.get('hideSecurityModal'))
 		if (hideSecurityModal) {
 			return this.scanPrint()
@@ -353,7 +356,10 @@ Page({
 		})
 	},
 
-	scanPrint: co.wrap(function*(){
+	/**
+	 * @methods 扫码打印
+	 */
+	scanPrint: co.wrap(function* (){
     this.cancelScan()
     let scanResult = yield scanCode(),
     pathArr = scanResult.path.split('scene=')[1].split('_'),
@@ -362,7 +368,10 @@ Page({
     yield this.selectedPrinter(id, type)
 	}),
 	
-	cancelScan(){
+	/**
+	 * @methods 取消扫描
+	 */
+	cancelScan () {
     if (this.data.checkboxFlag) {
 			storage.put('hideSecurityModal', true)
     }
@@ -371,14 +380,19 @@ Page({
     })
 	},
 	
-	// 设置不再提示安全打印弹窗
-	checkboxChange() {
+	/**
+	 * @methods 设置不再提示安全打印弹窗
+	 */
+	checkboxChange () {
 		this.setData({
 			checkboxFlag: !this.data.checkboxFlag
 		})
 	},
-
-	selectedPrinter:co.wrap(function*(id, type){
+	
+	/**
+	 * @methods 获取安全打印参数
+	 */
+	selectedPrinter: co.wrap(function*(id, type){
     this.longToast.toast({
 			type:'loading',
 			title: '请稍等'
@@ -389,8 +403,8 @@ Page({
         method: 'POST',
         dataType: 'json',
         data: {
-          'openid': app.openId,
-          'printer_type': type
+          openid: app.openId,
+          printer_type: type
         }
       })
       if (resp.data.code != 0) {
@@ -403,7 +417,10 @@ Page({
     }
 	}),
 
-	//设置回传参数
+	/**
+	 * @methods设置回传参数
+	 * @param {Object} postData 
+	 */
 	setPostData: function(postData) {
 		let tempFiles = _(this.data.files).clone()
 		tempFiles[postData.fileIndex].number = postData.number

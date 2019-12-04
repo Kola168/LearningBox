@@ -167,7 +167,7 @@ function drawImageWithDegree(ctx, path, width, height, degree) {
   }
 
   ctx.draw(false, function (e) {
-    console.log('draw callback', e)
+    // console.log('draw callback', e)
   })
 }
 

@@ -15,21 +15,15 @@ import storage from '../../../utils/storage'
 Page({
 
   data: {
-    share: app.galleryShare,
-    documentTitle: '',
     documentPrintNum: 1,
     startPrintPage: 1,
     endPrintPage: 1,
-    colorcheck: 'Color', //默认彩色
-    duplexcheck: false,
+    colorCheck: 'Color', //默认彩色
+    duplexCheck: false,
     previewUrl: '',
     endMaxPage: 1, //最大页数
     totalPage: 1,
-    showSelect: false,
     medium: 'a4',
-    defaultMedium: 'A4打印纸',
-    optionsMedium: 'A5打印纸',
-    fileIndex: 0,
     isExcel: true,
     colorModes: 2,
     isColorPrinter: true,
@@ -79,7 +73,7 @@ Page({
           title: '提示',
           content: '此文档的打印页数超过150张',
           showCancel: false,
-          confirmColor: '#fae100',
+          confirmColor: '#FFDC5E',
         })
       }
       yield this.setStatus();
@@ -133,7 +127,7 @@ Page({
     if (this.data.documentPrintNum <= 1) {
       return wx.showModal({
         content: '最少要1份才可以打印哦~',
-        confirmColor: '#2086ee',
+        confirmColor: '#FFDC5E',
         confirmText: "确认",
         showCancel: false
       })
@@ -156,7 +150,7 @@ Page({
       })
       wx.showModal({
         content: '每次最多打印30份',
-        confirmColor: '#2086ee',
+        confirmColor: '#FFDC5E',
         confirmText: "确认",
         showCancel: false
       })
@@ -177,7 +171,7 @@ Page({
       })
       return x.showModal({
         content: '请输入正确的起始页',
-        confirmColor: '#2086ee',
+        confirmColor: '#FFDC5E',
         confirmText: "确认",
         showCancel: false
       })
@@ -202,7 +196,7 @@ Page({
       })
       return wx.showModal({
         content: '请输入正确的结束页',
-        confirmColor: '#2086ee',
+        confirmColor: '#FFDC5E',
         confirmText: "确认",
         showCancel: false
       })
@@ -215,15 +209,15 @@ Page({
   //选择颜色
   colorCheck(e) {
     this.setData({
-      colorcheck: e.currentTarget.dataset.style
+      colorCheck: e.currentTarget.dataset.style
     })
   },
 
   //选择单双面打印模式
   duplexCheck(e) {
-    let duplexcheck = e.currentTarget.dataset.style == 0 ? false : true
+    let duplexCheck = e.currentTarget.dataset.style == 0 ? false : true
     this.setData({
-      duplexcheck: duplexcheck
+      duplexCheck: duplexCheck
     })
   },
 
@@ -288,8 +282,8 @@ Page({
       end_page: this.data.endPage, // 终止页数
       display: this.data.zoomType,
       skip_gs: !this.data.checkOpen, //是否检查文件修复
-      color: this.data.colorcheck, // 是否是彩色
-      duplex: this.data.duplexcheck ? true : false, // false单面 true双面
+      color: this.data.colorCheck, // 是否是彩色
+      duplex: this.data.duplexCheck ? true : false, // false单面 true双面
       media_size: (this.data.medium === 'a4') ? 0 : 3, //纸质
       extract: extract //范围类型
     }

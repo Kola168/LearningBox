@@ -5,6 +5,8 @@ import cropperUtils from './common/cropperUtils'
 import cropper from './common/drawShape'
 import utils from './common/utils'
 import cropperEntry from './common/cropperEntry'
+import { getLogger } from '../../utils/logger'
+const logger = new getLogger('components/cropper-img/cropper-img')
 import {
   cropperTypes
 } from './common/config'
@@ -72,7 +74,7 @@ var componentsData = {
           cropperMovableItems: this.cropperEntry.setInitMovePoints(croppers.tempInfo)
         })
       } catch (err) {
-        console.log(err)
+        logger.info(err)
       }
     },
     /**
@@ -376,7 +378,7 @@ var componentsData = {
         })
         _this.drawShape(callback)
       } catch (err) {
-        console.log(err)
+        logger.info(err)
       }
     },
     // 设置移动中心点
@@ -429,7 +431,7 @@ var componentsData = {
           _this.drawShape(callback)
         })
       } catch (err) {
-        console.log(err)
+        logger.info(err)
       }
     },
     // 设置移动边框
@@ -492,25 +494,25 @@ var componentsData = {
         //矩形翻转检测，四边的相对位置必须要固定,检测左上，左下，右上三个点
         if (key === 'up') {
           if (topLeft.y > (bottomLeft.y - 32)) { //上边检测
-            console.log('上边检测=============')
+            logger.info('上边检测=============')
             topLeft.y = bottomRight.y - 32
             topRight.y = bottomRight.y - 32
           }
         } else if (key === 'right') { //右边检测
           if (topRight.x < (topLeft.x + 32)) {
-            console.log('右边检测==============')
+            logger.info('右边检测==============')
             topRight.x = topLeft.x + 32
             bottomRight.x = topLeft.x + 32
           }
         } else if (key === 'bottom') { //下边检测
           if (bottomLeft.y <= (topLeft.y + 32)) {
-            console.log('下边检测=============')
+            logger.info('下边检测=============')
             bottomLeft.y = topLeft.y + 32
             bottomRight.y = topLeft.y + 32
           }
         } else if (key === 'left') { //左边检测
           if (topLeft.x > (topRight.x - 32)) {
-            console.log('左边检测==============')
+            logger.info('左边检测==============')
             x = topRight.x - 32
             bottomLeft.x = x
             topLeft.x = x
@@ -524,7 +526,7 @@ var componentsData = {
           _this.drawShape(cropperMovableItems, callback)
         })
       } catch (err) {
-        console.log(err)
+        logger.info(err)
       }
     },
     cropImage: function (cropCallback, errCallback) {

@@ -64,13 +64,13 @@
 
 		</view>
 	</block>
-	<view class="item member-tip" wx:if="{{!isMember}}" bindtap="toMember">
+	<!-- <view class="item member-tip" wx:if="{{!isMember}}" bindtap="toMember">
 		<view class="item-left">{{memberExpiresAt ? '开通会员，一年预计可省上千元' : '30天会员权限，1元即可体验'}}</view>
 		<view class="item-right">
 			<view>{{memberExpiresAt ? '' : '￥1' }}</view>
 			<view>开通</view>
 		</view>
-	</view>
+	</view> -->
 	<view class="bottom">
 		<view class="left" wx:if="{{!(discountType=='free' && !isAndroid && isMember)}}">
 			合计：
@@ -131,11 +131,11 @@
 			<view class="item-main">
 				<view class="color-check-box" data-style="Mono" bindtap="colorCheck">
 					<text class="color-type">黑白</text>
-					<image src="{{colorcheck!='Color' ? '/images/radio_on.png' : '/images/radio_off.png'}}" mode="widthFix" class="color-check" />
+					<image src="{{colorCheck!='Color' ? '/images/radio_on.png' : '/images/radio_off.png'}}" mode="widthFix" class="color-check" />
 				</view>
 				<view class="color-check-box" data-style="Color" bindtap="colorCheck">
 					<text class="color-type">全彩</text>
-					<image src="{{colorcheck=='Color'?'/images/radio_on.png':'/images/radio_off.png'}}" mode="widthFix" class="color-check" />
+					<image src="{{colorCheck=='Color'?'/images/radio_on.png':'/images/radio_off.png'}}" mode="widthFix" class="color-check" />
 				</view>
 			</view>
 		</view>
@@ -153,7 +153,7 @@
 			</view>
 		</view>
 	</view>
-	<view class="conf-box-left" bindtap="cancelcheck">取消</view>
+	<view class="conf-box-left" bindtap="cancelCheck">取消</view>
 	<button
 	 class="conf-box-right"
 	 bindtap="confCheck"

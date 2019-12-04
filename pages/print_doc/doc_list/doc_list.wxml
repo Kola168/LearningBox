@@ -1,4 +1,5 @@
 <!--pages/doc_doc_list/doc_list.wxml-->
+<wxs module="filter" src="../../../common/wxs/common.wxs"></wxs>
 <nav-bar background="#fff" title="文档列表" />
 <view class="list-container">
 	<view
@@ -24,8 +25,8 @@
 		</view>
 		<image
 		 class="close"
-		 bindtap="close"
-		 src="/images/doc_gfd-tutorial-bg-window-close.png"
+		 bindtap="delCurrentDoc"
+		 src="/images/doc_gfd_tutorial_bg_window_close.png"
 		 id="{{index}}"
 		/>
 	</view>
@@ -59,7 +60,7 @@
 </block>
 
 <!-- 打印确认框 -->
-<confirm-print bindconfirm="print" modal="{{confirmModal}}" />
+<confirm-print bindconfirm="print" modal="{{confirmModal}}"/>
 
 <!-- 安全打印弹窗 -->
 <view class="security-modal" wx:if="{{showSecurityModal}}">

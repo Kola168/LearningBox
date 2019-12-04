@@ -8,15 +8,15 @@
 	<view class="border">
 		<input
 		 value='{{input}}'
-		 bindblur="input"
-		 bindinput="input"
+		 bindblur="bindValue"
+		 bindinput="bindValue"
 		 cursor-spacing="20"
 		 maxlength="-1"
 		 placeholder="请将微信公众号文章的链接粘贴在此处"
 		 placeholder-style="font-size:26rpx;color:#999"
 		/>
 	</view>
-	<view class="btn" bindtap="next">
+	<view class="btn" bindtap="createLink">
 		<button hover-class="none" class='button'>下一步</button>
 	</view>
 </view>

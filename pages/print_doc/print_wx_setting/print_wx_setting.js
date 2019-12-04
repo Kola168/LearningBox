@@ -130,22 +130,6 @@ Page({
     })
   },
 
-  // chooseColor1 (e) {
-  //   this.setData({
-  //     img1: '/images/radio_on.png',
-  //     img2: '/images/radio_off.png',
-  //     color: 'Mono'
-  //   })
-  // },
-
-  // chooseColor2 (e) {
-  //   this.setData({
-  //     img1: '/images/radio_off.png',
-  //     img2: '/images/radio_on.png',
-  //     color: 'Color'
-  //   })
-  // },
-
   chooseColor3 (e) {
     this.setData({
       img3: '/images/radio_on.png',

@@ -8,7 +8,7 @@ const showModal = util.promisify(wx.showModal)
 import { getLogger } from '../../../utils/logger'
 const logger = new getLogger('pages/print_doc/doc_setting/doc_setting')
 import router from '../../../utils/nav'
-import event from '../../../lib/event'
+import event from '../../../lib/event/event'
 Page({
 
   data: {
@@ -167,10 +167,12 @@ Page({
       this.data.startPrintPage = e.detail.value
     }
   },
+  
   //输入打印结束页
   inputEndPage(e) {
     this.data.endPage = e.detail.value
   },
+
   endPageJudge(e) {
     let endMaxPage = Math.ceil(this.data.endMaxPage / this.data.zoomType),
       tempValue = parseInt(e.detail.value)

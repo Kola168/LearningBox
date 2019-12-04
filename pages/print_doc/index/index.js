@@ -63,10 +63,10 @@ Page({
       }
     ]
   },
-  onLoad(options) {
-
-  },
   
+  /**
+   * @methods 入口方法
+   */
   toEntry: function ({
     currentTarget: {
       dataset: {
@@ -87,13 +87,13 @@ Page({
 
   },
 
-  // 选择微信文档
+  /**
+   * @methods 选择微信文档
+   */
   chooseWeChatFile: co.wrap(function* () {
-    var SDKVersion
     try {
-      const res = wx.getSystemInfoSync()
-      SDKVersion = res.SDKVersion
-      if (util.compareVersion(SDKVersion, '2.5.0')) {
+      var res = wx.getSystemInfoSync()
+      if (util.compareVersion(res.SDKVersion, '2.5.0')) {
         wx.chooseMessageFile({
           type: 'file',
           count: 5, //暂定最多5个文档

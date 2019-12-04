@@ -16,8 +16,9 @@ const device = wx.getSystemInfoSync()
 const W = device.windowWidth - 60
 const H = device.windowHeight * 0.7 - 50
 const TOP = 50
+import { uploadFiles } from '../../../utils/upload'
 import router from '../../../utils/nav'
-import Logger from '../../../utils/logger.js'
+import Logger from '../../../utils/logger'
 const logger = new Logger.getLogger('pages/print_doc/duplicate_edit/duplicate_edit')
 
 
@@ -79,8 +80,7 @@ Page({
     try {
       let _this = this;
       let paths = JSON.parse(JSON.stringify(this.queryImages))
-      app.newUploadPhotos(app.checkBaseVersion('1.4.0'), paths, (index, url) => { // 注意了注意了，这里的index不是下标，是计数。。。。。。。。不是从0开始哒，是从1。。。
-        wx.hideLoading()
+      uploadFiles(paths, (index, url) => { 
         _this.longToast.hide()
         if (index && url) {
           _this.getImageOrientation(url)
@@ -89,7 +89,7 @@ Page({
             title: '照片上传失败',
             content: '请检查网络或稍候再试',
             showCancel: false,
-            confirmColor: '#6DD5DE'
+            confirmColor: '#FFDC5E'
           })
         }
 
@@ -103,7 +103,7 @@ Page({
   getImageOrientation: co.wrap(function* (url = '') {
     let _this = this
 
-    _this.data.images = {
+    _this.images = {
       isSmallImage: false
     }
  
@@ -119,9 +119,9 @@ Page({
         title: '照片上传失败',
         content: '请检查网络或稍候再试',
         showCancel: false,
-        confirmColor: '#6DD5DE'
+        confirmColor: '#FFDC5E'
       })
-      _this.data.images = null
+      _this.images = null
     } finally {
       _this.longToast.hide()
     }
@@ -138,16 +138,16 @@ Page({
 
     //大图过滤
     if (imageInfo.width / imageInfo.height > 5 || imageInfo.height / imageInfo.width > 5) {
-      _this.data.images = null
+      _this.images = null
       return wx.showModal({
         title: '提示',
         content: '您所上传的照片过大，请重新上传',
         showCancel: false,
-        confirmColor: '#6DD5DE'
+        confirmColor: '#FFDC5E'
       })
     }
 
-    _this.data.images = {
+    _this.images = {
       url: imginit.addProcess(url, noRotate), // 不做原始，可添加后缀
       localUrl: localUrl, // 原始默认图
       width: imageInfo.width, // 图片宽度
@@ -155,7 +155,7 @@ Page({
       isSmallImage: (imageInfo.width < 600 || imageInfo.height < 600) ? true : false, // 小图标记
     }
 
-    _this.initShowImg(_this.data.images);
+    _this.initShowImg(_this.images);
   }),
 
   initShowImg: co.wrap(function* (images) {
@@ -167,7 +167,6 @@ Page({
     this.setData({
       originalUrl: this.options.url
     })
-    cropper.init.apply(this, [W, H, TOP, false]);
     this.selectTap(); //合成图片
   }),
 
@@ -195,7 +194,7 @@ Page({
           title: '提示',
           content: resp.data.message || '服务器异常',
           showCancel: false,
-          confirmColor: '#fae100'
+          confirmColor: '#FFDC5E'
         })
       }
       return resp.data.res;
@@ -206,7 +205,7 @@ Page({
         title: '提示',
         content: '请检查您的网络，请稍后重试',
         showCancel: false,
-        confirmColor: '#fae100'
+        confirmColor: '#FFDC5E'
       })
     }
   }),
@@ -270,6 +269,13 @@ Page({
     }
   },
 
+  /**
+   * @methods  是否是小图
+   * @param {Number} leftX 
+   * @param {Number} leftY 
+   * @param {Number} rightX 
+   * @param {Number} rightY 
+   */
   smallLength(leftX, leftY, rightX, rightY) {
     let acceptLength = 50;
     let length = Math.sqrt((rightX - leftX) * (rightX - leftX) + (rightY - leftY) * (rightY - leftY));
@@ -299,7 +305,7 @@ Page({
           title: '提示',
           content: '图片尺寸过大，请重新选择',
           showCancel: false,
-          confirmColor: '#2086ee'
+          confirmColor: '#FFDC5E'
         }
       }
       if (imageInfo.width < 100 || imageInfo.height < 100) { //判断图片过小
@@ -307,14 +313,14 @@ Page({
           title: '提示',
           content: '图片尺寸过小，请重新选择',
           showCancel: false,
-          confirmColor: '#2086ee',
+          confirmColor: '#FFDC5E',
         }
       }
 
       if (textObj) {
         _this.longToast.hide()
         yield showModal(textObj)
-        return router.navigateTo()
+        return router.navigateBack()
       }
 
       //旋转矫正

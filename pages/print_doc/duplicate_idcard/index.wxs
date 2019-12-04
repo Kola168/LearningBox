@@ -8,7 +8,6 @@ var height = function (data) {
 }
 
 var showtext = function (value = []) {
-  console.log(value, 'value')
   var text = '请在黑色背景下横屏拍摄证件'
   for (var i = 0; i < value.length; i++) {
     if (value[i].url != null) {

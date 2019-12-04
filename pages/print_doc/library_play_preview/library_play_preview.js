@@ -57,18 +57,18 @@ Page({
     memberExpiresAt:null,
     title: null,
 	},
+
 	onLoad: co.wrap(function* (options) {
+		let systemInfo = wx.getSystemInfoSync()
 		this.longToast = new app.weToast()
     logger.info('99999预览模板id', options)
 		this.setData({
 			title: options.title,
 			type: options.type ? options.type : '',
-			as_type: options.as_type ? options.as_type : 'common'
-		})
-		let systemInfo = wx.getSystemInfoSync()
-		this.setData({
+			as_type: options.as_type ? options.as_type : 'common',
 			isAndroid: systemInfo.system.indexOf('iOS') > -1 ? false : true
 		})
+
 		this.id = options.id //试卷/内容单个id
 		this.sn = options.sn //分类sn
 		this.title = options.title
@@ -89,7 +89,7 @@ Page({
 		this.setData({
 			title: options.title
 		})
-		let unionId = storage.get('unionId')
+		var unionId = storage.get('unionId')
 		if (unionId) {
 			yield this.loopGetOpenId()
 		}
@@ -312,7 +312,7 @@ Page({
 				title: '请稍候'
 			})
 			yield this.getUserId()
-			yield this.member()
+			// yield this.member()
 			if (!app.activeDevice) {
 				yield this.getDevice()
       }
@@ -459,11 +459,10 @@ Page({
       })
 		}
 		this.longToast.toast({
-			img: '../../images/loading.gif',
-			title: '请稍候',
-			duration: 0
+			type: 'loading',
+			title: '请稍候'
 		})
-		let params = {
+		var params = {
 			sn: this.id,
 			type: 'ec_content',
 			openid: app.openId
@@ -478,7 +477,6 @@ Page({
 			if (resp.code != 0) {
 				throw (resp)
 			}
-			console.log('收藏', resp)
 			this.longToast.toast()
 			this.setData({
 				collection: !this.data.collection
@@ -818,7 +816,6 @@ Page({
 
 	endPageJudge(e) {
 		if (parseInt(e.detail.value) < parseInt(this.data.startPrintPage) || parseInt(e.detail.value) > this.data.detail.preview_urls.length) {
-			console.log('结束页===', parseInt(e.detail.value), typeof (e.detail.value))
 			this.setData({
 				endPrintPage: this.data.detail.preview_urls.length,
 			})
@@ -830,7 +827,6 @@ Page({
 			})
 			return
 		} else {
-			console.log('打印完成页===', e.detail.value)
 			this.data.endPrintPage = e.detail.value
 		}
 	},
@@ -904,7 +900,7 @@ Page({
 		let loopCount = 0
 		let _this = this
 		if (app.openId) {
-			
+
 		} else {
 			setTimeout(function () {
 				loopCount++

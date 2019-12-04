@@ -86,7 +86,7 @@
 		<image
 		 wx:else
 		 class="progress-loading"
-		 src="../../images/loading.gif"
+		 src="/images/loading.gif"
 		 mode="widthFix"
 		/>
 		<button class="cancel-upload" bindtap="cancelUpload">取消</button>

@@ -105,7 +105,6 @@ function Rect() {
       }
     } else if (key == 1) {
       //向左下方滑行检测
-      console.log('右顶点检测==============')
 
       if (topRight.x < (topLeft.x + 32) && topRight.y > (bottomRight.y - 32)) {
         topRight.x = topLeft.x + 32
@@ -131,7 +130,7 @@ function Rect() {
         topLeft.y = y
       }
     } else if (key == 2) {
-      console.log('左下顶点检测=============')
+      // console.log('左下顶点检测=============')
       if (bottomLeft.y < (topLeft.y + 32) && bottomLeft.x > (bottomRight.x - 32)) {
         bottomLeft.x = bottomRight.x - 32
         bottomLeft.y = topLeft.y + 32
@@ -154,7 +153,7 @@ function Rect() {
         bottomRight.y = y
       }
     } else if (key == 3) {
-      console.log('右下顶点检测=============')
+      // console.log('右下顶点检测=============')
       if (bottomRight.x < (bottomLeft.x + 32) && bottomRight.y < (topRight.y + 32)) {
         bottomRight.x = bottomLeft.x + 32
         bottomRight.y = topRight.y + 32
@@ -210,7 +209,7 @@ function Rect() {
     var x = minX * scaleInfo.x,
       y = minY * scaleInfo.y
 
-    console.log('crop rect: x=' + x + ',y=' + y + ',w=' + w + ',h=' + h)
+    // console.log('crop rect: x=' + x + ',y=' + y + ',w=' + w + ',h=' + h)
     var _this = this
     utils.canvasToTempFilePath({
       x: x,
@@ -221,7 +220,6 @@ function Rect() {
       destHeight: h,
       canvasId: 'originalCanvas',
       success: function (res) {
-        console.log(res, '===res=====')
         let tempFilePath = res.tempFilePath
         cropCallback && cropCallback(tempFilePath)
       },

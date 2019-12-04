@@ -14,14 +14,15 @@ import storage from '../../../utils/storage'
 import Logger from '../../../utils/logger.js'
 const logger = new Logger.getLogger('pages/print_doc/content_pay/content_pay')
 Page({
+
   data: {
     choosePoint: false,
     showSetting: false, //显示打印设置
     documentPrintNum: 1, //打印份数
     startPrintPage: 1,
     endPrintPage: 1,
-    colorcheck: 'Color', //默认彩色
-    duplexcheck: false,
+    colorCheck: 'Color', //默认彩色
+    duplexCheck: false,
     isColorPrinter: true,
     isDuplex: true,
     hasAuthPhoneNum: false,
@@ -34,11 +35,13 @@ Page({
     isAndroid: false,
     memberExpiresAt: null
   },
+
   toSetting: function () {
     this.setData({
       showSetting: true
     })
   },
+
   onLoad: co.wrap(function* (options) {
     try {
       this.longToast = new app.weToast()
@@ -52,7 +55,7 @@ Page({
         title: this.options.title,
         memberExpiresAt: this.options.memberExpiresAt
       })
-      let systemInfo = wx.getSystemInfoSync()
+      var systemInfo = wx.getSystemInfoSync()
       this.setData({
         isAndroid: systemInfo.system.indexOf('iOS') > -1 ? false : true
       })
@@ -64,7 +67,7 @@ Page({
         hasAuthPhoneNum: app.hasPhoneNum || hasAuthPhoneNum
       })
     } catch (e) {
-      console.log(e)
+      logger.info(e)
     }
   }),
 
@@ -101,7 +104,7 @@ Page({
       })
       wx.showModal({
         content: '每次最多打印30份',
-        confirmColor: '#2086ee',
+        confirmColor: '#FFDC5E',
         confirmText: "确认",
         showCancel: false
       })
@@ -121,7 +124,7 @@ Page({
       })
       return wx.showModal({
         content: '请输入正确的起始页',
-        confirmColor: '#2086ee',
+        confirmColor: '#FFDC5E',
         confirmText: "确认",
         showCancel: false
       })
@@ -143,7 +146,7 @@ Page({
       })
       return wx.showModal({
         content: '请输入正确的结束页',
-        confirmColor: '#2086ee',
+        confirmColor: '#FFDC5E',
         confirmText: "确认",
         showCancel: false
       })
@@ -152,19 +155,24 @@ Page({
     this.data.endPrintPage = e.detail.value
   },
 
-  //选择颜色
+  /**
+   * @methods 选择颜色
+   * @param {Object} e 
+   */
   colorCheck(e) {
     this.setData({
-      colorcheck: e.currentTarget.dataset.style
+      colorCheck: e.currentTarget.dataset.style
     })
   },
 
-  //选择单双面打印模式
+  /**
+   * @methods 选择单双面打印模式
+   * @param {Object} e 
+   */
   duplexCheck(e) {
-    console.log(e)
-    let duplexcheck = e.currentTarget.dataset.style == '0' ? false : true
+    let duplexCheck = e.currentTarget.dataset.style == '0' ? false : true
     this.setData({
-      duplexcheck: duplexcheck
+      duplexCheck: duplexCheck
     })
   },
 
@@ -176,7 +184,7 @@ Page({
     if (this.data.startPrintPage == '') {
       return wx.showModal({
         content: '请输入正确的开始页',
-        confirmColor: '#2086ee',
+        confirmColor: '#FFDC5E',
         confirmText: "确认",
         showCancel: false
       })
@@ -186,7 +194,7 @@ Page({
     if (this.data.endPrintPage == '') {
       return wx.showModal({
         content: '请输入正确的结束页',
-        confirmColor: '#2086ee',
+        confirmColor: '#FFDC5E',
         confirmText: "确认",
         showCancel: false
       })
@@ -202,7 +210,7 @@ Page({
     }
   },
 
-  cancelcheck() {
+  cancelCheck() {
     this.setData({
       showSetting: false
     })
@@ -297,12 +305,13 @@ Page({
       util.showErr(e)
     }
   }),
-  
+
   print: co.wrap(function* (e) {
     try {
       if (!app.activeDevice) {
         return util.showErr({message: '您还未绑定打印机，快去绑定吧'})
       }
+
       this.longToast.toast({
         type: 'loading',
         title: '请稍候'
@@ -317,8 +326,8 @@ Page({
       
 
       var setting = {
-        duplex: _this.data.duplexcheck,
-        color: _this.data.colorcheck,
+        duplex: _this.data.duplexCheck,
+        color: _this.data.colorCheck,
         number: _this.data.documentPrintNum,
         start_page: _this.data.startPrintPage,
         end_page: _this.data.endPrintPage
@@ -355,7 +364,7 @@ Page({
           title: '提示',
           content: resp.data.message,
           showCancel: false,
-          confirmColor: '#fae100',
+          confirmColor: '#FFDC5E',
         })
         if (res.confirm) {
           router.navigateBack()

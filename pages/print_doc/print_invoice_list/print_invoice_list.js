@@ -106,6 +106,7 @@ Page({
     })
     this.confirm(e)
   }),
+  
   print: co.wrap(function* () {
     logger.info('请求参数===', this.data.invoiceList)
     this.longToast.toast({

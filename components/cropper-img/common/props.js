@@ -29,7 +29,6 @@ export default {
       mode: cropperTypes.rect
     },
     observer: function (newVal, oldVal) {
-      console.log(newVal, oldVal)
       this.setData({
         croppers: newVal
       })

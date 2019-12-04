@@ -2,7 +2,7 @@
 <!-- <import src="../../../../transform-cropper/welCropper.wxml" /> -->
 <nav-bar background="#fff" title="图片编辑" />
 <view class="top-tip">
-	<image src='/images/icon_edit_white.png' class='icon_edit' mode='widthFix' />
+	<image src='/images/doc_icon_edit_white.png' class='icon_edit' mode='widthFix' />
 	<text>黄色框内为打印区域，请仔细编辑</text>
 </view>
 <cropper-img croppers="{{croppers}}" id="cropper"></cropper-img>
