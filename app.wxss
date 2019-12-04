@@ -2,7 +2,7 @@
 
 image {
 	height: auto;
-	display:inline-block;
+	display:block;
 }
 
 .common-button-bg{

@@ -76,9 +76,30 @@
 					"scene": null
 				},
 				{
+<<<<<<< HEAD
 					"id": -1,
 					"name": "测试",
 					"pathName": "pages/test/index",
+=======
+					"id": 3,
+					"name": "pages/print_photo/mediachoose",
+					"pathName": "pages/print_photo/mediachoose",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": 4,
+					"name": "pages/print_photo/photolist",
+					"pathName": "pages/print_photo/photolist",
+					"query": "mediaType=_6inch",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "components/process/text",
+					"pathName": "components/process/text",
+					"query": "mediaType=_6inch",
+>>>>>>> develop-zhouxw
 					"scene": null
 				}
 			]

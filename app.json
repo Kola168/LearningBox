@@ -1,10 +1,10 @@
 {
   "pages": [
     "pages/main/home_index",
-		"pages/devices/list/index",
+    "pages/devices/list/index",
     "pages/devices/setting/index",
-		"components/multiphoto/test",
-		"pages/network/index/index",
+    "components/multiphoto/test",
+    "pages/network/index/index",
     "pages/network/tips/step1",
     "pages/network/tips/step2",
     "pages/network/tips/step3",
@@ -34,7 +34,11 @@
     "pages/print_doc/duplicate_idcard/duplicate_idcard",
 		"pages/print_doc/duplicate_preview/duplicate_preview",
 		"pages/print_photo_doc/index",
-		"pages/test/index"
+		"pages/test/index",
+		"pages/print_photo_doc/index",
+    "pages/print_photo/mediachoose",
+    "pages/print_photo/photolist",
+    "components/process/text"
 	],
 	"subPackages": [
 		{
@@ -104,11 +108,12 @@
     "backgroundColor": "#fff",
     "borderStyle": "black",
     "position": "bottom",
-    "list": [{
+    "list": [
+      {
         "pagePath": "pages/main/home_index",
         "text": "首页",
         "iconPath": "images/home/icon_tab_home_unselected.png",
-        "selectedIconPath":"images/home/icon_tab_home_selected.png"
+        "selectedIconPath": "images/home/icon_tab_home_selected.png"
       },
       {
         "pagePath": "pages/main/home_index",
@@ -120,13 +125,13 @@
         "pagePath": "pages/main/home_index",
         "text": "商城",
         "iconPath": "images/home/icon_tab_shop_unselected.png",
-        "selectedIconPath":"images/home/icon_tab_shop_selected.png"
+        "selectedIconPath": "images/home/icon_tab_shop_selected.png"
       },
       {
         "pagePath": "pages/main/home_index",
         "text": "我的",
-        "iconPath":"images/home/icon_tab_account_unselected.png",
-        "selectedIconPath":"images/home/icon_tab_account_selected.png"
+        "iconPath": "images/home/icon_tab_account_unselected.png",
+        "selectedIconPath": "images/home/icon_tab_account_selected.png"
       }
     ]
   }

@@ -1,0 +1,47 @@
+/* pages/gallery/component/checkimg/index.wxss */
+.component-choosePhoto {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 999;
+}
+
+.component-choosePhoto-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    animation: alp 0.5s ease;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.component-choosePhoto-content {
+    width: 100%;
+    background: #efeff5;
+    animation: chooseBottom 0.3s ease;
+    position: relative;
+}
+
+.component-choosePhotoItem {
+    width: 100%;
+    height: 100rpx;
+    border-bottom: 1rpx solid #efeff5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #fff;
+}
+
+.higher-but{
+  height: 160rpx;
+  line-height:90rpx;
+  align-items: flex-start;
+}
+
+.component-choosePhotoItem-text {
+    color: #333;
+    font-size: 34rpx;
+}
