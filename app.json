@@ -33,7 +33,8 @@
     "pages/print_doc/duplicate_edit/duplicate_edit",
     "pages/print_doc/duplicate_idcard/duplicate_idcard",
 		"pages/print_doc/duplicate_preview/duplicate_preview",
-		"pages/print_photo_doc/index"
+		"pages/print_photo_doc/index",
+		"pages/test/index"
 	],
 	"subPackages": [
 		{
