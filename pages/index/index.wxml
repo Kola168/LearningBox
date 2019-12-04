@@ -14,13 +14,13 @@
   </block>
 </swiper>
 <view class="print-nomal">
-  <image src="/images/home/print_photo.png" mode="widthFix">
+  <image src="/images/home/print_photo.png" mode="widthFix" id="photo" bindtap="toNomalPrint">
     <view>照片打印</view>
   </image>
-  <image src="/images/home/print_doc.png" mode="widthFix">
+  <image src="/images/home/print_doc.png" mode="widthFix" id="doc" bindtap="toNomalPrint">
     <view>文档打印</view>
   </image>
-  <image src="/images/home/print_more.png" mode="widthFix">
+  <image src="/images/home/print_more.png" mode="widthFix" id="more" bindtap="toNomalPrint">
     <view>更多打印</view>
   </image>
 </view>

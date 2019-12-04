@@ -1,0 +1,47 @@
+<view class="size">
+    <image src="../../images/icon_edit.png" mode="widthFix"></image>
+    <text>请移动照片对准面部</text>
+</view>
+<view hover-class="none" bindtouchstart="onTouch" bindtouchmove="onTouchMove" bindtouchend="onTouchEnd" bindtouchcancel="onTouchEnd" bindtap="showChange" class="editor-area" style="width:{{areaPosition.width}}px;height:{{areaPosition.height}}px;left:{{areaPosition.left}}px;top:{{areaPosition.top}}px;">
+    <!-- <view class="btn-tip">
+        <view>{{localImgPath?'请移动照片对准面部':'请点击加号上传照片'}}</view>
+    </view> -->
+    <image class="delete" src="../../images/close-edit.png" mode="widthFix" wx:if="{{localImgPath}}" bindtap="deleteImg"></image>
+
+    <image class="area" mode="aspectFill" src="{{area.url}}" style="width:{{areaPosition.width}}px;height:{{areaPosition.height}}px;{{areaPosition.width==areaPosition.height?'margin-top:0':''}}">
+        <image class="btn-add" wx:if="{{!localImgPath}}" mode="widthFix" src="../../images/id_add.png" ontap="changeImage"></image>
+    </image>
+    <view class="area-border" style="width:{{area.areaWidth*areaPosition.scale-4}}px;height:{{area.areaHeight*areaPosition.scale-4}}px;left:{{area.x*areaPosition.scale}}px;top:{{area.y*areaPosition.scale}}px;display:{{showAreaBorder ? 'block' : 'none'}}"></view>
+    <!-- <view class="change-btn" ontap="changeImage" style="width:{{changeBtnWidth}}px;left:{{area.x*areaPosition.scale+area.areaWidth*areaPosition.scale/2-changeBtnWidth/2}}px;top:{{area.y*areaPosition.scale+area.areaHeight*areaPosition.scale-40}}px;display:{{showChangeBtn &&localImgPath? 'block' : 'none'}}">
+        <image mode="aspectFill" src="/images/gfd_icon_pic@2x.png"></image>
+        <text>换张试试</text>
+    </view> -->
+    <image animation="{{animationData}}" class="user-img" mode="widthFix" src="{{localImgPath}}" binderror="imageLoadError" bindload="initDesign" style="width:{{imgInfo.width}}px; height:{{imgInfo.height}}px;left:{{userImgPosition.x}}px;top:{{userImgPosition.y}}px;transform:scale3d({{realScale}},{{realScale}},1) rotate({{realRotate}}deg)"></image>
+</view>
+<form report-submit="true" bindsubmit="next" class="bottom-btn">
+    <button class="btn-print" formType="submit">下一步</button>
+</form>
+<view class="choosePhoto" wx:if="{{popWindow}}">
+    <view class="choosePhoto-container" catchtap="closePopWindow">
+        <view class="choosePhoto-content">
+            <view class="choosePhotoItem" catchtap="takePhoto">
+                <text>拍照</text>
+            </view>
+            <view class="choosePhotoItem" catchtap="localAlbum">
+                <text>手机相册</text>
+            </view>
+            <view class="choosePhotoItem" catchtap="weChatAlbum">
+                <text>微信聊天记录</text>
+            </view>
+            <view class="choosePhotoItem" style="margin-top:20rpx;" catchtap="closePopWindow">
+                <text>取消</text>
+            </view>
+        </view>
+    </view>
+</view>
+
+<import src="../../lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />
+<!-- <view class="editor-bg" bindtap="hideChange">
+    <image mode="aspectFill" src="../../resources/images/gfd_id_edit_bg@2x.jpg"></image>
+</view> -->

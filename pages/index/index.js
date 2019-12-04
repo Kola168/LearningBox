@@ -3,16 +3,16 @@ import wxNav from '../../utils/nav.js'
 import Logger from '../../utils/logger.js'
 const logger = new Logger.getLogger('pages/index/index')
 import co from '../../lib/co/co'
-import regeneratorRuntime from'../../lib/co/runtime'
+import regeneratorRuntime from '../../lib/co/runtime'
 const util = require('../../utils/util')
 // page mixins
 require('../../utils/mixin.js')
 import index from "../../mixins/index.js"
 import init from "../../mixins/init.js"
-
 import storage from '../../utils/storage.js'
 const request = util.promisify(wx.request)
 const checkSession = util.promisify(wx.checkSession)
+
 Page({
   mixins: [index, init],
   data: {
@@ -35,7 +35,7 @@ Page({
       title: '入园早准备',
       url: 'http://gfd-i.memeyin.com/e-FlXfVks1do_li3DqrLWVHjr-0IPr'
     }, ],
-    showAuth:false//登录
+    showAuth: false //登录
 
   },
 
@@ -53,40 +53,39 @@ Page({
     this.longToast = new app.weToast()
   },
   onShow: co.wrap(function* () {
-		yield this.getUnion() //授权
-	}),
+    yield this.getUnion() //授权
+  }),
   getUnion: co.wrap(function* () {
-		try {
-			let unionId = wx.getStorageSync('unionId')
-			let openId = wx.getStorageSync('openId')
-			if (unionId && openId) {
-				this.setData({
-					showAuth: false
-				})
-				app.openId = openId
-			}
-			if (!unionId) {
-				this.setData({
-					showAuth: true,
-				})
-			}
-		} catch (e) {
-			util.showErr({
-				message: '请重新打开小程序'
-			})
-		}
-	}),
+    try {
+      let unionId = storage.get('unionId')
+      let openId = storage.get('openId')
+      if (unionId && openId) {
+        this.setData({
+          showAuth: false
+        })
+        app.openId = openId
+      }
+      if (!unionId) {
+        this.setData({
+          showAuth: true,
+        })
+      }
+    } catch (e) {
+      util.showErr({
+        message: '请重新打开小程序'
+      })
+    }
+  }),
   checkSession: co.wrap(function* () {
-		try {
-			yield checkSession()
-			return true
-		} catch (e) {
-			console.log('need login', e)
-			return false
-		}
-	}),
+    try {
+      yield checkSession()
+      return true
+    } catch (e) {
+      return false
+    }
+  }),
   userInfoHandler: co.wrap(function* (e) {
-    console.log('授权', e)
+    logger.info('********** userInfoHandler', e)
     if (!e.detail.userInfo || !e.detail.encryptedData) {
       return
     }
@@ -95,12 +94,10 @@ Page({
       type: "loading",
       duration: 0
     })
-
     let session = yield this.checkSession()
     if (!session) {
       yield app.login()
     }
-
     try {
       let params = {
         openid: app.openId,
@@ -118,9 +115,6 @@ Page({
         },
         decr_type: 'login'
       }
-
-      // console.log('授权参数：', params)
-  
       const resp = yield request({
         url: app.apiServer + `/api/v1/users/sessions/wechat_decryption`,
         method: 'POST',
@@ -130,9 +124,9 @@ Page({
       if (resp.data.code != 0) {
         throw (resp.data)
       }
-      wx.setStorageSync('authToken', resp.data.res.auth_token)
-      wx.setStorageSync('unionId', resp.data.res.unionid)
-    
+      storage.put('authToken', resp.data.res.auth_token)
+      storage.put('unionId', resp.data.res.unionid)
+
       // if (resp.data.res.phone) {
       //   app.hasPhoneNum = true
       //   app.globalPhoneNum = resp.data.res.phone
@@ -144,15 +138,7 @@ Page({
       })
       this.longToast.toast()
     } catch (e) {
-      console.log(e)
       yield app.login()
-      yield showModal({
-        title: '授权失败',
-        content: '请重新尝试',
-        confirmColor: '#2086ee',
-        confirmText: "确认",
-        showCancel: false
-      })
       this.setData({
         showAuth: true
       })
@@ -160,4 +146,20 @@ Page({
       util.showErr(e)
     }
   }),
+  toNomalPrint: function (e) {
+    let url
+    switch (e.currentTarget.id) {
+      case 'photo':
+        url = "/pages/print_photo/mediachoose"
+        break
+      case 'doc':
+        url = "/pages/print_doc/index/index"
+        break
+        defalt:
+          url = ''
+    }
+    wx.navigateTo({
+      url
+    })
+  }
 })

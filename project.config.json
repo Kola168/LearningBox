@@ -74,6 +74,12 @@
 					"pathName": "pages/network/wificonnect/connect",
 					"query": "equipInfo=\"{asd:1}\"&wifiSSID=\"asd\"",
 					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "证件照",
+					"pathName": "pages/package_feature/id_normal_index",
+					"scene": null
 				}
 			]
 		}
