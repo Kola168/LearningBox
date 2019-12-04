@@ -5,19 +5,13 @@ let {
 const regeneratorRuntime = require('lib/co/runtime')
 const co = require('lib/co/co')
 const util = require('utils/util')
-// const _ = require('lib/underscore/we-underscore')
 import Logger from 'utils/logger.js'
 
 const getSystemInfo = util.promisify(wx.getSystemInfo)
-const getStorage = util.promisify(wx.getStorage)
-// const setStorage = util.promisify(wx.setStorage)
 
 const login = util.promisify(wx.login)
-// const getUserInfo = util.promisify(wx.getUserInfo)
-// const showModal = util.promisify(wx.showModal)
 const request = util.promisify(wx.request)
-// const uploadFile = util.promisify(wx.uploadFile)
-// const checkSession = util.promisify(wx.checkSession)
+import storage from 'utils/storage.js'
 
 
 App({
@@ -41,8 +35,8 @@ App({
     this.navBarInfo = this.getNavBarInfo()
     this.handleDevice()
   }),
- 
-	//获取系统信息
+
+  //获取系统信息
   getSystemInfo: co.wrap(function* () {
     let res = yield getSystemInfo()
     this.sysInfo = res
@@ -76,39 +70,40 @@ App({
         menuHeight: rect.height
       }
     }
-	},
-	
-	preventMoreTap: function (e) {
-		if (_.isEmpty(e)) {
-			return false
-		}
-		try {
-			var globaTime = this.globalLastTapTime;
-			var time = e.timeStamp;
-			if (Math.abs(time - globaTime) < 500 && globaTime != 0) {
-				this.globalLastTapTime = time;
-				return true;
-			} else {
-				this.globalLastTapTime = time;
-				return false;
-			}
-		} catch (e) {
-			console.log(e)
-		}
-	},
+  },
+
+  preventMoreTap: function (e) {
+    if (_.isEmpty(e)) {
+      return false
+    }
+    try {
+      var globaTime = this.globalLastTapTime;
+      var time = e.timeStamp;
+      if (Math.abs(time - globaTime) < 500 && globaTime != 0) {
+        this.globalLastTapTime = time;
+        return true;
+      } else {
+        this.globalLastTapTime = time;
+        return false;
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  },
 
   getOpenId: co.wrap(function* () {
-		try {
-			const storage = yield getStorage({
-				key: 'openid'
-			})
-			this.openId = storage.data
-		} catch (e) {
-			this.login()
-		}
-	}),
-	
-	login: co.wrap(function* () {
+    try {
+      const sto = storage.get('openId')
+      if (!sto) {
+        return this.login()
+      }
+      this.openId = sto
+    } catch (e) {
+      this.login()
+    }
+  }),
+
+  login: co.wrap(function* () {
     try {
       const loginCode = yield login()
       const loginInfo = yield request({
@@ -119,19 +114,16 @@ App({
           'code': loginCode.code
         }
       })
-      console.log('loginInfo.data.=====', loginInfo.data)
       if (loginInfo.data.code !== 0) {
         throw (loginInfo.data)
       }
-      wx.setStorageSync('openid', loginInfo.data.res.openid)
+      storage.put('openId', loginInfo.data.res.openid)
 
       this.openId = loginInfo.data.res.openid
     } catch (e) {
-      yield showModal({
+      util.showErr({
         title: '登录失败',
-        content: e.error,
-        showCancel: false,
-        confirmColor: '#6BA1F6'
+        content: e.error
       })
       return
     }

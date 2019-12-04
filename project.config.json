@@ -77,6 +77,7 @@
 				},
 				{
 <<<<<<< HEAD
+<<<<<<< HEAD
 					"id": -1,
 					"name": "测试",
 					"pathName": "pages/test/index",
@@ -100,6 +101,11 @@
 					"pathName": "components/process/text",
 					"query": "mediaType=_6inch",
 >>>>>>> develop-zhouxw
+=======
+					"id": -1,
+					"name": "证件照",
+					"pathName": "pages/package_feature/id_normal_index",
+>>>>>>> develop-lis
 					"scene": null
 				}
 			]

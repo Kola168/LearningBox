@@ -1,7 +1,7 @@
 {
   "pages": [
-    "pages/main/home_index",
-    "pages/devices/list/index",
+    "pages/index/index",
+		"pages/devices/list/index",
     "pages/devices/setting/index",
     "components/multiphoto/test",
     "pages/network/index/index",
@@ -56,7 +56,10 @@
 		{
 		 "root": "pages/package_feature",
 		 "pages": [
-		
+        "id_normal_index",
+        "id_normal_list",
+        "id_normal_mode",
+        "id_normal_edit"
 		 ]
 		},
 		{
@@ -108,27 +111,32 @@
     "backgroundColor": "#fff",
     "borderStyle": "black",
     "position": "bottom",
+<<<<<<< HEAD
     "list": [
       {
         "pagePath": "pages/main/home_index",
+=======
+    "list": [{
+        "pagePath": "pages/index/index",
+>>>>>>> develop-lis
         "text": "首页",
         "iconPath": "images/home/icon_tab_home_unselected.png",
         "selectedIconPath": "images/home/icon_tab_home_selected.png"
       },
       {
-        "pagePath": "pages/main/home_index",
+        "pagePath": "pages/index/index",
         "text": "学习",
         "iconPath": "images/home/icon_tab_study_unselected.png",
         "selectedIconPath": "images/home/icon_tab_study_selected.png"
       },
       {
-        "pagePath": "pages/main/home_index",
+        "pagePath": "pages/index/index",
         "text": "商城",
         "iconPath": "images/home/icon_tab_shop_unselected.png",
         "selectedIconPath": "images/home/icon_tab_shop_selected.png"
       },
       {
-        "pagePath": "pages/main/home_index",
+        "pagePath": "pages/index/index",
         "text": "我的",
         "iconPath": "images/home/icon_tab_account_unselected.png",
         "selectedIconPath": "images/home/icon_tab_account_selected.png"
