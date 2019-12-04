@@ -1,8 +1,5 @@
 const app = getApp()
-const regeneratorRuntime = require('../lib/co/runtime')
-import storage from './storage.js'
-const co = require('../lib/co/co')
-const util = require('../utils/util')
+import { regeneratorRuntime, co, storage, util } from './common_import'
 const request = util.promisify(wx.request)
 const wxUploadFile = util.promisify(wx.uploadFile)
   // 上传权限url

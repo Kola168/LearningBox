@@ -5,17 +5,15 @@ let {
 const regeneratorRuntime = require('lib/co/runtime')
 const co = require('lib/co/co')
 const util = require('utils/util')
-const login = util.promisify(wx.login)
-const request = util.promisify(wx.request)
-import storage from 'utils/storage.js'
-
-const _ = require('lib/underscore/we-underscore')
 import Logger from 'utils/logger.js'
 
 const getSystemInfo = util.promisify(wx.getSystemInfo)
 const getStorage = util.promisify(wx.getStorage)
  
 
+const login = util.promisify(wx.login)
+const request = util.promisify(wx.request)
+import storage from 'utils/storage.js'
 
 
 App({
