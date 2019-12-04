@@ -1,11 +1,12 @@
 const app = getApp()
 const regeneratorRuntime = require('../lib/co/runtime')
+import storage from './storage.js'
 const co = require('../lib/co/co')
 const util = require('../utils/util')
 const request = util.promisify(wx.request)
 const wxUploadFile = util.promisify(wx.uploadFile)
   // 上传权限url
-const UPLOAD_AUTH_URL = app.apiServer + `/boxapi/v3/obs/token`
+const UPLOAD_AUTH_URL = app.apiServer + `/api/v1/obs/token`
 let uploadIndex = 1
 
 /**
@@ -14,10 +15,12 @@ let uploadIndex = 1
  */
 const getUploadAuth = co.wrap(function*(params = {}) {
   try {
+    let authToken = storage.get('authToken')
     let resp = yield request({
       url: UPLOAD_AUTH_URL,
       header: {
-        'G-Auth': app.authAppKey
+        'G-Auth': app.authAppKey,
+        'AUTHORIZATION': `Token token=${authToken}`
       },
       method: 'GET',
       dataType: 'json',

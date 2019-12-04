@@ -41,7 +41,7 @@ App({
     this.navBarInfo = this.getNavBarInfo()
     this.handleDevice()
   }),
- 
+
 	//获取系统信息
   getSystemInfo: co.wrap(function* () {
     let res = yield getSystemInfo()
@@ -52,7 +52,8 @@ App({
   // 是否为iPhone X，rpxPixel
   handleDevice() {
     let model = this.sysInfo.model.toLowerCase()
-    this.isIpx = model.indexOf("iphone x") > -1 ? true : false
+    // 待解决
+    this.isFullScreen = model.indexOf("iphone x") > -1 ? true : false
     this.rpxPixel = 750 / this.sysInfo.windowWidth
   },
 
@@ -77,7 +78,7 @@ App({
       }
     }
 	},
-	
+
 	preventMoreTap: function (e) {
 		if (_.isEmpty(e)) {
 			return false
@@ -107,7 +108,7 @@ App({
 			this.login()
 		}
 	}),
-	
+
 	login: co.wrap(function* () {
     try {
       const loginCode = yield login()
