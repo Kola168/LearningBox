@@ -25,7 +25,7 @@
 					<image mode="widthFix" src="{{data.public_img}}" class='url' />
 					<text>{{data.public_name}}</text>
 				</view>
-				<view id="{{i}}" data-type="{{index}}" class="{{data.is_subscription==1?'cancel_btn':'subscribe_btn'}}">
+				<view id="{{i}}" data-type="{{index}}" class="{{data.is_subscription== 1 ? 'cancel_btn' : 'subscribe_btn'}}">
 					<button
 					 hover-class="none"
 					 class='cancel_button'
@@ -50,6 +50,6 @@
 		</view>
 	</view>
 </view>
-<import src="../../lib/toast/wetoast.wxml" />
+<import src="../../../lib/toast/wetoast.wxml" />
 <template is="wetoast" data="{{...__wetoast__}}" />
 

@@ -1,4 +1,4 @@
-<nav-bar background="#fff" title="发票打印" />
+<nav-bar background="#fff" title="已选发票列表" />
 <view class="list-container">
 	<view
 	 class="doc-item-container"

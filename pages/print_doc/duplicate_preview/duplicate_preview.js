@@ -18,8 +18,8 @@ Page({
     height: 0,
     count: 1,
     preUrl: '',
-    no_select_icon: '/images/doc_noselected.png',
-    select_icon: '/images/doc_document_checked.png',
+    no_select_icon: '/images/radio_off.png',
+    select_icon: '/images/radio_on.png',
     color: 'Mono', //是否彩色
     colorList: [{
         name: '黑白',
@@ -37,7 +37,7 @@ Page({
     confirmModal: {
       isShow: false,
       title: '请正确放置A4打印纸',
-      image: 'https://cdn.gongfudou.com/miniapp/ec/confirm_print_a4_new.png'
+      image: 'https://cdn-h.gongfudou.com/LearningBox/main/doc_confirm_print_a4_new.png'
     }
   },
   onLoad: function (options) {
@@ -136,7 +136,7 @@ Page({
 
   getPhoneNumber: co.wrap(function* (e) {
     yield app.getPhoneNum(e)
-    storage.set("hasAuthPhoneNum", true)
+    storage.put("hasAuthPhoneNum", true)
     this.hasAuthPhoneNum = true
     this.setData({
       hasAuthPhoneNum: true
@@ -152,13 +152,13 @@ Page({
         title: '请稍后'
       })
       try {
-        let param = {
+        var param = {
           media_type: 'copy',
           openid: app.openId,
           urls: [{
             number: this.data.count, //数量
-            pre_convert_url: this.data.img_url, //图片原始url
-            url: this.data.img_url, //图片原始url
+            pre_convert_url: this.data.img_url, //图片编辑后url
+            url: this.data.preUrl, //图片原始url
             rotate: false,
             thumb_url: this.data.preUrl, //图片url
             color: this.data.color, //色彩
@@ -186,6 +186,7 @@ Page({
       }
     }
   }),
+
   onShareAppMessage() {
     return app.share
   }

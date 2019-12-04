@@ -8,6 +8,8 @@ const util = require('../../../utils/util')
 
 const request = util.promisify(wx.request)
 import router from '../../../utils/nav'
+import Logger from '../../../utils/logger.js'
+const logger = new Logger.getLogger('pages/print_doc/print_wx/print_wx')
 // import commonRequest from '../../utils/common_request.js'
 Page({
   data: {
@@ -20,12 +22,12 @@ Page({
     textList: '',
     subscription: '',
     imgList: [
-      'https://cdn.gongfudou.com/miniapp/ec/wx_article1.png',
-      'https://cdn.gongfudou.com/miniapp/ec/wx_article2.png',
-      'https://cdn.gongfudou.com/miniapp/ec/wx_article3.png'
+      'https://cdn-h.gongfudou.com/LearningBox/main/doc_wx_article1.png',
+      'https://cdn-h.gongfudou.com/LearningBox/main/doc_wx_article2.png',
+      'https://cdn-h.gongfudou.com/LearningBox/main/doc_wx_article3.png'
     ]
   },
-  onLoad: co.wrap(function* (options) {
+  onLoad: co.wrap(function* () {
     this.longToast = new app.weToast()
     this.page = 1
     this.pageEnd = false
@@ -52,17 +54,21 @@ Page({
       util.showErr(e)
     }
   }),
-  changeTab: co.wrap(function* (e) {
-    var id = e.currentTarget.id
-    this.page = 1
-    this.pageEnd = false
-    this.setData({
-      textList: [],
-      tabId: id
-    })
-    yield this.getText()
-  }),
 
+  // changeTab: co.wrap(function* (e) {
+  //   var id = e.currentTarget.id
+  //   this.page = 1
+  //   this.pageEnd = false
+  //   this.setData({
+  //     textList: [],
+  //     tabId: id
+  //   })
+  //   yield this.getText()
+  // }),
+
+  /**
+   * @methods 自动填充剪切板链接
+   */
   getLink () {
     var _this = this
     wx.getClipboardData({
@@ -85,27 +91,21 @@ Page({
     router.navigateTo('/pages/print_doc/print_wx_introduction/print_wx_introduction')
   },
 
-  input: function (e) {
-    console.log(e, '===e====')
+  /**
+   * @methods 绑定值
+   * @param {Object} e 
+   */
+  bindValue (e) {
     this.setData({
       input: e.detail.value
     })
   },
 
-  toSetting: co.wrap(function* ({currentTarget: {id}}) {
-    var pdf = this.data.textList[id].pdf_url
-    this.setData({
-      pdf: pdf
-    })
-    router.navigateTo('/pages/print_doc/print_wx_setting/print_wx_setting', {
-      converted_url: encodeURIComponent(JSON.stringify(this.data.pdf)),
-      from: 'list'
-    })
-  }),
-
-  next: co.wrap(function* () {
+  /**
+   * @methods 生成链接
+   */
+  createLink: co.wrap(function* () {
     var input = this.data.input
-    console.log(input, '======0')
 
     if (input == '') {
       return util.showErr({
@@ -114,12 +114,10 @@ Page({
     }
     if (input.indexOf("https://mp.weixin.qq.com") == 0) {
       
-      console.log(input, '======1.1')
       this.longToast.toast({
         type: 'loading',
         title: '请稍候'
       })
-      console.log(input, '======1.2')
       try {
         var resp = yield request({
           url: app.apiServer + `/ec/v2/wx_files`,
@@ -152,170 +150,151 @@ Page({
     }
   }),
 
-  toSubscribe: co.wrap(function* (e) {
-    yield this.getSubscribe()
-    router.navigateTo('/pages/print_doc/print_wx_subscribe/print_wx_subscribe', {
-      user_id: this.user_id,
-      publicType: JSON.stringify(this.data.subscription)
-    })
+  // toSetting: co.wrap(function* ({currentTarget: {id}}) {
+  //   var pdf = this.data.textList[id].pdf_url
+  //   this.setData({
+  //     pdf: pdf
+  //   })
+  //   router.navigateTo('/pages/print_doc/print_wx_setting/print_wx_setting', {
+  //     converted_url: encodeURIComponent(JSON.stringify(this.data.pdf)),
+  //     from: 'list'
+  //   })
+  // }),
+
+  // toSubscribe: co.wrap(function* (e) {
+  //   yield this.getSubscribe()
+  //   router.navigateTo('/pages/print_doc/print_wx_subscribe/print_wx_subscribe', {
+  //     user_id: this.user_id,
+  //     publicType: JSON.stringify(this.data.subscription)
+  //   })
    
-  }),
+  // }),
 
-  getPublicType: co.wrap(function* (e) {
-    this.longToast.toast({
-      type: 'loading',
-      title: '请稍候'
-    })
-    try {
-      const resp = yield request({
-        url: `https://ta.dc.gongfudou.com/api/wx_article/getPublicType`,
-        method: 'GET',
-        dataType: 'json'
-      })
-      if (resp.data.code !== 0) {
-        throw (resp.data)
-      }
-      this.longToast.hide()
-      this.setData({
-        publicType: resp.data.data
-      })
-    } catch (e) {
-      this.longToast.hide()
-      util.showErr(e)
-    }
-  }),
+  // getPublicType: co.wrap(function* (e) {
+  //   this.longToast.toast({
+  //     type: 'loading',
+  //     title: '请稍候'
+  //   })
+  //   try {
+  //     const resp = yield request({
+  //       url: `https://ta.dc.gongfudou.com/api/wx_article/getPublicType`,
+  //       method: 'GET',
+  //       dataType: 'json'
+  //     })
+  //     if (resp.data.code !== 0) {
+  //       throw (resp.data)
+  //     }
+  //     this.longToast.hide()
+  //     this.setData({
+  //       publicType: resp.data.data
+  //     })
+  //   } catch (e) {
+  //     this.longToast.hide()
+  //     util.showErr(e)
+  //   }
+  // }),
 
-  getSubscribe: co.wrap(function* (e) {
-    this.longToast.toast({
-      type: 'loading',
-      title: '请稍候',
-    })
-    let params = {
-      user_id: this.user_id,
-    }
-    try {
-      const resp = yield request({
-        url: `https://ta.dc.gongfudou.com/api/wx_article/getPublicType`,
-        method: 'GET',
-        dataType: 'json',
-        data: params
-      })
-      if (resp.data.code !== 0) {
-        throw (resp.data)
-      }
-      this.longToast.hide()
-      this.setData({
-        subscription: resp.data.data
-      })
-    } catch (e) {
-      this.longToast.hide()
-      util.showErr(e)
-    }
-  }),
+  // getSubscribe: co.wrap(function* (e) {
+  //   this.longToast.toast({
+  //     type: 'loading',
+  //     title: '请稍候',
+  //   })
+  //   let params = {
+  //     user_id: this.user_id,
+  //   }
+  //   try {
+  //     const resp = yield request({
+  //       url: `https://ta.dc.gongfudou.com/api/wx_article/getPublicType`,
+  //       method: 'GET',
+  //       dataType: 'json',
+  //       data: params
+  //     })
+  //     if (resp.data.code !== 0) {
+  //       throw (resp.data)
+  //     }
+  //     this.setData({
+  //       subscription: resp.data.data
+  //     })
+  //     this.longToast.hide()
 
-  getText: co.wrap(function* (e) {
-    this.longToast.toast({
-      type: 'loading',
-      title: '请稍候',
-    })
-    console.log("this.page", this.page)
-    if (this.page == 1) {
-      this.setData({
-        textList: []
-      })
-      this.pageEnd = false
-    }
-    this.setData({
-      id: this.data.publicType[this.data.tabId].id
-    })
-    var params = {
-      public_type: this.data.id,
-      user_id: this.user_id,
-      page: this.page,
-      size: '10'
-    }
-    try {
-      const resp = yield request({
-        url: `https://ta.dc.gongfudou.com/api/wx_article/getWxArticle`,
-        method: 'GET',
-        dataType: 'json',
-        data: params
-      })
-      if (resp.data.code !== 0) {
-        throw (resp.data)
-      }
-      this.longToast.hide()
-      if (resp.data.data.length < 10) {
-        this.pageEnd = true
-      }
-      if (resp.data.data.length == 0) {
-        return
-      }
-      this.setData({
-        textList: this.data.textList.concat(resp.data.data)
-      })
-      this.page++
-    } catch (e) {
-      this.longToast.toast()
-      util.showErr(e)
-    }
-  }),
+  //   } catch (e) {
+  //     this.longToast.hide()
+  //     util.showErr(e)
+  //   }
+  // }),
 
-  playPreview: co.wrap(function* (e) {
-    this.longToast.toast({
-      type: 'loading',
-      title: '请稍候',
-      duration: 0
-    })
-    var id = parseInt(e.currentTarget.id)
-    let pdf = this.data.textList[id].pdf_url
-    this.setData({
-      pdf: pdf
-    })
-    let _this = this
-    wx.downloadFile({
-      url: _this.data.pdf,
-      success(res) {
-        if (res.statusCode === 200) {
-          console.log(res.tempFilePath)
-          _this.longToast.toast()
-          wx.openDocument({
-            filePath: res.tempFilePath
-          })
-        }
-      },
-      fail(e) {
-        // console.log('e=====', e)
-      }
-    })
-  }),
+  // getText: co.wrap(function* (e) {
+  //   this.longToast.toast({
+  //     type: 'loading',
+  //     title: '请稍候',
+  //   })
+  //   if (this.page == 1) {
+  //     this.setData({
+  //       textList: []
+  //     })
+  //     this.pageEnd = false
+  //   }
+  //   this.setData({
+  //     id: this.data.publicType[this.data.tabId].id
+  //   })
+  //   var params = {
+  //     public_type: this.data.id,
+  //     user_id: this.user_id,
+  //     page: this.page,
+  //     size: '10'
+  //   }
+  //   try {
+  //     const resp = yield request({
+  //       url: `https://ta.dc.gongfudou.com/api/wx_article/getWxArticle`,
+  //       method: 'GET',
+  //       dataType: 'json',
+  //       data: params
+  //     })
+  //     if (resp.data.code !== 0) {
+  //       throw (resp.data)
+  //     }
+  //     if (resp.data.data.length < 10) {
+  //       this.pageEnd = true
+  //     }
+  //     if (resp.data.data.length == 0) {
+  //       return
+  //     }
+  //     this.setData({
+  //       textList: this.data.textList.concat(resp.data.data)
+  //     })
+  //     this.longToast.hide()
+  //     this.page++
+  //   } catch (e) {
+  //     this.longToast.hide()
+  //     util.showErr(e)
+  //   }
+  // }),
 
-  controlModal: co.wrap(function* (e) {
-    this.setData({
-      showGetModal: true
-    })
-  }),
-  hideModal: co.wrap(function* (e) {
-    this.setData({
-      showGetModal: false
-    })
-  }),
+  // playPreview: co.wrap(function* (e) {
+  //   this.longToast.toast({
+  //     type: 'loading',
+  //     title: '请稍候'
+  //   })
+  //   var id = parseInt(e.currentTarget.id)
+  //   var pdf = this.data.textList[id].pdf_url
+  //   var _this = this
 
-  setFirst: co.wrap(function* (e) {
-    wx.setStorageSync('isFisrt', '1')
-  }),
-
-  isFirst: co.wrap(function* (e) {
-    var isFir = wx.getStorageSync('isFisrt')
-    if (isFir) {
-      this.setData({
-        showGetModal: false
-      })
-    } else {
-      this.setData({
-        showGetModal: true
-      })
-    }
-  }),
-
+  //   _this.setData({
+  //     pdf: pdf
+  //   })
+  //   wx.downloadFile({
+  //     url: _this.data.pdf,
+  //     success(res) {
+  //       if (res.statusCode === 200) {
+  //         _this.longToast.hide()
+  //         wx.openDocument({
+  //           filePath: res.tempFilePath
+  //         })
+  //       }
+  //     },
+  //     fail(e) {
+  //       // console.log('e=====', e)
+  //     }
+  //   })
+  // })
 })

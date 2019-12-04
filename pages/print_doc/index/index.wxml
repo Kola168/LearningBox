@@ -1,6 +1,5 @@
 <nav-bar background="#fff" title="文档打印" />
 
-
 <view class="entry-main">
 	<view class="main-entry flex flex-m-axis-between">
 		<view

@@ -6,19 +6,18 @@ const _ = require('../../../lib/underscore/we-underscore')
 const showModal = util.promisify(wx.showModal)
 // import commonRequest from '../../../utils/common_request.js'
 import { getLogger } from '../../../utils/logger'
-const logger = new getLogger('pages/print_doc/doc_list/doc_list')
+const logger = new getLogger('pages/print_doc/doc_setting/doc_setting')
 import router from '../../../utils/nav'
-import storage from '../../../utils/storage'
+import event from '../../../lib/event/event'
 Page({
 
   data: {
-    share: app.galleryShare,
     fileTitle: null,
     documentPrintNum: 1,
     startPrintPage: 1,
     endPrintPage: 1,
-    colorcheck: 'Color', //默认彩色
-    duplexcheck: false,
+    colorCheck: 'Color', //默认彩色
+    duplexCheck: false,
     previewUrl: '',
     endMaxPage: 1, //最大页数
     totalPage: 1,
@@ -37,6 +36,19 @@ Page({
     showConfirm: false,
     checkOpen: false,
     extract: 'all',
+    rangeList: [
+      {
+        name: '打印范围',
+        _id: 'all'
+      },
+      {
+        name: '仅打印奇数页',
+        _id: 'odd'
+      },
+      {
+        name: '仅打印偶数页',
+        _id: 'even'
+    }]
   },
 
   onLoad: co.wrap(function*(options) {
@@ -48,7 +60,7 @@ Page({
         fileIndex: query.fileIndex,
         colorModes: query.colorModes,
         media_sizes: query.media_sizes,
-        duplexcheck: query.duplexcheck,
+        duplexCheck: query.duplexcheck,
         previewUrl: query.url,
         endMaxPage: query.page_count,
         totalPage: query.page_count,
@@ -78,7 +90,7 @@ Page({
 
       this.setData(tempData)
     } catch (e) {
-      logger.error(e)
+      logger.info(e)
       util.showErr(e)
     }
     if (parseInt(this.query.page_count) > 150) {
@@ -92,6 +104,9 @@ Page({
     yield this.setStatus()
   }),
 
+  /**
+   * @methods 设置默认选项值
+   */
   setStatus: co.wrap(function*() {
       //设置是否支持多面打印
     if (this.query.media_sizes[0].duplex) {
@@ -116,7 +131,9 @@ Page({
     }
   }),
 
-  //减少份数
+  /**
+   * @methods 减少份数
+   */
   cutPrintNum: function() {
     if (this.data.documentPrintNum <= 1) {
       return
@@ -127,7 +144,9 @@ Page({
     })
   },
 
-  //增加份数
+  /**
+   * @methods 增加份数
+   */
   addPrintNum: co.wrap(function*() {
     if (this.data.documentPrintNum < 30) {
       this.data.documentPrintNum += 1
@@ -145,11 +164,18 @@ Page({
 
   }),
 
-  //输入打印起始页
+  /**
+   * @methods 输入打印起始页
+   * @param {Object} e 
+   */
   inputStartPage: function(e) {
     this.data.startPage = e.detail.value
   },
 
+  /**
+   * @methods 设置起始页
+   * @param {Object} e 
+   */
   startPageJudge: function(e) {
     if (parseInt(e.detail.value) > parseInt(this.data.endPrintPage) || parseInt(e.detail.value) <= 0) {
       this.setData({
@@ -167,10 +193,19 @@ Page({
       this.data.startPrintPage = e.detail.value
     }
   },
-  //输入打印结束页
+
+  /**
+   * @methods 输入打印结束页
+   * @param {Object} e 
+   */
   inputEndPage(e) {
     this.data.endPage = e.detail.value
   },
+
+  /**
+   * @methods 设置录入的结束页
+   * @param {Object} e 
+   */
   endPageJudge(e) {
     let endMaxPage = Math.ceil(this.data.endMaxPage / this.data.zoomType),
       tempValue = parseInt(e.detail.value)
@@ -191,23 +226,31 @@ Page({
     }
   },
 
-  //选择颜色
+  /**
+   * @methods 选择颜色
+   * @param {Object} e 
+   */
   colorCheck(e) {
     this.setData({
-      colorcheck: e.currentTarget.dataset.style
+      colorCheck: e.currentTarget.dataset.style
     })
   },
 
-  //选择单双面打印模式
+  /**
+   * @methods 选择单双面打印模式
+   * @param {Object} e 
+   */
   duplexCheck(e) {
     console.log(e)
-    let duplexcheck = e.currentTarget.dataset.style == '0' ? false : true
+    let duplexCheck = e.currentTarget.dataset.style == '0' ? false : true
     this.setData({
-      duplexcheck: duplexcheck
+      duplexCheck: duplexCheck
     })
   },
 
-  //确认按钮提交
+  /**
+   * @methods 确认按钮提交
+   */
   confCheck() {
     if (parseInt(this.data.startPage) > parseInt(this.data.endPage) || parseInt(this.data.startPage) <= 0) {
       this.setData({
@@ -238,8 +281,8 @@ Page({
     }
 
     let postData = {
-      color: this.data.colorcheck,
-      duplex: this.data.duplexcheck,
+      color: this.data.colorCheck,
+      duplex: this.data.duplexCheck,
       number: this.data.documentPrintNum,
       medium: this.data.medium,
       fileIndex: this.data.fileIndex,
@@ -253,14 +296,14 @@ Page({
       postData.start_page = 0
       postData.end_page = 0
     }
-
-    let pages = getCurrentPages();
-    let prevPage = pages[pages.length - 2]
-    prevPage.setPostData(postData)
+    event.emit('setPreData', postData)
     router.navigateBack()
   },
 
-  // 选择缩印模式
+  /**
+   * @methods 选择缩印模式
+   * @param {Object} e 
+   */
   chooseZoomType(e) {
     let zoomType = Number(e.currentTarget.id)
     let endPage = Math.ceil(this.data.endMaxPage / zoomType)
@@ -300,7 +343,10 @@ Page({
     })
   }),
   
-  // 选择打印范围类型奇、偶、范围
+  /**
+   * @methods 选择打印范围类型奇、偶、范围
+   * @param {Object} e 
+   */
   chooseRangeType(e) {
     let type = e.currentTarget.id,
       endMaxPage = this.data.endMaxPage,

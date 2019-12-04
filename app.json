@@ -1,8 +1,6 @@
 {
   "pages": [
     "pages/index/index",
-		"pages/devices/list/index",
-    "pages/devices/setting/index",
     "components/multiphoto/test",
     "pages/network/index/index",
     "pages/network/tips/step1",
@@ -33,7 +31,6 @@
     "pages/print_doc/duplicate_edit/duplicate_edit",
     "pages/print_doc/duplicate_idcard/duplicate_idcard",
 		"pages/print_doc/duplicate_preview/duplicate_preview",
-		"pages/print_photo_doc/index",
 		"pages/test/index",
 		"pages/print_photo_doc/index",
     "pages/print_photo/mediachoose",

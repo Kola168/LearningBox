@@ -5,29 +5,17 @@ let {
 const regeneratorRuntime = require('lib/co/runtime')
 const co = require('lib/co/co')
 const util = require('utils/util')
-<<<<<<< HEAD
-import Logger from 'utils/logger.js'
-
-const getSystemInfo = util.promisify(wx.getSystemInfo)
-
 const login = util.promisify(wx.login)
 const request = util.promisify(wx.request)
 import storage from 'utils/storage.js'
-=======
-  // const _ = require('lib/underscore/we-underscore')
+
+const _ = require('lib/underscore/we-underscore')
 import Logger from 'utils/logger.js'
 
 const getSystemInfo = util.promisify(wx.getSystemInfo)
 const getStorage = util.promisify(wx.getStorage)
-  // const setStorage = util.promisify(wx.setStorage)
+ 
 
-const login = util.promisify(wx.login)
-  // const getUserInfo = util.promisify(wx.getUserInfo)
-  // const showModal = util.promisify(wx.showModal)
-const request = util.promisify(wx.request)
-  // const uploadFile = util.promisify(wx.uploadFile)
-  // const checkSession = util.promisify(wx.checkSession)
->>>>>>> develop-zhaoyf
 
 
 App({
@@ -110,8 +98,6 @@ App({
       gap = 4
       width = 88
     }
-<<<<<<< HEAD
-=======
     return {
       bottom: sysInfo.statusBarHeight + gap + 32,
       height: 32,
@@ -120,7 +106,6 @@ App({
       top: sysInfo.statusBarHeight + gap,
       width: width
     };
->>>>>>> develop-zhaoyf
   },
 
   preventMoreTap: function (e) {
@@ -144,18 +129,11 @@ App({
 
   getOpenId: co.wrap(function* () {
     try {
-<<<<<<< HEAD
       const sto = storage.get('openId')
       if (!sto) {
         return this.login()
       }
       this.openId = sto
-=======
-      const storage = yield getStorage({
-        key: 'openid'
-      })
-      this.openId = storage.data
->>>>>>> develop-zhaoyf
     } catch (e) {
       this.login()
     }

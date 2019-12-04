@@ -5,29 +5,25 @@ const util = require('../../../utils/util')
 const _ = require('../../../lib/underscore/we-underscore')
 const showModal = util.promisify(wx.showModal)
 // import commonRequest from '../../utils/common_request'
-// import api from '../../network/api'
-import { getLogger } from '../../../utils/logger'
-const logger = new getLogger('pages/print_doc/doc_list/doc_list')
+import api from '../../../network/restful_request'
+import {
+  getLogger
+} from '../../../utils/logger'
+const logger = new getLogger('pages/print_doc/doc_local_setting/doc_local_setting')
 import router from '../../../utils/nav'
 import storage from '../../../utils/storage'
 Page({
 
   data: {
-    share: app.galleryShare,
-    documentTitle: '',
     documentPrintNum: 1,
     startPrintPage: 1,
     endPrintPage: 1,
-    colorcheck: 'Color', //默认彩色
-    duplexcheck: false,
+    colorCheck: 'Color', //默认彩色
+    duplexCheck: false,
     previewUrl: '',
     endMaxPage: 1, //最大页数
     totalPage: 1,
-    showSelect: false,
     medium: 'a4',
-    defaultMedium: 'A4打印纸',
-    optionsMedium: 'A5打印纸',
-    fileIndex: 0,
     isExcel: true,
     colorModes: 2,
     isColorPrinter: true,
@@ -38,16 +34,30 @@ Page({
     showConfirm: false,
     checkOpen: false,
     extract: 'all',
-    fileTitle:null,
-    hasAuthPhoneNum:false,
+    rangeList: [
+      {
+        name: '打印范围',
+        _id: 'all'
+      },
+      {
+        name: '仅打印奇数页',
+        _id: 'odd'
+      },
+      {
+        name: '仅打印偶数页',
+        _id: 'even'
+    }],
+    fileTitle: null,
+    hasAuthPhoneNum: false,
     confirmModal: {
-        isShow: false,
-        title: '请正确放置A4打印纸',
-        image: 'https://cdn.gongfudou.com/miniapp/ec/confirm_print_a4_new.png'
+      isShow: false,
+      title: '请正确放置A4打印纸',
+      image: 'https://cdn-h.gongfudou.com/LearningBox/main/doc_confirm_print_a4_new.png'
     }
   },
 
-  onLoad: co.wrap(function*(options) {
+  onLoad: co.wrap(function* (options) {
+    this.longToast = new app.weToast()
     try {
       const MAX_PAGE = 150;
       const arrayFile = this.data.arrayFile = JSON.parse(decodeURIComponent(options.file))
@@ -76,7 +86,7 @@ Page({
           title: '提示',
           content: '此文档的打印页数超过150张',
           showCancel: false,
-          confirmColor: '#fae100',
+          confirmColor: '#FFDC5E',
         })
       }
       yield this.setStatus();
@@ -87,7 +97,7 @@ Page({
 
   }),
 
-  onShow:function(){
+  onShow: function () {
     let hasAuthPhoneNum = Boolean(storage.get('hasAuthPhoneNum'))
     this.hasAuthPhoneNum = hasAuthPhoneNum
     this.setData({
@@ -99,10 +109,9 @@ Page({
     const rgx = "(.xlsx|.xls|.xlsm|.xltx|.xltm)$";
     const reg = new RegExp(rgx);
     return reg.test(name);
-
   },
 
-  setStatus: co.wrap(function*() {
+  setStatus: co.wrap(function* () {
     //设置是否支持多面打印
     if (this.data.media_sizes[0].duplex) {
       this.setData({
@@ -127,11 +136,11 @@ Page({
   }),
 
   //减少份数
-  cutPrintNum: function() {
+  cutPrintNum: function () {
     if (this.data.documentPrintNum <= 1) {
       return wx.showModal({
         content: '最少要1份才可以打印哦~',
-        confirmColor: '#2086ee',
+        confirmColor: '#FFDC5E',
         confirmText: "确认",
         showCancel: false
       })
@@ -154,7 +163,7 @@ Page({
       })
       wx.showModal({
         content: '每次最多打印30份',
-        confirmColor: '#2086ee',
+        confirmColor: '#FFDC5E',
         confirmText: "确认",
         showCancel: false
       })
@@ -167,22 +176,20 @@ Page({
     this.data.startPage = e.detail.value
   },
 
-  startPageJudge: function(e) {
-    console.log('起始页===', parseInt(e.detail.value), typeof(e.detail.value))
+  startPageJudge: function (e) {
     if (parseInt(e.detail.value) > parseInt(this.data.endPrintPage) || parseInt(e.detail.value) <= 0) {
       this.setData({
         startPrintPage: 1,
         startPage: 1
       })
-      wx.showModal({
+      return x.showModal({
         content: '请输入正确的起始页',
-        confirmColor: '#2086ee',
+        confirmColor: '#FFDC5E',
         confirmText: "确认",
         showCancel: false
       })
-      return
+
     } else {
-      console.log('打印起始页===', e.detail.value)
       this.data.startPrintPage = e.detail.value
     }
   },
@@ -202,11 +209,11 @@ Page({
       })
       return wx.showModal({
         content: '请输入正确的结束页',
-        confirmColor: '#2086ee',
+        confirmColor: '#FFDC5E',
         confirmText: "确认",
         showCancel: false
       })
-      
+
     } else {
       this.data.endPrintPage = e.detail.value
     }
@@ -215,22 +222,21 @@ Page({
   //选择颜色
   colorCheck(e) {
     this.setData({
-      colorcheck: e.currentTarget.dataset.style
+      colorCheck: e.currentTarget.dataset.style
     })
   },
 
   //选择单双面打印模式
   duplexCheck(e) {
-    console.log(e)
-    let duplexcheck = e.currentTarget.dataset.style == 0 ? false : true
+    let duplexCheck = e.currentTarget.dataset.style == 0 ? false : true
     this.setData({
-      duplexcheck: duplexcheck
+      duplexCheck: duplexCheck
     })
   },
 
   //确认按钮提交
   confCheck(e) {
-    if(!this.hasAuthPhoneNum && !app.hasPhoneNum){
+    if (!this.hasAuthPhoneNum && !app.hasPhoneNum) {
       return
     }
     if (parseInt(this.data.startPage) > parseInt(this.data.endPage) || parseInt(this.data.startPage) <= 0) {
@@ -260,25 +266,26 @@ Page({
 
     }
     let hideConfirmPrintBox = Boolean(storage.get("hideConfirmPrintBox"))
-    if(hideConfirmPrintBox){
-        this.print()
+    if (hideConfirmPrintBox) {
+      this.print()
     } else {
-        this.setData({
-            ['confirmModal.isShow']: true
-        })
+      this.setData({
+        ['confirmModal.isShow']: true
+      })
     }
   },
-  getPhoneNumber:co.wrap(function*(e){
+
+  getPhoneNumber: co.wrap(function* (e) {
     yield app.getPhoneNum(e)
-    storage.set("hasAuthPhoneNum", true)
+    storage.put("hasAuthPhoneNum", true)
     this.hasAuthPhoneNum = true
     this.setData({
-      hasAuthPhoneNum:true
+      hasAuthPhoneNum: true
     })
     this.confCheck(e)
   }),
 
-  print: co.wrap(function*() {
+  print: co.wrap(function* () {
     let extract = this.data.extract
     let tempObj = {
       url: this.data.arrayFile.url,
@@ -288,8 +295,8 @@ Page({
       end_page: this.data.endPage, // 终止页数
       display: this.data.zoomType,
       skip_gs: !this.data.checkOpen, //是否检查文件修复
-      color: this.data.colorcheck, // 是否是彩色
-      duplex: this.data.duplexcheck ? true : false, // false单面 true双面
+      color: this.data.colorCheck, // 是否是彩色
+      duplex: this.data.duplexCheck ? true : false, // false单面 true双面
       media_size: (this.data.medium === 'a4') ? 0 : 3, //纸质
       extract: extract //范围类型
     }
@@ -298,27 +305,28 @@ Page({
       tempObj.start_page = 0
       tempObj.end_page = 0
     }
-    let files = [tempObj];
-
-    wx.showLoading({
-      title: '正在提交',
-      mask: true
+    this.longToast.toast({
+      type: 'loading',
+      title: '正在提交'
     })
+
     try {
-      const resp = yield api.printInvoice(app.openId, '_docA4', files)
+      const resp = yield api.printInvoice(app.openId, '_docA4', [tempObj])
       if (resp.code != 0) {
         throw (resp)
       }
-      console.log('提交打印成功', resp)
-      wx.hideLoading()
-      wx.redirectTo({
-        url: `../finish/index?type=doc&state=${resp.order.state}`
+      this.longToast.hide()
+      router.redirectTo('/pages/finish/index', {
+        type: 'doc',
+        state: resp.order.state
       })
+
     } catch (e) {
-      wx.hideLoading()
+      this.longToast.hide()
       util.showErr(e)
     }
   }),
+
   // 选择缩印模式
   chooseZoomType(e) {
     let zoomType = Number(e.currentTarget.id)
@@ -330,6 +338,7 @@ Page({
       totalPage: endPage
     })
   },
+
   preview() {
     let url = this.data.previewUrl,
       display = this.data.zoomType,
@@ -337,35 +346,27 @@ Page({
       extract = this.data.extract
     commonRequest.previewDocument(url, display, skip_gs, extract)
   },
-  operaRepair: function() {
+
+  operaRepair() {
     this.setData({
       checkOpen: !this.data.checkOpen,
       showConfirm: this.data.checkOpen ? false : true,
     })
   },
+
   cancelRepair() {
     this.setData({
       checkOpen: false,
       showConfirm: false,
     })
   },
-  openRepair: co.wrap(function*() {
+
+  openRepair: co.wrap(function* () {
     this.setData({
       showConfirm: false
     })
   }),
-  // 选择打印范围类型奇、偶、范围
-  // chooseRangeType(e) {
-  //   let type = e.currentTarget.id
-  //   if (type !== 'all') {
-  //     this.setData({
-  //       zoomType: 1
-  //     })
-  //   }
-  //   this.setData({
-  //     extract: type
-  //   })
-  // },
+
   chooseRangeType(e) {
     let type = e.currentTarget.id,
       endMaxPage = this.data.endMaxPage,
