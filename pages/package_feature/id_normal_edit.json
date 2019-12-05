@@ -1,4 +1,7 @@
 {
   "disableScroll": true,
-  "enablePullDownRefresh": false
+  "enablePullDownRefresh": false,
+  "usingComponents": {
+    "take-photo-pop":"../../../components/checkimg/index"
+}
 }
