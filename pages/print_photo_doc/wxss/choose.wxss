@@ -229,7 +229,7 @@ page {
 /* 提示上传 end*/
 
 .bottom {
-    position: absolute;
+    position: fixed;
     left: 0;
     bottom: 0;
     height: 100rpx;
@@ -241,16 +241,14 @@ page {
     /* justify-content: space-between; */
     box-sizing: border-box;
     z-index: 2000;
+    text-align:center;
+    line-height: 100rpx;
 }
 
 .bottom-left {
     color: #666;
     font-size: 36rpx;
     width: 50%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     border-right: 2rpx solid #fff;
     box-sizing: border-box;
 }
@@ -258,10 +256,11 @@ page {
 .bottom-right {
     width: 50%;
     color: #999;
-    font-size: 32rpx;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    font-size: 36rpx;
+}
+
+.bottom-right button{
+  padding:0;
 }
 
 .bottom-count {

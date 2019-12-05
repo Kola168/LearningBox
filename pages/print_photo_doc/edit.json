@@ -1,0 +1,10 @@
+{
+  "disableScroll": true,
+  "enablePullDownRefresh": false,
+  "navigationBarTitleText": "图片编辑",
+  "disableSwipeBack": true,
+  "usingComponents": {
+    "confirm-reinforce-modal": "../../components/confirm-reinforce-modal/index",
+    "progress-modal": "../../components/progress-modal/index"
+  }
+}
