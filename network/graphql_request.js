@@ -29,19 +29,19 @@ let gql = GraphQL({
       } catch (e) {
         console.log(e)
       }
-		}	
-	},
-	//全局错误拦截
-	errorHandler:function(res){
+    }
+  },
+  //全局错误拦截
+  errorHandler: function(res) {
 
-	}
+  }
 }, true);
 
 const graphqlApi = {
   /**
    * 搜索
-   * *@param { String } keyword 关键词
-   * *@param { Array } keys 请求数据分类
+   * @param { String } keyword 关键词
+   * @param { Array } keys 请求数据分类
    */
   getSearchResult: (keyword, keys) => {
     return gql.query({
@@ -88,8 +88,8 @@ const graphqlApi = {
         keys: keys
       }
     })
-	},
-	
+  },
+
   bindDevice: (deviceInfo) => {
     return gql.mutate({
       mutation: `mutation bindDevice($input: BindDeviceInput!){
@@ -103,6 +103,106 @@ const graphqlApi = {
     })
   },
 
+  /**
+   * 解绑打印机
+   * @param { String } sn required 设备编号
+   */
+  unbindDevice: (sn) => {
+    return gql.mutate({
+      mutation: `mutation ($input: UpdateDeviceSettingInput!){
+        updateDeviceSetting(input:$input){
+          state
+        }
+      }`,
+      variables: {
+        input: {
+          sn: sn
+        }
+      }
+    })
+  },
+
+  /**
+   * 获取打印机列表
+   */
+  getDeviceList: () => {
+    return gql.query({
+      query: `query {
+        devices {
+          name,
+          selected,
+          sn,
+          model
+        }
+      }`
+    })
+  },
+
+  /**
+   * 获取打印机详情
+   * @param { String } sn required 设备编号
+   */
+  getDeviceDetail: (sn) => {
+    return gql.query({
+      query: `query ($sn: String!){
+        device(sn: $sn){
+          name,
+          selected,
+          sn,
+          model,
+          auditFree,
+          marginFree,
+          onlineState,
+          quality,
+          printOrder,
+          pressPrint
+        }
+      }`,
+      variables: {
+        sn: sn
+      }
+    })
+  },
+
+  /**
+   * 获取百度网盘是否授权
+   */
+  getBaiduNetAuth: () => {
+    return gql.query({
+      query: `query {
+        token {
+          baiduTokenName
+        }
+      }`
+    })
+  },
+
+  /**
+   * 获取百度网盘列表
+   * @param { String } path required 关键词
+   * @param { String } type required 请求数据类型：img/doc
+   * @param { String } key 搜索关键词
+   */
+  getBaiduNetList: (path, type, key = '') => {
+    return gql.query({
+      query: `query ($path: String!,$type: String!,$key: String){
+        fileList:baidu(path: $path,type: $type,key: $key){
+          filename,
+          fsId,
+          isdir,
+          path,
+          size,
+          thumb,
+          time
+        }
+      }`,
+      variables: {
+        path: path,
+        type: type,
+        key: key
+      }
+    })
+  },
 }
 
 export default graphqlApi
