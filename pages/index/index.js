@@ -144,8 +144,11 @@ Page({
         break
       case 'doc':
         url = "/pages/print_doc/index/index"
-        break
-        defalt:
+				break
+			case 'more':
+				url = "/pages/print_funny/index"
+				break
+      defalt:
           url = ''
     }
     wx.navigateTo({
