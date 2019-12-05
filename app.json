@@ -35,17 +35,21 @@
     "pages/print_photo_doc/index",
     "pages/print_photo/mediachoose",
     "pages/print_photo/photolist",
-    "components/process/text",
+		"components/process/text",
+		"pages/authorize/index",
+		"pages/print_funny/index",
+    "pages/print_photo/edit",
     "pages/print_id/index",
     "pages/print_id/normal_list",
     "pages/print_id/normal_edit",
     "pages/print_id/normal_mode",
     "pages/print_id/smart_index",
     "pages/print_id/smart_rules"
-  ],
-  "subPackages": [{
-      "root": "pages/package_common",
-      "pages": [
+	],
+	"subPackages": [
+		{
+		 "root": "pages/package_common",
+		 "pages": [
 
       ]
     },
@@ -115,7 +119,8 @@
     "backgroundColor": "#fff",
     "borderStyle": "black",
     "position": "bottom",
-    "list": [{
+    "list": [
+      {
         "pagePath": "pages/index/index",
         "text": "首页",
         "iconPath": "images/home/icon_tab_home_unselected.png",

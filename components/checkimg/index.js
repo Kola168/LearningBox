@@ -86,16 +86,15 @@ Component({
     }
   },
   attached: co.wrap(function*() {
-    console.log(app.isIpx)
-    if (app.isIpx) {
+    if (app.isFullScreen) {
       this.setData({
         butHigh: true
       })
-    }else if(app.isIpx==undefined){
+    }else if(app.isFullScreen==undefined){
       let that=this
       setTimeout(function(){
         that.setData({
-          butHigh: app.isIpx
+          butHigh: app.isFullScreen
         })
       },500)
 

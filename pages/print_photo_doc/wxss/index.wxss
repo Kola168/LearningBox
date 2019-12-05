@@ -1,27 +1,36 @@
-.photo_doc {
-    width: 100%;
-    display: flex;
-  }
-  
-  .photo-last {
-    margin-bottom: 104rpx;
-  }
-  
-  .btn {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background: #ffe27a;
-    font-size: 36rpx;
-    color: #454545;
-  }
-  
-  .consumables-icon {
-    width: 100rpx;
-    height: 104rpx;
-    position: fixed;
-    bottom: 240rpx;
-    right: 30rpx;
-    z-index: 10000;
-  }
+page{
+  background:#fff;
+}
+
+.photo-doc {
+  width: 100%;
+  display: flex;
+}
+
+.photo-last {
+  margin-bottom: 104rpx;
+}
+
+.btn {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  font-size: 36rpx;
+  color: #454545;
+}
+
+.btn ,.btn button{
+  height: 98rpx;
+  line-height: 70rpx;
+  background: #ffe27a;
+}
+
+.consumables-icon {
+  width: 100rpx;
+  height: 104rpx;
+  position: fixed;
+  bottom: 240rpx;
+  right: 30rpx;
+  z-index: 10000;
+}

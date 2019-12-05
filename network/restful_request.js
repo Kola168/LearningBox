@@ -37,6 +37,14 @@ const api = {
   }, {
     baseURL: `${app.apiServer}/api/v1/`
   }),
+ 
+	wechatDecryption: (params) => request.post(`users/sessions/wechat_decryption`, params, {
+    baseURL: `${app.apiServer}/api/v1/`
+  }),
+
+  processes:(params)=>request.post(`processes`,params, {
+    baseURL: `${app.apiServer}/api/v1/`
+  })
 }
 
 export default api

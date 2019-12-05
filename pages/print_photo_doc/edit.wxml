@@ -1,0 +1,39 @@
+<import src="../transform-cropper/welCropper.wxml" />
+<view class="top-tip">
+    <image src='../../images/icon_edit_white.png' class='icon_edit' mode='widthFix'></image>
+    <text>黄色框内为打印区域，请仔细编辑</text>
+</view>
+
+<template is="welCropper" data="{{cropperData:cropperData, cropperMovableItems:cropperMovableItems, cropperChangableData:cropperChangableData}}"></template>
+
+<view class='footer'>
+    <view class='choose'>
+        <view>
+            <text class='title'>打印效果</text>
+            <image class="print-effect-pic" src="/images/manage_intro.png" bindtap="showExamModal"/>
+        </view>
+        <view class='color'>
+            <view class='kind' wx:for="{{selectColors}}" wx:key="*this">
+                <text class='type'>{{item.name}}</text>
+                <image src="{{ item.selected ? '/images/selected_yellow.png' : '/images/noselected.png'}}" class='selected' mode='widthFix'  data-index="{{index}}" bindtap='chooseColor'></image>
+            </view>
+        </view>
+    </view>
+    <view class="btn">
+        <view class="btn-delete" bindtap="deleteCurrentImage">
+            <image src="/images/delete_icon.png"/>
+            <view>删除</view>
+        </view>
+        <form report-submit="true" bindsubmit="{{cropperChangableData.canCrop ? 'cropImage':''}}">
+            <button formType="submit" hover-class="none">{{currentCount != currentIndex && !isSingle ? '编辑下一张' + '('+(currentIndex)+ '/' + (currentCount || 0) + ')' : '完成'+(isSingle ? '' :  '(' + currentIndex+'/'+ currentCount +')' )}}</button>
+        </form>
+    </view>
+</view>
+
+
+<progress-modal  percent="{{percent}}" wx:if="{{showupLoad}}" bindcancel="cancelDraw" slotTitle="{{showTitle}}" slotContent="{{showContent}}">
+   
+</progress-modal>
+<confirm-reinforce-modal></confirm-reinforce-modal>
+<import src="../../lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />

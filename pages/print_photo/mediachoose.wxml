@@ -2,7 +2,7 @@
 <nav-bar title="照片打印"></nav-bar>
 
 <view class="media-box">
-  <view class="photo-media-topbox" data-type="_6inch" bindtap="choosemedia">
+  <view class="photo-media-topbox" data-type="pic_a6" bindtap="choosemedia">
     <image src="/images/printphoto_6inch.png" mode="widthFix" class="photo-media-topicon"></image>
     <text class="media-toptitle">6寸照片</text>
     <text class="media-size">102*152mm</text>
@@ -12,7 +12,7 @@
     <text class="media-toptitle">在A4纸上打印</text>
     <text class="media-size">速度快 耗墨少</text>
   </view>
-  <view class="photo-media-box" data-type="_5inch" bindtap="choosemedia">
+  <view class="photo-media-box" data-type="pic_a5" bindtap="choosemedia">
     <image src="/images/printphoto_5inch.png" mode="widthFix" class="photo-media-icon"></image>
     <text class="media-title">5寸照片</text>
     <text class="media-size">89*127mm</text>
@@ -22,12 +22,12 @@
     <text class="media-title">lomo照片</text>
     <text class="media-size">74*105mm</text>
   </view>
-  <view class="photo-media-box" data-type="_7inch" bindtap="choosemedia">
+  <view class="photo-media-box" data-type="pic_a7" bindtap="choosemedia">
     <image src="/images/printphoto_7inch.png" mode="widthFix" class="photo-media-icon"></image>
     <text class="media-title">7寸照片</text>
     <text class="media-size">127*178mm</text>
   </view>
-  <view class="photo-media-box" data-type="_a4" bindtap="choosemedia">
+  <view class="photo-media-box" data-type="pic_a4" bindtap="choosemedia">
     <image src="/images/printphoto_a4.png" mode="widthFix" class="photo-media-icon"></image>
     <text class="media-title">A4照片</text>
     <text class="media-size">A4尺寸照片纸</text>

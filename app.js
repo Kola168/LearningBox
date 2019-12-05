@@ -9,7 +9,7 @@ import Logger from 'utils/logger.js'
 
 const getSystemInfo = util.promisify(wx.getSystemInfo)
 const getStorage = util.promisify(wx.getStorage)
- 
+
 
 const login = util.promisify(wx.login)
 const request = util.promisify(wx.request)
@@ -30,6 +30,10 @@ App({
   //一个秃子的服务器地址
   apiServer: 'http://jran.nat300.top',
   apiWbviewServer: 'http://jran.nat300.top/',
+
+  // 测试接口季慧新
+  apiServer: 'http://jhx.nat300.top',
+  apiWbviewServer: 'http://jhx.nat300.top',
   authAppKey: 'iMToH51lZ0VrhbkTxO4t5J5m6gCZQJ6c',
   openId: '',
   authToken:'',
@@ -53,6 +57,7 @@ App({
   // 是否为全面屏，rpxPixel
   handleDevice() {
     // 暂时的处理
+    console.log('this.sysInfo.screenHeight=====',this.sysInfo.screenHeight)
     this.isFullScreen = this.sysInfo.screenHeight > 750 ? true : false
     this.rpxPixel = 750 / this.sysInfo.windowWidth
   },
