@@ -4,11 +4,11 @@ const regeneratorRuntime = require('../../../lib/co/runtime')
 const co = require('../../../lib/co/co')
 const util = require('../../../utils/util')
 const _ = require('../../../lib/underscore/we-underscore')
-const request = util.promisify(wx.request)
+import commonRequest from '../../../utils/common_request'
 import {
   getLogger
 } from '../../../utils/logger'
-const logger = new getLogger('pages/print_doc/doc_list/doc_list')
+const logger = new getLogger('pages/print_doc/duplicate_preview/duplicate_preview')
 import router from '../../../utils/nav'
 import storage from '../../../utils/storage'
 
@@ -40,6 +40,7 @@ Page({
       image: 'https://cdn-h.gongfudou.com/LearningBox/main/doc_confirm_print_a4_new.png'
     }
   },
+
   onLoad: function (options) {
     this.longToast = new app.weToast()
     this.initArea()
@@ -49,7 +50,7 @@ Page({
     })
   },
 
-  onShow: function () {
+  onShow () {
     let hasAuthPhoneNum = Boolean(storage.get("hasAuthPhoneNum"))
     this.hasAuthPhoneNum = hasAuthPhoneNum
     this.setData({
@@ -76,8 +77,8 @@ Page({
   /**
    * @methods 返回上一页
    */
-  backPrepage() {
-    router.navigateTo()
+  backPrePage() {
+    router.navigateBack()
   },
 
   /**
@@ -119,7 +120,9 @@ Page({
     })
   },
 
-  // 提交前确认打印
+  /**
+   * @methods 提交前确认打印
+   */
   confirm() {
     if (!this.hasAuthPhoneNum && !app.hasPhoneNum) {
       return
@@ -133,7 +136,10 @@ Page({
       })
     }
   },
-
+  
+  /**
+   * @methods 获取手机号
+   */
   getPhoneNumber: co.wrap(function* (e) {
     yield app.getPhoneNum(e)
     storage.put("hasAuthPhoneNum", true)
@@ -144,7 +150,9 @@ Page({
     this.confirm()
   }),
 
-  //提交打印照片
+  /**
+   * @methods 提交打印照片
+   */
   print: co.wrap(function* () {
     if (!this.id) {
       this.longToast.toast({
@@ -154,7 +162,6 @@ Page({
       try {
         var param = {
           media_type: 'copy',
-          openid: app.openId,
           urls: [{
             number: this.data.count, //数量
             pre_convert_url: this.data.img_url, //图片编辑后url
@@ -164,25 +171,20 @@ Page({
             color: this.data.color, //色彩
           }]
         }
-        const resp = yield request({
-          url: app.apiServer + `/ec/v2/orders`,
-          method: 'POST',
-          dataType: 'json',
-          data: param
-        })
-
-        if (resp.data.code != 0) {
-          throw (resp.data)
+        const resp = commonRequest.printOrders(param)
+        if (resp.code != 0) {
+          throw (resp)
         } else {
-          router.redirectTo('')
-          // wx.redirectTo({
-          //   url: `/pages/finish/index?type=id_card&media_type=invoice&state=${resp.data.order.state}`
-          // })
+          router.redirectTo('/pages/finish/index', {
+            type: 'id_card',
+            media_type: 'invoice',
+            state: resp.order.state
+          })
         }
       } catch (e) {
         logger.info(e)
         this.longToast.toast()
-        util.showErr(e)
+        util.showError(e)
       }
     }
   }),

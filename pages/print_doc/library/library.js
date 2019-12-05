@@ -8,6 +8,7 @@ const util = require('../../../utils/util')
 const request = util.promisify(wx.request)
 const event = require('../../../lib/event/event')
 import graphql from '../../../network/graphql_request'
+import api from '../../../network/restful_request'
 import storage from '../../../utils/storage'
 import router from '../../../utils/nav'
 import Logger from '../../../utils/logger.js'
@@ -45,33 +46,14 @@ Page({
     var unionId = storage.get('unionId')
 
     if (unionId) {
-      yield this.loopGetOpenId()
+      yield this.getTypeList()
     }
     event.on('Authorize', this, function (data) {
-      this.loopGetOpenId()
+      this.getTypeList()
     })
-    let refer = wx.getLaunchOptionsSync()
-    if (refer.scene === 1014) {
-      this.setData({
-        from_temp: true
-      })
-    }
-    if (app.activeDevice.is_3115) {
-      this.setData({
-        is_3115: true
-      })
-    }
   }),
 
-  backToHome: function () {
-    try {
-      router.switchTab('/pages/index/index')
-    } catch (err) {
-      logger.info(err)
-    }
-  },
-
-  onShow: co.wrap(function* (options) {
+  onShow: co.wrap(function* () {
     let unionId = storage.get('unionId')
     logger.info('应用二维码参数传参', this.share_user_id, this.way)
     if (!unionId) {
@@ -81,27 +63,6 @@ Page({
         share_user_id: this.share_user_id,
         way: this.way
       } : null)
-    }
-  }),
-
-  loopGetOpenId: co.wrap(function* () {
-    let loopCount = 0
-    let _this = this
-    if (app.openId) {
-      logger.info('openId++++++++++++----', app.openId)
-      yield this.getTypeList()
-      yield this.member()
-      return
-    } else {
-      setTimeout(function () {
-        loopCount++
-        if (loopCount <= 100) {
-          logger.info('openId not found loop getting...')
-          _this.loopGetOpenId()
-        } else {
-          logger.info('loop too long, stop')
-        }
-      }, 2000)
     }
   }),
 
@@ -137,7 +98,7 @@ Page({
       showTypeModal: false
     })
     if (id == 0) {
-      return yield this.getTypeList('getResourse')
+      return yield this.getTypeList('getResource')
     }
     yield this.getPlayList()
   }),
@@ -154,41 +115,36 @@ Page({
       this.pageEnd = false
     }
     try {
-      const resp = yield request({
-        url: app.apiServer + `/boxapi/v2/resource_categories/${this.id}`,
-        method: 'GET',
-        dataType: 'json',
-        data: {
-          'page': this.page
-        }
+      const resp = yield api.getResourceCategories(this.id, {
+        page: this.page
       })
-      if (resp.data.code != 0) {
-        throw (resp.data)
+      if (resp.code != 0) {
+        throw (resp)
       }
-      logger.info('益智列表页' , this.page, resp)
       this.longToast.hide()
-      if (data != 'getResourse') {
-        resp.data.res.sub_category.unshift({
+      var typeList = resp.res.sub_category
+      if (data != "getResource") {
+        typeList = [{
           name: '全部'
-        })
+        }].concat(typeList)
         this.setData({
-          typeList: resp.data.res.sub_category,
+          typeList: typeList,
         })
       }
-      if (resp.data.res.resources.length < 20) {
+      if (resp.res.resources.length < 20) {
         this.pageEnd = true
       }
-      if (resp.data.res.resources.length == 0) {
+      if (resp.res.resources.length == 0) {
         return
       }
       this.setData({
-        playList: this.data.playList.concat(resp.data.res.resources),
-        show_type: resp.data.res.resources.length > 0 ? resp.data.res.resources[0].attachment_type : ''
+        playList: this.data.playList.concat(resp.data.resources),
+        show_type: resp.res.resources.length > 0 ? resp.res.resources[0].attachment_type : ''
       })
       this.page++
     } catch (e) {
       this.longToast.hide()
-      util.showErr(e)
+      util.showError(e)
     }
   }),
 
@@ -205,44 +161,38 @@ Page({
       this.pageEnd = false
     }
     try {
-      const resp = yield request({
-        url: app.apiServer + `/boxapi/v2/resource_categories/${this.data.typeList[this.data.tabId].sn}`,
-        method: 'GET',
-        dataType: 'json',
-        data: {
-          'page': this.page
-        }
+      const resp = yield api.getResourceCategories(this.data.typeList[this.data.tabId].sn, {
+        page: this.page
       })
-      if (resp.data.code != 0) {
-        throw (resp.data)
+      if (resp.code != 0) {
+        throw (resp)
       }
-      logger.info('益智具体分类' , this.page, resp.data)
+      logger.info('益智具体分类' , this.page, resp)
       this.longToast.hide()
-      if (resp.data.res.resources.length < 20) {
+      if (resp.res.resources.length < 20) {
         this.pageEnd = true
       }
-      if (resp.data.res.resources.length == 0) {
+      if (resp.res.resources.length == 0) {
         return
       }
 
       this.setData({
-        playList: this.data.playList.concat(resp.data.res.resources),
-        show_type: resp.data.res.resources[0].attachment_type
+        playList: this.data.playList.concat(resp.res.resources),
+        show_type: resp.res.resources[0].attachment_type
       })
       this.page++
     } catch (e) {
       this.longToast.hide()
-      util.showErr(e)
+      util.showError(e)
     }
   }),
 
   onReachBottom: function () {
-    logger.info('分页加载', 'this.pageEnd', this.pageEnd)
     if (this.pageEnd) {
       return
     }
     if (this.data.tabId == 0) {
-      return this.getTypeList('getResourse')
+      return this.getTypeList('getResource')
     }
     this.getPlayList()
   },

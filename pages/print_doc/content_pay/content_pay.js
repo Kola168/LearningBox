@@ -159,9 +159,9 @@ Page({
    * @methods 选择颜色
    * @param {Object} e 
    */
-  colorCheck(e) {
+  colorCheck({currentTarget: {dataset: {style}}}) {
     this.setData({
-      colorCheck: e.currentTarget.dataset.style
+      colorCheck: style
     })
   },
 
@@ -170,7 +170,7 @@ Page({
    * @param {Object} e 
    */
   duplexCheck(e) {
-    let duplexCheck = e.currentTarget.dataset.style == '0' ? false : true
+    let duplexCheck = e.currentTarget.dataset.style == 0 ? false : true
     this.setData({
       duplexCheck: duplexCheck
     })
@@ -261,13 +261,13 @@ Page({
       this.longToast.hide()
     } catch (e) {
       this.longToast.hide()
-      util.showErr(e)
+      util.showError(e)
     }
   }),
 
   toPay: co.wrap(function* () {
     if (!app.activeDevice) {
-      return util.showErr({message: '您还未绑定打印机，快去绑定吧'})
+      return util.showError({message: '您还未绑定打印机，快去绑定吧'})
     }
     this.longToast.toast({
       type: 'loading',
@@ -302,14 +302,14 @@ Page({
       _this.longToast.hide()
     } catch (e) {
       _this.longToast.hide()
-      util.showErr(e)
+      util.showError(e)
     }
   }),
 
   print: co.wrap(function* (e) {
     try {
       if (!app.activeDevice) {
-        return util.showErr({message: '您还未绑定打印机，快去绑定吧'})
+        return util.showError({message: '您还未绑定打印机，快去绑定吧'})
       }
 
       this.longToast.toast({
@@ -375,7 +375,7 @@ Page({
 
     } catch (e) {
       this.longToast.hide()
-      util.showErr(e)
+      util.showError(e)
     }
   }),
 

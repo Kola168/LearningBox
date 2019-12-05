@@ -116,7 +116,7 @@ Page({
 
     } catch (e) {
       this.longToast.hide()
-      util.showErr(e)
+      util.showError(e)
     }
   }),
 
@@ -189,12 +189,12 @@ Page({
     let num1 = parseInt(this.data.start_page)
     let num2 = parseInt(this.data.end_page)
     if (num1 > num2 || num1 > parseInt(this.data.page_count)) {
-      return util.showErr({
+      return util.showError({
         message: '您输入的页数有误'
       })
     }
     if (num1 == 0 || num2 == 0) {
-      return util.showErr({
+      return util.showError({
         message: '输入页数不能为0'
       })
     }
@@ -259,7 +259,7 @@ Page({
       }
     } catch (e) {
       this.longToast.hide()
-      util.showErr(e)
+      util.showError(e)
     }
   })
 })

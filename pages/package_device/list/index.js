@@ -41,7 +41,7 @@ Page({
       })
     } catch (e) {
       this.weToast.toast()
-      util.showErr(e)
+      util.showError(e)
       console.log(e)
     }
   }),

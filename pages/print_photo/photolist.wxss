@@ -47,16 +47,18 @@ view {
   border-top: 1px solid #eaeaea;
   bottom: 0;
   left: 0;
+  background:#fff;
 }
 
 .but-heigher{
-  bottom:60rpx;
-  border-bottom: 1px solid #eaeaea;
+  height:140rpx;
 }
 
 .bottom-button-style {
   flex: 1;
+  height:100rpx;
   text-align: center;
+  border-bottom: 1px solid #eaeaea;
 }
 
 .bottom-button-white {

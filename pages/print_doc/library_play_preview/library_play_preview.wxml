@@ -1,7 +1,6 @@
 <!--pages/library/play_preview.wxml-->
 <nav-bar background="#fff" title="{{title}}" />
 <view wx:if="{{!showSetting}}" class='top'>
-	<view class="app-top-tip" wx:if="{{backHome}}" bindtap="backToHome">更多内容</view>
 	<view class="app-top-tip" wx:if="{{toMoreList}}" bindtap="backToHome">更多内容</view>
 	<!-- 开会员提示 -->
 	<!-- <view class="to-member" wx:if="{{!isMember&&discount!=null&&isAndroid}}" bindtap="toMember">
@@ -80,7 +79,7 @@
 				<button
 				 class="share-button"
 				 open-type="{{userAuthorize ? 'share' : ''}}"
-				 bindtap="{{userAuthorize ? '' : 'linktoauthorize'}}"
+				 bindtap="{{userAuthorize ? '' : 'linkToAuthorize'}}"
 				 hover-class="none"
 				>
 					<image mode="widthFix" src="/images/doc_gfd_share_gray.png" class='bottom-image' />

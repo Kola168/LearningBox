@@ -43,7 +43,7 @@
 		</view>
 	</view>
 	<view class="bottom">
-		<view class="btn-left" bindtap="backPrepage">返回</view>
+		<view class="btn-left" bindtap="backPrePage">返回</view>
 		<form report-submit="true" bindsubmit="confirm">
 			<button
 			 class="btn-print"

@@ -40,7 +40,7 @@ Page({
         type: this.data.type
       })
     } else {
-      return util.showErr({
+      return util.showError({
         message: '这是最后一个公众号，暂时无法取消'
       })
     }
@@ -66,7 +66,7 @@ Page({
       this.longToast.hide()
     } catch (e) {
       this.longToast.hide()
-      util.showErr(e)
+      util.showError(e)
     }
   }),
 
@@ -101,7 +101,7 @@ Page({
       this.longToast.hide()
     } catch (e) {
       this.longToast.hide()
-      util.showErr(e)
+      util.showError(e)
     }
   }),
 })

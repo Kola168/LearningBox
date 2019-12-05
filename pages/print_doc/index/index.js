@@ -42,7 +42,7 @@ Page({
         recommend: '家庭常用归纳',
         icon: '/images/doc_normal_icon.png',
         key: 'normal',
-        url: '/pages/print_doc/library/library',
+        // url: '/pages/print_doc/library/library',
         query: {
           sn: '1307275099676115'
         }
@@ -52,7 +52,7 @@ Page({
         recommend: '复制链接快速打',
         icon: '/images/doc_official_icon.png',
         key: 'weChatArticle',
-        url: '/pages/print_doc/print_wx/print_wx'
+        // url: '/pages/print_doc/print_wx/print_wx'
       },
       {
         name: '电子发票',
@@ -80,6 +80,11 @@ Page({
       if (key === 'weChatDoc') {
         return this.chooseWeChatFile()
       }
+
+      if (!url) {
+        return util.showError({message: '暂未开放'})
+      }
+
       router.navigateTo(url, query || '')
     } catch (err) {
       logger.info('err', err)
@@ -103,7 +108,7 @@ Page({
             })
           },
           fail: function () {
-            util.showErr({
+            util.showError({
               message: '文件获取失败，请重试~'
             })
           }

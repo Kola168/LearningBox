@@ -54,5 +54,5 @@ page {
 }
 
 .button-heigher{
-  height:160rpx;
+  margin-bottom:40rpx;
 }

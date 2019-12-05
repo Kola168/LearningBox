@@ -72,7 +72,9 @@ let uploadDocs = co.wrap(function*(array, callIndexBack) {
   // 获取上传权限
   if (array.length > 0) {
     try {
-      let authInfo = yield getUploadAuth()
+      let authInfo = yield getUploadAuth({
+        'file_name': array[0].name
+      })
       let uploadRes = yield wxUploadFile({
         url: authInfo.host,
         filePath: array[0].path,

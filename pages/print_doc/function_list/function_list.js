@@ -31,7 +31,7 @@ Page({
            
           }
         } catch (error) {
-            util.showErr(error)
+            util.showError(error)
         }
       } else {
         router.navigateTo('/pages/print_doc/start/start')
