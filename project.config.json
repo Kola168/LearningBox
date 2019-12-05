@@ -76,6 +76,12 @@
 					"scene": null
 				},
 				{
+<<<<<<< HEAD
+<<<<<<< HEAD
+					"id": -1,
+					"name": "测试",
+					"pathName": "pages/test/index",
+=======
 					"id": 3,
 					"name": "pages/print_photo/mediachoose",
 					"pathName": "pages/print_photo/mediachoose",
@@ -94,6 +100,12 @@
 					"name": "components/process/text",
 					"pathName": "components/process/text",
 					"query": "mediaType=_6inch",
+>>>>>>> develop-zhouxw
+=======
+					"id": -1,
+					"name": "证件照",
+					"pathName": "pages/package_feature/id_normal_index",
+>>>>>>> develop-lis
 					"scene": null
 				}
 			]

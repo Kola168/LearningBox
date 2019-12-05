@@ -1,0 +1,133 @@
+.longpress-notopen {
+  width: 80%;
+  margin: 56rpx auto 60rpx;
+}
+
+.notopen-image {
+  width: 100%;
+  margin-bottom: 60rpx;
+}
+
+.notopen-text {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.text-title {
+  font-size: 36rpx;
+  color: #333333;
+}
+
+.text-triangle {
+  width: 0;
+  height: 0;
+  border-left: 16rpx solid transparent;
+  border-right: 16rpx solid transparent;
+  border-bottom: 16rpx solid transparent;
+  border-top: 16rpx solid #999;
+  margin-top: 12rpx;
+}
+
+.text-sub {
+  font-size: 28rpx;
+  color: #999999;
+  margin: 4rpx 0 6rpx;
+}
+
+.notopen-btn {
+  width: 100%;
+  height: 100rpx;
+  line-height: 100rpx;
+  margin-top: 36rpx;
+  border-radius: 50rpx;
+  text-align: center;
+  background: #FFDC5E;
+  color: #454545;
+  font-size: 36rpx;
+}
+
+
+/* 功能说明 */
+
+.tips {
+  padding: 0 26rpx;
+}
+
+.function-tip {
+  background: #FFF8E0;
+  color: #FFA200;
+  font-size: 28rpx;
+  border-radius: 12rpx;
+  padding: 24rpx;
+  margin-bottom: 160rpx;
+}
+
+.function-explain {
+  color: #666;
+  font-size: 24rpx;
+  padding: 40rpx 0;
+}
+
+.function-explain view {
+  margin-bottom: 4rpx;
+}
+
+/* 开启 */
+.open-switch,
+.default-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #333;
+  font-size: 32rpx;
+}
+
+.border-bottom {
+  border-bottom: 2rpx solid #E7E7E7;
+}
+
+.open-switch{
+  padding: 32rpx 24rpx;
+}
+
+.default-item {
+  padding: 32rpx 0;
+}
+
+.setting-default {
+  border-top: 20rpx solid #f8f8f8;
+  padding: 0 24rpx;
+}
+
+.default-title {
+  font-size: 30rpx;
+  font-weight: bold;
+  padding: 30rpx 0 10rpx;
+}
+
+.open-switch image {
+  width: 80rpx;
+}
+
+.item-check,
+.radio-item {
+  display: flex;
+  align-items: center;
+}
+
+.radio-item {
+  margin-left: 30rpx;
+}
+
+.item-check {
+  color: #666;
+  font-size: 28rpx;
+}
+
+.item-check image {
+  width: 40rpx;
+  height: 40rpx;
+  margin-left: 16rpx;
+}

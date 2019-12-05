@@ -13,6 +13,8 @@ import { getLogger } from '../../../utils/logger'
 const logger = new getLogger('pages/print_doc/doc_list/doc_list')
 import router from '../../../utils/nav'
 import storage from '../../../utils/storage'
+import { uploadDocs } from '../../../utils/upload'
+import event from '../../../lib/event/event'
 Page({
 	data: {
 		allCount: 0, //上传总数
@@ -25,7 +27,7 @@ Page({
 		confirmModal: {
 			isShow: false,
 			title: '请正确放置A4打印纸',
-			image: 'https://cdn.gongfudou.com/miniapp/ec/confirm_print_a4_new.png'
+			image: 'https://cdn-h.gongfudou.com/LearningBox/main/doc_confirm_print_a4_new.png'
 		}
 	},
 
@@ -53,13 +55,17 @@ Page({
 				allCount: docFiles.length,
 			})
 
+			event.on('setPreData', this, (postData)=>{
+				this.setPostData(postData)
+			})
+
 		} catch(err) {
 			logger.error(err)
 		}
 
 	}),
 
-	onShow:function(){
+	onShow () {
 		let hasAuthPhoneNum = Boolean(storage.get('hasAuthPhoneNum'))
 		this.hasAuthPhoneNum = hasAuthPhoneNum
 		this.setData({
@@ -67,13 +73,15 @@ Page({
 		})
 	},
 
-	// 获取打印能力数据
+	/**
+	 * @methods 获取打印能力数据
+	 */
 	getPrinterCapability: co.wrap(function*(){
 		this.initPms = {
 			duplex: false, //单双面面
 			number: 1, // 份数
 		}
-		// var resp = yield commonRequest.getPrinterCapability() //获取打印能力数据
+		var resp = yield commonRequest.getPrinterCapability() //获取打印能力数据
 		this.initPms.color = resp && resp.color_modes[0] || 'Color'
 	}),
 
@@ -94,7 +102,7 @@ Page({
 				docFiles: docFiles || []
 			})
 		} catch(err) {
-			logger.error(err)
+			logger.info(err)
 		}
 	},
 
@@ -118,23 +126,24 @@ Page({
 
 	}),
 
-	// 上传文档
+	/**
+	 * @methods 上传文档
+	 */
 	uploadMessageFile: co.wrap(function*(urls) {
     try {
 			this.longToast.toast({
 				type:'loading',
-				title: '正在上传',
-				duration: 0
+				title: '正在上传'
 			})
 			var _this = this
 			var urlList = _(urls).clone()
-			var uploadFiles = []
-      yield app.uploadFile(urls, function(url, name) {
+			var uploadFileList = []
+      yield uploadDocs(urls, function(url, name) {
         var file = {
           url: url,
           filename: name,
-          color: _this.initOption.color,
-          duplex: _this.initOption.duplex,
+          color: _this.initPms.color,
+          duplex: _this.initPms.duplex,
           number: 1,
           isSetting: false,
           skip_gs: true,
@@ -142,15 +151,15 @@ Page({
           display: 1
         }
         if (url) {
-          uploadFiles.push(file)
+          uploadFileList.push(file)
           var tempFiles = _(_this.data.files).clone()
 					_this.setData({
 						files: [...tempFiles, file]
 					})
         }
-        if (uploadFiles.length == urlList.length) {
+        if (uploadFileList.length == urlList.length) {
           _this.setData({
-            allCount: _this.data.allCount + uploadFiles.length,
+            allCount: _this.data.allCount + uploadFileList.length,
           })
           if (_this.data.isCleared) {
 						_this.longToast.toast({
@@ -160,7 +169,8 @@ Page({
 						_this.setData({
 							isCleared: false
 						})
-          }
+					}
+					_this.longToast.hide()
         }
 			})
 		
@@ -170,18 +180,20 @@ Page({
     }
 	}),
 
-	//选择文档 
+	/**
+	 * @methods 选择文档 
+	 */ 
 	chooseDocFile: co.wrap(function *(){
 		if (this.data.files.length >= 5) {
 			return wx.showModal({
 				content: '每次最多选择5个文档',
-				confirmColor: '#2086ee',
+				confirmColor: '#FFDC5E',
 				confirmText: "确认",
 				showCancel: false
 			})
 		}
 		var _this = this
-		var leftLength = 5 - this.data.files.length
+		var leftLength = 5 - _this.data.files.length
 		wx.chooseMessageFile({
 			type: 'file',
 			count: leftLength, //暂定最多5个文档
@@ -208,10 +220,10 @@ Page({
 		})
 	}),
 
-	//确认
+	/**
+	 * @methods 确认
+	 */
 	confirm: co.wrap(function*(e) {
-		uploadFormId.dealFormIds(e.detail.formId, `print_docA4`)
-		uploadFormId.upload()
 		// 判断是否授权手机号
     if(!this.hasAuthPhoneNum && !app.hasPhoneNum){
       return
@@ -220,7 +232,7 @@ Page({
     if (this.data.allCount == 0) {
        return wx.showModal({
         content: '至少选择一个文档打印',
-        confirmColor: '#2086ee',
+        confirmColor: '#FFDC5E',
         confirmText: "确认",
         showCancel: false
       })
@@ -235,7 +247,9 @@ Page({
 		})
 	}),
 	
-	// 获取手机号
+	/**
+	 * @methods 获取手机号
+	 */
 	getPhoneNumber: co.wrap(function*(e){
 		yield app.getPhoneNum(e)
 		storage.put('hasAuthPhoneNum', true)
@@ -246,7 +260,9 @@ Page({
     this.confirm(e)
 	}),
 	
-	// 打印
+	/**
+	 * @methods 打印
+	 */
 	print: co.wrap(function*() {
     try {
 			this.longToast.toast({
@@ -272,7 +288,9 @@ Page({
 		}
 	}),
 	
-	// 预览
+	/**
+	 * @methods 预览
+	 */
 	preview: co.wrap(function*(e) {
     try {
 			if (app.preventMoreTap(e)) {
@@ -285,8 +303,10 @@ Page({
 		}
 	}),
 
-	// 删除当前行文档
-	close: co.wrap(function*(e) {
+	/**
+	 * @methods 删除当前行文档
+	 */
+	delCurrentDoc: co.wrap(function*(e) {
     util.deleteItem(this.data.files, this.data.files[e.currentTarget.id])
     this.setData({
       files: this.data.files,
@@ -294,7 +314,9 @@ Page({
     })
 	}),
 
-	// 设置页面属性
+	/**
+	 * @methods 设置页面属性
+	 */
 	setting: co.wrap(function*(e) {
 		try {
 			if (app.preventMoreTap(e)) {
@@ -327,7 +349,7 @@ Page({
 				postData.extract = currentFile.extract
 			}
 
-			router.navigateTo('/pages/print_doc/setting',
+			router.navigateTo('/pages/print_doc/doc_setting/doc_setting',
 				{
 					postData: encodeURIComponent(JSON.stringify(postData)),
 			})
@@ -337,8 +359,10 @@ Page({
 		}
 	}),
 	
-	// 扫码打印
-	toScan(){
+	/**
+	 * @methods 点击扫码打印
+	 */
+	toScan () {
 		let hideSecurityModal = Boolean(storage.get('hideSecurityModal'))
 		if (hideSecurityModal) {
 			return this.scanPrint()
@@ -348,7 +372,10 @@ Page({
 		})
 	},
 
-	scanPrint: co.wrap(function*(){
+	/**
+	 * @methods 扫码打印
+	 */
+	scanPrint: co.wrap(function* (){
     this.cancelScan()
     let scanResult = yield scanCode(),
     pathArr = scanResult.path.split('scene=')[1].split('_'),
@@ -357,7 +384,10 @@ Page({
     yield this.selectedPrinter(id, type)
 	}),
 	
-	cancelScan(){
+	/**
+	 * @methods 取消扫描
+	 */
+	cancelScan () {
     if (this.data.checkboxFlag) {
 			storage.put('hideSecurityModal', true)
     }
@@ -366,14 +396,19 @@ Page({
     })
 	},
 	
-	// 设置不再提示安全打印弹窗
-	checkboxChange() {
+	/**
+	 * @methods 设置不再提示安全打印弹窗
+	 */
+	checkboxChange () {
 		this.setData({
 			checkboxFlag: !this.data.checkboxFlag
 		})
 	},
-
-	selectedPrinter:co.wrap(function*(id, type){
+	
+	/**
+	 * @methods 获取安全打印参数
+	 */
+	selectedPrinter: co.wrap(function*(id, type){
     this.longToast.toast({
 			type:'loading',
 			title: '请稍等'
@@ -384,8 +419,8 @@ Page({
         method: 'POST',
         dataType: 'json',
         data: {
-          'openid': app.openId,
-          'printer_type': type
+          openid: app.openId,
+          printer_type: type
         }
       })
       if (resp.data.code != 0) {
@@ -396,6 +431,31 @@ Page({
 			this.longToast.hide()
       util.showErr(error)
     }
-	})
+	}),
+
+	/**
+	 * @methods设置回传参数
+	 * @param {Object} postData 
+	 */
+	setPostData: function(postData) {
+		let tempFiles = _(this.data.files).clone()
+		tempFiles[postData.fileIndex].number = postData.number
+		tempFiles[postData.fileIndex].start_page = postData.start_page
+		tempFiles[postData.fileIndex].skip_gs = postData.skip_gs
+		tempFiles[postData.fileIndex].extract = postData.extract
+		tempFiles[postData.fileIndex].end_page = postData.end_page
+		tempFiles[postData.fileIndex].color = postData.color
+		tempFiles[postData.fileIndex].duplex = postData.duplex
+		tempFiles[postData.fileIndex].display = postData.display
+		tempFiles[postData.fileIndex].media_size = (postData.medium == 'a4') ? '0' : '3'
+		tempFiles[postData.fileIndex].isSetting = true
+		this.setData({
+			files: tempFiles
+		})
+	},
+
+	onUnload() {
+		event.remove('setPreData', this)
+	},
 
 })

@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2019-11-19 14:39:00
- * @LastEditTime: 2019-11-26 14:52:13
- * @LastEditors: your name
+ * @LastEditTime: 2019-12-04 16:32:28
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /LearningBox/network/graphql_request.js
  */
@@ -29,8 +29,12 @@ let gql = GraphQL({
       } catch (e) {
         console.log(e)
       }
-    }
-  },
+		}	
+	},
+	//全局错误拦截
+	errorHandler:function(res){
+
+	}
 }, true);
 
 const graphqlApi = {
@@ -84,7 +88,21 @@ const graphqlApi = {
         keys: keys
       }
     })
+	},
+	
+  bindDevice: (deviceInfo) => {
+    return gql.mutate({
+      mutation: `mutation bindDevice($input: BindDeviceInput!){
+        bindDevice(input:$input){
+          state
+        }
+      }`,
+      variables: {
+        input: deviceInfo
+      }
+    })
   },
+
 }
 
 export default graphqlApi

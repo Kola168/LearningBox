@@ -1,0 +1,17 @@
+<nav-bar title="分享管理"></nav-bar>
+<view class="container">
+  <view class="share-top">
+    <view class="top-left">分享管理</view>
+    <view class="top-right" bindtap="selectAllUser">{{selectAllFlag?'取消全选':'全选'}}</view>
+  </view>
+  <view class="user-list">
+    <view class="list-item" wx:for="{{userList}}" wx:key="{{index}}" bindtap="selectUser" id="{{index}}">
+      <view class="item-left">
+        <image src="{{item.url}}" class="item-user-image" />
+        <view class="text-overflow-points item-user-name">{{item.name}}</view>
+      </view>
+      <image src="../images/share_user_{{(item.selectFlag||selectAllFlag)?'':'un'}}check.png" class="item-user-select" />
+    </view>
+  </view>
+  <view class="stop-share {{isFullScreen?'is-full-screen':''}}">停止分享</view>
+</view>

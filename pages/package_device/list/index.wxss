@@ -1,0 +1,120 @@
+.container {
+  padding: 0 24rpx 160rpx;
+}
+
+.device-active,
+.device-list {
+  margin-top: 60rpx;
+}
+
+.device-active>view:first-child,
+.device-item>view:first-child {
+  font-size: 32rpx;
+  color: #454545;
+}
+
+.device-active-status,
+.device-item,
+.right-arrow,
+.left-img,
+.item-left,
+.item-right {
+  display: flex;
+  align-items: center;
+}
+
+.device-item {
+  margin-top: 30rpx;
+  border: 2rpx solid #CECECE;
+  border-radius: 16rpx;
+  padding: 50rpx 0;
+}
+
+.device-item-active {
+  box-shadow: 0 2px 8px 0 rgba(204, 204, 204, 0.40);
+  border: none;
+}
+
+.active-name-box {
+  display: flex;
+  flex-direction: column;
+}
+
+.device-active-status {
+  font-size: 24rpx;
+  margin-top: 8rpx;
+}
+
+.online-active-status {
+  color: #4FB526;
+}
+
+.status-flag {
+  width: 8rpx;
+  height: 8rpx;
+  background: #999;
+  border-radius: 4rpx;
+  margin-right: 8rpx;
+}
+
+.online-status {
+  background: #4FB526;
+}
+
+.item-left {
+  width: 75%;
+}
+
+.left-img {
+  width: 120rpx;
+  justify-content: center;
+  margin: 0 28rpx;
+}
+
+.left-img image {
+  width: 120rpx;
+}
+
+.left-name {
+  width: calc(100% - 176rpx);
+}
+
+.item-right {
+  width: 25%;
+}
+
+.item-right {
+  justify-content: flex-end;
+}
+
+.right-btn {
+  background: #FFDC5E;
+  color: #333;
+  font-size: 24rpx;
+  height: 44rpx;
+  line-height: 44rpx;
+  padding: 0 24rpx;
+  border-radius: 22rpx;
+}
+
+.right-arrow {
+  padding: 0 20rpx 0 24rpx;
+}
+
+.right-arrow image {
+  width: 14rpx;
+  height: 24rpx;
+}
+
+.device-add {
+  color: #333;
+  font-size: 36rpx;
+  text-align: center;
+  background: #FFDC5E;
+  height: 100rpx;
+  line-height: 100rpx;
+  width: 100%;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+}
