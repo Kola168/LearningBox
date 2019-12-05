@@ -40,7 +40,6 @@ Page({
 		isColorPrinter: true,
 		isDuplex: true,
 		as_type: 'common', //试卷类型
-		is_3115: false, //本字段现用来判断是否为会员
 		unionId: '',
 		userAuthorize: true,
 		hasAuthPhoneNum: false,
@@ -76,9 +75,6 @@ Page({
 		this.type_id = options.type_id //父级id
 		this.way = 1 //默认自然用户
 		if (this.share_user_id) {
-			this.setData({
-				backHome: true
-			})
 			this.way = 5
 		}
 		if (['library_index', 'search'].indexOf(options.from) > -1) {
@@ -91,7 +87,7 @@ Page({
 		})
 		var unionId = storage.get('unionId')
 		if (unionId) {
-			yield this.loopGetOpenId()
+			yield this.updateDetail()
 		}
 
 		//授权成功后回调
@@ -104,12 +100,6 @@ Page({
 			mediumRecommend: resource_category_sn
 		})
 
-		if (unionId) {
-			try {
-				this.loopGrowingOpenId(unionId)
-			} catch (error) {}
-		}
-
 	}),
 
 	updateDetail: co.wrap(function* () {
@@ -117,17 +107,14 @@ Page({
 			type: 'loading',
 			title: '请稍候'
 		})
-		this.getUserId()
-		this.member()
+		// this.getUserId()
+		// this.member()
 		if (!app.activeDevice) {
 			yield this.getDevice()
 		}
 		if (this.data.type == '_learning') {
-			
 			yield this.getShijuanDetail()
-
 		} else {
-			
 			yield this.getDetail()
 		}
 
@@ -136,52 +123,53 @@ Page({
 		}
 		this.longToast.toast()
 	}),
-	member: co.wrap(function* () {
-		var authToken = storage.get('authToken')
-		var unionId = storage.get('unionId')
 
-		if (authToken) {
-			var res = yield graphql.isMember()
-			this.setData({
-				isMember: res.user && res.user.isMember || false,
-				memberExpiresAt:  res.user.selectedPrinter ? res.user.selectedPrinter.memberExpiresAt : null
-			})
-		}
-		if (!authToken && unionId) {
-			if (app.openId) {
-				try {
-					const resp = yield request({
-						url: app.apiServer + `/ec/v2/users/user_id`,
-						method: 'GET',
-						dataType: 'json',
-						data: {
-							openid: app.openId
-						}
-					})
-					if (resp.data.code != 0) {
-						throw (resp.data)
-          }
-          storage.put('authToken', resp.data.auth_token)
-					let res = yield graphql.isMember()
-					this.setData({
-						isMember: res.user && res.user.isMember || false,
-						memberExpiresAt: res.user.selectedPrinter.memberExpiresAt
-					})
-				} catch (e) {
-					util.showErr(e)
-				}
-			} else {
-				setTimeout(function () {
-					loopCount++
-					if (loopCount <= 100) {
-						_this.member()
-					} else {
-            logger.info('loop too long, stop')
-					}
-				}, 2000)
-			}
-		}
-	}),
+	// member: co.wrap(function* () {
+	// 	var authToken = storage.get('authToken')
+	// 	var unionId = storage.get('unionId')
+
+	// 	if (authToken) {
+	// 		var res = yield graphql.isMember()
+	// 		this.setData({
+	// 			isMember: res.user && res.user.isMember || false,
+	// 			memberExpiresAt:  res.user.selectedPrinter ? res.user.selectedPrinter.memberExpiresAt : null
+	// 		})
+	// 	}
+	// 	if (!authToken && unionId) {
+	// 		if (app.openId) {
+	// 			try {
+	// 				const resp = yield request({
+	// 					url: app.apiServer + `/ec/v2/users/user_id`,
+	// 					method: 'GET',
+	// 					dataType: 'json',
+	// 					data: {
+	// 						openid: app.openId
+	// 					}
+	// 				})
+	// 				if (resp.data.code != 0) {
+	// 					throw (resp.data)
+  //         }
+  //         storage.put('authToken', resp.data.auth_token)
+	// 				let res = yield graphql.isMember()
+	// 				this.setData({
+	// 					isMember: res.user && res.user.isMember || false,
+	// 					memberExpiresAt: res.user.selectedPrinter.memberExpiresAt
+	// 				})
+	// 			} catch (e) {
+	// 				util.showErr(e)
+	// 			}
+	// 		} else {
+	// 			setTimeout(function () {
+	// 				loopCount++
+	// 				if (loopCount <= 100) {
+	// 					_this.member()
+	// 				} else {
+  //           logger.info('loop too long, stop')
+	// 				}
+	// 			}, 2000)
+	// 		}
+	// 	}
+	// }),
 
 	onShow: function () {
 		let hasAuthPhoneNum = Boolean(storage.get('hasAuthPhoneNum'))
@@ -205,7 +193,7 @@ Page({
 	
   },
   
-	linktoauthorize: function () {
+	linkToAuthorize () {
 		let url = this.share_user_id ? `/pages/authorize/index` : `/pages/authorize/index`
     router.navigateTo(url, {
       url: url,
@@ -213,34 +201,6 @@ Page({
       way: this.way
     })
 	},
-
-	onShareAppMessage: co.wrap(function* (res) {
-		res = res[0]
-		if (res.from === 'button') {
-			this.longToast.toast({
-				type: 'loading',
-				title: '请稍候'
-			})
-			try {
-				const resp = yield api.shareResource(app.openId)
-				if (resp.code != 0) {
-					throw (resp)
-				}
-				this.longToast.hide()
-			} catch (e) {
-        this.longToast.hide()
-				util.showErr(e)
-			}
-
-			return {
-				title: this.title,
-				path: `/pages/print_doc/library_play_preview/library_play_preview?id=${this.id}&sn=${this.sn}&user_id=${this.user_id}&title=${this.title}&type_id=${this.type_id}&as_type=${this.data.as_type}&type=${this.data.type}`
-			}
-		} else {
-			return app.share
-		}
-
-	}),
 
 	getDevice: co.wrap(function* () {
 		try {
@@ -252,18 +212,12 @@ Page({
 					'openid': app.openId
 				}
 			})
-      logger.info('查询绑定的**打印机列表', resp)
 			if (resp.data.code != 0) {
 				throw (resp.data)
 			}
 			if (resp.data.res.selected_printer) {
         app.activeDevice = resp.data.res.selected_printer
         logger.info('已绑打印机', resp.data, app.activeDevice)
-				if (app.activeDevice.is_3115) {
-					this.setData({
-						is_3115: true
-					})
-				}
 			}
 
 		} catch (e) {
@@ -274,7 +228,6 @@ Page({
 	}),
 
 	tab_slide: function (e) {
-    logger.info(e.detail.current)
 		this.setData({
 			num: e.detail.current
 		})
@@ -302,82 +255,71 @@ Page({
 		})
 	}),
 
-	loopGetOpenId: co.wrap(function* () {
-		let loopCount = 0
-		let _this = this
-		if (app.openId) {
-      logger.info('openId++++++++++++----', app.openId)
-			this.longToast.toast({
-				type: 'loading',
-				title: '请稍候'
-			})
-			yield this.getUserId()
-			// yield this.member()
-			if (!app.activeDevice) {
-				yield this.getDevice()
-      }
-      logger.info(this.data.type)
-			if (this.data.type == '_learning') {
-				yield this.getShijuanDetail()
-			} else {
-				yield this.getDetail()
-			}
-			if (app.activeDevice) {
-				yield this.getCapability()
-			}
+	// loopGetOpenId: co.wrap(function* () {
+	// 	let loopCount = 0
+	// 	let _this = this
+	// 	if (app.openId) {
+  //     logger.info('openId++++++++++++----', app.openId)
+	// 		this.longToast.toast({
+	// 			type: 'loading',
+	// 			title: '请稍候'
+	// 		})
+	// 		yield this.getUserId()
+	// 		// yield this.member()
 
-			return
-		} else {
-			setTimeout(function () {
-				loopCount++
-				if (loopCount <= 100) {
-          logger.info('openId not found loop getting...')
-					_this.loopGetOpenId()
-				} else {
-          logger.info('loop too long, stop')
-				}
-			}, 2000)
-		}
-	}),
 
-	getUserId: co.wrap(function* () {
-		try {
-			const resp = yield request({
-				url: app.apiServer + `/ec/v2/users/user_id`,
-				method: 'GET',
-				dataType: 'json',
-				data: {
-					openid: app.openId
-				}
-			})
-			if (resp.data.code != 0) {
-				throw (resp.data)
-      }
-      logger.info('获取user_id', resp.data)
-			this.user_id = resp.data.user_id
-		} catch (e) {
-			util.showErr(e)
-		}
-	}),
+	// 		return
+	// 	} else {
+	// 		setTimeout(function () {
+	// 			loopCount++
+	// 			if (loopCount <= 100) {
+  //         logger.info('openId not found loop getting...')
+	// 				_this.loopGetOpenId()
+	// 			} else {
+  //         logger.info('loop too long, stop')
+	// 			}
+	// 		}, 2000)
+	// 	}
+	// }),
 
-	getUnion: co.wrap(function* () {
-		try {
-			var unionId = storage.get('unionId')
-			this.setData({
-				unionId
-      })
-      logger.info('get unionId', unionId)
-		} catch (e) {
-			util.showErr({message: '请重新打开小程序'})
-		}
-	}),
+	// getUserId: co.wrap(function* () {
+	// 	try {
+	// 		const resp = yield request({
+	// 			url: app.apiServer + `/ec/v2/users/user_id`,
+	// 			method: 'GET',
+	// 			dataType: 'json',
+	// 			data: {
+	// 				openid: app.openId
+	// 			}
+	// 		})
+	// 		if (resp.data.code != 0) {
+	// 			throw (resp.data)
+  //     }
+  //     logger.info('获取user_id', resp.data)
+	// 		this.user_id = resp.data.user_id
+	// 	} catch (e) {
+	// 		util.showErr(e)
+	// 	}
+	// }),
 
-	toMember: function () {
-    router.navigateTo('/pages/')
-		// wx.navigateTo({
-		// 	url: `/pages/error_book/pages/account/member?isAndroid=${this.data.isAndroid}&isMember=false`
-		// })
-	},
+	// getUnion: co.wrap(function* () {
+	// 	try {
+	// 		var unionId = storage.get('unionId')
+	// 		this.setData({
+	// 			unionId
+  //     })
+  //     logger.info('get unionId', unionId)
+	// 	} catch (e) {
+	// 		util.showErr({message: '请重新打开小程序'})
+	// 	}
+	// }),
+
+	// toMember: function () {
+  //   router.navigateTo('/pages/')
+	// 	// wx.navigateTo({
+	// 	// 	url: `/pages/error_book/pages/account/member?isAndroid=${this.data.isAndroid}&isMember=false`
+	// 	// })
+	// },
 
 	/**
 	 * @method   获取内容详情
@@ -705,19 +647,6 @@ Page({
 		}
 	}),
 
-	backToHome: function () {
-		var unionId = storage.get('unionId')
-		if (!unionId) {
-			let url = this.share_user_id ? `/pages/authorize/index?url=${url}&share_user_id=${this.share_user_id}&way=${this.way}` : `/pages/authorize/index`
-			return router.switchTab(url,  this.share_user_id ? {
-        url: url,
-        share_user_id: this.share_user_id,
-        way: this.way
-      } : '')
-    }
-    router.switchTab('/pages/index/index')
-	},
-
 	//获取打印能力
 	getCapability: co.wrap(function* () {
 		this.longToast.toast({
@@ -725,6 +654,8 @@ Page({
 			title: '请稍候'
 		})
 		try {
+
+
 			const resp = yield request({
 				url: app.apiServer + `/ec/v2/apps/printer_capability`,
 				method: 'GET',
@@ -896,19 +827,32 @@ Page({
 		})
 	},
 
-	loopGrowingOpenId: co.wrap(function* (unionId) {
-		let loopCount = 0
-		let _this = this
-		if (app.openId) {
+	onShareAppMessage: co.wrap(function* (res) {
+		res = res[0]
+		if (res.from === 'button') {
+			this.longToast.toast({
+				type: 'loading',
+				title: '请稍候'
+			})
+			try {
+				const resp = yield api.shareResource()
+				if (resp.code != 0) {
+					throw (resp)
+				}
+				this.longToast.hide()
+			} catch (e) {
+        this.longToast.hide()
+				util.showErr(e)
+			}
 
+			return {
+				title: this.title,
+				path: `/pages/print_doc/library_play_preview/library_play_preview?id=${this.id}&sn=${this.sn}&title=${this.title}&type_id=${this.type_id}&as_type=${this.data.as_type}&type=${this.data.type}`
+			}
 		} else {
-			setTimeout(function () {
-				loopCount++
-				if (loopCount <= 100) {
-					_this.loopGrowingOpenId()
-				} 
-			}, 2000)
+			return app.share
 		}
+
 	}),
 
 	onUnload: function () {

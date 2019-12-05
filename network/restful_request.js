@@ -5,7 +5,12 @@ const api = {
    params
   }, {
     baseURL: `${app.apiServer}/api/v1/`
-  })
+  }),
+   //资源分享签到
+  shareResource: () => request.post(`users/share_resource`, {
+  }, {
+    baseURL: `${app.apiServer}/boxapi/v2/`
+  }),
 
 }
 
