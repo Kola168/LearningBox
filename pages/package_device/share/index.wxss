@@ -1,0 +1,45 @@
+.qrcode,
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.container image {
+  width: 100%;
+}
+
+.qrcode {
+  position: relative;
+}
+
+.qrcode-box {
+  position: absolute;
+  left: 50%;
+  top: 40rpx;
+  transform: translateX(-50%);
+}
+
+.box-wrap {
+  border: 2rpx solid #ffc35b;
+  border-radius: 50rpx;
+  background: #fff;
+  padding: 40rpx;
+}
+
+.box-wrap image {
+  width: 300rpx;
+  height: 300rpx;
+}
+
+.qrcode-btn {
+  background: #ffc35b;
+  font-size: 30rpx;
+  color: #454545;
+  height: 80rpx;
+  line-height: 80rpx;
+  border-radius: 40rpx;
+  padding: 0 32rpx;
+  text-align: center;
+  width: 74%;
+  margin: 60rpx auto 0;
+}

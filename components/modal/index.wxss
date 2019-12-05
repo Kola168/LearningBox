@@ -21,7 +21,7 @@
 
 .confirm-modal-title {
   font-size: 36rpx;
-  padding: 60rpx 0 36rpx;
+  padding: 60rpx 40rpx 36rpx;
   text-align: center;
   font-weight: bold;
 }
@@ -38,7 +38,7 @@
 
 .box-text {
   font-size: 28rpx;
-  margin-bottom: 12rpx;
+  margin-bottom: 18rpx;
 }
 
 .box-tip {
@@ -69,7 +69,7 @@
 }
 
 .button .cancel {
-  color: #333;
+  color: #666;
   background: #fff;
   border-top: 2rpx solid #CECECE;
   box-sizing: border-box;

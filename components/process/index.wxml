@@ -1,0 +1,17 @@
+<!--components/process/index.wxml-->
+<!-- 自定义遮罩上传进度条/照片过滤提示 -->
+<view class="process-cover-box">
+  <!-- 图片过滤提示 -->
+  <view class="showInterceptModal" wx:if="{{errTip!==''}}">
+    {{errTip}}
+  </view>
+  <!-- 上传进度显示 -->
+  <view class="progress-content" wx:else>
+    <view class="progress-count">
+      正在上传( {{completeCount}} / {{count}} )
+    </view>
+    <text class="">正在上传照片，请耐心等候</text>
+    <progress class="progress-bar" percent="{{percent}}" activeColor="#FFE27A" backgroundColor="#eff0f5" stroke-width="6" />
+    <view class="cancel-upload" bindtap="cancelprocess">取消</view>
+  </view>
+</view>

@@ -1,0 +1,5 @@
+{
+  "usingComponents": {
+      "take-photo-pop":"/pages/gallery/component/checkimg/index"
+  }
+}

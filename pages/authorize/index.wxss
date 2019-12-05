@@ -1,0 +1,69 @@
+/* pages/authorize/index.wxss */
+
+Page {
+    width: 100%;
+    height: 100%;
+}
+
+.auth-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* .title {
+    font-size: 38rpx;
+    color: #333333;
+    margin-top: 160rpx;
+} */
+
+/* .logo {
+    width: 300rpx;
+    margin: 194rpx 0;
+    height: 100%;
+    max-width: 100%;
+    width: 200rpx;
+}  */
+
+.scope-button {
+	width: 100%;
+	margin-top:100rpx;
+}
+
+button {
+    outline: none;
+    border: none;
+    color: #454545;
+    width: 90%;
+    border-radius: 100rpx;
+    line-height: 2.5;
+}
+
+button.authorize-confirm {
+    background-color: #ffe27a;
+}
+
+.back-to {
+		margin-top: 50rpx;
+		border: 2rpx solid #CECECE;
+    color: #999;
+}
+
+.authorize-title{
+	width: 75%;
+	margin-top:70rpx;
+}
+
+.authorize-tip{
+	width: 40%;
+	margin-top: 80rpx;
+}
+
+.authorize-logo {
+    width: 250rpx;
+    height: 205rpx;
+    margin-top: 20rpx;
+}
+
