@@ -19,15 +19,16 @@
 }
 
 .nav-bar-search {
-  background: #f2f2f2;
-  color: #ccc;
+  background: #F4F4F3;
+  color: #999;
   font-size: 24rpx;
+  justify-content: center;
 }
 
 .nav-bar-search__icon {
-  width: 32rpx;
-  height: 32rpx;
-  margin: 0 14rpx 0 16rpx;
+  width: 28rpx;
+  height: 28rpx;
+  margin-right: 16rpx;
 }
 
 .nav-bar-left__inner {

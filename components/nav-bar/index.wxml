@@ -2,8 +2,8 @@
   <view class="custom-nav-status" bindtap="backTop" style="height:{{statusBarHeight}}px;background:{{background}};"></view>
   <view class="custom-nav-bar" wx:if="{{!isOnlyStatusBar}}" style="height:{{navBarHeight}}px;padding:0 {{navBarPadding}}px;background:{{background}};">
     <view wx:if="{{searchObj.isSearch}}" class="nav-bar-search" style="height:{{menuHeight}}px;width:{{menuWidth+titleWidth-30}}px;border-radius:{{menuHeight/2}}px;background:{{searchObj.background}};" bindtap="toSearch">
-      <image src='/images/custom_nav_search.png.png' mode='widthFix' class='nav-bar-search__icon'></image>
-      <view style="color:{{searchObj.textColor}};">小白智慧打印</view>
+      <image src='/images/custom_nav_search.png' mode='widthFix' class='nav-bar-search__icon'></image>
+      <view style="color:{{searchObj.textColor}};">{{searchObj.placeText}}</view>
     </view>
     <block wx:else>
       <view class="nav-bar-left" style="width:{{menuWidth}}px;">
