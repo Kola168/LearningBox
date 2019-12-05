@@ -40,6 +40,7 @@ const downloadFile = util.promisify(wx.downloadFile)
 //       height: 1950, //单位px
 //       heightPer: 0.68 //照片编辑区域所占高度比例
 //       minLeftHeight: 260   //照片下方空出区域
+//       sider:200   //边缘留出的空隙（两遍总和）
 //     }
 //
 //
@@ -156,6 +157,7 @@ Component({
             height: 1950,
             heightPer: 1,
             minLeftHeight:200,
+            sider:200,
         },
         areaSize: {}, //整个照片模板可显示区域尺寸
         editAreaSize: [], //编辑区域尺寸
@@ -192,13 +194,16 @@ Component({
                 if (!_.isNotEmpty(size.minLeftHeight)) {
                     size.minLeftHeight = this.data.paperSize.minLeftHeight
                 }
+                if (!_.isNotEmpty(size.sider)) {
+                    size.sider = this.data.paperSize.sider
+                }
                 this.setData({
                     paperSize: size
                 })
                 //获取当前系统屏幕宽高
                 const res = yield getSystemInfo()
                 console.log(res.windowHeight)
-                let avaWidth = res.windowWidth
+                let avaWidth = res.windowWidth-size.sider* res.windowWidth / 750
                 let avaHeight = res.windowHeight * size.heightPer
                 if ((res.windowHeight - avaHeight) < (size.minLeftHeight * res.windowWidth / 750)) {
                     avaHeight = res.windowHeight - size.minLeftHeight * res.windowWidth / 750

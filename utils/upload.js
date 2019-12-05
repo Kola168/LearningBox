@@ -141,6 +141,7 @@ let uploadFiles = co.wrap(function*(array, callIndexBack, callProgressBack, isFi
         const serialUrl = authInfo.cdn + authInfo.key
         if (res.statusCode == 200) {
           callIndexBack(uploadIndex, serialUrl)
+          uploadIndex++
           array.splice(0, 1)
           uploadFiles(array, callIndexBack, callProgressBack)
         } else {
