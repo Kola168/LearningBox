@@ -28,7 +28,7 @@ Page({
     toPrint: function (e) {
         let media_type = e.currentTarget.id
         wx.navigateTo({
-            url: `id_normal_edit?media_type=${media_type}`
+            url: `normal_edit?media_type=${media_type}`
         })
     }
 })

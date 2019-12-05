@@ -4,15 +4,14 @@ const app = getApp()
 const regeneratorRuntime = require('../../lib/co/runtime')
 const co = require('../../lib/co/co')
 const util = require('../../utils/util')
+import upload from '../../utils/upload'
+import api from '../../network/restful_request.js'
 
 const chooseImage = util.promisify(wx.chooseImage)
 const getImageInfo = util.promisify(wx.getImageInfo)
 const getSystemInfo = util.promisify(wx.getSystemInfo)
-const request = util.promisify(wx.request)
 const showModal = util.promisify(wx.showModal)
 const chooseMessageFile = util.promisify(wx.chooseMessageFile)
-
-
 Page({
     data: {
         // 本地照片地址
@@ -28,7 +27,7 @@ Page({
         },
         // 编辑区域
         area: {
-            url: 'images/id_templete.png',
+            url: '/images/id/id_templete.png',
             width: 480,
             height: 670,
             x: 0,
@@ -199,7 +198,7 @@ Page({
         }
 
         if (area.areaWidth == area.areaHeight) {
-            area.url = 'images/id_templete_square.png'
+            area.url = '/images/id/id_templete_square.png'
         }
 
         this.setData({
@@ -637,9 +636,9 @@ Page({
 
     // 下一步
     next: co.wrap(function* (e) {
-        if (!app.openId) {
-            yield this.loopGetOpenId()
-        }
+        // if (!app.openId) {
+        //     yield this.loopGetOpenId()
+        // }
         if (!this.data.localImgPath) {
             return yield showModal({
                 title: '提示',
@@ -649,30 +648,20 @@ Page({
             })
         }
         this.longToast.toast({
-            img: '/images/loading.gif',
-            title: '正在提交',
+            type: "loading",
             duration: 0
         })
-        // console.log('form发生了submit事件，携带数据为：', e.detail)
-        // uploadFormId.dealFormIds(e.detail.formId, 'id-index')
         let imageURL
         try {
-            // if (this.data.isGfdAlbum) {
-            //     let downloadImage = yield downloadFile({ url: this.data.localImgPath })
-            //     console.log('downloadImage====', downloadImage.tempFilePath)
-            //     imageURL = yield app.uploadImage(downloadImage.tempFilePath)
-            // } else
-            // {
             if (this.data.source == 'computer') {
                 imageURL = this.data.localImgPath
             } else {
-                imageURL = yield app.newUploadImage(this.data.localImgPath)
+                imageURL = yield upload.uploadFile(this.data.localImgPath)
+                console.log('3456789', imageURL)
             }
-
-            // }
         } catch (e) {
             console.error(e)
-            this.longToast.toast()
+            this.longToastoast()
             yield showModal({
                 title: '照片上传失败',
                 content: '请检查网络或稍候再试',
@@ -713,17 +702,31 @@ Page({
         let svw = (this.data.imgInfo.width - result.scale * (this.data.imgInfo.width * Math.cos(mp) + this.data.imgInfo.height * Math.sin(mp))) / 2
 
         let svh = (this.data.imgInfo.height - result.scale * (this.data.imgInfo.width * Math.sin(mp) + this.data.imgInfo.height * Math.cos(mp))) / 2
-
+        // {
+        //     "is_async": false
+        //     "feature_key": "normal_id",  # 自定义默认普通证件照key
+        //       "editor_scale": 0.6013186813186814,
+        //       "image_height": 579,
+        //       "image_url": "https://cdn-h.gongfudou.com/Hyperion/miniapp/2019/12/3/f322a4eb-f30e-4eb6-85bf-ac185ca80ccb.png",
+        //       "image_width": 413,
+        //       "media_type": "_id2in",  # 普通证件照media_type _id1in _id2in _id3in
+        //       "rotate": 0,
+        //       "scale": 0.662,
+        //       "x": 0.796999999999997,
+        //       "y": 1.0
+        //   }
         let params = {
-            image_url: imageURL,
+            is_async: false, //一异步请求
+            feature_key: "normal_id", //普通证件照
             editor_scale: this.editorScale,
-            scale: result.scale,
-            x: result.x + svw,
-            y: result.y + svh,
             image_width: this.data.imgInfo.width,
             image_height: this.data.imgInfo.height,
+            image_url: imageURL,
+            media_type: this.data.mode,
             rotate: rotate,
-            media_type: this.data.mode
+            scale: result.scale,
+            x: result.x + svw,
+            y: result.y + svh
         }
 
         console.log('证件照合成参数', params, app.openId)
@@ -731,55 +734,48 @@ Page({
         app.tmpIDParams = params
 
         try {
-            const resp = yield request({
-                url: app.apiServer + `/boxapi/v3/images/id_convert`,
-                method: 'POST',
-                dataType: 'json',
-                data: params
-            })
+            const resp = yield api.convertId(params)
 
-            if (resp.data.code != 0) {
+            if (resp.code != 0) {
                 throw (resp.data)
             } else {
                 this.longToast.toast()
-                console.log('相馆证件照合成', resp.data)
-                let url = resp.data.url
-                let preview_url = resp.data.preview_url
+                // console.log('相馆证件照合成', resp.res)
                 let params = {
-                    url: resp.data.url,
-                    preview_url: encodeURIComponent(resp.data.preview_url),
+                    url: imageURL,
+                    preview_url: encodeURIComponent(resp.res.url),
                     mode: this.data.mode,
                     imageURL: imageURL,
+                    name:this.data.name
                 }
                 wx.redirectTo({
-                    url: `mode?idPrint=${JSON.stringify(params)}`
+                    url: `normal_mode?idPrint=${JSON.stringify(params)}`
                 })
             }
         } catch (e) {
-            console.error(e)
             this.longToast.toast()
             util.showErr(e)
             return null
         }
 
     }),
-    loopGetOpenId: co.wrap(function* () {
-        let loopCount = 0
-        let _this = this
-        if (app.openId) {
-            console.log('openId++++++++++++----', app.openId)
-            return
-        } else {
-            setTimeout(function () {
-                loopCount++
-                if (loopCount <= 100) {
-                    console.log('openId not found loop getting...')
-                    _this.loopGetOpenId()
-                } else {
-                    console.log('loop too long, stop')
-                }
-            }, 2000)
-        }
-    }),
+    // loopGetOpenId: co.wrap(function* () {
+    //     let loopCount = 0
+    //     let _this = this
+    //     if (app.openId) {
+    //         console.log('openId++++++++++++----', app.openId)
+    //         return
+    //     } else {
+    //         setTimeout(function () {
+    //             loopCount++
+    //             if (loopCount <= 100) {
+    //                 console.log('openId not found loop getting...')
+    //                 _this.loopGetOpenId()
+    //             } else {
+    //                 console.log('loop too long, stop')
+    //             }
+    //         }, 2000)
+    //     }
+    // }),
 
 })

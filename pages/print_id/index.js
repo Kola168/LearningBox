@@ -5,17 +5,17 @@ Page({
     onLoad: function (options) {},
     toZhineng: function () {
         wx.navigateTo({
-            url: `../error_book/pages/print_id/index`
+            url: `smart_index`
         })
     },
     toNomal: function () {
         wx.navigateTo({
-            url: `id_normal_list?type=normal`
+            url: `normal_list?type=normal`
         })
     },
     toForeign: function () {
         wx.navigateTo({
-            url: `id_normal_list?type=foreign`
+            url: `normal_list?type=foreign`
         })
     },
     toPrint: function (e) {

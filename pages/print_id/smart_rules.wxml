@@ -1,0 +1,47 @@
+<!--pages/idprint/rules.wxml-->
+<nav-bar background="#fff" title="示例"></nav-bar>
+<view class='wrap bg-white'>
+    <view class='example color-darkgray'>
+        <view class='title'>
+            <text>最佳拍摄姿势</text>
+        </view>
+        <view class='image'>
+            <image mode='widthFix' src='../../images/id/complex_example.png'></image>
+        </view>
+        <view class='fs-32'>
+            <view class='mg-t-60 flex-center'>
+                <image class='icon' mode='widthFix' src='../../images/id/complex_star.png'></image>
+                <text>头部需摆正</text>
+            </view>
+            <view class='flex-center mg-t-20'>
+                <image class='icon' mode='widthFix' src='../../images/id/complex_star.png'></image>
+                <text>穿深色衣服</text>
+            </view>
+            <view class='flex-center mg-t-20'>
+                <image class='icon' mode='widthFix' src='../../images/id/complex_star.png'></image>
+                <text>站在白墙前</text>
+            </view>
+        </view>
+    </view>
+   
+    <view class='bottom flex-center' bindtap="changeImage">
+        <text class='fs-32'>选择照片</text>
+    </view>
+    <view class='fail-wrap flex-center' wx-if='{{fail}}'>
+        <view class='fail bg-white'>
+            <image mode='widthFix' src='../../images/id/complex_invalidImg.png'></image>
+            <view class='mg-t-20'>
+                <text class='color-darkgray'>{{failMessage}}</text>
+            </view>
+            <view>
+                <text class='color-gray fs-32'>请重新选择照片</text>
+            </view>
+            <view class='reChoose' bindtap='chooseImg'>
+                <text>重新拍照</text>
+            </view>
+        </view>
+    </view>
+</view>
+<take-photo-pop id="checkComponent" bindchooseImg="takePhoto" imgNum="{{9}}"></take-photo-pop>
+<import src="../../lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />

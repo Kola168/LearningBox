@@ -74,13 +74,14 @@ page{
 }
 
 .btn-print {
+    width:100%!important;
     background: #FFE27A;
     color:#000;
     border: none;
     height:100rpx;
-    padding-left:60rpx;
-    padding-right: 60rpx;
+    padding:0 60rpx; 
     line-height: 100rpx;
+    margin:none;
     border-radius: 0;
     font-size: 34rpx;
 }
