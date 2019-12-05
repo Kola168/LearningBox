@@ -35,7 +35,8 @@
 		"pages/print_photo_doc/index",
     "pages/print_photo/mediachoose",
     "pages/print_photo/photolist",
-    "components/process/text"
+		"components/process/text",
+		"pages/authorize/index"
 	],
 	"subPackages": [
 		{

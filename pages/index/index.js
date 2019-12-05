@@ -110,7 +110,7 @@ Page({
         },
         decr_type: 'login'
       }
-      const resp = yield api.getSession(params)
+      const resp = yield api.wechatDecryption(params)
       if (resp.code != 0) {
         throw (resp.data)
       }

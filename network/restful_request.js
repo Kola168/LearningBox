@@ -1,3 +1,11 @@
+/*
+ * @Author: your name
+ * @Date: 2019-12-05 11:13:26
+ * @LastEditTime: 2019-12-05 11:17:58
+ * @LastEditors: your name
+ * @Description: In User Settings Edit
+ * @FilePath: /LearningBox/network/restful_request.js
+ */
 var app = getApp()
 import request from './request'
 
@@ -8,7 +16,8 @@ const api = {
   }, {
     baseURL: `${app.apiServer}/ec/v2/`
   }),
-  getSession: (params) => request.post(`users/sessions/wechat_decryption`, params, {
+ 
+	wechatDecryption: (params) => request.post(`users/sessions/wechat_decryption`, params, {
     baseURL: `${app.apiServer}/api/v1/`
   })
 
