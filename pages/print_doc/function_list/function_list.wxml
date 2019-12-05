@@ -28,5 +28,4 @@
 
 <import src="../../../lib/toast/wetoast.wxml" />
 <template is="wetoast" data="{{...__wetoast__}}" />
-<!-- <consumables class="modify" bind:myevent="onMyEvent" supply_types="{{supply_types}}" consumables-icon="consumables-icon" medium_recommend="{{mediumRecommend}}" find="common"></consumables> -->
 

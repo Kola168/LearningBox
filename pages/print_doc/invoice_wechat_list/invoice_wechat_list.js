@@ -11,7 +11,7 @@ import router from '../../../utils/nav'
 import { uploadDocs } from '../../../utils/upload'
 import Logger from '../../../utils/logger.js'
 const logger = new Logger.getLogger('pages/print_doc/invoice_wechat_list/invoice_wechat_list')
-
+import commonRequest from '../../../utils/common_request'
 const downloadFile = util.promisify(wx.downloadFile)
 const chooseMessageFile = util.promisify(wx.chooseMessageFile)
 const openDocument = util.promisify(wx.openDocument)
@@ -96,7 +96,6 @@ Page({
             files: cloneFiles
           })
         }
-        logger.info('uploadFiles=======', uploadFiles, uploadFiles.length, cloneUrls.length)
 
         if (uploadFiles.length == cloneUrls.length) {
           logger.info('uploadFiles=======', uploadFiles)
@@ -111,7 +110,7 @@ Page({
       })
     } catch (e) {
       _this.longToast.hide()
-      util.showErr(e)
+      util.showError(e)
     }
   }),
 
@@ -119,14 +118,16 @@ Page({
     let covertUrls = this.data.files.map(item=>item.url)
     logger.info('covertUrls=====', covertUrls)
     try {
-      const resp = yield api.covertInvoiceToPdf(app.openId, covertUrls)
+      const resp = yield api.getInvoiceInfo({
+        pdf_urls: covertUrls
+      })
+      console.log(resp,'==resp===')
       if (resp.code != 0) {
         throw (resp)
       }
-      logger.info('转化链接成功=====', resp)
       let tempFiles = _(this.data.files).clone()
       tempFiles.forEach((item, index) => {
-        item.url = resp.convert_urls[index],
+        item.url = resp.res.convert_urls[index],
           item.number = 1,
           item.rotate = true,
           item.color = 'Color'
@@ -137,7 +138,7 @@ Page({
       this.longToast.hide()
     } catch (e) {
       this.longToast.hide()
-      util.showErr(e)
+      util.showError(e)
     }
   }),
 
@@ -199,7 +200,11 @@ Page({
     })
     try {
       logger.info('发票提交打印参数=====', this.data.files)
-      const resp = yield api.printInvoice(app.openId, 'invoice', this.data.files)
+      const resp = yield commonRequest.printOrders({
+        media_type: 'invoice',
+        urls: this.data.files
+      })
+      // const resp = yield api.printInvoice(app.openId, 'invoice', this.data.files)
       if (resp.code != 0) {
         throw (resp)
       }
@@ -215,7 +220,7 @@ Page({
       // })
     } catch (e) {
       this.longToast.hide()
-      util.showErr(e)
+      util.showError(e)
     }
   }),
 
@@ -235,7 +240,7 @@ Page({
       util.hideToast(this.longToast)
     } catch (e) {
       this.longToast.hide()
-      util.showErr(e)
+      util.showError(e)
     }
   }),
 

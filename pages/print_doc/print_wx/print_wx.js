@@ -51,7 +51,7 @@ Page({
       }
       this.user_id = resp.data.user_id
     } catch (e) {
-      util.showErr(e)
+      util.showError(e)
     }
   }),
 
@@ -77,7 +77,7 @@ Page({
           _this.setData({
             input: res.data
           })
-          return util.showErr({
+          return util.showError({
             message: '链接获取成功'
           })
         }
@@ -108,7 +108,7 @@ Page({
     var input = this.data.input
 
     if (input == '') {
-      return util.showErr({
+      return util.showError({
         message: '请输入微信文章链接'
       })
     }
@@ -141,10 +141,10 @@ Page({
 
       } catch (e) {
         this.longToast.hide()
-        util.showErr(e)
+        util.showError(e)
       }
     } else {
-      return util.showErr({
+      return util.showError({
         message: '此链接已失效，请检查链接输入是否正确'
       })
     }
@@ -190,7 +190,7 @@ Page({
   //     })
   //   } catch (e) {
   //     this.longToast.hide()
-  //     util.showErr(e)
+  //     util.showError(e)
   //   }
   // }),
 
@@ -219,7 +219,7 @@ Page({
 
   //   } catch (e) {
   //     this.longToast.hide()
-  //     util.showErr(e)
+  //     util.showError(e)
   //   }
   // }),
 
@@ -266,7 +266,7 @@ Page({
   //     this.page++
   //   } catch (e) {
   //     this.longToast.hide()
-  //     util.showErr(e)
+  //     util.showError(e)
   //   }
   // }),
 

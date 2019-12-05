@@ -30,7 +30,7 @@ Page({
       wx.hideLoading()
     } catch (error) {
       wx.hideLoading()
-      util.showErr(error)
+      util.showError(error)
     }
 
   }),
