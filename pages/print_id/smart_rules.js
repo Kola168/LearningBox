@@ -9,6 +9,9 @@ const showModal = util.promisify(wx.showModal)
 const chooseMessageFile = util.promisify(wx.chooseMessageFile)
 import upload from '../../utils/upload'
 import api from '../../network/restful_request.js'
+import getLoopsEvent from '../../utils/worker'
+import router from '../../utils/nav'
+
 Page({
     data: {
         rule: {
@@ -34,7 +37,7 @@ Page({
     },
     uploadImage: co.wrap(function* () {
         this.longToast.toast({
-            type:'loading',
+            type: 'loading',
             duration: 0
         })
         try {
@@ -51,34 +54,36 @@ Page({
         }
     }),
 
-
-
     confirm: co.wrap(function* () {
         let params = {
             is_async: true,
             url: this.imageURL,
-            feature_key: "cert_id",
             spec_id: this.data.spec.spec_id
         }
         console.log('合成参数', params)
         try {
-            const resp = yield api.convertId(params)
-            if (resp.code != 0) {
-                throw (resp.res)
-            } else {
-                console.log('证件照合成成功', resp.res)
-                this.longToast.toast()
-                let confirm = JSON.stringify(resp.res.sn)
-                wx.redirectTo({
-                    url: `smart_preview?confirm=${confirm}&info=${JSON.stringify(this.data.spec)}`
-                })
-            }
-        } catch (e) {
-            this.longToast.toast()
-            console.log(e)
-            util.showError(e)
-            return
+            getLoopsEvent({
+                feature_key: 'cert_id',
+                worker_data: params
+            }, (resp) => {
+                if (resp.status == 'finished') {
+                    this.longToast.hide()
+                    console.log('3456789', resp.data)
+                    let confirm = JSON.stringify(resp.data)
+                    router.redirectTo('/pages/print_id/smart_preview', {
+                        confirm: confirm,
+                        info: JSON.stringify(this.data.spec)
+                    })
+                }
+            }, () => {
+                this.longToast.hide()
+            })
+        } catch (err) {
+            logger.info(err)
+            this.longToast.hide()
+            util.showError(err)
         }
+
     }),
     changeImage: co.wrap(function* () {
         this.selectComponent("#checkComponent").showPop()

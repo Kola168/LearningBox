@@ -39,21 +39,23 @@ Page({
     //下面的是worker sn
     this.query = JSON.parse(options.confirm)
     this.info = JSON.parse(options.info)
-
+  
+    console.log('预览页参数', this.info, this.query)
     this.setData({
-      price_count: this.query.price,
-      price: this.query.price,
-      can_free_print: this.query.can_free_print ? this.query.can_free_print : false
+      singleImg: this.query.wm_url,
+      // price_count: this.query.price,
+      // price: this.query.price,
+      // can_free_print: this.query.can_free_print ? this.query.can_free_print : false
     })
-    if (this.query.url_print_wm == null) {
+    if (this.query.print_wm_url == null) {
       this.setData({
         idPrint: false
       })
     }
-    let res = yield graphql.isMember()
-    this.setData({
-      isMember: res.user != null && res.user.isMember ? res.user.isMember : false
-    })
+    // let res = yield graphql.isMember()
+    // this.setData({
+    //   isMember: res.user != null && res.user.isMember ? res.user.isMember : false
+    // })
   }),
   onShow: function () {
     let hasAuthPhoneNum = Boolean(wx.getStorageSync('hasAuthPhoneNum'))
@@ -125,8 +127,7 @@ Page({
     }
     let brand
     this.longToast.toast({
-      img: '../../images/loading.gif',
-      title: '请稍候',
+      type: "loading",
       duration: 0
     })
     let p = {
