@@ -24,9 +24,12 @@ App({
   //线上地址
   // apiServer: 'https://epbox.gongfudou.com',
   // apiWbviewServer: 'https://epbox.gongfudou.com/',
+  //季慧新本地地址
+  apiServer:'http://jhx.nat300.top',
+  apiWbviewServer: 'http://jhx.nat300.top',
   //王析理本地地址
-  apiServer: 'http://epbox.natapp1.cc',
-  apiWbviewServer: 'http://epbox.natapp1.cc/',
+  // apiServer: 'http://epbox.natapp1.cc',
+  // apiWbviewServer: 'http://epbox.natapp1.cc/',
   authAppKey: 'iMToH51lZ0VrhbkTxO4t5J5m6gCZQJ6c',
   openId: '',
   unionId: '',

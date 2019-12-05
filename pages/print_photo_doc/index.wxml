@@ -6,40 +6,40 @@
             <view class="image-main">
                 <view class="image-item" wx:for="{{images}}" wx:key="{{index}}" id="{{index}}" key="{{key}}">
                     <!-- 删除图片 -->
-                    <image class="delete" src="../../images/pic2doc_close_icon.png" mode="widthFix" bindtap="deleteImg" id="{{index}}"></image>
+                    <image class="delete" src="../../images/print_photo_delete.png" mode="widthFix" bindtap="deleteImg" id="{{index}}"></image>
                     <view class="mainImage" style="height:{{height}}px">
-                        <image class="photo" src="{{item.url}}" mode="widthFix" id="{{index}}" bindload="{{realCount == images.length ? 'hideToast' : ''}}" binderror="errImage" catchtap="previewImg"></image>
+                        <image class="photo" style="height:{{height}}px" src="{{item.url}}" mode="widthFix" id="{{index}}"  bindload="{{realCount==images.length? 'hideToast':''}}" binderror="errImage" catchtap="previewImg"></image>
                     </view>
                     <!-- 数量增减 -->
                     <view class="count">
                         <!-- 编辑按钮 -->
                         <text class="moreEdit" bindtap="toMoreEdit" id="{{index}}" key="1">编辑</text>
                         <view>
-                            <image class="count-button" src="{{item.count < 2 ? '../../images/pic2doc_decrease_check.png' : '../../images/pic2doc_decrease_checked.png'}}" mode="widthFix" id="{{index}}" bindtap="decrease"></image>
+                            <image class="count-button" src="{{item.count < 2 ? '../../images/print_photo_cutgray.png' : '../../images/print_photo_cutimg.png'}}" mode="widthFix" id="{{index}}" bindtap="decrease"></image>
                             <view class="count-num">{{item.count}}</view>
-                            <image class="count-button" src="{{item.count < 49 && item.count !== 0 ? '../../images/pic2doc_increase_checked.png' : '../../images/pic2doc_increase_check.png' }}" mode="widthFix" id="{{index}}" bindtap="increase"></image>                
+                            <image class="count-button" src="{{item.count < 49 && item.count !== 0 ? '../../images/print_photo_plussimg.png' : '../../images/doc_document_add_gray.png' }}" mode="widthFix" id="{{index}}" bindtap="increase"></image>                
                         </view>
                     </view>
                 </view>
                 <!-- 添加图片 -->
                 <view class="image-item upload-btn" bindtap="openPopWindow" wx:if="{{images.length && images.length < maxCount}}" style="height: calc( {{height}}px + 60rpx )">
-                    <image src="/images/pic2doc_btn_add_pic.png"></image>
+                    <image src="/images/print_photo_plusicon.png"></image>
                     <text class="text">上传照片</text>
                 </view>
                 <!-- 页面无图片 -->
                 <block wx:if="{{!images.length}}">
                     <view class="empty-image">
-                        <image class="upload-m-icon" src="https://cdn.gongfudou.com/miniapp/ec/upload_m_icon.png" mode="widthFix" bindtap="openPopWindow"></image>
+                        <image class="upload-m-icon" src="https://cdn-h.gongfudou.com/LearningBox/main/pic2doc_add_img.png" mode="widthFix" bindtap="openPopWindow"></image>
                       <view>点击此处上传照片吧</view>
-                      <image class="use-handbook" src="https://cdn.gongfudou.com/miniapp/ec/use_handbook.png" mode="widthFix"></image>
+                      <image class="use-handbook" src="https://cdn-h.gongfudou.com/LearningBox/main/pic2doc_tip_message.png" mode="widthFix"></image>
                     </view>
                 </block>
             </view>
         </view>
         <!-- 底部按钮 -->
         <view class="bottom">
-            <view class="bottom-left" bindtap="openPopWindow">
-                <text>上传照片</text>
+            <view class="bottom-left" bindtap="openPopWindow" style="{{!rePrint&& images.length == maxCount ? '' : 'color:#666666;background:#fff;'}}">
+                <text>{{images.length ? '继续上传' : '上传照片'}}({{images.length}}/{{maxCount}})</text>
             </view>
             <view class="bottom-right">
                 <form report-submit="true" bindsubmit="confirm">
@@ -50,21 +50,22 @@
         <!-- 自定义遮罩上传进度条/照片过滤提示 -->
         <view class="progress" wx:if="{{uploadImg || showInterceptModal}}">
             <!-- 上传进度显示 -->
-            <view class="progress-content">
+            <view class="progress-content" wx:if="{{uploadImg}}">
                 <view class="progress-count">
                     正在上传(
-                        <text class="complete">{{completeCount}}</text>
+                        <text class="complete">{{completeCount}}/</text>
                         <text class="allCount">{{count}}</text>
                     )
                 </view>
                 <text>正在上传照片，请耐心等候</text>
                 <progress class="progress-bar" percent="{{percent}}" activeColor="#ffe27a" backgroundColor="#eff0f5" stroke-width="6"></progress>
-                <image class="progress-loading" src="../../images/loading.gif" mode="widthFix"></image>
+                <!-- <image class="progress-loading" src="../../images/loading.gif" mode="widthFix"></image> -->
                 <button class="cancel-upload" bindtap="cancelUpload">取消</button>
             </view>
             <!-- 图片过滤提示 -->
-            <view class="showInterceptModal">{{showInterceptModal}}</view>
+            <view class="showInterceptModal" wx:if="{{showInterceptModal}}">{{showInterceptModal}}</view>
         </view>
+        
     <!-- 选择图片 -->
         <view class="choosePhoto" wx:if="{{popWindow}}">
             <view class="choosePhoto-container" catchtap="closePopWindow">
@@ -88,8 +89,8 @@
         <confirm-print bindconfirm="userConfirm" modal="{{confirmModal}}"></confirm-print>
     </block>
     <block wx:else>
-        <image class="photo-doc" src="https://cdn.gongfudou.com/miniapp/ec/pic_to_doc_desc_a.png" mode="widthFix"></image>
-        <image class="photo-doc photo-last" src="https://cdn.gongfudou.com/miniapp/ec/pic_to_doc_desc_b.png" mode="widthFix"></image>
+        <image class="photo-doc" src="https://cdn-h.gongfudou.com/LearningBox/main/pic2doc_intro_01.png" mode="widthFix"></image>
+        <image class="photo-doc photo-last" src="https://cdn-h.gongfudou.com/LearningBox/main/pic2doc_intro_02.png" mode="widthFix"></image>
         <view class="btn" bindtap="toUse">
             <button hover-class="none">开始使用</button>
         </view>

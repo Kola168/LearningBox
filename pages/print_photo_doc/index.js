@@ -1,30 +1,32 @@
-//pages/print_photo_doc/choose.js
+// pages/print_photo_doc/choose.js
 "use strict"
 const app = getApp()
-const logger = new Logger.getLogger('pages/index/index')
-const regeneratorRuntime = require('../../lib/co/runtime')
-const co = require('../../lib/co/co')
-const util = require('../../utils/util')
+
+import { regeneratorRuntime, co, util, uploadFormId,wxNav } from '../../utils/common_import.js'
+import { uploadFiles } from '../../utils/upload.js'
+import storage from '../../utils/storage.js'
+const imginit = require('../../utils/imginit')
 
 const chooseImage = util.promisify(wx.chooseImage)
 const showModal = util.promisify(wx.showModal)
+const request = util.promisify(wx.request)
+const getImageInfo = util.promisify(wx.getImageInfo)
 const getNetworkType = util.promisify(wx.getNetworkType)
 const chooseMessageFile = util.promisify(wx.chooseMessageFile)
 // import commonRequest from '../../utils/common_request.js'
 
-import wxNav from '../../utils/nav.js'
-import Logger from '../../utils/logger.js'
 
-Page({
-	data: {
-		showArea: false,
-		showIndex: false,
-		popWindow: false,
-		showConsumablesModal: false, //耗材推荐弹窗
-		consumablesIcon: false, //耗材推荐图标
-		images: [],
-		//图片选择器
-		popWindow: false,
+const chooseCtx = {
+  data: {
+    showArea: false,
+    showIndex: true,
+    popWindow: false,
+    // showGetModal: false, //耗材推荐弹窗
+    // supply_types: '',
+    // consumablesIcon: false, //耗材推荐图标
+    mediumRecommend: '',
+    // share: app.galleryShare,
+    images: [],
     canUseProgressBar: false, //判断进度条是否可用
     uploadImg: false, //上传进度条显示、隐藏
     percent: 0, //进度条百分比
@@ -48,336 +50,231 @@ Page({
       }
     },
     showConfirmModal: null,
-    showGetModal: false, //耗材推荐弹窗
-    supply_types: '',
-    consumablesIcon: false, //耗材推荐图标
+    // showGetModal: false, //耗材推荐弹窗
+    // supply_types: '',
+    // consumablesIcon: false, //耗材推荐图标
     hasAuthPhoneNum: false,
     confirmModal: {
       isShow: false,
       title: '请正确放置A4打印纸',
       image: 'https://cdn.gongfudou.com/miniapp/ec/confirm_print_a4_new.png'
     }
-	},
+  },
+  onLoad: function (options) {
+    this.longToast = new app.weToast()
+    this.query = options || {}
+    this.initUseArea()
+  },
+  onShow: function () {
+    let hasAuthPhoneNum = Boolean(wx.getStorageSync('hasAuthPhoneNum'))
+    this.hasAuthPhoneNum = hasAuthPhoneNum
+    this.setData({
+      hasAuthPhoneNum: app.hasPhoneNum || hasAuthPhoneNum
+    })
+    this.needToDelete = [] //长宽比大于5，最后统一删除
+  },
+  // 初始化当前区域信息
+  initUseArea: function () {
+    this.media_type = 'pic2doc'
+    var isNoUse = wx.getStorageSync('picToDocUSeStatus') || null
+    if (isNoUse) {
+      this.setData({
+        showArea: true,
+        showIndex: false
+      })
+      this.initSingleArea()
+      this.getStorageImages(this.media_type)
+    } else {
+      this.setData({
+        showArea: true,
+        mediumRecommend: this.media_type,
+        showIndex: true
+      })
+      // this.getSupplyBefore(this.media_type)
+    }
+  },
+  //初始化视图区域信息
+  initSingleArea: function () {
+    try {
+      let res = wx.getSystemInfoSync()
+      let width = (res.windowWidth - 35) / 2
+      let height = width / this.data.media_size[this.media_type].width * this.data.media_size[this.media_type].height
+      this.setData({
+        width,
+        height
+      })
+    } catch (e) {
+      console.log(e)
+    }
+  },
+  getStorageImages: function (media_type) {
+    try {
+      app.judgeClearStorage('2.1.3', media_type)
+      let galleryImages = wx.getStorageSync(media_type) || {
+        images: [],
+        allCount: 0
+      }
+      if (galleryImages) {
+        this.setData({
+          images: galleryImages.images,
+          allCount: galleryImages.allCount
+        })
+      }
+    } catch (e) {
+      console.log('getStorageImages == 获取本地图片失败')
+    }
+  },
+  // getSupplyBefore(media_type) {
+  //   commonRequest.getSupplyBefore(media_type).then(res => {
+  //     res.supply_types && this.setData({
+  //       supply_types: res.supply_types
+  //     })
+  //   })
+  // },
+  toMoreEdit: function ({ currentTarget: { id, flag = false } }) {
+    let image = this.data.images[id]
+    let params = {
+      url: image.localUrl,
+      mode: "quadrectangle",
+      from: "pic2doc",
+      index: id,
+      media_type: this.media_type,
+      isSingle: !flag,
+      currentCount: Math.max(this.data.images.length - this.data.preAllCount, 0) //当前选择的图片总数
+    }
+    wxNav.navigateTo(`./edit`,params)
 
-	onLoad: function (options) {
-		this.query = options || {}
-		this.initUseArea()
+  },
+  previewImg: function ({ currentTarget: { id } }) {
+    let image = this.data.images[id]
+    wx.previewImage({
+      current: image.afterEditUrl || image.url,
+      urls: [image.afterEditUrl || image.url]
+    })
+  },
+  openPopWindow: function () {
+    if (this.data.images.length >= this.data.maxCount) {
+      return showModal({
+        content: '已选照片达到限定的数量，请重新选择上传',
+        confirmColor: '#ffe27a',
+        confirmText: "确认",
+        showCancel: false
+      })
 
-	},
+    }
+    if (this.data.uploadImg) {
+      return
+    }
+    this.setData({
+      popWindow: true
+    })
+  },
+  closePopWindow: function () {
+    this.setData({
+      popWindow: false
+    })
+  },
+  chooseImg: co.wrap(function* (e) {
+    if (app.preventMoreTap(e)) {
+      return
+    }
 
-	//初始化当前区域信息
-	initUseArea: function () {
-		this.media_type = 'pic2doc'
-		var isNoUse = wx.getStorageSync('picToDocUseStatus') || null
-		if (isNoUse) {
-			this.setData({
-				showArea: true,
-				showIndex: false
-			})
-			this.initSingleArea()
-			this.getStorageImages(this.media_type)
-		} else {
-			this.setData({
-				showArea: true,
-				mediumRecommend: this.media_type,
-				showIndex: true
-			})
-			this.getSupplyBefore(this.media_type)
-		}
-	},
+    let net = yield getNetworkType()
 
-	//初始化视图区域信息
-	initSingleArea: function () {
-		try {
-			let res = wx.getSystemInfoSync()
-			let width = (res.windowWidth - 35) / 2
-			let height = width / this.data.media_size[this.media_size].width * this.data.media_size[this.media_size].height
-			this.setData({
-				width,
-				height
-			})
-		}
-		catch (e) {
-			logger.error(e)
-		}
-	},
+    if (net.networkType === "none") {
+      return wx.showModal({
+        content: '貌似断网了哦~',
+        confirmColor: '#ffe27a',
+        confirmText: "确认",
+        showCancel: false
+      })
+    }
+    let res
+    let that = this
+    let countLimit = Math.max((this.data.maxCount - this.data.images.length), 0)
+    let photoSource = e.currentTarget.id
+    let sourceType = photoSource == 'takePhoto' ? ["camera"] : ["album"]
 
-	getStorageImages: function (media_type) {
-		try {
-			app.judgeClearStorage('2.1.3', media_type)
-			let galleryImage = wx.getStorageSync(media) || {
-				images: [],
-				allCount: 0
-			}
-			if (galleryImage) {
-				this.setData({
-					images: galleryImage.images,
-					allCount: galleryImage.allCount
-				})
-			}
-		} catch (e) {
-			logger.error('getStorageImage == 获取本地图片失败')
-		}
-	},
+    console.log('与1.4.0版本号比较==', app.checkBaseVersion('1.4.0'))
+    console.log('与1.9.90版本号比较==', app.checkBaseVersion('1.9.90'))
 
-	getSupplyBefore(media_type) {
-		commonRequest.getSupplyBefore(media_type).then(
-			res => {
-				res.supply_types && this.setData({
-					supply_types: res.supply_types
-				})
-			}
-		)
-	},
-
-	toUse: function () {
-		var useStatus = 'picToDocUseStatus'
-		wx.setStorageSync(useStatus, true)
-		this.setData({
-			showIndex: false
-		})
-		this.initSingleArea()
-	},
-
-	//删除照片
-	deleteImg: co.wrap(function* ({ currentTarget: { id } }) {
-		let images = this.data.images
-		let res = yield showModal({
-			title: '确认删除',
-			content: '确认删除照片？',
-			confirmColor: '#ffe27a'
-		})
-		if (!res.confirm) {
-			return
-		}
-		let count = this.data.images[id].count
-		images.splice(id, 1)
-		this.setData({
-			images: images,
-			allCount: this.data.allCount - count
-		})
-		this.setStorage()
-		console.log('删除后剩余照片:', this.data.images)
-	}),
-
-	hideToast: function (e) {
-		if (!this.querry.gallerySource || this.querry.gallerySource == 'localStorage') {
-			return
-		}
-		// this.longToast.toast()
-		this.longToast = new app.weToast()
-		this.longToast.toast({
-			type: "loading",
-			duration: 3000
-		})
-		this.setData({
-			realCount: 0
-		})
-	},
-
-	errImage: function (e) {
-		if (this.querry.gallerySource) {
-			return
-		}
-		let images = this.data.images
-		images.splice(images.length - 1, 1)
-		this.setData({
-			images: this.data.images,
-			allCount: this.data.allCount - 1
-		})
-		this.setStorage()
-		logger.info('某张图片渲染失败后还可以继续上传的张数：', this.data.allCount)
-		logger.info('某张图片渲染失败后还可以继续上传的张数：', this.data.countLimit)
-	},
-
-	previewImg: function ({ currentTarget: { id } }) {
-		let image = this.data.images[id]
-		wx.previewImg({
-			current: image.afterEditUrl || image.url,
-			urls: [image.afterEditUrl || image.url]
-		})
-	},
-
-	//编辑照片
-	toMoreEdit: function ({ currentTarget: { id, flag = false } }) {
-		let image = this.data.images[id]
-		let params = {
-			url: image.localUrl,
-			mode: 'quadrectangle',
-			index: id,
-			media_type: this.media_type,
-			from: 'pic2doc',
-			isSingle: !flag,
-			currentCount: Math.max(this.data.images.length - this.data.preAllCount, 0) //当前选择的图片总数
-		}
-		wxNav.navigateTo('/pages/print_photo_doc/edit')
-	},
-
-	//减张数
-	decrease: function ({ currentTarget: { id } }) {
-		let images = this.data.images
-		let item = this.data.images[id]
-		if (item.count == 0) {
-			return wx.showModal({
-				title: '提示',
-				content: '请先选中该照片',
-				showCancel: false,
-				confirmColor: '#ffe27a'
-			})
-		}
-		//最少一张
-		if (item.count <= 1) {
-			return
-		}
-		this.setData({
-			['images[${id}].count']: --images[id].count,
-			allCount: this.data.allCount - 1
-		})
-	},
-
-	//增张数
-	increase: function () {
-		let images = this.data.images
-		let item = this.data.images[id]
-		if (item.count == 0) {
-			wx.showModal({
-				title: '提示',
-				content: '请先选中该照片',
-				showCancel: false,
-				confirmColor: '#ffe27a'
-			})
-		}
-		this.setData({
-			['images[${id}].count']: ++images[id].count,
-			allCount: this.data.allCount + 1
-		})
-	},
-
-	openPopWindow: function () {
-		if (this.data.images.length > this.data.maxCount) {
-			return wx.showModal({
-				content: '已选照片达到限定数量，请重新选择上传',
-				confirmText: '确认',
-				showCancel: false
-			})
-		}
-		if (this.data.uploadImg) {
-			return
-		}
-		this.setData({
-			popWindow: true
-		})
-	},
-
-	closePopWindow: function () {
-		this.setData({
-			popWindow: false
-		})
-	},
-
-	chooseImg: co.wrap(function* (e) {
-		if (app.preventMoreTap(e)) {
-			return
-		}
-		let net = yield getNetworkType()
-		if (net.networktype === "none") {
-			return wx.showModal({
-				content: '貌似断网了哦~',
-				showCancel: false,
-				confirmColor: '#ffe27a',
-				confirmText: '确认'
-			})
-		}
-		let res
-		let that = this
-		let countLimit = Math.max((that.data.maxCount - that.data.images.length), 0)
-		let photoSource = e.currentTarget.id
-		let sourceType = photoSource = 'takePhoto' ? ["camera"] : ["album"]
-
-		if (['takePhoto', 'localAlbum'].indexOf(photoSource) > -1) {
-			res = yield chooseImage({
-				count: countLimit,
-				sizeType: ['original'],
-				sourceType: sourceType
-			})
-    } 
-    else {
-			var SDKVersion
-			try {
-				const resInfo = wx.getSystemInfoSync()
-				SDKVersion = resInfo.SDKVersion
-			} catch (e) {
-				logger.info(e)
-			}
-			if (util.compareVersion(SDKVersion, '2.5.0')) {
-				res = yield chooseMessageFile({
-					type: 'image',
-					count: countLimit
-				})
-			} else {
-				//请升级最新的微信版本
-				yield showModal({
+    if (['takePhoto', 'localAlbum'].indexOf(photoSource) > -1) {
+      res = yield chooseImage({
+        count: countLimit,
+        sizeType: ['original'],
+        sourceType: sourceType
+      })
+    } else {
+      var SDKVersion
+      try {
+        const resInfo = wx.getSystemInfoSync()
+        SDKVersion = resInfo.SDKVersion
+      } catch (e) {
+        console.log(e)
+      }
+      if (util.compareVersion(SDKVersion, '2.5.0')) {
+        res = yield chooseMessageFile({
+          type: 'image',
+          count: countLimit,
+        })
+      } else {
+        //请升级到最新的微信版本
+        yield showModal({
           title: '微信版本过低',
           content: '请升级到最新的微信版本',
           confirmColor: '#ffe27a',
-          confirmText: '确认',
+          confirmText: "确认",
           showCancel: false
-				})
-			}
-		}
+        })
+      }
+    }
     let count = res.tempFiles.length //每次选择的数量
     let tempFiles = res.tempFiles
-    let paths = [] //所有选择的临时文件路径
+    let paths = [] // 所有选择的临时文件路径
     let maxSize = 20000000
     that.setData({
       count: count,
-      preAllCount: that.data.images.length, //上一次所选图片张数
-      chooseCount: count, //用户单次选择的数量，不是最终过滤的数量
+      preAllCount: that.data.images.length, //上一次所选图片数量
+      chooseCount: count, //用户单次选择的数量 不是最终过滤的数量
       realCount: that.data.realCount + count,
       currentStartIndex: that.data.images.length
     })
-logger.info('......111')
     //上传前判断进度条是否可用
-    if(app.checkBaseVersion('1.4.0')){
+    if (app.checkBaseVersion('1.4.0')) {
       that.setData({
         canUseProgressBar: true
       })
     }
 
-    //过滤大于20M的图片
-    tempFiles.forEach((item, index)=> {
-      if(item.size < maxSize){
+    //过滤大于20m的图片
+    tempFiles.forEach((item, index) => {
+      if (item.size < maxSize) {
         paths.push(item.path)
       } else {
-        that.needToDelet.push(index)
+        that.needToDelete.push(index)
         that.setData({
-          count: that.data.count -1,
-          realCount: that.data.realCount - 1
+          count: that.data.count - 1,
+          realCount: this.data.realCount - 1
         })
       }
     })
-
     //显示进度弹窗
     that.setData({
       uploadImg: true
     })
-
-    logger.info('111......111', paths)
     app.cancelUpload = false
-    that.increaseNum = 0 //初始化自然增量标识符
-    // app.newUploadPhotos(app.checkBaseVersion('1.4.0'), paths, co.wrap(function *(index, url){ //index不是下标，是计数，从1开始
-
-    app.uploadFiles(paths, co.wrap(function* (index, url) { //index不是下标，是计数，从1开始
-      if(index && url){
+    that.increaseNum = 0 // 初始化自增数量标识符
+    uploadFiles(paths, co.wrap(function* (index, url) {//注意了注意了，这里的index不是下标，是计数。。。。。。。。不是从0开始哒，是从1。。。
+      if (index && url) {
         yield that.getImageOrientation(url)
       } else {
-        if(app.cancelUpload){
+        if (app.cancelUpload) {
           return
         }
         that.setData({
-          count: 0,
           uploadImg: false,
-          completeCount: 0
+          count: 0,
+          completeCount: 0,
         })
         wx.showModal({
           title: '照片上传失败',
@@ -386,28 +283,26 @@ logger.info('......111')
           confirmColor: '#ffe27a'
         })
       }
-    }), function(progress){
-      if(progress !== 'noPregress'){
+    }), function (progress) {
+      if (progress !== 'noProgress') {
         that.setData({
           percent: progress
         })
       }
     })
-	}),
-
-  cancelUpload: co.wrap(function *(){
+  }),
+  cancelUpload: co.wrap(function* () {
     app.cancelUpload = true
     this.setData({
       uploadImg: false,
       count: 0,
       completeCount: 0
     })
-    console.log('手动停止上传还可以继续上传张数：',this.data.countLimit)
+    console.log('手动停止上传还可以继续上传张数：', this.data.countLimit)
   }),
-
-  getImageOrientation: co.wrap(function *(url){
-    logger.info('.......', url)
+  getImageOrientation: co.wrap(function* (url) {
     let that = this
+    let imageInfo
     let index = that.data.images.length
     let image = {
       count: 1,
@@ -420,39 +315,37 @@ logger.info('......111')
       allCount: that.data.allCount + 1,
       completeCount: that.data.completeCount + 1
     })
-
-    try{
+    try {
       that.showImage(url, index)
-    } catch(e){
+    } catch (e) {
       that.data.images.splice(that.data.images.length - 1, 1)
       that.setData({
         uploadImg: false,
         completeCount: 0,
-        // 以下为删除信息获取失败图片所占数组、数量空间
+        //以下，删除信息获取失败图片所占数组、数量空间
         images: that.data.images,
         allCount: that.data.allCount - 1
       })
       wx.showModal({
         title: '照片上传失败',
-        content: '请检查网络或',
+        content: '请检查网络或稍候再试',
         showCancel: false,
         confirmColor: '#ffe27a'
       })
     }
   }),
-
-  showImage: co.wrap(function *(url, index){
+  showImage: co.wrap(function* (url, index) {
     let that = this
     let noRotate = this.data.media_size[this.media_type].noRotateMin
-    let imagePath = yield imginit.imgInit(url, 'vertical')
-    let localUrl = imagePath.imgNetPath
-    let imageInfo = imagePath.imageInfo
+    let imaPath = yield imginit.imgInit(url, 'vertical')
+    let localUrl = imaPath.imgNetPath
+    let imageInfo = imaPath.imageInfo
     that.increaseNum += 1
     //大图过滤
-    if(imageInfo.width / imageInfo.height > 5 || imageInfo.height / imageInfo.width > 5){
-      that.needToDelet.push(index)  //追加无效图片索引
+    if (imageInfo.width / imageInfo.height > 5 || imageInfo.height / imageInfo.width > 5) {
+      that.needToDelete.push(index) //追加无效图片索引
       that.setData({
-        realCount: that.data.realCount - 1
+        realCount: this.data.realCount - 1
       })
     } else {
       let image = {
@@ -463,50 +356,198 @@ logger.info('......111')
         height: imageInfo.height,
         isSmallImage: false
       }
-
       //小图标记
-      if(imageInfo.width < 600 || imageInfo.height < 600){
+      if (imageInfo.width < 600 || imageInfo.height < 600) {
         image.isSmallImage = true
       }
-
       that.data.images[index] = image
+
       that.setData({
         percent: 0,
-        images: that.data.images
+        images: that.data.images,
       })
     }
-    //最后一张图片结束清空隐藏进度条
-    if(that.increaseNum == that.data.chooseCount){
+    //最后一张图结束清空隐藏进度条
+    if (that.increaseNum == that.data.chooseCount) {
       var delay = 0
       that.setData({
         uploadImg: false,
         count: 0,
         completeCount: 0
       })
-      if(that.needToDelet.length){
+      if (that.needToDelete.length) {
         delay = 2000
+        console.log('===进入needToDelete====')
         var newImages = that.data.images.filter((item, index) => {
-          return that.needToDelet.indexOf(index) == -1
+          return that.needToDelete.indexOf(index) == -1
         })
         that.setData({
           images: newImages,
-          showInterceptModal: '您上传的照片过大，请重新上传'
+          showInterceptModal: '您所上传的照片过大，请重新上传'
         })
-        that.needToDelet = []
+        that.needToDelete = []
       }
       setTimeout(() => {
-        logger.info('图片处理结束，所有照片：', that.data.images)
+        console.log('***图片处理结束，所有照片：***', that.data.images)
         that.setStorage()
-        that.setData({
-          showInterceptModal: false
-        })
-        if (that.data.images.length > that.data.currentStartIndex) { //判断图片过滤后 无新图片不进行跳转
-          that.toMoreEdit({currentTarget: {id: that.data.currentStartIndex, flag: true}}, delay)
+        that.setData({ showInterceptModal: false })
+        if (that.data.images.length > that.data.currentStartIndex) {  //判断图片过滤后 无新图片不进行跳转
+          that.toMoreEdit({ currentTarget: { id: that.data.currentStartIndex, flag: true } })
         }
+      }, delay)
+    }
+  }),
+  hideToast: function (e) {
+    if (!this.query.gallerySource || this.query.gallerySource == 'localStorage') {
+      return
+    }
+    this.longToast.toast()
+    this.setData({
+      realCount: 0
+    })
+  },
+  errImage: function (e) {
+    if (this.query.gallerySource) {
+      return
+    }
+    let images = this.data.images
+    images.splice(images.length - 1, 1)
+    this.setData({
+      images: images,
+      allCount: this.data.allCount - 1
+    })
+    this.setStorage()
+    console.log('某张图片渲染失败后还可以继续上传张数：', this.data.countLimit)
+  },
+  //减张数
+  decrease: function ({ currentTarget: { id } }) {
+    let images = this.data.images
+    let item = this.data.images[id]
+    if (item.count == 0) {
+      return wx.showModal({
+        title: '提示',
+        content: '请先选中该照片',
+        showCancel: false,
+        confirmColor: '#ffe27a'
+      })
+    }
+    //最少一张
+    if (item.count <= 1) {
+      return
+    }
+    this.setData({
+      [`images[${id}].count`]: --images[id].count,
+      allCount: this.data.allCount - 1
+    })
+  },
+  //加张数
+  increase: function ({ currentTarget: { id } }) {
+    let images = this.data.images
+    let item = this.data.images[id]
+    if (item.count == 0) {
+      return wx.showModal({
+        title: '提示',
+        content: '请先选中该照片',
+        showCancel: false,
+        confirmColor: '#ffe27a'
+      })
+    }
+    //最多49张
+    if (item.count > 49) {
+      return wx.showModal({
+        title: '提示',
+        content: '每张数量最50张哦',
+        showCancel: false,
+        confirmColor: '#ffe27a'
+      })
+    }
+    this.setData({
+      [`images[${id}].count`]: ++images[id].count,
+      allCount: this.data.allCount + 1,
+    })
+  },
+  //删除照片
+  deleteImg: co.wrap(function* ({ currentTarget: { id } }) {
+    let images = this.data.images
+    let res = yield showModal({
+      title: '确认删除',
+      content: '确认删除照片？',
+      confirmColor: '#ffe27a'
+    })
+    if (!res.confirm) {
+      return
+    }
+    let count = this.data.images[id].count
+    images.splice(id, 1)
+    this.setData({
+      images: images,
+      allCount: this.data.allCount - count,
+    })
+    this.setStorage()
+    console.log('删除后剩余照片：', this.data.images)
+  }),
+  confirm: co.wrap(function* (e) {
+    uploadFormId.dealFormIds(e.detail.formId, `print_${this.media_type}`)
+    uploadFormId.upload()
+    if (!this.hasAuthPhoneNum && !app.hasPhoneNum) {
+      return
+    }
+    if (app.preventMoreTap(e)) {
+      return
+    }
+
+    if (this.data.uploadImg) {
+      return
+    }
+
+    if (!this.data.images.length) {
+      return wx.showModal({
+        title: '提示',
+        content: '至少选择一张照片哦',
+        showCancel: false,
+        confirmColor: '#ffe27a'
+      })
+    }
+    let hideConfirmPrintBox = Boolean(wx.getStorageSync("hideConfirmPrintBox"))
+    if (hideConfirmPrintBox) {
+      this.userConfirm()
+    } else {
+      this.setData({
+        ['confirmModal.isShow']: true
       })
     }
   }),
-
+  getPhoneNumber: co.wrap(function* (e) {
+    yield app.getPhoneNum(e)
+    wx.setStorageSync("hasAuthPhoneNum", true)
+    this.hasAuthPhoneNum = true
+    this.setData({
+      hasAuthPhoneNum: true
+    })
+    this.confirm(e)
+  }),
+  userConfirm: co.wrap(function* (e) {
+    let images = this.data.images
+    let newImages = []
+    let _this = this
+    images.forEach((data, index) => {
+      if (data.choose == undefined || data.choose == true) {
+        let newImage = {
+          url: imginit.mediaResize(data.localUrl, this.media_type), //原图
+          number: data.count,
+          color: data.color ? data.color : 'Color',
+        }
+        if (data.afterEditUrl) {
+          newImage.pre_convert_url = data.afterEditUrl //编辑之后的图
+        }
+        newImages.push(newImage)
+      }
+      if (index === images.length - 1) {
+        _this.uploadImg(newImages)
+      }
+    })
+    
+  }),
   uploadImg: co.wrap(function* (images) {
     // if (!app.openId) {
     //   yield this.loopGetOpenId()
@@ -523,9 +564,7 @@ logger.info('......111')
       showConfirmModal: null,
     })
     this.longToast.toast({
-      img: '../../images/loading.gif',
-      title: '正在提交',
-      duration: 0
+      type: 'loading'
     })
     try {
       const resp = yield request({
@@ -550,7 +589,6 @@ logger.info('......111')
       util.showErr(e)
     }
   }),
-
   //图片存储至本地
   setStorage: function () {
     try {
@@ -563,15 +601,41 @@ logger.info('......111')
       console.log('图片存储到本地失败')
     }
   },
+  onHide: function () {
+    this.setStorage()
+  },
+  onUnload: function () {
+    this.setStorage()
+  },
+  // loopGetOpenId: co.wrap(function* () {
+  //   let loopCount = 0
+  //   let _this = this
+  //   if (app.openId) {
+  //     console.log('openId++++++++++++----', app.openId)
+  //     return
+  //   } else {
+  //     setTimeout(function () {
+  //       loopCount++
+  //       if (loopCount <= 100) {
+  //         console.log('openId not found loop getting...')
+  //         _this.loopGetOpenId()
+  //       } else {
+  //         console.log('loop too long, stop')
+  //       }
+  //     }, 2000)
+  //   }
+  // }),
+  toUse: function () {
+    var useStatus = 'picToDocUSeStatus'
+    wx.setStorageSync(useStatus, true)
+    this.setData({
+      showIndex: false
+    })
+    this.initSingleArea()
+  },
+  onShareAppMessage: function () {
+    return app.share
+  }
+}
 
-
-
-  
-
-
-
-
-
-
-
-})
+Page(chooseCtx)

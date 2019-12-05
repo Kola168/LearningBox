@@ -1,2 +1,54 @@
 @import "./wxss/choose.wxss";
 @import "./wxss/index.wxss";
+/* 自定义图片选择器 start */
+
+.choosePhoto {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 99999;
+}
+
+.choosePhoto-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    animation: alp 0.5s ease;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.choosePhoto-content {
+    width: 100%;
+    background: #efeff5;
+    animation: chooseBottom 0.3s ease;
+    position: relative;
+}
+
+.choosePhotoItem {
+    width: 100%;
+    height: 90rpx;
+    border-bottom: 1rpx solid #efeff5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #fff;
+}
+
+.choosePhotoItem text {
+    color: #333;
+    font-size: 34rpx;
+}
+
+
+/* 自定义图片选择器 end */
+
+/* 自定义遮罩中的按钮 */
+
+.progress-content button{
+  background-color: #fff;
+  text-align: right;
+}
