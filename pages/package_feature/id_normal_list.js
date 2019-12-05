@@ -10,7 +10,6 @@ Page({
         type: 'normal'
     },
     onLoad: function (options) {
-        this.longToast = new app.WeToast()
         this.setData({
             type: options.type
         })
@@ -20,7 +19,6 @@ Page({
             })
         }
     },
-
     onShow: function () {},
 
     onShareAppMessage: function () {
@@ -30,7 +28,7 @@ Page({
     toPrint: function (e) {
         let media_type = e.currentTarget.id
         wx.navigateTo({
-            url: `edit?media_type=${media_type}`
+            url: `id_normal_edit?media_type=${media_type}`
         })
     }
 })

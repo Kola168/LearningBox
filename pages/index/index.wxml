@@ -24,6 +24,7 @@
     <view>更多打印</view>
   </image>
 </view>
+
 <block wx:if="{{!showAuth}}">
   <view class="home-title">智能学习工具</view>
   <view class="tool-wrap">
@@ -105,7 +106,7 @@
   </view>
 </block>
 <view wx:if="{{showAuth}}">
-  授权ugfbdhbjsnjncdjskbhkbuoewhe
+  点我登录，我本是一张图。。。。
 </view>
 <!-- loading -->
 <import src="/lib/toast/wetoast.wxml" />

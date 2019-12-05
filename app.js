@@ -9,7 +9,7 @@ import Logger from 'utils/logger.js'
 const _ = require('lib/underscore/we-underscore')
 const getSystemInfo = util.promisify(wx.getSystemInfo)
 const getStorage = util.promisify(wx.getStorage)
- 
+
 
 const login = util.promisify(wx.login)
 const request = util.promisify(wx.request)
@@ -25,12 +25,16 @@ App({
   //王析理本地地址
   // apiServer: 'http://epbox.natapp1.cc',
   // apiWbviewServer: 'http://epbox.natapp1.cc/',
-  // jhx
+  
+  // 测试接口季慧新
   apiServer: 'http://jhx.nat300.top',
-	apiWbviewServer: 'http://jhx.nat300.top/',
+  apiWbviewServer: 'http://jhx.nat300.top',
 
+  //江然本地服务
+  // apiServer: 'http://jran.nat300.top',
   authAppKey: 'iMToH51lZ0VrhbkTxO4t5J5m6gCZQJ6c',
   openId: '',
+  authToken:'',
   unionId: '',
   sysInfo: null,
   navBarInfo: null,
@@ -51,6 +55,7 @@ App({
   // 是否为全面屏，rpxPixel
   handleDevice() {
     // 暂时的处理
+    console.log('this.sysInfo.screenHeight=====',this.sysInfo.screenHeight)
     this.isFullScreen = this.sysInfo.screenHeight > 750 ? true : false
     this.rpxPixel = 750 / this.sysInfo.windowWidth
   },

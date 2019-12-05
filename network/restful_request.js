@@ -1,9 +1,14 @@
 var app = getApp()
 import request from './request'
+
 const api = {
-  wechatDecryption: (params) => request.post(`users/wechat_decryption`, {
-   params
+  covertInvoiceToPdf: (openId, convertUrls) => request.post(`orders/invoice_url_convert`, {
+    openid: openId,
+    pdf_urls: convertUrls
   }, {
+    baseURL: `${app.apiServer}/ec/v2/`
+  }),
+	wechatDecryption: (params) => request.post(`users/sessions/wechat_decryption`, params, {
     baseURL: `${app.apiServer}/api/v1/`
   }),
    //资源分享签到
@@ -12,7 +17,7 @@ const api = {
     baseURL: `${app.apiServer}/boxapi/v2/`
   }),
    //convert invoice to pdf
-   covertInvoiceToPdf: (convertUrls) => request.post(`orders/invoice_url_convert`, {
+  covertInvoiceToPdf: (convertUrls) => request.post(`orders/invoice_url_convert`, {
     pdf_urls: convertUrls
   }, {
     baseURL: `${app.apiServer}/ec/v2/`
@@ -20,10 +25,6 @@ const api = {
   smartConvert: (img_url) => request.post(`reprographics/smart_convert`, {
     img_url
   }, {
-    baseURL: `${app.apiServer}/api/v1/`
-  }),
-  // 非规则矩形裁切做透视变换
-  imgEdit: (params) => request.post(`images/edit`, params, {
     baseURL: `${app.apiServer}/api/v1/`
   }),
   // 获取资源列表
@@ -59,6 +60,9 @@ const api = {
     baseURL: `${app.apiServer}/api/v1/`
   }),
   copyConvert: (params) => request.post(`reprographics/point_edit`, params, {
+      baseURL: `${app.apiServer}/api/v1/`
+  }),
+  processes:(params)=>request.post(`processes`,params, {
     baseURL: `${app.apiServer}/api/v1/`
   })
 }

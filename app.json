@@ -30,12 +30,15 @@
     "pages/print_doc/duplicate/index",
     "pages/print_doc/duplicate_edit/duplicate_edit",
     "pages/print_doc/duplicate_idcard/duplicate_idcard",
-		"pages/print_doc/duplicate_preview/duplicate_preview",
-		"pages/test/index",
-		"pages/print_photo_doc/index",
+    "pages/print_doc/duplicate_preview/duplicate_preview",
+    "pages/test/index",
+    "pages/print_photo_doc/index",
     "pages/print_photo/mediachoose",
     "pages/print_photo/photolist",
-    "components/process/text"
+		"components/process/text",
+		"pages/authorize/index",
+		"pages/print_funny/index",
+    "pages/print_photo/edit"
 	],
 	"subPackages": [
 		{
@@ -55,8 +58,8 @@
 		 "pages": [
         "id_normal_index",
         "id_normal_list",
-        "id_normal_mode",
-        "id_normal_edit"
+        "id_normal_edit",
+        "id_normal_mode"
 		 ]
 		},
 		{
@@ -92,9 +95,9 @@
         "share/index",
         "share_manage/index",
         "longpress/index"
-			]
-		 }
-	 ],
+      ]
+    }
+  ],
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
@@ -113,7 +116,8 @@
     "backgroundColor": "#fff",
     "borderStyle": "black",
     "position": "bottom",
-    "list": [{
+    "list": [
+      {
         "pagePath": "pages/index/index",
         "text": "首页",
         "iconPath": "images/home/icon_tab_home_unselected.png",

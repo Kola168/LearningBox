@@ -73,6 +73,7 @@ page{
 }
 
 .bottom-btn button {
+    width: 100%;
     height: 100rpx;
     padding: 0;
     line-height: 0;

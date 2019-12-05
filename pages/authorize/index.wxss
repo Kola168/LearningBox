@@ -42,7 +42,8 @@ button {
 }
 
 button.authorize-confirm {
-    background-color: #ffe27a;
+		background-color: #ffe27a;
+		margin-top:50rpx;
 }
 
 .back-to {

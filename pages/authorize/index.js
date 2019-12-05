@@ -4,65 +4,54 @@ const app = getApp()
 const regeneratorRuntime = require('../../lib/co/runtime')
 const co = require('../../lib/co/co')
 const util = require('../../utils/util')
-
-const request = util.promisify(wx.request)
 const checkSession = util.promisify(wx.checkSession)
-var event = require('../../lib/event/event.js')
+
+import Logger from '../../utils/logger.js'
+const logger = new Logger.getLogger('pages/index/index')
+import api from '../../network/restful_request.js'
+import storage from '../../utils/storage.js'
 
 
 Page({
 	data: {
-
 	},
 
 	onLoad: co.wrap(function* (options) {
-		this.longToast = new app.WeToast()
-		mta.Page.init()
-		this.way = 1 //默认都是自然用户
-		this.showBack = options.showBack
-		console.log('授权页面options========', options)
-		this.url = options.url
-		if (options.way == 5 && options.share_user_id) {
-			this.share_user_id = options.share_user_id
-			this.way = options.way
-		}
+    this.longToast = new app.weToast()
 	}),
 
 	onShow: co.wrap(function* () { }),
 
 	authorize: co.wrap(function* (e) {
 		this.detail = e.detail
-		console.log('detail======', this.detail)
+		logger.info('detail======', this.detail)
+
 		if (!e.detail.userInfo || !e.detail.encryptedData) {
 			return
 		}
 		yield this.loopGetOpenId()
 	}),
 
-	hideModal: co.wrap(function* (e) {
-		console.log('未授权页面授权时form发生了submit事件，携带数据为：', e.detail.formId, 'authorize')
-		this.authorizeFormId = e.detail.formId
-	}),
-
 	loopGetOpenId: co.wrap(function* () {
 		let loopCount = 0
 		let _this = this
 		if (app.openId) {
-			console.log('openId++++++++++++----', app.openId)
+			logger.info('openId++++++++++++----', app.openId)
 			yield _this.decrypt()
 			return
 		} else {
 			setTimeout(function () {
 				loopCount++
 				if (loopCount <= 100) {
-					console.log('openId not found loop getting...')
+					logger.info('openId not found loop getting...')
 					_this.loopGetOpenId()
 				} else {
-					console.log('loop too long, stop')
+					logger.info('loop too long, stop')
 				}
 			}, 2000)
 		}
 	}),
+	
 	checkSession: co.wrap(function* () {
 		try {
 			yield checkSession()
@@ -72,145 +61,58 @@ Page({
 			return false
 		}
 	}),
+	
 	decrypt: co.wrap(function* () {
+		console.log('here======')
 		this.longToast.toast({
-			img: '../../images/loading.gif',
-			title: '请稍候',
-			duration: 0
+      type: "loading",
+      duration: 0
 		})
+
 		let session = yield this.checkSession()
-		console.log('seesion是否有效', session)
 		if (!session) {
 			yield app.login()
 		}
 		try {
-			let white_guests_info = {
-				way: this.way
-			}
-			if (this.share_user_id && (this.way == 3 || this.way == 4 || this.way == 5)) {
-				white_guests_info.user_id = this.share_user_id
-			}
-			let params = {
-				openid: app.openId,
-				encrypted_info: {
-					encrypted_data: encodeURIComponent(this.detail.encryptedData),
-					iv: encodeURIComponent(this.detail.iv),
-				},
-				white_guests_info: white_guests_info,
-				mobile_info: {
-					device_type: app.sysInfo.model,
-					os_version: app.sysInfo.system,
-					sdk_version: app.sysInfo.SDKVersion,
-					platform: app.sysInfo.platform,
-					wx_version: app.sysInfo.version,
-					app_version: app.version
-				},
-				action: 'login'
+      let params = {
+        openid: app.openId,
+        encrypted_info: {
+          encrypted_data: encodeURIComponent(this.detail.encryptedData),
+          iv: encodeURIComponent(this.detail.iv),
+        },
+        mobile_info: {
+          device_type: app.sysInfo.model,
+          os_version: app.sysInfo.system,
+          sdk_version: app.sysInfo.SDKVersion,
+          platform: app.sysInfo.platform,
+          wx_version: app.sysInfo.version,
+          app_version: app.version
+        },
+        decr_type: 'login'
 			}
 
-			console.log('sp授权参数：way1自然用户，way2小白客，way3分享打印机，way4分享首页，way5分享应用', params)
+			const resp = yield api.wechatDecryption(params)
 
-			const resp = yield request({
-				url: app.apiServer + `/boxapi/v2/users/decryption`,
-				method: 'POST',
-				dataType: 'json',
-				data: params
-			})
-			if (resp.data.code != 0) {
-				throw (resp.data)
+      if (resp.code != 0) {
+        throw (resp)
 			}
-			console.log('授权成功', resp.data)
-			wx.setStorageSync('authToken', resp.data.res.auth_token)
-			wx.setStorageSync('unionId', resp.data.res.unionid)
-			wx.setStorageSync('userId', resp.data.res.user_id)
-			if(resp.data.res.selected_stage.sn){
-				wx.setStorageSync('selectedStage', resp.data.res.selected_stage.sn)
-			}
-			if (resp.data.res.phone) {
-				app.hasPhoneNum = true
-				app.globalPhoneNum = resp.data.res.phone
-				wx.setStorageSync("phonenum", resp.data.res.phone)
-			}
-			this.loopUploadOpenId() //上报formid
-			this.userId = resp.data.res.user_id
-			try {
-				this.loopGrowingOpenId(resp.data.res.union_id)
+			logger.info('通用接口授权解密成功=====',resp)
+      storage.put('authToken', resp.res.auth_token)
+      storage.put('unionId', resp.res.unionid)
 
-			} catch (error) {
-
-			}
-			this.longToast.toast()
-			console.log('111111111111')
-			event.emit('Authorize', 'Authorize Success');
-			console.log('222222222222')
-			wx.navigateBack();
-		} catch (e) {
-			yield app.login()
-			yield showModal({
-				title: '授权失败',
-				content: '请重新尝试',
-				confirmColor: '#2086ee',
-				confirmText: "确认",
-				showCancel: false
-			})
-			this.setData({
-				showGetModal: true
-			})
-			this.longToast.toast()
-			util.showError(e)
-		}
-	}),
-
-	onUnload: function () {
-		this.detail = ''
-	},
-
-
-	loopUploadOpenId: co.wrap(function* () {
-		let loopCount = 0
-		let _this = this
-		if (app.openId) {
-			console.log('绑定分享 openId++++++++++++----', app.openId)
-			if (_this.authorizeFormId) {
-				uploadFormId.dealFormIds(_this.authorizeFormId, `authorize`)
-				uploadFormId.upload()
-				console.log('未授权页面授权时上报，携带数据为：', this.authorizeFormId, 'authorize')
-			}
-		} else {
-			setTimeout(function () {
-				loopCount++
-				if (loopCount <= 100) {
-					console.log('openId not found loop getting...')
-					_this.loopUploadOpenId()
-				} else {
-					console.log('loop too long, stop')
-				}
-			}, 2000)
-		}
-	}),
-	loopGrowingOpenId: co.wrap(function* (unionId) {
-		let loopCount = 0
-		let _this = this
-		if (app.openId) {
-			console.log('loopGrowingOpenId openId++++++++++++----', app.openId)
-			app.gio('identify', app.openId, unionId)
-			app.gio('setUserId', app.openId)
-			wx.getUserInfo({
-				success: function (res) {
-					app.gio('setVisitor', res.userInfo)
-				}
-			})
-		} else {
-			setTimeout(function () {
-				loopCount++
-				if (loopCount <= 100) {
-					console.log('openId not found loop getting...')
-					_this.loopGrowingOpenId()
-				} else {
-					console.log('loop too long, stop')
-				}
-			}, 2000)
-		}
+      // if (resp.data.res.phone) {
+      //   app.hasPhoneNum = true
+      //   app.globalPhoneNum = resp.data.res.phone
+      //   wx.setStorageSync("phonenum", resp.data.res.phone)
+      // }
+      app.authToken = resp.res.auth_token
+      
+      this.longToast.toast()
+    } catch (e) {
+      yield app.login()
+      this.longToast.toast()
+      util.showErr(e)
+    }
 	}),
 
 	backTo: function () {

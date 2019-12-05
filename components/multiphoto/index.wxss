@@ -11,6 +11,7 @@ image {
 
 .mode-box-size {
     position: relative;
+    flex-shrink:0;
 }
 
 .mode-cover {
