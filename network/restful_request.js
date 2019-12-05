@@ -7,9 +7,7 @@ const api = {
     baseURL: `${app.apiServer}/api/v1/`
   }),
 
-  processes:(params)=>request.post(`processes`, {
-   params
-  }, {
+  processes:(params)=>request.post(`processes`,params, {
     baseURL: `${app.apiServer}/api/v1/`
   })
 }
