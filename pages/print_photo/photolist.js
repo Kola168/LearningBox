@@ -37,7 +37,7 @@ Page({
       name: '7寸照片',
       size: {
         width: 1560,
-        height: 2148,
+        height: 2184,
         shrinksize: '/resize,m_fill,h_280,w_200/quality,Q_85/format,jpg',
       }
     },
@@ -166,7 +166,6 @@ Page({
     try {
       let image
       let that = this
-      let shrinksize = this.data.photoMedia.size.shrinksize
       let imaPath = yield imginit.imgInit(url, 'vertical')
       let localUrl = imaPath.imgNetPath
       let imageInfo = imaPath.imageInfo
