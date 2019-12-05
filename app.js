@@ -27,6 +27,7 @@ App({
   apiWbviewServer: 'http://epbox.natapp1.cc/',
   authAppKey: 'iMToH51lZ0VrhbkTxO4t5J5m6gCZQJ6c',
   openId: '',
+  authToken:'',
   unionId: '',
   sysInfo: null,
   navBarInfo: null,
