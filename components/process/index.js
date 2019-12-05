@@ -2,12 +2,18 @@
 const _ = require('../../lib/underscore/we-underscore')
 
 Component({
-
+  observers: {
+    'completeCount, count, percent': function() {
+      // 在 numberA 或者 numberB 被设置时，执行这个函数
+      this.setData({
+        errTip: ''
+      })
+    }
+  },
   properties: {
     completeCount: {
       type: Number,
       observer: function(newVal, oldVal) {
-        console.log(newVal)
         if (_.isEqual(newVal, oldVal)) {
           return
         }
@@ -21,7 +27,6 @@ Component({
     count: {
       type: Number,
       observer: function(newVal, oldVal) {
-        console.log(newVal)
         if (_.isEqual(newVal, oldVal)) {
           return
         }
@@ -35,7 +40,6 @@ Component({
     percent: {
       type: Number,
       observer: function(newVal, oldVal) {
-        console.log(newVal)
         if (_.isNotEmpty(newVal)) {
           this.setData({
             percent: newVal
@@ -46,7 +50,6 @@ Component({
     errTip: {
       type: String,
       observer: function(newVal, oldVal) {
-        console.log(newVal)
         if (_.isNotEmpty(newVal)) {
           this.setData({
             errTip: newVal
@@ -65,7 +68,7 @@ Component({
   },
 
   methods: {
-    cancelprocess:function(){
+    cancelprocess: function() {
       this.triggerEvent('cancelprocess')
     },
   }
