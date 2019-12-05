@@ -31,14 +31,25 @@
 }
 
 .nav-bar-left__inner {
-  padding: 0 16rpx;
-  border: 2rpx solid #ccc;
-  background: rgba(255, 255, 255, .6);
+  width: 100%;
 }
 
-.nav-bar-left__line {
-  margin: 0 12rpx;
-  color: #ccc;
+.nav-bar-left__inner>view {
+  width: 36%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-bar-left__back {
+  width: 21rpx;
+  height: 35rpx;
+}
+
+.nav-bar-left__home {
+  width: 33rpx;
+  height: 36rpx;
 }
 
 .nav-bar-title {
@@ -49,11 +60,6 @@
   font-size: 34rpx;
   font-weight: bold;
   color: #030303;
-}
-
-.nav-bar-left image {
-  width: 44rpx;
-  height: 44rpx;
 }
 
 .nav-bar-right {
