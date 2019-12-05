@@ -346,4 +346,5 @@ module.exports = {
   deleteOneId: deleteOneId,
   clearPdfFile: clearPdfFile,
   resetFiles: resetFiles,
+  showError: showError,
 }

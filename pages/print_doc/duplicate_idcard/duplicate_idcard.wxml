@@ -1,5 +1,5 @@
 <!--pages/print_doc/duplicate_idcard/duplicate_idcard.wxml-->
-<nav-bar background="#fff" title="智能复印" />
+<nav-bar background="#fff" title="{{title}}" />
 <wxs src="index.wxs" module="foo" />
 <view class="top-box">
 	<view class="top-text">
@@ -13,7 +13,7 @@
 <!-- 图片列表 -->
 <view
  wx:for="{{typeInfo}}"
- wx:key="type"
+ wx:key="{{index}}"
  class="block"
  style="{{foo.height(item)}}"
 >

@@ -7,7 +7,7 @@ const co = require('../../../lib/co/co')
 const util = require('../../../utils/util')
 import api from '../../../network/restful_request'
 import graphql from '../../../network/graphql_request'
-// import commonRequest from '../../../utils/common_request.js'
+import commonRequest from '../../../utils/common_request.js'
 
 import storage from '../../../utils/storage'
 import router from '../../../utils/nav'
@@ -107,8 +107,6 @@ Page({
 			type: 'loading',
 			title: '请稍候'
 		})
-		// this.getUserId()
-		// this.member()
 		if (!app.activeDevice) {
 			yield this.getDevice()
 		}
@@ -156,7 +154,7 @@ Page({
 	// 					memberExpiresAt: res.user.selectedPrinter.memberExpiresAt
 	// 				})
 	// 			} catch (e) {
-	// 				util.showErr(e)
+	// 				util.showError(e)
 	// 			}
 	// 		} else {
 	// 			setTimeout(function () {
@@ -223,7 +221,7 @@ Page({
 		} catch (e) {
 			this.longToast.hide()
       logger.info('===执行到这里异常===')
-			util.showErr(e)
+			util.showError(e)
 		}
 	}),
 
@@ -298,7 +296,7 @@ Page({
   //     logger.info('获取user_id', resp.data)
 	// 		this.user_id = resp.data.user_id
 	// 	} catch (e) {
-	// 		util.showErr(e)
+	// 		util.showError(e)
 	// 	}
 	// }),
 
@@ -310,7 +308,7 @@ Page({
   //     })
   //     logger.info('get unionId', unionId)
 	// 	} catch (e) {
-	// 		util.showErr({message: '请重新打开小程序'})
+	// 		util.showError({message: '请重新打开小程序'})
 	// 	}
 	// }),
 
@@ -350,9 +348,10 @@ Page({
 		} catch (e) {
       logger.info(e)
 			this.longToast.hide()
-			util.showErr(e)
+			util.showError(e)
 		}
 	}),
+
 	getShijuanDetail: co.wrap(function* () {
 		this.longToast.toast({
 			type: 'loading',
@@ -385,7 +384,7 @@ Page({
 			})
 		} catch (e) {
 			this.longToast.hide()
-			util.showErr(e)
+			util.showError(e)
 		}
   }),
   
@@ -425,7 +424,7 @@ Page({
 			})
 		} catch (e) {
 			this.longToast.toast()
-			util.showErr(e)
+			util.showError(e)
 		}
   }),
   
@@ -454,8 +453,8 @@ Page({
   
 	toPay: co.wrap(function* () {
 		var unionId = storage.get('unionId')
+		// 判断授权
 		if (!unionId) {
-
 			var url = this.share_user_id ? `/pages/authorize/index?url=${url}&share_user_id=${this.share_user_id}&way=${this.way}` : `/pages/authorize/index`
       return router.navigateTo(url, {
         url: url,
@@ -463,11 +462,13 @@ Page({
         way: this.way,
       })
 		}
+		// 判断是否绑定打印机
 		if (!app.activeDevice) {
-			return util.showErr({
+			return util.showError({
         message: '您还未绑定打印机，快去绑定吧'
       })
 		}
+
 		var brand
 		this.longToast.toast({
 			type: 'loading',
@@ -481,24 +482,25 @@ Page({
 		}
 
     try {
-			const resp = yield request({
-				url: app.apiServer + `/boxapi/v2/resources/prepay`,
-				header: {
-					'G-Auth': app.gAuthAppKey
-				},
-				method: 'POST',
-				dataType: 'json',
-				data: params
-			})
-			if (resp.data.code == 0) {
-				if (!resp.data.res.free_to_print) {
-					brand = resp.data.res
+			const resp = yield api.toPrePay(params)
+			// const resp = yield request({
+			// 	url: app.apiServer + `/boxapi/v2/resources/prepay`,
+			// 	header: {
+			// 		'G-Auth': app.gAuthAppKey
+			// 	},
+			// 	method: 'POST',
+			// 	dataType: 'json',
+			// 	data: params
+			// })
+			if (resp.code == 0) {
+				if (!resp.res.free_to_print) {
+					brand = resp.res
 				}
 			} else {
 				this.longToast.hide()
 				const res = yield showModal({
 					title: '提示',
-					content: resp.data.message,
+					content: resp.message,
 					showCancel: false,
 					confirmColor: '#fae100',
 				})
@@ -576,7 +578,7 @@ Page({
 	print: co.wrap(function* (e) {
 		try {
 			if (!app.activeDevice) {
-				return util.showErr({message: '您还未绑定打印机，快去绑定吧'})
+				return util.showError({message: '您还未绑定打印机，快去绑定吧'})
 			}
 			this.longToast.toast({
 				type: 'loading',
@@ -611,26 +613,26 @@ Page({
 			if (that.data.type != '_learning') {
 				params.is_vip = true
 			}
-
-      var resp = yield request({
-				url: app.apiServer + `/boxapi/v2/orders`,
-				method: 'POST',
-				dataType: 'json',
-				data: params
-      })
+			const resp = yield commonRequest.printOrders(params)
+      // var resp = yield request({
+			// 	url: app.apiServer + `/boxapi/v2/orders`,
+			// 	method: 'POST',
+			// 	dataType: 'json',
+			// 	data: params
+      // })
       
-			if (resp.data.code == 0) {
+			if (resp.code == 0) {
         this.longToast.hide()
         router.navigateTo('/pages/finish/index', {
           media_type: this.data.media_type,
-          state: resp.data.order.state,
+          state: resp.order.state,
           type: this.data.type
         })
-			} else if (resp.data.code == 1) {
+			} else if (resp.code == 1) {
 				this.longToast.hide()
 				const res = yield showModal({
 					title: '提示',
-					content: resp.data.message,
+					content: resp.message,
 					showCancel: false,
 					confirmColor: '#fae100',
 				})
@@ -638,12 +640,12 @@ Page({
           router.navigateBack()
 				}
 			} else {
-				throw (resp.data)
+				throw (resp)
 			}
 
 		} catch (e) {
 			this.longToast.hide()
-			util.showErr(e)
+			util.showError(e)
 		}
 	}),
 
@@ -679,7 +681,7 @@ Page({
 			})
 		} catch (e) {
 			this.longToast.hide()
-			util.showErr(e)
+			util.showError(e)
 		}
 	}),
 
@@ -842,7 +844,7 @@ Page({
 				this.longToast.hide()
 			} catch (e) {
         this.longToast.hide()
-				util.showErr(e)
+				util.showError(e)
 			}
 
 			return {

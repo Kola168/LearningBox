@@ -1,7 +1,8 @@
 const app = getApp()
 import { regeneratorRuntime, co, storage, util } from './common_import'
 const request = util.promisify(wx.request)
-
+import getLoopsEvent from './worker'
+import api from '../network/restful_request'
 /**
  * 打印接口
  * @param { Object } params required
@@ -48,11 +49,40 @@ const getPrinterCapacity = co.wrap(function*(params = {}) {
   //   throw (authInfo)
   // }
   let res = { "code": 0, "print_capability": { "color_modes": ["Color", "Mono"], "page_count": 29, "media_sizes": [{ "media_size": 0, "media_name": "A4文件", "duplex": true }, { "media_size": 3, "media_name": "A5文件", "duplex": false }] } }
-  return res
+  return res.print_capability
+})
+
+
+const previewDocument = co.wrap(function*(data, callback){
+    const resp = yield api.getInvoiceInfo({
+      is_async: false,
+      feature_key: 'doc_a4',
+      ...data.worker_data
+    })
+
+    console.log(resp,'===resp===')
+    callback
+  // getLoopsEvent(data, (result)=>{
+  //   if (result.status == 'finished') {
+  //     var converted_url = data.converted_url
+  //     wx.downloadFile({
+  //       url: converted_url,
+  //       success:(res)=>{
+  //         wx.openDocument({
+  //           filePath: res.tempFilePath,
+  //           success: ()=>{
+  //             callback()
+  //           }
+  //         })
+  //       }
+  //     })
+  //   }
+  // })
 })
 
 
 module.exports = {
   printOrders,
-  getPrinterCapacity
+  getPrinterCapacity,
+  previewDocument,
 }

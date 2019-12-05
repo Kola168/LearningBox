@@ -71,7 +71,7 @@ Page({
         })
       }
     } catch (e) {
-      util.showErr({
+      util.showError({
         message: '请重新打开小程序'
       })
     }
@@ -143,7 +143,7 @@ Page({
         showAuth: true
       })
       this.longToast.toast()
-      util.showErr(e)
+      util.showError(e)
     }
   }),
   toNomalPrint: function (e) {

@@ -6,7 +6,7 @@ const regeneratorRuntime = require('lib/co/runtime')
 const co = require('lib/co/co')
 const util = require('utils/util')
 import Logger from 'utils/logger.js'
-
+const _ = require('lib/underscore/we-underscore')
 const getSystemInfo = util.promisify(wx.getSystemInfo)
 const getStorage = util.promisify(wx.getStorage)
  
@@ -23,8 +23,12 @@ App({
   // apiServer: 'https://epbox.gongfudou.com',
   // apiWbviewServer: 'https://epbox.gongfudou.com/',
   //王析理本地地址
-  apiServer: 'http://epbox.natapp1.cc',
-  apiWbviewServer: 'http://epbox.natapp1.cc/',
+  // apiServer: 'http://epbox.natapp1.cc',
+  // apiWbviewServer: 'http://epbox.natapp1.cc/',
+  // jhx
+  apiServer: 'http://jhx.nat300.top',
+	apiWbviewServer: 'http://jhx.nat300.top/',
+
   authAppKey: 'iMToH51lZ0VrhbkTxO4t5J5m6gCZQJ6c',
   openId: '',
   unionId: '',
@@ -155,7 +159,7 @@ App({
 
       this.openId = loginInfo.data.res.openid
     } catch (e) {
-      util.showErr({
+      util.showError({
         title: '登录失败',
         content: e.error
       })

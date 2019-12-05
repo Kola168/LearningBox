@@ -1,7 +1,7 @@
 const regeneratorRuntime = require('../lib/co/runtime')
 const co = require('../lib/co/co')
-const util = require('../util')
-const request = util.promisify(wx.request)
+const util = require('./util')
+import api from '../network/restful_request'
 const app = getApp()
 
 var workerId //定义的loop状态
@@ -17,22 +17,18 @@ var removeTimer = function (_id) {
  * @param {Object} 具体处理函数所需的数据
  */
 
-const getWorkerSn = co.wrap(function*(handle, worker_data={}) {
+const getWorkerSn = co.wrap(function*(feature_key, worker_data={}) {
   try {
-    const resp = yield request({
-      url: app.apiServer + '/boxapi/v2/workers',
-      method: 'POST',
-      dataType: 'json',
-      data: {
-          handle,
-          worker_data,
-      }
+    const resp = yield api.synthesisWorker({
+      is_async: true,
+      feature_key,
+      ...worker_data
     })
-    if (resp.data.code != 0) {
-      throw (resp.data)
+    if (resp.code != 0) {
+      throw (resp)
     }
-    if (resp.data && resp.data.res) {
-      return resp.data.res.sn
+    if (resp && resp.res) {
+      return resp.res.sn
     } 
   }catch(err) {
   }
@@ -46,23 +42,15 @@ const getWorkerSn = co.wrap(function*(handle, worker_data={}) {
 
 const getWorkerResult = co.wrap(function*(sn) {
   try {
-    const resp = yield request({
-      url: app.apiServer + '/boxapi/v2/workers',
-      method: 'POST',
-      dataType: 'json',
-      data: {
-          handle,
-          worker_data,
-      }
-    })
-    if (resp.data.code != 0) {
-      throw (resp.data)
+    const resp = yield api.synthesisSnResult(sn)
+    if (resp.code != 0) {
+      throw (resp)
     }
-    if (resp.data && resp.data.res) {
-      return resp.data.res.sn
+    if (resp && resp.res) {
+      return resp.res
     } 
   } catch(err) {
-    util.showErr(err)
+    util.showError(err)
   }
 })
 
@@ -75,45 +63,48 @@ const getWorkerResult = co.wrap(function*(sn) {
 const getLoopsEvent = co.wrap(function*(data, triggerCallbackFn = function(){}, triggerError = function(){}){
   try {
     var enterTime = (new Date()) //初始化时间
-    var sn = yield getWorkerSn(data.handle, data.worker_data)
+    var sn = yield getWorkerSn(data.feature_key, data.worker_data)
+    try {
 
-    var counter = function() {
-      workerId = setTimeout(co.wrap(function*() {
-        var carryTime = (new Date()) //执行时间
-        var workers = yield getWorkerResult(sn) //获取worker结果
-        if (carryTime  - enterTime > MAX_TIME) {
-          triggerCallbackFn({
-            status: 'timeout',
-            message: '图片处理超时, 请重新尝试!'
-          })
-          return removeTimer(workerId) //关闭定时器
-        }
-  
-        if (res.state === 'processing') { //处理中
-           triggerCallbackFn({
-            status: 'processing',
-            message: ''
-          })
-          return counter()
-        } 
-  
-        removeTimer(workerId) //关闭定时器
-        if (workers.state === 'finished') {
-          triggerCallbackFn({
-            data: workers.worker_data,
-            status: 'finished',
-            message: ''
-          })
-        } else if (workers.state === 'failed') {
-          triggerCallbackFn({
-            status: 'failed',
-            message: '绘制有误'
-          })
-        } 
+      var counter = function() {
+        workerId = setTimeout(co.wrap(function*() {
+          var carryTime = (new Date()) //执行时间
+          var workers = yield getWorkerResult(sn) //获取worker结果
+          if(!workers) {
+            triggerError()
+          }
+          if (carryTime  - enterTime > MAX_TIME) {
+            triggerCallbackFn({
+              status: 'timeout',
+              message: '图片处理超时, 请重新尝试!'
+            })
+            return removeTimer(workerId) //关闭定时器
+          }
 
-      }), time)
+    
+          if (workers && workers.state === 'send') { //处理中
+             triggerCallbackFn({
+              status: 'processing',
+              message: ''
+            })
+            return counter()
+          } 
+    
+          removeTimer(workerId) //关闭定时器
+          if (workers && workers.state === 'finished') {
+            triggerCallbackFn({
+              data: workers,
+              status: 'finished',
+              message: ''
+            })
+          } 
+  
+        }), time)
+      }
+      counter()
+    } catch (err) {
+      removeTimer(workerId) //接口异常时 关闭定时器 
     }
-    counter()
 
   } catch(err) {
     triggerError  && triggerError(err)

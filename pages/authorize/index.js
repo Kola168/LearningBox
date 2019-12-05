@@ -157,7 +157,7 @@ Page({
 				showGetModal: true
 			})
 			this.longToast.toast()
-			util.showErr(e)
+			util.showError(e)
 		}
 	}),
 
