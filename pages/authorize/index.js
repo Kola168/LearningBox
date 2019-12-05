@@ -17,15 +17,6 @@ Page({
 
 	onLoad: co.wrap(function* (options) {
 		this.longToast = new app.WeToast()
-		mta.Page.init()
-		this.way = 1 //默认都是自然用户
-		this.showBack = options.showBack
-		console.log('授权页面options========', options)
-		this.url = options.url
-		if (options.way == 5 && options.share_user_id) {
-			this.share_user_id = options.share_user_id
-			this.way = options.way
-		}
 	}),
 
 	onShow: co.wrap(function* () { }),
@@ -37,11 +28,6 @@ Page({
 			return
 		}
 		yield this.loopGetOpenId()
-	}),
-
-	hideModal: co.wrap(function* (e) {
-		console.log('未授权页面授权时form发生了submit事件，携带数据为：', e.detail.formId, 'authorize')
-		this.authorizeFormId = e.detail.formId
 	}),
 
 	loopGetOpenId: co.wrap(function* () {
@@ -63,6 +49,7 @@ Page({
 			}, 2000)
 		}
 	}),
+	
 	checkSession: co.wrap(function* () {
 		try {
 			yield checkSession()
@@ -72,6 +59,7 @@ Page({
 			return false
 		}
 	}),
+	
 	decrypt: co.wrap(function* () {
 		this.longToast.toast({
 			img: '../../images/loading.gif',
@@ -158,58 +146,6 @@ Page({
 			})
 			this.longToast.toast()
 			util.showErr(e)
-		}
-	}),
-
-	onUnload: function () {
-		this.detail = ''
-	},
-
-
-	loopUploadOpenId: co.wrap(function* () {
-		let loopCount = 0
-		let _this = this
-		if (app.openId) {
-			console.log('绑定分享 openId++++++++++++----', app.openId)
-			if (_this.authorizeFormId) {
-				uploadFormId.dealFormIds(_this.authorizeFormId, `authorize`)
-				uploadFormId.upload()
-				console.log('未授权页面授权时上报，携带数据为：', this.authorizeFormId, 'authorize')
-			}
-		} else {
-			setTimeout(function () {
-				loopCount++
-				if (loopCount <= 100) {
-					console.log('openId not found loop getting...')
-					_this.loopUploadOpenId()
-				} else {
-					console.log('loop too long, stop')
-				}
-			}, 2000)
-		}
-	}),
-	loopGrowingOpenId: co.wrap(function* (unionId) {
-		let loopCount = 0
-		let _this = this
-		if (app.openId) {
-			console.log('loopGrowingOpenId openId++++++++++++----', app.openId)
-			app.gio('identify', app.openId, unionId)
-			app.gio('setUserId', app.openId)
-			wx.getUserInfo({
-				success: function (res) {
-					app.gio('setVisitor', res.userInfo)
-				}
-			})
-		} else {
-			setTimeout(function () {
-				loopCount++
-				if (loopCount <= 100) {
-					console.log('openId not found loop getting...')
-					_this.loopGrowingOpenId()
-				} else {
-					console.log('loop too long, stop')
-				}
-			}, 2000)
 		}
 	}),
 
