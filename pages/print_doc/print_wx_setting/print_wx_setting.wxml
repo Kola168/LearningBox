@@ -3,6 +3,17 @@
 	<view class='choose'>
 		<text class='title'>色彩选择</text>
 		<view class='color'>
+			<view class="kind" wx:for="{{colorList}}" wx:key="{{item.color}}">
+					<text class='type'>黑白</text>
+					<image
+					src="{{item.checked ? '/images/radio_on.png' : '/images/radio_off.png'}}"
+					data-item="{{item}}"
+					class='selected'
+					mode='widthFix'
+					bindtap='chooseColors'
+					/>
+			</view>
+				
 			<view class='kind'>
 				<text class='type'>黑白</text>
 				<image

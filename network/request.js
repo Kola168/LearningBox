@@ -24,7 +24,12 @@ request.interceptors.request.use((request) => {
 
 request.interceptors.response.use(
 	(response, promise) => {
-		return promise.resolve(response.data)
+		if(response.data.code === 40001){ //强制退出登录
+
+			return
+		}else{
+			return promise.resolve(response.data)
+		}	
 	},
 	(error, promise) => {
 		// return promise.reject()

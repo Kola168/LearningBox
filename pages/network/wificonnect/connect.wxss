@@ -87,7 +87,6 @@ view {
   line-height:100rpx;
   border-radius:50rpx;
   text-align:center;
-  background:#FFDC5E;
   font-size:36rpx;
   color:#333;
   margin-top:80rpx;

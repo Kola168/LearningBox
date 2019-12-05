@@ -139,6 +139,8 @@ page {
   color: #000;
   height: 100rpx;
   line-height: 100rpx;
+  padding: 0!important;
+  background: none!important;
 }
 
 .modal-wrap {

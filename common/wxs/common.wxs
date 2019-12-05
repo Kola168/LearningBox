@@ -1,0 +1,160 @@
+var isExcel = function (name) {
+
+  var names = name.split('.'),
+   fileType = names[names.length - 1].toLowerCase()
+
+  if (fileType == 'xlsx' || fileType == 'xls' || fileType == 'xlsm' || fileType == 'xltx' || fileType == 'xltm') {
+      return 'excel文档打印效果与文档可能会有偏差，请先行预览'
+  } else {
+      return ''
+  }
+}
+
+// 获取文件类型
+var getFileType = function getFileType(name) {
+  var names = name.split('.'),
+      typeText = names[names.length - 1].toLowerCase()
+
+  switch (typeText) {
+      case 'xlsx':
+      case 'xls':
+      case 'xlsm':
+      case 'xltx':
+      case 'xltm':
+          return 'word'
+          break
+      case 'doc':
+      case 'docx':
+          return 'word'
+          break;
+      case 'ppt':
+      case 'pptx':
+          return 'ppt'
+          break;
+      case 'pdf':
+          return 'pdf'
+          break;
+      case 'png':
+          return 'png'
+          break;
+      case 'jpg':
+      case 'jpeg':
+          return 'jpg'
+          break;
+      default:
+          return 'error'
+  }
+}
+
+
+var calculateSize = function (size) {
+
+  return size.toFixed(1)
+}
+
+
+var translateMedium =
+  function mediaType(type) {
+      switch (type) {
+          case '_a4':
+              return 'A4照片'
+              break
+          case '_ID':
+              return '身份证复印'
+              break
+          case '_docA4':
+              return 'A4文档'
+              break
+          case '_docA5':
+              return 'A5文档'
+              break
+          case 'balloon':
+              return '气球'
+              break
+          case 'album':
+              return '照片书'
+              break
+          case 'calendar':
+              return 'A5台历'
+              break
+          case 'vertical_calendar':
+              return 'A5竖版台历'
+              break
+          case 'horizontal_calendar':
+              return 'A5横版台历'
+              break
+          case 'postcard':
+              return '明信片'
+              break
+          case '_6inch':
+              return '6寸照片'
+              break
+          case '_5inch':
+              return '5寸照片'
+              break
+          case '_7inch':
+              return '7寸照片'
+              break
+          case '_id1in':
+              return '1寸证件照'
+              break
+          case '_id2in':
+              return '2寸证件照'
+              break
+          case '_id3in':
+              return '3寸证件照'
+              break
+          case '_cert':
+              return '智能证件照'
+              break
+          case 'pic2doc':
+              return '图片转文档'
+              break
+          case 'page2doc':
+              return '微信文章'
+              break
+          case 'invoice':
+              return '发票'
+              break
+          case '_id1ins':
+              return '小1寸证件照'
+              break
+          case '_id1inb':
+              return '大1寸证件照'
+              break
+          case '_id2ins':
+              return '小2寸证件照'
+              break
+          case '_id2inb':
+              return '大2寸证件照'
+              break
+          case '_visa_usa':
+              return '美国签证'
+              break
+          case '_visa_jp':
+              return '日本签证'
+              break
+          case '_visa_kor':
+              return '韩国签证'
+              break
+          case '_visa_tha':
+              return '泰国签证'
+              break
+          case 'oral':
+              return '智能口算'
+              break
+          case 'mistake':
+              return '错题本'
+              break
+          default:
+              return '未知介质'
+              break
+      }
+  }
+
+module.exports = {
+  calculateSize: calculateSize,
+  isExcel: isExcel,
+  translateMedium: translateMedium,
+  getFileType: getFileType
+}

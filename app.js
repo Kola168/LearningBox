@@ -8,6 +8,8 @@ const util = require('utils/util')
 import Logger from 'utils/logger.js'
 
 const getSystemInfo = util.promisify(wx.getSystemInfo)
+const getStorage = util.promisify(wx.getStorage)
+ 
 
 const login = util.promisify(wx.login)
 const request = util.promisify(wx.request)
@@ -34,7 +36,6 @@ App({
     yield this.getOpenId()
     yield this.getSystemInfo()
     this.navBarInfo = this.getNavBarInfo()
-    this.handleDevice()
   }),
 
   //获取系统信息
@@ -44,33 +45,66 @@ App({
     this.handleDevice()
   }),
 
-  // 是否为iPhone X，rpxPixel
+  // 是否为全面屏，rpxPixel
   handleDevice() {
-    let model = this.sysInfo.model.toLowerCase()
-    this.isIpx = model.indexOf("iphone x") > -1 ? true : false
+    // 暂时的处理
+    this.isFullScreen = this.sysInfo.screenHeight > 750 ? true : false
     this.rpxPixel = 750 / this.sysInfo.windowWidth
   },
 
   // 获取导航栏信息
   getNavBarInfo() {
     let sysInfo = this.sysInfo ? this.sysInfo : wx.getSystemInfoSync()
-    let rect = wx.getMenuButtonBoundingClientRect ? wx.getMenuButtonBoundingClientRect() : null
-    if (rect) {
-      let statusBarHeight = sysInfo.statusBarHeight,
-        gap = rect.top - statusBarHeight,
-        navBarHeight = 2 * gap + rect.height,
-        navBarPadding = sysInfo.screenWidth - rect.right,
-        topBarHeight = navBarHeight + statusBarHeight
-      return {
-        statusBarHeight,
-        navBarHeight,
-        topBarHeight,
-        navBarPadding,
-        titleWidth: sysInfo.screenWidth - navBarPadding * 2 - rect.width * 2,
-        menuWidth: rect.width,
-        menuHeight: rect.height
-      }
+    let rect = null
+    try {
+      rect = wx.getMenuButtonBoundingClientRect()
+    } catch (error) {
+      rect = this.fixButtonBoundingClientRect()
     }
+    let statusBarHeight = sysInfo.statusBarHeight,
+      gap = rect.top - statusBarHeight,
+      navBarHeight = 2 * gap + rect.height,
+      navBarPadding = sysInfo.screenWidth - rect.right,
+      topBarHeight = navBarHeight + statusBarHeight
+    return {
+      statusBarHeight,
+      navBarHeight,
+      topBarHeight,
+      navBarPadding,
+      titleWidth: sysInfo.screenWidth - navBarPadding * 2 - rect.width * 2,
+      menuWidth: rect.width,
+      menuHeight: rect.height
+    }
+  },
+
+  // 修复wx.getMenuButtonBoundingClientRect接口报错，保证自定义导航栏不错位
+  fixButtonBoundingClientRect() {
+    let sysInfo = this.sysInfo,
+      platform = sysInfo.platform.toLowerCase(),
+      gap = '', //胶囊按钮上下间距 使导航内容居中
+      width = 88 //胶囊的宽度，android大部分96，ios为88
+    if (platform === 'android') {
+      gap = 8
+      width = 96
+    } else if (platform === 'devtools') {
+      let system = sysInfo.system.toLowerCase()
+      if (system.indexOf('ios') > -1) {
+        gap = 5.5 //开发工具中ios手机
+      } else {
+        gap = 7.5 //开发工具中android和其他手机
+      }
+    } else {
+      gap = 4
+      width = 88
+    }
+    return {
+      bottom: sysInfo.statusBarHeight + gap + 32,
+      height: 32,
+      left: sysInfo.windowWidth - width - 10,
+      right: sysInfo.windowWidth - 10,
+      top: sysInfo.statusBarHeight + gap,
+      width: width
+    };
   },
 
   preventMoreTap: function (e) {

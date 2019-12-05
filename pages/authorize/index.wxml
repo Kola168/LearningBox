@@ -1,0 +1,16 @@
+<view class="auth-container">
+		<!-- <view class="title">确认授权，更好的小程序体验</view> -->
+		<image class="authorize-title" src="/images/common_authorize_title.png" mode="widthFix"></image>
+    <image class="authorize-logo" src="/images/logo-72.png" mode="widthFix">
+		</image>
+		<image class="authorize-tip" src="/images/common_authorize_tip.png" mode="widthFix"></image>
+ 
+    <form report-submit="{{true}}" bindsubmit="hideModal" class="" data-type="authorize" class="scope-button">
+        <button class='authorize-confirm' open-type="getUserInfo" bindgetuserinfo="authorize" form-type='submit'>确认授权</button>
+		</form>
+		
+		<button class="back-to" bindtap="backTo">先逛逛</button>
+</view>
+
+<import src="../../lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />

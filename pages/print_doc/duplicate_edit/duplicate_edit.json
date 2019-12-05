@@ -1,5 +1,8 @@
 {
   "disableScroll": true,
   "enablePullDownRefresh": false,
-  "disableSwipeBack": true
+  "disableSwipeBack": true,
+  "usingComponents": {
+    "cropper-img": "../../../components/cropper-img/cropper-img"
+  }
 }

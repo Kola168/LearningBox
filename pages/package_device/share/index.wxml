@@ -1,0 +1,14 @@
+<nav-bar title="分享二维码"></nav-bar>
+<view class="container">
+  <image src="https://cdn-h.gongfudou.com/LearningBox/device/device_share_intro_1.png" mode="widthFix" />
+  <image src="https://cdn-h.gongfudou.com/LearningBox/device/device_share_intro_2.png" mode="widthFix" />
+  <view class="qrcode">
+    <image src="https://cdn-h.gongfudou.com/LearningBox/device/device_share_intro_3.png" mode="widthFix" />
+    <view class="qrcode-box">
+      <view class="box-wrap">
+        <image src="/images/doc_email.png" />
+      </view>
+      <view class="qrcode-btn">保存</view>
+    </view>
+  </view>
+</view>

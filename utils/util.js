@@ -316,6 +316,20 @@ function clearPdfFile(array) {
   return array
 }
 
+/**
+ * @methods  处理文件名
+ * @param {Array} files 文件列表
+ */
+function resetFiles(file = '') {
+  const reg = /([^\/\\]+)\.+([a-z]+)$/i;
+  const newfile = reg.exec(file);
+  let newFiles = {
+    name: newfile[1],
+    suffix: newfile[2]
+  }
+  return newFiles;
+}
+
 module.exports = {
   promisify: promisify,
   _getRotateDirection: _getRotateDirection,
@@ -331,4 +345,5 @@ module.exports = {
   compareVersion: compareVersion,
   deleteOneId: deleteOneId,
   clearPdfFile: clearPdfFile,
+  resetFiles: resetFiles,
 }

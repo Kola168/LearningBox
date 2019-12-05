@@ -36,7 +36,7 @@ Component({
       this.setData({
         hideConfirmPrintBox: !this.data.hideConfirmPrintBox
       })
-      storage.set('hideConfirmPrintBox', hideConfirmPrintBox)
+      storage.put('hideConfirmPrintBox', hideConfirmPrintBox)
     },
     tapModal() {
       return

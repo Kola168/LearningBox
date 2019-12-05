@@ -1,0 +1,22 @@
+<!--pages/gallery/component/checkimg/index.wxml-->
+<view class="component-choosePhoto" wx:if="{{popWindow}}" catch:touchmove="preventScroll">
+  <view class="component-choosePhoto-container" catchtap="showPop">
+    <view class="component-choosePhoto-content">
+      <view wx:if="{{showCamera}}" class="component-choosePhotoItem" catchtap="chooseImg" data-id="camera">
+        <text class="component-choosePhotoItem-text">拍照</text>
+      </view>
+      <view wx:if="{{showAlbum}}" class="component-choosePhotoItem" catchtap="chooseImg" data-id="album">
+        <text class="component-choosePhotoItem-text">手机相册</text>
+      </view>
+      <view wx:if="{{showMessageFile}}" class="component-choosePhotoItem" catchtap="chooseImg" data-id="chooseMessageFile">
+        <text class="component-choosePhotoItem-text">微信聊天记录</text>
+      </view>
+      <view wx:if="{{showBaidu}}" class="component-choosePhotoItem" catchtap="baiduChooseImg">
+        <text class="component-choosePhotoItem-text">百度网盘</text>
+      </view>
+      <view class="component-choosePhotoItem {{butHigh?'higher-but':''}}" style="margin-top:14rpx;">
+        <text class="component-choosePhotoItem-text">取消</text>
+      </view>
+    </view>
+  </view>
+</view>

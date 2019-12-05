@@ -1,0 +1,21 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.container image {
+  width: 100%;
+}
+
+.back {
+  position: absolute;
+  left: 0;
+  bottom: 120rpx;
+  width: 100%;
+  text-align: center;
+  text-decoration: underline;
+  color: #454545;
+  font-size: 36rpx;
+  font-weight: bold;
+}

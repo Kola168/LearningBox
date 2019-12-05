@@ -2,18 +2,18 @@
 
 image {
 	height: auto;
-	display:inline-block;
+	display:block;
 }
 
 .common-button-bg{
   background:#ffdc5e;
 }
 
-.is-ipx {
+.is-full-screen {
   bottom: 60rpx !important;
 }
 
-.is-ipx::after {
+.is-full-screen::after {
   position: absolute;
   left: 0;
   bottom: -60rpx;
