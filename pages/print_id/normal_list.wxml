@@ -2,49 +2,49 @@
 <nav-bar background="#fff" title="{{type=='normal'?'常用寸照':'各类签证'}}"></nav-bar>
 <block wx:if="{{type=='normal'}}">
     <view class="item" bindtap="toPrint" id="_id1in">
-        <image src="images/icon_id.png" class="icon" mode="widthFix"></image>
+        <image src="/images/id/icon_id.png" class="icon" mode="widthFix"></image>
         <view class="content">
             <text>1寸</text>
             <text class="size">25*35mm</text>
         </view>
     </view>
     <view class="item" bindtap="toPrint" id="_id2in">
-        <image src="images/icon_id.png" class="icon" mode="widthFix"></image>
+        <image src="/images/id/icon_id.png" class="icon" mode="widthFix"></image>
         <view class="content">
             <text>2寸</text>
             <text class="size">35*49mm</text>
         </view>
     </view>
     <view class="item" bindtap="toPrint" id="_id1ins">
-        <image src="images/icon_id.png" class="icon" mode="widthFix"></image>
+        <image src="/images/id/icon_id.png" class="icon" mode="widthFix"></image>
         <view class="content">
             <text>小1寸</text>
             <text class="size">22*32mm</text>
         </view>
     </view>
     <view class="item" bindtap="toPrint" id="_id1inb">
-        <image src="images/icon_id.png" class="icon" mode="widthFix"></image>
+        <image src="/images/id/icon_id.png" class="icon" mode="widthFix"></image>
         <view class="content">
             <text>大1寸</text>
             <text class="size">33*48mm</text>
         </view>
     </view>
     <view class="item" bindtap="toPrint" id="_id2ins">
-        <image src="images/icon_id.png" class="icon" mode="widthFix"></image>
+        <image src="/images/id/icon_id.png" class="icon" mode="widthFix"></image>
         <view class="content">
             <text>小2寸</text>
             <text class="size">35*45mm</text>
         </view>
     </view>
     <view class="item" bindtap="toPrint" id="_id2inb">
-        <image src="images/icon_id.png" class="icon" mode="widthFix"></image>
+        <image src="/images/id/icon_id.png" class="icon" mode="widthFix"></image>
         <view class="content">
             <text>大2寸</text>
             <text class="size">35*53mm</text>
         </view>
     </view>
     <view class="item" bindtap="toPrint" id="_id3in">
-        <image src="images/icon_id.png" class="icon" mode="widthFix"></image>
+        <image src="/images/id/icon_id.png" class="icon" mode="widthFix"></image>
         <view class="content">
             <text>3寸</text>
             <text class="size">55*84mm</text>
@@ -53,28 +53,28 @@
 </block>
 <view wx:if="{{type=='foreign'}}" class="foreign">
     <view class="item" bindtap="toPrint" id="_visa_usa">
-        <image src="images/icon_america.png" class="icon" mode="widthFix"></image>
+        <image src="/images/id/icon_america.png" class="icon" mode="widthFix"></image>
         <view class="content">
             <text>美国签证</text>
             <text class="size">51*51mm</text>
         </view>
     </view>
     <view class="item" bindtap="toPrint" id="_visa_jp">
-        <image src="images/icon_japan.png" class="icon" mode="widthFix"></image>
+        <image src="/images/id/icon_japan.png" class="icon" mode="widthFix"></image>
         <view class="content">
             <text>日本签证</text>
             <text class="size">45*45mm</text>
         </view>
     </view>
     <view class="item" bindtap="toPrint" id="_visa_kor">
-        <image src="images/icon_korea.png" class="icon" mode="widthFix"></image>
+        <image src="/images/id/icon_korea.png" class="icon" mode="widthFix"></image>
         <view class="content">
             <text>韩国签证</text>
             <text class="size">35*45mm</text>
         </view>
     </view>
     <view class="item" bindtap="toPrint" id="_visa_tha">
-        <image src="images/icon_thailand.png" class="icon" mode="widthFix"></image>
+        <image src="/images/id/icon_thailand.png" class="icon" mode="widthFix"></image>
         <view class="content">
             <text>泰国签证</text>
             <text class="size">35*45mm</text>

@@ -1,16 +1,16 @@
 <nav-bar background="#fff" title="{{name}}"></nav-bar>
 <view class="size">
-    <image src="images/icon_edit.png" mode="widthFix"></image>
+    <image src="/images/id/icon_edit.png" mode="widthFix"></image>
     <text>请移动照片对准面部</text>
 </view>
 <view hover-class="none" bindtouchstart="onTouch" bindtouchmove="onTouchMove" bindtouchend="onTouchEnd" bindtouchcancel="onTouchEnd" bindtap="showChange" class="editor-area" style="width:{{areaPosition.width}}px;height:{{areaPosition.height}}px;left:{{areaPosition.left}}px;top:{{areaPosition.top}}px;">
     <!-- <view class="btn-tip">
         <view>{{localImgPath?'请移动照片对准面部':'请点击加号上传照片'}}</view>
     </view> -->
-    <image class="delete" src="images/close_edit.png" mode="widthFix" wx:if="{{localImgPath}}" bindtap="deleteImg"></image>
+    <image class="delete" src="/images/id/close_edit.png" mode="widthFix" wx:if="{{localImgPath}}" bindtap="deleteImg"></image>
 
     <image class="area" mode="aspectFill" src="{{area.url}}" style="width:{{areaPosition.width}}px;height:{{areaPosition.height}}px;{{areaPosition.width==areaPosition.height?'margin-top:0':''}}">
-        <image class="btn-add" wx:if="{{!localImgPath}}" mode="widthFix" src="images/id_add.png" ontap="changeImage"></image>
+        <image class="btn-add" wx:if="{{!localImgPath}}" mode="widthFix" src="/images/id/id_add.png" ontap="changeImage"></image>
     </image>
     <view class="area-border" style="width:{{area.areaWidth*areaPosition.scale-4}}px;height:{{area.areaHeight*areaPosition.scale-4}}px;left:{{area.x*areaPosition.scale}}px;top:{{area.y*areaPosition.scale}}px;display:{{showAreaBorder ? 'block' : 'none'}}"></view>
     <!-- <view class="change-btn" ontap="changeImage" style="width:{{changeBtnWidth}}px;left:{{area.x*areaPosition.scale+area.areaWidth*areaPosition.scale/2-changeBtnWidth/2}}px;top:{{area.y*areaPosition.scale+area.areaHeight*areaPosition.scale-40}}px;display:{{showChangeBtn &&localImgPath? 'block' : 'none'}}">

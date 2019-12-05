@@ -1,3 +1,4 @@
+<nav-bar background="#fff" title="{{name}}"></nav-bar>
 <view class="modes">
     <view class="mode">
         <image mode="widthFix" src="{{preview_url}}"></image>
@@ -7,9 +8,9 @@
 <view class="gfd-setting">
     <view class="name">照片张数</view>
     <view class="mode-name">
-        <image ontap="tapMin" class="btn-c" mode="widthFix" src="{{num > 1 ? '/images/minus.png' : '/images/decrease_circle_gray.png'}}"></image>
+        <image ontap="tapMin" class="btn-c" mode="widthFix" src="{{num > 1 ? '../../images/id/minus.png' : '../../images/id/decrease_circle_gray.png'}}"></image>
         <text>{{num}}</text>
-        <image ontap="tapPlus" class="btn-c" mode="widthFix" src="{{num < 9 ? '/images/plus.png' : '/images/decrease_circle_gray.png'}}"></image>
+        <image ontap="tapPlus" class="btn-c" mode="widthFix" src="{{num < 9 ? '../../images/id/plus.png' : '../../images/id/decrease_circle_gray.png'}}"></image>
     </view>
 </view>
 <view class="bottom">

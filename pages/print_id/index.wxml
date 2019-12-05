@@ -9,22 +9,24 @@
         <view>一键换背景，10秒快速生成合格证件照</view>
         <view class="zhineng-button">
             <text>去制作</text>
-            <image src="images/zhineng_trangle.png" mode="widthFix"></image>
+            <image src="../../images/id/zhineng_trangle.png" mode="widthFix"></image>
         </view>
     </view>
 </view>
+
 <view class="title">证件照分类<text>(已有电子照请选我)</text>
 </view>
+
 <view class="kind">
     <view bindtap="toNomal">
-        <image src="images/id_nomal.png" mode="aspectFit"></image>
+        <image src="../../images/id/id_nomal.png" mode="aspectFit"></image>
         <view>
             <view class="kind-title">常用尺寸</view>
             <view>一寸/二寸/三寸...</view>
         </view>
     </view>
     <view bindtap="toForeign">
-        <image src="images/id_foreign.png" mode="aspectFit"></image>
+        <image src="../../images/id/id_foreign.png" mode="aspectFit"></image>
         <view>
             <view class="kind-title">各类签证</view>
             <view>美国/日本/韩国...</view>
