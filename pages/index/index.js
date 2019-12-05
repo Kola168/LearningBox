@@ -10,18 +10,14 @@ require('../../utils/mixin.js')
 import index from "../../mixins/index.js"
 import init from "../../mixins/init.js"
 import storage from '../../utils/storage.js'
-const request = util.promisify(wx.request)
+import api from '../../network/restful_request.js'
+// const request = util.promisify(wx.request)
 const checkSession = util.promisify(wx.checkSession)
 
 Page({
   mixins: [index, init],
   data: {
-    motto: 'Hello World',
     userInfo: {},
-    hasUserInfo: false,
-    blockSize: 10,
-    audioType: 'circle',
-    canIUse: wx.canIUse('button.open-type.getUserInfo'),
     bannerUrls: [{
       url: 'http://gfd-i.memeyin.com/e-FlXfVks1do_li3DqrLWVHjr-0IPr'
     }],
@@ -57,15 +53,14 @@ Page({
   }),
   getUnion: co.wrap(function* () {
     try {
-      let unionId = storage.get('unionId')
-      let openId = storage.get('openId')
-      if (unionId && openId) {
+      let authToken = storage.get('authToken')
+      if (authToken) {
         this.setData({
           showAuth: false
         })
-        app.openId = openId
+        app.authToken = authToken
       }
-      if (!unionId) {
+      if (!authToken) {
         this.setData({
           showAuth: true,
         })
@@ -115,17 +110,12 @@ Page({
         },
         decr_type: 'login'
       }
-      const resp = yield request({
-        url: app.apiServer + `/api/v1/users/sessions/wechat_decryption`,
-        method: 'POST',
-        dataType: 'json',
-        data: params
-      })
-      if (resp.data.code != 0) {
+      const resp = yield api.getSession(params)
+      if (resp.code != 0) {
         throw (resp.data)
       }
-      storage.put('authToken', resp.data.res.auth_token)
-      storage.put('unionId', resp.data.res.unionid)
+      storage.put('authToken', resp.res.auth_token)
+      storage.put('unionId', resp.res.unionid)
 
       // if (resp.data.res.phone) {
       //   app.hasPhoneNum = true
