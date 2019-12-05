@@ -304,7 +304,7 @@ Page({
 			})
 			commonRequest.previewDocument({
 				feature_key: 'doc_a4',
-				worker_data: {url, display, skip_gs, extract: (extract || 'all'), start_page, end_page}
+				worker_data: {url, display, skip_gs, extract: (extract || 'all')}
 			}, ()=>{
 				this.longToast.hide()
 			})
