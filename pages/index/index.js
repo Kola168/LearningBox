@@ -122,7 +122,7 @@ Page({
       //   app.globalPhoneNum = resp.data.res.phone
       //   wx.setStorageSync("phonenum", resp.data.res.phone)
       // }
-
+      app.authToken = resp.res.auth_token
       this.setData({
         showAuth: false
       })

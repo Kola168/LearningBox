@@ -55,8 +55,8 @@
 		 "pages": [
         "id_normal_index",
         "id_normal_list",
-        "id_normal_mode",
-        "id_normal_edit"
+        "id_normal_edit",
+        "id_normal_mode"
 		 ]
 		},
 		{
