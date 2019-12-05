@@ -41,7 +41,7 @@
 		{
 		 "root": "pages/package_common",
 		 "pages": [
-
+        "search/index"
 		 ]
 		},
 		{
