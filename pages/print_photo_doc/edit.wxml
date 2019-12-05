@@ -1,11 +1,10 @@
-<nav-bar background="#fff" title="在A4纸上打印"></nav-bar>
+<nav-bar title="图片转文档"></nav-bar>
 <view class="top-tip">
     <image src='../../images/doc_icon_edit_white.png' class='icon_edit' mode='widthFix'></image>
     <text>黄色框内为打印区域，请仔细编辑</text>
 </view>
 
 <cropper-img croppers="{{croppers}}" id="cropper"></cropper-img>
-
 <view class='footer'>
     <view class='choose'>
         <view>
@@ -21,18 +20,19 @@
     </view>
     <view class="btn">
         <view class="btn-delete" bindtap="deleteCurrentImage">
+            <!-- <image src="/images/delete_icon.png"/> -->
             <view>删除</view>
         </view>
-        <form report-submit="true" bindsubmit="{{cropperChangableData.canCrop ? 'cropImage':''}}">
-            <button style="background:none;" formType="submit" hover-class="none">{{currentCount != currentIndex && !isSingle ? '编辑下一张' + '('+(currentIndex)+ '/' + (currentCount || 0) + ')' : '完成'+(isSingle ? '' :  '(' + currentIndex+'/'+ currentCount +')' )}}</button>
+        <form report-submit="true" bindsubmit="cropImage">
+            <button formType="submit" hover-class="none">{{currentCount != currentIndex && !isSingle ? '编辑下一张' + '('+(currentIndex)+ '/' + (currentCount || 0) + ')' : '完成'+(isSingle ? '' :  '(' + currentIndex+'/'+ currentCount +')' )}}</button>
         </form>
     </view>
 </view>
 
 
-<progress-modal  percent="{{percent}}" wx:if="{{showupLoad}}" bindcancel="cancelDraw" slotTitle="{{showTitle}}" slotContent="{{showContent}}">
+<!-- <progress-modal  percent="{{percent}}" wx:if="{{showupLoad}}" bindcancel="cancelDraw" slotTitle="{{showTitle}}" slotContent="{{showContent}}">
    
-</progress-modal>
-<confirm-reinforce-modal></confirm-reinforce-modal>
+ </progress-modal>-->
+<!-- <confirm-reinforce-modal></confirm-reinforce-modal>-->
 <import src="../../lib/toast/wetoast.wxml" />
 <template is="wetoast" data="{{...__wetoast__}}" />
