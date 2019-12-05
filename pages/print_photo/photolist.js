@@ -4,6 +4,7 @@ const regeneratorRuntime = require('../../lib/co/runtime')
 const co = require('../../lib/co/co')
 const _ = require('../../lib/underscore/we-underscore')
 const util = require('../../utils/util')
+const upload=require('../../utils/upload')
 
 import wxNav from '../../utils/nav.js'
 Page({
@@ -73,21 +74,55 @@ Page({
     this.initSingleArea()
   },
 
-  showImgCheck:function(){
-    let restCount=this.data.limitPhoto-this.data.photoList.length
-    let count=restCount>9?9:restCount
+  showImgCheck: function() {
+    let restCount = this.data.limitPhoto - this.data.photoList.length
+    let count = restCount > 9 ? 9 : restCount
     this.setData({
-      count:count
+      count: count
     })
     this.selectComponent("#checkComponent").showPop()
   },
 
-  chooseImgs:co.wrap(function*(e){
-    console.log(e.detail.tempFiles)
-    let imgs=e.detail.tempFiles
+  chooseImgs: co.wrap(function*(e) {
+    let imgs = e.detail.tempFiles
+    let that = this
+    let paths = []
+    //去除大于20兆的
+    _.each(imgs, function(value, index) {
+      if (data.size < 20000000) {
+        paths.push(value.path)
+      }
+    })
+    //没有可用图片列表时提示
+    if (paths.length == 0) {
+      this.setData({
+        showProcess: true,
+        completeCount: '已为您过滤部分不适合打印的照片（大于20M)'
+      })
+      setTimeout(function() {
+        that.setData({
+          showInterceptModal: '',
+          showProcess: false,
+        })
+      }, 5000)
+    }else{
+      this.setData({
+        showProcess: true,
+        count:paths.length
+      })
+      app.cancelUpload = false
+      upload.uploadFiles(paths,function(){
+
+      },function(process){
+        that.setData({
+          percent:process
+        })
+      })
+    }
+
   }),
 
-  baiduprint:function(){
+  baiduprint: function() {
 
   },
 
