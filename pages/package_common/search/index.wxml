@@ -105,3 +105,6 @@
     <view class="feedback-btn" bindtap="toFeedback">立即反馈</view>
   </view>
 </view>
+<!-- loading -->
+<import src="/lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />

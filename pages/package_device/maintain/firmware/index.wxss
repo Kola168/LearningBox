@@ -1,0 +1,51 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 80rpx;
+}
+
+.container-title {
+  color: #333333;
+  font-weight: bold;
+  font-size: 40rpx;
+  margin: 66rpx 0;
+}
+
+.container>image {
+  width: 172rpx;
+}
+
+.update-tip {
+  color: #333;
+  font-size: 28rpx;
+  margin-top: 50rpx;
+}
+
+.update-warn {
+  width: 100%;
+  background: #FFF8E0;
+  color: #FFA200;
+  font-size: 28rpx;
+  padding: 20rpx 30rpx;
+  border-radius: 8rpx;
+  margin: 40rpx 0 64rpx;
+}
+
+.update-btn {
+  width: 100%;
+  height: 100rpx;
+  line-height: 100rpx;
+  border-radius: 50rpx;
+  background: #FFDC5E;
+  font-size: 36rpx;
+  color: #454545;
+  text-align: center;
+  margin-bottom: 60rpx;
+}
+
+.update-time {
+  font-size: 24rpx;
+  color: #666;
+  margin-bottom: 32rpx;
+}

@@ -1,10 +1,8 @@
 "use strict"
 
 const app = getApp()
-const regeneratorRuntime = require('../../lib/co/runtime')
-const co = require('../../lib/co/co')
-const util = require('../../utils/util')
-import graphql from '../../network/graphql_request'
+import { regeneratorRuntime, co, util, wxNav } from '../../../utils/common_import'
+import graphql from '../../../network/graphql_request'
 
 Page({
   data: {
@@ -16,10 +14,7 @@ Page({
     inputFocus: true
   },
   onLoad: co.wrap(function*() {
-    wx.showLoading({
-      title: "请稍等",
-      mask: true
-    })
+    this.weToast = new app.weToast()
     try {
       let hotTags = yield this.getHotSearch()
       let historySearchs = yield this.getHistorySearch()
