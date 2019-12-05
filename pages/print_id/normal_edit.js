@@ -648,8 +648,7 @@ Page({
             })
         }
         this.longToast.toast({
-            img: 'loading',
-            title: '正在提交',
+            type: "loading",
             duration: 0
         })
         let imageURL
@@ -662,7 +661,7 @@ Page({
             }
         } catch (e) {
             console.error(e)
-            this.longToast.toast()
+            this.longToastoast()
             yield showModal({
                 title: '照片上传失败',
                 content: '请检查网络或稍候再试',
@@ -735,12 +734,6 @@ Page({
         app.tmpIDParams = params
 
         try {
-            // const resp = yield request({
-            //     url: app.apiServer + `/boxapi/v3/images/id_convert`,
-            //     method: 'POST',
-            //     dataType: 'json',
-            //     data: params
-            // })
             const resp = yield api.convertId(params)
 
             if (resp.code != 0) {

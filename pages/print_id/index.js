@@ -5,7 +5,7 @@ Page({
     onLoad: function (options) {},
     toZhineng: function () {
         wx.navigateTo({
-            url: `../error_book/pages/print_id/index`
+            url: `smart_index`
         })
     },
     toNomal: function () {

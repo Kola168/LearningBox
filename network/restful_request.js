@@ -25,8 +25,18 @@ const api = {
    */
   convertId: (params) => request.post(`processes`, params, {
     baseURL: `${app.apiServer}/api/v1/`
-  })
+  }),
 
+  /**
+   *智能证件照搜索
+   *
+   * @param {*} search 关键词
+   */
+  searchId: (search) => request.get(`certificate_photo_types`, {
+    search
+  }, {
+    baseURL: `${app.apiServer}/api/v1/`
+  }),
 }
 
 export default api

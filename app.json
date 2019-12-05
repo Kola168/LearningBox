@@ -39,7 +39,9 @@
     "pages/print_id/index",
     "pages/print_id/normal_list",
     "pages/print_id/normal_edit",
-    "pages/print_id/normal_mode"
+    "pages/print_id/normal_mode",
+    "pages/print_id/smart_index",
+    "pages/print_id/smart_rules"
   ],
   "subPackages": [{
       "root": "pages/package_common",

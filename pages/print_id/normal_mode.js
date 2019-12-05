@@ -16,7 +16,7 @@ Page({
         price: 0,
         price_count: 0,
         showConfirmModal: null,
-        hasAuthPhoneNum:false,
+        hasAuthPhoneNum: false,
         confirmModal: {
             isShow: false,
             title: '请确认6寸照片纸放置正确',
@@ -24,40 +24,40 @@ Page({
         }
     },
     // 分享事件
-    onShareAppMessage: function() {
+    onShareAppMessage: function () {
         return app.share
     },
-    onLoad: co.wrap(function*(query) {
-        try{
-        this.idPrint = JSON.parse(query.idPrint)
-        console.log('证件照确认打印页参数', this.idPrint)
-        this.longToast = new app.weToast()
+    onLoad: co.wrap(function* (query) {
+        try {
+            this.idPrint = JSON.parse(query.idPrint)
+            console.log('证件照确认打印页参数', this.idPrint)
+            this.longToast = new app.weToast()
             // 本地照片
-        this.setData({
-            url: this.idPrint.url.replace('http://', 'https://'),
-            preview_url: decodeURIComponent(this.idPrint.preview_url).replace('http://', 'https://'),
-            imageURL: this.idPrint.imageURL,
-            mode: this.idPrint.mode,
-            name:query.name
-        })
-        if (this.idPrint.price) {
             this.setData({
-                price: this.idPrint.price,
-                price_count: this.idPrint.price
+                url: this.idPrint.url.replace('http://', 'https://'),
+                preview_url: decodeURIComponent(this.idPrint.preview_url).replace('http://', 'https://'),
+                imageURL: this.idPrint.imageURL,
+                mode: this.idPrint.mode,
+                name: this.idPrint.name
             })
+            if (this.idPrint.price) {
+                this.setData({
+                    price: this.idPrint.price,
+                    price_count: this.idPrint.price
+                })
+            }
+        } catch (e) {
+            console.log(e)
         }
-    }catch(e){
-    console.log(e)        
-    }
     }),
-    onShow:function(){
+    onShow: function () {
         let hasAuthPhoneNum = Boolean(wx.getStorageSync('hasAuthPhoneNum'))
         this.hasAuthPhoneNum = hasAuthPhoneNum
         this.setData({
             hasAuthPhoneNum: app.hasPhoneNum || hasAuthPhoneNum
         })
     },
-    tapMin: co.wrap(function*() {
+    tapMin: co.wrap(function* () {
         if (this.data.num > 1) {
             this.setData({
                 num: this.data.num - 1,
@@ -65,7 +65,7 @@ Page({
             })
         }
     }),
-    tapPlus: co.wrap(function*() {
+    tapPlus: co.wrap(function* () {
         if (this.data.num < 9) {
             this.setData({
                 num: this.data.num + 1,
@@ -73,16 +73,15 @@ Page({
             })
         }
     }),
-    toConfirm: co.wrap(function*(e) {
+    toConfirm: co.wrap(function* (e) {
         console.log('证件照打印时form发生了submit事件，携带数据为：', e.detail.formId, `print${this.data.mode}`)
-        uploadFormId.dealFormIds(e.detail.formId, `print${this.data.mode}`)
-        uploadFormId.upload()
-        if(!this.hasAuthPhoneNum&&!app.hasPhoneNum){
-            return
-        }
+
+        // if (!this.hasAuthPhoneNum && !app.hasPhoneNum) {
+        //     return
+        // }
 
         let hideConfirmPrintBox = Boolean(wx.getStorageSync("hideConfirmPrintBox"))
-        if(hideConfirmPrintBox){
+        if (hideConfirmPrintBox) {
             this.print()
         } else {
             this.setData({
@@ -91,19 +90,18 @@ Page({
         }
     }),
 
-    getPhoneNumber:co.wrap(function*(e){
+    getPhoneNumber: co.wrap(function* (e) {
         yield app.getPhoneNum(e)
-        wx.setStorageSync("hasAuthPhoneNum",true)
+        wx.setStorageSync("hasAuthPhoneNum", true)
         this.hasAuthPhoneNum = true
         this.setData({
-            hasAuthPhoneNum:true
+            hasAuthPhoneNum: true
         })
         this.toConfirm(e)
     }),
-    print: co.wrap(function*() {
+    print: co.wrap(function* () {
         this.longToast.toast({
-            img: '/images/loading.gif',
-            title: '正在提交',
+            type: "loading",
             duration: 0
         })
         let images = [{
@@ -118,11 +116,11 @@ Page({
         }]
         console.log('证件照生成参数', images)
         let params = {
-                openid: app.openId,
-                urls: images,
-                media_type: this.data.mode
-            }
-            // 提交制作信息
+            openid: app.openId,
+            urls: images,
+            media_type: this.data.mode
+        }
+        // 提交制作信息
         try {
             const resp = yield request({
                 url: app.apiServer + `/ec/v2/orders`,
