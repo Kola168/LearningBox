@@ -1,2 +1,2 @@
 <!--components/process/text.wxml-->
-<multi-process wx:if="{{false}}" complete-count="{{completeCount}}" count="{{count}}" percent="{{percent}}" bindcancelprocess="cancelimg"></multi-process>
+<multi-process wx:if="{{false}}" complete-count="{{completeCount}}" err-tip ="{{}}" count="{{count}}" percent="{{percent}}" bindcancelprocess="cancelimg"></multi-process>

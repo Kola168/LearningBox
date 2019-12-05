@@ -1,8 +1,5 @@
 const app = getApp()
-const regeneratorRuntime = require('../lib/co/runtime')
-import storage from './storage.js'
-const co = require('../lib/co/co')
-const util = require('../utils/util')
+import { regeneratorRuntime, co, storage, util } from './common_import'
 const request = util.promisify(wx.request)
 const wxUploadFile = util.promisify(wx.uploadFile)
   // 上传权限url
@@ -144,6 +141,7 @@ let uploadFiles = co.wrap(function*(array, callIndexBack, callProgressBack, isFi
         const serialUrl = authInfo.cdn + authInfo.key
         if (res.statusCode == 200) {
           callIndexBack(uploadIndex, serialUrl)
+          uploadIndex++
           array.splice(0, 1)
           uploadFiles(array, callIndexBack, callProgressBack)
         } else {

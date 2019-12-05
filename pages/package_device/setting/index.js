@@ -1,9 +1,6 @@
 const app = getApp()
-const regeneratorRuntime = require('../../../lib/co/runtime')
-const co = require('../../../lib/co/co')
+import { regeneratorRuntime, co, util, wxNav } from '../../../utils/common_import'
 import api from '../../../network/restful_request'
-import wxNav from '../../../utils/nav'
-import util from '../../../utils/util'
 Page({
   data: {
     devices: [],

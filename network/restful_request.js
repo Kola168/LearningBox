@@ -1,12 +1,21 @@
 var app = getApp()
 import request from './request'
+
 const api = {
-  wechatDecryption: (params) => request.post(`users/wechat_decryption`, {
-   params
+  covertInvoiceToPdf: (openId, convertUrls) => request.post(`orders/invoice_url_convert`, {
+    openid: openId,
+    pdf_urls: convertUrls
   }, {
+    baseURL: `${app.apiServer}/ec/v2/`
+  }),
+ 
+	wechatDecryption: (params) => request.post(`users/sessions/wechat_decryption`, params, {
+    baseURL: `${app.apiServer}/api/v1/`
+  }),
+
+  processes:(params)=>request.post(`processes`,params, {
     baseURL: `${app.apiServer}/api/v1/`
   })
-
 }
 
 export default api

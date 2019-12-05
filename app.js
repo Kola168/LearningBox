@@ -5,17 +5,15 @@ let {
 const regeneratorRuntime = require('lib/co/runtime')
 const co = require('lib/co/co')
 const util = require('utils/util')
-const login = util.promisify(wx.login)
-const request = util.promisify(wx.request)
-import storage from 'utils/storage.js'
-
-const _ = require('lib/underscore/we-underscore')
 import Logger from 'utils/logger.js'
 
 const getSystemInfo = util.promisify(wx.getSystemInfo)
 const getStorage = util.promisify(wx.getStorage)
- 
 
+
+const login = util.promisify(wx.login)
+const request = util.promisify(wx.request)
+import storage from 'utils/storage.js'
 
 
 App({
@@ -32,6 +30,7 @@ App({
   // apiWbviewServer: 'http://epbox.natapp1.cc/',
   authAppKey: 'iMToH51lZ0VrhbkTxO4t5J5m6gCZQJ6c',
   openId: '',
+  authToken:'',
   unionId: '',
   sysInfo: null,
   navBarInfo: null,
@@ -52,6 +51,7 @@ App({
   // 是否为全面屏，rpxPixel
   handleDevice() {
     // 暂时的处理
+    console.log('this.sysInfo.screenHeight=====',this.sysInfo.screenHeight)
     this.isFullScreen = this.sysInfo.screenHeight > 750 ? true : false
     this.rpxPixel = 750 / this.sysInfo.windowWidth
   },
