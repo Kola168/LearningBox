@@ -40,12 +40,6 @@ Page({
     wxNav.navigateTo('/pages/logs/logs')
   },
   onLoad: function () {
-    // logger.error('123456789')
-    // logger.warn('123456789')
-    // logger.info('1234567890000', '6789')
-    // logger.debug('123456789')
-    // storage.put('hello', '123')
-
     this.longToast = new app.weToast()
   },
   onShow: co.wrap(function* () {
@@ -112,7 +106,7 @@ Page({
       }
       const resp = yield api.wechatDecryption(params)
       if (resp.code != 0) {
-        throw (resp.data)
+        throw (resp.res)
       }
       storage.put('authToken', resp.res.auth_token)
       storage.put('unionId', resp.res.unionid)

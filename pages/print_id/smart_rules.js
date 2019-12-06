@@ -65,7 +65,6 @@ Page({
             }, (resp) => {
                 if (resp.status == 'finished') {
                     this.longToast.hide()
-                    console.log('3456789', resp.data)
                     let confirm = JSON.stringify(resp.data)
                     router.redirectTo('/pages/print_id/smart_preview', {
                         confirm: confirm,
@@ -92,7 +91,7 @@ Page({
             yield this.uploadImage()
             yield this.confirm()
         } catch (err) {
-            util.showError(e)
+            util.showError(err)
         }
     })
 })
