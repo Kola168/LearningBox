@@ -6,6 +6,7 @@ const regeneratorRuntime = require('../../../lib/co/runtime')
 const co = require('../../../lib/co/co')
 const util = require('../../../utils/util')
 import api from '../../../network/restful_request'
+import graphql from '../../../network/graphql_request'
 import router from '../../../utils/nav'
 Page({
     data: {
@@ -19,8 +20,8 @@ Page({
       let type = id
       if (type == 'baiduPrint') {
         try {
-          var resp = yield api.checkBaiduAuth(app.openId)
-          if (resp.code == 0) {
+          let res = yield graphql.getBaiduNetAuth()
+          if (res.baiduTokenName) {
             router.navigateTo('/pages/error_book/pages/baidu_print/choose', {
               arrayFile: encodeURIComponent(JSON.stringify(res.tempFiles))
             })
@@ -28,7 +29,6 @@ Page({
             router.navigateTo('/pages/print_doc/start_intro/start_intro', {
               type: type
             })
-           
           }
         } catch (error) {
             util.showError(error)
