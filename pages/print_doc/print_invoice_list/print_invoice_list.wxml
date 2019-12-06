@@ -4,7 +4,6 @@
 <view class='list-container'>
 	<view
 	 class='invoice-item-container'
-	 wx:if='{{count != 0}}'
 	 wx:for='{{newInvoice}}'
 	 wx:for-index="index"
 	 wx:for-item="item"
@@ -35,7 +34,7 @@
 		</view>
 		<view class='line-bolder' />
 	</view>
-	<view class='no-invoice' wx:if='{{!count}}'>
+	<view class='no-invoice' wx:if='{{!newInvoice.length}}'>
 		<text>暂无发票</text>
 	</view>
 </view>

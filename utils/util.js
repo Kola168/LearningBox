@@ -235,6 +235,7 @@ function deleteItem(array, item) {
   Array.prototype.remove = function(val) {
     var index = this.indexOf(val);
     if (index > -1) {
+
       this.splice(index, 1);
     }
   };
@@ -347,4 +348,5 @@ module.exports = {
   clearPdfFile: clearPdfFile,
   resetFiles: resetFiles,
   showError: showError,
+  deleteItem: deleteItem
 }
