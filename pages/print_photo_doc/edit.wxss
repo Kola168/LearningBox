@@ -152,6 +152,8 @@ page {
 .btn button {
     color: #454545;
     background-color: #ffe27a;
+    height: 100rpx;
+    line-height: 70rpx;
 }
 
 .modal-wrap {
