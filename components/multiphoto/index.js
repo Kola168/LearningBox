@@ -12,6 +12,8 @@ const getImageInfo = util.promisify(wx.getImageInfo)
 const canvasToTempFilePath = util.promisify(wx.canvasToTempFilePath)
 const downloadFile = util.promisify(wx.downloadFile)
 
+let Loger=(app.apiServer=='https://epbox.gongfudou.com'||app.deBug)?function(){}:console.log
+
 // 照片编辑组件介绍
 // 参数：
 //   id  //唯一的id值，不可重复，用于调用组件页面选中组件调用方法
@@ -58,7 +60,7 @@ Component({
         modePaper: {
             type: Object,
             observer: function(newVal, oldVal) {
-                console.log(newVal)
+                Loger(newVal)
                 if (_.isEqual(newVal, oldVal)) {
                     return
                 }
@@ -70,15 +72,15 @@ Component({
         modeInfo: {
             type: Object,
             observer: function(newVal, oldVal) {
-                console.log(newVal)
+                Loger(newVal)
                 if (_.isNotEmpty(newVal)) {
                     if (!_.isArray(newVal.modeSize)) {
-                        console.log(newVal.modeSize)
+                        Loger(newVal.modeSize)
                         let newArr = []
                         newArr.push(newVal.modeSize)
                         newVal.modeSize = newArr
                     }
-                    console.log(newVal.modeSize)
+                    Loger(newVal.modeSize)
                     this.setData({
                         TemplateSrc: newVal.modeSrc,
                         TemplateSizeArr: newVal.modeSize,
@@ -90,7 +92,7 @@ Component({
         imgPath: {
             type: String,
             observer: function(newVal, oldVal) {
-                console.log(newVal)
+                Loger(newVal)
                 if (_.isEqual(newVal, oldVal)) {
                     return
                 }
@@ -104,7 +106,7 @@ Component({
         showChange: {
             type: String,
             observer: function(newVal, oldVal) {
-                console.log('--------------',newVal)
+                Loger('--------------',newVal)
                 if (_.isEqual(newVal, oldVal)) {
                     return
                 }
@@ -119,7 +121,7 @@ Component({
         border: { //边框颜色
             type: String,
             observer: function(newVal, oldVal) {
-                console.log('--------------', newVal)
+                Loger('--------------', newVal)
                 if (_.isEqual(newVal, oldVal)) {
                     return
                 }
@@ -134,7 +136,7 @@ Component({
         visible:{  //是否溢出隐藏  'visible','hidden'
             type:String,
             observer: function(newVal, oldVal) {
-                console.log('--------------', newVal)
+                Loger('--------------', newVal)
                 if (_.isEqual(newVal, oldVal)) {
                     return
                 }
@@ -146,7 +148,7 @@ Component({
             }
         }
     },
-
+    
     data: {
         TemplateSrc: '', //模板图片链接地址
         photoSrc: '', //组件传递过来的图片链接
@@ -180,7 +182,7 @@ Component({
                 mask: true
             })
             try {
-                console.log(size)
+                Loger(size)
                 //设置默认尺寸
                 if (!_.isNotEmpty(size.width)) {
                     size.width = this.data.paperSize.width
@@ -202,7 +204,7 @@ Component({
                 })
                 //获取当前系统屏幕宽高
                 const res = yield getSystemInfo()
-                console.log(res.windowHeight)
+                Loger(res.windowHeight)
                 let avaWidth = res.windowWidth-size.sider* res.windowWidth / 750
                 let avaHeight = res.windowHeight * size.heightPer
                 if ((res.windowHeight - avaHeight) < (size.minLeftHeight * res.windowWidth / 750)) {
@@ -225,22 +227,22 @@ Component({
                         modeSize:this.data.TemplateSizeArr
                     })
                 }
-                console.log(this.data.areaSize)
+                Loger(this.data.areaSize)
             } catch (e) {
                 wx.hideLoading()
-                console.log(e)
+                Loger(e)
             }
         }),
 
         //初始化多块编辑区域
         initTemplate: co.wrap(function*(templateArr) {
-            console.log('templateArr----------',templateArr,this.data.areaSize)
+            Loger('templateArr----------',templateArr,this.data.areaSize)
             try {
                 let that = this
                 let modeScale = this.data.areaSize.scale
                 that.data.editAreaSize = []
                 _.each(templateArr, function(value, index, list) {
-                    console.log(index)
+                    Loger(index)
                     that.data.editAreaSize[index] = {
                         x: value.x * modeScale,
                         y: value.y * modeScale,
@@ -250,7 +252,7 @@ Component({
                         areaHeight: value.areaHeight * modeScale,
                     }
                 })
-                console.log(that.data.editAreaSize)
+                Loger(that.data.editAreaSize)
                 this.setData({
                     editAreaSize: this.data.editAreaSize
                 })
@@ -265,7 +267,7 @@ Component({
 
             } catch (e) {
                 wx.hideLoading()
-                console.log(e)
+                Loger(e)
             }
         }),
 
@@ -285,7 +287,7 @@ Component({
             })
             let that = this
             try {
-                console.log(img)
+                Loger(img)
                 if (img.size > 20000000) {
                     return wx.showModal({
                         title: '图片过大',
@@ -301,7 +303,7 @@ Component({
                 let imgDetail = yield this.upLoadAndInit(img)
                 //设定编辑区域
                 let editArea = this.data.editAreaSize[this.choosedImgIndex]
-                console.log(imgDetail,editArea)
+                Loger(imgDetail,editArea)
                 //初始化图片与编辑区域
                 let sv = util._getSuiteValues(imgDetail.imageInfo.width, imgDetail.imageInfo.height, editArea.areaWidth, editArea.areaHeight)
                 this.data.imgArr[this.choosedImgIndex] = {}
@@ -342,7 +344,7 @@ Component({
                         twoPoint: false,
                     }
                 })
-                console.log(this.data.imgArr)
+                Loger(this.data.imgArr)
                 wx.hideLoading()
             } catch (e) {
                 wx.hideLoading()
@@ -355,12 +357,12 @@ Component({
                         wx.hideLoading()
                     }
                 })
-                console.log(e)
+                Loger(e)
             }
         }),
 
         upLoadAndInit: co.wrap(function*(imgPath) {
-            console.log(imgPath)
+            Loger(imgPath)
             if (imgPath.type == 'uploaded') {
                 return {
                     imgNetPath: this.data.imgArr[this.choosedImgIndex].phtotSrc,
@@ -369,30 +371,30 @@ Component({
             }
             try {
                 let imgNetPath
-                console.log(imgPath.path.indexOf('https://cdn-h.gongfudou.com/'))
+                Loger(imgPath.path.indexOf('https://cdn-h.gongfudou.com/'))
                 if (imgPath.path.indexOf('https://cdn-h.gongfudou.com/') < 0) {
                     try {
                         imgNetPath = yield app.galleryUploadImg(imgPath.path)
                     } catch (e) {
-                        console.log(e)
+                        Loger(e)
                         imgNetPath = imgPath.path
                     }
                 } else {
                     imgNetPath = imgPath.path
                 }
-                console.log(imgNetPath)
+                Loger(imgNetPath)
                 let imageInfo
                 try {
                     imageInfo = yield getImageInfo({
                         src: imgNetPath
                     })
                 } catch (e) {
-                    console.log('获取图片信息失败，再次获取11111', e)
+                    Loger('获取图片信息失败，再次获取11111', e)
                     imageInfo = yield getImageInfo({
                         src: imgNetPath
                     })
                 }
-                console.log('imageInfo====', imageInfo)
+                Loger('imageInfo====', imageInfo)
 
                 wx.showLoading({
                     title: '图片矫正中',
@@ -428,7 +430,7 @@ Component({
                 }
                 return { imgNetPath: imgNetPath, imageInfo: imageInfo }
             } catch (e) {
-                console.log(e)
+                Loger(e)
             }
         }),
         addProcess: function(imgUrl, process) {
@@ -481,7 +483,7 @@ Component({
                     this.data.globalData[this.moveIndex].touchY = e.touches[0].pageY
                 }
             } catch (e) {
-                console.log(e)
+                Loger(e)
             }
         },
 
@@ -533,7 +535,7 @@ Component({
                     })
                 }
             } catch (e) {
-                console.log(e)
+                Loger(e)
             }
         },
 
@@ -558,7 +560,7 @@ Component({
 
         //获取点位信息
         getImgPoint: function() {
-            console.log(this.data.imgArr)
+            Loger(this.data.imgArr)
             let that = this
             let pointArr = []
             _.each(this.data.imgArr, function(value, index, kist) {
@@ -684,7 +686,7 @@ Component({
                 this.imgChooseInit(imageUrl.tempFiles[0])
             } catch (e) {
                 wx.hideLoading()
-                console.log(e)
+                Loger(e)
             }
         }),
         closePopWindow: function() {

@@ -41,6 +41,7 @@ App({
   sysInfo: null,
   navBarInfo: null,
   rpxPixel: 0.5,
+  deBug:false,
   onLaunch: co.wrap(function* () {
     yield this.getOpenId()
     yield this.getSystemInfo()
