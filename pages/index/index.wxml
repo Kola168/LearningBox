@@ -1,5 +1,7 @@
 <!--index.wxml-->
 <nav-bar background="#fff" title="小白智慧打印"></nav-bar>
+<button bindtap="changeSubject">学科/学前UI切换</button>
+<!-- <button bindtap="toId" style="background:pink;">证件照</button> -->
 <button open-type="getUserInfo" bindgetuserinfo="userInfoHandler" form-type='submit' hover-class="none"
   class="auth-button" wx:if="{{showAuth}}"></button>
 

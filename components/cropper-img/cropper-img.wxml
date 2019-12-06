@@ -8,7 +8,7 @@
 		<!-- 显示的原图片 -->
 		<image src="{{cropperData.imageInfo.path}}" class='scale-image cropper_canvas_container_item' mode='aspectFill' bindload="finishLoad" style="{{cropperChangeableData && utils.cropperImgStyle(cropperChangeableData.previewImageInfo, cropperChangeableData.rotateDegree)}}"></image>
 		<!-- 不规则裁剪操作区域 start -->
-		<view class='cropper_canvas_container' wx:if="{{cropperData.mode == 'quadrectangle'}}" style="{{utils.cropperCanvasContainStyle(cropperChangeableData.scaleSize, cropperData)}}">
+		<view class='cropper_canvas_container' hidden="{{cropperData.mode == 'quadrectangle' ? false : true}}" style="{{utils.cropperCanvasContainStyle(cropperChangeableData.scaleSize, cropperData)}}">
 			<canvas class="move_canvas cropper_canvas_container_item" canvas-id="moveCanvas"></canvas>
 			<movable-area class="cropper_movable_area_container" style="{{utils.cropperCanvasContainStyle(cropperChangeableData.scaleSize, cropperData)}}">
 				<block wx:if="{{cropperMovableItems}}">
@@ -20,7 +20,7 @@
 		</view>
 		<!-- 不规则裁剪操作区域 end -->
 		<!-- 矩形裁剪操作区域 start -->
-		<view class='cropper_canvas_container' wx:else style="width:{{cropperChangeableData.scaleSize.width}}px;height:{{cropperChangeableData.scaleSize.height}}px;">
+		<view class='cropper_canvas_container' hidden="{{cropperData.mode == 'rectangle' ? false : true}}" style="width:{{cropperChangeableData.scaleSize.width}}px;height:{{cropperChangeableData.scaleSize.height}}px;">
 			<canvas class="move_canvas cropper_canvas_container_item" canvas-id="moveCanvas"></canvas>
 			<movable-area class="cropper_movable_area_container" style="width:{{cropperChangeableData.scaleSize.width}}px;height:{{cropperChangeableData.scaleSize.height}}px;">
 				<block>
