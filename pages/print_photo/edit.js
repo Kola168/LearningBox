@@ -11,6 +11,8 @@ const request = util.promisify(wx.request)
 import wxNav from '../../utils/nav.js'
 import api from '../../network/restful_request'
 
+let Loger=(app.apiServer!='https://epbox.gongfudou.com'||app.deBug)?console.log:function(){}
+
 Page({
 
   data: {
@@ -21,7 +23,7 @@ Page({
   },
 
   onLoad: function(options) {
-    console.log(options)
+    Loger(options)
     this.longToast = new app.weToast()
     let imgInfo = JSON.parse(decodeURIComponent(options.imgInfo))
     this.index = options.index
@@ -82,7 +84,7 @@ Page({
         showCancel: false,
         confirmColor: '#FFE27A'
       })
-      console.log(e)
+      Loger(e)
     }
   }),
 })

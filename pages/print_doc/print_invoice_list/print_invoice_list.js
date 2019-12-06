@@ -173,11 +173,11 @@ Page({
       const resp = yield api.getInvoiceInfo({
         item_list: invoiceList
       })
+
       if (resp.code != 0) {
         throw (resp)
       }
-      console.log(resp,'==resp==')
-      var tempInvoice = resp.data.item_list.map(item => {
+      var tempInvoice = resp.res.convert_urls.item_list.map(item => {
         return {
           payee: item.payee,
           title: item.user_info.title,
@@ -187,11 +187,11 @@ Page({
           pdf_url: item.user_info.pdf_url
         }
       })
-
       this.setData({
-        newInvoice: this.data.newInvoice.concat(tempInvoice),
+        newInvoice: [].concat(this.data.newInvoice, tempInvoice),
         count: this.data.newInvoice.length
       })
+
       this.longToast.hide()
     } catch (e) {
       this.longToast.hide()

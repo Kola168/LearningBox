@@ -6,6 +6,8 @@ const util = require('../../utils/util')
 
 const chooseImage = util.promisify(wx.chooseImage)
 const chooseMessageFile = util.promisify(wx.chooseMessageFile)
+
+let Loger=(app.apiServer!='https://epbox.gongfudou.com'||app.deBug)?console.log:function(){}
 Component({
 
   data: {
@@ -119,8 +121,8 @@ Component({
       if (sizeType == []) {
         sizeType = ['original', 'compressed']
       }
-      console.log('sizeType======', sizeType)
-      console.log('chooseImgNum=====', this.data.chooseImgNum)
+      Loger('sizeType======', sizeType)
+      Loger('chooseImgNum=====', this.data.chooseImgNum)
       let imageUrl
       if (type == 'chooseMessageFile') {
         imageUrl = yield chooseMessageFile({

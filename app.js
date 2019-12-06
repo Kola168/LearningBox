@@ -22,7 +22,7 @@ App({
   //线上地址
   // apiServer: 'https://epbox.gongfudou.com',
   // apiWbviewServer: 'https://epbox.gongfudou.com/',
-  
+
   //王析理本地地址
   // apiServer: 'http://epbox.natapp1.cc',
   // apiWbviewServer: 'http://epbox.natapp1.cc/',
@@ -48,6 +48,8 @@ App({
   sysInfo: null,
   navBarInfo: null,
   rpxPixel: 0.5,
+  deBug:false, //线上环境log调试
+  
   onLaunch: co.wrap(function* () {
     yield this.getOpenId()
     yield this.getSystemInfo()
