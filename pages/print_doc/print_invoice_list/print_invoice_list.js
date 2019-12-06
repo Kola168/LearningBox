@@ -10,6 +10,8 @@ const _ = require('../../../lib/underscore/we-underscore')
 import storage from '../../../utils/storage'
 import router from '../../../utils/nav'
 import Logger from '../../../utils/logger.js'
+import api from '../../../network/restful_request'
+import commonRequest from '../../../utils/common_request'
 const logger = new Logger.getLogger('pages/print_wx_setting/print_wx_setting')
 Page({
   data: {
@@ -24,9 +26,9 @@ Page({
     }
   },
 
-  onLoad: function (options) {
+  onLoad (options) {
     this.longToast = new app.weToast()
-    var invoiceList = JSON.parse(decodeURIComponent(options.invoiceList)) //解析得到集合
+    var invoiceList = JSON.parse( (options.invoiceList)) //解析得到集合
 
     this.getDetail(invoiceList)
     this.setData({
@@ -60,7 +62,6 @@ Page({
         })
       }
     })
-    logger.info('***********urlurlurlurlurlurl', url)
   }),
 
   delete: co.wrap(function* (e) {
@@ -108,7 +109,6 @@ Page({
   }),
   
   print: co.wrap(function* () {
-    logger.info('请求参数===', this.data.invoiceList)
     this.longToast.toast({
       type: 'loading',
       title: '正在提交'
@@ -126,47 +126,31 @@ Page({
       })
 
       logger.info('发票提交打印参数', printOneInvoice)
-
-      const resp = yield request({
-        url: app.apiServer + '/ec/v2/orders',
-        method: 'POST',
-        dataType: 'json',
-        data: {
-          openid: app.openId,
-          media_type: 'invoice',
-          urls: printOneInvoice
-        }
+      const resp = yield commonRequest.printOrders({
+        media_type: 'invoice',
+        urls: printOneInvoice
       })
-      if (resp.data.code != 0) {
-        throw (resp.data)
+      if (resp.code != 0) {
+        throw (resp)
       }
-      logger.info('提交打印成功', resp.data)
+      logger.info('提交打印成功', resp)
       this.longToast.hide()
       router.redirectTo('/finish/index', {
         type: 'invoice',
         media_type: 'invoice',
-        state: resp.data.order.state
+        state: resp.order.state
       })
-      // wx.redirectTo({
-      //   url: `../finish/index?type=invoice&media_type=invoice&state=${resp.data.order.state}`
-      // })
     } catch (e) {
       this.longToast.hide()
-      util.showErr(e)
+      util.showError(e)
     }
   }),
 
-  choose: function () {
-    var that = this
-    let list = []
+  choose () {
+    var _this = this
     wx.chooseInvoice({
       success: (res) => {
-        if (res.choose_invoice_info != undefined) {
-          list = res.choose_invoice_info
-        } else {
-          list = res.invoiceInfo
-        }
-        that.getDetail(list)
+        _this.getDetail(res.choose_invoice_info || res.invoiceInfo)
       },
       fail: function (e) {
         logger.info('选取发票失败', e)
@@ -174,69 +158,44 @@ Page({
     })
   },
 
-  getDetail: co.wrap(function* (res) {
+  getDetail: co.wrap(function* (invoices) {
     this.longToast.toast({
       type: 'loading',
       title: '请稍候'
     })
-    var arr = []
-    var _this = this
-
-    var invoiceList = JSON.parse(res)
-    invoiceList.forEach((item) => {
-      arr.push({
+    var invoiceList = JSON.parse(invoices).map(item=>{
+      return {
         card_id: item.card_id,
         encrypt_code: item.encrypt_code
-      })
+      }
     })
-    logger.info('arrarrarr', arr)
-
     try {
-      const resp = yield request({
-        url: app.apiServer + `/ec/v2/orders/invoice_info`,
-        method: 'POST',
-        dataType: 'json',
-        data: {
-          openid: app.openId,
-          item_list: arr
+      const resp = yield api.getInvoiceInfo({
+        item_list: invoiceList
+      })
+      if (resp.code != 0) {
+        throw (resp)
+      }
+  
+      var tempInvoice = resp.data.item_list.map(item => {
+        return {
+          payee: item.payee,
+          title: item.user_info.title,
+          fee: item.user_info.fee,
+          billing_time: item.user_info.billing_time,
+          convert_url: item.user_info.convert_url,
+          pdf_url: item.user_info.pdf_url
         }
       })
-      if (resp.data.code != 0) {
-        throw (resp.data)
-      }
-      logger.info('resprespresprespresp2018', resp)
-      let tempInvoice = []
-      resp.data.data.item_list.forEach(item => {
-        tempInvoice.push({
-          "payee": item.payee,
-          "title": item.user_info.title,
-          "fee": item.user_info.fee,
-          "billing_time": item.user_info.billing_time,
-          'convert_url': item.user_info.convert_url,
-          'pdf_url': item.user_info.pdf_url
-
-        })
-      })
-      let newInvoice = _this.data.newInvoice.concat(tempInvoice)
-      logger.info('newInvoice====', newInvoice, tempInvoice)
 
       this.setData({
-        newInvoice: newInvoice
+        newInvoice: this.data.newInvoice.concat(tempInvoice),
+        count: this.data.newInvoice.length
       })
-
-      if (newInvoice.length == 0) {
-        this.setData({
-          count: 0
-        })
-      } else {
-        this.setData({
-          count: newInvoice.length
-        })
-      }
       this.longToast.hide()
     } catch (e) {
       this.longToast.hide()
-      util.showErr(e)
+      util.showError(e)
     }
   }),
 

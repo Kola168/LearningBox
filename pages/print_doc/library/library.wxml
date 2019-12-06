@@ -1,6 +1,6 @@
 <nav-bar background="#fff" title="文档打印" />
 
-<view class="app-bottom-tip" wx:if="{{from_temp}}" bindtap="backToHome">返回首页</view>
+<!-- <view class="app-bottom-tip" wx:if="{{from_temp}}" bindtap="backToHome">返回首页</view> -->
 <view class="tabs">
 	<scroll-view
 	 scroll-x="true"

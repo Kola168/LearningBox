@@ -1,7 +1,5 @@
 <!--index.wxml-->
 <nav-bar background="#fff" title="小白智慧打印"></nav-bar>
-
-
 <button open-type="getUserInfo" bindgetuserinfo="userInfoHandler" form-type='submit' hover-class="none"
   class="auth-button" wx:if="{{showAuth}}"></button>
 
@@ -9,10 +7,11 @@
   circular bindchange="changeSwiper" bindtap="clickAds">
   <block wx:for="{{bannerUrls}}" wx:key="{{index}}">
     <swiper-item>
-      <image src="{{item.url}}" mode="widthFix" id="{{index}}" />
+      <image src="{{item.url}}" mode="widthFix" />
     </swiper-item>
   </block>
 </swiper>
+<!-- 常规打印 -->
 <view class="print-nomal">
   <image src="/images/home/print_photo.png" mode="widthFix" id="photo" bindtap="toNomalPrint">
     <view>照片打印</view>
@@ -26,84 +25,169 @@
 </view>
 
 <block wx:if="{{!showAuth}}">
-  <view class="home-title">智能学习工具</view>
-  <view class="tool-wrap">
-    <view class="tool-item">
-      <image src="/images/home/icon_shizika.png" mode="widthFix"></image>
-      <view>识字卡</view>
+  <!-- 学龄前ui -->
+  <block wx:if="{{homeType!=='subject'}}">
+    <view class="home-title">智能学习工具</view>
+    <view class="tool-wrap">
+      <view class="tool-item">
+        <image src="/images/home/icon_shizika.png" mode="widthFix"></image>
+        <view>识字卡</view>
+      </view>
+      <view class="tool-item">
+        <image src="/images/home/icon_voice.png" mode="widthFix"></image>
+        <view>童音录制</view>
+      </view>
+      <view class="tool-item">
+        <image src="/images/home/icon_test.png" mode="widthFix"></image>
+        <view>宝贝测评</view>
+      </view>
+      <view class="tool-item">
+        <image src="/images/home/icon_miaohong.png" mode="widthFix"></image>
+        <view>幼儿描红</view>
+      </view>
+      <view class="tool-item">
+      </view>
     </view>
-    <view class="tool-item">
-      <image src="/images/home/icon_voice.png" mode="widthFix"></image>
-      <view>童音录制</view>
+    <view class="home-title">
+      <view>宝贝学习计划</view>
+      <view>
+        <text>更多</text>
+        <image src="/images/doc_item_arrow.png" mode="widthFix"></image>
+      </view>
     </view>
-    <view class="tool-item">
-      <image src="/images/home/icon_test.png" mode="widthFix"></image>
-      <view>宝贝测评</view>
-    </view>
-    <view class="tool-item">
-      <image src="/images/home/icon_miaohong.png" mode="widthFix"></image>
-      <view>幼儿描红</view>
-    </view>
-    <view class="tool-item">
-    </view>
-  </view>
-  <view class="home-title">
-    <view>宝贝学习计划</view>
-    <view>
-      <text>更多</text>
-      <image src="/images/doc_item_arrow.png" mode="widthFix"></image>
-    </view>
-  </view>
-  <scroll-view class="study-plan-wrap" scroll-x>
+    <scroll-view class="study-plan-wrap" scroll-x>
+      <view class="study-plan">
+        <image src="/images/home/study_plan_none.png" mode="widthFix" class="study-plan-image"></image>
+        <view class="has-plan">
+          <view>嘿嘿，嘿嘿，黑黑黑~</view>
+          <view class="progress">
+            <progress percent="30" border-radius="30" stroke-width="10rpx" backgroundColor="#e8e8e8"
+              activeColor="#FF7D15" />
+
+            <view>12/14</view>
+          </view>
+        </view>
+      </view>
+      <view class="study-plan">
+        <image src="/images/home/study_plan_none.png" mode="widthFix" class="study-plan-image"></image>
+        <view class="has-plan">
+          <view>嘿嘿，嘿嘿，黑黑黑~</view>
+          <view class="progress">
+            <progress percent="30" border-radius="30" stroke-width="10rpx" backgroundColor="#e8e8e8"
+              activeColor="#FF7D15" />
+
+            <view>12/14</view>
+          </view>
+        </view>
+      </view>
+    </scroll-view>
+
     <view class="study-plan">
       <image src="/images/home/study_plan_none.png" mode="widthFix" class="study-plan-image"></image>
-      <view class="has-plan">
-        <view>嘿嘿，嘿嘿，黑黑黑~</view>
-        <view class="progress">
-          <progress percent="30" border-radius="30" stroke-width="10rpx" backgroundColor="#e8e8e8"
-            activeColor="#FF7D15" />
-
-          <view>12/14</view>
+      <view>
+        <view>快去定制宝宝的学习计划吧~</view>
+        <view class="add-plan">
+          <view>新增计划</view>
         </view>
       </view>
     </view>
-    <view class="study-plan">
-      <image src="/images/home/study_plan_none.png" mode="widthFix" class="study-plan-image"></image>
-      <view class="has-plan">
-        <view>嘿嘿，嘿嘿，黑黑黑~</view>
-        <view class="progress">
-          <progress percent="30" border-radius="30" stroke-width="10rpx" backgroundColor="#e8e8e8"
-            activeColor="#FF7D15" />
+    <view class="content-list" wx:for="{{contentList}}" wx:key="{{idnex}}" id="{{idnex}}">
+      <view class="home-title">{{item.title}}</view>
+      <image src="{{item.url}}" class="content-image" mode="widthFix" id="{{index}}" />
+    </view>
+    <view class="tips">
+      <view>
+        <image src="/images/home/icon_book.png" mode="widthFix" />
+        <view>什么是纸质学习法？</view>
+      </view>
+      <view>
+        <image src="/images/home/icon_teacher.png" mode="widthFix" />
+        <view>小白老师是谁？</view>
+      </view>
+    </view>
+  </block>
+  <!-- 学科 ui -->
+  <block wx:if="{{homeType=='subject'}}">
+    <view class="home-title">智能学习工具</view>
+    <view class="tool-wrap">
+      <view class="tool-item">
+        <image src="/images/home/icon_shizika.png" mode="widthFix"></image>
+        <view>识字卡</view>
+      </view>
+      <view class="tool-item">
+        <image src="/images/home/icon_voice.png" mode="widthFix"></image>
+        <view>童音录制</view>
+      </view>
+      <view class="tool-item">
+        <image src="/images/home/icon_test.png" mode="widthFix"></image>
+        <view>宝贝测评</view>
+      </view>
+      <view class="tool-item">
+        <image src="/images/home/icon_miaohong.png" mode="widthFix"></image>
+        <view>幼儿描红</view>
+      </view>
+      <view class="tool-item">
+        lalala
+      </view>
+    </view>
+    <view class="home-title">智能辅导</view>
+    <view class="subject-aptitude">
+      <image src="/images/home/subject_follow.png" mode="widthFix" />
+      <image src="/images/home/subject_learning.png" mode="widthFix" />
+      <image src="/images/home/subject_test.png" mode="widthFix" />
+      <image src="/images/home/subject_correction.png" mode="widthFix" />
+      <image src="/images/home/subject_train.png" mode="widthFix" />
+      <image src="/images/home/subject_report.png" mode="widthFix" />
+    </view>
+    <view class="tips">
+      <view>
+        <image src="/images/home/icon_book.png" mode="widthFix" />
+        <view>什么是纸质学习法？</view>
+      </view>
+      <view>
+        <image src="/images/home/icon_teacher.png" mode="widthFix" />
+        <view>小白老师是谁？</view>
+      </view>
+    </view>
+    <view class="study-center">
+      <text>进入学习中心</text>
+      <image src="/images/home/to_study_center.png" mode="widthFix" />
+    </view>
+    <view class="home-title">
+      <view>升学专题</view>
+      <view>
+        <text>更多</text>
+        <image src="/images/doc_item_arrow.png" mode="widthFix"></image>
+      </view>
+    </view>
 
-          <view>12/14</view>
+    <view class="subject-class-title">
+      <image src="/images/home/subject_class.png" mode="widthFix" class="subject-class-title" />
+    </view>
+    <view class="special">
+      <image src="http://gfd-i.memeyin.com/e-FlXfVks1do_li3DqrLWVHjr-0IPr" mode="widthFix" />
+
+      <image src="http://gfd-i.memeyin.com/e-FlXfVks1do_li3DqrLWVHjr-0IPr" mode="widthFix" />
+    </view>
+
+    <view class="home-title">
+      <view>心选课程</view>
+      <view>
+        <text>更多</text>
+        <image src="/images/doc_item_arrow.png" mode="widthFix"></image>
+      </view>
+    </view>
+    <scroll-view class="recommend" scroll-x>
+      <block wx:for="{{contentList}}" wx:key="{{index}}">
+        <view class="other course" bindtap="toCourse" id="{{index}}" data-type="{{index}}">
+          <image src="{{item.url}}" mode="widthFix" />
+          <view class="small-title">{{item.title}}</view>
+          <!-- <view class="small-title">{{item.total_lessons}}课时</view> -->
         </view>
-      </view>
-    </view>
-  </scroll-view>
+      </block>
+    </scroll-view>
+  </block>
 
-  <view class="study-plan">
-    <image src="/images/home/study_plan_none.png" mode="widthFix" class="study-plan-image"></image>
-    <view>
-      <view>快去定制宝宝的学习计划吧~</view>
-      <view class="add-plan">
-        <view>新增计划</view>
-      </view>
-    </view>
-  </view>
-  <view class="content-list" wx:for="{{contentList}}" wx:key="{{idnex}}" id="{{idnex}}">
-    <view class="home-title">{{item.title}}</view>
-    <image src="{{item.url}}" class="content-image" mode="widthFix" id="{{index}}" />
-  </view>
-  <view class="tips">
-    <view>
-      <image src="/images/home/icon_book.png" mode="widthFix" id="{{index}}" />
-      <view>什么是纸质学习法？</view>
-    </view>
-    <view>
-      <image src="/images/home/icon_teacher.png" mode="widthFix" id="{{index}}" />
-      <view>小白老师是谁？</view>
-    </view>
-  </view>
 </block>
 <view wx:if="{{showAuth}}">
   点我登录，我本是一张图。。。。

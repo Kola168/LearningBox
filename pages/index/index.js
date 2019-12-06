@@ -31,8 +31,8 @@ Page({
       title: '入园早准备',
       url: 'http://gfd-i.memeyin.com/e-FlXfVks1do_li3DqrLWVHjr-0IPr'
     }, ],
-    showAuth: false //登录
-
+    showAuth: false, //登录
+    homeType: 'subject'
   },
 
   //事件处理函数
@@ -66,7 +66,7 @@ Page({
         })
       }
     } catch (e) {
-      util.showErr({
+      util.showError({
         message: '请重新打开小程序'
       })
     }
@@ -133,7 +133,7 @@ Page({
         showAuth: true
       })
       this.longToast.toast()
-      util.showErr(e)
+      util.showError(e)
     }
   }),
   toNomalPrint: function (e) {

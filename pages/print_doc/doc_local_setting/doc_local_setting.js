@@ -92,7 +92,7 @@ Page({
       yield this.setStatus();
 
     } catch (e) {
-      util.showErr(e)
+      util.showError(e)
     }
 
   }),
@@ -323,7 +323,7 @@ Page({
 
     } catch (e) {
       this.longToast.hide()
-      util.showErr(e)
+      util.showError(e)
     }
   }),
 
@@ -339,13 +339,25 @@ Page({
     })
   },
 
-  preview() {
-    let url = this.data.previewUrl,
-      display = this.data.zoomType,
-      skip_gs = !this.data.checkOpen,
-      extract = this.data.extract
-    commonRequest.previewDocument(url, display, skip_gs, extract)
-  },
+  preview: co.wrap(function*() {
+    let url = this.data.previewUrl
+    let  display = this.data.zoomType
+    let skip_gs = !this.data.checkOpen
+    let extract = this.data.extract || 'all'
+    let start_page = this.data.startPrintPage
+    let end_page = this.data.endPrintPage
+    this.longToast.toast({
+      type:'loading',
+      title: '正在开启预览',
+      duration: 0
+    })
+    commonRequest.previewDocument({
+      feature_key: 'doc_a4',
+      worker_data: {url, display, skip_gs, extract, start_page, end_page}
+    }, ()=>{
+      this.longToast.hide()
+    })
+  }),
 
   operaRepair() {
     this.setData({

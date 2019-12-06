@@ -75,11 +75,11 @@
 		<view class="item-main">
 			<view class="color-check-box" data-style="0" bindtap="duplexCheck">
 				<text class="color-type">单面</text>
-				<image src="{{duplexCheck ? '/images/radio_off.png' : '/images/radio_on.png'}}" mode="widthFix" class="color_check" />
+				<image src="{{duplexCheck ? '/images/radio_off.png' : '/images/radio_on.png'}}" mode="widthFix" class="color-check" />
 			</view>
 			<view class="color-check-box" data-style="1" bindtap="duplexCheck">
 				<text class="color-type">双面</text>
-				<image src="{{duplexCheck ? '/images/radio_on.png' : '/images/radio_off.png'}}" mode="widthFix" class="color_check" />
+				<image src="{{duplexCheck ? '/images/radio_on.png' : '/images/radio_off.png'}}" mode="widthFix" class="color-check" />
 			</view>
 		</view>
 	</view>

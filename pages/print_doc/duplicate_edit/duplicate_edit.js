@@ -7,17 +7,16 @@ const co = require('../../../lib/co/co')
 const util = require('../../../utils/util')
 const event = require('../../../lib/event/event')
 const imgInit = require('../../../utils/imginit')
-
-const request = util.promisify(wx.request)
+import api from '../../../network/restful_request'
 const showModal = util.promisify(wx.showModal)
 const getImageInfo = util.promisify(wx.getImageInfo)
 
 const device = wx.getSystemInfoSync()
 const W = device.windowWidth - 60
 const H = device.windowHeight * 0.7 - 50
-const TOP = 50
 import { uploadFiles } from '../../../utils/upload'
 import router from '../../../utils/nav'
+import getLoopsEvent from '../../../utils/worker'
 import Logger from '../../../utils/logger'
 const logger = new Logger.getLogger('pages/print_doc/duplicate_edit/duplicate_edit')
 
@@ -45,6 +44,7 @@ Page({
   },
 
   onLoad: co.wrap(function* (options) {
+
     this.longToast = new app.weToast();
     this.initPage(options)
     this.setData({
@@ -52,7 +52,7 @@ Page({
         tempInfo: {
           width: W,
           height:H,
-          top: TOP,
+          top: 80 + app.navBarInfo.navBarHeight,
           left: 30
        },
        mode: 'quadrectangle'
@@ -179,17 +179,9 @@ Page({
       title: '图片检测中'
     })
     try {
-      const resp = yield request({
-        url: app.apiServer + `/boxapi/v2/designs/smart_convert`,
-        method: 'POST',
-        dataType: 'json',
-        data: {
-          img_url: img,
-          openid: app.openId
-        }
-      })
+      const resp = yield api.smartConvert(img)
       this.longToast.hide()
-      if (resp.data.code != 0) {
+      if (resp.code != 0) {
         return wx.showModal({
           title: '提示',
           content: resp.data.message || '服务器异常',
@@ -197,7 +189,7 @@ Page({
           confirmColor: '#FFDC5E'
         })
       }
-      return resp.data.res;
+      return resp.res;
 
     } catch (e) {
       this.longToast.hide()
@@ -346,11 +338,13 @@ Page({
           param: params,
         })
       }
+
       _this.ctx = _this.selectComponent('#cropper')
       // 开始图片绘制
       _this.ctx.startCropper({ 
         src: editPath,  //图片地址
         mode: mode, // 模式
+        pointData: _this.data.pointData,
         sizeType: ['original'], //图片压缩
         maxLength: 2000, //限制最大像素为2500像素
       })
@@ -380,30 +374,27 @@ Page({
       type: 'loading',
       title: '请稍候'
     })
-    try {
-      const resp = yield request({
-        url: app.apiServer + '/boxapi/v3/images/edit',
-        method: 'POST',
-        dataType: 'json',
-        data: {
-          tlx: res[0][0] / _this.editScale, //左上
-          tly: res[0][1] / _this.editScale,
-          trx: res[3][0] / _this.editScale, //右上
-          try: res[3][1] / _this.editScale,
-          blx: res[1][0] / _this.editScale, //左下
-          bly: res[1][1] / _this.editScale,
-          brx: res[2][0] / _this.editScale, //右下
-          bry: res[2][1] / _this.editScale,
-          url: imgUrl,
-          gray: false,
-          transform: true,
-        }
-      })
-
-      if (resp.data.code != 0) {
-        throw (resp.data)
+    try { 
+      const params = {
+        tlx: res[0][0] / _this.editScale, //左上
+        tly: res[0][1] / _this.editScale,
+        trx: res[3][0] / _this.editScale, //右上
+        try: res[3][1] / _this.editScale,
+        blx: res[1][0] / _this.editScale, //左下
+        bly: res[1][1] / _this.editScale,
+        brx: res[2][0] / _this.editScale, //右下
+        bry: res[2][1] / _this.editScale,
+        url: imgUrl,
+        gray: false,
+        transform: true,
       }
-      const img_src = resp.data && resp.data.url;
+
+      const resp = yield api.copyConvert(params)
+      if (resp.code != 0) {
+        throw (resp)
+      }
+      console.log(resp, '=====resp====')
+      var img_src = resp && resp.res.url
       event.emit('card_url_data', {
         url: img_src,
         originUrl: imgUrl,
@@ -413,7 +404,7 @@ Page({
       router.navigateBack()
     } catch (e) {
       _this.longToast.hide()
-      util.showErr(e)
+      util.showError(e)
     }
   })
 })

@@ -1,0 +1,45 @@
+<!--pages/search/search.wxml-->
+<nav-bar background="#fff" title="搜索证件照规格"></nav-bar>
+<view class='wrap'>
+    <view class="complex-header flex-middle">
+        <view class='header-left flex-middle bg-white'>
+            <image mode="widthFix" src="../../images/id/complex_search.png"></image>
+            <input class='fs-28' placeholder="{{placehoder}}" value='{{inputValue}}' bindfocus='clickInput' bindinput="bindKeyInput" bindconfirm="search" placeholder-class="holder"/>
+            <image class="close" mode="widthFix" bindtap="resetInput" src="../../images/id/close_gray.png"></image>
+        </view>
+        <view class='header-right flex-center' bindtap='search'>
+            <text>搜索</text>
+        </view>
+    </view>
+
+    <view class="line" wx:if="{{!showLabel}}"></view>
+
+    <view class='labels fs-28 bg-white' wx:if="{{showLabel}}">
+        <view class="hot">
+            <text>热门搜索</text>
+        </view>
+
+        <block wx:for='{{labelList}}' wx:key='index'>
+            <view class='label' bindtap='searchLabel' id='{{index}}'>
+                <text>{{item}}</text>
+            </view>
+        </block>
+    </view>
+
+    <view class='result bg-gray fs-32' wx:else>
+        <view class='item bg-white' wx:for='{{searchList}}' wx:key='{{spec_id}}' id='{{index}}' bindtap='toRules'>
+            <view>
+                <text>{{item.name}}</text>
+            </view>
+            <view class='size color-gray'>
+                <text style="margin-right:20rpx" wx:if='{{item.px_size}}'>{{item.px_size}}</text>
+                <text wx:if='{{item.size}}'>{{item.size}}</text>
+                <!-- <text wx:if='{{item.file_size}}'>{{item.file_size}}</text> -->
+            </view>
+        </view>
+    </view>
+
+</view>
+
+<import src="../../lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />

@@ -3,12 +3,9 @@ const app = getApp()
 const regeneratorRuntime = require('../../../lib/co/runtime')
 const co = require('../../../lib/co/co')
 const util = require('../../../utils/util')
-// const uploadFormId = require('../../../utils/gfd-formid-upload')
-
 const scanCode = util.promisify(wx.scanCode)
 const _ = require('../../../lib/underscore/we-underscore')
-import api from '../../../network/restful_request'
-// import commonRequest from '../../../utils/common_request.js'
+import commonRequest from '../../../utils/common_request.js'
 import { getLogger } from '../../../utils/logger'
 const logger = new getLogger('pages/print_doc/doc_list/doc_list')
 import router from '../../../utils/nav'
@@ -81,7 +78,7 @@ Page({
 			duplex: false, //单双面面
 			number: 1, // 份数
 		}
-		var resp = yield commonRequest.getPrinterCapability() //获取打印能力数据
+		var resp = yield commonRequest.getPrinterCapacity() //获取打印能力数据
 		this.initPms.color = resp && resp.color_modes[0] || 'Color'
 	}),
 
@@ -176,7 +173,7 @@ Page({
 		
     } catch (e) {
       this.longToast.hide()
-      util.showErr(e)
+      util.showError(e)
     }
 	}),
 
@@ -213,7 +210,7 @@ Page({
 				
 			},
 			fail: function() {
-				util.showErr({
+				util.showError({
 					message:'文件获取失败，请重试~'
 				})
 			}
@@ -238,7 +235,7 @@ Page({
       })
     }
 		
-    if(Boolean(wx.getStorageSync("hideConfirmPrintBox"))){
+    if(Boolean(storage.get("hideConfirmPrintBox"))){
         return this.print()
 		} 
 		
@@ -271,8 +268,11 @@ Page({
 				duration: 0
 			})
 			var types = this.data.types
-      var urls = this.data.files
-      const resp = yield api.printInvoice(types.printType, urls)
+			var urls = this.data.files
+			const resp = yield commonRequest.printOrders({
+				media_type: types.printType,
+				urls
+			})
       if (resp.code != 0) {
         throw (resp)
 			}
@@ -282,7 +282,7 @@ Page({
 					state: resp.order.state
 			})
     } catch (e) {
-      util.showErr(e)
+      util.showError(e)
     } finally {
 			this.longToast.hide()
 		}
@@ -296,10 +296,20 @@ Page({
 			if (app.preventMoreTap(e)) {
 				return
 			}
-			var { url,  display, skip_gs, extract} = this.data.files[parseInt(e.currentTarget.id)]
-			yield commonRequest.previewDocument(url, display, skip_gs, (extract || 'all'))
+			var { url,  display, skip_gs, extract } = this.data.files[parseInt(e.currentTarget.id)]
+			this.longToast.toast({
+				type:'loading',
+				title: '正在开启预览',
+				duration: 0
+			})
+			commonRequest.previewDocument({
+				feature_key: 'doc_a4',
+				worker_data: {url, display, skip_gs, extract: (extract || 'all')}
+			}, ()=>{
+				this.longToast.hide()
+			})
 		} catch(err) {
-			
+			this.longToast.hide()
 		}
 	}),
 
@@ -322,12 +332,12 @@ Page({
 			if (app.preventMoreTap(e)) {
 				return
 			}
+
 			var currentFile = this.data.files[e.currentTarget.id]
-			var print_capability = yield commonRequest.getPrinterCapability(currentFile.url) //获取打印能力
+			var print_capability = yield commonRequest.getPrinterCapacity(currentFile.url) //获取打印能力
 			if (!print_capability) {
 				return
 			}
-
 			var postData = {
 				page_count: print_capability.page_count,
 				name: currentFile.filename,
@@ -348,14 +358,13 @@ Page({
 				postData.skip_gs = currentFile.skip_gs
 				postData.extract = currentFile.extract
 			}
-
 			router.navigateTo('/pages/print_doc/doc_setting/doc_setting',
 				{
 					postData: encodeURIComponent(JSON.stringify(postData)),
 			})
 		} catch (e) {
 			this.longToast.hide()
-			util.showErr(e)
+			util.showError(e)
 		}
 	}),
 	
@@ -429,7 +438,7 @@ Page({
       this.print()
     } catch (error) {
 			this.longToast.hide()
-      util.showErr(error)
+      util.showError(error)
     }
 	}),
 

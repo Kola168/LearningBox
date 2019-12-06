@@ -4,18 +4,19 @@ const co = require('../../../lib/co/co')
 const util = require('../../../utils/util')
 const _ = require('../../../lib/underscore/we-underscore')
 const event = require('../../../lib/event/event')
-// const imginit = require('../../../utils/imginit')
+const imginit = require('../../../utils/imginit')
 
 const chooseImage = util.promisify(wx.chooseImage)
 const getImageInfo = util.promisify(wx.getImageInfo)
-const request = util.promisify(wx.request)
 const showModal = util.promisify(wx.showModal)
 const chooseMessageFile = util.promisify(wx.chooseMessageFile)
 import router from '../../../utils/nav'
 import storage from '../../../utils/storage'
+import getLoopsEvent from '../../../utils/worker'
+import api from '../../../network/restful_request'
 Page({
   data: {
-    cardHeight: 0,
+    title: '',
     popWindow: false,
     tipsWindow: false,
     idType: {
@@ -111,7 +112,7 @@ Page({
         name: '银行卡复印',
       }]
     },
-    select_icon: '/images/doc_selected_check.png',
+    select_icon: '/images/radio_on.png',
     no_select_icon: '/images/radio_off.png',
     watermark: [{
         key: 'define',
@@ -136,11 +137,8 @@ Page({
     let opt_types = options.type;
     _this.setData({
       type: opt_types,
-      typeInfo: _this.data.idType[opt_types]
-    })
-
-    wx.setNavigationBarTitle({
-      title: `${_this.data.typeInfo[0].name}`
+      typeInfo: _this.data.idType[opt_types],
+      title: _this.data.idType[opt_types][0].name
     })
 
     event.on('card_url_data', _this, (data) => {
@@ -158,7 +156,7 @@ Page({
 
   selectIndex(e) {
     try {
-      let params = ['img_top', 'img_bottom'];
+      let params = ['img_top', 'img_bottom']
       let {
         index
       } = e.currentTarget.dataset;
@@ -358,12 +356,12 @@ Page({
           list[index] = imginit.mediaResize(value, 'copy')
         }
       })
-      const newWatemark = this.data.watermark.filter(item => item.is_select);
-      const all_checkd = (newWatemark.length > 1) && {
+      const newWaterMark = this.data.watermark.filter(item => item.is_select);
+      const all_checked = (newWaterMark.length > 1) && {
         watermark_type: 'time_for'
       };
-      const watermark_type = newWatemark.length ? (all_checkd || {
-        watermark_type: newWatemark[0]['mark_k']
+      const watermark_type = newWaterMark.length ? (all_checked || {
+        watermark_type: newWaterMark[0]['mark_k']
       }) : {};
 
       params = Object.assign({}, _.object(params, imgArr), {
@@ -391,28 +389,25 @@ Page({
         title: '请稍后',
       })
       try {
-        const resp = yield request({
-          url: app.apiServer + `/boxapi/v2/designs/multi_id_convert`,
-          method: 'POST',
-          dataType: 'json',
-          data: params
-        })
-
-        if (resp.data.code != 0) {
-          throw (resp.data)
-        } else {
+        getLoopsEvent({
+          feature_key: 'reprography',
+          worker_data: params
+        }, (resp)=>{
+          if (resp.status == 'finished') {
+            this.longToast.hide()
+            let url = encodeURIComponent(imginit.addProcess(resp.data.url, '/resize,h_600'))
+            router.redirectTo('/pages/print_doc/duplicate_preview/duplicate_preview', {
+              preUrl: url,
+              url: encodeURIComponent(resp.data.url)
+            })
+          }
+        }, ()=>{
           this.longToast.hide()
-          let url = encodeURIComponent(imginit.addProcess(resp.data.res.result, '/resize,h_600'))
-          router.redirectTo('/pages/print_doc/duplicate_preview/duplicate_preview', {
-            preUrl: url,
-            url: encodeURIComponent(resp.data.res.result)
-          })
-         
-        }
+        })
       } catch (err) {
         logger.info(err)
         this.longToast.hide()
-        util.showErr(err)
+        util.showError(err)
       }
     } catch (err) {
       logger.info(err)

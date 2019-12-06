@@ -17,7 +17,9 @@
 
 .main-entry .module-item image {
   margin: 36rpx 0 18rpx 0;
+  display: inline-block;
   width: 112rpx;
+  vertical-align: top;
 }
 
 .main-entry .module-item .name {
@@ -54,7 +56,9 @@
 
 .minor-entry .module-item image {
   margin: 36rpx 0 18rpx 0;
+  display: inline-block;
   width: 86rpx;
+  vertical-align: top;
 }
 
 .minor-entry .module-item .name {

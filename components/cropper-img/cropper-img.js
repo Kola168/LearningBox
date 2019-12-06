@@ -85,6 +85,7 @@ var componentsData = {
       var src = options.src
       var mode = options.mode
       var callback = options.callback || function () {}
+      var adjustPoints = options.pointData
       var maxLength = options.maxLength
       var sizeType = options.sizeType.slice(-1)
       var cropperData = _this.data.cropperData
@@ -107,6 +108,7 @@ var componentsData = {
           original: sizeType.indexOf('original') > -1 ? true : false,
           maxLength: maxLength || cropperData.maxLength, // 设置最大长度
           mode: mode || cropperData.mode, // 设置绘制模式 矩形 & 不规则
+          adjustPoints: adjustPoints, //自动校正后的坐标点
           sizeType: sizeType, //图片是否压缩 & 原图
           imageInfo: {
             path: src,
@@ -138,7 +140,7 @@ var componentsData = {
         },
         [cropperTypes.quadRect]: {
           func: _this.loadImage,
-          pms: [_this.imgWidth, _this.imgHeight]
+          pms: [_this.imgWidth, _this.imgHeight, false, _this.data.cropperData.adjustPoints]
         }
       }
       return modeSet[mode].func.apply(_this, modeSet[mode].pms)
@@ -147,7 +149,7 @@ var componentsData = {
      * @methods 根据图片大小设置canvas大小，并绘制图片
      */
     loadImage: function (width, height, isRotate = false, pointData = false) {
-      // var 
+      console.log(pointData,'===pointData===')
       var _this = this
       var src = _this.data.cropperData.imageInfo.path
       var cropperTempInfo = _this.data.croppers.tempInfo

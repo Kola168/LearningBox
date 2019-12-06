@@ -1,0 +1,17 @@
+<nav-bar title="设为维护"></nav-bar>
+<view class="container">
+  <view class="container-title">固件升级</view>
+  <image src="../../images/miantain_firmware_fire.png" mode="widthFix" />
+  <view class="update-tip">打印机固件更新需要15分钟左右的时间，打印机应处于接入稳定网络的待机状态</view>
+  <view class="update-warn">
+    <view>在此过程中，请注意以下几点：</view>
+    <view>1、期间请勿使用打印机</view>
+    <view>2、请勿关闭电源</view>
+    <view>3、请勿触碰打印机按键</view>
+  </view>
+  <view class="update-btn" bindtap="checkUpdate">检查并更新打印机固件</view>
+  <view class="update-time">打印机于2019-06-31 17：36  升级成功</view>
+</view>
+<!-- modal -->
+<modal modal="{{modalObj}}" bindcomfirm="updateConfirm">
+</modal>

@@ -47,11 +47,11 @@ Component({
   properties: {
     backImage: {
       type: String,
-      value: '/images/icon-back.png'
+      value: '/images/custom_nav_back.png'
     },
     homeImage: {
       type: String,
-      value: '/images/icon-home.png'
+      value: '/images/custom_nav_home.png'
     },
     isOnlyStatusBar: {
       type: Boolean,
@@ -110,7 +110,7 @@ Component({
     let navBarInfo = (app.navBarInfo && app.navBarInfo.navBarHeight > 0) ? app.navBarInfo : app.getNavBarInfo()
     this.setData(navBarInfo)
     let pages = getCurrentPages(),
-      tabBars = ['pages/main/home_index', 'pages/search/index'],
+      tabBars = ['pages/index/index'],
       len = pages.length,
       currentPageRoute = pages[len - 1].route,
       showNavCapsuleBack = pages.length > 1,
