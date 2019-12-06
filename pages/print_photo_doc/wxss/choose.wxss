@@ -74,7 +74,7 @@ page {
     position: relative;
     width: calc( (100% - 18rpx) /  2);
     background: #fff;
-    border: 2rpx solid #ffe27a;
+    border: 2rpx solid #FFDC5E;
     box-sizing: border-box;
     margin-bottom: 20rpx;
 }
@@ -117,7 +117,7 @@ page {
     justify-content: center;
     padding: 6rpx 14rpx;
     border-radius: 4rpx;
-    background: #ffe27a;
+    background: #FFDC5E;
     color: #333;
     font-size: 20rpx;
 }
@@ -285,7 +285,7 @@ page {
     padding: 0;
     line-height: 100rpx;
     border-radius: 0;
-    background: #ffe27a;
+    background: #FFDC5E;
     font-size: 36rpx;
 }
 

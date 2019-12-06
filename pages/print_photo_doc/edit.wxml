@@ -7,7 +7,7 @@
 <cropper-img croppers="{{croppers}}" id="cropper"></cropper-img>
 <view class='footer'>
     <view class='choose'>
-        <view>
+        <view class="effect-tip">
             <text class='title'>打印效果</text>
             <image class="print-effect-pic" src="/images/pic2doc_tip_icon.png" bindtap="showExamModal"/>
         </view>
