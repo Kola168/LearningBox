@@ -113,23 +113,26 @@
     <view class="home-title">智能学习工具</view>
     <view class="tool-wrap">
       <view class="tool-item">
-        <image src="/images/home/icon_shizika.png" mode="widthFix"></image>
-        <view>识字卡</view>
+        <image src="/images/home/icon_free_database.png" mode="widthFix">
+          <image src="/images/home/icon_subject_free.png" mode="widthFix" class="subject-free"></image>
+        </image>
+        <view>免费资源库</view>
       </view>
       <view class="tool-item">
-        <image src="/images/home/icon_voice.png" mode="widthFix"></image>
-        <view>童音录制</view>
+        <image src="/images/home/icon_count.png" mode="widthFix"></image>
+        <view>口算</view>
       </view>
       <view class="tool-item">
-        <image src="/images/home/icon_test.png" mode="widthFix"></image>
-        <view>宝贝测评</view>
+        <image src="/images/home/icon_write.png" mode="widthFix"></image>
+        <view>默写</view>
       </view>
       <view class="tool-item">
-        <image src="/images/home/icon_miaohong.png" mode="widthFix"></image>
-        <view>幼儿描红</view>
+        <image src="/images/home/icon_camera_search.png" mode="widthFix"></image>
+        <view>拍搜</view>
       </view>
       <view class="tool-item">
-        lalala
+        <image src="/images/home/icon_word.png" mode="widthFix"></image>
+        <view>练好字</view>
       </view>
     </view>
     <view class="home-title">智能辅导</view>
@@ -143,11 +146,11 @@
     </view>
     <view class="tips tips-sub">
       <view>
-        <image src="/images/home/icon_book.png" mode="widthFix" />
+        <image src="/images/home/icon_subject_book.png" mode="widthFix" />
         <view>什么是纸质学习法？</view>
       </view>
       <view>
-        <image src="/images/home/icon_teacher.png" mode="widthFix" />
+        <image src="/images/home/icon_subject_teacher.png" mode="widthFix" />
         <view>小白老师是谁？</view>
       </view>
     </view>
@@ -159,7 +162,7 @@
       <view>升学专题</view>
       <view>
         <text>更多</text>
-        <image src="/images/doc_item_arrow.png" mode="widthFix"></image>
+        <image src="/images/home/icon_right_arrow.png" mode="widthFix"></image>
       </view>
     </view>
 

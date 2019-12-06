@@ -97,9 +97,19 @@ swiper-item {
 }
 
 .tool-item image {
+  position: relative;
   width: 80rpx;
   height: 80rpx;
   margin-bottom: 14rpx;
+  overflow: visible;
+}
+
+.tool-item .subject-free {
+  position: absolute;
+  width: 48rpx;
+  height: 28rpx;
+  top: -20rpx;
+  right: -44rpx;
 }
 
 .study-plan-wrap {
