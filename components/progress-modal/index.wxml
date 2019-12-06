@@ -1,0 +1,48 @@
+<!--cover-view/progress-modal/index.wxml-->
+<wxs src="./index.wxs" module="utils" />
+
+<cover-view class="progress" >
+    <!-- 上传进度显示 -->
+    <cover-view class="progress-content" >
+        <cover-view wx:if="{{slotTitle || slotContent}}" style="color: {{color}}">
+            <!-- <slot name="title"></slot>
+            <slot name="content"></slot> -->
+            <cover-view class="progress-inner-title" >图片正在处理中</cover-view>
+            <cover-view class="progress-inner-content">处理时间预计7秒左右，请耐心等待</cover-view>
+        </cover-view>
+        <block wx:else>
+            <cover-view class="progress-count" style="color: {{color}}">
+                正在上传({{completeCount}} / {{currentChooseCount}} )
+            </cover-view>
+            <cover-view class="progress-title">
+                {{utils.repalceName(key)}}正在上传中，请稍候
+            </cover-view>
+        </block>
+        <cover-view class="progress-main">
+            <cover-view class="progress-main" style="height: {{height * 2}}rpx">
+                <cover-view>
+                    <progress  class="progress-bar" 
+                        wx:if="{{!canUseProgressBar}}"
+                        percent="{{percent}}"
+                        activeColor="{{color}}"
+                        backgroundColor="{{bgColor}}" 
+                        stroke-width="{{width}}"
+                        show-info="{{showInfo}}"
+                        font-size="{{fontSize}}"
+                        border-radius="{{borderRadis}}"
+                    />
+                    <cover-view class="progress-box"  style="height: {{width * 2}}rpx;" wx:else>
+                        <cover-view class="progress-inner-box" 
+                            style="background-color:{{bgColor}};">
+                            <cover-view class="progress-in-bar" 
+                                style="{{utils.style(percent, width, color, borderRadis)}}">
+                            </cover-view>
+                        </cover-view>    
+                        <cover-view class="show-precent" style="font-size:{{fontSize}}px;display:{{showInfo ? '' : 'none'}}">{{percent}}%</cover-view>
+                    </cover-view>
+                </cover-view>
+            </cover-view>
+        </cover-view>
+        <cover-view class="cancel-upload" bindtap="cancelUpload">取消</cover-view>
+    </cover-view>
+</cover-view>

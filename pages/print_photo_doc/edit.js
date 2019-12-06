@@ -8,26 +8,15 @@ import {
   wxNav,
   storage
 } from '../../utils/common_import'
-// const regeneratorRuntime = require('../../lib/co/runtime')
-// const co = require('../../lib/co/co')
-// const util = require('../../utils/util')
-const _ = require('../../lib/underscore/we-underscore')
-// var mta = require('../../utils/mta_analysis.js');
 const imginit = require('../../utils/imginit')
-
-const request = util.promisify(wx.request)
-// const showModal = util.promisify(wx.showModal)
-// const getImageInfo = util.promisify(wx.getImageInfo)
-// const downloadFile = util.promisify(wx.downloadFile)
 import common_request from '../../utils/common_request'
-
+import modal from '../../components/confirm-reinforce-modal/event'
+import getLoopsEvent from '../../utils/worker'
+import event from '../../lib/event/event'
 const device = wx.getSystemInfoSync()
-const W = device.windowWidth - 60
-const H = device.windowHeight * 0.7 - 50
-const TOP = 110
-
-// let cropper = require('../transform-cropper/welCropper.js');
-// import modal from '../../components/confirm-reinforce-modal/event'
+const W = device.windowWidth - 40
+const H = device.windowHeight * 0.7 - 100
+const TOP = 140
 
 Page({
   data: {
@@ -62,28 +51,17 @@ Page({
     croppers: null,
     galleryImages: {
       images: []
-    }
+    },
   },
-  onLoad: co.wrap(function* () {
-    var that = this
-    let params = {
-      currentCount: 1,
-      from: "pic2doc",
-      index: 0,
-      isSingle: false,
-      media_type: "pic2doc",
-      mode: "quadrectangle",
-      url: "https://cdn-h.gongfudou.com/epbox/pciup/2019/12/5/8aa028db-de6d-490e-8d02-f28a20957c92?x-image-process=image/auto-orient,1"
-    }
-    var options = that.options = JSON.parse(decodeURIComponent(options.params))
-    that.setData({
+  onLoad: co.wrap(function*(options) {
+    options.url = JSON.parse(decodeURIComponent(options.url))
+    this.options = options
+    this.setData({
       isSingle: options.isSingle,
       currentCount: options.currentCount
     })
-    that.longToast = new app.weToast()
-    that.options = that.checkImgOptions(options.index)
-    console.log(that.options, '==that.options==')
-    // cropper.init.apply(that, [W, H, TOP])
+    this.longToast = new app.weToast()
+    this.options = this.checkImgOptions(options.index)
     this.setData({
       croppers: {
         tempInfo: {
@@ -95,15 +73,15 @@ Page({
         mode: 'quadrectangle'
       }
     })
-    that.initData(that.options)
-    that.getColor()
+    this.initData(this.options)
+    this.getColor()
   }),
   // 检查入参 是否是有效数据
-  checkImgOptions: function (index) {
+  checkImgOptions: function(index) {
     let galleryImages = this.getImgStorage()
     let image = galleryImages.images[index]
     if (!image) {
-      return wx.navigateBack()
+      return wxNav.navigateBack()
     }
     if (!image.url) {
       this.removeCurrentImage(index)
@@ -116,15 +94,14 @@ Page({
       index: index,
       media_type: galleryImages.media_type,
     }
-
   },
   // 初始化数据
-  initData: function (options, flag) {
+  initData: function(options, flag) {
     if (!options) {
       return
     }
     this.longToast.toast({
-      type:'loading'
+      type: 'loading'
     })
     var refreshIndex = !flag ? Number(options.index) : this.data.refreshIndex
     this.setData({
@@ -156,10 +133,7 @@ Page({
 
     this.selectTap() // 图形绘制
   },
-  getColor: co.wrap(function* () {
-    // let param = {
-    //   openid: app.openId
-    // }
+  getColor: co.wrap(function*() {
     try {
       let res = common_request.getPrinterCapacity()
       if (res.code == 1001) {
@@ -177,7 +151,7 @@ Page({
       util.showErr(e)
     }
   }),
-  removeColorCapability: function () {
+  removeColorCapability: function() {
     this.data.selectColors.splice(2, 1)
     this.data.selectColors[1] = {
       name: '灰度',
@@ -189,16 +163,16 @@ Page({
       selectColors: this.data.selectColors
     })
   },
-  getImgStorage: function (media_type) {
+  getImgStorage: function(media_type) {
     try {
-      let galleryImages = wx.getStorageSync(media_type || this.options.media_type)
+      let galleryImages = storage.get(media_type || this.options.media_type)
       return galleryImages
     } catch (err) {
-
+      console.log(err)
     }
   },
   // 删除当前张
-  deleteCurrentImage: function () {
+  deleteCurrentImage: function() {
     try {
       wx.showModal({
         title: '提示',
@@ -208,7 +182,7 @@ Page({
           if (res.confirm) {
             this.removeCurrentImage(this.options.index)
             if (this.data.isSingle) {
-              return wx.navigateBack()
+              return wxNav.navigateBack()
             }
             this.options = this.checkImgOptions(this.options.index)
             this.options && this.initData(this.options)
@@ -220,7 +194,7 @@ Page({
     }
   },
   // 移除选中项和同步上一个页面数据
-  removeCurrentImage: function (index) {
+  removeCurrentImage: function(index) {
     let galleryImages = this.getImgStorage()
     galleryImages.images.splice(index, 1)
     this.setImgStorage(this.options.media_type, galleryImages) //同步缓存
@@ -232,15 +206,15 @@ Page({
     })
   },
   // 数据缓存
-  setImgStorage: function (media_type, galleryImages) {
-    wx.setStorageSync(media_type, {
+  setImgStorage: function(media_type, galleryImages) {
+    storage.put(media_type, {
       media_type: media_type,
       images: galleryImages.images,
       allCount: galleryImages.images.length
     })
   },
   // 预览下一张
-  setNextPreview: function () {
+  setNextPreview: function() {
     let index = this.data.index
     this.data.refreshIndex = index
     this.data.index = (this.data.galleryImages.images.length - 1) == index ? index : (index + 1)
@@ -257,7 +231,6 @@ Page({
   selectTap(e) {
     let that = this
     let tempFilePath = this.options.url
-    console.log('====0',this.options)
     let mode = this.options.mode
     wx.getImageInfo({
       src: tempFilePath,
@@ -275,7 +248,7 @@ Page({
             confirmColor: '#2086ee',
             success: (res) => {
               if (res.confirm) {
-                wx.navigateBack()
+                wxNav.navigateBack()
               }
             }
           })
@@ -289,7 +262,6 @@ Page({
           editPath = imginit.addProcess(editPath, `/resize,w_1500,h_1500`)
           that.editScale = 1500 / (width > height ? width : height)
         }
-        console.log('1500缩放比', width > height ? width : height, that.editScale)
         var ctx = that.selectComponent('#cropper')
         ctx.startCropper({
           src: editPath,
@@ -305,8 +277,17 @@ Page({
     })
   },
   cropImage() {
+    let mode = this.options.mode,
+      tempFilePath = this.options.url
     this.ctx.cropImage((res) => {
-      console.log('res',res)
+      if (mode == "rectangle") {
+        this.uploadImage(res)
+      } else {
+        this.utilsPic({
+          origin_url: tempFilePath,
+          data: res,
+        })
+      }
     })
   },
   showExamModal() {
@@ -334,9 +315,6 @@ Page({
         } else {
           item.checked = false
         }
-        // mta.Event.stat('tupianzhuanwend', {
-        //   printtype: current.key == 'Color' ? 'color' : 'black'
-        // })
       }
       return item
     })
@@ -354,12 +332,7 @@ Page({
     }
   },
   // 获取编辑需要的sn
-  getBlackEnhanceSn: co.wrap(function* (res, url) {
-    this.longToast.toast({
-      img: '/images/loading.gif',
-      title: '请稍候',
-      duration: 0
-    })
+  getBlackEnhanceSn: co.wrap(function*(res, url) {
     try {
       const [colors] = this.data.selectColors.filter(item => item.selected)
       let worker_data = {
@@ -372,8 +345,7 @@ Page({
         bly: res[1][1] / this.editScale,
         brx: res[2][0] / this.editScale, //右下
         bry: res[2][1] / this.editScale,
-        transform: true,
-        media_type: 'pic2doc',
+        transform: true
       }
       if (colors.key == 'Grays') {
         worker_data.bw = true
@@ -381,91 +353,35 @@ Page({
       } else {
         worker_data.gray = colors.key == 'Color' ? false : true
       }
-      const resp = yield request({
-        url: app.apiServer + '/boxapi/v2/workers',
-        method: 'POST',
-        dataType: 'json',
-        data: {
-          openid: app.openId,
-          handle: 'scan_image',
-          worker_data,
-        }
+      this.setData({
+        showupLoad: true
       })
-      if (resp.data.code != 0) {
-        throw (resp.data)
-      }
-      this.longToast.toast()
-      if (resp.data.res && resp.data.res.sn) {
-        this.getLoopsPic(resp.data.res.sn)
-      }
+      this.requestAnimationPercent()
+      getLoopsEvent({ feature_key: 'pic_to_doc', worker_data: worker_data }, (resp) => {
+        if (resp.status == 'processing') {
+          return this.setData({
+            percent: this.data.percent + 30
+          })
+        }
+        this.timer && clearInterval(_this.timer)
+        this.setData({
+          percent: 0,
+          showupLoad: false
+        })
+        if (resp.status == 'finished') {
+          this.longToast.hide()
+          this.setPrePageData(resp.data)
+        }
+      }, () => {
+        this.setData({
+          percent: 0,
+          showupLoad: false
+        })
+      })
     } catch (err) {
-      this.longToast.toast()
       console.log(err);
     }
   }),
-  drawRequest(sn_key) {
-    return new Promise(co.wrap(function* (resolve, reject) {
-      const resp = yield request({
-        url: app.apiServer + `/boxapi/v2/workers/${sn_key}`,
-        method: 'GET',
-        dataType: 'json'
-      })
-      if (resp.data.code != 0) {
-        reject(resp.data)
-      } else {
-        resolve(resp.data && resp.data.res)
-      }
-    }))
-  },
-  // 轮询绘制编辑图片
-  getLoopsPic(sn) {
-    try {
-      const nowTime = new Date(); // 初始化开始时间
-      const _this = this;
-      _this.setData({
-        showupLoad: true
-      })
-      _this.requestAnimationPercent()
-      _this.timer = setInterval(() => {
-        let carryTime = new Date() //执行时间
-        if (carryTime - nowTime > 60000) { //判断处理大于12秒  提示处理失败
-          _this.timer && clearInterval(_this.timer)
-          _this.setData({
-            percent: 0,
-            showupLoad: false
-          })
-          return util.showErr({
-            message: '图片处理失败, 请重新尝试!'
-          })
-        }
-        // 开启绘制
-        _this.drawRequest(sn).then(res => {
-          if (res.state === 'processing') {
-            return _this.setData({
-              percent: _this.data.percent + 30
-            })
-          }
-          _this.timer && clearInterval(_this.timer)
-          _this.setData({
-            percent: 0,
-            showupLoad: false
-          })
-
-          if (res.state === 'finished') {
-            _this.setPrePageData(res.worker_data)
-          } else if (res.state === 'failed') {
-            util.showErr({
-              message: '绘制有误'
-            })
-          } else {
-            console.log('drawRequest state: ', res)
-          }
-        })
-      }, 3000)
-    } catch (err) {
-      console.log(`draw Pic Error =`, err);
-    }
-  },
   requestAnimationPercent() {
     var timer = setInterval(() => {
       if (this.data.percent > 30) {
@@ -485,41 +401,33 @@ Page({
     _this.timer && clearInterval(_this.timer)
   },
   //非规则矩形裁切做透视变换
-  getPic: co.wrap(function* (res, imgUrl) {
+  getPic: co.wrap(function*(res, imgUrl) {
     this.longToast.toast({
-      img: '../../images/loading.gif',
-      title: '请稍候',
-      duration: 0
+      type: 'loading'
     })
     try {
       const [colors] = this.data.selectColors.filter(item => item.checked && item.key != 'Grays')
-      const resp = yield request({
-        url: app.apiServer + '/boxapi/v3/images/edit',
-        method: 'POST',
-        dataType: 'json',
-        data: {
-          'url': imgUrl,
-          'tlx': res[0][0] / this.editScale, //左上
-          'tly': res[0][1] / this.editScale,
-          'trx': res[3][0] / this.editScale, //右上
-          'try': res[3][1] / this.editScale,
-          'blx': res[1][0] / this.editScale, //左下
-          'bly': res[1][1] / this.editScale,
-          'brx': res[2][0] / this.editScale, //右下
-          'bry': res[2][1] / this.editScale,
-          'gray': colors.key == 'Color' ? false : true,
-          'transform': true,
-          'media_type': 'pic2doc',
-        }
-      })
-
-      console.log('获取图片', resp.data)
-      if (resp.data.code != 0) {
-        throw (resp.data)
+      let params = {
+        'url': imgUrl,
+        'tlx': res[0][0] / this.editScale, //左上
+        'tly': res[0][1] / this.editScale,
+        'trx': res[3][0] / this.editScale, //右上
+        'try': res[3][1] / this.editScale,
+        'blx': res[1][0] / this.editScale, //左下
+        'bly': res[1][1] / this.editScale,
+        'brx': res[2][0] / this.editScale, //右下
+        'bry': res[2][1] / this.editScale,
+        'gray': colors.key == 'Color' ? false : true,
+        'transform': true,
       }
-      this.setPrePageData(resp.data)
-      this.longToast.toast()
-
+      getLoopsEvent({ feature_key: 'pic_to_doc', worker_data: params }, (resp) => {
+        if (resp.status == 'finished') {
+          this.longToast.hide()
+          this.setPrePageData(resp.data)
+        }
+      }, () => {
+        this.longToast.hide()
+      })
     } catch (e) {
       this.longToast.toast()
       util.showErr(e)
@@ -533,29 +441,25 @@ Page({
     images[this.data.refreshIndex].afterEditUrl = resp.url
     images[this.data.refreshIndex].color = colors.key
     images[this.data.refreshIndex].url = resp.thumbnail_url
-    prevPage.setData({
-      images: images
-    })
+    event.emit('setPreData', images)
+
     // 最后一次进行 或者单次 返回操作
     if (this.data.galleryImages.images.length == this.data.refreshIndex + 1 || this.data.isSingle) {
-      wx.navigateBack({
-        delta: 1
-      })
+      wxNav.navigateBack()
     } else {
       this.setNextPreview() //最后设置完成进行下一张图片初始化
       this.data.refreshIndex = this.data.refreshIndex + 1
     }
   },
-  getPrePages: function (index) {
+  getPrePages: function(index) {
     let pages = getCurrentPages()
     let prevPage = pages[pages.length - 2]
     return prevPage
   },
   //上传图片
-  uploadImage: co.wrap(function* (tempUlr) {
+  uploadImage: co.wrap(function*(tempUlr) {
     this.longToast.toast({
-      img: '../../images/loading.gif',
-      title: '请稍候',
+      type: 'loading',
       duration: 0
     })
     let imgUrl = yield app.newUploadImage(tempUlr)
@@ -572,16 +476,11 @@ Page({
       prevPage.setData({
         urls: urls
       })
-      return wx.navigateBack()
+      return wxNav.navigateBack()
     } else {
-      //首张图
-      mta.Event.stat('tupianzhuanwend', {
-        'cropperfix': 'true'
-      })
-      wx.redirectTo({
-        url: `../error_book/pages/error_book/topic_details?url=${imgUrl}`
+      wxNav.redirectTo(`../error_book/pages/error_book/topic_details`, {
+        url: imgUrl
       })
     }
-
-  }),
+  })
 })

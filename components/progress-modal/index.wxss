@@ -1,0 +1,102 @@
+/* components/progress-modal/index.wxss */
+
+.progress {
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 60rpx;
+    box-sizing: border-box;
+    z-index: 99999;
+}
+
+.progress-content {
+    position: relative;
+    padding: 100rpx 80rpx;
+    background: #fff;
+    border-radius: 10rpx;
+    color: #676767;
+    font-size: 32rpx;
+}
+
+.cancel-upload {
+    position: absolute;
+    bottom: 30rpx;
+    right: 30rpx;
+    padding: 0 16rpx;
+    line-height: 50rpx;
+    font-size: 28rpx;
+    border-radius: 4rpx;
+    color: #999;
+}
+
+.progress-count {
+    margin-bottom: 30rpx;
+    font-size: 36rpx;
+    text-align: center;
+}
+
+.progress-main{
+    margin-top: 30rpx;
+}
+
+.progress-loading {
+    display: block;
+    width: 80rpx;
+    height: 80rpx;
+    margin: 30rpx auto 0;
+}
+
+.showInterceptModal {
+    margin: 0 40rpx;
+    padding: 20rpx;
+    border-radius: 10rpx;
+    box-sizing: border-box;
+    font-size: 26rpx;
+    background: rgba(0, 0, 0, 0.75);
+    color: #fff;
+}
+
+.progress-main{
+    width: 100%;
+}
+
+.progress-bar {
+    border-radius: 12rpx;
+}
+
+.progress-inner-box {
+    flex: 1;
+}
+
+.progress-in-bar{
+    /* transition: all .5s ease; */
+}
+
+.progress-box{
+    display: flex;
+    align-items: center;
+}
+
+.show-precent{
+    margin-left: 30rpx;
+}
+
+.progress-title {
+    margin-bottom: 20rpx;
+}
+.progress-inner-title {
+    margin-bottom: 20rpx;
+}
+
+.progress-inner-title, .progress-inner-content{
+    color: #000;
+    text-align: center;
+    font-size: 25rpx;
+}
