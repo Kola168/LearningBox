@@ -1,0 +1,59 @@
+<nav-bar title="设备维护"></nav-bar>
+<view class="maintain-list">
+  <view class="list-item" bindtap="toNextPage" id="test_page">
+    <view class="item-index">
+      <view>1</view>
+    </view>
+    <view class="item-main">
+      <view class="main-left">
+        <view>打印测试页</view>
+        <view class="text-overflow-points">打印效果偏色有横纹？可选择此项进行检测</view>
+      </view>
+      <view class="main-right">
+        <image src="../../images/arrow_right.png" />
+      </view>
+    </view>
+  </view>
+  <view class="list-item" bindtap="toNextPage" id="sprayer_clean">
+    <view class="item-index">
+      <view>2</view>
+    </view>
+    <view class="item-main">
+      <view class="main-left">
+        <view>喷头清洗</view>
+        <view class="text-overflow-points">测试图案不合格？选择此项清洗喷头</view>
+      </view>
+      <view class="main-right">
+        <image src="../../images/arrow_right.png" />
+      </view>
+    </view>
+  </view>
+  <view class="list-item" bindtap="toNextPage" id="firmware">
+    <view class="item-index">
+      <view>3</view>
+    </view>
+    <view class="item-main">
+      <view class="main-left">
+        <view>打印机固件升级</view>
+        <view class="text-overflow-points">此项可检查打印机固件版本，进行升级操作</view>
+      </view>
+      <view class="main-right">
+        <image src="../../images/arrow_right.png" />
+      </view>
+    </view>
+  </view>
+  <view class="list-item" bindtap="toNextPage" id="state_notice">
+    <view class="item-index">
+      <view>4</view>
+    </view>
+    <view class="item-main">
+      <view class="main-left">
+        <view>设备状态通知</view>
+        <view class="text-overflow-points">关注小白学习盒子公众号，打印机有异常会及时通知您</view>
+      </view>
+      <view class="main-right">
+        <image src="../../images/arrow_right.png" />
+      </view>
+    </view>
+  </view>
+</view>

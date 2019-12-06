@@ -33,6 +33,7 @@
     "pages/print_doc/duplicate_preview/duplicate_preview",
     "pages/test/index",
     "pages/print_photo_doc/index",
+    "pages/print_photo_doc/edit",
     "pages/print_photo/mediachoose",
     "pages/print_photo/photolist",
 		"components/process/text",
@@ -50,7 +51,7 @@
 		{
 		 "root": "pages/package_common",
 		 "pages": [
-
+			"search/index"
       ]
     },
     {
@@ -97,7 +98,12 @@
         "setting/index",
         "share/index",
         "share_manage/index",
-        "longpress/index"
+				"longpress/index",
+				"maintain/index/index",
+        "maintain/firmware/index",
+        "maintain/state_notice/index",
+        "maintain/test_page/index",
+        "maintain/sprayer_clean/index"
       ]
     }
   ],

@@ -54,30 +54,22 @@ const getPrinterCapacity = co.wrap(function*(params = {}) {
 
 
 const previewDocument = co.wrap(function*(data, callback){
-    const resp = yield api.getInvoiceInfo({
-      is_async: false,
-      feature_key: 'doc_a4',
-      ...data.worker_data
-    })
+  getLoopsEvent(data, (result)=>{
+    console.log(result,'==result==')
+    if (result.status == 'finished') {
+      var converted_url = result.data.converted_url
+      wx.downloadFile({
+        url: converted_url,
+        success:(res)=>{
+          callback()
 
-    console.log(resp,'===resp===')
-    callback
-  // getLoopsEvent(data, (result)=>{
-  //   if (result.status == 'finished') {
-  //     var converted_url = data.converted_url
-  //     wx.downloadFile({
-  //       url: converted_url,
-  //       success:(res)=>{
-  //         wx.openDocument({
-  //           filePath: res.tempFilePath,
-  //           success: ()=>{
-  //             callback()
-  //           }
-  //         })
-  //       }
-  //     })
-  //   }
-  // })
+          wx.openDocument({
+            filePath: res.tempFilePath
+          })
+        }
+      })
+    }
+  })
 })
 
 

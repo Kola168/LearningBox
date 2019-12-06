@@ -28,7 +28,7 @@ Page({
 
   onLoad (options) {
     this.longToast = new app.weToast()
-    var invoiceList = JSON.parse(decodeURIComponent(options.invoiceList)) //解析得到集合
+    var invoiceList = JSON.parse( (options.invoiceList)) //解析得到集合
 
     this.getDetail(invoiceList)
     this.setData({
@@ -130,16 +130,6 @@ Page({
         media_type: 'invoice',
         urls: printOneInvoice
       })
-      // const resp = yield request({
-      //   url: app.apiServer + '/ec/v2/orders',
-      //   method: 'POST',
-      //   dataType: 'json',
-      //   data: {
-      //     openid: app.openId,
-      //     media_type: 'invoice',
-      //     urls: printOneInvoice
-      //   }
-      // })
       if (resp.code != 0) {
         throw (resp)
       }
@@ -180,7 +170,7 @@ Page({
       }
     })
     try {
-      const resp = api.getInvoiceInfo({
+      const resp = yield api.getInvoiceInfo({
         item_list: invoiceList
       })
       if (resp.code != 0) {

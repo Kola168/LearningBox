@@ -1,22 +1,30 @@
 "use strict"
 
 const app = getApp()
-const regeneratorRuntime = require('../../lib/co/runtime')
-const co = require('../../lib/co/co')
-const util = require('../../utils/util')
+import {
+  regeneratorRuntime,
+  co,
+  util,
+  wxNav,
+  storage
+} from '../../utils/common_import'
+// const regeneratorRuntime = require('../../lib/co/runtime')
+// const co = require('../../lib/co/co')
+// const util = require('../../utils/util')
 const _ = require('../../lib/underscore/we-underscore')
 // var mta = require('../../utils/mta_analysis.js');
-// const imginit = require('../../utils/imginit')
+const imginit = require('../../utils/imginit')
 
 const request = util.promisify(wx.request)
-const showModal = util.promisify(wx.showModal)
-const getImageInfo = util.promisify(wx.getImageInfo)
-const downloadFile = util.promisify(wx.downloadFile)
+// const showModal = util.promisify(wx.showModal)
+// const getImageInfo = util.promisify(wx.getImageInfo)
+// const downloadFile = util.promisify(wx.downloadFile)
+import common_request from '../../utils/common_request'
 
 const device = wx.getSystemInfoSync()
 const W = device.windowWidth - 60
 const H = device.windowHeight * 0.7 - 50
-const TOP = 50
+const TOP = 110
 
 // let cropper = require('../transform-cropper/welCropper.js');
 // import modal from '../../components/confirm-reinforce-modal/event'
@@ -27,8 +35,7 @@ Page({
     index: -1,
     currentIndex: 0,
     originalUrl: '',
-    selectColors: [
-      {
+    selectColors: [{
         name: '黑白',
         key: 'Grays',
         selected: false, //用于点击的状态
@@ -52,23 +59,44 @@ Page({
     showTitle: true,
     showContent: true,
     isSingle: false, //是否单张编辑
+    croppers: null,
     galleryImages: {
       images: []
     }
   },
-  onLoad: co.wrap(function* (options) {
+  onLoad: co.wrap(function* () {
     var that = this
+    let params = {
+      currentCount: 1,
+      from: "pic2doc",
+      index: 0,
+      isSingle: false,
+      media_type: "pic2doc",
+      mode: "quadrectangle",
+      url: "https://cdn-h.gongfudou.com/epbox/pciup/2019/12/5/8aa028db-de6d-490e-8d02-f28a20957c92?x-image-process=image/auto-orient,1"
+    }
     var options = that.options = JSON.parse(decodeURIComponent(options.params))
     that.setData({
       isSingle: options.isSingle,
       currentCount: options.currentCount
     })
-    that.longToast = new app.WeToast()
+    that.longToast = new app.weToast()
     that.options = that.checkImgOptions(options.index)
-    cropper.init.apply(that, [W, H, TOP])
+    console.log(that.options, '==that.options==')
+    // cropper.init.apply(that, [W, H, TOP])
+    this.setData({
+      croppers: {
+        tempInfo: {
+          width: W,
+          height: H,
+          top: TOP,
+          left: 30
+        },
+        mode: 'quadrectangle'
+      }
+    })
     that.initData(that.options)
     that.getColor()
-    mta.Page.init()
   }),
   // 检查入参 是否是有效数据
   checkImgOptions: function (index) {
@@ -96,9 +124,7 @@ Page({
       return
     }
     this.longToast.toast({
-      img: '../../images/loading.gif',
-      title: '加载中',
-      duration: 0
+      type:'loading'
     })
     var refreshIndex = !flag ? Number(options.index) : this.data.refreshIndex
     this.setData({
@@ -107,8 +133,7 @@ Page({
       originalUrl: options.url || '',
       refreshIndex: refreshIndex,
       galleryImages: this.getImgStorage(),
-      selectColors: [
-        {
+      selectColors: [{
           name: '黑白',
           key: 'Grays',
           selected: false, //用于点击的状态
@@ -132,22 +157,16 @@ Page({
     this.selectTap() // 图形绘制
   },
   getColor: co.wrap(function* () {
-    let param = {
-      openid: app.openId
-    }
+    // let param = {
+    //   openid: app.openId
+    // }
     try {
-      const resp = yield request({
-        url: app.apiServer + `/ec/v2/apps/printer_capability`,
-        method: 'GET',
-        dataType: 'json',
-        data: param
-      })
-      if (resp.data.code == 1001) {
+      let res = common_request.getPrinterCapacity()
+      if (res.code == 1001) {
         this.removeColorCapability()
-      } else if (resp.data.code != 0) {
-        throw (resp.data)
+      } else if (rescode != 0) {
+        throw (res.data)
       } else {
-        console.log('色彩选择', resp.data.print_capability.color_modes)
         let color_length = resp.data.print_capability.color_modes.length
         if (color_length == 1) {
           this.removeColorCapability()
@@ -238,12 +257,12 @@ Page({
   selectTap(e) {
     let that = this
     let tempFilePath = this.options.url
+    console.log('====0',this.options)
     let mode = this.options.mode
     wx.getImageInfo({
       src: tempFilePath,
       success(res) {
         let imageInfo = res
-        console.log(tempFilePath, res)
         let showText
         if (imageInfo.width < 100 || imageInfo.height < 100) {
           showText = '图片尺寸过小，请重新选择'
@@ -271,33 +290,35 @@ Page({
           that.editScale = 1500 / (width > height ? width : height)
         }
         console.log('1500缩放比', width > height ? width : height, that.editScale)
-        that.showCropper({
+        var ctx = that.selectComponent('#cropper')
+        ctx.startCropper({
           src: editPath,
           mode: mode,
           sizeType: ['original'],
-          maxLength: 2000, //限制最大像素为2500像素
-          callback: (res) => {
-            if (mode == "rectangle") {
-              console.log("crop callback:" + res)
-              that.uploadImage(res)
-            } else {
-              that.utilsPic({
-                origin_url: tempFilePath,
-                data: res,
-              })
-            }
-          }
+          maxLength: 2000, //限制最大像素为2500像素)
         })
+        that.ctx = ctx
       },
       fail(err) {
         console.log(err)
       }
     })
   },
+  cropImage() {
+    this.ctx.cropImage((res) => {
+      console.log('res',res)
+    })
+  },
   showExamModal() {
     modal.showModal()
   },
-  chooseColor({ currentTarget: { dataset: { index } } }) {
+  chooseColor({
+    currentTarget: {
+      dataset: {
+        index
+      }
+    }
+  }) {
     const current = this.data.selectColors[index]
     const selectColors = this.data.selectColors.map((item, idx) => {
 
@@ -313,9 +334,9 @@ Page({
         } else {
           item.checked = false
         }
-        mta.Event.stat('tupianzhuanwend', {
-          printtype: current.key == 'Color' ? 'color' : 'black'
-        })
+        // mta.Event.stat('tupianzhuanwend', {
+        //   printtype: current.key == 'Color' ? 'color' : 'black'
+        // })
       }
       return item
     })
@@ -326,7 +347,7 @@ Page({
   // 处理图片的编辑
   utilsPic(params) {
     const [colors] = this.data.selectColors.filter(item => item.checked && item.key == 'Grays')
-    if (colors && colors.checked) {// 针对黑白处理的
+    if (colors && colors.checked) { // 针对黑白处理的
       this.getBlackEnhanceSn(params.data, params.origin_url)
     } else { // 普通 灰度 | 全彩处理
       this.getPic(params.data, params.origin_url)
@@ -401,14 +422,21 @@ Page({
     try {
       const nowTime = new Date(); // 初始化开始时间
       const _this = this;
-      _this.setData({ showupLoad: true })
+      _this.setData({
+        showupLoad: true
+      })
       _this.requestAnimationPercent()
       _this.timer = setInterval(() => {
         let carryTime = new Date() //执行时间
         if (carryTime - nowTime > 60000) { //判断处理大于12秒  提示处理失败
           _this.timer && clearInterval(_this.timer)
-          _this.setData({ percent: 0, showupLoad: false })
-          return util.showErr({ message: '图片处理失败, 请重新尝试!' })
+          _this.setData({
+            percent: 0,
+            showupLoad: false
+          })
+          return util.showErr({
+            message: '图片处理失败, 请重新尝试!'
+          })
         }
         // 开启绘制
         _this.drawRequest(sn).then(res => {
@@ -418,12 +446,17 @@ Page({
             })
           }
           _this.timer && clearInterval(_this.timer)
-          _this.setData({ percent: 0, showupLoad: false })
+          _this.setData({
+            percent: 0,
+            showupLoad: false
+          })
 
           if (res.state === 'finished') {
             _this.setPrePageData(res.worker_data)
           } else if (res.state === 'failed') {
-            util.showErr({ message: '绘制有误' })
+            util.showErr({
+              message: '绘制有误'
+            })
           } else {
             console.log('drawRequest state: ', res)
           }

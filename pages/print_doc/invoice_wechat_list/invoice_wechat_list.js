@@ -127,7 +127,7 @@ Page({
       }
       let tempFiles = _(this.data.files).clone()
       tempFiles.forEach((item, index) => {
-        item.url = resp.res.convert_urls[index],
+        item.url = resp.res.convert_urls[index].url,
           item.number = 1,
           item.rotate = true,
           item.color = 'Color'
@@ -237,7 +237,7 @@ Page({
       yield openDocument({
         filePath: previewUrl
       })
-      util.hideToast(this.longToast)
+      this.longToast.hide()
     } catch (e) {
       this.longToast.hide()
       util.showError(e)

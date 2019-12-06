@@ -54,7 +54,7 @@ page {
 .wrap {
     position: relative;
     width: 100%;
-    padding: 30rpx 26rpx;
+    padding: 30rpx 26rpx 120rpx;
     height: calc(100% - 100rpx);
     box-sizing: border-box;
     overflow-y: scroll;
@@ -229,7 +229,7 @@ page {
 /* 提示上传 end*/
 
 .bottom {
-    position: fixed;
+    position: absolute;
     left: 0;
     bottom: 0;
     height: 100rpx;
@@ -240,15 +240,17 @@ page {
     align-items: center;
     /* justify-content: space-between; */
     box-sizing: border-box;
-    z-index: 2000;
-    text-align:center;
-    line-height: 100rpx;
+    z-index: 400;
 }
 
 .bottom-left {
     color: #666;
     font-size: 36rpx;
     width: 50%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     border-right: 2rpx solid #fff;
     box-sizing: border-box;
 }
@@ -256,11 +258,10 @@ page {
 .bottom-right {
     width: 50%;
     color: #999;
-    font-size: 36rpx;
-}
-
-.bottom-right button{
-  padding:0;
+    font-size: 32rpx;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .bottom-count {
@@ -281,8 +282,7 @@ page {
 
 .bottom button {
     width: 100%;
-    padding-left: 60rpx;
-    padding-right: 60rpx;
+    padding: 0;
     line-height: 100rpx;
     border-radius: 0;
     background: #ffe27a;

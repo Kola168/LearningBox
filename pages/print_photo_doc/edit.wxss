@@ -151,6 +151,7 @@ page {
 
 .btn button {
     color: #454545;
+    background-color: #ffe27a;
 }
 
 .modal-wrap {
@@ -194,7 +195,3 @@ page {
     height: 26rpx;
     margin:0 20rpx 0 10rpx;
 }
-
-
-/* @import "../transform-cropper/welCropper.wxss"; */
-

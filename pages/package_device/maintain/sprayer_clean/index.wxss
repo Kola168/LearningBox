@@ -1,0 +1,36 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 40rpx;
+}
+
+.container image {
+  width: 100%;
+}
+
+.print-btn {
+  width: 80%;
+  margin: 0 auto;
+  background: #FFDC5E;
+  color: #454545;
+  font-size: 36rpx;
+  text-align: center;
+  height: 100rpx;
+  line-height: 100rpx;
+  border-radius: 50rpx;
+  transform: translateY(80rpx);
+}
+
+.modal-content {
+  color: #333;
+  font-size: 28rpx;
+}
+
+.modal-content>view:first-child {
+  margin-bottom: 20rpx;
+}
+
+.modal-content text {
+  font-weight: bold;
+  color: #151515;
+}
