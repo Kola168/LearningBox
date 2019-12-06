@@ -168,7 +168,7 @@ Page({
       let galleryImages = storage.get(media_type || this.options.media_type)
       return galleryImages
     } catch (err) {
-      console.log(err)
+      logger.info(err)
     }
   },
   // 删除当前张
@@ -379,7 +379,7 @@ Page({
         })
       })
     } catch (err) {
-      console.log(err);
+      logger.info(err);
     }
   }),
   requestAnimationPercent() {

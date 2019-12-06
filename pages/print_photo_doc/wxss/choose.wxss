@@ -229,7 +229,7 @@ page {
 /* 提示上传 end*/
 
 .bottom {
-    position: absolute;
+    position: fixed;
     left: 0;
     bottom: 0;
     height: 100rpx;
@@ -253,6 +253,7 @@ page {
     align-items: center;
     border-right: 2rpx solid #fff;
     box-sizing: border-box;
+    border-top: 2rpx solid #E4E4E4;
 }
 
 .bottom-right {

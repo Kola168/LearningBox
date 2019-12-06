@@ -8,11 +8,11 @@
         </cover-view>
         <cover-view class="example-area">
             <cover-view class="origin-ctx">
-                <cover-image class="origin-ctx-image" src="https://cdn.gongfudou.com/miniapp/ec/print_pic_example2.jpg" />
+                <cover-image class="origin-ctx-image" src="https://cdn-h.gongfudou.com/LearningBox/main/pic2doc_tip_example2.jpg" />
                 <cover-view class="">原图</cover-view>
             </cover-view>
             <cover-view class="reinforce-ctx">
-                <cover-image class="origin-ctx-image" src="https://cdn.gongfudou.com/miniapp/ec/print_pic_example1.jpg" />
+                <cover-image class="origin-ctx-image" src="https://cdn-h.gongfudou.com/LearningBox/main/pic2doc_tip_example1.jpg" />
                 <cover-view class="">黑白加强</cover-view>
             </cover-view>
         </cover-view>
