@@ -32,8 +32,15 @@ App({
   // apiWbviewServer: 'http://jran.nat300.top/',
 
   // 测试接口季慧新
+  // apiServer: 'http://jhx.nat300.top',
+  // apiWbviewServer: 'http://jhx.nat300.top',
+  
+  // 测试接口季慧新
   apiServer: 'http://jhx.nat300.top',
   apiWbviewServer: 'http://jhx.nat300.top',
+
+  //江然本地服务
+  // apiServer: 'http://jran.nat300.top',
   authAppKey: 'iMToH51lZ0VrhbkTxO4t5J5m6gCZQJ6c',
   openId: '',
   authToken:'',

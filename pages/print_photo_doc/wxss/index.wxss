@@ -16,6 +16,9 @@
     font-size: 36rpx;
     color: #454545;
   }
+  .btn button{
+    background:none;
+  }
 /*   
   .consumables-icon {
     width: 100rpx;

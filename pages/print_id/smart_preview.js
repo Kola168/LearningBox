@@ -7,6 +7,8 @@ const util = require('../../utils/util')
 const _ = require('../../lib/underscore/we-underscore')
 const imginit=require('../../utils/imginit')
 import api from '../../network/restful_request.js'
+import router from '../../utils/nav'
+
 
 const showModal = util.promisify(wx.showModal)
 const request = util.promisify(wx.request)
@@ -39,21 +41,23 @@ Page({
     //下面的是worker sn
     this.query = JSON.parse(options.confirm)
     this.info = JSON.parse(options.info)
-
+  
+    console.log('预览页参数', this.info, this.query)
     this.setData({
-      price_count: this.query.price,
-      price: this.query.price,
-      can_free_print: this.query.can_free_print ? this.query.can_free_print : false
+      singleImg: this.query.wm_url,
+      // price_count: this.query.price,
+      // price: this.query.price,
+      // can_free_print: this.query.can_free_print ? this.query.can_free_print : false
     })
-    if (this.query.url_print_wm == null) {
+    if (this.query.print_wm_url == null) {
       this.setData({
         idPrint: false
       })
     }
-    let res = yield graphql.isMember()
-    this.setData({
-      isMember: res.user != null && res.user.isMember ? res.user.isMember : false
-    })
+    // let res = yield graphql.isMember()
+    // this.setData({
+    //   isMember: res.user != null && res.user.isMember ? res.user.isMember : false
+    // })
   }),
   onShow: function () {
     let hasAuthPhoneNum = Boolean(wx.getStorageSync('hasAuthPhoneNum'))
@@ -125,8 +129,7 @@ Page({
     }
     let brand
     this.longToast.toast({
-      img: '../../images/loading.gif',
-      title: '请稍候',
+      type: "loading",
       duration: 0
     })
     let p = {
@@ -156,27 +159,22 @@ Page({
         brand = resp.data.res
         console.log('brand-----', resp.data.res)
       } else {
-        this.longToast.toast()
+        this.longToast.hide()
         // 其他错误
-        yield showModal({
-          title: '提示',
-          content: resp.data.message,
-          showCancel: false,
-          confirmColor: '#fae100'
+        util.showError({
+          content:resp.res.message
         })
         return
       }
     } catch (e) {
-      this.longToast.toast()
-      yield showModal({
+      this.longToast.hide()
+      util.showError({
         title: '网络异常',
-        content: '请检查您的手机网络后重试',
-        showCancel: false,
-        confirmColor: '#fae100'
+        content: '请检查您的手机网络后重试'
       })
       return
     }
-    this.longToast.toast()
+    this.longToast.hide()
     if (brand && this.data.can_free_print) {
       this.setData({
         can_free_print: false
