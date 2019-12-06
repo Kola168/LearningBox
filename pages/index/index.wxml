@@ -194,10 +194,14 @@
   </block>
 
 </block>
-<button open-type="getUserInfo" bindgetuserinfo="userInfoHandler" form-type='submit' hover-class="none"
-  class="auth-button-bottom" wx:if="{{showAuth}}">
-  登录了解更多
-</button>
+<block wx:if="{{showAuth}}">
+    <image src="../../images/home/login_bg.png" mode="widthFix" class="login-bg"/>
+  <button open-type="getUserInfo" bindgetuserinfo="userInfoHandler" form-type='submit' hover-class="none"
+    class="auth-button-bottom">
+    登录了解更多
+  </button>
+</block>
+
 <!-- loading -->
 <import src="/lib/toast/wetoast.wxml" />
 <template is="wetoast" data="{{...__wetoast__}}" />

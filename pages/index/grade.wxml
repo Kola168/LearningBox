@@ -1,0 +1,4 @@
+<!--pages/index/grade.wxml-->
+<nav-bar background="#fff" title="我的"></nav-bar>
+<image src="/images/home/choose_grade.png" mode="widthFix" id="photo" bindtap="toNomalPrint"/>
+

@@ -14,6 +14,9 @@ const getStorage = util.promisify(wx.getStorage)
 const login = util.promisify(wx.login)
 const request = util.promisify(wx.request)
 import storage from 'utils/storage.js'
+import {
+  logger
+} from './utils/common_import'
 
 
 App({
@@ -22,10 +25,10 @@ App({
   //线上地址
   // apiServer: 'https://epbox.gongfudou.com',
   // apiWbviewServer: 'https://epbox.gongfudou.com/',
-  
+
   //王析理本地地址
-  // apiServer: 'http://epbox.natapp1.cc',
-  // apiWbviewServer: 'http://epbox.natapp1.cc/',
+  apiServer: 'http://epbox.natapp1.cc',
+  apiWbviewServer: 'http://epbox.natapp1.cc/',
 
   //一个秃子的服务器地址
   // apiServer: 'http://jran.nat300.top',
@@ -34,16 +37,16 @@ App({
   // 测试接口季慧新
   // apiServer: 'http://jhx.nat300.top',
   // apiWbviewServer: 'http://jhx.nat300.top',
-  
+
   // 测试接口季慧新
-  apiServer: 'http://jhx.nat300.top',
-  apiWbviewServer: 'http://jhx.nat300.top',
+  // apiServer: 'http://jhx.nat300.top',
+  // apiWbviewServer: 'http://jhx.nat300.top',
 
   //江然本地服务
   // apiServer: 'http://jran.nat300.top',
   authAppKey: 'iMToH51lZ0VrhbkTxO4t5J5m6gCZQJ6c',
   openId: '',
-  authToken:'',
+  authToken: '',
   unionId: '',
   sysInfo: null,
   navBarInfo: null,
@@ -58,13 +61,14 @@ App({
   getSystemInfo: co.wrap(function* () {
     let res = yield getSystemInfo()
     this.sysInfo = res
+    console.log('4567890',this.sysInfo)
     this.handleDevice()
   }),
 
   // 是否为全面屏，rpxPixel
   handleDevice() {
     // 暂时的处理
-    console.log('this.sysInfo.screenHeight=====',this.sysInfo.screenHeight)
+    console.log('this.sysInfo.screenHeight=====', this.sysInfo.screenHeight)
     this.isFullScreen = this.sysInfo.screenHeight > 750 ? true : false
     this.rpxPixel = 750 / this.sysInfo.windowWidth
   },
@@ -147,11 +151,14 @@ App({
     try {
       const sto = storage.get('openId')
       if (!sto) {
-        return this.login()
+        this.login()
+        logger.warn('首页调用登录')
+        return
       }
       this.openId = sto
     } catch (e) {
       this.login()
+      logger.warn('首页调用登录啦')
     }
   }),
 
@@ -170,9 +177,10 @@ App({
         throw (loginInfo.data)
       }
       storage.put('openId', loginInfo.data.res.openid)
-
+      logger.warn('login登录成功', loginInfo.data.res.openid)
       this.openId = loginInfo.data.res.openid
     } catch (e) {
+      logger.error('1234567890-',e)
       util.showError({
         title: '登录失败',
         content: e.error

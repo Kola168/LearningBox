@@ -661,7 +661,7 @@ Page({
             const resp = yield api.convertId(params)
 
             if (resp.code != 0) {
-                throw (resp.res)
+                throw (resp)
             } else {
                 this.longToast.hide()
                 let params = {

@@ -106,7 +106,7 @@ Page({
       }
       const resp = yield api.wechatDecryption(params)
       if (resp.code != 0) {
-        throw (resp.res)
+        throw (resp)
       }
       storage.put('authToken', resp.res.auth_token)
       storage.put('unionId', resp.res.unionid)
