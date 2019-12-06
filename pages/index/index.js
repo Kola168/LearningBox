@@ -32,7 +32,7 @@ Page({
       url: 'http://gfd-i.memeyin.com/e-FlXfVks1do_li3DqrLWVHjr-0IPr'
     }, ],
     showAuth: false, //登录
-    homeType: 'subject'
+    homeType: 'beforeSchool'
   },
 
   //事件处理函数
