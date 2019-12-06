@@ -27,13 +27,6 @@ Page({
         this.setData({
             spec: JSON.parse(options.item)
         })
-        wx.setNavigationBarTitle({
-            title: '示例'
-        })
-        console.log('page rules', this.data.spec)
-        wx.setNavigationBarTitle({
-            title: this.data.spec.name
-        })
     },
     uploadImage: co.wrap(function* () {
         this.longToast.toast({

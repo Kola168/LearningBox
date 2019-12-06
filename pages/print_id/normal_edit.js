@@ -6,7 +6,7 @@ const co = require('../../lib/co/co')
 const util = require('../../utils/util')
 import upload from '../../utils/upload'
 import api from '../../network/restful_request.js'
-import { unwatchFile } from 'fs'
+import router from '../../utils/nav'
 
 const chooseImage = util.promisify(wx.chooseImage)
 const getImageInfo = util.promisify(wx.getImageInfo)
@@ -278,7 +278,7 @@ Page({
                 showCancel: false,
                 confirmColor: '#2086ee',
                 success: function () {
-                    wx.navigateBack()
+                    router.navigateBack()
                 }
             })
         }
@@ -313,87 +313,12 @@ Page({
                 showCancel: false,
                 confirmColor: '#2086ee',
                 success: function () {
-                    wx.navigateBack()
+                    router.navigateBack()
                 }
             })
         }
 
     }),
-    gfdAlbum: co.wrap(function* () {
-        console.log('here=======')
-        this.setData({
-            popWindow: false,
-        })
-        wx.redirectTo({
-            url: `/pages/albumlist/index?type=${'single'}`
-        })
-    }),
-
-    //从微信聊天记录中选择文件
-    weChatAlbum: co.wrap(function* () {
-        var SDKVersion
-        try {
-            const resInfo = wx.getSystemInfoSync()
-            console.log('基础库版本======', resInfo.SDKVersion)
-            SDKVersion = resInfo.SDKVersion
-        } catch (e) {
-            console.log(e)
-        }
-        if (util.compareVersion(SDKVersion, '2.5.0')) {
-            console.log('证件照执行到选择图片')
-            const image = yield chooseMessageFile({
-                type: 'image',
-                count: 1,
-            })
-
-            console.log(`chooseImage ${image.tempFiles}`)
-            this.path = image.tempFiles[0].path
-            console.log('image,this.path', image)
-
-            this.setData({
-                showChangeBtn: false,
-                popWindow: false,
-            })
-            try {
-                const imgInfo = yield getImageInfo({
-                    src: this.path
-                })
-                this.setData({
-                    imgInfo: imgInfo,
-                    localImgPath: this.path
-                })
-                console.log("imgInfo", imgInfo)
-            } catch (err) {
-                console.error(err)
-                wx.showModal({
-                    title: '照片加载失败',
-                    content: '请重新选择重试',
-                    showCancel: false,
-                    confirmColor: '#2086ee',
-                    success: function () {
-                        wx.navigateBack()
-                    }
-                })
-            }
-        } else {
-            //请升级到最新的微信版本
-            yield showModal({
-                title: '微信版本过低',
-                content: '请升级到最新的微信版本',
-                confirmColor: '#2086ee',
-                confirmText: "确认",
-                showCancel: false
-            })
-        }
-    }),
-
-
-    closePopWindow: co.wrap(function* () {
-        this.setData({
-            popWindow: false
-        })
-    }),
-
     imageLoadError: co.wrap(function* () {
         // wx.showModal({
         //     title: '照片加载失败',
@@ -664,8 +589,8 @@ Page({
             console.error(e)
             this.longToast.hide()
             unwatchFile.showError({
-                title:'照片上传失败',
-                content:'请检查网络或稍后重试'
+                title: '照片上传失败',
+                content: '请检查网络或稍后重试'
             })
             return null
         }
@@ -744,10 +669,10 @@ Page({
                     preview_url: encodeURIComponent(resp.res.url),
                     mode: this.data.mode,
                     imageURL: imageURL,
-                    name:this.data.name
+                    name: this.data.name
                 }
-                wx.redirectTo({
-                    url: `normal_mode?idPrint=${JSON.stringify(params)}`
+                router.redirectTo(`/pages/print_id/normal_mode`, {
+                    idPrint: JSON.stringify(params)
                 })
             }
         } catch (e) {

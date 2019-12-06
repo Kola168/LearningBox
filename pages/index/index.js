@@ -11,7 +11,7 @@ import index from "../../mixins/index.js"
 import init from "../../mixins/init.js"
 import storage from '../../utils/storage.js'
 import api from '../../network/restful_request.js'
-// const request = util.promisify(wx.request)
+import router from '../../utils/nav'
 const checkSession = util.promisify(wx.checkSession)
 
 Page({
@@ -138,15 +138,22 @@ Page({
         break
       case 'doc':
         url = "/pages/print_doc/index/index"
-				break
-			case 'more':
-				url = "/pages/print_funny/index"
-				break
-      defalt:
+        break
+      case 'more':
+        url = "/pages/print_funny/index"
+        break
+        defalt:
           url = ''
     }
-    wx.navigateTo({
-      url
+    router.navigateTo(url)
+  },
+  // TODO:以下两个为测试函数，待删除
+  changeSubject: function () {
+    this.setData({
+      homeType: this.data.homeType == 'subject' ? 'beforSchool' : 'subject'
     })
+  },
+  toId: function () {
+    router.navigateTo('/pages/print_id/index')
   }
 })

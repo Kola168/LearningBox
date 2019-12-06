@@ -3,6 +3,7 @@ const app = getApp()
 const regeneratorRuntime = require('../../lib/co/runtime')
 const co = require('../../lib/co/co')
 const util = require('../../utils/util')
+import router from '../../utils/nav'
 
 Page({
     data: {
@@ -132,8 +133,9 @@ Page({
                 throw (resp.data)
             } else {
                 this.longToast.hide()
-                wx.redirectTo({
-                    url: `../finish/index?type=id&&state=${resp.data.order.state}`
+                router.redirectTo(`/pages/finish/index`, {
+                    type: id,
+                    state: resp.data.order.state
                 })
             }
         } catch (e) {

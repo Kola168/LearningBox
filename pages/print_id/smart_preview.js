@@ -7,6 +7,8 @@ const util = require('../../utils/util')
 const _ = require('../../lib/underscore/we-underscore')
 const imginit=require('../../utils/imginit')
 import api from '../../network/restful_request.js'
+import router from '../../utils/nav'
+
 
 const showModal = util.promisify(wx.showModal)
 const request = util.promisify(wx.request)

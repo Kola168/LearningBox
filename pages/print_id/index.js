@@ -1,27 +1,27 @@
 // pages/print_id/sort.js
-// import commonRequest from '../../utils/common_request.js'
+
+import router from '../../utils/nav'
+
 Page({
     data: {},
     onLoad: function (options) {},
     toZhineng: function () {
-        wx.navigateTo({
-            url: `smart_index`
-        })
+        router.navigateTo(`/pages/print_id/smart_index`)
     },
     toNomal: function () {
-        wx.navigateTo({
-            url: `normal_list?type=normal`
+        router.navigateTo(`/pages/print_id/normal_list`, {
+            type: 'normal'
         })
     },
     toForeign: function () {
-        wx.navigateTo({
-            url: `normal_list?type=foreign`
+        router.navigateTo(`/pages/print_id/normal_list`, {
+            type: 'foreign'
         })
     },
     toPrint: function (e) {
         let media_type = e.currentTarget.id
-        wx.navigateTo({
-            url: `edit?media_type=${media_type}`
+        router.navigateTo(`/pages/print_id/edit`, {
+            media_type
         })
     },
     onShareAppMessage: function () {

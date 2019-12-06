@@ -6,6 +6,8 @@ const co = require('../../lib/co/co')
 const util = require('../../utils/util')
 import api from '../../network/restful_request.js'
 const showModal = util.promisify(wx.showModal)
+import router from '../../utils/nav'
+
 
 Page({
     data: {
@@ -78,7 +80,7 @@ Page({
 
                 if (resp.res.length == 0) {
                     return util.showError({
-                        content:'没有搜到该类型哦'
+                        content: '没有搜到该类型哦'
                     })
                 }
                 this.setData({
@@ -93,15 +95,15 @@ Page({
         } catch (e) {
             this.longToast.hide()
             util.showError({
-                content:'请检查您的网络，请稍后重试'
+                content: '请检查您的网络，请稍后重试'
             })
             return
         }
     }),
     toRules: co.wrap(function* (e) {
         let item = JSON.stringify(this.data.searchList[e.currentTarget.id])
-        wx.redirectTo({
-            url: `smart_rules?item=${item}`
+        router.redirectTo(`/pages/print_id/smart_rules`, {
+            item
         })
     })
 
