@@ -25,6 +25,7 @@ Page({
     showInterceptModal: '',
     isCleared: false,
     hasAuthPhoneNum: false,
+    isFullScreen: false,
     confirmModal: {
       isShow: false,
       title: '请正确放置A4打印纸',
@@ -36,6 +37,9 @@ Page({
     this.longToast = new app.weToast()
     let arrayFile = JSON.parse(decodeURIComponent(options.arrayFile))
     this.beforeUpload(arrayFile)
+    this.setData({
+      isFullScreen: app.isFullScreen
+    })
   }),
 
   onShow: function () {

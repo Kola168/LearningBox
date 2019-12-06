@@ -7,7 +7,7 @@
 </view>
 <cropper-img croppers="{{croppers}}" id="cropper"></cropper-img>
 <!-- <template is="welCropper" data="{{cropperData:cropperData, cropperMovableItems:cropperMovableItems, cropperChangableData:cropperChangableData}}" /> -->
-<view class="btn">
+<view class="btn {{isFullScreen ? 'is-full-screen' : ''}}">
 	<form report-submit="true" bindsubmit="cropImage">
 		<button formType="submit" hover-class="none">确认</button>
 	</form>

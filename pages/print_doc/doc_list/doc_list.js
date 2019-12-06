@@ -14,6 +14,7 @@ import { uploadDocs } from '../../../utils/upload'
 import event from '../../../lib/event/event'
 Page({
 	data: {
+		isFullScreen: false,
 		allCount: 0, //上传总数
 		type: null, //打印类型
 		hasAuthPhoneNum: false, //是否授权手机号
@@ -41,6 +42,7 @@ Page({
 				yield this.formatUpLoadFiles(docFiles)
 			}
 			this.setData({
+				isFullScreen: app.isFullScreen,
 				type,
 				types: type == 'security' ? {
 					printType: "security_folder",

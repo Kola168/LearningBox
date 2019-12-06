@@ -102,6 +102,7 @@ page {
 }
 
 .bottom button {
+  width: 100%;
   height: 100rpx;
   padding: 0;
   line-height: 0;
@@ -109,7 +110,8 @@ page {
   justify-content: center;
   align-items: center;
   color: #000;
-  background: #FFE27A;
+  background: #FFDC5E;
+  margin: 0!important;
 }
 
 .choose {
