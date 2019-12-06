@@ -8,6 +8,7 @@ const chooseImage = util.promisify(wx.chooseImage)
 const chooseMessageFile = util.promisify(wx.chooseMessageFile)
 
 let Loger=(app.apiServer!='https://epbox.gongfudou.com'||app.deBug)?console.log:function(){}
+
 Component({
 
   data: {
