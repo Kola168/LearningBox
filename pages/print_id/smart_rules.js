@@ -43,13 +43,10 @@ Page({
         try {
             this.imageURL = yield upload.uploadFile(this.path)
         } catch (e) {
-            this.longToast.toast()
-            console.error(e)
-            const confirm = yield showModal({
+            this.longToast.hide()
+            util.showError({
                 title: '上传失败',
-                content: '请检查您的网络，请稍后重试',
-                showCancel: false,
-                confirmColor: '#FFE27A'
+                content: '请检查您的网络，请稍后重试'
             })
         }
     }),

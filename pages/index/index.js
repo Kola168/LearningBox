@@ -126,13 +126,13 @@ Page({
       this.setData({
         showAuth: false
       })
-      this.longToast.toast()
+      this.longToast.hide()
     } catch (e) {
       yield app.login()
       this.setData({
         showAuth: true
       })
-      this.longToast.toast()
+      this.longToast.hide()
       util.showError(e)
     }
   }),

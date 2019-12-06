@@ -6,6 +6,7 @@ const co = require('../../lib/co/co')
 const util = require('../../utils/util')
 import upload from '../../utils/upload'
 import api from '../../network/restful_request.js'
+import { unwatchFile } from 'fs'
 
 const chooseImage = util.promisify(wx.chooseImage)
 const getImageInfo = util.promisify(wx.getImageInfo)
@@ -458,7 +459,7 @@ Page({
     initDesign: co.wrap(function* (e) {
 
         if (this.data.source == 'computer') {
-            this.longToast.toast()
+            this.longToast.hide()
         }
 
         if (e != undefined) {
@@ -661,12 +662,10 @@ Page({
             }
         } catch (e) {
             console.error(e)
-            this.longToastoast()
-            yield showModal({
-                title: '照片上传失败',
-                content: '请检查网络或稍候再试',
-                showCancel: false,
-                confirmColor: '#2086ee'
+            this.longToast.hide()
+            unwatchFile.showError({
+                title:'照片上传失败',
+                content:'请检查网络或稍后重试'
             })
             return null
         }
@@ -739,8 +738,7 @@ Page({
             if (resp.code != 0) {
                 throw (resp.data)
             } else {
-                this.longToast.toast()
-                // console.log('相馆证件照合成', resp.res)
+                this.longToast.hide()
                 let params = {
                     url: imageURL,
                     preview_url: encodeURIComponent(resp.res.url),
@@ -753,8 +751,8 @@ Page({
                 })
             }
         } catch (e) {
-            this.longToast.toast()
-            util.showErr(e)
+            this.longToast.hide()
+            util.showError(e)
             return null
         }
 

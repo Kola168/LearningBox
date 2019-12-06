@@ -157,27 +157,22 @@ Page({
         brand = resp.data.res
         console.log('brand-----', resp.data.res)
       } else {
-        this.longToast.toast()
+        this.longToast.hide()
         // 其他错误
-        yield showModal({
-          title: '提示',
-          content: resp.data.message,
-          showCancel: false,
-          confirmColor: '#fae100'
+        util.showError({
+          content:resp.res.message
         })
         return
       }
     } catch (e) {
-      this.longToast.toast()
-      yield showModal({
+      this.longToast.hide()
+      util.showError({
         title: '网络异常',
-        content: '请检查您的手机网络后重试',
-        showCancel: false,
-        confirmColor: '#fae100'
+        content: '请检查您的手机网络后重试'
       })
       return
     }
-    this.longToast.toast()
+    this.longToast.hide()
     if (brand && this.data.can_free_print) {
       this.setData({
         can_free_print: false

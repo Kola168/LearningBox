@@ -131,21 +131,14 @@ Page({
             if (resp.data.code != 0) {
                 throw (resp.data)
             } else {
-                this.longToast.toast()
-                console.log('证件照订单', resp.data)
+                this.longToast.hide()
                 wx.redirectTo({
                     url: `../finish/index?type=id&&state=${resp.data.order.state}`
                 })
             }
         } catch (e) {
-            console.error(e)
-            this.longToast.toast()
-            yield showModal({
-                title: '提示',
-                content: e.message,
-                showCancel: false,
-                confirmColor: '#fae100'
-            })
+            this.longToast.hide()
+            util.showError(e)
             return null
         }
     })
