@@ -1,0 +1,7 @@
+<nav-bar title="认知卡"></nav-bar>
+<view class="container">
+  <image src="../../images/cognition_intro_1.jpg" mode="widthFix" />
+  <image src="../../images/cognition_intro_2.jpg" mode="widthFix" />
+  <image src="../../images/cognition_intro_3.jpg" mode="widthFix" bindtap="toShopping" />
+  <view class="btn {{isFullScreen?'is-full-screen':''}}" bindtap="toMake">立即制作</view>
+</view>

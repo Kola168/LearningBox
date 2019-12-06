@@ -63,7 +63,11 @@
     {
       "root": "pages/package_feature",
       "pages": [
-
+        "cognition_card/index/index",
+        "cognition_card/list/index",
+        "cognition_card/category/index",
+        "cognition_card/category_list/index",
+        "cognition_card/edit/index"
       ]
     },
     {
