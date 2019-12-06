@@ -64,8 +64,17 @@ Page({
       images: []
     }
   },
-  onLoad: co.wrap(function* (options) {
+  onLoad: co.wrap(function* () {
     var that = this
+    let params = {
+      currentCount: 1,
+      from: "pic2doc",
+      index: 0,
+      isSingle: false,
+      media_type: "pic2doc",
+      mode: "quadrectangle",
+      url: "https://cdn-h.gongfudou.com/epbox/pciup/2019/12/5/8aa028db-de6d-490e-8d02-f28a20957c92?x-image-process=image/auto-orient,1"
+    }
     var options = that.options = JSON.parse(decodeURIComponent(options.params))
     that.setData({
       isSingle: options.isSingle,
@@ -566,9 +575,9 @@ Page({
       return wx.navigateBack()
     } else {
       //首张图
-      // mta.Event.stat('tupianzhuanwend', {
-      //   'cropperfix': 'true'
-      // })
+      mta.Event.stat('tupianzhuanwend', {
+        'cropperfix': 'true'
+      })
       wx.redirectTo({
         url: `../error_book/pages/error_book/topic_details?url=${imgUrl}`
       })

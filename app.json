@@ -33,6 +33,7 @@
     "pages/print_doc/duplicate_preview/duplicate_preview",
     "pages/test/index",
     "pages/print_photo_doc/index",
+    "pages/print_photo_doc/edit",
     "pages/print_photo/mediachoose",
     "pages/print_photo/photolist",
 		"components/process/text",
