@@ -73,7 +73,7 @@
 </view>
 <!-- 身份证扩展区域 start-->
 
-<view class="bottom" bindtap="confirm">确认</view>
+<view class="bottom {{isFullScreen ? 'is-full-screen' : ''}}" bindtap="confirm">确认</view>
 
 <view class="choosePhoto" wx:if="{{popWindow}}">
 	<view class="choosePhoto-container" catchtap="closePopWindow">

@@ -19,6 +19,7 @@ Page({
     invoiceList: [],
     newInvoice: [],
     hasAuthPhoneNum: false,
+    isFullScreen: false,
     confirmModal: {
       isShow: false,
       title: '请正确放置A4打印纸',
@@ -32,7 +33,8 @@ Page({
 
     this.getDetail(invoiceList)
     this.setData({
-      invoiceList: invoiceList
+      invoiceList: invoiceList,
+      isFullScreen: app.isFullScreen
     })
   },
 

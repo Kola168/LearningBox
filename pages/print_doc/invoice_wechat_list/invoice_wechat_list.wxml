@@ -31,7 +31,7 @@
 	<view class="bottom-tip-medium-text">只支持打pdf发票</view>
 </view>
 
-<view class="bottom">
+<view class="bottom {{isFullScreen ? 'is-full-screen' : ''}}">
 	<view class="bottom-left" bindtap="chooseFile" style="color:{{ allCount == 5 ? '#cecece' : '#666666'}};background:#fff;">
 		<text>继续选择</text>
 	</view>
