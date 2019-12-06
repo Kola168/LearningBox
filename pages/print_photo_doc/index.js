@@ -103,7 +103,7 @@ const chooseCtx = {
         height
       })
     } catch (e) {
-      console.log(e)
+      logger.info(e)
     }
   },
   getStorageImages: function(media_type) {
@@ -119,7 +119,7 @@ const chooseCtx = {
         })
       }
     } catch (e) {
-      console.log('getStorageImages == 获取本地图片失败')
+      logger.info('getStorageImages == 获取本地图片失败')
     }
   },
 
@@ -236,7 +236,7 @@ const chooseCtx = {
         }
       })
     } catch (e) {
-      console.log(e, '-----')
+      logger.info(e, '-----')
     }
   }),
   cancelUpload: co.wrap(function*() {
@@ -246,7 +246,7 @@ const chooseCtx = {
       count: 0,
       completeCount: 0
     })
-    console.log('手动停止上传还可以继续上传张数：', this.data.countLimit)
+    logger.info('手动停止上传还可以继续上传张数：', this.data.countLimit)
   }),
   getImageOrientation: co.wrap(function*(url) {
     let that = this
@@ -370,7 +370,7 @@ const chooseCtx = {
       allCount: this.data.allCount - 1
     })
     this.setStorage()
-    console.log('某张图片渲染失败后还可以继续上传张数：', this.data.countLimit)
+    logger.info('某张图片渲染失败后还可以继续上传张数：', this.data.countLimit)
   },
   //减张数
   decrease: function({
@@ -449,7 +449,7 @@ const chooseCtx = {
       allCount: this.data.allCount - count,
     })
     this.setStorage()
-    console.log('删除后剩余照片：', this.data.images)
+    logger.info('删除后剩余照片：', this.data.images)
   }),
   confirm: co.wrap(function*(e) {
     uploadFormId.dealFormIds(e.detail.formId, `print_${this.media_type}`)
@@ -523,7 +523,7 @@ const chooseCtx = {
       from: 'mini_app'
     }
 
-    console.log('订单生成参数', params)
+    logger.info('订单生成参数', params)
     this.setData({
       showConfirmModal: null,
     })
@@ -537,13 +537,13 @@ const chooseCtx = {
         dataType: 'json',
         data: params
       })
-      console.log(resp)
+      logger.info(resp)
       if (resp.data.code !== 0) {
         throw (resp.data)
       }
 
       this.longToast.toast()
-      console.log('订单创建成功', resp)
+      logger.info('订单创建成功', resp)
       wx.redirectTo({
         url: `../finish/index?type=photo_doc&media_type=${this.media_type}&state=${resp.data.order.state}`
       })
@@ -562,7 +562,7 @@ const chooseCtx = {
         allCount: this.data.images.length
       })
     } catch (e) {
-      console.log('图片存储到本地失败')
+      logger.info('图片存储到本地失败')
     }
   },
   onHide: function() {
@@ -585,16 +585,16 @@ const chooseCtx = {
   //     let loopCount = 0
   //     let _this = this
   //     if (app.openId) {
-  //       console.log('openId++++++++++++----', app.openId)
+  //       logger.info('openId++++++++++++----', app.openId)
   //       return
   //     } else {
   //       setTimeout(function() {
   //         loopCount++
   //         if (loopCount <= 100) {
-  //           console.log('openId not found loop getting...')
+  //           logger.info('openId not found loop getting...')
   //           _this.loopGetOpenId()
   //         } else {
-  //           console.log('loop too long, stop')
+  //           logger.info('loop too long, stop')
   //         }
   //       }, 2000)
   //     }
