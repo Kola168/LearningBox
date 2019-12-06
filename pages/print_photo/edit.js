@@ -11,7 +11,7 @@ const request = util.promisify(wx.request)
 import wxNav from '../../utils/nav.js'
 import api from '../../network/restful_request'
 
-let Loger=(app.apiServer=='https://epbox.gongfudou.com'||app.deBug)?function(){}:console.log
+let Loger=(app.apiServer!='https://epbox.gongfudou.com'||app.deBug)?console.log:function(){}
 
 Page({
 

@@ -13,7 +13,7 @@ const showModal = util.promisify(wx.showModal)
 import wxNav from '../../utils/nav.js'
 import storage from '../../utils/storage.js'
 
-let Loger=(app.apiServer=='https://epbox.gongfudou.com'||app.deBug)?function(){}:console.log
+let Loger=(app.apiServer!='https://epbox.gongfudou.com'||app.deBug)?console.log:function(){}
 
 Page({
 

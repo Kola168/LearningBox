@@ -12,7 +12,7 @@ const getImageInfo = util.promisify(wx.getImageInfo)
 const canvasToTempFilePath = util.promisify(wx.canvasToTempFilePath)
 const downloadFile = util.promisify(wx.downloadFile)
 
-let Loger=(app.apiServer=='https://epbox.gongfudou.com'||app.deBug)?function(){}:console.log
+let Loger=(app.apiServer!='https://epbox.gongfudou.com'||app.deBug)?console.log:function(){}
 
 // 照片编辑组件介绍
 // 参数：
@@ -148,7 +148,7 @@ Component({
             }
         }
     },
-    
+
     data: {
         TemplateSrc: '', //模板图片链接地址
         photoSrc: '', //组件传递过来的图片链接
