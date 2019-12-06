@@ -50,7 +50,7 @@ Page({
     }
     var furl = this.data.newInvoice[e.currentTarget.id].convert_url
     wx.downloadFile({
-      url: furl,
+      url: furl.url,
       success: function (res) {
         const filePath = res.tempFilePath
         wx.openDocument({
@@ -187,9 +187,10 @@ Page({
           pdf_url: item.user_info.pdf_url
         }
       })
+      var newInvoice = [].concat(this.data.newInvoice, tempInvoice)
       this.setData({
-        newInvoice: [].concat(this.data.newInvoice, tempInvoice),
-        count: this.data.newInvoice.length
+        newInvoice: newInvoice,
+        count: newInvoice.length
       })
 
       this.longToast.hide()

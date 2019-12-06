@@ -52,7 +52,7 @@ Page({
         tempInfo: {
           width: W,
           height:H,
-          top: 80 + app.navBarInfo.navBarHeight,
+          top: 120 + app.navBarInfo.navBarHeight,
           left: 30
        },
        mode: 'quadrectangle'
