@@ -45,7 +45,7 @@ Page({
       }
     },
     pic_a4: {
-      name: '7寸照片',
+      name: 'a4照片',
       size: {
         width: 2520,
         height: 3564,

@@ -36,9 +36,9 @@ Page({
     scale: 1,
     originalUrl: '',
     pointData: null,
-    croppers: null
+    croppers: null,
+    isFullScreen: false,
   },
-
   model_data: {
     media_type: 'copy'
   },
@@ -48,11 +48,12 @@ Page({
     this.longToast = new app.weToast();
     this.initPage(options)
     this.setData({
+      isFullScreen: app.isFullScreen,
       croppers: {
         tempInfo: {
           width: W,
           height:H,
-          top: 80 + app.navBarInfo.navBarHeight,
+          top: 120 + app.navBarInfo.navBarHeight,
           left: 30
        },
        mode: 'quadrectangle'
@@ -393,7 +394,6 @@ Page({
       if (resp.code != 0) {
         throw (resp)
       }
-      console.log(resp, '=====resp====')
       var img_src = resp && resp.res.url
       event.emit('card_url_data', {
         url: img_src,

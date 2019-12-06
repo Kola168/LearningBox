@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2019-12-05 21:14:27
- * @LastEditTime: 2019-12-05 21:21:05
- * @LastEditors: your name
+ * @LastEditTime: 2019-12-06 14:44:28
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /LearningBox/pages/print_photo/mediachoose.wxml
  -->
@@ -40,7 +40,7 @@
     <text class="media-title">A4照片</text>
     <text class="media-size">A4尺寸照片纸</text>
   </view>
-  <view class="photo-media-box">
+  <view class="photo-media-box" bindtap="printId">
     <image src="/images/printphoto_id.png" mode="widthFix" class="photo-media-icon"></image>
     <text class="media-title">证件照</text>
     <text class="media-size">多尺寸可换背景</text>

@@ -34,6 +34,7 @@ Page({
     ],
     img_url: null,
     hasAuthPhoneNum: false,
+    isFullScreen: false,
     confirmModal: {
       isShow: false,
       title: '请正确放置A4打印纸',
@@ -45,6 +46,7 @@ Page({
     this.longToast = new app.weToast()
     this.initArea()
     this.setData({
+      isFullScreen: app.isFullScreen,
       preUrl: decodeURIComponent(options.preUrl),
       img_url: decodeURIComponent(options.url)
     })

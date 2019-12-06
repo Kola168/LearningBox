@@ -39,7 +39,7 @@
 	</view>
 </view>
 
-<view class='bottom'>
+<view class="bottom {{isFullScreen ? 'is-full-screen' : ''}}">
 	<view class='bottom-left' bindtap='choose'>
 		<text>继续选择</text>
 	</view>

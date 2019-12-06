@@ -119,7 +119,7 @@
 		</view>
 	</view>
 </view>
-<view class="conf-box">
+<view class="conf-box {{isFullScreen ? 'is-full-screen' : ''}}">
 	<form report-submit="true" bindsubmit="confCheck">
 		<button open-type="{{hasAuthPhoneNum ? '' : 'getPhoneNumber'}}" bindgetphonenumber="{{hasAuthPhoneNum ? '' : 'getPhoneNumber'}}" formType="submit">确认打印</button>
 	</form>

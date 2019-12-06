@@ -82,7 +82,7 @@ page {
     margin: 30rpx;
 }
 
-.color {
+.effect-tip, .color {
     display: flex;
     align-items: center;
 }
