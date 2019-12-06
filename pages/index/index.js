@@ -153,7 +153,7 @@ Page({
       homeType: this.data.homeType == 'subject' ? 'beforSchool' : 'subject'
     })
   },
-  toId: function () {
-    router.navigateTo('/pages/print_id/index')
-  }
+  // toId: function () {
+  //   router.navigateTo('/pages/print_id/index')
+  // }
 })

@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2019-12-05 21:00:18
- * @LastEditTime: 2019-12-05 21:22:01
- * @LastEditors: your name
+ * @LastEditTime: 2019-12-06 10:26:04
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /LearningBox/pages/print_photo/mediachoose.js
  */
@@ -32,5 +32,9 @@ Page({
 
 	printPhotoDoc:function(){
 		wxNav.navigateTo('/pages/print_photo_doc/index')
+	},
+
+	printId:function(){
+		wxNav.navigateTo('/pages/print_id/index')
 	}
 })
