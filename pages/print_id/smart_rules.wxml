@@ -1,5 +1,5 @@
 <!--pages/idprint/rules.wxml-->
-<nav-bar background="#fff" title="示例"></nav-bar>
+<nav-bar background="#fff" title="{{spec.name}}"></nav-bar>
 <view class='wrap bg-white'>
     <view class='example color-darkgray'>
         <view class='title'>
