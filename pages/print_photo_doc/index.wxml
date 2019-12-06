@@ -29,9 +29,9 @@
             <!-- 页面无图片 -->
             <block wx:if="{{!images.length}}">
                 <view class="empty-image">
-                    <image class="upload-m-icon" src="https://cdn.gongfudou.com/miniapp/ec/upload_m_icon.png" mode="widthFix" bindtap="changeImage"></image>
+                    <image class="upload-m-icon" src="https://cdn-h.gongfudou.com/LearningBox/main/pic2doc_add_img.png" mode="widthFix" bindtap="changeImage"></image>
                     <view>点击此处上传照片吧</view>
-                    <image class="use-handbook" src="https://cdn.gongfudou.com/miniapp/ec/use_handbook.png" mode="widthFix"></image>
+                    <image class="use-handbook" src="https://cdn-h.gongfudou.com/LearningBox/main/pic2doc_tip_message.png" mode="widthFix"></image>
                 </view>
             </block>
         </view>
@@ -68,8 +68,8 @@
         <confirm-print bindconfirm="userConfirm" modal="{{confirmModal}}"></confirm-print>
     </block>
     <block wx:else>
-        <image src="https://cdn.gongfudou.com/miniapp/ec/pic_to_doc_desc_a.png" class="photo_doc" mode="widthFix"></image>
-        <image src="https://cdn.gongfudou.com/miniapp/ec/pic_to_doc_desc_b.png" class="photo_doc photo-last" mode="widthFix"></image>
+        <image src="https://cdn-h.gongfudou.com/LearningBox/main/pic2doc_intro_01.png" class="photo_doc" mode="widthFix"></image>
+        <image src="https://cdn-h.gongfudou.com/LearningBox/main/pic2doc_intro_02.png" class="photo_doc photo-last" mode="widthFix"></image>
         <view class='btn' bindtap='toUse'>
             <button hover-class="none">开始使用</button>
         </view>
