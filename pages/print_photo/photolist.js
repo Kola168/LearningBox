@@ -12,6 +12,9 @@ const showModal = util.promisify(wx.showModal)
 
 import wxNav from '../../utils/nav.js'
 import storage from '../../utils/storage.js'
+
+let Loger=(app.apiServer!='https://epbox.gongfudou.com'||app.deBug)?console.log:function(){}
+
 Page({
 
 
@@ -42,7 +45,7 @@ Page({
       }
     },
     pic_a4: {
-      name: '7寸照片',
+      name: 'a4照片',
       size: {
         width: 2520,
         height: 3564,
@@ -101,7 +104,7 @@ Page({
   },
 
   chooseImgs: co.wrap(function*(e) {
-    console.log(e)
+    Loger(e)
     let imgs = e.detail.tempFiles
     let that = this
     let paths = []
@@ -112,7 +115,7 @@ Page({
           paths.push(value.path)
         }
       })
-      console.log(paths)
+      Loger(paths)
       //没有可用图片列表时提示
       if (paths.length == 0) {
         this.setData({
@@ -157,7 +160,7 @@ Page({
           })
         })
       }
-    } catch (e) { console.log(e) }
+    } catch (e) { Loger(e) }
   }),
 
 
@@ -197,9 +200,9 @@ Page({
       if (imageInfo.width < 600 || imageInfo.height < 600) {
         image.isSmallImage = true
       }
-      console.log(image)
+      Loger(image)
       this.data.photoList.push(image)
-      console.log(this.data.photoList)
+      Loger(this.data.photoList)
       this.setData({
         photoList: this.data.photoList
       })
@@ -219,10 +222,10 @@ Page({
             })
           }, 5000)
         }
-        console.log('***图片处理结束，所有照片：***', that.data.photoList)
+        Loger('***图片处理结束，所有照片：***', that.data.photoList)
       }
     } catch (e) {
-      console.log(e)
+      Loger(e)
     }
   }),
 
@@ -282,7 +285,7 @@ Page({
 
   toEdit: function(e) {
     let index = e.currentTarget.dataset.index
-    console.log(this.data.photoMedia)
+    Loger(this.data.photoMedia)
     wxNav.navigateTo('/pages/print_photo/edit', {
       imgInfo: encodeURIComponent(JSON.stringify(this.data.photoList[index])),
       index: index,
@@ -298,21 +301,21 @@ Page({
         photoList: this.data.photoList
       })
     } catch (e) {
-      console.log('图片存储到本地失败')
+      Loger('图片存储到本地失败')
     }
   },
 
   getStorageImages: function() {
     try {
       let galleryImages =storage.get(this.mediaType)
-      console.log(galleryImages)
+      Loger(galleryImages)
       if(galleryImages){
         this.setData({
           photoList: galleryImages.photoList,
         })
       }
     } catch (e) {
-      console.log('获取本地图片失败')
+      Loger('获取本地图片失败')
     }
   },
 
@@ -343,7 +346,7 @@ Page({
         addBoxHeight: height
       })
     } catch (e) {
-      console.log(e)
+      Loger(e)
     }
   },
 })

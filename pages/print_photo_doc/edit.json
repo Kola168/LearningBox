@@ -4,6 +4,8 @@
   "navigationBarTitleText": "图片编辑",
   "disableSwipeBack": true,
   "usingComponents": {
-    "cropper-img": "../../components/cropper-img/cropper-img"
+    "cropper-img": "../../components/cropper-img/cropper-img",
+    "confirm-reinforce-modal": "../../components/confirm-reinforce-modal/index",
+    "progress-modal": "../../components/progress-modal/index"
   }
 }
