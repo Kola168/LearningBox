@@ -28,7 +28,7 @@ Page({
 
   onLoad (options) {
     this.longToast = new app.weToast()
-    var invoiceList = JSON.parse( (options.invoiceList)) //解析得到集合
+    var invoiceList = JSON.parse( decodeURIComponent(options.invoiceList)) //解析得到集合
 
     this.getDetail(invoiceList)
     this.setData({
@@ -176,7 +176,7 @@ Page({
       if (resp.code != 0) {
         throw (resp)
       }
-  
+      console.log(resp,'==resp==')
       var tempInvoice = resp.data.item_list.map(item => {
         return {
           payee: item.payee,
