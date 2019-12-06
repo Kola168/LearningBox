@@ -23,7 +23,7 @@ Page({
 
     toPrint: function (e) {
         let media_type = e.currentTarget.id
-        router.navigateTo(`normal_edit`,{
+        router.navigateTo(`/pages/print_id/normal_edit`,{
             media_type
         })
     }
