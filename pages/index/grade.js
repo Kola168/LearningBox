@@ -1,18 +1,40 @@
 // pages/index/grade.js
+const app = getApp()
+import wxNav from '../../utils/nav.js'
+import api from '../../network/restful_request.js'
+import router from '../../utils/nav'
+import {
+  co
+} from '../../utils/common_import.js'
+import regeneratorRuntime from '../../lib/co/runtime'
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-
+    discipline: [
+      ['0~3岁', '小班', '中、大班'],
+      ['一年级', '二年级', '三年级', '四年级', '五年级', '六年级'],
+      ['七年级', '八年级', '九年级'],
+      ['高一', '高二', '高三']
+    ],
+    activeGrade: '0~3岁'
   },
-
+  chooseGrade: co.wrap(function* (e) {
+    this.setData({
+      activeGrade: e.currentTarget.id
+    })
+    this.longToast.toast({
+      type: "loading",
+      duration: 0
+    })
+  }),
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    this.longToast = new app.weToast()
   },
 
   /**
