@@ -1,0 +1,72 @@
+/* components/confirm-reinforce-modal/index.wxss */
+
+.confirm-modal {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    z-index: 99999;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.confirm-modal .confirm-main {
+    position: relative;
+    margin: 0 66rpx;
+    width: 80vw;
+    height: 50vh;
+    border-radius: 20rpx;
+    background-color: #fff;
+}
+
+
+.confirm-title {
+    margin: 64rpx 0 40rpx 0;
+    font-size: 36rpx;
+    font-weight: 400;
+    color: #333333;
+    text-align: center;
+}
+
+.confirm-content {
+    font-size: 28rpx;
+    color: #333333;
+    margin: 0 44rpx 28rpx;
+    white-space: wrap!important;
+}
+
+.example-area {
+    display: flex;
+    justify-content: space-around;
+    margin: 30rpx 0 30rpx 0;
+    font-size: 24rpx;
+    color: #666666;
+}
+
+.example-area .origin-ctx, .reinforce-ctx{
+    text-align: center;
+}
+
+.example-area .origin-ctx-image {
+    width: 150rpx;
+    height: 202rpx;
+    margin-bottom: 16rpx;
+}
+
+.btn-confirm {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 98rpx;
+    line-height: 98rpx;
+    text-align: center;
+    font-size: 36rpx;
+    border-radius: 0 0 20rpx 20rpx;
+    color: #000;
+    background: #ffe27a;
+}

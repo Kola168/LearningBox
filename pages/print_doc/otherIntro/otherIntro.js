@@ -2,6 +2,7 @@ const app = getApp()
 import router from '../../../utils/nav'
 Page({
   data: {
+    isFullScreen: false,
     platform: 'ios',
     imgList: [],
     imgArr: {
@@ -37,6 +38,7 @@ Page({
       imgList = platform === 'ios' ? imgArr[type][0] : imgArr[type][1];
     }
     this.setData({
+      isFullScreen: app.isFullScreen,
       type: type,
       imgList: imgList,
       platform: platform

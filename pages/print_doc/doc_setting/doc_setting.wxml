@@ -118,7 +118,7 @@
 		</view>
 	</view>
 </view>
-<view class="conf-box" bindtap="confCheck">确认设置</view>
+<view class="conf-box {{isFullScreen ? 'is-full-screen' : ''}}" bindtap="confCheck">确认设置</view>
 <view class="confirm-main" wx:if="{{showConfirm}}" catchtap="cancelRepair">
 	<view class="confirm-modal">
 		<view class="confirm-title">确认使用文件修复吗？</view>

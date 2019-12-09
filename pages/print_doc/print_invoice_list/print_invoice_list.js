@@ -19,6 +19,7 @@ Page({
     invoiceList: [],
     newInvoice: [],
     hasAuthPhoneNum: false,
+    isFullScreen: false,
     confirmModal: {
       isShow: false,
       title: '请正确放置A4打印纸',
@@ -28,11 +29,12 @@ Page({
 
   onLoad (options) {
     this.longToast = new app.weToast()
-    var invoiceList = JSON.parse( (options.invoiceList)) //解析得到集合
+    var invoiceList = JSON.parse( decodeURIComponent(options.invoiceList)) //解析得到集合
 
     this.getDetail(invoiceList)
     this.setData({
-      invoiceList: invoiceList
+      invoiceList: invoiceList,
+      isFullScreen: app.isFullScreen
     })
   },
 
@@ -50,7 +52,7 @@ Page({
     }
     var furl = this.data.newInvoice[e.currentTarget.id].convert_url
     wx.downloadFile({
-      url: furl,
+      url: furl.url,
       success: function (res) {
         const filePath = res.tempFilePath
         wx.openDocument({
@@ -173,11 +175,11 @@ Page({
       const resp = yield api.getInvoiceInfo({
         item_list: invoiceList
       })
+
       if (resp.code != 0) {
         throw (resp)
       }
-  
-      var tempInvoice = resp.data.item_list.map(item => {
+      var tempInvoice = resp.res.convert_urls.item_list.map(item => {
         return {
           payee: item.payee,
           title: item.user_info.title,
@@ -187,11 +189,12 @@ Page({
           pdf_url: item.user_info.pdf_url
         }
       })
-
+      var newInvoice = [].concat(this.data.newInvoice, tempInvoice)
       this.setData({
-        newInvoice: this.data.newInvoice.concat(tempInvoice),
-        count: this.data.newInvoice.length
+        newInvoice: newInvoice,
+        count: newInvoice.length
       })
+
       this.longToast.hide()
     } catch (e) {
       this.longToast.hide()

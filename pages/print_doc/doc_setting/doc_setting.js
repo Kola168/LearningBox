@@ -48,7 +48,8 @@ Page({
       {
         name: '仅打印偶数页',
         _id: 'even'
-    }]
+    }],
+    isFullScreen: false
   },
 
   onLoad: co.wrap(function*(options) {
@@ -89,7 +90,10 @@ Page({
         tempData.extract = 'all'
       }
 
-      this.setData(tempData)
+      this.setData({
+        ...tempData,
+        isFullScreen: app.isFullScreen
+      })
     } catch (e) {
       logger.info(e)
       util.showError(e)

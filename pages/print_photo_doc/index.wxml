@@ -16,7 +16,7 @@
                         <view>
                             <image class="count-button" src="{{item.count<2?'../../images/print_photo_cutgray.png':'../../images/print_photo_cutimg.png'}}" mode="widthFix" bindtap="decrease" id="{{index}}"></image>
                             <view class="count-num">{{item.count}}</view>
-                            <image class="count-button" src="{{item.count<49&&item.count!==0?'../../images/doc_minus_y.png':'../../images/doc_document_add_gray.png'}}" mode="widthFix" bindtap="increase" id="{{index}}"></image>
+                            <image class="count-button" src="{{item.count<49&&item.count!==0?'../../images/print_photo_plussimg.png':'../../images/doc_document_add_gray.png'}}" mode="widthFix" bindtap="increase" id="{{index}}"></image>
                         </view>
                     </view>
                 </view>

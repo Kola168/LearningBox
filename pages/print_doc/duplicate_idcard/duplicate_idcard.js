@@ -13,9 +13,9 @@ const chooseMessageFile = util.promisify(wx.chooseMessageFile)
 import router from '../../../utils/nav'
 import storage from '../../../utils/storage'
 import getLoopsEvent from '../../../utils/worker'
-import api from '../../../network/restful_request'
 Page({
   data: {
+    isFullScreen: false,
     title: '',
     popWindow: false,
     tipsWindow: false,
@@ -136,6 +136,7 @@ Page({
     _this.longToast = new app.weToast()
     let opt_types = options.type;
     _this.setData({
+      isFullScreen: app.isFullScreen,
       type: opt_types,
       typeInfo: _this.data.idType[opt_types],
       title: _this.data.idType[opt_types][0].name

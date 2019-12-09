@@ -40,7 +40,7 @@
 	<view class="bottom-tip-medium">
 		<view class="bottom-tip-medium-text">目前只支持doc、docx、ppt、pptx、pdf、xls、xlsx 7种格式</view>
 	</view>
-	<view class="bottom">
+	<view class="bottom {{isFullScreen ? 'is-full-screen' : ''}}">
 		<view class="bottom-left" bindtap="chooseDocFile">
 			<text>继续选择</text>
 		</view>

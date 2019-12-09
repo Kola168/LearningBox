@@ -6,7 +6,7 @@
 </view>
 <view class="line" style="width:{{width}}px" />
 
-<view class="bottom-main">
+<view class="bottom-main {{isFullScreen ? 'is-full-screen' : ''}}">
 	<view class="number">
 		<view>打印份数</view>
 		<view class="count">

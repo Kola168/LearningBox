@@ -51,6 +51,8 @@ App({
   sysInfo: null,
   navBarInfo: null,
   rpxPixel: 0.5,
+  deBug:false, //线上环境log调试
+  
   onLaunch: co.wrap(function* () {
     yield this.getOpenId()
     yield this.getSystemInfo()
