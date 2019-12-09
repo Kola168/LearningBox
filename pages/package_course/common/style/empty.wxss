@@ -1,0 +1,17 @@
+/* empty */
+.empty-main {
+    text-align: center;
+    margin: 200rpx auto 38vh;
+}
+
+.empty-main image {
+    width: 100rpx;
+    height: 100rpx;
+    margin-bottom: 30rpx;
+    vertical-align: top;
+}
+
+.empty-main view {
+    font-size: 36rpx;
+    color: #666666;
+}

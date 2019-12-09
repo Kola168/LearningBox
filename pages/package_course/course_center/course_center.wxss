@@ -1,0 +1,8 @@
+@import '../common/style/course_list.wxss';
+@import '/common/wxss/common.wxss';
+@import '../common/style/empty.wxss';
+
+.course-main {
+    padding: 0 24rpx 0;
+}
+

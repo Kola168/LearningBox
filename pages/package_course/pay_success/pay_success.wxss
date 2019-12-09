@@ -1,0 +1,42 @@
+/* pages/error_book/pages/course/pay_success/pay_success.wxss */
+@import '/common/wxss/common.wxss';
+
+.payment-header {
+    flex-direction: column;
+}
+
+.pay-success-icon {
+    margin: 120rpx 0 40rpx 0;
+    vertical-align: top;
+    width: 160rpx;
+    height: 160rpx;
+    border-radius: 160rpx;
+}
+
+.btn-container {
+    padding: 10rpx 46rpx;
+}
+
+.btn-container .btn {
+    text-align: center;
+    width: 320rpx;
+    height: 80rpx;
+    line-height: 80rpx;
+    border-radius: 44rpx;
+    font-size: 32rpx;
+    box-sizing: border-box;
+}
+
+.btn-container .btn-cancel {
+    border: 1px solid #CECECE;
+    color: #999999;
+} 
+
+.btn-container .btn-study {
+    background-color: #FFE27A;
+    color: #454545;
+} 
+
+.margin-b-60 {
+    margin-bottom: 120rpx;
+}

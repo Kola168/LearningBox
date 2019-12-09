@@ -1,0 +1,36 @@
+<wxs src="../common/wxs/utils.wxs" module="utils" />
+<import src="../common/temps/course_area.wxml" />
+
+<nav-bar background="#fff" title="课程中心" />
+<view class="course-main">
+	<view class="mine-list">
+		<view
+		 class="mine-item sys-flex"
+		 wx:for="{{courseList}}"
+		 wx:key="{{index}}"
+		 bindtap="enterDetail"
+		 data-sn="{{item.sn}}"
+		>
+			<image class="" src="{{item.iconUrl}}" mode="aspectFill">
+				<view class="free-tag f-14" wx:if="{{(item.discount.discountType==='non_free' || item.discount.discountType === 'free') && !is_android}}">免费</view>
+			</image>
+			<view class="content-info">
+				<view class="course-title f-16">{{item.desc}}</view>
+				<!-- 是否支付 -->
+				<view class="f-14 course-status" wx:if="{{item.payed}}">
+					{{is_android ? '已购买' : '已加入学习'}}
+				</view>
+				<template is="collectVipInfo" data="{{item, is_android, isMember}}" />
+			</view>
+			<view class="arrow-r" />
+		</view>
+	</view>
+	<view class="empty-main" wx:if="{{is_empty}}">
+		<image src="" mode="aspectFill" />
+		<view>暂无课程~~</view>
+	</view>
+</view>
+
+<import src="../../../lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />
+

@@ -1,0 +1,24 @@
+
+<nav-bar background="#fff" title="课程" />
+<view class="img-container img-{{lessonImgs.length>2?3:lessonImgs.length}}">
+  <view class="img-box" wx:for="{{lessonImgs}}" wx:key="{{index}}" id="{{index}}" data-check="{{item.isCheck}}" bindtap="checkImg">
+    <image src="{{lessonImgs.length===1?item.imgObj.url+'?x-image-process=image/quality,q_100/watermark,image_bWljcm8vRXBib3gvc2h1aXlpbi9zaHVpeWluX25ldy5wbmc=,t_100,g_center':item.imgObj.url+'?x-image-process=image/resize,w_300'}}" class="box-img" mode="widthFix" />
+    <image src="../images/selected.png" wx:if="{{(item.isCheck&&lessonImgs.length>1)}}" class="img-check" />
+    <image src="../images/zoom_big.png" class="zoom-big" wx:if="{{lessonImgs.length>1}}" catchtap="zoomImg" id="{{index}}" />
+  </view>
+</view>
+<view class="handle-bar" wx:if="{{loadReady}}">
+  <view class="bar-count" wx:if="{{lessonImgs.length>1}}">
+    <view class="all-check" bindtap="allCheck">
+      <image src="/images/check_{{allCheck ? 'yes' : 'no'}}.png" />
+      <view>全选</view>
+    </view>
+    <view class="all-check">已选：{{count}}张</view>
+  </view>
+  <button class="bar-print" open-type="{{hasAuthPhoneNum ? '' : 'getPhoneNumber'}}" bindgetphonenumber="{{hasAuthPhoneNum ? '' : 'getPhoneNumber'}}" bindtap="toConfirm">开始打印</button>
+</view>
+
+<!-- 打印确认框 -->
+<confirm-print bindconfirm="print" modal="{{confirmModal}}"></confirm-print>
+<import src="../../../lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />

@@ -1,0 +1,185 @@
+<gio-marketing />
+
+<wxs module="filter">
+var getFileType = function(url){
+    var urls = url.split('.'),
+        typeText = urls[urls.length - 1].toLowerCase()
+    switch (typeText){
+      case 'mp4':
+        return 'video'
+        break
+      case 'jpg':
+      case 'jpeg':
+      case 'png':
+        return 'pic'
+        break
+    }
+}
+module.exports = {
+  getFileType:getFileType
+}
+</wxs>
+<nav-bar background="#fff" title="{{title}}" />
+<scroll-view scroll-y bindscroll="pageScroll" class="scroll-wrap" style="height:{{viewHeight}}px;" scroll-top="{{scrollTop}}">
+  <swiper class="swiper" indicator-dots indicator-active-color="#2086ee" autoplay="{{course.banners.length>0}}" interval="{{interval}}" circular>
+    <swiper-item wx:for="{{course.banners}}" wx:key="{{index}}">
+      <block wx:if="{{filter.getFileType(item)==='pic'}}">
+        <image src="{{item}}" class="slide-img" mode="widthFix" />
+      </block>
+      <block wx:else>
+        <video src="{{item}}" class="slide-video" />
+      </block>
+    </swiper-item>
+  </swiper>
+  <view class="course-container">
+    <view class="nav-box">
+      <view class="course-nav {{isFixedNav?'nav-fixed':''}}" style="top: {{navBarTop}}px" id="course_nav">
+        <view class="nav-item {{activeTab==0?'nav-item-active':''}}" id="0" bindtap="navTap">
+          课程简介
+        </view>
+        <view class="nav-item {{activeTab==1?'nav-item-active':''}}" id="1" bindtap="navTap">
+          课程列表
+        </view>
+        <view class="nav-item {{activeTab==2?'nav-item-active':''}}" wx:if="{{supplyTypes.length>0}}" id="2" bindtap="navTap">
+          专属推荐
+        </view>
+      </view>
+    </view>
+    <view class="nav-content">
+      <view class="nav-content-1" wx:if="{{activeTab==0}}">
+        <view class="discount-date" wx:if="{{course.discount_end_at&&!course.payed&&isAndroid}}">
+          <view class="date-box">
+            <image src="../images/hui.png" />
+            <view>当前优惠持续到：{{course.discount_end_at}}</view>
+          </view>
+        </view>
+        <rich-text nodes="{{course.introduction}}"></rich-text>
+        <view class="good-tip" wx:if="{{isAndroid}}">温馨提示：本商品一经售出，不可退款，不可转让。敬请谅解。</view>
+      </view>
+      <view class="nav-content-2" wx:if="{{activeTab==1}}">
+        <view class="course-content-top">
+          <view class="course-count">
+            <image src="../images/book.png" />
+            <view>
+              {{course.payed?"已学："+course.finished_lessons+"/":"共"}}{{course.total_lessons}}课时
+            </view>
+          </view>
+          <view class="course-limit" wx:if="{{course.print_limit > -1}}">
+            课程可打印次数{{course.print_limit}}次
+          </view>
+        </view>
+        <view class="course-item course-item-{{index}}" wx:for="{{course.course_chapters}}" wx:key="{{index}}" id="{{index}}" bindtap="unfoldChapter" wx:if="{{item.course_lessons.length>0}}">
+          <view class="chapter-fold">
+            <view class="fold-left">
+              <view class="name-wrap {{item.state === 'finished' ? 'has-study' : ''}}">
+                <image src="../images/list_{{item.state === 'finished' ? 'gray' : 'black'}}.png" />
+                <view>{{item.name}}</view>
+              </view>
+              <view wx:if="{{course.payed&&item.state!=='new'}}" class="fold-tag {{item.state==='finished' ? 'hollow' : 'danger'}}-tag">
+                {{item.state==='finished' ? '已学习' : '学习中'}}
+              </view>
+              <blcok wx:else>
+                <view wx:if="{{item.trial}}" class="fold-tag primary-tag">可试学</view>
+                <view wx:if="{{!item.trial && item.share_to_trial}}" class="fold-tag danger-tag">
+                  <image src="../images/rocket.png" />
+                  <view>{{course.promotion_num}}人助力可解锁</view>
+                </view>
+              </blcok>
+            </view>
+            <view class="fold-right">
+              <image src="../images/arrow_{{item.unfoldChapter?'top':'bottom'}}_gray.png" />
+            </view>
+          </view>
+          <view class="chapter {{item.unfoldChapter ? 'chapter-fold-half' : ''}} {{item.unfoldChapterAll && item.unfoldChapter ? 'chapter-fold-all' : ''}}" hidden="{{!item.unfoldChapter}}">
+            <view class="chapter-item" wx:for="{{item.course_lessons}}" wx:for-index="chapterIndex" wx:key="{{chapterIndex}}" wx:for-item="chapterItem" data-lock="{{chapterItem.locked}}" data-shareable="{{chapterItem.share_to_trial}}" id="{{chapterItem.sn}}" catchtap="chapterClick">
+              <view class="chapter-name">
+                <view class="name-wrap {{chapterItem.state === 'finished' ? 'has-study' : ''}}">
+                  {{chapterItem.name}}
+                </view>
+                <view wx:if="{{course.payed}}" class="fold-tag {{chapterItem.state === 'finished' ? 'hollow' : '' }}-tag">
+                  {{chapterItem.state === 'finished' ? '已学习' : ''}}
+                </view>
+                <blcok wx:else>
+                  <view wx:if="{{chapterItem.trial}}" class="fold-tag primary-tag">可试学</view>
+                  <view wx:if="{{chapterItem.share_to_trial}}" class="fold-tag danger-tag">
+                    <image src="../images/rocket.png" />
+                    <view>{{course.promotion_num}}人助力可解锁</view>
+                  </view>
+                </blcok>
+              </view>
+              <image src="../images/course_lock.png" wx:if="{{chapterItem.locked}}" class="chapter-lock" />
+              <image src="../images/arrow_right_gray.png" wx:else class="chapter-arrow" />
+            </view>
+            <view class="item-more" catchtap="unfoldChapterAll" hidden="{{item.unfoldChapterAll||item.course_lessons.length<5}}" data-index="{{index}}">
+              <view>查看更多</view>
+              <image src="../images/arrow_bottom_gray.png" />
+            </view>
+          </view>
+        </view>
+      </view>
+      <view class="nav-content-3" wx:if="{{activeTab == 2}}">
+        <view class="exclusive-item" wx:for="{{supplyTypes}}" wx:key="{{index}}" id="{{index}}" bindtap="toExclusive">
+          <image src="{{item.image_url}}" mode="widthFix" />
+          <!-- <view class="exclusive-btn">{{isAndroid?'购买':'点击查看'}}</view> -->
+        </view>
+      </view>
+    </view>
+  </view>
+</scroll-view>
+<view class="handle-bar" wx:if="{{loadReady}}">
+  <view bindtap="collectCourse">
+    <image src="../images/collection_{{isCollected?'on':'off'}}.png"></image>
+    <view>收藏</view>
+  </view>
+  <view>
+    <view class="share-tip" hidden="{{hiddenShareTip || !canShare || !unionId}}">
+      <image src="../images/share_clock.png" mode="widthFix" bindtap="closeShareTip"/>
+    </view>
+
+    <form report-submit="{{true}}" bindsubmit="uploadFormId">
+      <button open-type="share" form-type="submit" hover-class="none" class="{{course.payed?'has-buy':''}}">
+        <image src="/images/doc_gfd_share_gray.png" wx:if="{{!course.payed}}"></image>
+        <text>{{canShare && unionId ? '助力' : '分享'}}</text>
+      </button>
+    </form>
+  </view>
+  <view class="course-buy" bindtap="toBuy" wx:if="{{!course.payed}}">
+    <block wx:if="{{isAndroid}}">
+      <view>我要学习</view>
+      <view class="course-price">¥{{course.display_price}}</view>
+    </block>
+    <block wx:else>加入学习</block>
+  </view>
+</view>
+<view class="unlock-video" wx:if="{{showCodeCourseModal}}">
+  <view class="unlock-wrap">
+    <image src="../images/unlock_top.png" mode="widthFix" />
+    <view class="unlock-head">领取免费视频课程步骤介绍</view>
+    <view class="unlock-main">
+      <view class="text-title">购买成功啦！打印课程搭配在线视频课程，学习效果更佳哦！</view>
+      <view class="text-step">
+        <view class="step-item">
+          1.打印
+          <text>第一课时“在线视频课程解锁说明页”</text>
+          ，按照说明页上的步骤，使用下方兑换码，解锁在线视频课程
+        </view>
+        <view class="step-item">
+          2.另外您还可以前往
+          <text>“我的课程”</text>
+          中查看课程对应的兑换码
+        </view>
+      </view>
+      <view class="unlock-code">
+        <view>兑换码：{{course.code}}</view>
+        <view class="code-copy" bindtap="copyCode">复制</view>
+      </view>
+      <checkbox-group class="not-tip" bindchange="checkboxChange">
+          <checkbox checked="{{checkboxFlag}}" color="#FFDC5E" id="not-tip" />
+          <label for="not-tip">不再提示</label>
+      </checkbox-group>
+      <view class="unlock-btn" bindtap="closeCodeCourseModal">知道了</view>
+    </view>
+  </view>
+</view>
+<import src="../../../lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />

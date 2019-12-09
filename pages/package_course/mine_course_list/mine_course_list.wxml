@@ -1,0 +1,55 @@
+<wxs src="../common/wxs/utils.wxs" module="utils" />
+<import src="../common/temps/course_area.wxml" />
+
+<nav-bar background="#fff" title="{{title}}" />
+<view class="course-list">
+	<view class="course-tab sys-flex">
+		<view
+		 class="tab-item"
+		 wx:for="{{tabList}}"
+		 data-index="{{index}}"
+		 wx:key="*this"
+		 bindtap="switchTab"
+		>
+			<view class="tab-title f-16 {{index === active_index ? 'active-title' : ''}}">{{item.title}}</view>
+			<view class="tab-line {{index === active_index ? 'active-line' : ''}}" />
+		</view>
+	</view>
+	<view class="cover-box" />
+	<view class="mine-list" wx:if="{{!is_empty}}">
+		<view
+		 class="mine-item sys-flex flex-dir-column"
+		 wx:for="{{active_index ? favorList : courseList}}"
+		 wx:key="{{index}}"
+		 bindtap="enterDetail"
+		 data-sn="{{item.sn}}"
+		>
+			<view class="mine-t-item sys-flex ">
+				<image src="{{item.main_image_url}}" mode="aspectFill">
+					<view class="free-tag f-14" wx:if="{{item.discount_price_yuan != null && item.discount_price_yuan <= 0 && !is_android}}">免费</view>
+				</image>
+				<view class="content-info">
+					<view class="course-title f-16">{{item.desc}}</view>
+					<!-- 是否支付 -->
+					<view class="f-14 course-status" wx:if="{{item.payed}}">
+						{{is_android ? '已购买' : '已加入学习'}}
+					</view>
+					<template is="{{active_index ? 'collectInfo' : 'course'}}" data="{{item, is_android}}" />
+				</view>
+				<view class="arrow-r" />
+			</view>
+			<view class="mine-border mine-b-item sys-flex f-12" wx:if="{{item.code}}">
+				<view class="activate-code color-666">兑换码: {{item.code}}</view>
+				<view class="btn-active" catchtap="copyActiveCode" data-code="{{item.code}}">复制</view>
+			</view>
+		</view>
+	</view>
+	<view class="empty-main" wx:if="{{is_empty}}">
+		<image src="" mode="aspectFill" />
+		<view>暂无{{active_index ? '收藏' : '课程'}}~~</view>
+	</view>
+	<!--<connect-ours></connect-ours>-->
+</view>
+<import src="../../../lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />
+

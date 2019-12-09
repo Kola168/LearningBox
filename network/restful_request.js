@@ -94,7 +94,30 @@ const api = {
   }),
   processes:(params)=>request.post(`processes`,params, {
     baseURL: `${app.apiServer}/api/v1/`
-  })
+  }),
+  // 收藏
+  collectCourse: (openId, sn, type) => request.post(`collections/${openId}/create`, {
+    sn: sn,
+    type: type
+  }, {
+    baseURL: `${app.apiServer}/boxapi/v2/`
+  }),
+
+  // 取消收藏
+  deleteCollectCourse: (openId, sn, type) => request.post(`collections/${openId}/delete`, {
+    sn: sn,
+    type: type
+  }, {
+    baseURL: `${app.apiServer}/boxapi/v2/`
+  }),
+  // 发起助力
+  sendAssistance: (sn) => request.post(`/boxapi/v2/course_base/assistance/${sn}`, {}, {
+    baseURL: `${app.apiServer}/boxapi/v2/`
+  }),
+  // 获取分享助力信息
+  getShareAssistance: (sn) => request.get(`/boxapi/v2/course_base/share/${sn}`, {}, {
+    baseURL: `${app.apiServer}/boxapi/v2/`
+  }),
 }
 
 export default api
