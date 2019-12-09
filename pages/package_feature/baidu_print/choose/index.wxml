@@ -1,0 +1,47 @@
+<nav-bar title="百度网盘" forbidBack="{{fileIds.length>0}}"></nav-bar>
+<wxs module="filter" src="../../../../utils/common.wxs"></wxs>
+<view class="display-search flex" bindtap='toSearch'>
+  <image src="/images/custom_nav_search.png" mode="widthFix" />
+  <text>请输入要搜索的关键字</text>
+</view>
+<view class="files-box">
+  <view class="file-item flex" wx:for="{{fileList}}" wx:key="fsId">
+    <block wx:if="{{item.isdir}}">
+      <view class="item-info flex" bindtap="toNextFolder" data-path="{{item.path}}">
+        <view class="info-img-box">
+          <image src="../../images/bd_print_folder.png" mode="widthFix" />
+        </view>
+        <view class="info-main flex">
+          <view class="main-name">{{item.filename}}</view>
+          <view class="main-time">{{item.time}}</view>
+        </view>
+      </view>
+    </block>
+    <block wx:else>
+      <view class="item-info flex">
+        <view class="info-img-box">
+          <image wx:if="{{type==='doc'}}" src="../../images/bd_print_{{filter.getFileType(item.filename)}}.png" mode="widthFix" />
+          <image wx:else src="{{filter.getFileType(item.filename)==='error'?'../../images/bd_print_error.png':item.thumb}}" mode="aspectFit" bindtap="previewImg" data-type="{{filter.getFileType(item.filename)}}" id="{{item.thumb}}" />
+        </view>
+        <view class="info-main flex" bindtap="handleFileTip" data-size="{{item.size}}" data-type="{{filter.getFileType(item.filename)}}">
+          <view class="main-name">{{item.filename}}</view>
+          <view class="main-time">{{item.time}}</view>
+        </view>
+      </view>
+      <view class="item-check flex" wx:if="{{item.size<20000000&&filter.getFileType(item.filename)!=='error'}}" data-type="{{filter.getFileType(item.filename)}}" bindtap="checkFile" id="{{index}}">
+        <image src="../../images/bd_print_{{item.isChecked?'':'no'}}checked.png" />
+      </view>
+      <image wx:if="{{item.size>20000000}}" src="../../images/bd_file_oversize.png" class="file-tip" />
+      <image wx:if="{{filter.getFileType(item.filename)==='error'}}" src="../../images/bd_file_nosupport.png" class="file-tip" />
+    </block>
+  </view>
+</view>
+<view class="confirm-btn {{fileIds.length>0?'confirm-btn-active':''}} {{isFullScreen?'is-full-screen':''}}" bindtap="chooseDone">
+  <text>确定</text>
+  <text wx:if="{{fileIds.length>0}}">({{fileIds.length}})</text>
+</view>
+<!-- modal -->
+<modal modal="{{modalObj}}"></modal>
+<!-- loading -->
+<import src="/lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />

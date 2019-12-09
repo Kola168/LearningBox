@@ -224,13 +224,23 @@ function showError(e) {
   })
 }
 
+function showGraphqlErr(e) {
+  let msg = e.errors[0].message
+  wx.showModal({
+    title: '提示',
+    content: msg,
+    showCancel: false,
+    confirmColor: '#FFDC5E'
+  })
+}
+
 function deleteItem(array, item) {
   Array.prototype.indexOf = function(val) {
     for (var i = 0; i < this.length; i++) {
       if (this[i] == val) return i;
     }
     return -1;
-    
+
   };
   Array.prototype.remove = function(val) {
     var index = this.indexOf(val);
@@ -348,5 +358,6 @@ module.exports = {
   clearPdfFile: clearPdfFile,
   resetFiles: resetFiles,
   showError: showError,
+  showGraphqlErr: showGraphqlErr,
   deleteItem: deleteItem
 }

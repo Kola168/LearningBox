@@ -12,7 +12,7 @@ var GraphQL = gqwxappGraphql.GraphQL
 
 // 初始化对象
 let gql = GraphQL({
-  url: `${app.apiServer}/box_graphql`,
+  url: `${app.apiServer}/graphql`,
   header: function() {
     if (app.authToken) {
       return {

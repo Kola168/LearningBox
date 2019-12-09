@@ -67,7 +67,9 @@
         "cognition_card/list/index",
         "cognition_card/category/index",
         "cognition_card/category_list/index",
-        "cognition_card/edit/index"
+        "cognition_card/edit/index",
+        "baidu_print/choose/index",
+        "baidu_print/search/index"
       ]
     },
     {
