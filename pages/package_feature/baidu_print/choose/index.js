@@ -21,6 +21,7 @@ Page({
     this.weToast = new app.weToast()
     this.isEnd = false
     this.gapNum = 50
+    this.chooseBaiduFrom = options.from ? options.from : ''
     if (options.path) {
       this.path = options.path
     } else {
@@ -93,7 +94,8 @@ Page({
   toSearch() {
     wxNav.navigateTo(`../search/index`, {
       type: this.data.type,
-      path: this.path
+      path: this.path,
+      from: this.chooseBaiduFrom
     })
   },
 
@@ -101,16 +103,16 @@ Page({
   checkFile: co.wrap(function*(e) {
     try {
       let index = e.currentTarget.id,
+        arrIndex = e.currentTarget.dataset.arrindex,
         tempData = this.data.fileList,
-        currentFile = tempData[index],
+        currentFile = tempData[index][arrIndex],
         fileIds = this.data.fileIds
-
       if (currentFile.isChecked) {
         fileIds.push(Number(currentFile.fsId))
         let tempSet = new Set(fileIds)
         tempSet.delete(Number(currentFile.fsId))
         fileIds = Array.from(tempSet)
-        tempData[index].isChecked = false
+        tempData[index][arrIndex].isChecked = false
       } else {
         let tempText = '',
           fileLimt = 0
@@ -130,7 +132,7 @@ Page({
           return
         } else {
           fileIds.push(Number(currentFile.fsId))
-          tempData[index].isChecked = true
+          tempData[index][arrIndex].isChecked = true
         }
       }
       this.setData({
@@ -149,7 +151,6 @@ Page({
     })
     try {
       let resp = yield api.getBdFilesSn(this.data.fileIds)
-      console.log(resp)
       if (resp.code != 0) {
         throw (resp)
       }
@@ -175,12 +176,19 @@ Page({
         return
       }
       let cdnFiles = resp.res.data
-      event.emit('chooseBaiduFileDone', cdnFiles)
-      let delta = this.findLastUrlAndQueryDelta()
-      wxNav.navigateBack(delta, () => {
-        this.weToast.hide()
-      })
+      if (this.chooseBaiduFrom === 'original'&&this.type==='doc') {
+        wxNav.navigateTo(`/pages/print_doc/doc_list/doc_list`, {
+          arrayFile: encodeURIComponent(JSON.stringify(cdnFiles))
+        })
+      } else {
+        event.emit('chooseBaiduFileDone', cdnFiles)
+        let delta = this.findLastUrlAndQueryDelta()
+        wxNav.navigateBack(delta, () => {
+          this.weToast.hide()
+        })
+      }
     } catch (error) {
+      console.log(error)
       this.weToast.hide()
       util.showError(error)
     }
@@ -238,8 +246,8 @@ Page({
     let path = e.currentTarget.dataset.path
     wxNav.navigateTo('../choose/index', {
       type: this.data.type,
+      from: this.chooseBaiduFrom,
       path
     })
   },
-
 })

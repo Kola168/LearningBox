@@ -6,7 +6,7 @@
 </view>
 <view class="files-box">
   <block wx:for="{{fileList}}" wx:key="index" wx:for-item="pageItem">
-    <view class="file-item flex" wx:for="{{pageItem}}" wx:for-item="arrayItem" wx:key="fsId">
+    <view class="file-item flex" wx:for="{{pageItem}}" wx:for-item="arrayItem" wx:for-index="arrayIndex" wx:key="fsId">
       <block wx:if="{{arrayItem.isdir}}">
         <view class="item-info flex" bindtap="toNextFolder" data-path="{{arrayItem.path}}">
           <view class="info-img-box">
@@ -29,7 +29,7 @@
             <view class="main-time">{{arrayItem.time}}</view>
           </view>
         </view>
-        <view class="item-check flex" wx:if="{{arrayItem.size<20000000&&filter.getFileType(arrayItem.filename)!=='error'}}" data-type="{{filter.getFileType(arrayItem.filename)}}" bindtap="checkFile" id="{{index}}">
+        <view class="item-check flex" wx:if="{{arrayItem.size<20000000&&filter.getFileType(arrayItem.filename)!=='error'}}" bindtap="checkFile" id="{{index}}" data-arrIndex="{{arrayIndex}}">
           <image src="../../images/bd_print_{{arrayItem.isChecked?'':'no'}}checked.png" />
         </view>
         <image wx:if="{{arrayItem.size>20000000}}" src="../../images/bd_file_oversize.png" class="file-tip" />
