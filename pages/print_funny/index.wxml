@@ -1,7 +1,34 @@
+
 <nav-bar background="#fff" title="更多打印" />
 
-<view>
-	<view class="item">
-		
+<view class="container">
+<view class="title">趣味打印</view>
+<view class="minor-entry flex flex-m-axis-start">
+		<view
+		 class="{{item ? 'module-item' : ''}}"
+		 bind:tap="toFunApplication"
+		 data-url="{{item.url}}"
+		 data-key="{{item.key}}"
+		 wx:for="{{funApplications}}"
+		 wx:key="indexFunny"
+		>
+			<image src="{{item.icon}}" mode="widthFix" wx:if="{{item.icon}}" />
+			<view class="name" wx:if="{{item.name}}">{{item.name}}</view>
+		</view>
 	</view>
+	<view class="title top">智能应用</view>
+	<view class="minor-entry flex flex-m-axis-start">
+			<view
+			 class="{{item ? 'module-item' : ''}}"
+			 bind:tap="toSmartApplication"
+			 data-url="{{item.url}}"
+			 data-query="{{item.query}}"
+			 data-key="{{item.key}}"
+			 wx:for="{{smartApplications}}"
+			 wx:key="indexSmart"
+			>
+				<image src="{{item.icon}}" mode="widthFix" wx:if="{{item.icon}}" />
+				<view class="name" wx:if="{{item.name}}">{{item.name}}</view>
+			</view>
+		</view>
 </view>
