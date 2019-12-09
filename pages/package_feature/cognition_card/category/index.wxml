@@ -11,10 +11,10 @@
       <image src="{{categoryList[0].image}}" id="{{categoryList[0].id}}" bindtap="toNext" mode="widthFix" />
     </view>
     <view class="category-template">
-      <image src="{{item.image}}" wx:for="{{categoryList}}" wx:key="{{index}}" id="{{item.id}}" wx:if="{{index!==0}}" bindtap="toNext" mode="widthFix" />
+      <image src="{{item.image}}" wx:for="{{categoryList}}" wx:key="id" id="{{item.id}}" wx:if="{{index!==0}}" bindtap="toNext" mode="widthFix" />
     </view>
   </view>
-  <image src="../../images/cognition_bg.jpg" class="container-bg" style="min-height:{{areaHeight}}px;" mode="widthFix" />
+  <image src="https://cdn-h.gongfudou.com/LearningBox/feature/cognition_bg.jpg" class="container-bg" style="min-height:{{areaHeight}}px;" mode="widthFix" />
 </view>
 <!-- </block> -->
 <import src="/lib/toast/wetoast.wxml" />

@@ -16,7 +16,39 @@
   <text class='search' bindtap='search' wx:if="{{keywordValue!=''}}">搜索</text>
 </view>
 <view class="files-box">
-  <view class="file-item flex" wx:for="{{fileList}}" wx:key="fsId">
+  <block wx:for="{{fileList}}" wx:key="index" wx:for-item="pageItem">
+    <view class="file-item flex" wx:for="{{pageItem}}" wx:for-item="arrayItem" wx:key="fsId">
+      <block wx:if="{{arrayItem.isdir}}">
+        <view class="item-info flex" bindtap="toNextFolder" data-path="{{arrayItem.path}}">
+          <view class="info-img-box">
+            <image src="../../images/bd_print_folder.png" mode="widthFix" />
+          </view>
+          <view class="info-main flex">
+            <view class="main-name">{{arrayItem.filename}}</view>
+            <view class="main-time">{{arrayItem.time}}</view>
+          </view>
+        </view>
+      </block>
+      <block wx:else>
+        <view class="item-info flex">
+          <view class="info-img-box">
+            <image wx:if="{{type==='doc'}}" src="../../images/bd_print_{{filter.getFileType(arrayItem.filename)}}.png" mode="widthFix" />
+            <image wx:else src="{{filter.getFileType(arrayItem.filename)==='error'?'../../images/bd_print_error.png':arrayItem.thumb}}" mode="aspectFit" bindtap="previewImg" data-type="{{filter.getFileType(arrayItem.filename)}}" id="{{arrayItem.thumb}}" />
+          </view>
+          <view class="info-main flex" bindtap="handleFileTip" data-size="{{arrayItem.size}}" data-type="{{filter.getFileType(arrayItem.filename)}}">
+            <view class="main-name">{{arrayItem.filename}}</view>
+            <view class="main-time">{{arrayItem.time}}</view>
+          </view>
+        </view>
+        <view class="item-check flex" wx:if="{{arrayItem.size<20000000&&filter.getFileType(arrayItem.filename)!=='error'}}" data-type="{{filter.getFileType(arrayItem.filename)}}" bindtap="checkFile" id="{{index}}">
+          <image src="../../images/bd_print_{{arrayItem.isChecked?'':'no'}}checked.png" />
+        </view>
+        <image wx:if="{{arrayItem.size>20000000}}" src="../../images/bd_file_oversize.png" class="file-tip" />
+        <image wx:if="{{filter.getFileType(arrayItem.filename)==='error'}}" src="../../images/bd_file_nosupport.png" class="file-tip" />
+      </block>
+    </view>
+  </block>
+  <!-- <view class="file-item flex" wx:for="{{fileList}}" wx:key="fsId">
     <block wx:if="{{item.isdir}}">
       <view class="item-info flex" bindtap="toNextFolder" data-path="{{item.path}}">
         <view class="info-img-box">
@@ -45,7 +77,7 @@
       <image wx:if="{{item.size>20000000}}" src="../../images/bd_file_oversize.png" class="file-tip" />
       <image wx:if="{{filter.getFileType(item.filename)==='error'}}" src="../../images/bd_file_nosupport.png" class="file-tip" />
     </block>
-  </view>
+  </view> -->
 </view>
 <view class="confirm-btn {{fileIds.length>0?'confirm-btn-active':''}} {{isFullScreen?'is-full-screen':''}}" bindtap="chooseDone" wx:if="{{fileList.length>0}}">
   <text>确定</text>

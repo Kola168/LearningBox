@@ -1,6 +1,6 @@
 <nav-bar title="认知卡"></nav-bar>
 <view class="container {{loadReady?'fill-back':''}}">
-  <image src="../../../images/cloud.png" class="cloud" mode="widthFix" />
+  <!-- <image src="../../../images/cloud.png" class="cloud" mode="widthFix" /> -->
   <image src="../../../images/cognition_tip_2.png" class="tip-img" mode="widthFix" bindtap="toShopping" />
   <view class="list-box">
     <view class="box-container" wx:for="{{cognitionCardImgs}}" wx:key="{{index}}">

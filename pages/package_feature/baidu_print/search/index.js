@@ -22,6 +22,8 @@ Page({
   },
   onLoad(options) {
     this.weToast = new app.weToast()
+    this.isEnd = false
+    this.gapNum = 50
     this.path = options.path
     this.setData({
       type: options.type,
@@ -35,16 +37,35 @@ Page({
     try {
       const resp = yield graphql.getBaiduNetList(this.path, this.data.type, this.data.keywordValue)
       this.weToast.hide()
-      if (resp.fileList.length > 0) {
-        this.setData({
-          fileList: resp.fileList,
-          isEmpty: false
-        })
-      } else {
+      let allData = resp.fileList,
+        len = allData.length
+      this.allData = allData
+      if (len === 0) {
         this.setData({
           isEmpty: true
         })
+        return
       }
+      if (len > this.gapNum) {
+        this.startIndex = 0
+        this.setPageData()
+      } else {
+        this.isEnd = true
+        this.setData({
+          ['fileList[0]']: allData,
+          isEmpty: false
+        })
+      }
+      // if (resp.fileList.length > 0) {
+      //   this.setData({
+      //     fileList: resp.fileList,
+      //     isEmpty: false
+      //   })
+      // } else {
+      //   this.setData({
+      //     isEmpty: true
+      //   })
+      // }
     } catch (e) {
       this.setData({
         isEmpty: true
@@ -53,6 +74,31 @@ Page({
       util.showGraphqlErr(e)
     }
   }),
+
+  // 模拟分页
+  setPageData() {
+    let allData = this.allData,
+      tempData = allData.slice(this.startIndex, this.startIndex + this.gapNum),
+      tempLen = tempData.length
+    if (tempLen < this.gapNum) {
+      this.isEnd = true
+    } else {
+      this.isEnd = false
+    }
+    this.startIndex += this.gapNum
+    let len = this.data.fileList.length
+    this.setData({
+      ['fileList[' + len + ']']: tempData,
+      isEmpty: false
+    })
+  },
+  onReachBottom() {
+    if (!this.isEnd) {
+      this.setPageData()
+    } else {
+      return
+    }
+  },
 
   // 选择文件
   checkFile: co.wrap(function*(e) {
@@ -133,7 +179,7 @@ Page({
       let cdnFiles = resp.res.data
       event.emit('chooseBaiduFileDone', cdnFiles)
       let delta = this.findLastUrlAndQueryDelta()
-      wxNav.navigateBack(delta,()=>{
+      wxNav.navigateBack(delta, () => {
         this.weToast.hide()
       })
     } catch (error) {
@@ -227,4 +273,5 @@ Page({
       fileList: []
     })
   },
+
 })

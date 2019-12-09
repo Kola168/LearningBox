@@ -19,6 +19,8 @@ Page({
   },
   onLoad(options) {
     this.weToast = new app.weToast()
+    this.isEnd = false
+    this.gapNum = 50
     if (options.path) {
       this.path = options.path
     } else {
@@ -48,14 +50,46 @@ Page({
     try {
       const resp = yield graphql.getBaiduNetList(this.path, this.data.type, this.keyword)
       this.weToast.hide()
-      this.setData({
-        fileList: resp.fileList
-      })
+      let allData = resp.fileList,
+        len = allData.length
+      this.allData = allData
+      if (len > this.gapNum) {
+        this.startIndex = 0
+        this.setPageData()
+      } else {
+        this.isEnd = true
+        this.setData({
+          ['fileList[0]']: allData
+        })
+      }
     } catch (e) {
       this.weToast.hide()
       util.showGraphqlErr(e)
     }
   }),
+  // 模拟分页
+  setPageData() {
+    let allData = this.allData,
+      tempData = allData.slice(this.startIndex, this.startIndex + this.gapNum),
+      tempLen = tempData.length
+    if (tempLen < this.gapNum) {
+      this.isEnd = true
+    } else {
+      this.isEnd = false
+    }
+    this.startIndex += this.gapNum
+    let len = this.data.fileList.length
+    this.setData({
+      ['fileList[' + len + ']']: tempData
+    })
+  },
+  onReachBottom() {
+    if (!this.isEnd) {
+      this.setPageData()
+    } else {
+      return
+    }
+  },
   toSearch() {
     wxNav.navigateTo(`../search/index`, {
       type: this.data.type,
@@ -206,5 +240,6 @@ Page({
       type: this.data.type,
       path
     })
-  }
+  },
+
 })
