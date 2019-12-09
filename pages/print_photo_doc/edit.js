@@ -49,6 +49,7 @@ Page({
     showContent: true,
     isSingle: false, //是否单张编辑
     croppers: null,
+    isFullScreen: false,
     galleryImages: {
       images: []
     },
@@ -63,12 +64,13 @@ Page({
     this.longToast = new app.weToast()
     this.options = this.checkImgOptions(options.index)
     this.setData({
+      isFullScreen: app.isFullScreen,
       croppers: {
         tempInfo: {
           width: W,
           height: H,
           top: TOP,
-          left: 30
+          left: 20
         },
         mode: 'quadrectangle'
       }
