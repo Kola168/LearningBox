@@ -20,14 +20,14 @@
         <view class="photo-edit-but" data-index="{{index}}" bindtap="toEdit">
           编辑
         </view>
-        <view wx:if="{{photoList.length<limitPhoto}}" class="photo-pluss-box">
+        <view class="photo-pluss-box">
           <image src="{{item.number<2?'/images/print_photo_cutgray.png':'/images/print_photo_cutimg.png'}}" mode="widthFix" class="photo-pluss-icon" data-index="{{index}}" bindtap="decrease"></image>
           <text class="photo-pluss-num">{{item.number}}</text>
           <image src="/images/print_photo_plussimg.png" mode="widthFix" class="photo-pluss-icon" data-index="{{index}}" bindtap="increase"></image>
         </view>
       </view>
     </view>
-    <view class="photo-normal-add" style="height:{{addBoxHeight}}rpx" bindtap="showImgCheck">
+    <view wx:if="{{photoList.length<limitPhoto}}" class="photo-normal-add" style="height:{{addBoxHeight}}rpx" bindtap="showImgCheck">
       <image src="/images/print_photo_plusicon.png" mode="widthFix" class="photo-add-icon"></image>
       <text class="photo-add-text">上传图片</text>
     </view>
