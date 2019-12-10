@@ -1,6 +1,6 @@
 // pages/network/tips/index.js
 const app = getApp()
-import wxNav from '../../../utils/nav.js'
+import wxNav from '../../../../utils/nav.js'
 
 Page({
 
@@ -17,7 +17,7 @@ Page({
   },
 
   nextStep:function(){
-    wxNav.navigateTo('/pages/network/tips/step2',{asd:1})
+    wxNav.navigateTo('/pages/package_device/network/tips/step2',{asd:1})
   }
 
 })

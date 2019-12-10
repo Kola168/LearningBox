@@ -101,7 +101,7 @@ Page({
       return
     }
     this.setData({
-      count: count
+      chooseCount: count
     })
     this.selectComponent("#checkComponent").showPop()
   },

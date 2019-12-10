@@ -5,6 +5,19 @@ image {
 	display:block;
 }
 
+button {
+    background: none;
+    border: none;
+    border-radius: 0;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+button::after {
+    border: none;
+    border-radius: 0;
+}
+
 .common-button-bg{
   background:#ffdc5e;
 }

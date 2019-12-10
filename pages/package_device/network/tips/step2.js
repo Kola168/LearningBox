@@ -1,5 +1,5 @@
 // pages/network/tips/step2.js
-import wxNav from '../../../utils/nav.js'
+import wxNav from '../../../../utils/nav.js'
 
 Page({
 
@@ -11,6 +11,6 @@ Page({
     console.log(options)
   },
   nextStep: function() {
-    wxNav.navigateTo('/pages/network/tips/step3')
+    wxNav.navigateTo('/pages/package_device/network/tips/step3')
   }
 })
