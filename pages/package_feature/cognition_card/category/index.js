@@ -31,30 +31,22 @@ Page({
   onLoad: co.wrap(function*() {
     let navBarHeight = app.navBarInfo.navBarHeight
     this.setData({
-        areaHeight: app.sysInfo.safeArea.height - navBarHeight
-      })
-      // let showIntro = wx.getStorageSync('hasViewCognitionCard')
-      // this.setData({
-      //   showIntro: showIntro ? false : true
-      // })
-      // if (showIntro) {
-    this.longToast = new app.weToast()
-    yield this.getCognitionCategories()
-      // }
-  }),
-  toMake: co.wrap(function*() {
-    this.longToast = new app.weToast()
-    wx.setStorageSync('hasViewCognitionCard', true)
-    this.setData({
-      showIntro: false
+      areaHeight: app.sysInfo.safeArea.height - navBarHeight
     })
+    this.longToast = new app.weToast()
     yield this.getCognitionCategories()
   }),
-  toShopping: function() {
+  toShopping: function(e) {
+    if (app.preventMoreTap(e)) {
+      return
+    }
     wxNav.navigateTo(
       `/pages/cart/transit/transit?pageType=goodsDetail&goodsId=${this.data.printerAlias}&openId=${app.openId}&shopId=${this.data.shopId}&appId=${this.data.appId}`)
   },
   toNext: co.wrap(function*(e) {
+    if (app.preventMoreTap(e)) {
+      return
+    }
     let id = Number(e.currentTarget.id),
       url = '',
       playload = {}

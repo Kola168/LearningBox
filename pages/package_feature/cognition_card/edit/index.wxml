@@ -6,7 +6,7 @@
     <image src="/images/transparent.png" class="editor-back" />
     <image class="area" src="{{area.image}}"></image>
     <view class="area-border {{showAreaBorder?'show-border':''}}" style="width:{{area.area_width*areaPosition.scale-4}}px;height:{{area.area_height*areaPosition.scale-4}}px;left:{{area.area_x*areaPosition.scale}}px;top:{{area.area_y*areaPosition.scale}}px;">
-      <image src="/images/circle_add.png" class="add-btn absolute" bindtap="chooseImg" hidden="{{localImgPath}}"></image>
+      <image src="/images/circle_add.png" class="add-btn absolute" bindtap="showImgChooseWay" hidden="{{localImgPath}}"></image>
       <image src="/images/close_dark.png" class="delete-btn absolute" hidden="{{showAreaBorder||!localImgPath}}" bindtap="deleteImg"></image>
     </view>
     <image class="user-img" mode="widthFix" src="{{localImgPath}}" binderror="imageLoadError" bindload="initDesign" style="width:{{imgInfo.width}}px; height:{{imgInfo.height}}px;left:{{userImgPosition.x}}px;top:{{userImgPosition.y}}px; transform:scale3d({{realScale}},{{realScale}},1) rotate({{realRotate}}deg)" wx:if="{{localImgPath}}"></image>
@@ -15,7 +15,7 @@
   <view class="handle-btns">
     <image src="../../../images/cognition_change.png" id="guide-view" bindtap="chooseImg" mode="widthFix" />
     <image src="../../../images/{{type==='template'?'cognition_print':'edit_done'}}.png" mode="widthFix" hidden="{{type===''}}">
-        <button form-type='submit' open-type="{{hasAuthPhoneNum?'':'getPhoneNumber'}}" bindgetphonenumber="{{hasAuthPhoneNum?'':'getPhoneNumber'}}" bindtap="preCheck" hover-class="none" class="cover-but"></button>
+      <button form-type='submit' open-type="{{hasAuthPhoneNum?'':'getPhoneNumber'}}" bindgetphonenumber="{{hasAuthPhoneNum?'':'getPhoneNumber'}}" bindtap="preCheck" hover-class="none" class="cover-but"></button>
     </image>
   </view>
 </view>
@@ -47,4 +47,6 @@
   </view>
 </view>
 <!-- 打印确认框 -->
-  <confirm-print bindconfirm="print" bindcancel="toShopping" modal="{{confirmModal}}"></confirm-print>
+<confirm-print bindconfirm="print" bindcancel="toShopping" modal="{{confirmModal}}"></confirm-print>
+<!-- 选择图片 -->
+<check-img id="checkComponent" bindchooseImg="chooseImg"></check-img>

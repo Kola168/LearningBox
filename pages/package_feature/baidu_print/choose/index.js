@@ -4,7 +4,6 @@ const event = require('../../../../lib/event/event')
 import { regeneratorRuntime, co, util, wxNav, storage } from '../../../../utils/common_import'
 import graphql from '../../../../network/graphql_request'
 import api from '../../../../network/restful_request'
-// const MAX_LENGTH = 18
 Page({
   data: {
     fileList: [],
@@ -22,12 +21,13 @@ Page({
     this.isEnd = false
     this.gapNum = 50
     this.chooseBaiduFrom = options.from ? options.from : ''
+    this.countLimit = options.countLimit ? options.countLimit : 1
     if (options.path) {
       this.path = options.path
     } else {
       this.path = '/'
       let pages = getCurrentPages(),
-        toBdNetPath = [pages.length - 2].route
+        toBdNetPath = pages[pages.length - 2].route
       storage.put('toBdNetPath', toBdNetPath, 60 * 24)
     }
     this.keyword = ''
@@ -35,13 +35,6 @@ Page({
       type: options.type,
       isFullScreen: app.isFullScreen
     })
-
-    // this.media_type = options.media_type
-    // if (options.type === 'img') {
-    //   this.storageImages = this.getStorageImages()
-    //   let imgLen = this.storageImages.allCount
-    //   this.usableLen = MAX_LENGTH - imgLen
-    // }
     this.getFileList()
   },
   getFileList: co.wrap(function*() {
@@ -95,29 +88,35 @@ Page({
     wxNav.navigateTo(`../search/index`, {
       type: this.data.type,
       path: this.path,
+      countLimit: this.countLimit,
       from: this.chooseBaiduFrom
     })
   },
 
   // 选择文件
   checkFile: co.wrap(function*(e) {
+    if (app.preventMoreTap(e)) {
+      return
+    }
     try {
       let index = e.currentTarget.id,
         arrIndex = e.currentTarget.dataset.arrindex,
-        tempData = this.data.fileList,
-        currentFile = tempData[index][arrIndex],
-        fileIds = this.data.fileIds
+        fileList = this.data.fileList,
+        currentFile = fileList[index][arrIndex],
+        fileIds = this.data.fileIds,
+        isChecked = currentFile.isChecked,
+        dataKey = 'fileList[' + index + '][' + arrIndex + '].isChecked'
       if (currentFile.isChecked) {
         fileIds.push(Number(currentFile.fsId))
         let tempSet = new Set(fileIds)
         tempSet.delete(Number(currentFile.fsId))
         fileIds = Array.from(tempSet)
-        tempData[index][arrIndex].isChecked = false
+        isChecked = false
       } else {
         let tempText = '',
           fileLimt = 0
-        if (this.type == 'imagelist') {
-          fileLimt = this.usableLen > 5 ? 5 : this.usableLen
+        if (this.data.type === 'img') {
+          fileLimt = this.countLimit > 5 ? 5 : this.countLimit
           tempText = fileLimt + '张图片'
         } else {
           fileLimt = 1
@@ -132,11 +131,11 @@ Page({
           return
         } else {
           fileIds.push(Number(currentFile.fsId))
-          tempData[index][arrIndex].isChecked = true
+          isChecked = true
         }
       }
       this.setData({
-        fileList: tempData,
+        [dataKey]: isChecked,
         fileIds: fileIds
       })
     } catch (error) {
@@ -145,7 +144,10 @@ Page({
   }),
 
   // 请求下载code
-  chooseDone: co.wrap(function*() {
+  chooseDone: co.wrap(function*(e) {
+    if (app.preventMoreTap(e)) {
+      return
+    }
     this.weToast.toast({
       type: 'loading'
     })
@@ -176,7 +178,7 @@ Page({
         return
       }
       let cdnFiles = resp.res.data
-      if (this.chooseBaiduFrom === 'original'&&this.type==='doc') {
+      if (this.chooseBaiduFrom === 'original' && this.type === 'doc') {
         wxNav.navigateTo(`/pages/print_doc/doc_list/doc_list`, {
           arrayFile: encodeURIComponent(JSON.stringify(cdnFiles))
         })
@@ -188,7 +190,6 @@ Page({
         })
       }
     } catch (error) {
-      console.log(error)
       this.weToast.hide()
       util.showError(error)
     }
@@ -222,6 +223,9 @@ Page({
 
   // 不支持文件提示
   handleFileTip(e) {
+    if (app.preventMoreTap(e)) {
+      return
+    }
     let file = e.currentTarget.dataset,
       size = file.size,
       type = file.type
@@ -243,6 +247,9 @@ Page({
 
   // 跳转文件夹
   toNextFolder(e) {
+    if (app.preventMoreTap(e)) {
+      return
+    }
     let path = e.currentTarget.dataset.path
     wxNav.navigateTo('../choose/index', {
       type: this.data.type,

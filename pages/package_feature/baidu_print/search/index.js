@@ -4,7 +4,6 @@ const event = require('../../../../lib/event/event')
 import { regeneratorRuntime, co, util, wxNav, storage } from '../../../../utils/common_import'
 import graphql from '../../../../network/graphql_request'
 import api from '../../../../network/restful_request'
-// const MAX_LENGTH = 18
 Page({
   data: {
     fileList: [],
@@ -23,6 +22,7 @@ Page({
   onLoad(options) {
     this.weToast = new app.weToast()
     this.chooseBaiduFrom = options.from ? options.from : ''
+    this.countLimit = options.countLimit ? options.countLimit : 1
     this.isEnd = false
     this.gapNum = 50
     this.path = options.path
@@ -57,16 +57,6 @@ Page({
           isEmpty: false
         })
       }
-      // if (resp.fileList.length > 0) {
-      //   this.setData({
-      //     fileList: resp.fileList,
-      //     isEmpty: false
-      //   })
-      // } else {
-      //   this.setData({
-      //     isEmpty: true
-      //   })
-      // }
     } catch (e) {
       this.setData({
         isEmpty: true
@@ -103,23 +93,28 @@ Page({
 
   // 选择文件
   checkFile: co.wrap(function*(e) {
+    if (app.preventMoreTap(e)) {
+      return
+    }
     try {
       let index = e.currentTarget.id,
         arrIndex = e.currentTarget.dataset.arrindex,
-        tempData = this.data.fileList,
-        currentFile = tempData[index][arrIndex],
+        fileList = this.data.fileList,
+        currentFile = fileList[index][arrIndex],
+        isChecked = currentFile.isChecked,
+        dataKey = 'fileList[' + index + '][' + arrIndex + '].isChecked',
         fileIds = this.data.fileIds
       if (currentFile.isChecked) {
         fileIds.push(Number(currentFile.fsId))
         let tempSet = new Set(fileIds)
         tempSet.delete(Number(currentFile.fsId))
         fileIds = Array.from(tempSet)
-        tempData[index][arrIndex].isChecked = false
+        isChecked = false
       } else {
         let tempText = '',
           fileLimt = 0
-        if (this.type == 'imagelist') {
-          fileLimt = this.usableLen > 5 ? 5 : this.usableLen
+        if (this.type === 'img') {
+          fileLimt = this.countLimit > 5 ? 5 : this.countLimit
           tempText = fileLimt + '张图片'
         } else {
           fileLimt = 1
@@ -134,11 +129,11 @@ Page({
           return
         } else {
           fileIds.push(Number(currentFile.fsId))
-          tempData[index][arrIndex].isChecked = true
+          isChecked = true
         }
       }
       this.setData({
-        fileList: tempData,
+        [dataKey]: isChecked,
         fileIds: fileIds
       })
     } catch (error) {
@@ -148,6 +143,9 @@ Page({
 
   // 请求下载code
   chooseDone: co.wrap(function*() {
+    if (app.preventMoreTap(e)) {
+      return
+    }
     this.weToast.toast({
       type: 'loading'
     })
@@ -223,6 +221,9 @@ Page({
 
   // 不支持文件提示
   handleFileTip(e) {
+    if (app.preventMoreTap(e)) {
+      return
+    }
     let file = e.currentTarget.dataset,
       size = file.size,
       type = file.type
@@ -244,6 +245,9 @@ Page({
 
   // 跳转文件夹
   toNextFolder(e) {
+    if (app.preventMoreTap(e)) {
+      return
+    }
     let path = e.currentTarget.dataset.path
     wxNav.navigateTo('../choose/index', {
       type: this.data.type,
@@ -280,6 +284,5 @@ Page({
       autoFocus: true,
       fileList: []
     })
-  },
-
+  }
 })

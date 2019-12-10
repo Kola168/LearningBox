@@ -81,7 +81,7 @@ Page({
         cognitionCardImgs: images
       })
     } catch (error) {
-      console.log(error)
+      util.showError(error)
     }
   }),
   preConfirm() {

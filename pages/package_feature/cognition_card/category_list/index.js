@@ -21,7 +21,10 @@ Page({
     this.hasViewCongnitionTpl = wx.getStorageSync('hasViewCongnitionTpl')
     yield this.getCognitionTemplates()
   }),
-  toShopping: function() {
+  toShopping: function(e) {
+    if (app.preventMoreTap(e)) {
+      return
+    }
     wxNav.navigateTo(
       `/pages/cart/transit/transit?pageType=goodsDetail&goodsId=${this.data.printerAlias}&openId=${app.openId}&shopId=${this.data.shopId}&appId=${this.data.appId}`
     )
@@ -81,6 +84,9 @@ Page({
     })
   },
   toEdit(e) {
+    if (app.preventMoreTap(e)) {
+      return
+    }
     let id = e.currentTarget.id,
       editUrl = e.currentTarget.dataset.url
     wxNav.navigateTo(

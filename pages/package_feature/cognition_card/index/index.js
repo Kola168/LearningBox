@@ -13,7 +13,10 @@ Page({
       isFullScreen: app.isFullScreen
     })
   },
-  toMake() {
+  toMake(e) {
+    if (app.preventMoreTap(e)) {
+      return
+    }
     wxNav.navigateTo('../category/index')
   },
   toShopping: function() {

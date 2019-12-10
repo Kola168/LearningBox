@@ -93,7 +93,10 @@ Page({
     })
   },
 
-  toShopping: function() {
+  toShopping: function(e) {
+    if (app.preventMoreTap(e)) {
+      return
+    }
     wxNav.navigateTo(`/pages/cart/transit/transit?pageType=goodsDetail&goodsId=${this.data.printerAlias}&openId=${app.openId}&shopId=${this.data.shopId}&appId=${this.data.appId}`)
   },
 
@@ -272,7 +275,10 @@ Page({
     }
   }),
   // 检查提交参数
-  preCheck: co.wrap(function*() {
+  preCheck: co.wrap(function*(e) {
+    if (app.preventMoreTap(e)) {
+      return
+    }
     if (!this.hasAuthPhoneNum && !app.hasPhoneNum) {
       return
     }
@@ -362,12 +368,22 @@ Page({
       })
     }
   }),
-  chooseImg: co.wrap(function*() {
-    let imgs = yield chooseImgWay()
-    let path = imgs[0].path || imgs[0]
-    let imageInfo = yield this.checkImgSize(path)
-    yield this.uploadImage(path, imageInfo)
+  // 显示上传图片方式
+  showImgChooseWay() {
+    this.selectComponent("#checkComponent").showPop()
+      // let imgs = yield chooseImgWay()
+      // let path = imgs[0].path || imgs[0]
+      // let imageInfo = yield this.checkImgSize(path)
+      // yield this.uploadImage(path, imageInfo)
+  },
+
+  // 选择图片回调
+  chooseImg: co.wrap(function*(e) {
+    let tempFiles = e.detail.tempFiles
+    let imageInfo = yield this.checkImgSize(tempFiles[0])
+    yield this.uploadImage(tempFiles[0], imageInfo)
   }),
+
   checkImgSize: co.wrap(function*(path) {
     let imageInfo = yield getImageInfo({
       src: path
@@ -430,7 +446,6 @@ Page({
       this.showImage(imgPath.imageInfo, imgPath.imgNetPath)
 
     } catch (e) {
-      console.log(e)
       yield showModal({
         title: '上传失败',
         content: '请检查您的网络，请稍后重试',
@@ -446,7 +461,6 @@ Page({
       mask: true
     })
     try {
-
       this.originalUrl = url
       this.setData({
         localImgPath: url,
@@ -551,7 +565,7 @@ Page({
         })
       }
     } catch (error) {
-      console.log('e=====', error)
+      util.showError(error)
     }
   },
   onTouchEnd: function() {
