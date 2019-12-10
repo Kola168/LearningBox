@@ -1,0 +1,7 @@
+/* components/bottom-button/test.wxss */
+.bottom-but{
+  width:100%;
+  position:fixed;
+  bottom:0;
+  left:0;
+}

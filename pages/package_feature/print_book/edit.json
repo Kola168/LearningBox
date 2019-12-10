@@ -1,0 +1,10 @@
+{
+  "usingComponents": {
+    "nav-bar": "../../../components/nav-bar/index",
+    "edit-photo":"../../../components/multiphoto/index",
+    "bottom-button":"../../../components/bottom-button/index",
+    "take-photo-pop":"../../../components/checkimg/index",
+    "multi-process":"../../../components/process/index"
+  },
+  "disableScroll":true
+}

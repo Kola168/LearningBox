@@ -1,13 +1,13 @@
 // pages/network/tips/step3.js
 const app = getApp()
-const regeneratorRuntime = require('../../../lib/co/runtime')
-const co = require('../../../lib/co/co')
-const _ = require('../../../lib/underscore/we-underscore')
-const util = require('../../../utils/util')
+const regeneratorRuntime = require('../../../../lib/co/runtime')
+const co = require('../../../../lib/co/co')
+const _ = require('../../../../lib/underscore/we-underscore')
+const util = require('../../../../utils/util')
 
 const request = util.promisify(wx.request)
 
-import wxNav from '../../../utils/nav.js'
+import wxNav from '../../../../utils/nav.js'
 
 Page({
 
@@ -23,6 +23,10 @@ Page({
     }
     this.longToast = new app.weToast()
 
+  },
+
+  changeWifi:function(){
+    wxNav.navigateBack()
   },
 
   loopCheck: co.wrap(function*() {
@@ -90,7 +94,7 @@ Page({
       if (resp.data.code == 0) {
         this.longToast.toast()
         let that = this
-        wxNav.redirectTo('/pages/network/wificonnect/list',{equipInfo:`${encodeURIComponent(JSON.stringify(resp.data.data))}`})
+        wxNav.navigateTo('/pages/package_device/network/wificonnect/list',{equipInfo:`${encodeURIComponent(JSON.stringify(resp.data.data))}`})
       }
       return
     } catch (e) {

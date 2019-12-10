@@ -4,6 +4,7 @@ const regeneratorRuntime = require('../../lib/co/runtime')
 const co = require('../../lib/co/co')
 const util = require('../../utils/util')
 const _ = require('../../lib/underscore/we-underscore')
+const upload = require('../../utils/upload')
 
 const getSystemInfo = util.promisify(wx.getSystemInfo)
 const chooseMessageFile = util.promisify(wx.chooseMessageFile)
@@ -11,6 +12,7 @@ const chooseImage = util.promisify(wx.chooseImage)
 const getImageInfo = util.promisify(wx.getImageInfo)
 const canvasToTempFilePath = util.promisify(wx.canvasToTempFilePath)
 const downloadFile = util.promisify(wx.downloadFile)
+const showModal=util.promisify(wx.showModal)
 
 let Loger=(app.apiServer!='https://epbox.gongfudou.com'||app.deBug)?console.log:function(){}
 
@@ -100,8 +102,35 @@ Component({
                     this.setData({
                         photoSrc: newVal
                     })
+                    if (_.isNotEmpty(this.data.editAreaSize)) {
+                        this.choosedImgIndex = 0
+                        this.imgChooseInit({ path: this.data.photoSrc })
+                        this.setData({
+                            photoSrc:''
+                        })
+                    }
                 }
             }
+        },
+        imgInfo:{
+          type: Object,
+          observer: function(newVal, oldVal) {
+              Loger(newVal)
+              // if (_.isNotEmpty(newVal)) {
+              //     if (!_.isArray(newVal.modeSize)) {
+              //         Loger(newVal.modeSize)
+              //         let newArr = []
+              //         newArr.push(newVal.modeSize)
+              //         newVal.modeSize = newArr
+              //     }
+              //     Loger(newVal.modeSize)
+              //     this.setData({
+              //         TemplateSrc: newVal.modeSrc,
+              //         TemplateSizeArr: newVal.modeSize,
+              //     })
+              //     this.changeTemplate(newVal)
+              // }
+          }
         },
         showChange: {
             type: String,
@@ -146,9 +175,44 @@ Component({
                     })
                 }
             }
-        }
+        },
+        addIcon:{
+            type:String,
+            observer: function(newVal, oldVal) {
+                Loger('--------------', newVal)
+                if (_.isEqual(newVal, oldVal)) {
+                    return
+                }
+                if(!_.isEmpty(newVal)){
+                    this.setData({
+                        addImgIcon: newVal
+                    })
+                }
+            }
+        },
+        deleteIcon:{
+            type:String,
+            observer: function(newVal, oldVal) {
+                Loger('--------------', newVal)
+                if (_.isEqual(newVal, oldVal)) {
+                    return
+                }
+                if(!_.isEmpty(newVal)){
+                    this.setData({
+                        deleteIcon: newVal
+                    })
+                }
+            }
+        },
     },
-
+    observers: {
+      'addIcon, deleteIcon': function() {
+        // 在 numberA 或者 numberB 被设置时，执行这个函数
+        this.setData({
+          showAdd: true
+        })
+      }
+    },
     data: {
         TemplateSrc: '', //模板图片链接地址
         photoSrc: '', //组件传递过来的图片链接
@@ -167,10 +231,12 @@ Component({
         globalData: [], //全局数据
 
         popWindow: false, //展示照片尺寸选择
-        showchange: false, //是否展示删除更换按钮
         borderColor:null, //时是否展会编辑区域边框，及边框颜色
         showBorder:false,  //是否展示边缘框
         visible:'hidden', //是否溢出隐藏
+        addImgIcon:'', //添加图片图标
+        deleteIcon:'', //删除图片图标
+        showAdd:false, //展示添加图标
     },
 
     methods: {
@@ -324,7 +390,6 @@ Component({
                     top: sv.top+(sv.height-sv.height*messageScale)/2,
                     rotate: 0,
                     startRotate: 0,
-                    showedit: false,
                 }
                 imgInfo.imgOriginalInfo = imgDetail.imageInfo
                 imgInfo.imgOriginalInfo.scale = sv.scale*messageScale
@@ -374,7 +439,7 @@ Component({
                 Loger(imgPath.path.indexOf('https://cdn-h.gongfudou.com/'))
                 if (imgPath.path.indexOf('https://cdn-h.gongfudou.com/') < 0) {
                     try {
-                        imgNetPath = yield app.galleryUploadImg(imgPath.path)
+                        imgNetPath = yield upload.uploadFile(imgPath.path)
                     } catch (e) {
                         Loger(e)
                         imgNetPath = imgPath.path
@@ -422,12 +487,12 @@ Component({
                         imageInfo.width = newHeight
                     }
                 }
-                if(imageInfo.width>imageInfo.height){
-                    imgNetPath = this.addProcess(imgNetPath, '/rotate,90')
-                    let newHeight = imageInfo.height
-                    imageInfo.height = imageInfo.width
-                    imageInfo.width = newHeight
-                }
+                // if(imageInfo.width>imageInfo.height){
+                //     imgNetPath = this.addProcess(imgNetPath, '/rotate,90')
+                //     let newHeight = imageInfo.height
+                //     imageInfo.height = imageInfo.width
+                //     imageInfo.width = newHeight
+                // }
                 return { imgNetPath: imgNetPath, imageInfo: imageInfo }
             } catch (e) {
                 Loger(e)
@@ -625,40 +690,36 @@ Component({
             }
         }),
 
-        showEdit: function(e) {
-            let index = e.currentTarget.dataset.index
-            let imgArr = `imgArr[${index}].showedit`
-            this.setData({
-                [imgArr]: !this.data.imgArr[index].showedit
-            })
-        },
-
         //更换图片
         changeImg: function(e) {
             let index = e.currentTarget.dataset.index
             this.choosedImgIndex = index
-            this.setData({
-                popWindow: true
-            })
+            this.selectComponent("#checkComponent").showPop()
         },
 
         //删除图片
-        deleteImg: function(e) {
+        deleteImg: co.wrap(function*(e) {
+            let res=yield showModal({
+                title: '提示',
+                content: '确认删除图片？',
+                confirmColor: '#fae100',
+            })
+            if(!res.confirm){
+              return
+            }
             let index = e.currentTarget.dataset.index
-            this.data.imgArr[index] = null
-            this.data.globalData[index] = null
+            this.data.imgArr.splice(index,1)
+            this.data.globalData.splice(index,1)
             this.setData({
                 imgArr: this.data.imgArr,
                 globalData: this.data.globalData
             })
-        },
+        }),
 
         //选择图片功能
         chooseImgs: function(e) {
             this.choosedImgIndex = e.currentTarget.dataset.index
-            this.setData({
-                popWindow: true
-            })
+            this.selectComponent("#checkComponent").showPop()
         },
 
         chooseImg: co.wrap(function*(e) {
@@ -667,32 +728,11 @@ Component({
                 mask: true
             })
             try {
-                let type = e.currentTarget.dataset.id
-
-                let imageUrl
-                if (type == 'chooseMessageFile') {
-                    imageUrl = yield chooseMessageFile({
-                        count: 1,
-                        type: 'image',
-                    })
-                } else {
-                    imageUrl = yield chooseImage({
-                        count: 1,
-                        sizeType: ['original'],
-                        sourceType: [type]
-                    })
-                }
-                this.closePopWindow()
-                this.imgChooseInit(imageUrl.tempFiles[0])
+                this.imgChooseInit(e.detail.tempFiles[0])
             } catch (e) {
                 wx.hideLoading()
                 Loger(e)
             }
         }),
-        closePopWindow: function() {
-            this.setData({
-                popWindow: false
-            })
-        }
     }
 })
