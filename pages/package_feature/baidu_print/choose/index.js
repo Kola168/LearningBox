@@ -19,9 +19,9 @@ Page({
   onLoad(options) {
     this.weToast = new app.weToast()
     this.isEnd = false
-    this.gapNum = 50
-    this.chooseBaiduFrom = options.from ? options.from : ''
-    this.countLimit = options.countLimit ? options.countLimit : 1
+    this.gapNum = 50 //模拟分页单页数据量
+    this.chooseBaiduFrom = options.from ? options.from : 'application' //是否从应用选择百度
+    this.countLimit = options.countLimit ? options.countLimit : 1 //可选数量限制
     if (options.path) {
       this.path = options.path
     } else {
@@ -178,9 +178,12 @@ Page({
         return
       }
       let cdnFiles = resp.res.data
-      if (this.chooseBaiduFrom === 'original' && this.type === 'doc') {
+      if (this.chooseBaiduFrom === 'original' && this.data.type === 'doc') {
         wxNav.navigateTo(`/pages/print_doc/doc_list/doc_list`, {
-          arrayFile: encodeURIComponent(JSON.stringify(cdnFiles))
+          arrayFile: encodeURIComponent(JSON.stringify(cdnFiles)),
+          type: 'baidu'
+        }, () => {
+          this.weToast.hide()
         })
       } else {
         event.emit('chooseBaiduFileDone', cdnFiles)

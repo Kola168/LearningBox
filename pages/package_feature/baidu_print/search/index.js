@@ -113,7 +113,7 @@ Page({
       } else {
         let tempText = '',
           fileLimt = 0
-        if (this.type === 'img') {
+        if (this.data.type === 'img') {
           fileLimt = this.countLimit > 5 ? 5 : this.countLimit
           tempText = fileLimt + '张图片'
         } else {
@@ -137,7 +137,7 @@ Page({
         fileIds: fileIds
       })
     } catch (error) {
-      console.log(error)
+      util.showError(error)
     }
   }),
 
@@ -176,9 +176,10 @@ Page({
         return
       }
       let cdnFiles = resp.res.data
-      if (this.chooseBaiduFrom === 'original' && this.type === 'doc') {
+      if (this.chooseBaiduFrom === 'original' && this.data.type === 'doc') {
         wxNav.navigateTo(`/pages/print_doc/doc_list/doc_list`, {
-          arrayFile: encodeURIComponent(JSON.stringify(cdnFiles))
+          arrayFile: encodeURIComponent(JSON.stringify(cdnFiles)),
+          type: 'baidu'
         })
       } else {
         event.emit('chooseBaiduFileDone', cdnFiles)
