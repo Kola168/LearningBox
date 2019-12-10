@@ -116,7 +116,6 @@ Page({
         let tempText = '',
           fileLimt = 0
         if (this.data.type === 'img') {
-          console.log('this.countLimit',this.countLimit)
           fileLimt = this.countLimit > 5 ? 5 : this.countLimit
           tempText = fileLimt + '张图片'
         } else {
@@ -140,7 +139,7 @@ Page({
         fileIds: fileIds
       })
     } catch (error) {
-      console.log(error)
+      util.showError(error)
     }
   }),
 

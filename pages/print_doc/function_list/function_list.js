@@ -8,13 +8,19 @@ Page({
     supply_types: '',
     mediumRecommend: ''
   },
-  onLoad: co.wrap(function*(options) {}),
+  onLoad: co.wrap(function*(options) {
+    this.weToast = new app.weToast()
+  }),
 
   toNext: co.wrap(function*({ currentTarget: { id } }) {
     let type = id
     if (type == 'baiduPrint') {
+      this.weToast.toast({
+        type: 'loading'
+      })
       try {
         let res = yield graphql.getBaiduNetAuth()
+        this.weToast.hide()
         if (res.token.baiduTokenName) {
           wxNav.navigateTo('/pages/package_feature/baidu_print/choose/index', {
             type: 'doc',
@@ -26,6 +32,7 @@ Page({
           })
         }
       } catch (error) {
+        this.weToast.hide()
         util.showError(error)
       }
     } else {
