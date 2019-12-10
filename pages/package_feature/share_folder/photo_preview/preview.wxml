@@ -1,0 +1,19 @@
+<view class="container">
+    <view class="preview-main">
+        <view class="preview_img" style="width:{{width}}px;height:{{height}}px">
+            <image src="{{img_src}}"  style="width:{{imgInfo.imgWidth}}px;height:{{imgInfo.imgHeight}}px"/>
+        </view>
+    </view>
+    <view class="bottom-holder"></view>
+    <view class="setting-main">
+        <view class="setting-title">打印尺寸</view>
+        <view class="switch-box" bindtap="chooseImageSize">
+            <view class="">{{print_size.name}}</view>
+            <view class="arrow-down">
+            </view>
+        </view>
+    </view>
+    <view class="handle_bar">
+        <view class="confirm_print" bindtap="toPrintEdit">下一步</view>
+    </view>
+</view>

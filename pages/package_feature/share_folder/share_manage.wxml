@@ -1,0 +1,40 @@
+<view class='top'>
+    <view>
+        <text class="text-share">{{file_name}}</text>
+        <text class="text-share-num">（{{memberList.length}}/200）</text>
+    </view>
+    <text class="text-select" bindtap="selectAll" wx:if="{{memberList.length > 0}}">{{selectText}}</text>
+</view>
+<view class="share-container" wx:if="{{memberList.length > 0}}">
+    <view class="member-list" wx:for="{{memberList}}" wx:key="{{index}}" id="{{index}}">
+        <view class="member-list">
+            <view class="member-item">
+                <view class="user-info">
+                    <image src="{{item.avatar}}" mode="widthFix"></image>
+                    <text>{{item.nickname}}</text>
+                </view>
+                <image class="select-image" src="{{item.choose ? '/images/error_finish.png': '/images/device_share_not_select.png'}}" mode="widthFix" bindtap="choose" id="{{index}}"></image>
+            </view>
+        </view>
+    </view>
+
+    <view class="modal-wrap" wx:if="{{showClear}}" catchtap="cancelIntroduction">
+        <view class="confirm-modal1">
+            <view class="confirm-title">{{showClear.intro}}</view>
+            <view class="button-bottom">
+                <view class="button-cancel" bindtap="cancelIntroduction">取消</view>
+                <view class="button-confirm" bindtap="stopShare">确认删除</view>
+            </view>
+        </view>
+    </view>
+</view>
+
+<view wx:if="{{memberList.length == 0}}" class='no-share'>
+    <image src='../../images/file_no_share.png' mode='widthFix'></image>
+    <view>将文件夹分享给好友吧</view>
+</view>
+
+
+<button class="btn-stop" wx:if="{{memberList.length > 0}}" bindtap="toClear">删除</button>
+<import src="../../../lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />

@@ -63,7 +63,6 @@ App({
   getSystemInfo: co.wrap(function* () {
     let res = yield getSystemInfo()
     this.sysInfo = res
-    console.log('4567890',this.sysInfo)
     this.handleDevice()
   }),
 
