@@ -21,7 +21,7 @@ Page({
     this.isEnd = false
     this.gapNum = 50 //模拟分页单页数据量
     this.chooseBaiduFrom = options.from ? options.from : 'application' //是否从应用选择百度
-    this.countLimit = options.countLimit ? options.countLimit : 1 //可选数量限制
+    this.countLimit = options.countLimit ? Number(options.countLimit) : 1 //可选数量限制
     if (options.path) {
       this.path = options.path
     } else {
@@ -116,6 +116,7 @@ Page({
         let tempText = '',
           fileLimt = 0
         if (this.data.type === 'img') {
+          console.log('this.countLimit',this.countLimit)
           fileLimt = this.countLimit > 5 ? 5 : this.countLimit
           tempText = fileLimt + '张图片'
         } else {
