@@ -344,7 +344,6 @@ Component({
             })
             let that = this
             try {
-
                 if (img.size > 20000000) {
                     return wx.showModal({
                         title: '图片过大',
@@ -615,15 +614,66 @@ Component({
                     [imgArr]: this.data.imgArr[this.moveIndex]
                 })
             }
-  
+
+        },
+
+        //未初始化图片获取点位坐标信息参数信息：
+        // data:[{
+        //     templateSize:{}  //模板尺寸
+        //     imgInfo:{path:'',width:'',height:''}
+        // }]
+        getImgsPoints:function(imgData){
+          try{
+
+
+            let imgArr=[]
+            let that=this
+            _.each(imgData,function(value,index,list){
+              let modeScale = that.data.areaSize.scale
+              let editArea={
+                x: value.templateSize.x * modeScale,
+                y: value.templateSize.y * modeScale,
+                width: value.templateSize.width * modeScale,
+                height: value.templateSize.height * modeScale,
+                areaWidth: value.templateSize.areaWidth * modeScale,
+                areaHeight: value.templateSize.areaHeight * modeScale,
+              }
+              let sv = util._getSuiteValues(value.imgInfo.width, value.imgInfo.height, editArea.areaWidth, editArea.areaHeight)
+              let imgInfo = {
+                  width: sv.width,
+                  height: sv.height,
+                  scale: 1,
+                  startScale: 1,
+                  left: sv.left+(sv.width-sv.width)/2,
+                  top: sv.top+(sv.height-sv.height)/2,
+                  rotate: 0,
+                  startRotate: 0,
+              }
+              imgInfo.imgOriginalInfo = value.imgInfo
+              console.log(imgInfo.imgOriginalInfo, value.imgInfo , sv)
+              imgInfo.imgOriginalInfo.scale = sv.scale
+              imgInfo.imgOriginalInfo.left = sv.left+(sv.width-sv.width)/2
+              imgInfo.imgOriginalInfo.top = sv.top+(sv.height-sv.height)/2
+              imgInfo.imgOriginalInfo.rotate = 0
+              imgInfo.phtotSrc = value.imgInfo.path
+              imgArr.push(imgInfo)
+            })
+            return this.getImgPoint(imgArr)
+          }catch(e){
+            console.log(e)
+          }
         },
 
         //获取点位信息
-        getImgPoint: function() {
-            Loger(this.data.imgArr)
+        getImgPoint: function(arr) {
+          try{
+
+
             let that = this
             let pointArr = []
-            _.each(this.data.imgArr, function(value, index, kist) {
+            let imgArr=arr||this.data.imgArr
+            Loger(imgArr)
+            _.each(imgArr, function(value, index, kist) {
                 const result = {
                     x: Number(value.left),
                     y: Number(value.top),
@@ -650,7 +700,7 @@ Component({
                 }
                 let svw = (value.width-result.scale * (value.imgOriginalInfo.width * Math.cos(mp) + value.imgOriginalInfo.height * Math.sin(mp))) / 2
                 let svh = (value.height-result.scale * (value.imgOriginalInfo.width * Math.sin(mp) + value.imgOriginalInfo.height * Math.cos(mp))) / 2
-
+                console.log(result,svw,svh)
                 let params = {
                     editor_scale: that.data.areaSize.scale,
                     scale: result.scale,
@@ -662,9 +712,13 @@ Component({
                     rotate: rotate,
                     image_url: value.phtotSrc
                 }
+                console.log(params)
                 pointArr.push(params)
             })
             return pointArr
+          }catch(e){
+            console.log(e)
+          }
         },
 
         changeTemplate: co.wrap(function*(data) {

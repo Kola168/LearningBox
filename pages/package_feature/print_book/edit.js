@@ -15,7 +15,8 @@ let Loger = (app.apiServer != 'https://epbox.gongfudou.com' || app.deBug) ? cons
 Page({
 
   data: {
-    photoPath: '',
+    photoPath: '', //组件图片地址
+    imageInfo: {}, //图片信息
     paperSize: {
       width: 1500,
       height: 1000,
@@ -43,14 +44,65 @@ Page({
 
   limitCount: 9, //最大上传数量
 
-  onLoad: function(options) {
+  onLoad: co.wrap(function*(options) {
 
-  },
+  }),
 
   tapTemplate: function(e) {
     let index = e.currentTarget.dataset.index
+    let storageArr = _.deepClone(this.selectComponent("#mymulti").data.imgArr)
+    let previousIdnex = _.clone(this.data.selectedIndex)
     this.setData({
-      selectedIndex: index
+      selectedIndex: index,
+      [`imgList[${previousIdnex}].storage`]: storageArr,
+    })
+    //临时方法用于存储和切换编辑过的图片信息
+    let that = this
+    if (_.isNotEmpty(this.data.imgList[index].storage)) {
+      this.selectComponent("#mymulti").setData({
+        imgArr: that.data.imgList[index].storage
+      })
+    } else {
+      this.showEdit(index)
+    }
+  },
+
+  confBut: co.wrap(function*() {
+    try {
+
+
+      let that = this
+      let pointArr = []
+      _.each(this.data.imgList, function(value, index, list) {
+        console.log(value)
+        let pointItem = {}
+        if (index == that.data.selectedIndex) {
+          pointItem = that.selectComponent("#mymulti").getImgPoint()
+        } else if (value.storage) {
+          pointItem = that.selectComponent("#mymulti").getImgPoint(value.storage)
+        } else {
+          pointItem = that.selectComponent("#mymulti").getImgsPoints([{
+            templateSize: that.data.templateInfo.modeSize,
+            imgInfo: {
+              path: value.imgNetPath,
+              width: value.imageInfo.width,
+              height: value.imageInfo.height,
+            }
+          }])
+        }
+        console.log(pointItem)
+        pointArr.push(pointItem[0])
+      })
+      console.log(pointArr)
+    } catch (e) {
+      console.log(e)
+    }
+  }),
+
+  showEdit: function(index) {
+    this.setData({
+      photoPath: this.data.imgList[index].imgNetPath,
+      imageInfo: this.data.imgList[index].imageInfo,
     })
   },
 
@@ -128,12 +180,15 @@ Page({
     try {
       let that = this
       let imaPath = yield imginit.imgInit(url)
-      this.data.imgList.push(imaPath)
+      if (_.isNotEmpty(imaPath)) {
+        this.data.imgList.push(imaPath)
+      }
       this.setData({
         imgList: this.data.imgList
       })
       //最后一张图结束清空隐藏进度条
       if (index == that.data.count) {
+        this.showEdit(0)
         that.setData({
           showProcess: false
         })
@@ -160,8 +215,9 @@ Page({
     })
     let choosedIndex = this.data.selectedIndex > index ? this.data.selectedIndex - 1 : (index == 0 ? 0 : this.data.selectedIndex)
     this.setData({
-      selectedIndex:choosedIndex
+      selectedIndex: choosedIndex
     })
+    this.showEdit(choosedIndex)
   }),
   //取消照片上传
   cancelImg: co.wrap(function*() {
