@@ -115,21 +115,11 @@ Component({
         imgInfo:{
           type: Object,
           observer: function(newVal, oldVal) {
-              Loger(newVal)
-              // if (_.isNotEmpty(newVal)) {
-              //     if (!_.isArray(newVal.modeSize)) {
-              //         Loger(newVal.modeSize)
-              //         let newArr = []
-              //         newArr.push(newVal.modeSize)
-              //         newVal.modeSize = newArr
-              //     }
-              //     Loger(newVal.modeSize)
-              //     this.setData({
-              //         TemplateSrc: newVal.modeSrc,
-              //         TemplateSizeArr: newVal.modeSize,
-              //     })
-              //     this.changeTemplate(newVal)
-              // }
+              if (_.isNotEmpty(newVal)) {
+                  this.setData({
+                      photoInfo: newVal,
+                  })
+              }
           }
         },
         showChange: {
@@ -216,6 +206,7 @@ Component({
     data: {
         TemplateSrc: '', //模板图片链接地址
         photoSrc: '', //组件传递过来的图片链接
+        photoInfo:{}, //组件传过来的图片信息
         TemplateSizeArr: [], //模板位置区域
         //窗口默认尺寸
         paperSize: {
@@ -353,7 +344,7 @@ Component({
             })
             let that = this
             try {
-                Loger(img)
+
                 if (img.size > 20000000) {
                     return wx.showModal({
                         title: '图片过大',
@@ -401,13 +392,7 @@ Component({
                 let globalData = `globalData[${this.choosedImgIndex}]`
                 this.setData({
                     [imgArr]: imgInfo,
-                    [globalData]: {
-                        moveX: sv.left,
-                        moveY: sv.top,
-                        scale: 1,
-                        rotate: 0,
-                        twoPoint: false,
-                    }
+                    [globalData]: {}
                 })
                 Loger(this.data.imgArr)
                 wx.hideLoading()
@@ -427,12 +412,21 @@ Component({
         }),
 
         upLoadAndInit: co.wrap(function*(imgPath) {
-            Loger(imgPath)
             if (imgPath.type == 'uploaded') {
                 return {
                     imgNetPath: this.data.imgArr[this.choosedImgIndex].phtotSrc,
                     imageInfo: this.data.imgArr[this.choosedImgIndex].imgOriginalInfo
                 }
+            }
+            if(_.isNotEmpty(this.data.photoInfo)){
+              let initialImgInfo=_.deepClone(this.data.photoInfo)
+              this.setData({
+                photoInfo:{}
+              })
+              return {
+                imgNetPath: imgPath.path,
+                imageInfo: initialImgInfo
+              }
             }
             try {
                 let imgNetPath
@@ -621,6 +615,7 @@ Component({
                     [imgArr]: this.data.imgArr[this.moveIndex]
                 })
             }
+  
         },
 
         //获取点位信息

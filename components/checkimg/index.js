@@ -69,7 +69,7 @@ Component({
         })
       }
     },
-    baudu: {
+    baidu: {
       type: Boolean,
       value: true,
       observer: function(newval) {

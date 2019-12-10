@@ -193,4 +193,9 @@ Page({
       }, 3000)
     }
   }),
+
+  changeWifi: function() {
+    wxNav.navigateBack()
+  },
+
 })

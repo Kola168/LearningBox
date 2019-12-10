@@ -11,7 +11,7 @@
 </view>
 <view class="edit-mode-bg">
   <image src="../resource_images/photo_book_banner.png" mode="aspectFill" class="border-img"></image>
-  <edit-photo id="mymulti" class="edit-mode" mode-info="{{templateInfo}}" mode-paper="{{paperSize}}" img-path="{{photoPath}}" img-info="{{}}"></edit-photo>
+  <edit-photo id="mymulti" class="edit-mode" mode-info="{{templateInfo}}" mode-paper="{{paperSize}}" img-path="{{imgList[selectedIndex].imgNetPath}}" img-info="{{imgList[selectedIndex].imageInfo}}" temporary-storage="{{true}}"></edit-photo>
   <image src="../resource_images/icon_edit_bg.png" mode="aspectFill" class="edit-bg-img"></image>
 </view>
 <view class="bottom-station"></view>
@@ -19,7 +19,7 @@
 <view class="bottom-box">
   <scroll-view class="template-list-box" scroll-x>
     <view wx:for="{{imgList}}" wx:key="imgList" data-index="{{index}}" class="template-item {{index==selectedIndex?'img-selected':''}}" bindtap="tapTemplate">
-      <image src="{{foo.addOss(item,'/resize,w_100,h_100/quality,q_90')}}" mode="aspectFill" class="template-img"></image>
+      <image src="{{foo.addOss(item.imgNetPath,'/resize,w_100,h_100/quality,q_90')}}" mode="aspectFill" class="template-img"></image>
       <image src="../resource_images/icon_delete.png" mode="widthFix" class="template-delete-icon" data-index="{{index}}" catchtap="deleteImg"></image>
     </view>
     <view wx:if="{{imgList.length<9}}" class="template-item" bindtap="addImg">

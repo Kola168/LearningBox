@@ -47,18 +47,11 @@ Page({
 
   },
 
-  showEditImg: function(index) {
-    this.setData({
-      photoPath: this.data.imgList[index]
-    })
-  },
-
   tapTemplate: function(e) {
     let index = e.currentTarget.dataset.index
     this.setData({
       selectedIndex: index
     })
-    this.showEditImg(index)
   },
 
   addImg: function() {
@@ -135,9 +128,7 @@ Page({
     try {
       let that = this
       let imaPath = yield imginit.imgInit(url)
-      let localUrl = imaPath.imgNetPath
-
-      this.data.imgList.push(localUrl)
+      this.data.imgList.push(imaPath)
       this.setData({
         imgList: this.data.imgList
       })
@@ -146,7 +137,6 @@ Page({
         that.setData({
           showProcess: false
         })
-        this.showEditImg(0)
         Loger('***图片处理结束，所有照片：***', that.data.imgList)
       }
     } catch (e) {
@@ -172,7 +162,6 @@ Page({
     this.setData({
       selectedIndex:choosedIndex
     })
-    this.showEditImg(choosedIndex)
   }),
   //取消照片上传
   cancelImg: co.wrap(function*() {

@@ -53,7 +53,6 @@ page{
   width:120rpx;
   height:120rpx;
   display:inline-block;
-  box-sizing:border-box;
   margin:40rpx 12rpx;
   position:relative;
 }
@@ -69,7 +68,7 @@ page{
 
 .border-img{
   width:45rpx;
-  height:100%;
+  height:auto;
 }
 
 .bottom-station{

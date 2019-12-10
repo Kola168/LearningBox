@@ -3,7 +3,7 @@
 <view class="mode-box-size" style="width:{{areaSize.width}}px;height:{{areaSize.height}}px">
   <block wx:for="{{editAreaSize}}" wx:key="editAres">
     <view class="img-area" style="width:{{item.areaWidth}}px;height:{{item.areaHeight}}px;left:{{item.x}}px;top:{{item.y}}px;overflow:{{visible}}">
-      <image wx:if="{{imgArr[index]}}" src="{{foo.judgeOss(imgArr[index].phtotSrc,'/resize,w_1500,h_1500')}}" mode="widthFix"
+      <image wx:if="{{imgArr[index]}}" src="{{foo.judgeOss(imgArr[index].phtotSrc,'/resize,w_1000,h_1000')}}" mode="widthFix"
         style="transform-origin:(50%, 50%, 0);position:absolute;width:{{imgArr[index].width}}px;height:{{imgArr[index].height}}px;left:{{imgArr[index].left}}px;top:{{imgArr[index].top}}px;transform:rotate({{imgArr[index].rotate}}deg) scale3d({{imgArr[index].scale}},{{imgArr[index].scale}},1)">
       </image>
     </view>
