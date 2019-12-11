@@ -1,0 +1,33 @@
+<!--pages/package_feature/print_book/edit.wxml-->
+<nav-bar title="照片编辑"></nav-bar>
+<multi-process wx:if="{{showProcess}}" complete-count="{{completeCount}}" count="{{count}}" percent="{{percent}}" err-tip ="{{errTip}}" bindcancelprocess="cancelImg"></multi-process>
+<take-photo-pop id="checkComponent" bindchooseImg="chooseImgs" imgNum="{{chooseCount}}" bindbaidutap="baiduprint"></take-photo-pop>
+
+<wxs src="common.wxs" module="foo" />
+
+<view class="top-tips">
+  <image src="../resource_images/icon_smile.png" mode="widthFix" class="top-tip-icon"></image>
+  <text>点击+上传照片，图片可以旋转缩放，调整后点击提交</text>
+</view>
+<view class="edit-mode-bg">
+  <image src="../resource_images/photo_book_banner.png" mode="aspectFill" class="border-img"></image>
+  <edit-photo id="mymulti" class="edit-mode" mode-info="{{templateInfo}}" mode-paper="{{paperSize}}" img-path="{{photoPath}}" img-info="{{}}"></edit-photo>
+  <image src="../resource_images/icon_edit_bg.png" mode="aspectFill" class="edit-bg-img"></image>
+</view>
+<view class="bottom-station"></view>
+
+<view class="bottom-box">
+  <scroll-view class="template-list-box" scroll-x>
+    <view wx:for="{{imgList}}" wx:key="imgList" data-index="{{index}}" class="template-item {{index==selectedIndex?'img-selected':''}}" bindtap="tapTemplate">
+      <image src="{{foo.addOss(item,'/resize,w_100,h_100/quality,q_90')}}" mode="aspectFill" class="template-img"></image>
+      <image src="../resource_images/icon_delete.png" mode="widthFix" class="template-delete-icon" data-index="{{index}}" catchtap="deleteImg"></image>
+    </view>
+    <view wx:if="{{imgList.length<9}}" class="template-item" bindtap="addImg">
+      <image src="../resource_images/photo_book_add.png" mode="aspectFill" class="template-img"></image>
+    </view>
+  </scroll-view>
+  <bottom-button text-right="确认" bindrighttap="confBut"></bottom-button>
+</view>
+
+<import src="/lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />

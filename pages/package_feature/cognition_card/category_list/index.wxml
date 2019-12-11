@@ -1,0 +1,17 @@
+<nav-bar title="认知卡"></nav-bar>
+<view class="container {{loadReady?'fill-back':''}}">
+  <image src="../../images/cognition_tip_2.png" class="tip-img" mode="widthFix" bindtap="toShopping" />
+  <view class="list-box">
+    <view class="box-container" wx:for="{{templates}}" wx:key="{{index}}" id="{{item.id}}" data-url="{{item.default_img}}" bindtap="toEdit">
+      <image src="{{item.thumb}}" bindload="drawGuideView" id="{{index}}" mode="widthFix" />
+    </view>
+  </view>
+</view>
+<view class="guide-modal" wx:if="{{showGuide}}" catchtouchmove bindtap="hideGuideView">
+  <view class="guide-view" style="width:{{guidePosition.width}}px;left:{{guidePosition.left}}px;top:{{guidePosition.top}}px;">
+    <image src="{{templates[0].thumb}}" mode="widthFix" />
+    <image src="../../images/cognition_guide_tip_1.png" mode="widthFix" class="guide-tip" />
+  </view>
+</view>
+<import src="/lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />

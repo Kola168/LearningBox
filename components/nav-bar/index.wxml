@@ -10,7 +10,7 @@
         <block wx:if="{{slotLeft}}">
           <slot name="left"></slot>
         </block>
-        <view class="nav-bar-left__inner" wx:if="{{(showNavCapsuleBack||showNavCapsuleHome)&&!slotLeft}}" style="height:{{menuHeight-2}}px;border-radius:{{(menuHeight-2)/2}}px;">
+        <view class="nav-bar-left__inner" wx:if="{{(showNavCapsuleBack||showNavCapsuleHome)&&!slotLeft&&!forbidBack}}" style="height:{{menuHeight-2}}px;border-radius:{{(menuHeight-2)/2}}px;">
           <view wx:if="{{showNavCapsuleBack}}" bindtap="navigateBack">
             <image src="{{backImage}}" class="nav-bar-left__back" />
           </view>

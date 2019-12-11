@@ -1,0 +1,9 @@
+<!--pages/package_feature/print_balloon/typelist.wxml-->
+<nav-bar title="模版选择"></nav-bar>
+
+<view class="flex-box">
+  <view wx:for="{{ballList}}" wx:key="ballList" class="cont-box" data-id="{{item.id}}" bindtap="checkType">
+      <image src="{{item.name=='圆形气球'?'../resource_images/balloon_ball.png':(item.name=='心形气球'?'../resource_images/balloon_heart.png':(item.name=='星形气球'?'../resource_images/balloon_star.png':''))}}" mode="widthFix" class='cont-img'></image>
+      <text class="cont-text">{{item.name}}</text>
+  </view>
+</view>

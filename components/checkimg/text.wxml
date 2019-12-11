@@ -1,5 +1,5 @@
 <!--pages/gallery/component/checkimg/text.wxml-->
-<take-photo-pop id="checkComponent" bindchooseImg="chooseImgs" messageFile="{{false}}" imgNum="{{9}}" bindbaidutap="baiduprint"></take-photo-pop>
+<take-photo-pop id="checkComponent" bindchooseImg="chooseImgs" imgNum="{{9}}" bindbaidutap="baiduprint"></take-photo-pop>
 
 
 <view style="color:#000" bindtap="showpop" class="">

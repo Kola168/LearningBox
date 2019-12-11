@@ -1,0 +1,7 @@
+{
+  "enablePullDownRefresh": false,
+  "onReachBottomDistance": 80,
+  "usingComponents": {
+    "modal": "../../../../components/modal/index"
+  }
+}
