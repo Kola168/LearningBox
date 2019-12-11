@@ -1,0 +1,75 @@
+<!--pages/package_preschool/timed_print/timed_print.wxml-->
+<nav-bar title="宝贝成长计划"></nav-bar>
+<view class="time-block">
+    <view class="lists">
+        <view class="list-item">
+            <view class="item-left">宝贝昵称</view>
+            <view class="item-right">
+                <text class="name">请填写真实昵称</text>
+                <image class="arrow-icon" src="/images/doc_item_arrow.png"></image>
+            </view>
+        </view>
+        <view class="list-item">
+            <view class="item-left">自动打印</view>
+            <view class="item-right set-switch">
+                <image src="/images/switch_off.png"></image>
+            </view>
+        </view>
+        <view class="list-item">
+            <view class="item-left">每关打印份数</view>
+            <view class="item-right print-num">
+                <image class="arrow-icon" src="/images/doc_document_cut.png"></image>
+                <text class="name">1</text>
+                <image class="arrow-icon" src="/images/doc_plus_y.png"></image>
+            </view>
+        </view>
+        <view class="list-item">
+            <view class="item-left">打印时间</view>
+            <view class="item-right print-time">
+                <text class="name">16:00</text>
+                <image class="arrow-icon" src="/images/doc_item_arrow.png"></image>
+            </view>
+        </view>
+        <view class="list-item list-frequency">
+            <view class="frequency-left">打印频率</view>
+            <view class="frequency-right">
+                <view class="set-frequency">
+                    <text>一天一关</text>
+                    <image src="/images/radio_on.png"></image>
+                </view>
+                <view class="set-frequency">
+                    <text>两天一关</text>
+                    <image src="/images/radio_off.png"></image>
+                </view>
+                <view class="set-frequency">
+                    <text>三天一关</text>
+                    <image src="/images/radio_off.png"></image>
+                </view>
+            </view>
+        </view>
+    </view>
+    <view class="function-intro">
+        <text>功能说明：</text>
+        <text>1、开启自动打印，关卡将按照设置定时进行打印</text>
+        <text>2、若因设备原因导致打印失败，可进行人为手动打印该关卡</text>
+        <text>3、订阅成功后，用户也可在关卡页面进行修改设置</text>
+    </view>
+</view>
+<view class="footer">确认</view>
+<view class="bottom-popup" style="display:none;">
+    <view class="popup-bg"></view>
+    <view class="popup-cont">
+        <text class="confirm">确定</text>
+        <view class="scroll-block">
+            <text>1</text>
+            <text>2</text>
+            <text class="on">3</text>
+            <text>4</text>
+            <text>5</text>
+            <text>6</text>
+            <text>7</text>
+            <text>8</text>
+            <text>9</text>
+        </view>
+    </view>
+</view>

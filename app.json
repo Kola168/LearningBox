@@ -81,7 +81,8 @@
     {
       "root": "pages/package_preschool",
       "pages": [
-
+        "growth_plan/list/index",
+        "growth_plan/timed_print/timed_print"
       ]
     },
     {
