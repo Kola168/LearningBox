@@ -1,0 +1,21 @@
+<cover-view class="confirm-modal" wx:if="{{show}}" bindtap="cancelModal">
+    <cover-view class="confirm-main">
+        <cover-view class="confirm-title">什么是黑白处理？</cover-view>
+        <cover-view class="confirm-content" scroll-top="0">
+            <cover-view>过智能识别技术，将图片中的文本显示加强</cover-view>
+            <cover-view >此功能适用于仅有纯文本，（不含任何图片）的照片，</cover-view>
+            <cover-view>且识别时间较长</cover-view>
+        </cover-view>
+        <cover-view class="example-area">
+            <cover-view class="origin-ctx">
+                <cover-image class="origin-ctx-image" src="https://cdn-h.gongfudou.com/LearningBox/main/pic2doc_tip_example2.jpg" />
+                <cover-view class="">原图</cover-view>
+            </cover-view>
+            <cover-view class="reinforce-ctx">
+                <cover-image class="origin-ctx-image" src="https://cdn-h.gongfudou.com/LearningBox/main/pic2doc_tip_example1.jpg" />
+                <cover-view class="">黑白加强</cover-view>
+            </cover-view>
+        </cover-view>
+        <cover-view class="btn-confirm" catchtap="cancelModal">知道了</cover-view>
+    </cover-view>
+</cover-view>

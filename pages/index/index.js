@@ -11,7 +11,7 @@ import index from "../../mixins/index.js"
 import init from "../../mixins/init.js"
 import storage from '../../utils/storage.js'
 import api from '../../network/restful_request.js'
-// const request = util.promisify(wx.request)
+import router from '../../utils/nav'
 const checkSession = util.promisify(wx.checkSession)
 
 Page({
@@ -32,7 +32,7 @@ Page({
       url: 'http://gfd-i.memeyin.com/e-FlXfVks1do_li3DqrLWVHjr-0IPr'
     }, ],
     showAuth: false, //登录
-    homeType: 'subject'
+    homeType: 'beforeSchool'
   },
 
   //事件处理函数
@@ -40,12 +40,6 @@ Page({
     wxNav.navigateTo('/pages/logs/logs')
   },
   onLoad: function () {
-    // logger.error('123456789')
-    // logger.warn('123456789')
-    // logger.info('1234567890000', '6789')
-    // logger.debug('123456789')
-    // storage.put('hello', '123')
-
     this.longToast = new app.weToast()
   },
   onShow: co.wrap(function* () {
@@ -112,7 +106,7 @@ Page({
       }
       const resp = yield api.wechatDecryption(params)
       if (resp.code != 0) {
-        throw (resp.data)
+        throw (resp.res)
       }
       storage.put('authToken', resp.res.auth_token)
       storage.put('unionId', resp.res.unionid)
@@ -126,13 +120,13 @@ Page({
       this.setData({
         showAuth: false
       })
-      this.longToast.toast()
+      this.longToast.hide()
     } catch (e) {
       yield app.login()
       this.setData({
         showAuth: true
       })
-      this.longToast.toast()
+      this.longToast.hide()
       util.showError(e)
     }
   }),
@@ -144,15 +138,22 @@ Page({
         break
       case 'doc':
         url = "/pages/print_doc/index/index"
-				break
-			case 'more':
-				url = "/pages/print_funny/index"
-				break
-      defalt:
+        break
+      case 'more':
+        url = "/pages/print_funny/index"
+        break
+        defalt:
           url = ''
     }
-    wx.navigateTo({
-      url
+    router.navigateTo(url)
+  },
+  // TODO:以下两个为测试函数，待删除
+  changeSubject: function () {
+    this.setData({
+      homeType: this.data.homeType == 'subject' ? 'beforSchool' : 'subject'
     })
-  }
+  },
+  // toId: function () {
+  //   router.navigateTo('/pages/print_id/index')
+  // }
 })

@@ -1,4 +1,3 @@
-// pages/network/wificonnect/list.js
 const app = getApp()
 const regeneratorRuntime = require('../../../../lib/co/runtime')
 const co = require('../../../../lib/co/co')
@@ -9,6 +8,7 @@ const request = util.promisify(wx.request)
 const showModal = util.promisify(wx.showModal)
 
 import wxNav from '../../../../utils/nav.js'
+
 
 Page({
 

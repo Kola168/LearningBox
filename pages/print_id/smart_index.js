@@ -6,6 +6,8 @@ const co = require('../../lib/co/co')
 const util = require('../../utils/util')
 import api from '../../network/restful_request.js'
 const showModal = util.promisify(wx.showModal)
+import router from '../../utils/nav'
+
 
 Page({
     data: {
@@ -67,50 +69,41 @@ Page({
         }
 
         this.longToast.toast({
-            img: '../../images/loading.gif',
-            title: '请稍后',
+            type: 'loading',
             duration: 0
         })
 
         try {
             const resp = yield api.searchId(this.data.inputValue)
             if (resp.code == 0) {
-                this.longToast.toast()
-                console.log('搜索结果', resp.res)
+                this.longToast.hide()
 
                 if (resp.res.length == 0) {
-                    return yield showModal({
-                        content: '没有搜到该类型哦',
-                        showCancel: false,
-                        confirmColor: '#FFE27A'
+                    return util.showError({
+                        content: '没有搜到该类型哦'
                     })
-
                 }
                 this.setData({
                     searchList: resp.res,
                     showLabel: false
                 })
             } else {
-                this.longToast.toast()
-                util.showErr(e)
+                this.longToast.hide()
+                util.showError(e)
                 return
             }
         } catch (e) {
-            this.longToast.toast()
-            console.log(e)
-            yield showModal({
-                title: '网络异常',
-                content: '请检查您的网络状态，稍后重试',
-                showCancel: false,
-                confirmColor: '#FFE27A'
+            this.longToast.hide()
+            util.showError({
+                content: '请检查您的网络，请稍后重试'
             })
             return
         }
     }),
     toRules: co.wrap(function* (e) {
         let item = JSON.stringify(this.data.searchList[e.currentTarget.id])
-        wx.redirectTo({
-            url: `smart_rules?item=${item}`
+        router.redirectTo(`/pages/print_id/smart_rules`, {
+            item
         })
     })
 

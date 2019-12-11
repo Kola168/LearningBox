@@ -1,0 +1,68 @@
+/* @import '../common.wxss'; */
+.container {
+  position: relative;
+  z-index: 10;
+}
+
+.fill-back {
+  background: linear-gradient(#FFCC6D, #FFE071, #F5E273);
+  min-height: 100%;
+}
+
+.tip-img {
+  width: 90%;
+}
+
+.list-box {
+  padding: 40rpx 36rpx;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.box-container {
+  width: 48%;
+  margin-bottom: 4%;
+  border-radius: 24rpx;
+  display: flex;
+}
+
+.box-container:nth-child(odd) {
+  margin-right: 4%;
+}
+
+.box-container image {
+  width: 100%;
+  border-radius: 24rpx;
+}
+
+.guide-modal {
+  position: fixed;
+  left: 0;
+  top: 0;
+  background: rgba(0, 0, 0, .5);
+  width: 100%;
+  height: 100%;
+  z-index: 1000;
+}
+
+.guide-view {
+  display: flex;
+  background: #FFE071;
+  border-radius: 24rpx;
+  position: absolute;
+  padding: 6px;
+}
+
+.guide-view image {
+  width: 100%;
+  border-radius: 24rpx;
+}
+
+image.guide-tip {
+  position: absolute;
+  right: -104%;
+  width: 200%;
+  bottom: -30px;
+  border-radius: 0;
+}

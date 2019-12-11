@@ -1,4 +1,8 @@
 {
-  "navigationBarTitleText": "在A4纸上打印",
-  "usingComponents": {}
+  "navigationBarTitleText": "图片转文档",
+  "enablePullDownRefresh": false,
+  "usingComponents": {
+    "confirm-print": "../../components/confirm-print/index",
+    "check-img": "../../components/checkimg/index"
+  }
 }

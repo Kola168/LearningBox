@@ -1,0 +1,19 @@
+var keyMapping = {
+    all: '',
+    pic :'照片',
+    doc: '文档',
+    file: '文件'
+}
+
+function style (percent, height, bgColor, borderRadius) {
+    return 'width:'+percent+'%;height:' + height * 2 + 'rpx;background-color:' + bgColor + ';border-radius:' + borderRadius * 2 + 'rpx;'
+}
+
+function repalceName (key) {
+    return keyMapping[key]
+}
+
+module.exports = {
+    repalceName: repalceName,
+    style: style
+}

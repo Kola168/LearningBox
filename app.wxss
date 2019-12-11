@@ -42,3 +42,17 @@ button::after {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+
+button {
+  background: none;
+  border: none;
+  border-radius: 0;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+button::after {
+  border: none;
+  border-radius: 0;
+}

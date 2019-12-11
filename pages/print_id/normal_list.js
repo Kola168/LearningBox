@@ -1,6 +1,7 @@
 // pages/photo/index.js
 "use strict"
 const app = getApp()
+import router from '../../utils/nav'
 
 Page({
     data: {
@@ -13,11 +14,6 @@ Page({
         this.setData({
             type: options.type
         })
-        if (options.type == 'foreign') {
-            wx.setNavigationBarTitle({
-                title: '各类签证'
-            })
-        }
     },
     onShow: function () {},
 
@@ -27,8 +23,8 @@ Page({
 
     toPrint: function (e) {
         let media_type = e.currentTarget.id
-        wx.navigateTo({
-            url: `normal_edit?media_type=${media_type}`
+        router.navigateTo(`/pages/print_id/normal_edit`,{
+            media_type
         })
     }
 })

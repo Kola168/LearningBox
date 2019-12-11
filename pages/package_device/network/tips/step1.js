@@ -17,7 +17,7 @@ Page({
   },
 
   nextStep:function(){
-    wxNav.navigateTo('/pages/package_device/network/tips/step2',{asd:1})
+    wxNav.navigateTo('/pages/package_device/network/tips/step2')
   }
 
 })

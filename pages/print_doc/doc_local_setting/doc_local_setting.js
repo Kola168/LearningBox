@@ -49,6 +49,7 @@ Page({
     }],
     fileTitle: null,
     hasAuthPhoneNum: false,
+    isFullScreen: false,
     confirmModal: {
       isShow: false,
       title: '请正确放置A4打印纸',
@@ -65,6 +66,7 @@ Page({
       const page_count = arrayFile.page_count || print_capability.page_count;
 
       this.setData({
+        isFullScreen: app.isFullScreen,
         isExcel: this.isExcelFiles(arrayFile.name),
         origin_name: arrayFile.name,
         previewUrl: arrayFile.url,

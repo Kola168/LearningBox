@@ -3,6 +3,6 @@
     <image wx:for="{{imgList}}" src="{{item}}" wx:key="{{index}}" style="width:100%" mode="widthFix"></image>
 </view>
 
-<view class="documentconfbox btn-print" bindtap="localPrint" wx:if="{{type === 'qq' && platform !== 'ios'}}">
+<view class="documentconfbox btn-print {{isFullScreen ? 'is-full-screen' : ''}}" bindtap="localPrint" wx:if="{{type === 'qq' && platform !== 'ios'}}">
     选择本地文档打印
 </view>
