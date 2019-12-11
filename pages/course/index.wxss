@@ -11,6 +11,11 @@
   border-radius: 20rpx;
 }
 
+.swiper-main {
+  width: 100%;
+  position: relative;
+}
+
 swiper {
   width: calc( 100% - 48rpx )!important;
   margin: 20rpx 24rpx 0;
@@ -22,8 +27,8 @@ swiper swiper-item {
 }
 
 .dots-main {
-  position: fixed;
-  top: 430rpx;
+  position: absolute;
+  bottom: 10rpx;
   left: 0;
   display: flex;
   justify-content: center;

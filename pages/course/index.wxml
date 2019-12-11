@@ -16,13 +16,15 @@ module.exports = {
 }
 </wxs>
 <nav-bar background="#fff" title="学习" />
-<swiper class="swiper"  bindchange="changeDots" autoplay="{{autoplay}}" interval="{{interval}}" circular>
-  <swiper-item wx:for="{{banners}}" wx:key="{{index}}" class="swpier-i" id="{{index}}" bindtap="swiperClick">
-    <image src="{{item.url}}" class="slide-img" mode="widthFix" />
-  </swiper-item>
-</swiper>
-<view class="dots-main">
-  <view class="dot-item {{activeIndex == index ? 'dot-item-active' : ''}}" wx:for="{{banners}}" wx:key="{{index}}"></view>
+<view class="swiper-main">
+  <swiper class="swiper"  bindchange="changeDots" autoplay="{{autoplay}}" interval="{{interval}}" circular>
+    <swiper-item wx:for="{{banners}}" wx:key="{{index}}" class="swpier-i" id="{{index}}" bindtap="swiperClick">
+      <image src="{{item.url}}" class="slide-img" mode="widthFix" />
+    </swiper-item>
+  </swiper>
+  <view class="dots-main">
+    <view class="dot-item {{activeIndex == index ? 'dot-item-active' : ''}}" wx:for="{{banners}}" wx:key="{{index}}"></view>
+  </view>
 </view>
 <view class="container">
   <view class="fast-nav">
