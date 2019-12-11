@@ -60,7 +60,7 @@ Page({
           showAuth: false
         })
         app.authToken = authToken
-        yield rhis.getUserInfo()
+        yield this.getUserInfo()
       }
       if (!authToken) {
         this.setData({
