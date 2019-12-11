@@ -59,7 +59,10 @@
         "print_balloon/typelist",
         "print_balloon/edit",
         "print_book/index",
-        "print_book/edit"
+        "print_book/edit",
+        "print_calendar/typelist",
+        "print_calendar/index",
+        "print_calendar/edit"
       ]
     },
     {

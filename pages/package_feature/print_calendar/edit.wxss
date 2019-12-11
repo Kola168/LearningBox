@@ -1,0 +1,36 @@
+/* pages/package_feature/print_ calendar/edit.wxss */
+page {
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.top-check-box {
+  width: 410rpx;
+  height: 66rpx;
+  margin-top: 26rpx;
+  display: flex;
+  justify-content: space-between;
+}
+
+.check-item {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 30rpx;
+  color: #666666;
+}
+
+.check-item-checked {
+  color: #FFA200;
+}
+
+.line {
+  width: 28rpx;
+  height: 4rpx;
+  background: #FFA200;
+}

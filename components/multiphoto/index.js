@@ -194,6 +194,17 @@ Component({
                 }
             }
         },
+        deleteEdge:{
+          type:Boolean,
+          value:false,
+          observer: function(newVal, oldVal) {
+              if(newVal){
+                  this.setData({
+                      deleteEdge: newVal
+                  })
+              }
+          }
+        }
     },
     observers: {
       'addIcon, deleteIcon': function() {
@@ -228,6 +239,7 @@ Component({
         addImgIcon:'', //添加图片图标
         deleteIcon:'', //删除图片图标
         showAdd:false, //展示添加图标
+        deleteEdge:false, //删除图标顶边显示
     },
 
     methods: {
@@ -756,7 +768,7 @@ Component({
             if(!res.confirm){
               return
             }
-            let index = e.currentTarget.dataset.index
+            let index = e.currentTarget.dataset.index||e
             this.data.imgArr.splice(index,1)
             this.data.globalData.splice(index,1)
             this.setData({

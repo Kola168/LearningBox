@@ -1,0 +1,15 @@
+<!--pages/package_feature/print_ calendar/edit.wxml-->
+<nav-bar title="{{titleName}}"></nav-bar>
+<view class="top-check-box">
+  <view class="check-item {{direction=='horizontal'?'check-item-checked':''}}" data-type="horizontal" bindtap="checkdirection">
+    <text>横向</text>
+    <view wx:if="{{direction=='horizontal'}}" class="line"></view>
+  </view>
+  <view class="check-item {{direction=='vertical'?'check-item-checked':''}}" data-type="vertical" bindtap="checkdirection">
+    <text>竖版</text>
+    <view wx:if="{{direction=='vertical'}}" class="line"></view>
+  </view>
+</view>
+<edit-photo id="mymulti" class="edit-mode" mode-info="{{templateInfo}}" mode-paper="{{paperSize}}" add-icon="/pages/package_feature/resource_images/balloon_add_icon.png" delete-icon="/pages/package_feature/resource_images/calendar_close.png"
+  delete-edge="{{true}}"></edit-photo>
+<bottom-button text-right="开始打印" bindrighttap="confBut"></bottom-button>
