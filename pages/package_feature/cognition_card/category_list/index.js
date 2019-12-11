@@ -2,7 +2,7 @@
 
 const app = getApp()
 import { regeneratorRuntime, co, util, wxNav, storage } from '../../../../utils/common_import'
-import api from '../../../../network/restful_request'
+import graphql from '../../../../network/graphql_request'
 Page({
   data: {
     showGuide: false,
@@ -14,11 +14,9 @@ Page({
     shopId: 24056376
   },
   onLoad: co.wrap(function*(query) {
-    this.longToast = new app.weToast()
-    this.categoryId = query.id
-    this.page = 1
-    this.pageEnd = false
-    this.hasViewCongnitionTpl = wx.getStorageSync('hasViewCongnitionTpl')
+    this.weToast = new app.weToast()
+    this.categorySn = query.sn
+    this.hasViewCongnitionTpl = storage.get('hasViewCongnitionTpl')
     yield this.getCognitionTemplates()
   }),
   toShopping: function(e) {
@@ -30,30 +28,20 @@ Page({
     )
   },
   getCognitionTemplates: co.wrap(function*() {
-    this.longToast.toast({
+    this.weToast.toast({
       type: 'loading'
     })
     try {
-      let resp = yield api.getCognitionTemplates(app.openId, this.categoryId, this.page++)
-      if (resp.code !== 0) {
-        throw (resp)
-      }
-      let templates = resp.res
-      if (templates.length < 20) {
-        this.pageEnd = true
-      }
-      this.longToast.toast()
-      if (templates.length === 0) {
-        return
-      }
+      let res = yield graphql.getTemplates(this.categorySn)
+      this.weToast.hide()
       this.setData({
-        templates: templates,
+        templates: res.category.templates,
         loadReady: true
       })
 
     } catch (error) {
-      this.longToast.toast()
-      util.showErr(error)
+      this.weToast.hide()
+      util.showGraphqlErr(error)
     }
   }),
   drawGuideView(e) {
@@ -87,21 +75,14 @@ Page({
     if (app.preventMoreTap(e)) {
       return
     }
-    let id = e.currentTarget.id,
+    let sn = e.currentTarget.id,
       editUrl = e.currentTarget.dataset.url
     wxNav.navigateTo(
       `../edit/index`, {
-        templateId: id,
+        sn,
         type: 'template',
-        hasEdit: 0,
-        editUrl
+        hasEdit: 0
       }
     )
-  },
-  onReachBottom: function() {
-    if (this.pageEnd) {
-      return
-    }
-    this.getCognitionTemplates()
-  },
+  }
 })

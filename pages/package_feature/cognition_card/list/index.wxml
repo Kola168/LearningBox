@@ -1,10 +1,14 @@
 <nav-bar title="认知卡"></nav-bar>
-<view class="container {{loadReady?'fill-back':''}}">
-  <!-- <image src="../../../images/cloud.png" class="cloud" mode="widthFix" /> -->
-  <image src="../../../images/cognition_tip_2.png" class="tip-img" mode="widthFix" bindtap="toShopping" />
+<view class="container">
+  <view class="index-top">
+    <view class="top-left">
+      <image src="../../images/cognition_tip_1.png" mode="widthFix" />
+    </view>
+    <view class="top-right" bindtap="toShopping">选购耗材</view>
+  </view>
   <view class="list-box">
     <view class="box-container" wx:for="{{cognitionCardImgs}}" wx:key="{{index}}">
-      <image src="{{item.previewUrl}}" mode="widthFix" class="main-img" />
+      <image src="{{item.url}}" mode="widthFix" class="main-img" />
       <view class="edit-text" bindtap="toEdit" data-url="{{item.editUrl}}" data-name="{{item.cardName}}" data-index="{{index}}">
         <image src="../../../images/cognition_edit_text.png" mode="widthFix" />
       </view>

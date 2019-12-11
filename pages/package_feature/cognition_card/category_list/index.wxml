@@ -1,15 +1,20 @@
 <nav-bar title="认知卡"></nav-bar>
 <view class="container {{loadReady?'fill-back':''}}">
-  <image src="../../images/cognition_tip_2.png" class="tip-img" mode="widthFix" bindtap="toShopping" />
+  <view class="index-top">
+    <view class="top-left">
+      <image src="../../images/cognition_tip_2.png" mode="widthFix" />
+    </view>
+    <view class="top-right" bindtap="toShopping">选购耗材</view>
+  </view>
   <view class="list-box">
-    <view class="box-container" wx:for="{{templates}}" wx:key="{{index}}" id="{{item.id}}" data-url="{{item.default_img}}" bindtap="toEdit">
-      <image src="{{item.thumb}}" bindload="drawGuideView" id="{{index}}" mode="widthFix" />
+    <view class="box-container" wx:for="{{templates}}" wx:key="index" id="{{item.sn}}" bindtap="toEdit">
+      <image src="{{item.perviewImage}}" bindload="drawGuideView" id="{{index}}" mode="widthFix" />
     </view>
   </view>
 </view>
 <view class="guide-modal" wx:if="{{showGuide}}" catchtouchmove bindtap="hideGuideView">
   <view class="guide-view" style="width:{{guidePosition.width}}px;left:{{guidePosition.left}}px;top:{{guidePosition.top}}px;">
-    <image src="{{templates[0].thumb}}" mode="widthFix" />
+    <image src="{{templates[0].perviewImage}}" mode="widthFix" />
     <image src="../../images/cognition_guide_tip_1.png" mode="widthFix" class="guide-tip" />
   </view>
 </view>

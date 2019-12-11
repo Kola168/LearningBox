@@ -1,31 +1,15 @@
 "use strict"
 
 const app = getApp()
-import { regeneratorRuntime, co, util, wxNav } from '../../../../utils/common_import'
-import api from '../../../../network/restful_request'
+import { regeneratorRuntime, co, util, wxNav, storage } from '../../../../utils/common_import'
+import graphql from '../../../../network/graphql_request'
 Page({
   data: {
-    categoryList: [{
-      image: '../../images/category_0.png',
-      id: 1
-    }, {
-      image: '../../images/category_1.png',
-      id: 2
-    }, {
-      image: '../../images/category_2.png',
-      id: 3
-    }, {
-      image: '../../images/category_3.png',
-      id: 4
-    }, {
-      image: '../../images/category_4.png',
-      id: 5
-    }],
-    printerAlias: '3nfe8xk3b6vew',
-    appId: 'wxde848be28728999c',
-    shopId: 24056376,
-    showIntro: false,
-    navBarHeight: 0,
+    categoryList: [],
+    // printerAlias: '3nfe8xk3b6vew',
+    // appId: 'wxde848be28728999c',
+    // shopId: 24056376,
+    // showIntro: false,
     areaHeight: 0
   },
   onLoad: co.wrap(function*() {
@@ -33,7 +17,7 @@ Page({
     this.setData({
       areaHeight: app.sysInfo.safeArea.height - navBarHeight
     })
-    this.longToast = new app.weToast()
+    this.weToast = new app.weToast()
     yield this.getCognitionCategories()
   }),
   toShopping: function(e) {
@@ -47,72 +31,71 @@ Page({
     if (app.preventMoreTap(e)) {
       return
     }
-    let id = Number(e.currentTarget.id),
-      url = '',
-      playload = {}
-    if (id === 5) {
-      let literacyCard = wx.getStorageSync('literacy_card')
-      let templateId = yield this.getEmptyTemplateId(id)
-
-      if (literacyCard && literacyCard.length > 0) {
-        let isFull = literacyCard.length >= 18 ? 1 : 0
-        url = `../list/list`
-        playload = {
-          isFull,
-          id: templateId
+    try {
+      let sn = e.currentTarget.dataset.sn,
+        id = e.currentTarget.id,
+        url = '',
+        playload = {}
+      if (id === 'custom') {
+        let literacyCard = storage.get('literacy_card')
+        let templateSn = yield this.getEmptyTemplateInfo(sn)
+        if (literacyCard && literacyCard.length > 0) {
+          let isFull = literacyCard.length >= 18 ? 1 : 0
+          url = `../list/index`
+          playload = {
+            isFull,
+            sn: templateSn
+          }
+        } else {
+          url = `../edit/index`
+          playload = {
+            sn: templateSn,
+            type: 'custom',
+            hasEdit: 0,
+            editUrl: ''
+          }
         }
       } else {
-        url = `../edit/index`
+        url = `../category_list/index`
         playload = {
-          templateId,
-          type: 'custom',
-          hasEdit: 0,
-          editUrl: ''
+          sn
         }
       }
-    } else {
-      url = `../category_list/index`
-      playload = {
-        id
-      }
+      console.log(url,'playload')
+      wxNav.navigateTo(
+        url, playload
+      )
+    } catch (error) {
+      util.showError(error)
     }
-    wxNav.navigateTo(
-      url, playload
-    )
+
   }),
   getCognitionCategories: co.wrap(function*() {
-    this.longToast.toast({
+    this.weToast.toast({
       type: 'loading'
     })
     try {
-      let resp = yield api.getCognitionCategories('oHTe45c3u5Y5xcUMd2Vw4c2SWjj4')
-      if (resp.code != 0) {
-        throw (resp)
-      }
+      let res = yield graphql.getCategory('literacy_card')
       this.setData({
-        categoryList: resp.res
+        categoryList: res.feature.categories
       })
-      this.longToast.toast()
+      this.weToast.hide()
     } catch (error) {
-      this.longToast.toast()
-      util.showErr(error)
+      this.weToast.hide()
+      util.showGraphqlErr(error)
     }
   }),
-  getEmptyTemplateId: co.wrap(function*(id) {
-    wx.showLoading({
-      title: '请稍等',
-      mask: true
+  getEmptyTemplateInfo: co.wrap(function*(sn) {
+    this.weToast.toast({
+      type: 'loading'
     })
     try {
-      let resp = yield api.getCognitionTemplates(app.openId, id, 1)
-      if (resp.code !== 0) {
-        throw (resp)
-      }
-      wx.hideLoading()
-      return resp.res[0].id
+      let res = yield graphql.getTemplates(sn)
+      this.weToast.hide()
+      return res.category.templates[0].sn
     } catch (error) {
-      wx.hideLoading()
-      util.showErr(error)
+      this.weToast.hide()
+      util.showGraphqlErr(error)
     }
   }),
 })

@@ -15,15 +15,15 @@ let gql = GraphQL({
   url: `${app.apiServer}/graphql`,
   header: function() {
     if (app.authToken) {
-			console.log('authToken==1==',app.authToken)
+      console.log('authToken==1==', app.authToken)
       return {
         "AUTHORIZATION": `Token token=${app.authToken}`
       }
     } else {
       try {
         var authToken = wx.getStorageSync('authToken')
-			  console.log('authToken====',authToken)
-				if (authToken) {
+        console.log('authToken====', authToken)
+        if (authToken) {
           return {
             "AUTHORIZATION": `Token token=${authToken}`
           }
@@ -204,6 +204,73 @@ const graphqlApi = {
         path: path,
         type: type,
         key: key
+      }
+    })
+  },
+
+  /**
+   * 获取模版分类
+   * @param { String } key required 模版feature key
+   */
+  getCategory: (key) => {
+    return gql.query({
+      query: `query ($key: String!){
+        feature(key: $key){
+          categories {
+            image,
+            sn
+          }
+        }
+      }`,
+      variables: {
+        key: key
+      }
+    })
+  },
+
+  /**
+   * 获取模版分类
+   * @param { String } sn required 分类sn
+   */
+  getTemplates: (sn) => {
+    return gql.query({
+      query: `query ($sn: String!){
+        category(sn: $sn){
+          templates {
+            perviewImage,
+            sn
+          }
+        }
+      }`,
+      variables: {
+        sn: sn
+      }
+    })
+  },
+
+  /**
+   * 获取模版详情
+   * @param { String } sn required 模版sn
+   */
+  getTemplate: (sn) => {
+    return gql.query({
+      query: `query ($sn: String!){
+        template(sn: $sn){
+          defaultImage,
+          imageUrl,
+          sn,
+          positionInfo {
+            areaX,
+            areaY,
+            areaHeight,
+            areaWidth,
+            height,
+            width
+          }
+        }
+      }`,
+      variables: {
+        sn: sn
       }
     })
   },

@@ -24,7 +24,7 @@ Page({
   },
   onLoad(query) {
     let cognitionCardImgs = storage.get('literacy_card')
-    this.templateId = query.id
+    this.templateSn = query.sn
     let isFull = query.isFull == 1 ? true : false
     if (isFull) {
       wx.showModal({

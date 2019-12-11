@@ -5,18 +5,18 @@
     <view class="device-item device-item-active">
       <view class="item-left" bindtap="toSetting">
         <view class="left-img">
-          <image src="https://cdn-h.gongfudou.com/e-FpdiBnM3QbjrdiMTUMLY_Zf8tnGU" mode="widthFix" />
+          <image src="../images/{{activeDevice.model==='3115'?'L3115':'EP400'}}.png" mode="widthFix" />
         </view>
         <view class="left-name text-overflow-points active-name-box">
-          <view>小白盒子小白盒子小</view>
+          <view>{{activeDevice.name}}</view>
           <view class="device-active-status online-active-status">
-            <view class="status-flag online-status"></view>
-            <view>在线</view>
+            <view class="status-flag {{activeDevice.onlineState==='no'?'online-status':''}}"></view>
+            <view>{{activeDevice.onlineState==='no'?'在线':'离线'}}</view>
           </view>
         </view>
       </view>
       <view class="item-right">
-        <view class="right-btn" bindtap="toShare">分享</view>
+        <view class="right-btn" bindtap="toShare" data-sn="{{activeDevice.sn}}">分享</view>
         <view class="right-arrow">
           <image src="../images/arrow_right.png" />
         </view>
@@ -25,7 +25,21 @@
   </view>
   <view class="device-list">
     <view>设备列表</view>
-    <view class="device-item">
+    <view class="device-item" wx:for="{{devices}}" wx:key="sn">
+      <view class="item-left" wx:if="{{!item.selected}}" bindtap="toSetting" data-sn="{{item.sn}}">
+        <view class="left-img">
+          <image src="../images/{{item.model==='3115'?'L3115':'EP400'}}.png" mode="widthFix" />
+        </view>
+        <view class="left-name text-overflow-points">{{item.name}}</view>
+      </view>
+      <view class="item-right">
+        <view class="right-btn" bindtap="switchActiveDevice" data-sn="{{item.sn}}">切换</view>
+        <view class="right-arrow">
+          <image src="../images/arrow_right.png" />
+        </view>
+      </view>
+    </view>
+    <!-- <view class="device-item">
       <view class="item-left" bindtap="toSetting">
         <view class="left-img">
           <image src="https://cdn-h.gongfudou.com/e-FpdiBnM3QbjrdiMTUMLY_Zf8tnGU" mode="widthFix" />
@@ -52,23 +66,9 @@
           <image src="../images/arrow_right.png" />
         </view>
       </view>
-    </view>
-    <view class="device-item">
-      <view class="item-left" bindtap="toSetting">
-        <view class="left-img">
-          <image src="https://cdn-h.gongfudou.com/e-FpdiBnM3QbjrdiMTUMLY_Zf8tnGU" mode="widthFix" />
-        </view>
-        <view class="left-name text-overflow-points">小白盒子小白盒子小白盒子小白盒子小白盒子小白盒子</view>
-      </view>
-      <view class="item-right">
-        <view class="right-btn" bindtap="switchActiveDevice">切换</view>
-        <view class="right-arrow">
-          <image src="../images/arrow_right.png" />
-        </view>
-      </view>
-    </view>
+    </view> -->
   </view>
-  <view class="device-add {{isFullScreen?'is-full-screen':''}}">添加打印设备</view>
+  <view class="device-add {{isFullScreen?'is-full-screen':''}}" bindtap="addDevice">添加打印设备</view>
 </view>
 <!-- loading -->
 <import src="/lib/toast/wetoast.wxml" />
