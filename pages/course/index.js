@@ -6,7 +6,6 @@ import {
   util
 } from '../../utils/common_import'
 const event = require('../../lib/event/event')
-import api from '../../network/restful_request'
 import graphql from '../../network/graphql_request'
 import storage from '../../utils/storage'
 import router from '../../utils/nav.js'
@@ -17,18 +16,8 @@ Page({
     autoplay: true,
     interval: 3000,
     userLastCourse: null,
-    banners: [
-      {url: 'https://cdn-h.gongfudou.com/epbox/picture/category_e42cf96c50534c57a8f9d102e86d237a.jpg'},
-      {url: 'https://cdn-h.gongfudou.com/epbox/picture/category_e42cf96c50534c57a8f9d102e86d237a.jpg'}
-    ],
-    recommendCourse: [
-      {
-        desc: '著名作家小星星倾情力作',
-        studyUsers: 20,
-        totalLessons: 120,
-        recommendationImageUrl: 'https://cdn-h.gongfudou.com/epbox/picture/category_e42cf96c50534c57a8f9d102e86d237a.jpg'
-      }
-    ],
+    banners: [],
+    recommendCourse: [],
     selectCategories: [],
     isAndroid: false,
     isMember: false
@@ -46,22 +35,11 @@ Page({
       unionId: unionId
     })
 
-    let hideCourseRedDot = storage.get('hideCourseRedDot')
-    if (!hideCourseRedDot) {
-      wx.hideTabBarRedDot({
-        index: 1
-      })
-      storage.put('hideCourseRedDot', true)
-    }
     event.on('Authorize', this, () => {
       this.unionId = storage.get('unionId')
-      // this.isMember()
       this.getCourseIndex()
     })
 
-    // try {
-    // 	app.gio('track', 'course', {})
-    // } catch (e) {}
   }),
 
   onShow() {
@@ -91,14 +69,6 @@ Page({
       }
     }
   },
-
-  isMember: co.wrap(function* () {
-    let res = yield graphql.isMember(),
-      isMember = res.user.isMember
-    this.setData({
-      isMember
-    })
-  }),
 
   formatCount(count) {
     if (count < 10000) {
@@ -163,7 +133,7 @@ Page({
   }),
 
   toCourseCenter: co.wrap(function* () {
-    let isAuth = yield this.authCheck()
+    let isAuth = yield this.authCheck() 
     let isMember = this.data.isMember ? 1 : 0
     if (isAuth) {
       router.navigateTo('/pages/package_course/course_center/course_center', {
@@ -173,30 +143,27 @@ Page({
   }),
 
   authCheck: co.wrap(function* () {
-    if (!this.unionId) {
-      router.navigateTo('/pages/authorize/authorize')
-      return false
-    } else {
-      return true
-    }
+    // if (!this.unionId) {
+    //   router.navigateTo('/pages/authorize/index')
+    //   return false
+    // } else {
+    //   return true
+    // }
+    return true
   }),
 
+  // 获取推荐 || banner
   getCourseIndex: co.wrap(function* () {
     this.longToast.toast({
       type: 'loading',
       title: '请稍候'
     })
     try {
-      // let params = {}
-      // if (this.unionId) {
-      //   params.openid = app.openId
-      // }
-      let respRecommend = yield graphql.getCourseIndex('recommendation')
-      let respCategories = yield graphql.getSeletedCategories('course')
+      var respRecommend = yield graphql.getCourses('recommendation')
+      var banners = yield graphql.getCourseBanner('course')
       this.setData({
-        banners: respRecommend.banners,
         recommendCourse: respRecommend.courses,
-        selectCategories: respCategories.categories
+        banners: banners.banners,
       })
       this.longToast.hide()
     } catch (error) {
@@ -204,15 +171,14 @@ Page({
       util.showError(error)
     }
   }),
-
+  
+  // 获取最后一次学习的信息
   getLastCourseInfo: co.wrap(function* () {
     try {
-      let resp = yield api.getLastCourseInfo(app.openId)
-      if (resp.code !== 0) {
-        throw (resp)
-      }
+      let res = yield graphql.getLastCourseInfo(app.openId)
+      
       this.setData({
-        userLastCourse: resp.res.user_last_course
+        userLastCourse: res
       })
     } catch (error) {
       util.showError(error)

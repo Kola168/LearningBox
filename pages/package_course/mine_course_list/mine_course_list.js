@@ -5,7 +5,9 @@ import {
 } from '../../../utils/common_import'
 const app = getApp()
 const request = util.promisify(wx.request)
+import graphql from '../../../network/graphql_request'
 import Logger from '../../../utils/logger'
+import router from '../../../utils/nav'
 const logger = new Logger.getLogger('pages/package_course/mine_course_list/mine_course_list')
 Page({
   data: {
@@ -26,8 +28,12 @@ Page({
   },
 
   onLoad: function (options) {
+    var systemInfo = wx.getSystemInfoSync()
     this.longToast = new app.weToast()
     this.verifyPlat()
+    this.setData({
+      top:40 +  systemInfo.statusBarHeight
+    })
   },
 
   onShow: function () {
@@ -88,21 +94,12 @@ Page({
         type: 'loading',
         title: '请稍后'
       })
-      var resp = yield request({
-        url: app.apiServer + `/boxapi/v2/collections/${app.openId}`,
-        method: 'GET',
-        dataType: 'json',
-        data: {
-          type: 'course'
-        }
-      })
-      if (resp.data.code != 0) {
-        throw (resp.data)
-      }
-      var res = resp.data.res
+
+      var res = yield graphql.getMyFavorList('course')
+      console.log(res,'===getFavorList===')
       this.setData({
-        favorList: res || [],
-        is_empty: res && res.length > 0 ? false : true
+        favorList: res.collections || [],
+        is_empty: res && res.collections.length > 0 ? false : true
       })
     } catch (err) {
       logger.info(err)
@@ -119,15 +116,7 @@ Page({
         type: 'loading',
         title: '请稍后'
       })
-      var resp = yield request({
-        url: app.apiServer + `/boxapi/v2/course_base/user/${app.openId}/courses`,
-        method: 'GET',
-        dataType: 'json'
-      })
-      var res = resp.data.res
-      if (resp.data.code != 0) {
-        throw (resp.data)
-      }
+      var res = yield graphql.getCourses('my')
       this.setData({
         courseList: res.courses || [],
         is_empty: res && res.courses.length > 0 ? false : true
@@ -135,8 +124,9 @@ Page({
 
     } catch (err) {
       logger.info(err)
-
+      util.showError(err)
     } finally {
+      
       this.longToast.hide()
     }
   }),

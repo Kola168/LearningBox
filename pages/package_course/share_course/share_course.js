@@ -7,8 +7,7 @@
 	const app = getApp()
 	var timer
 	const event = require('../../../lib/event/event')
-	import commonRequest from '../../../utils/common_request'
-	import api from '../../../network/restful_request'	
+	import graphql from '../../../network/graphql_request'
 	import storage from '../../../utils/storage'
 	import router from '../../../utils/nav'
 	import Logger from '../../../utils/logger.js'
@@ -40,8 +39,10 @@
 		onLoad: co.wrap(function* (options) {
 			var _this = this
 			var unionId = storage.get("unionId")
+
 			_this.longToast = new app.weToast()
-			options.sn && _this.setData({
+			console.log(options.sn,'=options.sn==')
+			_this.setData({
 				sn: options.sn,
 				share_user_id: options.share_user_id || '',
 				isAuth: !!unionId
@@ -60,24 +61,12 @@
 		}),
 
 		onShow: co.wrap(function* () {
-			// this.init()
+			this.init()
 		}),
 
 		init: function () {
 			this.verifyPlat()
-			this.data.sn && this.loopGetOpenId()
-		},
-
-		loopGetOpenId: function () {
-			let count = 100,
-				_this = this;
-			const loopEvent = function (count) {
-				if (app.openId) {
-					return _this.getShareInfo()
-				}
-				count > 0 && setTimeout(loopEvent.bind(_this, --count), 2000)
-			}
-			return loopEvent(count)
+			this.data.sn && this.getShareInfo()
 		},
 
 		// 设备标示
@@ -122,25 +111,17 @@
 					title: '加载中...'
 				})
 		
-				var resp = yield api.getShareAssistance(_this.data.sn)
-
-				var res = resp.res
-				if (resp.code != 0) {
-					return util.showError(resp)
-				}
+				var res = yield graphql.getAssistanceInfo(_this.data.sn)
 				_this.setData({
-					shareInfo: res,
-					endTime: res.end_at_timestamp,
-					introduction: res.course && res.course.introduction.replace(/alt=""/g, `style="max-width:100%;vertical-align:middle;"`)
+					shareInfo: res.courseShare,
+					endTime: res.courseShare.endAtTimestamp,
+					introduction: res.courseShare && res.courseShare.course.introduction.replace(/alt=""/g, `style="max-width:100%;vertical-align:middle;"`)
 				})
 
-					//当前助力是否已经完成 | 判断未点击助力时提示 只在首次进入页面时提示
-					// if (res.assistance_succeed && !_this.data.isClick) {
-					//     util.showErrororor({message: '此次助力已完成'})
-					// }
+
 
 					// 助力完成不计时
-					!res.assistance_succeed && _this.countDown(function (time) {
+					!res.assistanceSucceed && _this.countDown(function (time) {
 						_this.setData({
 							time: time
 						})
@@ -176,9 +157,9 @@
 					_this.auth().then(() => {
 						var text = null
 						if (_this.data.shareInfo) {
-							if (_this.data.shareInfo.assistance_succeed) {
+							if (_this.data.shareInfo.assistanceSucceed) {
 								text = '助力活动结束，您不可助力'
-							} else if (!_this.data.shareInfo.can_assistance) {
+							} else if (!_this.data.shareInfo.canAssistance) {
 								text = '你已经参与助力！'
 							}
 						}
@@ -202,6 +183,7 @@
 
 		},
 
+		// 发起助力
 		sendHelper: co.wrap(function* () {
 			var _this = this
 			try {
@@ -209,14 +191,9 @@
 					type: 'loading',
 					title: '加载中...'
 				})
-				var resp = yield api.sendAssistance(_this.data.sn)
+				
+				yield graphql.sendCourseAssistance(_this.data.sn)
 
-				if (resp.code != 0) {
-					_this.data.isClick = false
-					return util.showError({
-						message: resp && resp.message || '助力失败'
-					})
-				}
 				wx.showToast({
 					title: '助力成功',
 					icon: 'success',

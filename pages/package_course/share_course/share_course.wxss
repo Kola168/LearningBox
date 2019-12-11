@@ -153,8 +153,18 @@ page {
 }
 
 .share-user-avatar {
+    display: flex;
     height: 60rpx;
 }
+
+.share-user-avatar image {
+    margin-right: 20rpx;
+    width: 64rpx;
+    height: 64rpx;
+    border-radius: 64rpx;
+}
+
+
 
 
 button {

@@ -14,14 +14,15 @@ Page({
     sn: null, //课程id
     loading: false, //loading状态
     usePoints: true,
-    isMember: false, //是否是会员
   },
+  
   onLoad: function (options) {
     var _this = this
     _this.longToast = new app.weToast()
     _this.data.sn = options.sn || ''
     _this.getCourses()
   },
+
   switchPoints: function () {
     this.setData({
       usePoints: !this.data.usePoints
@@ -34,10 +35,9 @@ Page({
       title: '请稍后'
     })
     try {
-      var resp = yield graphql.getCourses(this.data.sn)
+      var resp = yield graphql.getCourseDetail(this.data.sn)
       this.setData({
-        courseInfo: resp.course,
-        isMember: resp.user && resp.user.isMember
+        courseInfo: resp.course
       })
     } catch (err) {
       logger.info(err)

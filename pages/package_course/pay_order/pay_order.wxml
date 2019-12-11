@@ -6,7 +6,7 @@
 		<view class="product-r-info sys-flex">
 			<view class="product-title">{{courseInfo.desc||courseInfo.name}}</view>
 			<view class="product-price sys-flex">
-				<view class="discount-price" wx:if="{{courseInfo.discount.amountY!=null}}">￥{{utils.fixPrice(courseInfo.discount.amountY)}}</view>
+				<view class="discount-price" wx:if="{{courseInfo.priceYuan!=null}}">￥{{utils.fixPrice(courseInfo.priceYuan)}}</view>
 			</view>
 		</view>
 	</view>
@@ -24,11 +24,11 @@
 			<view class="detail-r-info">{{courseInfo.totalLessons}}课</view>
 		</view>
 		<view class="detail-item total-learn-time sys-flex f-15" wx:if="{{courseInfo.discount.discountType!='non_free'}}">
-			<view class="detail-l-title sys-flex">
+			<!-- <view class="detail-l-title sys-flex">
 				<view>{{(isMember && courseInfo.discount.discountType =='promotion') ? '会员专属折扣' : '优惠'}}</view>
 				<image class="discount-url-card" mode="widthFix" src="{{isMember ? courseInfo.setVipDiscountAngle : courseInfo.discountUrl}}" />
-			</view>
-			<view class="detail-r-info sys-flex flex-cross-axis-center">
+			</view> -->
+			<!-- <view class="detail-r-info sys-flex flex-cross-axis-center">
 				<block wx:if="{{courseInfo.discount.discountType =='promotion'}}">
 					<view class="print-bean-price f-14">-￥{{utils.fixPrice(courseInfo.discount.discountAmountY)}}</view>
 				</block>
@@ -36,9 +36,9 @@
 					<view class="f-12 price-text-line">￥{{utils.fixPrice(courseInfo.discount.amountY)}}</view>
 					<view class="print-bean-price f-14">￥{{utils.fixPrice(courseInfo.discount.priceY)}}</view>
 				</block>
-			</view>
+			</view> -->
 		</view>
-		<view class="detail-item total-learn-time sys-flex f-15" wx:if="{{courseInfo.discount && courseInfo.discount.resourceCanPoint && courseInfo.discount.point > 0}}">
+		<!-- <view class="detail-item total-learn-time sys-flex f-15" wx:if="{{courseInfo.discount && courseInfo.discount.resourceCanPoint && courseInfo.discount.point > 0}}">
 			<view class="detail-l-title">
 				<view>印豆抵扣</view>
 				<view class="f-12 color-999">抵扣{{courseInfo.discount.point}}个印豆</view>
@@ -47,7 +47,7 @@
 				<view class="print-bean-price f-14">-￥{{courseInfo.discount.point / 100}}</view>
 				<image src="{{usePoints ? '/images/icon_play_selected_green.png' : '/images/icon_circle_not_selected.png'}}" class="btn-switch" bind:tap="switchPoints" />
 			</view>
-		</view>
+		</view> -->
 	</view>
 	<form bindsubmit="submitOrder" report-submit='true'>
 		<button form-type="submit" loading="{{loading}}" hover-class="button-hover">去支付￥
@@ -55,7 +55,7 @@
 				{{utils.fixPrice(courseInfo.discount.pointPriceY)}}
 			</block>
 			<block wx:else>
-				{{courseInfo.discount.priceY!=null ? utils.fixPrice(courseInfo.discount.priceY) : utils.fixPrice(courseInfo.discount.amountY)}}
+				{{courseInfo.priceYuan!=null ?  utils.fixPrice(courseInfo.priceYuan) : 0}}
 			</block>
 		</button>
 	</form>

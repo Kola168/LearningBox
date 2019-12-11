@@ -6,10 +6,7 @@
         <block wx:if="{{!item.payed}}">
             <!-- android plat start-->
             <view class="course-price sys-flex" wx:if="{{is_android}}">
-                <view class="origin-price f-12 price-text-line" wx:if="{{item.discount.discountType!=null&&item.discount.discountType!='non_free'}}">￥{{utils.fixPrice(item.discount.amountY)}}</view>
-                <image class="course-label" wx:if="{{item.discountUrl&&item.discount.discountType!=null&&!isMember}}" src="{{item.discountUrl}}"/>
-                <image class="course-label" wx:if="{{item.setVipDiscountAngle&&item.discount.discountType!=null&&isMember}}" src="{{item.setVipDiscountAngle}}"/>
-                <view class="discount-price">￥{{utils.fixPrice(item.discount.priceY)}}</view>
+                <view class="origin-price f-12">￥{{utils.fixPrice(item.priceYuan)}}</view>
             </view>
             <!-- android plat end -->
         </block>
@@ -20,20 +17,18 @@
 <!-- tmp -->
 <template name="collectInfo">
     <block>
-        <view class="course-descrtion">共{{item.total_lessons}}课时/{{item.study_users}}人已参与</view>
+        <view class="course-descrtion">共{{item.totalLessons}}课时/{{item.studyUsers}}人已参与</view>
         <block wx:if="{{!item.payed}}">
              <view class="course-price sys-flex" wx:if="{{is_android}}">
-                <view class="origin-price f-12 {{item.discount_price_yuan != null ? 'price-text-line' : ''}}">￥{{utils.fixPrice(item.price_yuan)}}</view>
-                <image class="course-label" wx:if="{{item.discount_image_url&&item.discount_price_yuan!=null}}" src="{{item.discount_image_url}}"/>
-                <view class="discount-price" wx:if="{{item.discount_price_yuan !=null}}">￥{{utils.fixPrice(item.discount_price_yuan)}}</view>
+                <view class="origin-price f-12">￥{{utils.fixPrice(item.priceYuan)}}</view>
             </view>
         </block>
     </block>
 </template>
 <template name="course">
     <block>
-        <view class="learn-progress">已学：{{item.finished_lessons}}/{{item.total_lessons}}</view>
-        <view class="buy-time">购买时间：{{item.purchased_at}}</view>
+        <view class="learn-progress">已学：{{item.finishedLessons}}/{{item.totalLessons}}</view>
+        <view class="buy-time">购买时间：{{item.purchasedAt}}</view>
     </block>
 </template>
 <!-- tmp -->

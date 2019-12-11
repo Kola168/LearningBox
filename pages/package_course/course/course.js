@@ -5,7 +5,6 @@ import { regeneratorRuntime, co, util } from '../../../utils/common_import'
 import api from '../../../network/restful_request'
 const event = require('../../../lib/event/event')
 const getSystemInfo = util.promisify(wx.getSystemInfo)
-const request = util.promisify(wx.request)
 const showModal = util.promisify(wx.showModal)
 import graphql from '../../../network/graphql_request'
 import wxPay from '../../../utils/wxPay'
@@ -35,7 +34,6 @@ Page({
   },
 
   onLoad: co.wrap(function*(query) {
-    this.reLoad = true //控制onShow数据刷新
     this.shareSn = ''
     this.unionId = storage.get('unionId')
     this.longToast = new app.weToast()
@@ -56,34 +54,25 @@ Page({
       unionId: this.unionId,
       isAndroid: isAndroid
     })
-    let userId = storage.get('userId')
-    if (this.unionId && !userId) {
-      yield this.loopUserId()
-    } else {
-      this.userId = userId
-    }
     // 分享
-    this.shareUserId = query.share_user_id ? query.share_user_id : null
     event.on('Authorize', this, () => {
       this.unionId = storage.get('unionId')
-      this.userId = storage.get('userId')
     })
   }),
 
   onShow: co.wrap(function*() {
-    this.reLoad && this.loopGetOpenId()
+    this.getCourseDetail()
   }),
 
   // 课程分享，用户打开无unionId，跳转授权
   authCheck: co.wrap(function*() {
-    if (!this.unionId) {
-      router.navigateTo('/pages/authorize/index', {
-        share_user_id: this.shareUserId
-      })
-      return false
-    } else {
-      return true
-    }
+    // if (!this.unionId) {
+    //   router.navigateTo('/pages/authorize/index')
+    //   return false
+    // } else {
+    //   return true
+    // }
+    return true
   }),
 
   displayTab(isPayed) {
@@ -135,8 +124,8 @@ Page({
 
   toExclusive: co.wrap(function*(e) {
     let index = e.currentTarget.id,
-      supplys = this.data.supplyTypes,
-      alias = supplys[index].alias
+      supplies = this.data.supplyTypes,
+      alias = supplies[index].alias
     
     router.navigateTo('/pages/cart/transit/transit', {
       pageType: 'goodsDetail',
@@ -145,7 +134,6 @@ Page({
       shopId: this.data.shopId,
       appId: this.data.appId
     })
-    this.reLoad = false
   
   }),
 
@@ -168,14 +156,13 @@ Page({
       router.navigateTo('/pages/package_course/print/print', {
         sn: sn
       })
-      this.reLoad
     }
   },
 
   unfoldChapter: co.wrap(function*(e) {
     let index = Number(e.currentTarget.id),
-      preFoldStatus = this.data.course.course_chapters[index].unfoldChapter,
-      unfoldTarget = "course.course_chapters[" + index + "].unfoldChapter"
+      preFoldStatus = this.data.course.courseChapters[index].unfoldChapter,
+      unfoldTarget = "course.courseChapters[" + index + "].unfoldChapter"
     this.setData({
       [unfoldTarget]: !preFoldStatus
     })
@@ -183,7 +170,7 @@ Page({
 
   unfoldChapterAll: co.wrap(function*(e) {
     let index = Number(e.currentTarget.dataset.index),
-      unfoldAllTarget = "course.course_chapters[" + index + "].unfoldChapterAll"
+      unfoldAllTarget = "course.courseChapters[" + index + "].unfoldChapterAll"
     this.setData({
       [unfoldAllTarget]: true
     })
@@ -198,7 +185,6 @@ Page({
         router.navigateTo('/pages/package_course/pay_order/pay_order', {
           sn: this.sn
         })
-        this.reLoad = true
       } else {
         if (payPrice > 0) {
           yield showModal({
@@ -267,25 +253,17 @@ Page({
 
   onShareAppMessage(res) {
     if (res.from === 'button') {
-      this.reLoad = false
-      if (this.data.canShare && this.unionId) {
-        let id = this.sn
-        wx.request({
-          url: `${app.apiServer}/boxapi/v2/course_base/share/${id}`,
-          method: 'post',
-          dataType: 'json',
-          data: {
-            'openid': app.openId
-          }
-        })
+      if (this.data.canShare ) {
+        graphql.shareAssistance(this.sn)
+
         return {
           title: '你好，我想学这个，帮帮我！',
-          path: `/pages/package_course/share_course/share_course?sn=${this.shareSn}&share_user_id=${this.userId}`
+          path: `/pages/package_course/share_course/share_course?sn=${this.shareSn}`
         }
       } else if (this.unionId) {
         return {
           title: '这个课程好棒啊 快来看看吧',
-          path: `/pages/package_course/course/course?sn=${this.sn}&share_user_id=${this.userId}`
+          path: `/pages/package_course/course/course?sn=${this.sn}`
         }
       } else {
         return app.share
@@ -303,16 +281,13 @@ Page({
         title: '请稍等'
       })
       try {
-        let resp = null,
-          isCollected = this.data.isCollected
-        if (isCollected) {
-          resp = yield api.deleteCollectCourse(app.openId, this.sn, 'course')
-        } else {
-          resp = yield api.collectCourse(app.openId, this.sn, 'course')
-        }
-        if (resp.code !== 0) {
-          throw (resp)
-        }
+        var isCollected = this.data.isCollected
+        yield graphql.collectCourse({
+            type: 'course',
+            sn: this.sn,
+            action: isCollected ? 'destroy' : 'create'
+          })
+        
         this.longToast.hide()
         let tipText = isCollected ? '取消收藏成功' : '收藏成功'
         wx.showToast({
@@ -337,95 +312,41 @@ Page({
       title: '请稍候'
     })
     try {
-      let sn = this.sn
-      let resp = yield api.getCourseDetail(app.openId, sn)
-      if (resp.code !== 0) {
-        throw (resp)
-      }
-      let temp = resp.res,
-        course = temp.course,
-        lastStudySn = course.last_course_chapter_sn
+      let resp = yield graphql.getCourseDetail(this.sn)
+   
+      let course = resp.course,
+        lastStudySn = course.lastCourseChapterSn
+
+
       course.introduction = course.introduction.replace(/alt=""/g, `style="max-width:100%;vertical-align:middle;"`)
-      for (let i = 0; i < course.course_chapters.length; i++) {
+      for (let i = 0; i < course.courseChapters.length; i++) {
         let unfoldChapter = false
-        if (course.course_chapters[i].sn == lastStudySn) {
+        if (course.courseChapters[i].sn == lastStudySn) {
           unfoldChapter = true
         }
-        course.course_chapters[i].unfoldChapter = unfoldChapter
-        course.course_chapters[i].unfoldChapterAll = false
+        course.courseChapters[i].unfoldChapter = unfoldChapter
+        course.courseChapters[i].unfoldChapterAll = false
       }
-      course.display_price = (temp.discount.price / 100).toFixed(2)
+      course.display_price = (course.priceYuan / 100).toFixed(2)
+
       this.setData({
         course: course,
-        isCollected: temp.course_collected,
-        canShare: temp.user_can_share_to_trial,
-        supplyTypes: temp.supply_types,
+        isCollected: course.courseCollected,
+        canShare: course.userCanShareToTrial,
+        // supplyTypes: temp.supply_types,
         loadReady: true
       })
       this.setData({
         title: course.name
       })
-      this.shareSn = temp.sn
+      this.shareSn = course.shareSn
       this.showCodeCourseModal(course.code)
-        // 切换tab
-      this.displayTab(course.payed)
+      this.displayTab(course.payed) // 切换tab
       this.longToast.toast()
     } catch (error) {
+      
       this.longToast.toast()
       util.showError(error)
-    }
-  }),
-
-  // 获取用户id
-  getUserId: co.wrap(function*() {
-    try {
-      const resp = yield request({
-        url: `${app.apiServer}/ec/v2/users/user_id`,
-        method: 'GET',
-        dataType: 'json',
-        data: {
-          openid: app.openId
-        }
-      })
-      if (resp.data.code != 0) {
-        throw (resp.data)
-      }
-      wx.setStorageSync('userId', resp.data.user_id)
-      this.userId = resp.data.user_id
-    } catch (e) {
-      console.error(e)
-    }
-  }),
-
-  loopUserId: co.wrap(function*() {
-    let loopCount = 0
-    if (app.openId) {
-      this.getUserId()
-    } else {
-      setTimeout(() => {
-        loopCount++
-        if (loopCount <= 100) {
-          this.loopUserId()
-        } else {
-          console.log('loop too long, stop')
-        }
-      }, 1000)
-    }
-  }),
-
-  loopGetOpenId: co.wrap(function*() {
-    let loopCount = 0
-    if (app.openId) {
-      yield this.getCourseDetail()
-    } else {
-      setTimeout(() => {
-        loopCount++
-        if (loopCount <= 100) {
-          this.loopGetOpenId()
-        } else {
-          console.log('loop too long, stop')
-        }
-      }, 1000)
     }
   }),
 

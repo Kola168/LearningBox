@@ -11,7 +11,7 @@
 		 bindtap="enterDetail"
 		 data-sn="{{item.sn}}"
 		>
-			<image class="" src="{{item.iconUrl}}" mode="aspectFill">
+			<image class="" src="{{item.mainImageUrl}}" mode="aspectFill">
 				<view class="free-tag f-14" wx:if="{{(item.discount.discountType==='non_free' || item.discount.discountType === 'free') && !is_android}}">免费</view>
 			</image>
 			<view class="content-info">

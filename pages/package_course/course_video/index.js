@@ -27,17 +27,17 @@ Page({
       title: '请稍等'
     })
     try {
-      let resp = yield graphql.getCourseLessonVideo(this.sn),
+      let resp = yield graphql.getCourseLesson(this.sn),
         courseLessonVideo = resp.courseLesson
-      this.longToast.hide()
       this.setData({
         title: courseLessonVideo.courseName,
         loadReady: true,
         courseLessonVideo
       })
     } catch (error) {
-      this.longToast.hide()
       util.showError(error)
+    } finally {
+      this.longToast.hide()
     }
   }),
 

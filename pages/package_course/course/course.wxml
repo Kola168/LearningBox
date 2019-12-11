@@ -32,6 +32,7 @@ module.exports = {
     </swiper-item>
   </swiper>
   <view class="course-container">
+    <!-- tab 切换 -->
     <view class="nav-box">
       <view class="course-nav {{isFixedNav?'nav-fixed':''}}" style="top: {{navBarTop}}px" id="course_nav">
         <view class="nav-item {{activeTab==0?'nav-item-active':''}}" id="0" bindtap="navTap">
@@ -45,14 +46,16 @@ module.exports = {
         </view>
       </view>
     </view>
+
+    <!-- 切换详情展示 -->
     <view class="nav-content">
       <view class="nav-content-1" wx:if="{{activeTab==0}}">
-        <view class="discount-date" wx:if="{{course.discount_end_at&&!course.payed&&isAndroid}}">
+        <!-- <view class="discount-date" wx:if="{{course.discount_end_at&&!course.payed&&isAndroid}}">
           <view class="date-box">
             <image src="../images/hui.png" />
             <view>当前优惠持续到：{{course.discount_end_at}}</view>
           </view>
-        </view>
+        </view> -->
         <rich-text nodes="{{course.introduction}}"></rich-text>
         <view class="good-tip" wx:if="{{isAndroid}}">温馨提示：本商品一经售出，不可退款，不可转让。敬请谅解。</view>
       </view>
@@ -61,37 +64,37 @@ module.exports = {
           <view class="course-count">
             <image src="../images/book.png" />
             <view>
-              {{course.payed?"已学："+course.finished_lessons+"/":"共"}}{{course.total_lessons}}课时
+              {{course.payed?"已学："+course.finishedLessons+"/":"共"}}{{course.totalLessons}}课时
             </view>
           </view>
-          <view class="course-limit" wx:if="{{course.print_limit > -1}}">
-            课程可打印次数{{course.print_limit}}次
+          <view class="course-limit" wx:if="{{course.printLimit > -1}}">
+            课程可打印次数{{course.printLimit}}次
           </view>
         </view>
-        <view class="course-item course-item-{{index}}" wx:for="{{course.course_chapters}}" wx:key="{{index}}" id="{{index}}" bindtap="unfoldChapter" wx:if="{{item.course_lessons.length>0}}">
+        <view class="course-item course-item-{{index}}" wx:for="{{course.courseChapters}}" wx:key="{{index}}" id="{{index}}" bindtap="unfoldChapter" wx:if="{{item.courseLessons.length>0}}">
           <view class="chapter-fold">
             <view class="fold-left">
               <view class="name-wrap {{item.state === 'finished' ? 'has-study' : ''}}">
                 <image src="../images/list_{{item.state === 'finished' ? 'gray' : 'black'}}.png" />
                 <view>{{item.name}}</view>
               </view>
-              <view wx:if="{{course.payed&&item.state!=='new'}}" class="fold-tag {{item.state==='finished' ? 'hollow' : 'danger'}}-tag">
-                {{item.state==='finished' ? '已学习' : '学习中'}}
+              <view wx:if="{{course.payed && item.state!=='new'}}" class="fold-tag {{item.state === 'finished' ? 'hollow' : 'danger'}}-tag">
+                {{item.state === 'finished' ? '已学习' : '学习中'}}
               </view>
               <blcok wx:else>
                 <view wx:if="{{item.trial}}" class="fold-tag primary-tag">可试学</view>
-                <view wx:if="{{!item.trial && item.share_to_trial}}" class="fold-tag danger-tag">
+                <view wx:if="{{!item.trial && item.shareToTrial}}" class="fold-tag danger-tag">
                   <image src="../images/rocket.png" />
-                  <view>{{course.promotion_num}}人助力可解锁</view>
+                  <view>{{course.promotionNum}}人助力可解锁</view>
                 </view>
               </blcok>
             </view>
             <view class="fold-right">
-              <image src="../images/arrow_{{item.unfoldChapter?'top':'bottom'}}_gray.png" />
+              <image src="../images/arrow_{{item.unfoldChapter ? 'top' : 'bottom'}}_gray.png" />
             </view>
           </view>
           <view class="chapter {{item.unfoldChapter ? 'chapter-fold-half' : ''}} {{item.unfoldChapterAll && item.unfoldChapter ? 'chapter-fold-all' : ''}}" hidden="{{!item.unfoldChapter}}">
-            <view class="chapter-item" wx:for="{{item.course_lessons}}" wx:for-index="chapterIndex" wx:key="{{chapterIndex}}" wx:for-item="chapterItem" data-lock="{{chapterItem.locked}}" data-shareable="{{chapterItem.share_to_trial}}" id="{{chapterItem.sn}}" catchtap="chapterClick">
+            <view class="chapter-item" wx:for="{{item.courseLessons}}" wx:for-index="chapterIndex" wx:key="{{chapterIndex}}" wx:for-item="chapterItem" data-lock="{{chapterItem.locked}}" data-shareable="{{chapterItem.shareToTrial}}" id="{{chapterItem.sn}}" catchtap="chapterClick">
               <view class="chapter-name">
                 <view class="name-wrap {{chapterItem.state === 'finished' ? 'has-study' : ''}}">
                   {{chapterItem.name}}
@@ -101,16 +104,16 @@ module.exports = {
                 </view>
                 <blcok wx:else>
                   <view wx:if="{{chapterItem.trial}}" class="fold-tag primary-tag">可试学</view>
-                  <view wx:if="{{chapterItem.share_to_trial}}" class="fold-tag danger-tag">
+                  <view wx:if="{{chapterItem.shareToTrial}}" class="fold-tag danger-tag">
                     <image src="../images/rocket.png" />
-                    <view>{{course.promotion_num}}人助力可解锁</view>
+                    <view>{{course.promotionNum}}人助力可解锁</view>
                   </view>
                 </blcok>
               </view>
               <image src="../images/course_lock.png" wx:if="{{chapterItem.locked}}" class="chapter-lock" />
               <image src="../images/arrow_right_gray.png" wx:else class="chapter-arrow" />
             </view>
-            <view class="item-more" catchtap="unfoldChapterAll" hidden="{{item.unfoldChapterAll||item.course_lessons.length<5}}" data-index="{{index}}">
+            <view class="item-more" catchtap="unfoldChapterAll" hidden="{{item.unfoldChapterAll || item.courseLessons.length < 5}}" data-index="{{index}}">
               <view>查看更多</view>
               <image src="../images/arrow_bottom_gray.png" />
             </view>
@@ -118,14 +121,17 @@ module.exports = {
         </view>
       </view>
       <view class="nav-content-3" wx:if="{{activeTab == 2}}">
-        <view class="exclusive-item" wx:for="{{supplyTypes}}" wx:key="{{index}}" id="{{index}}" bindtap="toExclusive">
+        <!-- <view class="exclusive-item" wx:for="{{supplyTypes}}" wx:key="{{index}}" id="{{index}}" bindtap="toExclusive">
           <image src="{{item.image_url}}" mode="widthFix" />
-          <!-- <view class="exclusive-btn">{{isAndroid?'购买':'点击查看'}}</view> -->
-        </view>
+          <view class="exclusive-btn">{{isAndroid?'购买':'点击查看'}}</view>
+        </view> -->
       </view>
     </view>
   </view>
+
+
 </scroll-view>
+<!-- 底部按钮控制区域 -->
 <view class="handle-bar" wx:if="{{loadReady}}">
   <view bindtap="collectCourse">
     <image src="../images/collection_{{isCollected?'on':'off'}}.png"></image>
@@ -137,7 +143,7 @@ module.exports = {
     </view>
 
     <form report-submit="{{true}}" bindsubmit="uploadFormId">
-      <button open-type="share" form-type="submit" hover-class="none" class="{{course.payed?'has-buy':''}}">
+      <button open-type="share" form-type="submit" hover-class="none" class="{{course.payed ? 'has-buy' : ''}}">
         <image src="/images/doc_gfd_share_gray.png" wx:if="{{!course.payed}}"></image>
         <text>{{canShare && unionId ? '助力' : '分享'}}</text>
       </button>
@@ -151,6 +157,8 @@ module.exports = {
     <block wx:else>加入学习</block>
   </view>
 </view>
+
+<!-- 弹窗 -->
 <view class="unlock-video" wx:if="{{showCodeCourseModal}}">
   <view class="unlock-wrap">
     <image src="../images/unlock_top.png" mode="widthFix" />

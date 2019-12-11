@@ -292,7 +292,6 @@ swiper swiper-item {
 .original-price {
   font-size: 24rpx;
   color: #666;
-  text-decoration: line-through;
   margin-right: 20rpx;
 }
 

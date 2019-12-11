@@ -108,7 +108,6 @@ Page({
         }
       }
       let params = {
-        openid: app.openId,
         media_type: this.mediaType,
         resourceable: {
           type: this.sourceType,
@@ -134,7 +133,7 @@ Page({
       })
     } catch (error) {
       this.longToast.hide()
-      util.showErroror(error)
+      util.showError(error)
     }
   }),
 

@@ -45,7 +45,7 @@
     height: 8rpx;
     border-radius: 6rpx;
     margin-left: -20rpx;
-    background-color: #FFE27A;
+    background-color: #FFDC5E;
     transition: 0.2s width linear;
     -webkit-transform: translate3d(0, 0, 0);
     transform: translateX(20rpx);
@@ -83,7 +83,7 @@
     width: 68rpx;
     height: 36rpx;
     line-height: 36rpx;
-    background-color: #FFE27A;
+    background-color: #FFDC5E;
     border-radius: 8rpx;
     text-align: center;
 }

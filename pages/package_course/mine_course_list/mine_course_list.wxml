@@ -3,7 +3,7 @@
 
 <nav-bar background="#fff" title="{{title}}" />
 <view class="course-list">
-	<view class="course-tab sys-flex">
+	<view class="course-tab sys-flex" style="top:{{top}}px;">
 		<view
 		 class="tab-item"
 		 wx:for="{{tabList}}"
@@ -25,8 +25,7 @@
 		 data-sn="{{item.sn}}"
 		>
 			<view class="mine-t-item sys-flex ">
-				<image src="{{item.main_image_url}}" mode="aspectFill">
-					<view class="free-tag f-14" wx:if="{{item.discount_price_yuan != null && item.discount_price_yuan <= 0 && !is_android}}">免费</view>
+				<image src="{{item.mainImageUrl}}" mode="aspectFill">
 				</image>
 				<view class="content-info">
 					<view class="course-title f-16">{{item.desc}}</view>

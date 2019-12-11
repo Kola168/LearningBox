@@ -15,7 +15,7 @@ module.exports = {
   formatPrice:formatPrice
 }
 </wxs>
-<nav-bar background="#fff" title="课程" />
+<nav-bar background="#fff" title="学习" />
 <swiper class="swiper"  bindchange="changeDots" autoplay="{{autoplay}}" interval="{{interval}}" circular>
   <swiper-item wx:for="{{banners}}" wx:key="{{index}}" class="swpier-i" id="{{index}}" bindtap="swiperClick">
     <image src="{{item.url}}" class="slide-img" mode="widthFix" />
@@ -50,14 +50,14 @@ module.exports = {
       <block wx:if="{{userLastCourse}}">
         <view class="course-name">{{userLastCourse.name}}</view>
         <view class="course-progress">
-          <progress percent="{{userLastCourse.chapters.finished/userLastCourse.chapters.total*100}}" color="#4FB526" border-radius="3" stroke-width="6" />
+          <progress percent="{{userLastCourse.finished/userLastCourse.total*100}}" color="#4FB526" border-radius="3" stroke-width="6" />
           <view class="progress-text">
-            {{userLastCourse.chapters.finished}}/{{userLastCourse.chapters.total}}
+            {{userLastCourse.finished}}/{{userLastCourse.total}}
           </view>
         </view>
       </block>
       <block wx:else>
-        <view class="no-last-course">您还没有{{isAndroid?'购买':'学习'}}课程哦</view>
+        <view class="no-last-course">您还没有{{isAndroid ? '购买' : '学习'}}课程哦</view>
       </block>
     </view>
     <view class="user-btns">
@@ -66,7 +66,7 @@ module.exports = {
       </view>
     </view>
   </view>
-  <view class="recommend" wx:if="{{selectCategories.length>0}}">
+  <view class="recommend" wx:if="{{selectCategories.length}}">
     <view class="recommend-top">
       <view class="top-label">
         <view>精选专题</view>
@@ -104,20 +104,13 @@ module.exports = {
               {{filter.formatCount(item.studyUsers)}}人已学习 共{{item.totalLessons}}课时
             </view>
         </view>
-        <view class="bottom-price" wx:if="{{isAndroid}}">
-          <block wx:if="{{item.payed && unionId}}">
+        <view class="bottom-price" wx:if="{{isAndroid && unionId}}">
+          <block wx:if="{{item.payed}}">
             <view class="buy-btn-ed">已购买</view>
           </block>
           <block wx:else>
-            <view class="original-price" wx:if="{{item.discount.discountType!=null && item.discount.discountType!='non_free' && unionId}}">
-              ¥{{filter.formatPrice(item.discount.amountY)}}
-            </view>
-            <view class="sale-price-box">
-              <image src="{{item.discountUrl}}" wx:if="{{item.discountUrl && item.discount.discountType !=null && !isMember && unionId}}" mode="widthFix" />
-              <image src="{{item.setVipDiscountAngle}}" wx:if="{{item.setVipDiscountAngle && item.discount.discountType!=null && isMember && unionId}}" mode="widthFix" />
-              <view class="sale-price">
-                ¥{{filter.formatPrice(unionId ? item.discount.priceY : item.discount.amountY)}}
-              </view>
+            <view class="original-price">
+              ¥{{filter.formatPrice(item.priceYuan)}}
             </view>
           </block>
         </view>

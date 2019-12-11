@@ -24,8 +24,8 @@ App({
   // apiWbviewServer: 'https://epbox.gongfudou.com/',
 
   //王析理本地地址
-  apiServer: 'http://epbox.natapp1.cc',
-  apiWbviewServer: 'http://epbox.natapp1.cc/',
+  // apiServer: 'http://epbox.natapp1.cc',
+  // apiWbviewServer: 'http://epbox.natapp1.cc/',
 
   //一个秃子的服务器地址
   // apiServer: 'http://jran.nat300.top',
@@ -45,6 +45,10 @@ App({
 
   //江然本地服务
   // apiServer: 'http://jran.nat300.top',
+  // 测试张伟
+  apiServer: 'http://bboo.natapp1.cc',
+
+
   authAppKey: 'iMToH51lZ0VrhbkTxO4t5J5m6gCZQJ6c',
   openId: '',
   authToken:'',

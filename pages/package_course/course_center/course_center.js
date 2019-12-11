@@ -40,7 +40,7 @@ Page({
         type: 'loading',
         title: '请稍后'
       })
-      let res = yield graphql.getCourseIndex('list')
+      let res = yield graphql.getCourses('list')
       this.setData({
         courseList: res && res.courses || [],
         is_empty: res && res.courses.length > 0 ? false : true
