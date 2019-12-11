@@ -1,44 +1,21 @@
 <!--pages/gallery/component/multiphoto/index.wxml-->
 <wxs src="common.wxs" module="foo" />
 <view class="mode-box-size" style="width:{{areaSize.width}}px;height:{{areaSize.height}}px">
-    <block wx:for="{{editAreaSize}}" wx:key="editAres">
-        <view class="img-area" style="width:{{item.areaWidth}}px;height:{{item.areaHeight}}px;left:{{item.x}}px;top:{{item.y}}px;overflow:{{visible}}">
-            <image wx:if="{{imgArr[index]}}" src="{{foo.judgeOss(imgArr[index].phtotSrc,'/resize,w_1500,h_1500')}}" mode="widthFix"
-                style="transform-origin:(50%, 50%, 0);position:absolute;width:{{imgArr[index].width}}px;height:{{imgArr[index].height}}px;left:{{imgArr[index].left}}px;top:{{imgArr[index].top}}px;transform:rotate({{imgArr[index].rotate}}deg) scale3d({{imgArr[index].scale}},{{imgArr[index].scale}},1)">
-            </image>
-            <view wx:if="{{imgArr[index] && imgArr[index].showedit && showchange}}" class="img-edit-box">
-                <view class="icon-box" data-index="{{index}}" bindtap="showEdit">
-                    <text class="iconfont icon-swap img-icon-style" data-index="{{index}}" catchtap="changeImg"></text>
-                </view>
-                <text class="line"></text>
-                <view class="icon-box" data-index="{{index}}" bindtap="showEdit">
-                    <text class="iconfont icon-close img-icon-style" data-index="{{index}}" catchtap="deleteImg"></text>
-                </view>
-            </view>
-        </view>
-        <view wx:if="{{showBorder && borderColor}}" class="border-cover" data-index="{{index}}" style="width:{{item.areaWidth}}px;height:{{item.areaHeight}}px;left:{{item.x}}px;top:{{item.y}}px;border:4rpx solid {{borderColor}}"></view>
-        <view class="img-area-cover" data-index="{{index}}" bindtouchstart="onTouch" bindtouchmove="onTouchMove" bindtouchend="onTouchEnd" bindtouchcancel="onTouchEnd"
-            style="width:{{item.areaWidth}}px;height:{{item.areaHeight}}px;left:{{item.x}}px;top:{{item.y}}px;" data-index="{{index}}" bindtap="{{!imgArr[index]?'chooseImgs':(showchange?'showEdit':'')}}"></view>
-    </block>
-    <image wx:if="{{TemplateSrc}}" src="{{TemplateSrc}}" mode="widthFix" class="mode-cover"></image>
+  <block wx:for="{{editAreaSize}}" wx:key="editAres">
+    <view class="img-area" style="width:{{item.areaWidth}}px;height:{{item.areaHeight}}px;left:{{item.x}}px;top:{{item.y}}px;overflow:{{visible}}">
+      <image wx:if="{{imgArr[index]}}" src="{{foo.judgeOss(imgArr[index].phtotSrc,'/resize,w_1500,h_1500')}}" mode="widthFix"
+        style="transform-origin:(50%, 50%, 0);position:absolute;width:{{imgArr[index].width}}px;height:{{imgArr[index].height}}px;left:{{imgArr[index].left}}px;top:{{imgArr[index].top}}px;transform:rotate({{imgArr[index].rotate}}deg) scale3d({{imgArr[index].scale}},{{imgArr[index].scale}},1)">
+      </image>
+    </view>
+    <view wx:if="{{showBorder && borderColor}}" class="border-cover" data-index="{{index}}" style="width:{{item.areaWidth}}px;height:{{item.areaHeight}}px;left:{{item.x}}px;top:{{item.y}}px;border:4rpx solid {{borderColor}}"></view>
+    <view class="img-area-cover" data-index="{{index}}" bindtouchstart="onTouch" bindtouchmove="onTouchMove" bindtouchend="onTouchEnd" bindtouchcancel="onTouchEnd"
+      style="width:{{item.areaWidth}}px;height:{{item.areaHeight}}px;left:{{item.x}}px;top:{{item.y}}px;" data-index="{{index}}" bindtap="{{!imgArr[index] && addImgIcon && showAdd?'chooseImgs':''}}">
+      <image wx:if="{{!imgArr[index] && addImgIcon && showAdd}}" src="{{addImgIcon}}" mode="widthFix" class="add-icon"></image>
+    </view>
+    <image wx:if="{{imgArr[index] && deleteIcon && showAdd}}" src="{{deleteIcon}}" mode="widthFix" class="delete-icon" style="left:{{item.x+item.areaWidth+10}}px;top:{{item.y-10}}px" data-index="{{index}}" bindtap="deleteImg"></image>
+  </block>
+  <image wx:if="{{TemplateSrc}}" src="{{TemplateSrc}}" mode="widthFix" class="mode-cover"></image>
 </view>
 
 <!--选择图片-->
-<view class="component-choosePhoto" wx:if="{{popWindow}}">
-    <view class="component-choosePhoto-container" catchtap="closePopWindow">
-        <view class="component-choosePhoto-content">
-            <view wx:if="{{true}}" class="component-choosePhotoItem" bindtap="chooseImg" data-id="chooseMessageFile">
-                <text class="component-choosePhotoItem-text">微信聊天记录</text>
-            </view>
-            <view wx:if="{{true}}" class="component-choosePhotoItem" bindtap="chooseImg" data-id="camera">
-                <text class="component-choosePhotoItem-text">拍照</text>
-            </view>
-            <view wx:if="{{true}}" class="component-choosePhotoItem" bindtap="chooseImg" data-id="album">
-                <text class="component-choosePhotoItem-text">手机相册</text>
-            </view>
-            <view class="component-choosePhotoItem" style="margin-top:20rpx;">
-                <text class="component-choosePhotoItem-text">取消</text>
-            </view>
-        </view>
-    </view>
-</view>
+<take-photo-pop id="checkComponent" bindchooseImg="chooseImg" imgNum="{{1}}" bindbaidutap="baiduprint"></take-photo-pop>

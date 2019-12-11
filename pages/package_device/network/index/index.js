@@ -1,5 +1,5 @@
 // pages/network/index.js
-import wxNav from '../../../utils/nav.js'
+import wxNav from '../../../../utils/nav.js'
 
 Page({
 
@@ -13,7 +13,7 @@ Page({
 
   tobox: function() {
 
-    wxNav.navigateTo('/pages/network/tips/step1')
+    wxNav.navigateTo('/pages/package_device/network/tips/step1')
   },
 
   onShareAppMessage: function() {

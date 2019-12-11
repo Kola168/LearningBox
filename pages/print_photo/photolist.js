@@ -97,8 +97,11 @@ Page({
   showImgCheck: function() {
     let restCount = this.data.limitPhoto - this.data.photoList.length
     let count = restCount > 9 ? 9 : restCount
+    if(restCount<=0){
+      return
+    }
     this.setData({
-      count: count
+      chooseCount: count
     })
     this.selectComponent("#checkComponent").showPop()
   },

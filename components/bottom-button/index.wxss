@@ -1,0 +1,50 @@
+/* components/bottom-button/index.wxss */
+button {
+    background: none;
+    border: none;
+    border-radius: 0;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+button::after {
+    border: none;
+    border-radius: 0;
+}
+
+.components-bottom-box {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  font-size: 36rpx;
+  background: #fff;
+}
+
+.components-button-style {
+  display: flex;
+  height:100rpx;
+  flex: 1;
+  justify-content:center;
+  box-sizing: border-box;
+  align-items:center;
+  padding:0;
+}
+
+.components-left-botton {
+  border-top: 1px solid #e7e7e7;
+  color: #666;
+}
+
+.components-right-botton {
+  border-top: 1px solid #ffdc5e;
+  color: #333;
+  background:#ffdc5e;
+}
+
+.bottom-heigher{
+  height:140rpx;
+}
+
+.bottom-left-heigher{
+  border-bottom: 1px solid #e7e7e7;
+}

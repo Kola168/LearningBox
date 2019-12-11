@@ -1,21 +1,20 @@
-// pages/network/wificonnect/list.js
 const app = getApp()
-const regeneratorRuntime = require('../../../lib/co/runtime')
-const co = require('../../../lib/co/co')
-const _ = require('../../../lib/underscore/we-underscore')
-const util = require('../../../utils/util')
+const regeneratorRuntime = require('../../../../lib/co/runtime')
+const co = require('../../../../lib/co/co')
+const _ = require('../../../../lib/underscore/we-underscore')
+const util = require('../../../../utils/util')
 
 const request = util.promisify(wx.request)
 const showModal = util.promisify(wx.showModal)
 
-import wxNav from '../../../utils/nav.js'
+import wxNav from '../../../../utils/nav.js'
+
 
 Page({
 
   data: {
-    wifiList: [
-      { SSID: 'asd' }
-    ],
+    wifiList: [],
+    loading:false, //是都在请求网络
   },
 
   onLoad: function(options) {
@@ -23,13 +22,17 @@ Page({
     if (options.equipInfo) {
       this.equipInfo = options.equipInfo
     }
-    // this.searchWifi()
+    this.searchWifi()
   },
 
   searchWifi: co.wrap(function*() {
+    this.setData({
+      loading:true
+    })
     this.longToast.toast({
       type: "loading",
     })
+
     try {
       const resp = yield request({
         url: 'http://192.168.178.1:1788/wifi_scan',
@@ -41,6 +44,9 @@ Page({
         dataType: 'json'
       })
       this.longToast.toast()
+      this.setData({
+        loading:false
+      })
       if (resp.data.code == 0) {
         this.setData({
           wifiList: resp.data.data
@@ -52,7 +58,7 @@ Page({
           showCancel: false,
           confirmColor: '#ff9999'
         })
-
+        wxNav.navigateTo('/pages/package_device/network/tips/step1')
       }
 
     } catch (e) {
@@ -63,13 +69,14 @@ Page({
         confirmColor: '#ff9999'
       })
       this.longToast.toast()
+        wxNav.navigateTo('/pages/package_device/network/tips/step1')
     }
   }),
 
   connect: co.wrap(function*(e) {
     try {
       let that = this
-      wxNav.redirectTo('/pages/network/wificonnect/connect', {
+      wxNav.navigateTo('/pages/package_device/network/wificonnect/connect', {
         equipInfo: this.equipInfo,
         wifiSSID: encodeURIComponent(JSON.stringify(that.data.wifiList[e.currentTarget.dataset.index].SSID))
       })

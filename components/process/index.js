@@ -18,6 +18,9 @@ Component({
           return
         }
         if (_.isNotEmpty(newVal)) {
+          if(newVal>this.data.count){
+            return
+          }
           this.setData({
             completeCount: newVal
           })
