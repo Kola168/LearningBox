@@ -1,0 +1,39 @@
+// 获取文件类型
+var getFileType = function getFileType(name) {
+  var names = name.split('.'),
+      typeText = names[names.length - 1].toLowerCase()
+
+  switch (typeText) {
+      case 'xlsx':
+      case 'xls':
+      case 'xlsm':
+      case 'xltx':
+      case 'xltm':
+          return 'excel'
+          break
+      case 'doc':
+      case 'docx':
+          return 'doc'
+          break;
+      case 'ppt':
+      case 'pptx':
+          return 'ppt'
+          break;
+      case 'pdf':
+          return 'pdf'
+          break;
+      case 'png':
+          return 'png'
+          break;
+      case 'jpg':
+      case 'jpeg':
+          return 'jpg'
+          break;
+      default:
+          return 'error'
+  }
+}
+
+module.exports = {
+  getFileType: getFileType
+}

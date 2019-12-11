@@ -1,0 +1,246 @@
+/* @import '../common.wxss'; */
+.tip-img {
+  width: 90%;
+}
+
+.editor-area {
+  position: relative;
+  z-index: 1;
+  transform:translate3d(0,0,0);
+  box-shadow: 0 2px 8px 0 rgba(204, 204, 204, 0.50);
+  margin: 50rpx auto 0;
+  border-radius: 24rpx;
+  overflow: hidden;
+}
+
+.editor-back {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -100;
+}
+
+.area {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  z-index: 500;
+  border-radius: 24rpx;
+}
+
+.user-img {
+  top: 0;
+  left: 0;
+  position: absolute;
+  z-index: 400;
+  transform: translate3d(0, 0, 0);
+  transform-origin: 50% 50% 0;
+}
+
+.area-border {
+  position: absolute;
+  z-index: 501;
+  border: 4rpx solid transparent;
+}
+
+.show-border {
+  border: 4rpx solid #ffe27a;
+}
+
+.add-btn {
+  position: absolute;
+  width: 80rpx;
+  height: 80rpx;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.delete-btn {
+  position: absolute;
+  width: 48rpx;
+  height: 48rpx;
+  right: -2rpx;
+  top: 2rpx;
+}
+
+.card-name {
+  position: absolute;
+  z-index: 800;
+  left: 10%;
+  width: 80%;
+  bottom: 12%;
+  background: #F8F8F8;
+  height: 80rpx;
+  text-align: center;
+  color: #333333;
+  font-size: 32rpx;
+  border: 2rpx solid #EBEAEA;
+}
+
+.handle-btns {
+  position: fixed;
+  left: 0;
+  bottom: 100rpx;
+  display: flex;
+  width: 74%;
+  padding: 0 13%;
+  justify-content: space-between;
+}
+
+.handle-btns image {
+  width: 45%;
+  position:relative;
+}
+
+.cover-but{
+    position:absolute;
+    top:0;
+    left:0;
+    opacity:0;
+    width:100%;
+    height:100%;
+}
+
+.cover-modal {
+  position: fixed;
+  left: 0;
+  top: 0;
+  background: rgba(0, 0, 0, .5);
+  width: 100%;
+  height: 100%;
+  z-index: 1000;
+}
+
+
+/* 用户引导 */
+
+.guide-view {
+  display: flex;
+  background: #FFE071;
+  border-radius: 24rpx;
+  position: absolute;
+  padding: 12px;
+}
+
+.guide-view image {
+  width: 100%;
+  border-radius: 24rpx;
+}
+
+image.guide-tip {
+  position: absolute;
+  right: -82%;
+  width: 200%;
+  top: -34px;
+  border-radius: 0;
+}
+
+.handle-step {
+  position: absolute;
+  width: 75%;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 20rpx;
+  background: #fff;
+  text-align: center;
+}
+
+.modal-btn,
+.box-title {
+  font-size: 36rpx;
+  font-weight: bold;
+}
+
+.box-title {
+  color: #333;
+}
+
+.step-box {
+  padding: 44rpx 54rpx 60rpx;
+}
+
+.step-box image {
+  width: 100%;
+}
+
+.box-main {
+  font-size: 28rpx;
+  color: #333;
+}
+
+.main-item {
+  display: flex;
+  align-items: center;
+  margin: 40rpx 0;
+}
+
+.item-label {
+  font-size: 24rpx;
+  background: #FFE27A;
+  height: 40rpx;
+  line-height: 40rpx;
+  border-radius: 20rpx;
+  padding: 0 10rpx;
+  margin-right: 20rpx;
+}
+
+.modal-btn {
+  color: #454545;
+  background: #FFE27A;
+  height: 88rpx;
+  line-height: 88rpx;
+  border-bottom-left-radius: 20rpx;
+  border-bottom-right-radius: 20rpx;
+}
+
+/* .modal-content {
+  position: absolute;
+  width: 75%;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 20rpx;
+  text-align: center;
+  background: #fff;
+  overflow: hidden;
+}
+
+.content-main {
+  padding: 44rpx 54rpx 60rpx;
+  font-size: 36rpx;
+  font-weight: bold;
+}
+
+.content-main image {
+  width: 100%;
+}
+
+.main-title {
+  color: #333;
+  margin-bottom: 40rpx;
+}
+
+.modal-btns {
+  display: flex;
+  height: 88rpx;
+  line-height: 88rpx;
+}
+
+.modal-btns>view {
+  width: 50%;
+}
+
+.modal-btns>view:first-child {
+  color: #666;
+  border-top: 2rpx solid #CECECE;
+}
+
+.modal-btns>view:last-child {
+  color: #454545;
+  background: #FFE27A;
+  border-top: 2rpx solid #FFE27A;
+} */

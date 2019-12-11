@@ -20,7 +20,6 @@ Page({
 		hasAuthPhoneNum: false, //是否授权手机号
 		types: {},
 		files: [], //文件列表
-		showSecurityModal: false,
 		checkboxFlag: false,
 		confirmModal: {
 			isShow: false,
@@ -36,7 +35,7 @@ Page({
 			var type = options.type || '' //打印类型
 			this.getPrinterCapability() //获取打印能力数据
 
-			if (['baidu', 'security'].indexOf(type) > -1) {
+			if (type === 'baidu') {
 				this.formatFiles(docFiles)
 			} else {
 				yield this.formatUpLoadFiles(docFiles)
@@ -44,10 +43,7 @@ Page({
 			this.setData({
 				isFullScreen: app.isFullScreen,
 				type,
-				types: type == 'security' ? {
-					printType: "security_folder",
-					mediaType: "security_folder"
-				} : {
+				types: {
 					printType: "_docA4",
 					mediaType: "doc"
 				},
@@ -98,7 +94,7 @@ Page({
 				}
 			})
 			this.setData({
-				docFiles: docFiles || []
+				files: docFiles || []
 			})
 		} catch(err) {
 			logger.info(err)
@@ -114,7 +110,7 @@ Page({
 				type:'info',
 				title: '不支持打印的文件已为您过滤'
 			})
-		} 
+		}
 
 		if (copyDocFiles.length != newDocFiles.length) {
 			this.setData({
@@ -172,7 +168,7 @@ Page({
 					_this.longToast.hide()
         }
 			})
-		
+
     } catch (e) {
       this.longToast.hide()
       util.showError(e)
@@ -180,8 +176,8 @@ Page({
 	}),
 
 	/**
-	 * @methods 选择文档 
-	 */ 
+	 * @methods 选择文档
+	 */
 	chooseDocFile: co.wrap(function *(){
 		if (this.data.files.length >= 5) {
 			return wx.showModal({
@@ -201,15 +197,15 @@ Page({
 				var newDocFiles = util.clearFile(res.tempFiles)
 				if (newDocFiles.length > 0) {
 					return _this.uploadMessageFile(newDocFiles)
-				} 
-				
+				}
+
 				if (tempFiles.length == 1) {
 					_this.longToast.toast({
 						type:'info',
 						title: '不支持打印的文件已为您过滤'
 					})
 				}
-				
+
 			},
 			fail: function() {
 				util.showError({
@@ -236,16 +232,16 @@ Page({
         showCancel: false
       })
     }
-		
+
     if(Boolean(storage.get("hideConfirmPrintBox"))){
         return this.print()
-		} 
-		
+		}
+
 		this.setData({
 				['confirmModal.isShow']: true
 		})
 	}),
-	
+
 	/**
 	 * @methods 获取手机号
 	 */
@@ -258,7 +254,7 @@ Page({
     })
     this.confirm(e)
 	}),
-	
+
 	/**
 	 * @methods 打印
 	 */
@@ -289,7 +285,7 @@ Page({
 			this.longToast.hide()
 		}
 	}),
-	
+
 	/**
 	 * @methods 预览
 	 */
@@ -369,84 +365,9 @@ Page({
 			util.showError(e)
 		}
 	}),
-	
-	/**
-	 * @methods 点击扫码打印
-	 */
-	toScan () {
-		let hideSecurityModal = Boolean(storage.get('hideSecurityModal'))
-		if (hideSecurityModal) {
-			return this.scanPrint()
-		} 
-		this.setData({
-			showSecurityModal: true
-		})
-	},
-
-	/**
-	 * @methods 扫码打印
-	 */
-	scanPrint: co.wrap(function* (){
-    this.cancelScan()
-    let scanResult = yield scanCode(),
-    pathArr = scanResult.path.split('scene=')[1].split('_'),
-    id = pathArr[2],
-    type = pathArr[1]==='ec' ? 'Ec::Printer' : 'EpDevice'
-    yield this.selectedPrinter(id, type)
-	}),
-	
-	/**
-	 * @methods 取消扫描
-	 */
-	cancelScan () {
-    if (this.data.checkboxFlag) {
-			storage.put('hideSecurityModal', true)
-    }
-    this.setData({
-      showSecurityModal: false
-    })
-	},
-	
-	/**
-	 * @methods 设置不再提示安全打印弹窗
-	 */
-	checkboxChange () {
-		this.setData({
-			checkboxFlag: !this.data.checkboxFlag
-		})
-	},
-	
-	/**
-	 * @methods 获取安全打印参数
-	 */
-	selectedPrinter: co.wrap(function*(id, type){
-    this.longToast.toast({
-			type:'loading',
-			title: '请稍等'
-		})
-    try {
-      let resp = yield request({
-        url: app.apiServer + `/boxapi/v2/printers/${id}/security_selected`,
-        method: 'POST',
-        dataType: 'json',
-        data: {
-          openid: app.openId,
-          printer_type: type
-        }
-      })
-      if (resp.data.code != 0) {
-        throw (resp.data)
-      }
-      this.print()
-    } catch (error) {
-			this.longToast.hide()
-      util.showError(error)
-    }
-	}),
-
 	/**
 	 * @methods设置回传参数
-	 * @param {Object} postData 
+	 * @param {Object} postData
 	 */
 	setPostData: function(postData) {
 		let tempFiles = _(this.data.files).clone()

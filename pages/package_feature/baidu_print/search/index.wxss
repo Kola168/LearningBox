@@ -1,0 +1,74 @@
+@import '../choose/index.wxss';
+.search-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20rpx 0;
+  margin: 0 30rpx;
+}
+
+.box-left {
+  position: relative;
+}
+
+.left-image {
+  width: 584rpx;
+  height: 60rpx;
+  display: flex;
+  background: #eaeaea;
+  border-radius: 42rpx;
+}
+
+.left-icon {
+  width: 60rpx;
+  height: 100%;
+  position: relative;
+}
+
+.search-input {
+  width: 90%;
+  height: 100%;
+  margin-left: 25rpx;
+  margin-right: 34rpx;
+  font-size: 24rpx;
+}
+
+.icon-search {
+  width: 27rpx;
+  position: absolute;
+  left: 38rpx;
+  z-index: 100;
+  top: 17rpx;
+}
+
+.icon-can {
+  width: 80rpx;
+  height: 60rpx;
+  position: absolute;
+  left: 500rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-cancel {
+  width: 30rpx;
+  z-index: 100;
+}
+
+.cancel {
+  color: #666;
+  font-size: 36rpx;
+}
+
+.search {
+  color: #FFA200;
+  font-size: 36rpx;
+}
+
+.empty-result{
+  color: #999;
+  font-size: 30rpx;
+  text-align: center;
+  padding:40rpx 0;
+}
