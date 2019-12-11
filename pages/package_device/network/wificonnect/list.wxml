@@ -1,7 +1,7 @@
 <!--pages/network/wificonnect/list.wxml-->
 <nav-bar title="配置网络"></nav-bar>
 
-<view wx:if="{{wifiList.length>0}}" class="wifilist-box">
+<view wx:if="{{wifiList.length>0||loading}}" class="wifilist-box">
   <view class="wifilist-tips">
     请选择要连接的WiFi网络
   </view>

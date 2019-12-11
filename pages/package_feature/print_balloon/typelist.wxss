@@ -1,0 +1,34 @@
+/* pages/package_feature/print_balloon/typelist.wxss */
+page {
+  box-sizing: border-box;
+  padding: 30rpx;
+}
+
+.flex-box {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.cont-box {
+  width: 336rpx;
+  height: 336rpx;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4rpx 16rpx 0 rgba(204, 204, 204, 0.40);
+  margin-top:30rpx;
+}
+
+.cont-img {
+  width: 132rpx;
+}
+
+.cont-text {
+  font-size: 36rpx;
+  color: #454545;
+  margin-top:36rpx;
+}

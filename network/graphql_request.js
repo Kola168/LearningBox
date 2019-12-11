@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2019-11-19 14:39:00
- * @LastEditTime: 2019-12-04 16:32:28
+ * @LastEditTime: 2019-12-10 13:42:36
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /LearningBox/network/graphql_request.js
@@ -15,13 +15,15 @@ let gql = GraphQL({
   url: `${app.apiServer}/graphql`,
   header: function() {
     if (app.authToken) {
+			console.log('authToken==1==',app.authToken)
       return {
         "AUTHORIZATION": `Token token=${app.authToken}`
       }
     } else {
       try {
         var authToken = wx.getStorageSync('authToken')
-        if (authToken) {
+			  console.log('authToken====',authToken)
+				if (authToken) {
           return {
             "AUTHORIZATION": `Token token=${authToken}`
           }
@@ -94,7 +96,10 @@ const graphqlApi = {
     return gql.mutate({
       mutation: `mutation bindDevice($input: BindDeviceInput!){
         bindDevice(input:$input){
-          state
+          device {
+						onlineState
+						sn
+					}
         }
       }`,
       variables: {
@@ -154,9 +159,8 @@ const graphqlApi = {
           marginFree,
           onlineState,
           quality,
-          printOrder,
-          pressPrint
-        }
+					printOrder
+				}
       }`,
       variables: {
         sn: sn
