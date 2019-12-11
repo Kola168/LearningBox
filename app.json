@@ -36,9 +36,9 @@
     "pages/print_photo_doc/edit",
     "pages/print_photo/mediachoose",
     "pages/print_photo/photolist",
-		"components/process/text",
-		"pages/authorize/index",
-		"pages/print_funny/index",
+    "components/process/text",
+    "pages/authorize/index",
+    "pages/print_funny/index",
     "pages/print_photo/edit",
     "pages/print_id/index",
     "pages/print_id/normal_list",
@@ -47,58 +47,51 @@
     "pages/print_id/smart_index",
     "pages/print_id/smart_rules",
     "pages/course/index"
-	],
-	"subPackages": [
-		{
-		 "root": "pages/package_common",
-		 "pages": [
-			"search/index"
+  ],
+  "subPackages": [
+    {
+      "root": "pages/package_common",
+      "pages": [
+        "search/index"
       ]
     },
     {
       "root": "pages/package_course",
       "pages": [
         "course/course",
-				"print/print",
-				"course_center/course_center",
-				"mine_course_list/mine_course_list",
-				"pay_order/pay_order",
-				"share_course/share_course",
-				"pay_success/pay_success",
-				"issue_list/issue_list",
-				"issue_center/issue_center",
-				"course_video/index"
+        "print/print",
+        "course_center/course_center",
+        "mine_course_list/mine_course_list",
+        "pay_order/pay_order",
+        "share_course/share_course",
+        "pay_success/pay_success",
+        "issue_list/issue_list",
+        "issue_center/issue_center",
+        "course_video/index"
       ]
     },
     {
       "root": "pages/package_feature",
-      "pages": [
-
-      ]
+      "pages": []
     },
     {
       "root": "pages/package_member",
-      "pages": [
-
-      ]
+      "pages": []
     },
     {
       "root": "pages/package_other",
-      "pages": [
-
-      ]
+      "pages": []
     },
     {
       "root": "pages/package_preschool",
       "pages": [
-
+        "record_voice/index/index",
+        "record_voice/recorder/recorder"
       ]
     },
     {
       "root": "pages/package_subject",
-      "pages": [
-
-      ]
+      "pages": []
     },
     {
       "root": "pages/package_device",
@@ -108,8 +101,8 @@
         "setting/index",
         "share/index",
         "share_manage/index",
-				"longpress/index",
-				"maintain/index/index",
+        "longpress/index",
+        "maintain/index/index",
         "maintain/firmware/index",
         "maintain/state_notice/index",
         "maintain/test_page/index",

@@ -1,0 +1,4 @@
+<view class="record-voice-main">
+  <image class="" src="" mode="widthFix"/>
+  <view class="btn {{isFullScreen ? 'is-full-screen' : ''}}">开始使用</view>
+</view>
