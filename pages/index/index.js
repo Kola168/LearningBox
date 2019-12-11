@@ -10,6 +10,7 @@ require('../../utils/mixin.js')
 import index from "../../mixins/index.js"
 import init from "../../mixins/init.js"
 import storage from '../../utils/storage.js'
+import gql from '../../network/graphql_request.js'
 import api from '../../network/restful_request.js'
 import router from '../../utils/nav'
 const checkSession = util.promisify(wx.checkSession)
@@ -39,9 +40,15 @@ Page({
   bindViewTap: function () {
     wxNav.navigateTo('/pages/logs/logs')
   },
-  onLoad: function () {
+  onLoad: co.wrap(function* () {
     this.longToast = new app.weToast()
-  },
+    try {
+      // yield this.getStage()
+    } catch (e) {
+      console.log(e)
+    }
+
+  }),
   onShow: co.wrap(function* () {
     yield this.getUnion() //授权
   }),
@@ -53,6 +60,7 @@ Page({
           showAuth: false
         })
         app.authToken = authToken
+        yield rhis.getUserInfo()
       }
       if (!authToken) {
         this.setData({
@@ -71,6 +79,14 @@ Page({
       return true
     } catch (e) {
       return false
+    }
+  }),
+  getUserInfo: co.wrap(function* () {
+    try {
+      let resp = yield gql.getUser()
+      console.log('4567890-=', resp)
+    } catch (e) {
+      util.showError(e)
     }
   }),
   userInfoHandler: co.wrap(function* (e) {
@@ -120,6 +136,7 @@ Page({
       this.setData({
         showAuth: false
       })
+      yield this.getUserInfo()
       this.longToast.hide()
     } catch (e) {
       yield app.login()

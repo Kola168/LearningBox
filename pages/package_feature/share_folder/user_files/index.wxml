@@ -1,3 +1,4 @@
+<nav-bar background="#fff" title="我是谁我在哪"></nav-bar>
 <view class="" hover-class="none" hover-stop-propagation="false">
   <w-progress-modal currentChooseCount="{{currentChooseCount}}" completeCount="{{completeCount}}" percent="{{percent}}" wx:if="{{showupLoad}}" bindcancel="cancel"></w-progress-modal>
 

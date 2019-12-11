@@ -1,3 +1,4 @@
+<nav-bar background="#fff" title="共享文件夹"></nav-bar>
 <view class="top-tip">不可上传或传播违法内容，一经发现依法处理</view>
 <view class="top">
   <view class="top-left">
@@ -12,7 +13,7 @@
     <view class="file-left">
       <view style="width:100rpx;">
         <image src="{{item.url}}?x-image-process=image/resize,m_fill,h_76,w_76/quality,Q_85/format,jpg" class="file-icon" bindtap="toPreview" wx:if="{{item.file_type=='image'}}" mode="widthFix"></image>
-        <image src="/images/doc_select_pdf.png" class="file-icon" bindtap="toPreview" wx:if="{{item.file_type=='pdf'}}" mode="widthFix"></image>
+        <image src="../../images/doc_select_pdf.png" class="file-icon" bindtap="toPreview" wx:if="{{item.file_type=='pdf'}}" mode="widthFix"></image>
         <image src="../../images/share_fold_ppt.png" class="file-icon" bindtap="toPreview" wx:if="{{item.file_type=='pptx'||item.file_type=='ppt'}}" mode="widthFix"></image>
         <image src="../../images/share_fold_xls.png" class="file-icon" bindtap="toPreview" wx:if="{{item.file_type=='xlsx'||item.file_type=='xls'}}" mode="widthFix"></image>
         <image src="../../images/share_fold_word.png" class="file-icon" bindtap="toPreview" wx:if="{{item.file_type=='docx'||item.file_type=='doc'}}" mode="widthFix"></image>
@@ -25,7 +26,7 @@
       </view>
     </view>
     <view class="file-right">
-      <image class="select-image" src="{{item.choose ? '/images/error_finish.png': '/images/device_share_not_select.png'}}" mode="widthFix" bindtap="choose" id="{{index}}"></image>
+      <image class="select-image" src="{{item.choose ? '../../images/error_finish.png': '../../images/device_share_not_select.png'}}" mode="widthFix" bindtap="choose" id="{{index}}"></image>
     </view>
   </view>
 </view>

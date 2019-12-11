@@ -1,8 +1,8 @@
 {
   "usingComponents": {
-    "w-progress-modal": "../../../../../components/progress-modal/index",
+    "w-progress-modal": "../../../components/progress-modal/index",
     "ball": "../../../components/ball/index",
-    "ios-tip": "../../../../components/ios_tip/index"
+    "ios-tip": "../../../components/ios_tip/index"
   },
   "navigationBarTitleText": "共享文件夹",
   "onReachBottomDistance": 50

@@ -1,7 +1,6 @@
 // pages/error_book/pages/share_folder/manage.js
 "use strict"
 const app = getApp()
-
 import api from '../../../network/restful_request.js'
 // import graphql from '../../../network/graphql_request.js'
 const regeneratorRuntime = require('../../../lib/co/runtime')

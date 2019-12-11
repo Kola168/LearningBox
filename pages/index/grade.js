@@ -1,10 +1,12 @@
 // pages/index/grade.js
 const app = getApp()
+import gql from '../../network/graphql_request.js'
 import wxNav from '../../utils/nav.js'
 import api from '../../network/restful_request.js'
 import router from '../../utils/nav'
 import {
-  co
+  co,
+  util
 } from '../../utils/common_import.js'
 import regeneratorRuntime from '../../lib/co/runtime'
 Page({
@@ -21,6 +23,23 @@ Page({
     ],
     activeGrade: '0~3岁'
   },
+  onLoad: function (options) {
+    this.longToast = new app.weToast()
+  },
+  getAllstages: co.wrap(function () {
+    this.longToast.toast({
+      type: "loading",
+      duration: 0
+    })
+    try {
+      resp = yield gql.getAllstages()
+      console.log(resp)
+      this.longToast.hide()
+    } catch (e) {
+      util.showError(e)
+      this.longToast.hide()
+    }
+  }),
   chooseGrade: co.wrap(function* (e) {
     this.setData({
       activeGrade: e.currentTarget.id
@@ -30,12 +49,7 @@ Page({
       duration: 0
     })
   }),
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad: function (options) {
-    this.longToast = new app.weToast()
-  },
+
 
   /**
    * 生命周期函数--监听页面初次渲染完成

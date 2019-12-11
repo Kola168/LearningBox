@@ -1,3 +1,4 @@
+<nav-bar background="#fff" title="分享好友管理"></nav-bar>
 <view class='top'>
     <view>
         <text class="text-share">{{file_name}}</text>
@@ -13,7 +14,7 @@
                     <image src="{{item.avatar}}" mode="widthFix"></image>
                     <text>{{item.nickname}}</text>
                 </view>
-                <image class="select-image" src="{{item.choose ? '/images/error_finish.png': '/images/device_share_not_select.png'}}" mode="widthFix" bindtap="choose" id="{{index}}"></image>
+                <image class="select-image" src="{{item.choose ? '../../images/error_finish.png': '../../images/device_share_not_select.png'}}" mode="widthFix" bindtap="choose" id="{{index}}"></image>
             </view>
         </view>
     </view>

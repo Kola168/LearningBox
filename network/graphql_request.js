@@ -12,8 +12,8 @@ var GraphQL = gqwxappGraphql.GraphQL
 
 // 初始化对象
 let gql = GraphQL({
-  url: `${app.apiServer}/box_graphql`,
-  header: function() {
+  url: `${app.apiServer}/graphql`,
+  header: function () {
     if (app.authToken) {
       return {
         "AUTHORIZATION": `Token token=${app.authToken}`
@@ -32,7 +32,7 @@ let gql = GraphQL({
     }
   },
   //全局错误拦截
-  errorHandler: function(res) {
+  errorHandler: function (res) {
 
   }
 }, true);
@@ -203,6 +203,57 @@ const graphqlApi = {
       }
     })
   },
+
+  /**
+   * 获取所有学段
+   * @returns
+   */
+  getAllstages: () => {
+    return gql.query({
+      query: `query{
+        stages{
+            children
+            name
+            rootName
+            sn
+        }
+      }`
+    })
+  },
+
+  /**
+   * 获取当前用户信息
+   * 
+   * @returns
+   */
+  getUser: () => {
+    return gql.query({
+      query: `query{
+        currentUser{
+          selectedKid{
+            gender
+            name
+            sn
+            stage
+            }
+          phone
+        }
+      }`
+    })
+  },
+  bindDevice: (deviceInfo) => {
+    return gql.mutate({
+      mutation: `mutation updateKid($input: BindDeviceInput!){
+        bindDevice(input:$input){
+          state
+        }
+      }`,
+      variables: {
+        input: deviceInfo
+      }
+    })
+  },
+
 }
 
 export default graphqlApi

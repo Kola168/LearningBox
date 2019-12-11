@@ -1,3 +1,4 @@
+<nav-bar background="#fff" title="打印设置"></nav-bar>
 <view class="container">
     <view class="preview-main">
         <view class="preview_img" style="width:{{width}}px;height:{{height}}px">

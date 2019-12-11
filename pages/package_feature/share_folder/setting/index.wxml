@@ -1,3 +1,4 @@
+<nav-bar background="#fff" title="打印设置"></nav-bar>
 <view class="document_title">
     <view class="title_text">
         <view class="text_name">{{fileTitle.name}}</view>
@@ -9,9 +10,9 @@
     <view class="setting_item">
         <view class="item_label">打印份数</view>
         <view class="item_main">
-            <image src="{{documentPrintNum==1?'/images/document_cut.png':'/images/minus_y.png'}}" mode="aspectFit" class="print_num" bindtap="cutPrintNum"></image>
+            <image src="{{documentPrintNum==1?'../../images/document_cut.png':'../../images/minus_y.png'}}" mode="aspectFit" class="print_num" bindtap="cutPrintNum"></image>
             <text class="document_print_num">{{documentPrintNum}}</text>
-            <image src="{{documentPrintNum>=50?'/images/document_add_gray.png':'/images/plus_y.png'}}" mode="aspectFit" class="print_num" bindtap="addPrintNum"></image>
+            <image src="{{documentPrintNum>=50?'../../images/document_add_gray.png':'../../images/plus_y.png'}}" mode="aspectFit" class="print_num" bindtap="addPrintNum"></image>
         </view>
     </view>
     <view class="setting_range_item">
@@ -43,11 +44,11 @@
         <view class="item_main">
             <view class="color_check_box" data-style="Mono" bindtap="colorCheck">
                 <text class="color_type">黑白</text>
-                <image src="{{colorcheck!='Color'?'/images/document_checked.png':'/images/icon_circle_not_selected.png'}}" mode="widthFix" class="color_check"></image>
+                <image src="{{colorcheck!='Color'?'../../images/document_checked.png':'../../images/icon_circle_not_selected.png'}}" mode="widthFix" class="color_check"></image>
             </view>
             <view class="color_check_box" data-style="Color" bindtap="colorCheck">
                 <text class="color_type">彩色</text>
-                <image src="{{colorcheck=='Color'?'/images/document_checked.png':'/images/icon_circle_not_selected.png'}}" mode="widthFix" class="color_check"></image>
+                <image src="{{colorcheck=='Color'?'../../images/document_checked.png':'../../images/icon_circle_not_selected.png'}}" mode="widthFix" class="color_check"></image>
             </view>
         </view>
     </view>
@@ -56,18 +57,18 @@
         <view class="item_main">
             <view class="color_check_box" data-style="0" bindtap="duplexCheck">
                 <text class="color_type">单面</text>
-                <image src="{{duplexcheck?'/images/icon_circle_not_selected.png':'/images/document_checked.png'}}" mode="widthFix" class="color_check"></image>
+                <image src="{{duplexcheck?'../../images/icon_circle_not_selected.png':'../../images/document_checked.png'}}" mode="widthFix" class="color_check"></image>
             </view>
             <view class="color_check_box" data-style="1" bindtap="duplexCheck">
                 <text class="color_type">双面</text>
-                <image src="{{duplexcheck?'/images/document_checked.png':'/images/icon_circle_not_selected.png'}}" mode="widthFix" class="color_check"></image>
+                <image src="{{duplexcheck?'../../images/document_checked.png':'../../images/icon_circle_not_selected.png'}}" mode="widthFix" class="color_check"></image>
             </view>
         </view>
     </view>
     <view class="setting_item">
         <view class="item_label">文件修复</view>
         <view class="item_main">
-            <image class="statistic-check-image" src="{{!checkOpen ?'/images/device_check_close.png':'/images/turn_on.png'}}" mode="widthFix" wx:if="{!checkOpen}}" bindtap="operaRepair"></image>
+            <image class="statistic-check-image" src="{{!checkOpen ?'../../images/device_check_close.png':'../../images/turn_on.png'}}" mode="widthFix" wx:if="{!checkOpen}}" bindtap="operaRepair"></image>
         </view>
     </view>
 </view>
@@ -76,8 +77,8 @@
     <view class="view_content">
         <view class="content_item" wx:for="{{[1, 2 , 4, 8]}}" bindtap="chooseZoomType" wx:key="{{item}}" id="{{item}}">
             <view class="item_img {{zoomType==item?'item_check_active':''}}">
-                <image src="/images/zoom_{{item}}.png" mode="widthFix" />
-                <image src="/images/error_finish.png" hidden="{{zoomType!=item}}" class="item_check" mode="widthFix" />
+                <image src="../../images/zoom_{{item}}.png" mode="widthFix" />
+                <image src="../../images/error_finish.png" hidden="{{zoomType!=item}}" class="item_check" mode="widthFix" />
             </view>
             <view>1页{{item}}张</view>
         </view>
