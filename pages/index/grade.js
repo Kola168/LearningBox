@@ -26,7 +26,7 @@ Page({
   onLoad: function (options) {
     this.longToast = new app.weToast()
   },
-  getAllstages: co.wrap(function () {
+  getAllstages: co.wrap(function* () {
     this.longToast.toast({
       type: "loading",
       duration: 0
