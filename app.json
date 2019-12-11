@@ -2,12 +2,6 @@
   "pages": [
     "pages/index/index",
     "components/multiphoto/test",
-    "pages/network/index/index",
-    "pages/network/tips/step1",
-    "pages/network/tips/step2",
-    "pages/network/tips/step3",
-    "pages/network/wificonnect/list",
-    "pages/network/wificonnect/connect",
     "pages/print_doc/doc_list/doc_list",
     "pages/print_doc/index/index",
     "pages/print_doc/function_list/function_list",
@@ -46,7 +40,8 @@
     "pages/print_id/normal_mode",
     "pages/print_id/smart_index",
     "pages/print_id/smart_rules",
-    "pages/course/index"
+    "pages/course/index",
+    "components/bottom-button/test"
   ],
   "subPackages": [
     {
@@ -72,7 +67,13 @@
     },
     {
       "root": "pages/package_feature",
-      "pages": []
+      "pages": [
+        "print_balloon/index",
+        "print_balloon/typelist",
+        "print_balloon/edit",
+        "print_book/index",
+        "print_book/edit"
+      ]
     },
     {
       "root": "pages/package_member",
@@ -106,7 +107,13 @@
         "maintain/firmware/index",
         "maintain/state_notice/index",
         "maintain/test_page/index",
-        "maintain/sprayer_clean/index"
+        "maintain/sprayer_clean/index",
+        "network/index/index",
+        "network/tips/step1",
+        "network/tips/step2",
+        "network/tips/step3",
+        "network/wificonnect/list",
+        "network/wificonnect/connect"
       ]
     }
   ],
