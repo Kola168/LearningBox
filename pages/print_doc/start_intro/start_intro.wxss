@@ -1,23 +1,23 @@
-/* pages/print_doc/start_intro/start_intro.wxss */
 .img-box {
   text-align: center;
+  padding: 60rpx 0 120rpx;
 }
 
 .image {
   width: 100%;
-  margin-bottom: 80rpx;
+  margin-bottom: 60rpx;
 }
 
-btn {
+.btn {
   width: 100%;
   position: fixed;
   bottom: 0;
-}
-
-.btn-yellow {
   background: #FFDC5E;
 }
 
-.btn-yellow > button {
+.btn > button {
   color: #454545;
+  height: 100rpx;
+  line-height: 100rpx;
+  padding: 0;
 }

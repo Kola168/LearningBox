@@ -1,48 +1,50 @@
-// pages/print_doc/index.js
 "use strict"
 
 const app = getApp()
-const regeneratorRuntime = require('../../../lib/co/runtime')
-const co = require('../../../lib/co/co')
-const util = require('../../../utils/util')
-import api from '../../../network/restful_request'
-import router from '../../../utils/nav'
+import { regeneratorRuntime, co, util, wxNav } from '../../../utils/common_import'
+import graphql from '../../../network/graphql_request'
 Page({
-    data: {
-        supply_types: '',
-        mediumRecommend: ''
-    },
-    onLoad: co.wrap(function* (options) {
-    }),
+  data: {
+    supply_types: '',
+    mediumRecommend: ''
+  },
+  onLoad: co.wrap(function*(options) {
+    this.weToast = new app.weToast()
+  }),
 
-    toNext: co.wrap(function* ({currentTarget: {id}}) {
-      let type = id
-      if (type == 'baiduPrint') {
-        try {
-          var resp = yield api.checkBaiduAuth(app.openId)
-          if (resp.code == 0) {
-            router.navigateTo('/pages/error_book/pages/baidu_print/choose', {
-              arrayFile: encodeURIComponent(JSON.stringify(res.tempFiles))
-            })
-          } else {
-            router.navigateTo('/pages/print_doc/start_intro/start_intro', {
-              type: type
-            })
-           
-          }
-        } catch (error) {
-            util.showError(error)
+  toNext: co.wrap(function*({ currentTarget: { id } }) {
+    let type = id
+    if (type == 'baiduPrint') {
+      this.weToast.toast({
+        type: 'loading'
+      })
+      try {
+        let res = yield graphql.getBaiduNetAuth()
+        this.weToast.hide()
+        if (res.token.baiduTokenName) {
+          wxNav.navigateTo('/pages/package_feature/baidu_print/choose/index', {
+            type: 'doc',
+            from: 'original'
+          })
+        } else {
+          wxNav.navigateTo('/pages/print_doc/start_intro/start_intro', {
+            type: type
+          })
         }
-      } else {
-        router.navigateTo('/pages/print_doc/start/start')
+      } catch (error) {
+        this.weToast.hide()
+        util.showError(error)
       }
-    }),
+    } else {
+      wxNav.navigateTo('/pages/print_doc/start/start')
+    }
+  }),
 
-    otherPrint() {
-      router.navigateTo('/pages/print_doc/otherIndex/otherIndex')
-    },
+  otherPrint() {
+    wxNav.navigateTo('/pages/print_doc/otherIndex/otherIndex')
+  },
 
-    onShareAppMessage: function () {
-      return app.share
-    },
+  onShareAppMessage: function() {
+    return app.share
+  },
 })

@@ -43,3 +43,14 @@
   width: 74%;
   margin: 60rpx auto 0;
 }
+
+.qrcode-btn button {
+  padding: 0;
+  margin: 0;
+  height: 80rpx;
+  line-height: 80rpx;
+  font-size: 30rpx;
+  font-weight: normal;
+  width: 100%;
+  color: #454545;
+}

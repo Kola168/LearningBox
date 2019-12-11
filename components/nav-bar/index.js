@@ -20,6 +20,7 @@
  *                                    }
  *
  * @param {Boolean} isOnlyStatusBar   只显示状态栏,默认false
+ * @param {Boolean} forbidBack        禁止返回,默认false
  * @param {Boolean} slotLeft          左侧区域是否使用slot内容，默认false
  * @param {Boolean} slotCenter        中间区域是否使用slot内容，默认false
  *
@@ -52,6 +53,10 @@ Component({
     homeImage: {
       type: String,
       value: '/images/custom_nav_home.png'
+    },
+    forbidBack: {
+      type: Boolean,
+      value: false
     },
     isOnlyStatusBar: {
       type: Boolean,

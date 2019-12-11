@@ -8,7 +8,13 @@
       <view class="box-wrap">
         <image src="/images/doc_email.png" />
       </view>
-      <view class="qrcode-btn">保存</view>
+      <view wx:if="{{savable}}" class="qrcode-btn" bindtap="saveImg">保存</view>
+      <view wx:if="{{!savable}}" class="qrcode-btn">
+        <button open-type="openSetting" bindopensetting="allowSave">保存</button>
+      </view>
     </view>
   </view>
 </view>
+<!-- loading -->
+<import src="/lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />
