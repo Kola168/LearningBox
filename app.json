@@ -72,7 +72,14 @@
         "print_balloon/typelist",
         "print_balloon/edit",
         "print_book/index",
-        "print_book/edit"
+				"print_book/edit",
+				"cognition_card/index/index",
+        "cognition_card/list/index",
+        "cognition_card/category/index",
+        "cognition_card/category_list/index",
+        "cognition_card/edit/index",
+        "baidu_print/choose/index",
+        "baidu_print/search/index"
       ]
     },
     {

@@ -1,0 +1,21 @@
+<nav-bar title="认知卡"></nav-bar>
+<view class="container" style="min-height:{{areaHeight}}px;">
+  <view class="index-top">
+    <view class="top-left">
+      <image src="../../images/cognition_tip_1.png" mode="widthFix" />
+    </view>
+    <view class="top-right" bindtap="toShopping">选购耗材</view>
+  </view>
+  <view class="category-box">
+    <view class="category-custom">
+      <image src="{{categoryList[0].image}}" id="{{categoryList[0].id}}" bindtap="toNext" mode="widthFix" />
+    </view>
+    <view class="category-template">
+      <image src="{{item.image}}" wx:for="{{categoryList}}" wx:key="id" id="{{item.id}}" wx:if="{{index!==0}}" bindtap="toNext" mode="widthFix" />
+    </view>
+  </view>
+  <image src="https://cdn-h.gongfudou.com/LearningBox/feature/cognition_bg.jpg" class="container-bg" style="min-height:{{areaHeight}}px;" mode="widthFix" />
+</view>
+<!-- </block> -->
+<import src="/lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />

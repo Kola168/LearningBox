@@ -1,0 +1,92 @@
+/* @import '../common.wxss'; */
+.container {
+  position: relative;
+  z-index: 10;
+  padding-bottom: 240rpx;
+}
+
+.unable {
+  filter: grayscale(100%);
+}
+
+.fill-back {
+  background: linear-gradient(#FFCC6D, #FFE071, #F5E273);
+  min-height: 100%;
+}
+
+.tip-img {
+  width: 90%;
+}
+
+.list-box {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  padding: 40rpx 36rpx;
+}
+
+.box-container {
+  position: relative;
+  display: flex;
+  width: 48%;
+  margin-bottom: 4%;
+  border-radius: 24rpx;
+  overflow: hidden;
+}
+
+.box-container:nth-child(odd) {
+  margin-right: 4%;
+}
+
+.mian-img {
+  width: 100%;
+  border-radius: 24rpx;
+}
+
+.delete-img {
+  position: absolute;
+  width: 48rpx;
+  height: 48rpx;
+  right: 16rpx;
+  top: 16rpx;
+}
+
+.edit-text {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  left: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, .5);
+  padding: 16rpx 0;
+}
+
+.edit-text image {
+  width: 60%;
+}
+
+.handle-btns {
+  position: fixed;
+  left: 0;
+  bottom: 100rpx;
+  display: flex;
+  width: 74%;
+  padding: 0 13%;
+  justify-content: space-between;
+}
+
+.handle-btns image {
+  width: 45%;
+  position:relative;
+}
+
+.cover-but{
+    width:100%;
+    height:100%;
+    position:absolute;
+    top:0;
+    left:0;
+    opacity:0;
+}

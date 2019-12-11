@@ -1,4 +1,4 @@
-// pages/print_doc/start_intro.js
+const app = getApp()
 Page({
   data: {
     imgs: {
@@ -7,10 +7,11 @@ Page({
     },
     type: ''
   },
-  onLoad: function (options) {
+  onLoad: function(options) {
     let type = options.type
     this.setData({
-      type: type
+      type: type,
+      isFullScreen: app.isFullScreen
     })
   },
 })

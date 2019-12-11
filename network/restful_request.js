@@ -37,7 +37,7 @@ const api = {
   }, {
     baseURL: `${app.apiServer}/api/v1/`
   }),
- 
+
 	wechatDecryption: (params) => request.post(`users/sessions/wechat_decryption`, params, {
     baseURL: `${app.apiServer}/api/v1/`
   }),
@@ -95,28 +95,22 @@ const api = {
   processes:(params)=>request.post(`processes`,params, {
     baseURL: `${app.apiServer}/api/v1/`
   }),
-  // 收藏
-  collectCourse: (openId, sn, type) => request.post(`collections/${openId}/create`, {
-    sn: sn,
-    type: type
+  /**
+   * 获取百度文件sn
+   * @param { Array } ids 文件id数组
+   */
+  getBdFilesSn:(ids)=>request.post(`baidu`,{
+    ids:ids
   }, {
-    baseURL: `${app.apiServer}/boxapi/v2/`
+    baseURL: `${app.apiServer}/api/v1/`
   }),
 
-  // 取消收藏
-  deleteCollectCourse: (openId, sn, type) => request.post(`collections/${openId}/delete`, {
-    sn: sn,
-    type: type
-  }, {
-    baseURL: `${app.apiServer}/boxapi/v2/`
-  }),
-  // 发起助力
-  sendAssistance: (sn) => request.post(`/boxapi/v2/course_base/assistance/${sn}`, {}, {
-    baseURL: `${app.apiServer}/boxapi/v2/`
-  }),
-  // 获取分享助力信息
-  getShareAssistance: (sn) => request.get(`/boxapi/v2/course_base/share/${sn}`, {}, {
-    baseURL: `${app.apiServer}/boxapi/v2/`
+  /**
+   * 轮询上传百度文件到cdn
+   * @param { sn } sn 百度文件sn
+   */
+  uploadBdFileToCdn:(sn)=>request.get(`baidu/${sn}`,{}, {
+    baseURL: `${app.apiServer}/api/v1/`
   }),
 }
 

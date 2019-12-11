@@ -224,13 +224,23 @@ function showError(e) {
   })
 }
 
+function showGraphqlErr(e) {
+  let msg = e.errors[0].message
+  wx.showModal({
+    title: '提示',
+    content: msg,
+    showCancel: false,
+    confirmColor: '#FFDC5E'
+  })
+}
+
 function deleteItem(array, item) {
   Array.prototype.indexOf = function(val) {
     for (var i = 0; i < this.length; i++) {
       if (this[i] == val) return i;
     }
     return -1;
-    
+
   };
   Array.prototype.remove = function(val) {
     var index = this.indexOf(val);
@@ -331,6 +341,26 @@ function resetFiles(file = '') {
   return newFiles;
 }
 
+/**
+ * @methods 获取字符串字节
+ * @param {String} val
+ * @returns {Number}
+ */
+
+function getStringByte(val) {
+  let str = new String(val),
+    bytesCount = 0
+  for (var i = 0, n = str.length; i < n; i++) {
+    let c = str.charCodeAt(i)
+    if ((c >= 0x0001 && c <= 0x007e) || (0xff60 <= c && c <= 0xff9f)) {
+      bytesCount += 1
+    } else {
+      bytesCount += 2
+    }
+  }
+  return bytesCount
+}
+
 module.exports = {
   promisify: promisify,
   _getRotateDirection: _getRotateDirection,
@@ -348,5 +378,7 @@ module.exports = {
   clearPdfFile: clearPdfFile,
   resetFiles: resetFiles,
   showError: showError,
-  deleteItem: deleteItem
+  showGraphqlErr: showGraphqlErr,
+  deleteItem: deleteItem,
+  getStringByte:getStringByte
 }
