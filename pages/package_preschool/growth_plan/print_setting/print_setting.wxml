@@ -1,0 +1,41 @@
+<!--pages/package_preschool/print_setting/print_setting.wxml-->
+<nav-bar title="打印设置"></nav-bar>
+<view class="setting-block">
+    <view class="lists">
+        <view class="list-item title">
+            <view class="item-left">题目标题标题</view>
+            <view class="item-right"></view>
+        </view>
+        <view class="list-item">
+            <view class="item-left">打印份数</view>
+            <view class="item-right print-num">
+                <image class="arrow-icon" src="/images/doc_document_cut.png"></image>
+                <text class="name">1</text>
+                <image class="arrow-icon" src="/images/doc_plus_y.png"></image>
+            </view>
+        </view>
+        <view class="list-item">
+            <view class="item-left">打印范围</view>
+            <view class="item-right">
+                <input class="input-attr" type="number" placeholder="0" auto-focus placeholder-style="" selection-start="" selection-end="" cursor="" />
+                <text class="name">至</text>
+                <input class="input-attr" type="number" placeholder="1" auto-focus placeholder-style="" selection-start="" selection-end="" cursor="" />
+                <text class="name">页</text>
+            </view>
+        </view>
+        <view class="list-item">
+            <view class="item-left">色彩选择</view>
+            <view class="item-right select-color">
+                <view class="self-color">
+                    <text>黑白</text>
+                    <image src="../../../../images/radio_on.png"></image>
+                </view>
+                <view class="self-color">
+                    <text>全彩</text>
+                    <image src="../../../../images/radio_off.png"></image>
+                </view>
+            </view>
+        </view>
+    </view>
+</view>
+<view class="footer" bindtap="confirmPrint">确认打印</view>

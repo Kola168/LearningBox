@@ -2,64 +2,40 @@
 <nav-bar title="宝贝成长计划"></nav-bar>
 <view class="list-block">
     <view class="tabs">
-        <view class="tab-item">已订阅</view>
-        <view class="tab-item tab-on">未订阅</view>
-        <view class="tab-item">已完成</view>
+        <view class="tab-item {{tabToContent==0 ? 'tab-on' : ''}}" id="0" bindtap="navTap">已订阅</view>
+        <view class="tab-item {{tabToContent==1 ? 'tab-on' : ''}}" id="1" bindtap="navTap">未订阅</view>
+        <view class="tab-item {{tabToContent==2 ? 'tab-on' : ''}}" id="2" bindtap="navTap">已完成</view>
     </view>
     <view class="tab-content">
     <!-- 已订阅 开始 -->
-        <view class="item-cont-block">
-            <block wx:if="{{!items.length}}">
+        <view class="item-cont-block" wx:if="{{tabToContent==0}}">
+            <block wx:if="{{!lists.length}}">
                 <view class="item-none">
-                    <image class="item-none-img" src="../images/baby_play_none.png" mode="widthFix"></image>
+                    <image class="item-none-img" src="https://cdn-h.gongfudou.com/LearningBox/preschool/growth_plan_none.png" mode="widthFix"></image>
                     <text class="item-none-desc">您还未订阅宝宝成长计划哦～</text>
-                    <view class="btn-default">去订阅</view>
+                    <view class="btn-default" bindtap="toSubscribe">去订阅</view>
                 </view>
             </block>
-            <view class="item-cont">
+            <view class="item-cont" wx:for="{{lists}}" wx:key="{{index}}" id="{{index}}">
                 <view class="item-left">
-                    <image class="item-img" src="https://cdn-h.gongfudou.com/LearningBox/main/pic2doc_add_img.png"></image>
+                    <image class="item-img" src="{{item.image}}"></image>
                 </view>
                 <view class="item-right">
                     <view class="item-right-top">
-                        <view class="item-title">好奇宝宝培养计划</view>
-                        <view class="item-desc">简单描述描述描述描述</view>
-                        <view class="item-tag">在家上早教</view>
+                        <view class="item-title">{{item.title}}</view>
+                        <view class="item-desc">{{item.desc}}</view>
+                        <view class="item-tag">{{item.tag}}</view>
                     </view>
                     <view class="item-right-bottom">
                         <view class="bottom-left">
                             <view class="progress-cont">
-                                <view class="progress"></view>
-                                <view class="progress-on"></view>
+                                <view class="progress" style="width:{{item.allProgress}}%;"></view>
+                                <view class="progress-on" style="width:{{item.currentProgress}}%;"></view>
                             </view>
-                            <text class="progress-num">30/30</text>
+                            <text class="progress-num">{{item.currentProgress}}/{{item.allProgress}}</text>
                         </view>
                         <view class="bottom-right">
-                            <view class="btn-default">取消订阅</view>
-                        </view>
-                    </view>
-                </view>
-            </view>
-            <view class="item-cont">
-                <view class="item-left">
-                    <image class="item-img" src="https://cdn-h.gongfudou.com/LearningBox/main/pic2doc_add_img.png"></image>
-                </view>
-                <view class="item-right">
-                    <view class="item-right-top">
-                        <view class="item-title">好奇宝宝培养计划</view>
-                        <view class="item-desc">简单描述描述描述描述</view>
-                        <view class="item-tag">在家上早教</view>
-                    </view>
-                    <view class="item-right-bottom">
-                        <view class="bottom-left">
-                            <view class="progress-cont">
-                                <view class="progress"></view>
-                                <view class="progress-on"></view>
-                            </view>
-                            <text class="progress-num">30/30</text>
-                        </view>
-                        <view class="bottom-right">
-                            <view class="btn-default">取消订阅</view>
+                            <view class="btn-default" id="{{index}}" bindtap="handleSubscribe">取消订阅</view>
                         </view>
                     </view>
                 </view>
@@ -67,7 +43,26 @@
         </view>
     <!-- 已订阅 结束 -->
     <!-- 未订阅 开始 -->
-        <view class="item-cont-block">
+        <view class="item-cont-block" wx:if="{{tabToContent==1}}">
+            <view class="item-cont" wx:for="{{lists}}" wx:key="{{index}}" id="{{item.id}}">
+                <view class="item-left">
+                    <image class="item-img" src="{{item.image}}"></image>
+                </view>
+                <view class="item-right">
+                    <view class="item-right-top">
+                        <view class="item-title">{{item.title}}</view>
+                        <view class="item-desc">{{item.desc}}</view>
+                        <view class="item-tag">{{item.tag}}</view>
+                    </view>
+                    <view class="item-right-bottom">
+                        <view class="bottom-left"></view>
+                        <view class="bottom-right">
+                            <view class="btn-primary" bindtap="toSubscribe" id="{{item.id}}">订阅</view>
+                        </view>
+                    </view>
+                </view>
+            </view>
+            
             <view class="item-cont">
                 <view class="item-left">
                     <image class="item-img" src="https://cdn-h.gongfudou.com/LearningBox/main/pic2doc_add_img.png"></image>
@@ -81,36 +76,19 @@
                     <view class="item-right-bottom">
                         <view class="bottom-left"></view>
                         <view class="bottom-right">
-                            <view class="btn-primary">订阅</view>
+                            <view class="btn-primary" bindtap="toSubscribe">订阅</view>
                         </view>
                     </view>
                 </view>
             </view>
-            <view class="item-cont">
-                <view class="item-left">
-                    <image class="item-img" src="https://cdn-h.gongfudou.com/LearningBox/main/pic2doc_add_img.png"></image>
-                </view>
-                <view class="item-right">
-                    <view class="item-right-top">
-                        <view class="item-title">好奇宝宝培养计划</view>
-                        <view class="item-desc">简单描述描述描述描述</view>
-                        <view class="item-tag">在家上早教</view>
-                    </view>
-                    <view class="item-right-bottom">
-                        <view class="bottom-left"></view>
-                        <view class="bottom-right">
-                            <view class="btn-primary">订阅</view>
-                        </view>
-                    </view>
-                </view>
-            </view>
+            
         </view>
     <!-- 未订阅 结束 -->
     <!-- 已完成 开始 -->
-        <view class="item-cont-block">
-            <block wx:if="{{!items.length}}">
+        <view class="item-cont-block" wx:if="{{tabToContent==2}}">
+            <block wx:if="{{!lists.length}}">
                 <view class="item-none">
-                    <image class="item-none-img" src="./images/baby_play_none.png" mode="widthFix"></image>
+                    <image class="item-none-img" src="https://cdn-h.gongfudou.com/LearningBox/preschool/growth_plan_none.png" mode="widthFix"></image>
                     <text class="item-none-desc">暂未已完成计划哦～</text>
                 </view>
             </block>
@@ -127,7 +105,7 @@
                     <view class="item-right-bottom">
                         <view class="bottom-left"></view>
                         <view class="bottom-right">
-                            <view class="btn-primary">订阅</view>
+                            <view class="btn-primary" bindtap="toSubscribe">订阅</view>
                         </view>
                     </view>
                 </view>
@@ -145,7 +123,7 @@
                     <view class="item-right-bottom">
                         <view class="bottom-left"></view>
                         <view class="bottom-right">
-                            <view class="btn-primary">订阅</view>
+                            <view class="btn-primary" bindtap="toSubscribe">订阅</view>
                         </view>
                     </view>
                 </view>
@@ -156,4 +134,4 @@
 </view>
 
 <!-- modal -->
-<modal modal="{{modalObj}}" bindconfirm="confirmModal" bindcancel="cancelModal"></modal>
+<modal modal="{{modalObj}}" bindconfirm="confirmModal"></modal>

@@ -1,0 +1,83 @@
+/* pages/package_preschool/plan_checkpoint/plan_checkpoint.wxss */
+.setting-block{
+    padding:0rpx 30rpx 30rpx;
+}
+.list-item{
+    display: flex;
+    justify-content: space-between;
+    border-bottom:2rpx solid #E7E7E7;
+    line-height:90rpx;
+}
+.item-left{
+    font-size: 32rpx;
+    color: #333333;
+    width: 50%;
+}
+.item-right{
+    font-size: 28rpx;
+    color: #999999;
+    width: 35%;
+    display: flex;
+    justify-content: space-between;
+}
+.footer{
+    position: fixed;
+    left:0;
+    right:0;
+    bottom:0;
+    font-size: 18px;
+    color: #333333; 
+    background: #FFDC5E;
+    height:98rpx;
+    line-height:98rpx;
+    width:100%;
+    text-align:center;
+}
+
+.print-num{
+    width:20%;
+}
+.print-time{
+    width:15%;
+}
+.print-num .arrow-icon{
+    width:35rpx;
+    height:35rpx;
+    margin-top: 28rpx;
+}
+.select-color{
+    width:40%;
+}
+.self-color{
+    display: flex;
+    width:4  0%;
+}
+.self-color image{
+    width: 40rpx;
+    height: 40rpx;
+    margin-left: 10rpx;
+    margin-top: 24rpx;
+}
+input.input-attr{
+    width:80rpx;
+    height:48rpx;
+    margin-top: 24rpx;
+    text-align:center;
+    vertical-align:middle;
+    font-size: 28rpx;
+    color: #666666;
+    box-shadow: inset 0 2px 4px 0 rgba(204,204,204,0.50);
+}
+.name{
+    font-size: 28rpx;
+    color: #999999;
+}
+.title{
+    border-bottom: 20rpx solid #F7F7F7;
+    padding-left:30rpx;
+    padding-right:30rpx;
+    margin-left:-30rpx;
+    margin-right:-30rpx;
+}
+
+

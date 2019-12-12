@@ -1,4 +1,4 @@
-// pages/package_preschool/timed_print/timed_print.js
+// pages/package_preschool/print_setting/print_setting.js
 const app = getApp()
 import {regeneratorRuntime, co, wxNav, util, logger} from '../../../../utils/common_import'
 // import { threadId } from 'worker_threads';
@@ -23,10 +23,9 @@ Page({
     },
   
     /**
-     * 定时打印设置后的确认
+     * 确认打印
      */
-    confirmTimedSetting: co.wrap(function* (){
-      // this.weToast.toast('订阅成功')
-      wxNav.navigateTo('/pages/package_preschool/growth_plan/checkpoint/plan_checkpoint')
+    confirmPrint: co.wrap(function* (){
+
     })
   })

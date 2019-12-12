@@ -1,0 +1,104 @@
+/* pages/package_preschool/growth_plan/checkpoint/plan_checkpoint.wxss */
+page{
+    width:100%;
+    height:100%;
+}
+.checkpoint-bg{
+    background: url('https://cdn-h.gongfudou.com/LearningBox/preschool/growth_plan_bg.png') top left no-repeat;
+    background-clip: border-box;
+    background-attachment: fixed;
+    background-size: cover;
+}
+.checkpoint-img-bg{
+    width:270rpx;
+    height: 342rpx;
+}
+.checkpoint-step-1 .checkpoint-img-bg{
+    position: relative;
+    padding-top:0rpx;
+    left:110rpx;
+}
+.checkpoint-step-1:nth-of-type(1){
+    padding-top:48rpx;
+}
+.checkpoint-step-2 .checkpoint-img-bg{
+    position: relative;
+    padding-top:10rpx;
+    left: 390rpx;
+}
+.checkpoint-step-1, .checkpoint-step-2{
+    width:100%;
+    height:400rpx;
+}
+.checkpoint-step-1 .checkpoint-cont, .checkpoint-step-2 .checkpoint-cont{
+    position: relative;
+    margin-top:-42.5%;
+    text-align: center;
+    width:214rpx;
+}
+.checkpoint-step-1 .checkpoint-cont{
+    left: 18%;
+}
+.checkpoint-step-2 .checkpoint-cont{
+    left: 55%;
+}
+.checkpoint-cont image{
+    width:100%;
+    height:142rpx;
+    border:4rpx solid #fff;
+}
+.checkpoint-cont text{
+    width:214rpx;
+    font-size: 28rpx;
+    color: #744E3A;
+    line-height:60rpx;
+    font-weight:500;
+    text-overflow: ellipsis;
+}
+.checkpoint-step-1 .shadow-opcity-bg, .checkpoint-step-2 .shadow-opcity-bg{
+    opacity: 0.55;
+    background: #000000;
+    width: 214rpx;
+    height: 142rpx;
+    position: relative;
+    margin-top: -27.3%;
+}
+.checkpoint-step-1 .shadow-opcity-bg{
+    left: 18.5%;
+}
+.checkpoint-step-2 .shadow-opcity-bg{
+    left: 55.5%;
+}
+.shadow-opcity-bg image{
+    width:58rpx;
+    height:70rpx;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.lock-icon{
+    position: relative;
+    left:50%;
+    top:30%;
+    margin-left:-29rpx;
+}
+.footer{
+    position: fixed;
+    bottom:50rpx;
+    z-index: 99;
+    left:50%;
+    margin-left:-180rpx;
+}
+.footer image{
+    width:360rpx;
+    height:96rpx;
+}
+.auto-print{
+    position: fixed;
+    right:30rpx;
+    top:12%;
+}
+.auto-print image{
+    width:174rpx;
+    height:68rpx;
+}
