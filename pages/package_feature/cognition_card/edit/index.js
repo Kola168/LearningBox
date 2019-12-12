@@ -55,6 +55,7 @@ Page({
     this.weToast = new app.weToast()
     if (this.hasEdit) {
       this.index = query.index
+      this.path = JSON.parse(decodeURIComponent(query.editUrl))
     }
     yield this.getTemplateInfo(this.templateSn, type)
     yield this.initArea(type)
@@ -164,7 +165,6 @@ Page({
         let imgInfo = yield getImageInfo({
           src: path
         })
-
         this.setData({
           imgInfo: imgInfo,
           localImgPath: path
@@ -433,7 +433,9 @@ Page({
     })
     try {
       let resp = yield graphql.getTemplateDetail(sn)
-      this.path = resp.template.defaultImage
+      if (type === 'template') {
+        this.path = resp.template.defaultImage
+      }
       let area = resp.template.positionInfo
       area.image = resp.template.imageUrl
       this.setData({
@@ -576,7 +578,7 @@ Page({
         })
       }
     } catch (error) {
-      util.showError(error)
+      console.log(error)
     }
   },
   onTouchEnd: function() {

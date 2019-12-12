@@ -63,7 +63,7 @@ Page({
       index: index,
       hasEdit: 1,
       cardName: name,
-      editUrl
+      editUrl: encodeURIComponent(JSON.stringify(editUrl))
     })
   },
   deleteImg: co.wrap(function*(e) {
