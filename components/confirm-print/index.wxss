@@ -1,4 +1,4 @@
-.confirm-modal {
+.confirm-print-modal {
   position: fixed;
   top: 0;
   left: 0;
@@ -11,59 +11,59 @@
   z-index: 100001;
 }
 
-.confirm-modal-wrap {
+.print-modal-wrap {
   width: 80%;
   background: #fff;
   border-radius: 10rpx;
   overflow: hidden;
 }
 
-.confirm-modal-title {
+.print-modal-title {
   color: #333;
   font-size: 36rpx;
   padding: 32rpx;
   text-align: center;
 }
 
-.confirm-modal-wrap image {
+.print-modal-wrap image {
   width: 80%;
   margin-left: 10%;
   margin-bottom: 10rpx;
 }
 
-.content-box {
+.print-modal-box {
   padding: 24rpx;
 }
 
-.box-text {
+.print-modal-box__text {
   color: #333;
   font-size: 28rpx;
   margin-bottom: 12rpx;
 }
 
-.box-tip {
+.print-modal-box__tip {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   font-size: 30rpx;
   color: #333;
   margin-top: 24rpx;
 }
 
-.box-tip view {
+.print-modal-box__tip view {
   margin-right: 10rpx;
 }
 
-.box-tip switch {
-  transform: scale(0.9)
+.print-modal-box__tip switch {
+  transform: scale(0.7)
 }
 
-.button {
+.print-modal-button {
   width: 100%;
   display: flex;
 }
 
-.button view {
+.print-modal-button view {
   width: 50%;
   height: 88rpx;
   line-height: 88rpx;
@@ -73,13 +73,13 @@
   text-align: center;
 }
 
-.button .cancel {
+.print-modal-button .print-modal-button__cancel {
   color: #333;
   background: #fff;
   border-top: 2rpx solid #CECECE;
   box-sizing: border-box;
 }
 
-.button .confirm {
+.print-modal-button .print-modal-button__confirm {
   width: 100%;
 }

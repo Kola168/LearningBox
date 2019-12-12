@@ -7,15 +7,15 @@ let gql = GraphQL({
   url: `${app.apiServer}/graphql`,
   header: function() {
     if (app.authToken) {
-			console.log('authToken==1==',app.authToken)
+      console.log('authToken==1==', app.authToken)
       return {
         "AUTHORIZATION": `Token token=${app.authToken}`
       }
     } else {
       try {
         var authToken = wx.getStorageSync('authToken')
-			  console.log('authToken====',authToken)
-				if (authToken) {
+        console.log('authToken====', authToken)
+        if (authToken) {
           return {
             "AUTHORIZATION": `Token token=${authToken}`
           }
@@ -104,14 +104,39 @@ const graphqlApi = {
   },
 
   /**
+   * 更新打印机设置
+   * @param { String } sn required 设备编号
+   * @param { Object } deviceSetting required 设置信息
+   */
+  updateDeviceSetting: (sn, deviceSetting, requestKey) => {
+    return gql.mutate({
+      mutation: `mutation ($input: UpdateDeviceSettingInput!){
+        updateDeviceSetting(input:$input){
+          device{
+            ${requestKey}
+          }
+        }
+      }`,
+      variables: {
+        input: {
+          sn: sn,
+          attributes: deviceSetting
+        }
+      }
+    })
+  },
+
+  /**
    * 解绑打印机
    * @param { String } sn required 设备编号
    */
   unbindDevice: (sn) => {
     return gql.mutate({
-      mutation: `mutation ($input: UpdateDeviceSettingInput!){
-        updateDeviceSetting(input:$input){
-          state
+      mutation: `mutation ($input: UnbindDeviceInput!){
+        unbindDevice(input:$input){
+          user{
+            currentToken
+          }
         }
       }`,
       variables: {
@@ -132,7 +157,8 @@ const graphqlApi = {
           name,
           selected,
           sn,
-          model
+          model,
+          onlineState
         }
       }`
     })
@@ -199,6 +225,93 @@ const graphqlApi = {
         path: path,
         type: type,
         key: key
+      }
+    })
+  },
+
+  /**
+   * 获取模版分类
+   * @param { String } key required 模版feature key
+   */
+  getCategory: (key) => {
+    return gql.query({
+      query: `query ($key: String!){
+        feature(key: $key){
+          categories {
+            image,
+            name,
+            sn
+          }
+        }
+      }`,
+      variables: {
+        key: key
+      }
+    })
+  },
+
+  /**
+   * 获取模版列表
+   * @param { String } sn required 分类sn
+   */
+  getTemplates: (sn) => {
+    return gql.query({
+      query: `query ($sn: String!){
+        category(sn: $sn){
+          templates {
+            previewImage,
+            sn,
+            name
+          }
+        }
+      }`,
+      variables: {
+        sn: sn
+      }
+    })
+  },
+
+  /**
+   * 获取模版详情
+   * @param { String } sn required 模版sn
+   */
+  getTemplateDetail: (sn) => {
+    return gql.query({
+      query: `query ($sn: String!){
+        template(sn: $sn){
+          defaultImage,
+          imageUrl,
+          sn,
+          name,
+          positionInfo {
+            areaX,
+            areaY,
+            areaHeight,
+            areaWidth,
+            height,
+            width
+          }
+        }
+      }`,
+      variables: {
+        sn: sn
+      }
+    })
+  },
+
+  /**
+   * 创建订单
+   * @param { Object } orderParams 订单参数
+   */
+  createOrder: (orderParams) => {
+    return gql.mutate({
+      mutation: `mutation ($input: CreateOrderInput!){
+        createOrder(input:$input){
+          state
+        }
+      }`,
+      variables: {
+        input: orderParams
       }
     })
   },

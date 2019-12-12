@@ -1,13 +1,49 @@
-/* @import '../common.wxss'; */
+page {
+  background: #FFE2A8;
+}
+
 .container {
   position: relative;
   z-index: 10;
 }
 
-.fill-back {
+.index-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 40rpx 24rpx 0;
+}
+
+.index-top>view:first-child {
+  display: flex;
+  align-items: center;
+}
+
+.top-left {
+  width: 70%;
+}
+
+.top-left image {
+  width: 100%;
+}
+
+.top-right {
+  width: 25%;
+  font-size: 29rpx;
+  color: #fff;
+  height: 54rpx;
+  line-height: 54rpx;
+  text-align: center;
+  border-radius: 24rpx;
+  background: linear-gradient(to right, #FFC664, #FF3605);
+  box-shadow: 0 4rpx 10rpx 0 rgba(255, 57, 7, 0.36);
+}
+
+
+/* .fill-back {
   background: linear-gradient(#FFCC6D, #FFE071, #F5E273);
   min-height: 100%;
-}
+} */
 
 .tip-img {
   width: 90%;

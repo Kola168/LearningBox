@@ -58,7 +58,7 @@ Page({
       }
     } catch (e) {
       this.weToast.hide()
-      util.showGraphqlErr(e)
+      util.showError(e)
     }
   }),
   // 模拟分页
@@ -178,6 +178,7 @@ Page({
         return
       }
       let cdnFiles = resp.res.data
+      // 从文档打印->百度网盘跳转过来
       if (this.chooseBaiduFrom === 'original' && this.data.type === 'doc') {
         wxNav.navigateTo(`/pages/print_doc/doc_list/doc_list`, {
           arrayFile: encodeURIComponent(JSON.stringify(cdnFiles)),
@@ -186,6 +187,7 @@ Page({
           this.weToast.hide()
         })
       } else {
+        // 从各个照片打印、文档打印及各个小应用跳转过来，计算层级返回
         event.emit('chooseBaiduFileDone', cdnFiles)
         let delta = this.findLastUrlAndQueryDelta()
         wxNav.navigateBack(delta, () => {

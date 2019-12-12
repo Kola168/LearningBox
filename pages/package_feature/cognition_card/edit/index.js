@@ -1,9 +1,14 @@
 const app = getApp()
 import { regeneratorRuntime, co, util, wxNav, storage } from '../../../../utils/common_import'
+import commonRequest from '../../../../utils/common_request'
+const imginit = require('../../../../utils/imginit')
+const event = require('../../../../lib/event/event')
+import upload from '../../../../utils/upload'
 const getImageInfo = util.promisify(wx.getImageInfo)
 const getSystemInfo = util.promisify(wx.getSystemInfo)
 const showModal = util.promisify(wx.showModal)
 const getFileInfo = util.promisify(wx.getFileInfo)
+import graphql from '../../../../network/graphql_request'
 import api from '../../../../network/restful_request'
 const MAXSIZE = 20000000
 const MAX_NAME_BYTE = 8
@@ -16,7 +21,6 @@ Page({
     printModal: false,
     type: '',
     localImgPath: '',
-    originalUrl: '',
     imgInfo: null,
     cardName: '',
     loadReady: false,
@@ -24,26 +28,36 @@ Page({
     appId: 'wxde848be28728999c',
     shopId: 24056376,
     hasAuthPhoneNum: false,
+    modalObj: {
+      isShow: false,
+      hasCancel: false,
+      content: '',
+      title: '重要提示'
+    },
     confirmModal: {
       isShow: false,
       hasCancel: true,
       cancelText: '选购相纸',
       confirmText: '开始制作',
       title: '打印前请选择LOMO相纸',
-      image: 'https://cdn.gongfudou.com/miniapp/ec/confirm_print_lomo.png'
+      image: 'https://cdn-h.gongfudou.com/LearningBox/main/confirm_print_lomo.png'
     }
   },
   onLoad: co.wrap(function*(query) {
-    let type = query.type,
-      id = query.templateId,
-      hasEdit = query.hasEdit == 1 ? true : false //是否已编辑
-    this.hasEdit = hasEdit
-    this.templateId = id
-    this.path = query.editUrl
-    if (hasEdit) {
+    let navBarHeight = app.navBarInfo.navBarHeight
+    this.setData({
+      areaHeight: app.sysInfo.safeArea.height - navBarHeight
+    })
+    let type = query.type
+    this.templateSn = query.sn
+      //是否已编辑
+    this.hasEdit = query.hasEdit == 1 ? true : false
+    this.weToast = new app.weToast()
+    if (this.hasEdit) {
       this.index = query.index
+      this.path = JSON.parse(decodeURIComponent(query.editUrl))
     }
-    yield this.getTemplateInfo(id, type)
+    yield this.getTemplateInfo(this.templateSn, type)
     yield this.initArea(type)
       // 半自定义
     if (type === 'template') {
@@ -53,7 +67,7 @@ Page({
       }
       // 自定义
     } else if (type === 'custom') {
-      if (hasEdit) {
+      if (this.hasEdit) {
         this.setData({
           cardName: query.cardName
         })
@@ -66,6 +80,10 @@ Page({
         })
       }
     }
+    // 监听百度网盘
+    event.on('chooseBaiduFileDone', this, (baiduFile) => {
+      this.showImage(baiduFile[0].url)
+    })
   }),
   onShow: function() {
     let hasAuthPhoneNum = Boolean(storage.get('hasAuthPhoneNum'))
@@ -74,6 +92,8 @@ Page({
       hasAuthPhoneNum: app.hasPhoneNum || hasAuthPhoneNum
     })
   },
+
+  // 绘制引导蒙版
   drawGuideView() {
     let query = wx.createSelectorQuery()
     query.select('#guide-view').boundingClientRect()
@@ -145,7 +165,6 @@ Page({
         let imgInfo = yield getImageInfo({
           src: path
         })
-
         this.setData({
           imgInfo: imgInfo,
           localImgPath: path
@@ -161,64 +180,67 @@ Page({
   }),
   // 初始化编辑器
   initDesign: co.wrap(function*(e) {
-    wx.hideLoading()
-    if (e != undefined) {
-      // 获取图片信息bug，这里通过load重新获取长宽信息
-      if (this.data.imgInfo.width != e.detail.width) {
-        this.setData({
-          imgInfo: {
-            width: e.detail.width,
-            height: e.detail.height
-          }
-        })
+    try {
+      if (e != undefined) {
+        // 获取图片信息bug，这里通过load重新获取长宽信息
+        if (this.data.imgInfo.width != e.detail.width) {
+          this.setData({
+            imgInfo: {
+              width: e.detail.width,
+              height: e.detail.height
+            }
+          })
+        }
       }
-    }
-    // 显示、实际缩放比
-    this.editorScale = this.data.areaPosition.width / this.data.area.width
-      // 初始化位置
-    let sv
-    let imgX
-    let imgY
-    sv = util._getSuiteValues(
-      this.data.imgInfo.width,
-      this.data.imgInfo.height,
-      this.data.area.area_width * this.editorScale,
-      this.data.area.area_height * this.editorScale
-    )
+      // 显示、实际缩放比
+      this.editorScale = this.data.areaPosition.width / this.data.area.width
+        // 初始化位置
+      let sv
+      let imgX
+      let imgY
+      sv = util._getSuiteValues(
+        this.data.imgInfo.width,
+        this.data.imgInfo.height,
+        this.data.area.areaWidth * this.editorScale,
+        this.data.area.areaHeight * this.editorScale
+      )
 
-    imgX = this.data.area.area_x * this.editorScale + sv.left - (this.data.imgInfo.width - sv.width) / 2
-    imgY = this.data.area.area_y * this.editorScale + sv.top - (this.data.imgInfo.height - sv.height) / 2
-    let imgScale = sv.scale.toFixed(3)
-    let imgRotate = 0
-    this.moveX = imgX
-    this.moveY = imgY
-    this.scale = imgScale
-    this.rotate = imgRotate
-    this.twoPoint = false
-    this.currentPoint = 0
-    const userImgPosition = {
-      x: imgX,
-      y: imgY,
-      scale: imgScale,
-      rotate: imgRotate,
+      imgX = this.data.area.areaX * this.editorScale + sv.left - (this.data.imgInfo.width - sv.width) / 2
+      imgY = this.data.area.areaY * this.editorScale + sv.top - (this.data.imgInfo.height - sv.height) / 2
+      let imgScale = sv.scale.toFixed(3)
+      let imgRotate = 0
+      this.moveX = imgX
+      this.moveY = imgY
+      this.scale = imgScale
+      this.rotate = imgRotate
+      this.twoPoint = false
+      this.currentPoint = 0
+      const userImgPosition = {
+        x: imgX,
+        y: imgY,
+        scale: imgScale,
+        rotate: imgRotate,
+      }
+      this.setData({
+        userImgPosition: userImgPosition,
+        realScale: imgScale,
+        realRotate: imgRotate
+      })
+      this.weToast.hide()
+    } catch (error) {
+      this.weToast.hide()
+      util.showError(error)
     }
-    this.setData({
-      userImgPosition: userImgPosition,
-      realScale: imgScale,
-      realRotate: imgRotate
-    })
   }),
   // 合成认知卡
   cognitionCompound: co.wrap(function*() {
-    wx.showLoading({
-      title: '请稍等',
-      mask: true
+    this.weToast.toast({
+      type: 'loading'
     })
     try {
       let redressInfo = yield this.redress()
-      let params = {
-        openid: app.openId,
-        template_id: this.templateId,
+      let worker_data = {
+        template_sn: this.templateSn,
         image_url: this.originalUrl,
         x: redressInfo.x,
         y: redressInfo.y,
@@ -226,21 +248,24 @@ Page({
         scale: redressInfo.scale,
         editor_scale: this.editorScale,
         image_width: this.data.imgInfo.width,
-        account: 'wechat_miniapp',
+        feature_key: 'literacy_card'
       }
       if (this.data.type === 'custom') {
-        params.text = this.data.cardName
+        worker_data.text = this.data.cardName
       }
-      let resp = yield api.cognitionCompound(params)
+      let resp = yield api.synthesisWorker({
+        is_async: false,
+        ...worker_data
+      })
       if (resp.code !== 0) {
         throw (resp)
       }
-      wx.hideLoading()
+      this.weToast.hide()
       let result = resp.res,
         type = this.data.type
       this.compoundUrl = result.url
       if (type === 'custom') {
-        let storageImgs = wx.getStorageSync('literacy_card') || []
+        let storageImgs = storage.get('literacy_card') || []
         let currentImg = {
           previewUrl: result.preview_url,
           url: result.url,
@@ -255,9 +280,9 @@ Page({
           storageImgs.push(currentImg)
         }
         storage.put('literacy_card', storageImgs)
-        wxNav.redirectTo(`../list/list`, {
+        wxNav.redirectTo(`../list/index`, {
           isFull: 0,
-          id: this.templateId
+          sn: this.templateSn
         })
       } else {
         let hideConfirmPrintBox = Boolean(storage.get("hideConfirmPrintBox"))
@@ -270,8 +295,8 @@ Page({
         }
       }
     } catch (error) {
-      wx.hideLoading()
-      util.showErr(error)
+      this.weToast.hide()
+      util.showError(error)
     }
   }),
   // 检查提交参数
@@ -279,9 +304,9 @@ Page({
     if (app.preventMoreTap(e)) {
       return
     }
-    if (!this.hasAuthPhoneNum && !app.hasPhoneNum) {
-      return
-    }
+    // if (!this.hasAuthPhoneNum && !app.hasPhoneNum) {
+    //   return
+    // }
     let type = this.data.type,
       tipFlag = null,
       contentText = ''
@@ -306,52 +331,43 @@ Page({
       contentText = '请上传照片才能打印哦'
     }
     if (tipFlag) {
-      wx.hideLoading()
-      yield showModal({
-        title: '重要提示',
-        content: contentText,
-        showCancel: false,
-        confirmText: '确认',
-        confirmColor: '#FFE27A'
+      this.weToast.hide()
+      this.setData({
+        ['modalObj.isShow']: true,
+        ['modalObj.content']: contentText,
       })
-      return false
+    } else {
+      this.cognitionCompound()
     }
-    this.cognitionCompound()
+
   }),
   getPhoneNumber: co.wrap(function*(e) {
-    yield app.getPhoneNum(e)
-    wx.setStorageSync("hasAuthPhoneNum", true)
-    this.hasAuthPhoneNum = true
-    this.setData({
-      hasAuthPhoneNum: true
-    })
-    this.preCheck()
+    // yield app.getPhoneNum(e)
+    // storage.put("hasAuthPhoneNum", true)
+    // this.hasAuthPhoneNum = true
+    // this.setData({
+    //   hasAuthPhoneNum: true
+    // })
+    // this.preCheck()
   }),
   print: co.wrap(function*() {
-    wx.showLoading({
-      title: '请稍等',
-      mask: true
+    this.weToast.toast({
+      type: 'loading'
     })
     try {
       let imgs = [{
-        url: this.compoundUrl,
-        pre_convert_url: this.compoundUrl,
-        number: 1
+        originalUrl: this.compoundUrl,
+        printUrl: this.compoundUrl
       }]
-      let resp = yield api.printInvoice(app.openId, 'literacy_card', imgs)
-      if (resp.code !== 0) {
-        throw (resp)
-      }
-      wx.hideLoading()
+      let resp = yield commonRequest.createOrder('literacy_card', imgs)
       wxNav.redirectTo(`../../../../finish/index`, {
-        type: 'sticker',
         media_type: 'literacy_card',
-        state: resp.order.state,
+        state: resp.state,
         type: 'literacy_card'
       })
     } catch (error) {
-      wx.hideLoading()
-      util.showErr(error)
+      this.weToast.hide()
+      util.showError(error)
     }
   }),
   // 删除选择的图片
@@ -371,17 +387,13 @@ Page({
   // 显示上传图片方式
   showImgChooseWay() {
     this.selectComponent("#checkComponent").showPop()
-      // let imgs = yield chooseImgWay()
-      // let path = imgs[0].path || imgs[0]
-      // let imageInfo = yield this.checkImgSize(path)
-      // yield this.uploadImage(path, imageInfo)
   },
 
   // 选择图片回调
   chooseImg: co.wrap(function*(e) {
     let tempFiles = e.detail.tempFiles
-    let imageInfo = yield this.checkImgSize(tempFiles[0])
-    yield this.uploadImage(tempFiles[0], imageInfo)
+    let imageInfo = yield this.checkImgSize(tempFiles[0].path)
+    yield this.uploadImage(tempFiles[0].path, imageInfo)
   }),
 
   checkImgSize: co.wrap(function*(path) {
@@ -413,39 +425,40 @@ Page({
       return imageInfo
     }
   }),
-  getTemplateInfo: co.wrap(function*(id, type) {
-    wx.showLoading({
-      title: '请稍等',
-      mask: true
+
+  // 获取模版信息
+  getTemplateInfo: co.wrap(function*(sn, type) {
+    this.weToast.toast({
+      type: 'loading'
     })
     try {
-      let resp = yield api.getCognitionTplInfo(app.openId, id)
-      if (resp.code !== 0) {
-        throw (resp)
+      let resp = yield graphql.getTemplateDetail(sn)
+      if (type === 'template') {
+        this.path = resp.template.defaultImage
       }
+      let area = resp.template.positionInfo
+      area.image = resp.template.imageUrl
       this.setData({
-        area: resp.res,
+        area,
         type: type
       })
-      wx.hideLoading()
+      this.weToast.hide()
     } catch (error) {
-      wx.hideLoading()
-      util.showErr(error)
+      this.weToast.hide()
+      util.showError(error)
     }
   }),
   // 上传照片
-  uploadImage: co.wrap(function*(path, imageInfo) {
-    wx.showLoading({
-      title: '上传中...',
-      mask: true
+  uploadImage: co.wrap(function*(path) {
+    this.weToast.toast({
+      type: 'loading'
     })
     try {
-      let imageURL = yield app.newUploadImage(path)
-      let imgPath = yield imginit.imgInit(imageURL, 'vertical')
-      wx.hideLoading()
-      this.showImage(imgPath.imageInfo, imgPath.imgNetPath)
-
+      let imageURL = yield upload.uploadFile(path)
+      this.showImage(imageURL)
+      this.weToast.hide()
     } catch (e) {
+      this.weToast.hide()
       yield showModal({
         title: '上传失败',
         content: '请检查您的网络，请稍后重试',
@@ -455,25 +468,25 @@ Page({
     }
   }),
 
-  showImage: co.wrap(function*(imageInfo, url) {
-    wx.showLoading({
-      title: "图片加载中",
-      mask: true
+  showImage: co.wrap(function*(url) {
+    this.weToast.toast({
+      type: 'loading'
     })
     try {
+      let imgPath = yield imginit.imgInit(url, 'vertical')
       this.originalUrl = url
       this.setData({
         localImgPath: url,
-        imgInfo: imageInfo
+        imgInfo: imgPath.imageInfo
       })
       yield this.initDesign()
     } catch (error) {
-      wx.hideLoading()
+      this.weToast.hide()
       util.showErr(error)
     }
   }),
   imageLoadError: co.wrap(function*(event) {
-    wx.hideLoading()
+    this.weToast.hide()
     wx.showModal({
       title: '照片加载失败',
       content: '请重新选择',
@@ -565,7 +578,7 @@ Page({
         })
       }
     } catch (error) {
-      util.showError(error)
+      console.log(error)
     }
   },
   onTouchEnd: function() {
@@ -582,8 +595,8 @@ Page({
   },
   getResult: co.wrap(function*() {
     return {
-      x: parseInt(this.data.userImgPosition.x - this.data.area.area_x * this.editorScale),
-      y: parseInt(this.data.userImgPosition.y - this.data.area.area_y * this.editorScale),
+      x: parseInt(this.data.userImgPosition.x - this.data.area.areaX * this.editorScale),
+      y: parseInt(this.data.userImgPosition.y - this.data.area.areaY * this.editorScale),
       scale: parseFloat(this.data.userImgPosition.scale),
       rotate: parseInt(this.data.userImgPosition.rotate),
     }
