@@ -20,7 +20,7 @@ Page({
       cancelText: '选购相纸',
       confirmText: '开始制作',
       title: '打印前请选择LOMO相纸',
-      image: 'https://cdn.gongfudou.com/miniapp/ec/confirm_print_lomo.png'
+      image: 'https://cdn-h.gongfudou.com/LearningBox/main/confirm_print_lomo.png'
     }
   },
   onLoad(query) {
@@ -110,7 +110,7 @@ Page({
     }
   },
   getPhoneNumber: co.wrap(function*(e) {
-    yield app.getPhoneNum(e)
+    // yield app.getPhoneNum(e)
     storage.put("hasAuthPhoneNum", true)
     this.hasAuthPhoneNum = true
     this.setData({

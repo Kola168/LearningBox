@@ -49,6 +49,10 @@
     <view class="modal-btn">开始制作</view>
   </view>
 </view>
+
+<!-- modal -->
+<modal modal="{{modalObj}}"></modal>
+
 <!-- 打印确认框 -->
 <confirm-print bindconfirm="print" bindcancel="toShopping" modal="{{confirmModal}}"></confirm-print>
 <!-- 选择图片 -->

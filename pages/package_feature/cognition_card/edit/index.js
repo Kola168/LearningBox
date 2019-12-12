@@ -28,13 +28,19 @@ Page({
     appId: 'wxde848be28728999c',
     shopId: 24056376,
     hasAuthPhoneNum: false,
+    modalObj: {
+      isShow: false,
+      hasCancel: false,
+      content: '',
+      title: '重要提示'
+    },
     confirmModal: {
       isShow: false,
       hasCancel: true,
       cancelText: '选购相纸',
       confirmText: '开始制作',
       title: '打印前请选择LOMO相纸',
-      image: 'https://cdn.gongfudou.com/miniapp/ec/confirm_print_lomo.png'
+      image: 'https://cdn-h.gongfudou.com/LearningBox/main/confirm_print_lomo.png'
     }
   },
   onLoad: co.wrap(function*(query) {
@@ -326,16 +332,14 @@ Page({
     }
     if (tipFlag) {
       this.weToast.hide()
-      yield showModal({
-        title: '重要提示',
-        content: contentText,
-        showCancel: false,
-        confirmText: '确认',
-        confirmColor: '#FFE27A'
+      this.setData({
+        ['modalObj.isShow']: true,
+        ['modalObj.content']: contentText,
       })
-      return false
+    } else {
+      this.cognitionCompound()
     }
-    this.cognitionCompound()
+
   }),
   getPhoneNumber: co.wrap(function*(e) {
     // yield app.getPhoneNum(e)

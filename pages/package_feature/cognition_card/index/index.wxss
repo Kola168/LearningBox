@@ -2,7 +2,7 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  background: #D8D8D8;
+  background: #ffd059;
   padding-bottom: 100rpx;
 }
 
