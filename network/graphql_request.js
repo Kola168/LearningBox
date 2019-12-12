@@ -1,11 +1,3 @@
-/*
- * @Author: your name
- * @Date: 2019-11-19 14:39:00
- * @LastEditTime: 2019-12-10 13:42:36
- * @LastEditors: Please set LastEditors
- * @Description: In User Settings Edit
- * @FilePath: /LearningBox/network/graphql_request.js
- */
 var app = getApp()
 var gqwxappGraphql = require('./wxgql')
 var GraphQL = gqwxappGraphql.GraphQL
@@ -35,7 +27,10 @@ let gql = GraphQL({
   },
   //全局错误拦截
   errorHandler: function(res) {
+		//如果auth	
+		if(1){
 
+			}
   }
 }, true);
 

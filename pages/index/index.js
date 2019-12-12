@@ -108,8 +108,11 @@ Page({
       if (resp.code != 0) {
         throw (resp.res)
       }
-      storage.put('authToken', resp.res.auth_token)
-      storage.put('unionId', resp.res.unionid)
+			
+			storage.put('authToken', resp.res.auth_token)
+			storage.put('unionId', resp.res.unionid)
+			storage.put('refreshToken', resp.res.refresh_token)
+
 
       // if (resp.data.res.phone) {
       //   app.hasPhoneNum = true

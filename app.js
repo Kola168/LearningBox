@@ -28,8 +28,8 @@ App({
   // apiWbviewServer: 'http://epbox.natapp1.cc/',
 
   // 袁小飞接口
-  apiServer: 'http://schaffer.utools.club',
-	apiWbviewServer: 'http://schaffer.utools.club',
+  // apiServer: 'http://schaffer.utools.club',
+	// apiWbviewServer: 'http://schaffer.utools.club',
 
   //一个秃子的服务器地址
   // apiServer: 'http://jran.nat300.top',
@@ -48,8 +48,14 @@ App({
   // apiWbviewServer: 'http://jhx.nat300.top',
 
   //江然本地服务
-  // apiServer: 'http://jran.nat300.top',
-  authAppKey: 'iMToH51lZ0VrhbkTxO4t5J5m6gCZQJ6c',
+	// apiServer: 'http://jran.nat300.top',
+	// apiWbviewServer: 'http://jhx.nat300.top',
+
+	//staging环境地址
+	apiServer: 'https://lb-stg.gongfudou.com',
+	apiWbviewServer: 'https://lb-stg.gongfudou.com/',
+	
+	authAppKey: 'iMToH51lZ0VrhbkTxO4t5J5m6gCZQJ6c',
   openId: '',
   authToken:'',
   unionId: '',
