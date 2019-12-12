@@ -81,7 +81,7 @@ Page({
       this.weToast.hide()
     } catch (error) {
       this.weToast.hide()
-      util.showGraphqlErr(error)
+      util.showError(error)
     }
   }),
   getEmptyTemplateInfo: co.wrap(function*(sn) {
@@ -94,7 +94,7 @@ Page({
       return res.category.templates[0].sn
     } catch (error) {
       this.weToast.hide()
-      util.showGraphqlErr(error)
+      util.showError(error)
     }
   }),
 })

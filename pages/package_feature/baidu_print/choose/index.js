@@ -58,7 +58,7 @@ Page({
       }
     } catch (e) {
       this.weToast.hide()
-      util.showGraphqlErr(e)
+      util.showError(e)
     }
   }),
   // 模拟分页

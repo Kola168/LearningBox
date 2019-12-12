@@ -367,7 +367,7 @@ Page({
       })
     } catch (error) {
       this.weToast.hide()
-      util.showGraphqlErr(error)
+      util.showError(error)
     }
   }),
   // 删除选择的图片
@@ -443,7 +443,7 @@ Page({
       this.weToast.hide()
     } catch (error) {
       this.weToast.hide()
-      util.showGraphqlErr(error)
+      util.showError(error)
     }
   }),
   // 上传照片

@@ -41,7 +41,7 @@ Page({
 
     } catch (error) {
       this.weToast.hide()
-      util.showGraphqlErr(error)
+      util.showError(error)
     }
   }),
   drawGuideView(e) {
