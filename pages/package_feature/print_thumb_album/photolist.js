@@ -57,6 +57,7 @@ Page({
     })
     this.longToast.toast()
   },
+
   calculateSize: function() {
 
     let areaWidth = app.sysInfo.windowWidth - 100

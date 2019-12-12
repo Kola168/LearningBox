@@ -1,0 +1,8 @@
+<!--pages/package_feature/print_name/index.wxml-->
+<nav-bar title="拇指相册"></nav-bar>
+<view class="wrap">
+    <block wx:for="{{urls}}" wx:key="urls">
+        <image class="img-style" mode="widthFix" src="{{item}}"></image>
+    </block>
+</view>
+<bottom-button class="bottom-but" text-left="购买耗材" text-right="开始制作" bindlefttap="buysth" bindrighttap="toedit"></bottom-button>

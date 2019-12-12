@@ -73,7 +73,10 @@
         "print_calendar/edit",
         "print_thumb_album/index",
         "print_thumb_album/photolist",
-        "print_thumb_album/edit"
+        "print_thumb_album/edit",
+        "print_name/index",
+        "print_name/edit",
+        "print_name/preview"
       ]
     },
     {
