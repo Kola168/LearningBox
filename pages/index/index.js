@@ -143,22 +143,10 @@ Page({
       if (resp.code != 0) {
         throw (resp)
       }
-<<<<<<< HEAD
-			
-			storage.put('authToken', resp.res.auth_token)
+      storage.put('authToken', resp.res.auth_token)
 			storage.put('unionId', resp.res.unionid)
 			storage.put('refreshToken', resp.res.refresh_token)
 
-
-      // if (resp.data.res.phone) {
-      //   app.hasPhoneNum = true
-      //   app.globalPhoneNum = resp.data.res.phone
-      //   wx.setStorageSync("phonenum", resp.data.res.phone)
-      // }
-=======
-      storage.put('authToken', resp.res.auth_token)
-      storage.put('unionId', resp.res.unionid)
->>>>>>> develop-lis
       app.authToken = resp.res.auth_token
       this.setData({
         showAuth: false
