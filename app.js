@@ -18,13 +18,17 @@ App({
   // apiServer: 'https://epbox.gongfudou.com',
   // apiWbviewServer: 'https://epbox.gongfudou.com/',
 
+  // staging地址
+  apiServer: 'https://lb-stg.gongfudou.com',
+  apiWbviewServer: 'https://lb-stg.gongfudou.com/',
+
   //王析理本地地址
   // apiServer: 'http://epbox.natapp1.cc',
   // apiWbviewServer: 'http://epbox.natapp1.cc/',
 
   // 袁小飞接口
-  apiServer: 'http://schaffer.utools.club',
-  apiWbviewServer: 'http://schaffer.utools.club',
+  // apiServer: 'http://schaffer.utools.club',
+  // apiWbviewServer: 'http://schaffer.utools.club/',
 
   //一个秃子的服务器地址
   // apiServer: 'http://jran.nat300.top',

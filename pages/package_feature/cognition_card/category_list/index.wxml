@@ -8,13 +8,13 @@
   </view>
   <view class="list-box">
     <view class="box-container" wx:for="{{templates}}" wx:key="index" id="{{item.sn}}" bindtap="toEdit">
-      <image src="{{item.perviewImage}}" bindload="drawGuideView" id="{{index}}" mode="widthFix" />
+      <image src="{{item.previewImage}}" bindload="drawGuideView" id="{{index}}" mode="widthFix" />
     </view>
   </view>
 </view>
 <view class="guide-modal" wx:if="{{showGuide}}" catchtouchmove bindtap="hideGuideView">
   <view class="guide-view" style="width:{{guidePosition.width}}px;left:{{guidePosition.left}}px;top:{{guidePosition.top}}px;">
-    <image src="{{templates[0].perviewImage}}" mode="widthFix" />
+    <image src="{{templates[0].previewImage}}" mode="widthFix" />
     <image src="../../images/cognition_guide_tip_1.png" mode="widthFix" class="guide-tip" />
   </view>
 </view>

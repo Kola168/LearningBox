@@ -238,7 +238,7 @@ const graphqlApi = {
       query: `query ($sn: String!){
         category(sn: $sn){
           templates {
-            perviewImage,
+            previewImage,
             sn,
             name
           }
