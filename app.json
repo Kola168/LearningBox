@@ -82,7 +82,10 @@
       "root": "pages/package_preschool",
       "pages": [
         "growth_plan/list/index",
-        "growth_plan/timed_print/timed_print"
+        "growth_plan/timed_print/timed_print",
+        "growth_plan/print_setting/print_setting",
+        "growth_plan/checkpoint/plan_checkpoint",
+        "growth_plan/checkpoint/plan_detail"
       ]
     },
     {
