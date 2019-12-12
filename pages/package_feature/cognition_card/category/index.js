@@ -61,7 +61,6 @@ Page({
           sn
         }
       }
-      console.log(url,'playload')
       wxNav.navigateTo(
         url, playload
       )

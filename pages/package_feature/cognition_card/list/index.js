@@ -23,6 +23,7 @@ Page({
     }
   },
   onLoad(query) {
+    this.weToast = new app.weToast()
     let cognitionCardImgs = storage.get('literacy_card')
     this.templateSn = query.sn
     let isFull = query.isFull == 1 ? true : false
@@ -56,7 +57,7 @@ Page({
       name = dataset.name,
       navUrl = `../edit/index`
     wxNav.redirectTo(navUrl, {
-      templateId: this.templateId,
+      sn: this.templateSn,
       type: 'custom',
       index: index,
       hasEdit: 1,
@@ -120,9 +121,8 @@ Page({
     this.setData({
       showModal: false
     })
-    wx.showLoading({
-      title: '请稍等',
-      mask: true
+    this.weToast.toast({
+      type: 'loading'
     })
     try {
       let imgs = this.data.cognitionCardImgs,
@@ -139,7 +139,7 @@ Page({
       if (resp.code !== 0) {
         throw (resp)
       }
-      wx.hideLoading()
+      this.weToast.hide()
       wxNav.redirectTo(`../../../../finish/index`, {
         type: 'sticker',
         media_type: 'literacy_card',
@@ -147,8 +147,8 @@ Page({
         type: 'literacy_card'
       })
     } catch (error) {
-      wx.hideLoading()
-      util.showErr(error)
+      this.weToast.hide()
+      util.showError(error)
     }
   }),
   toAdd() {
@@ -163,7 +163,7 @@ Page({
     } else {
       let url = `../edit/index`
       wxNav.redirectTo(url, {
-        templateId: this.templateId,
+        sn: this.templateSn,
         type: 'custom',
         hasEdit: 0,
         editUrl: ''

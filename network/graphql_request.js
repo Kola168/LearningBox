@@ -252,7 +252,7 @@ const graphqlApi = {
    * 获取模版详情
    * @param { String } sn required 模版sn
    */
-  getTemplate: (sn) => {
+  getTemplateDetail: (sn) => {
     return gql.query({
       query: `query ($sn: String!){
         template(sn: $sn){

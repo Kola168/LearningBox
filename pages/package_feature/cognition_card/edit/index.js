@@ -37,7 +37,6 @@ Page({
     }
   },
   onLoad: co.wrap(function*(query) {
-    console.log(app.navBarInfo)
     let navBarHeight = app.navBarInfo.navBarHeight
     this.setData({
       areaHeight: app.sysInfo.safeArea.height - navBarHeight
@@ -242,7 +241,7 @@ Page({
         scale: redressInfo.scale,
         editor_scale: this.editorScale,
         image_width: this.data.imgInfo.width,
-        feature_key:'literacy_card'
+        feature_key: 'literacy_card'
       }
       if (this.data.type === 'custom') {
         worker_data.text = this.data.cardName
@@ -274,7 +273,7 @@ Page({
           storageImgs.push(currentImg)
         }
         storage.put('literacy_card', storageImgs)
-        wxNav.redirectTo(`../list/list`, {
+        wxNav.redirectTo(`../list/index`, {
           isFull: 0,
           sn: this.templateSn
         })
@@ -289,7 +288,6 @@ Page({
         }
       }
     } catch (error) {
-      console.log(error)
       this.weToast.hide()
       util.showError(error)
     }
@@ -435,7 +433,7 @@ Page({
       type: 'loading'
     })
     try {
-      let resp = yield graphql.getTemplate(sn)
+      let resp = yield graphql.getTemplateDetail(sn)
       this.path = resp.template.defaultImage
       let area = resp.template.positionInfo
       area.image = resp.template.imageUrl
