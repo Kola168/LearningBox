@@ -109,14 +109,39 @@ const graphqlApi = {
   },
 
   /**
+   * 更新打印机设置
+   * @param { String } sn required 设备编号
+   * @param { Object } deviceSetting required 设置信息
+   */
+  updateDeviceSetting: (sn, deviceSetting, requestKey) => {
+    return gql.mutate({
+      mutation: `mutation ($input: UpdateDeviceSettingInput!){
+        updateDeviceSetting(input:$input){
+          device{
+            ${requestKey}
+          }
+        }
+      }`,
+      variables: {
+        input: {
+          sn: sn,
+          attributes: deviceSetting
+        }
+      }
+    })
+  },
+
+  /**
    * 解绑打印机
    * @param { String } sn required 设备编号
    */
   unbindDevice: (sn) => {
     return gql.mutate({
-      mutation: `mutation ($input: UpdateDeviceSettingInput!){
-        updateDeviceSetting(input:$input){
-          state
+      mutation: `mutation ($input: UnbindDeviceInput!){
+        unbindDevice(input:$input){
+          user{
+            currentToken
+          }
         }
       }`,
       variables: {
@@ -137,7 +162,8 @@ const graphqlApi = {
           name,
           selected,
           sn,
-          model
+          model,
+          onlineState
         }
       }`
     })

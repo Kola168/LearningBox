@@ -1,4 +1,5 @@
 const app = getApp()
+const event = require('../../../lib/event/event')
 import { regeneratorRuntime, co, util, wxNav } from '../../../utils/common_import'
 import graphql from '../../../network/graphql_request'
 const request = util.promisify(wx.request)
@@ -14,6 +15,9 @@ Page({
       isFullScreen: app.isFullScreen
     })
     this.getDevices()
+    event.on('deviceChange',this,()=>{
+      this.getDevices()
+    })
   },
   getDevices: co.wrap(function*() {
     this.weToast.toast({
@@ -21,7 +25,7 @@ Page({
     })
     try {
       let res = yield graphql.getDeviceList()
-      let devices = res.printers,
+      let devices = res.devices,
         activeDevice = {}
       for (let i = 0; i < devices.length; i++) {
         if (devices[i].selected) {
@@ -40,13 +44,14 @@ Page({
   }),
 
   // 设置打印机
-  toSetting() {
+  toSetting(e) {
     if (app.preventMoreTap(e)) {
       return
     }
     let sn = e.currentTarget.dataset.sn
+    console.log(e.currentTarget.dataset)
     wxNav.navigateTo(`../setting/index`,{
-      sn
+      sn:sn
     })
   },
 
@@ -74,7 +79,9 @@ Page({
   },
   // 下拉刷新
   refreshData() {
-
+    this.getDevices()
   },
-
+  onUnload(){
+    event.remove('deviceChange',this)
+  }
 })
