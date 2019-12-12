@@ -1,0 +1,49 @@
+/* pages/package_feature/print_thumb_album/edit.wxss */
+page {
+  width: 100%;
+  height: 100%;
+  background: rgba(3, 3, 3, 0.50);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.edit-box {
+  border: 4rpx dashed #FFE27A;
+  flex-shrink: 0;
+  background:#fff;
+}
+
+.edit-mode {
+  flex-shrink: 0;
+}
+
+.top-tips {
+  display: flex;
+  flex: 3;
+  justify-content: center;
+  align-items: center;
+}
+
+.tips-face-icon {
+  width: 36rpx;
+}
+
+.tips-top-text {
+  font-size: 36rpx;
+  line-height: 44rpx;
+  color: #fff;
+  margin-left: 12rpx;
+}
+
+.bottom-tips {
+  flex:2;
+  font-size: 28rpx;
+  color: #FFDC5E;
+  display:flex;
+  align-items:center;
+}
+
+.bottom-but{
+  width:100%;
+}

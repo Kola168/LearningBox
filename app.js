@@ -28,8 +28,8 @@ App({
   // apiWbviewServer: 'http://epbox.natapp1.cc/',
 
   // 袁小飞接口
-  apiServer: 'http://schaffer.utools.club',
-	apiWbviewServer: 'http://schaffer.utools.club',
+  // apiServer: 'http://schaffer.utools.club',
+	// apiWbviewServer: 'http://schaffer.utools.club',
 
   //一个秃子的服务器地址
   // apiServer: 'http://jran.nat300.top',
@@ -40,8 +40,8 @@ App({
 	// apiWbviewServer: 'https://schaffer.utools.club',
 
   // 测试接口季慧新
-  // apiServer: 'http://jhx.nat300.top',
-  // apiWbviewServer: 'http://jhx.nat300.top',
+  apiServer: 'http://jhx.nat300.top',
+  apiWbviewServer: 'http://jhx.nat300.top',
 
   // 测试接口季慧新
   // apiServer: 'http://jhx.nat300.top',

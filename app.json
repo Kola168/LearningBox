@@ -60,8 +60,8 @@
         "print_balloon/typelist",
         "print_balloon/edit",
         "print_book/index",
-				"print_book/edit",
-				"cognition_card/index/index",
+        "print_book/edit",
+        "cognition_card/index/index",
         "cognition_card/list/index",
         "cognition_card/category/index",
         "cognition_card/category_list/index",
@@ -70,7 +70,10 @@
         "baidu_print/search/index",
         "print_calendar/typelist",
         "print_calendar/index",
-        "print_calendar/edit"
+        "print_calendar/edit",
+        "print_thumb_album/index",
+        "print_thumb_album/photolist",
+        "print_thumb_album/edit"
       ]
     },
     {

@@ -69,8 +69,6 @@ Page({
 
   confBut: co.wrap(function*() {
     try {
-
-
       let that = this
       let pointArr = []
       _.each(this.data.imgList, function(value, index, list) {

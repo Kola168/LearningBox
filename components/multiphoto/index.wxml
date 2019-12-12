@@ -12,7 +12,7 @@
       style="width:{{item.areaWidth}}px;height:{{item.areaHeight}}px;left:{{item.x}}px;top:{{item.y}}px;" data-index="{{index}}" bindtap="{{!imgArr[index] && addImgIcon && showAdd?'chooseImgs':''}}">
       <image wx:if="{{!imgArr[index] && addImgIcon && showAdd}}" src="{{addImgIcon}}" mode="widthFix" class="add-icon"></image>
     </view>
-    <image wx:if="{{imgArr[index] && deleteIcon && showAdd}}" src="{{deleteIcon}}" mode="widthFix" class="delete-icon" style="left:{{item.x+item.areaWidth-(deletEdge?20:10)}}px;top:{{item.y-(deletEdge?20:10)}}px" data-index="{{index}}" bindtap="deleteImg"></image>
+    <image wx:if="{{imgArr[index] && deleteIcon && showAdd}}" src="{{deleteIcon}}" mode="widthFix" class="delete-icon" style="left:{{item.x+item.areaWidth-(deleteEdge?20:10)}}px;top:{{item.y-(deleteEdge?0:10)}}px" data-index="{{index}}" bindtap="deleteImg"></image>
   </block>
   <image wx:if="{{TemplateSrc}}" src="{{TemplateSrc}}" mode="widthFix" class="mode-cover"></image>
 </view>
