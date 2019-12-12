@@ -1,2 +1,39 @@
 <!--pages/package_feature/print_name/preview.wxml-->
-<text>pages/package_feature/print_name/preview.wxml</text>
+<nav-bar title="打印预览"></nav-bar>
+<view class="container">
+    <view class="preview_img" style="width:{{width}}px;height:{{height}}px">
+        <image src="{{compoundImg}}" />
+    </view>
+    <view class="print_count" wx:if="{{!isShare}}">
+        <view>打印份数</view>
+        <image src="../resource_images/name_minus.png" bindtap="decrease"></image>
+        <view>{{count}}</view>
+        <image src="../resource_images/name_plus.png" bindtap="increase"></image>
+    </view>
+    <view class="handle_bar" wx:if="{{!isShare}}">
+        <view wx:if="{{savable}}" bindtap="saveImg">
+            <image src="../resource_images/name_save.png"></image>
+            <view>保存</view>
+        </view>
+        <view wx:if="{{!savable}}">
+            <button open-type="openSetting" bindopensetting="allowSave">
+                <image src="../resource_images/name_save.png"></image>
+                <view>保存</view>
+            </button>
+        </view>
+        <view>
+            <button open-type="share">
+                <image src="../resource_images/name_share.png"></image>
+                <text>分享</text>
+            </button>
+        </view>
+        <view class="confirm_print">
+            <form report-submit="true" bindsubmit="confirm">
+                <button open-type="{{hasAuthPhoneNum?'':'getPhoneNumber'}}" bindgetphonenumber="{{hasAuthPhoneNum?'':'getPhoneNumber'}}" formType="submit">
+                    确认打印
+                </button>
+            </form>
+        </view>
+    </view>
+    <view bindtap="backIndex" class="back-index" wx:if="{{isShare}}">返回首页</view>
+</view>

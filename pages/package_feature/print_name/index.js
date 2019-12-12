@@ -18,6 +18,6 @@ Page({
 
   },
   toedit: function(e) {
-    wxNav.navigateTo('/pages/package_feature/print_thumb_album/photolist')
+    wxNav.navigateTo('/pages/package_feature/print_name/edit')
   },
 })

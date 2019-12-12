@@ -76,7 +76,12 @@
         "print_thumb_album/edit",
         "print_name/index",
         "print_name/edit",
-        "print_name/preview"
+        "print_name/preview",
+        "print_sticker/index",
+        "print_sticker/typeList",
+        "print_sticker/edit",
+        "print_sticker/preview",
+        "print_sticker/imglist"
       ]
     },
     {

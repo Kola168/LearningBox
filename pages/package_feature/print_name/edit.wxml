@@ -1,2 +1,30 @@
 <!--pages/package_feature/print_name/edit.wxml-->
-<text>pages/package_feature/print_name/edit.wxml</text>
+<nav-bar title="制作姓名贴"></nav-bar>
+<view class="top-tips">
+  <image src="../resource_images/icon_smile.png" mode="widthFix" class="top-tip-icon"></image>
+  <text>可输入文字或打印后手写文字</text>
+</view>
+<view wx:if="{{templateList[templateTypeIndex].templates[templateIndex].uploadable}}" class="edit-box">
+  <edit-photo id="mymulti" class="edit-mode" mode-info="{{templateInfo}}" mode-paper="{{paperSize}}" add-icon="/pages/package_feature/resource_images/calendar_add.png" delete-icon="/pages/package_feature/resource_images/calendar_close.png"
+    delete-edge="{{true}}"></edit-photo>
+</view>
+<view wx:else class="edit-box">
+  <image src="{{templateList[templateTypeIndex].templates[templateIndex].image.url}}" mode="widthFix" class="no-edit-mode"></image>
+</view>
+<view class="input-box">
+  <view wx:for="{{templateList[templateTypeIndex].nameArr}}" wx:key="nameArr" class="input-item-box">
+    <text wx:if="{{!templateList[templateTypeIndex].hidden}}" class="input-item-key">{{item}}</text>
+    <input class="input-item" placeholder="点击输入文字" type="text" data-index="{{index}}" bindinput="getTextAttr"/>
+  </view>
+</view>
+<view class="bottom-box">
+  <scroll-view class="template-list-box" scroll-x>
+    <view class="template-item-box template-name {{index==templateTypeIndex?'template-type-selected':''}}" wx:for="{{templateList}}" wx:key="templateList" data-index="{{index}}" bindtap="{{templateTypeIndex==index?'':'checkTemplateType'}}">{{item.name}}</view>
+  </scroll-view>
+  <scroll-view class="template-list-box template-limit-height" scroll-x>
+    <view wx:for="{{templateList[templateTypeIndex].templates}}" wx:key="templates" class="template-item-box {{index==templateIndex?'template-item-selected':''}}" data-index="{{index}}" bindtap="{{templateIndex==index?'':'checkTemplate'}}">
+      <image src="{{item.image.url}}" mode="widthFix" class="template-preview-img {{type=='wood' && direction=='vertical'?'template-vertical-img':''}}"></image>
+    </view>
+  </scroll-view>
+  <bottom-button class="button-conf" text-right="打印预览" bindrighttap="getParamsData"></bottom-button>
+</view>

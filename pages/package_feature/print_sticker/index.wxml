@@ -1,5 +1,5 @@
-<!--pages/package_feature/print_name/index.wxml-->
-<nav-bar title="姓名贴"></nav-bar>
+<!--pages/package_feature/print_sticker/index.wxml-->
+<nav-bar title="大头贴"></nav-bar>
 <view class="wrap">
     <block wx:for="{{urls}}" wx:key="urls">
         <image class="img-style" mode="widthFix" src="{{item}}"></image>
