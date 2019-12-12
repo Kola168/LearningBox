@@ -218,6 +218,7 @@ const graphqlApi = {
         feature(key: $key){
           categories {
             image,
+            name,
             sn
           }
         }
@@ -229,7 +230,7 @@ const graphqlApi = {
   },
 
   /**
-   * 获取模版分类
+   * 获取模版列表
    * @param { String } sn required 分类sn
    */
   getTemplates: (sn) => {
@@ -238,7 +239,8 @@ const graphqlApi = {
         category(sn: $sn){
           templates {
             perviewImage,
-            sn
+            sn,
+            name
           }
         }
       }`,
@@ -259,6 +261,7 @@ const graphqlApi = {
           defaultImage,
           imageUrl,
           sn,
+          name,
           positionInfo {
             areaX,
             areaY,
@@ -271,6 +274,23 @@ const graphqlApi = {
       }`,
       variables: {
         sn: sn
+      }
+    })
+  },
+
+  /**
+   * 创建订单
+   * @param { Object } orderParams 订单参数
+   */
+  createOrder: (orderParams) => {
+    return gql.mutate({
+      mutation: `mutation ($input: CreateOrderInput!){
+        createOrder(input:$input){
+          state
+        }
+      }`,
+      variables: {
+        input: orderParams
       }
     })
   },

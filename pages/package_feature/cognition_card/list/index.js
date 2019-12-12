@@ -2,6 +2,7 @@
 
 const app = getApp()
 import { regeneratorRuntime, co, util, wxNav, storage } from '../../../../utils/common_import'
+import commonRequest from '../../../../utils/common_request'
 const showModal = util.promisify(wx.showModal)
 import api from '../../../../network/restful_request'
 Page({
@@ -129,21 +130,16 @@ Page({
         reImgs = []
       for (let i = 0; i < imgs.length; i++) {
         let imgObj = {
-          url: imgs[i].url,
-          pre_convert_url: imgs[i].url,
-          number: 1
+          originalUrl: imgs[i].url,
+          printUrl: imgs[i].url
         }
         reImgs.push(imgObj)
       }
-      let resp = yield api.printInvoice(app.openId, 'literacy_card', reImgs)
-      if (resp.code !== 0) {
-        throw (resp)
-      }
+      let resp = yield commonRequest.createOrder('literacy_card', reImgs)
       this.weToast.hide()
       wxNav.redirectTo(`../../../../finish/index`, {
-        type: 'sticker',
         media_type: 'literacy_card',
-        state: resp.order.state,
+        state: resp.state,
         type: 'literacy_card'
       })
     } catch (error) {

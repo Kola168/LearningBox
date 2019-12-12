@@ -1,5 +1,6 @@
 const app = getApp()
 import { regeneratorRuntime, co, util, wxNav, storage } from '../../../../utils/common_import'
+import commonRequest from '../../../../utils/common_request'
 const imginit = require('../../../../utils/imginit')
 const event = require('../../../../lib/event/event')
 import upload from '../../../../utils/upload'
@@ -351,24 +352,18 @@ Page({
     })
     try {
       let imgs = [{
-        url: this.compoundUrl,
-        pre_convert_url: this.compoundUrl,
-        number: 1
+        originalUrl: this.compoundUrl,
+        printUrl: this.compoundUrl
       }]
-      let resp = yield api.printInvoice(app.openId, 'literacy_card', imgs)
-      if (resp.code !== 0) {
-        throw (resp)
-      }
-      this.weToast.hide()
+      let resp = yield commonRequest.createOrder('literacy_card', imgs)
       wxNav.redirectTo(`../../../../finish/index`, {
-        type: 'sticker',
         media_type: 'literacy_card',
-        state: resp.order.state,
+        state: resp.state,
         type: 'literacy_card'
       })
     } catch (error) {
       this.weToast.hide()
-      util.showErr(error)
+      util.showGraphqlErr(error)
     }
   }),
   // 删除选择的图片
