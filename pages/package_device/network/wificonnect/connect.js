@@ -176,8 +176,9 @@ Page({
 				this.longToast.toast()
 				wx.showToast({
 					title: '配网成功',
-					duration: 5000,
+					duration: 2000,
 				})
+        wxNav.switchTab('/pages/index/index')
 			}
 		} catch (e) {
 			this.longToast.toast()
