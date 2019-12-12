@@ -242,8 +242,7 @@ Page({
             })
             console.log("imgInfo", imgInfo)
         } catch (err) {
-            console.error(err)
-            util.showErr({
+            util.showError({
                 title: '照片加载失败',
                 content: '请重新选择重试'
             })
@@ -661,7 +660,7 @@ Page({
             const resp = yield api.convertId(params)
 
             if (resp.code != 0) {
-                throw (resp.res)
+                throw (resp)
             } else {
                 this.longToast.hide()
                 let params = {

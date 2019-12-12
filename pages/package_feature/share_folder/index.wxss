@@ -1,0 +1,387 @@
+.top-tip {
+  width: 100%;
+  height: 48rpx;
+  background: #fffae9;
+  text-align: center;
+  line-height: 48rpx;
+  position: fixed;
+  top: 0;
+  left: 0;
+  font-size: 24rpx;
+  color: #ff9a55;
+  z-index: 100;
+}
+
+.title {
+  display: flex;
+  justify-content: space-between;
+  font-size: 32rpx;
+  padding: 0 124rpx;
+  /* margin: 74rpx 0 20rpx; */
+  position: fixed;
+  left: 0;
+  top:48rpx;
+  width: 100%;
+  box-sizing: border-box;
+  z-index: 100;
+  background: #fff;
+  height: 100rpx;
+  line-height: 100rpx;
+}
+
+.tab-item {
+  color: #666;
+  position: relative;
+}
+
+.activeType {
+  color: #ffc35b;
+}
+
+.active-border {
+  position: absolute;
+  top: 85rpx;
+  left: 40%;
+  width: 20%;
+  height: 4rpx;
+}
+
+.activeType .active-border {
+  margin: 4rpx auto 0;
+  background: #ffc35b;
+  width: 20%;
+}
+
+.intro-center {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.intro-bg {
+  width: 500rpx;
+  margin: 200rpx 0 60rpx;
+}
+
+.intro-bg-share {
+  width: 300rpx;
+  margin: 200rpx 0 60rpx;
+}
+
+.intro-text {
+  margin-bottom: 16rpx;
+  font-size: 32rpx;
+  color: #666;
+}
+
+.intro-text-share {
+  font-size: 24rpx;
+  color: #666;
+}
+
+.file-list {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 2rpx solid #e9e9e9;
+  padding: 40rpx 22rpx 40rpx 26rpx;
+}
+
+.file-left {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  color: #333;
+}
+
+.file-left-bottom {
+  display: flex;
+  align-items: center;
+}
+
+.file-left-bottom view {
+  font-size: 12px;
+  color: #999;
+  margin-right: 20rpx;
+}
+
+.file-right {
+  display: flex;
+}
+
+.file-right-icon {
+  width: 14rpx;
+}
+
+.file-right-more {
+  width: 84rpx;
+  height: 40rpx;
+  border: 2rpx solid #8d8d8d;
+  border-radius: 25rpx;
+  font-size: 12px;
+  color: #999;
+  text-align: center;
+  line-height: 44rpx;
+}
+
+.file-right-share {
+  width: 88rpx;
+  height: 44rpx;
+  background: #ffe27a;
+  border-radius: 25rpx;
+  font-size: 12px;
+  color: #000;
+  text-align: center;
+  line-height: 44rpx;
+  margin-left: 20rpx;
+}
+
+.file-icon {
+  width: 76rpx;
+  margin-right: 20rpx;
+}
+
+.bottom-button {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 100rpx;
+  background: #ffe27a;
+  text-align: center;
+  line-height: 100rpx;
+  font-size: 36rpx;
+  color: #454545;
+}
+
+.bottom-button-gray {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 100rpx;
+  background: #999;
+  text-align: center;
+  line-height: 100rpx;
+  font-size: 36rpx;
+  color: #454545;
+}
+
+/* 确认协议弹窗 */
+
+.modal-wrap {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.confirm-modal {
+  width: 620rpx;
+  background: #fff;
+  color: #333;
+  border-radius: 20rpx;
+  padding-top: 40rpx;
+  /* text-align: center; */
+}
+
+.share-confirm-modal {
+  width: 422rpx;
+  background: #fff;
+  color: #333;
+  border-radius: 20rpx;
+  padding-bottom: 34rpx;
+  text-align: center;
+}
+
+.confirm-title {
+  color: #333;
+  font-size: 36rpx;
+  margin-left: 116rpx;
+}
+
+.confirm-title-share {
+  color: #333;
+  font-size: 36rpx;
+}
+
+.confirm-content {
+  color: #505050;
+  font-size: 28rpx;
+  margin: 34rpx 78rpx 30rpx;
+  text-indent: 50rpx;
+}
+
+.confirm-link {
+  font-size: 24rpx;
+  color: #ffa200;
+  margin: 0 154rpx 40rpx;
+  border-bottom: 2rpx solid #FFA812;
+}
+
+.confirm-choose {
+  font-size: 12px;
+  color: #666;
+}
+
+.protocol-choose {
+  display: flex;
+  margin-bottom: 28rpx;
+  margin-left: 80rpx;
+  align-items: center;
+}
+
+.choose-image {
+  width: 30rpx;
+  margin-right: 20rpx;
+}
+
+.confirm-noprotocol {
+  background: #eaeaea;
+  color: #a5a5a5;
+  font-size: 36rpx;
+  border-radius: 0 0 20rpx 20rpx;
+}
+
+.confirm-protocol {
+  background: #ffe27a;
+  color: #000;
+  font-size: 36rpx;
+  border-radius: 0 0 20rpx 20rpx;
+}
+
+/* 新建文件夹弹窗 */
+
+.modify-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 80%;
+  padding-top: 60rpx;
+  background: #fff;
+  border-radius: 25rpx;
+}
+
+.newfile-title {
+  width: 100%;
+  text-align: center;
+  color: #333;
+  font-size: 36rpx;
+}
+
+.section-input {
+  width: 454rpx;
+  height: 68rpx;
+  background: #f8f8f8;
+  margin-top: 40rpx;
+}
+
+.input {
+  width: 100%;
+  height: 68rpx;
+  line-height: 68rpx;
+  background: #f8f8f8;
+  text-align: center;
+  font-size: 28rpx;
+}
+
+.content {
+  width: 100%;
+  color: #ff9a87;
+  margin-top: 20rpx;
+  text-align: center;
+  font-size: 20rpx;
+}
+
+.share-content {
+  width: 100%;
+  color: #fe8d77;
+  text-align: center;
+  font-size: 28rpx;
+}
+
+.button-confirm {
+  width: 100%;
+  text-align: center;
+  font-size: 36rpx;
+  color: #000;
+  height: 80rpx;
+  line-height: 80rpx;
+  background: #ffe27a;
+  border-top: 2rpx solid #ffe27a;
+  border-radius: 0 0 25rpx 25rpx;
+  margin-top: 40rpx;
+}
+
+.choosePhoto {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 99999;
+}
+
+.choosePhoto-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  animation: alp 0.5s ease;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.choosePhoto-content {
+  width: 100%;
+  background: #efeff5;
+  animation: chooseBottom 0.3s ease;
+  position: relative;
+}
+
+.choosePhotoItem {
+  width: 100%;
+  height: 90rpx;
+  border-bottom: 1rpx solid #efeff5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #fff;
+}
+
+.choosePhotoItem text {
+  color: #333;
+  font-size: 34rpx;
+}
+
+.button-rename {
+  width: 100%;
+  font-size: 36rpx;
+  height: 80rpx;
+  line-height: 80rpx;
+  margin-top: 40rpx;
+  display: flex;
+}
+
+.button-confirm-change {
+  width: 50%;
+  text-align: center;
+  color: #000;
+  background: #ffe27a;
+  border-radius: 0 0 25rpx 0;
+}
+
+.button-cancel {
+  width: 50%;
+  text-align: center;
+  color: #666;
+  background: #fff;
+  border-top: 2rpx solid #cecece;
+  border-radius: 0 0 0 25rpx;
+}

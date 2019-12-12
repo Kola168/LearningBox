@@ -1,0 +1,31 @@
+/* pages/package_common/account/name_edit.wxss */
+
+page {
+    background: #F7F7F7;
+    width: 100%;
+}
+
+input {
+    background: #fff;
+    height: 100rpx;
+    margin-top: 20rpx;
+    padding: 0 24rpx;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.button {
+    background: #FFDC5E;
+    border-radius: 50rpx;
+    width: 80%;
+    font-family: PingFangSC-Regular;
+    font-size: 36rpx;
+    color: #333333;
+    letter-spacing: 0;
+    text-align: center;
+    height:98rpx;
+    line-height:98rpx;
+    position: fixed;
+    left:10%;
+    bottom:260rpx;
+}

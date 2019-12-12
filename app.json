@@ -41,13 +41,18 @@
     "pages/print_id/smart_index",
     "pages/print_id/smart_rules",
     "pages/course/index",
-    "components/bottom-button/test"
+		"components/bottom-button/test",
+		"pages/index/grade",
+    "pages/account/index"
   ],
   "subPackages": [
     {
       "root": "pages/package_common",
       "pages": [
-        "search/index"
+        "search/index",
+        "account/personal_info",
+        "account/avatar_edit",
+        "account/name_edit"
       ]
     },
     {
@@ -80,12 +85,24 @@
         "cognition_card/edit/index",
         "baidu_print/choose/index",
         "baidu_print/search/index",
+<<<<<<< HEAD
         "print_calendar/typelist",
         "print_calendar/index",
         "print_calendar/edit",
         "print_thumb_album/index",
         "print_thumb_album/photolist",
         "print_thumb_album/edit"
+=======
+        "share_folder/user_files/index",
+        "share_folder/photo_preview/preview",
+        "share_folder/more_edit/index",
+        "share_folder/more_edit_ali/index",
+        "share_folder/setting/index",
+        "share_folder/index",
+        "share_folder/share_manage",
+        "share_folder/content",
+        "share_folder/manage"
+>>>>>>> develop-lis
       ]
     },
     {

@@ -1,0 +1,15 @@
+<!--pages/account/index.wxml-->
+<nav-bar background="#fff" title="个人中心"></nav-bar>
+<view class="user-info" bindtap="toSetInfo">
+    <view>
+        <image src="/images/account_avatar_big.png" mode="widthFix" class="avatar"></image>
+        <view class="info">
+            <!-- <view class="name">{{userInfo.nickName}}</view> -->
+            <view class="name">未填写姓名</view>
+            <view class="grade">未填写年级</view>
+        </view>
+    </view>
+    <image src="../../images/doc_item_arrow.png" mode="widthFix" class="after"></image>
+</view>
+<image class="member"></image>
+<view class="content"></view>

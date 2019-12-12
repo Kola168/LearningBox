@@ -1,0 +1,131 @@
+<!-- <nav-bar background="#fff" title="共享文件夹"></nav-bar> -->
+<view class="top-tip">不可上传或传播违法内容，一经发现依法处理</view>
+<view class="title">
+    <view class="tab-item {{tabId == 0 ? 'activeType' : ''}}" bindtap="changeTab" id="0">
+        我创建的
+        <text class="active-border"></text>
+    </view>
+    <view class="tab-item {{tabId == 1 ? 'activeType' : ''}}" bindtap="changeTab" id="1">
+        好友分享的
+        <text class="active-border"></text>
+    </view>
+</view>
+
+<view wx:if="{{tabId==0}}" style="padding-bottom:100rpx;margin-top:150rpx;">
+    <view class="intro-center" wx:if="{{fileList.length==0}}">
+        <image src="https://cdn.gongfudou.com/miniapp/ec/create_folder_bg.png" mode="widthFix" class="intro-bg"></image>
+        <view class="intro-text">重要资料同步云端 随身而行</view>
+        <view class="intro-text">学习资源共享好友 快速打印</view>
+    </view>
+    <view wx:if="{{fileList.length!=0}}">
+        <view wx:for="{{fileList}}" wx:key="{{index}}" id="{{index}}" class="file-list">
+            <view class="file-left" bindtap="toDocuments" id="{{index}}">
+                <image src="../../images/file_icon.png" mode="widthFix" class="file-icon"></image>
+                <view>
+                    <view>{{item.name}}</view>
+                    <view class="file-left-bottom">
+                        <view>{{item.created_at}}</view>
+                        <view>{{item.users_count}}个成员加入</view>
+                    </view>
+                </view>
+            </view>
+            <view class="file-right">
+                <view class="file-right-more" id="{{index}}" bindtap="toMore">更多</view>
+                <button class="file-right-share" id="{{index}}" hover-class="none" bindtap="showShare" wx:if="{{!firstShare}}">分享</button>
+                <button class="file-right-share" id="{{index}}" hover-class="none" open-type="share" wx:if="{{firstShare}}">分享</button>
+            </view>
+        </view>
+    </view>
+    <view class="{{fileList.length==20?'bottom-button-gray':'bottom-button'}}" bindtap="newFile">新建文件夹</view>
+</view>
+
+<view wx:if="{{tabId==1}}" style="padding-bottom:100rpx;margin-top:150rpx;">
+    <view class="intro-center" wx:if="{{shareFileList.length==0}}">
+        <image src="../../images/share_folder_bg.png" mode="widthFix" class="intro-bg-share"></image>
+        <view class="intro-text">暂时没有好友分享的文件夹</view>
+        <view class="intro-text-share">快去告诉好友这个很棒的功能，让ta将文件</view>
+        <view class="intro-text-share">夹分享给您，一起阅读美好的时光</view>
+    </view>
+    <view wx:if="{{shareFileList.length!=0}}">
+        <view wx:for="{{shareFileList}}" wx:key="{{index}}" id="{{index}}" class="file-list" bindtap="toDocuments">
+            <view class="file-left">
+                <image src="../../images/file_icon.png" mode="widthFix" class="file-icon"></image>
+                <view>
+                    <view>{{item.name}}</view>
+                    <view class="file-left-bottom">
+                        <view>{{item.created_at}}</view>
+                        <view>分享人：{{item.nickname}}</view>
+                    </view>
+                </view>
+            </view>
+            <image src="/images/arrow-right-gray.png" mode="widthFix" class="file-right-icon"></image>
+        </view>
+    </view>
+</view>
+
+
+<import src="../../../lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />
+
+<view class="modal-wrap" wx:if="{{showConfirmModal}}" bindtap="cancelNewFile">
+    <view class="confirm-modal" catchtap="a">
+        <view class="confirm-title">{{showConfirmModal.title}}</view>
+        <view class="confirm-content">{{showConfirmModal.intro}}</view>
+        <view class="confirm-link" bindtap="toUrl">{{showConfirmModal.link}}</view>
+        <view class="protocol-choose">
+            <image src="../../images/protocol_nochoose.png" mode="widthFix" class="choose-image" catchtap="checkProtocol" wx:if="{{!checked}}"></image>
+            <image src="../../images/protocol_choose.png" mode="widthFix" class="choose-image" catchtap="checkProtocol" wx:if="{{checked}}"></image>
+            <view class="confirm-choose">{{showConfirmModal.choose}}</view>
+        </view>
+        <button class="confirm-noprotocol" catchtap="cancelProtocol" wx:if="{{!checked}}">确认</button>
+        <button class="confirm-protocol" catchtap="confirmProtocol" wx:if="{{checked}}">确认</button>
+    </view>
+</view>
+
+<view class="modal-wrap" wx:if="{{fileModal}}" bindtap="cancelNewFile">
+    <view class="modify-box" catchtap="a">
+        <view class="newfile-title">
+            <text wx:if="{{showNewFileModal}}">新建文件夹</text>
+            <text wx:if="{{changeFileModal}}">修改文件夹名称</text>
+        </view>
+        <view class="section-input">
+            <input class="input" bindblur="endInput" bindinput="endInput" bindconfirm="endInput" maxlength="15" placeholder="请输入文件夹名称" />
+        </view>
+        <view class="content">{{content}}</view>
+        <view class="button-confirm" catchtap="confirmNewFile" wx:if="{{showNewFileModal}}">下一步</view>
+        <view class="button-rename" wx:if="{{changeFileModal}}">
+          <view class="button-cancel" bindtap="cancelFile">取消</view>
+          <view class="button-confirm-change" bindtap="changeFoldersName">确认</view>
+        </view>
+    </view>
+</view>
+
+<view class="modal-wrap" bindtap="cancelShare" wx:if="{{showShareModel}}">
+    <view class="modify-box">
+        <view class="share-confirm-modal">
+            <view class="confirm-title-share">分享后，好友可看到该文件夹内的所有内容</view>
+        </view>
+        <view class="share-content">请慎重分享到微信群中</view>
+        <view class="share-content">严禁传播违法乱纪的内容</view>
+        <button class="button-confirm" open-type="share" hover-class="none">分享给微信好友</button>
+    </view>
+</view>
+
+<view class="choosePhoto" wx:if="{{popWindow}}">
+    <view class="choosePhoto-container" catchtap="closePopWindow">
+        <view class="choosePhoto-content">
+            <view class="choosePhotoItem" bindtap="rename">
+                <text>修改文件夹名称</text>
+            </view>
+            <view class="choosePhotoItem" bindtap="manageGroup">
+                <text>文件夹成员管理</text>
+            </view>
+            <view class="choosePhotoItem" bindtap="deleteFile">
+                <text>删除文件夹</text>
+            </view>
+            <view class="choosePhotoItem" style="margin-top:20rpx;">
+                <text>取消</text>
+            </view>
+        </view>
+    </view>
+</view>

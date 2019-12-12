@@ -1,0 +1,8 @@
+<!--pages/package_common/account/avatar_edit.wxml-->
+<nav-bar background="#fff" title="修改头像"></nav-bar>
+ <view class="tip">
+        <image src="/images/print_photo_edit_face.png" mode="widthFix" class="avatar"></image>
+        <text>可手动放大缩小，移动位置</text>
+ </view>
+ <!-- 编辑区域 -->
+ <view></view>

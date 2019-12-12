@@ -5,7 +5,7 @@ var GraphQL = gqwxappGraphql.GraphQL
 // 初始化对象
 let gql = GraphQL({
   url: `${app.apiServer}/graphql`,
-  header: function() {
+  header: function () {
     if (app.authToken) {
       console.log('authToken==1==', app.authToken)
       return {
@@ -590,6 +590,92 @@ const graphqlApi = {
       }`,
       variables: {
         sn
+      }
+    })
+	},
+	
+	/**
+   * 获取所有学段
+   * @returns
+   */
+  getAllstages: () => {
+    return gql.query({
+      query: `query{
+        stages{
+            name
+            rootName
+            sn
+            children{
+              name
+              rootName
+              sn
+              children{
+                name
+                rootName
+                sn
+                children{
+                  name
+                  rootName
+                  sn
+                }
+              }
+            }
+        }
+      }`
+    })
+  },
+
+  /**
+   * 获取当前用户信息
+   * 
+   * @returns
+   */
+  getUser: () => {
+    return gql.query({
+      query: `query{
+        currentUser{
+          selectedKid{
+            gender
+            name
+            sn
+            stageRoot{
+              name
+              rootName
+              sn
+            }
+            stage{
+              name
+              rootName
+              sn
+            }
+            }
+          phone
+        }
+      }`
+    })
+  },
+
+  /**
+   * 设置年级
+   *
+   * @param {*} params
+   * @returns
+   */
+  changeStage: (params) => {
+    return gql.mutate({
+      mutation: `mutation ($input: UpdateKidInput!){
+        updateKid(input:$input){
+          kid{
+            name
+            sn
+            stage{
+              rootName
+            }
+          }
+        }
+      }`,
+      variables: {
+        input: params
       }
     })
   }
