@@ -75,6 +75,9 @@
 
 <view class="bottom {{isFullScreen ? 'is-full-screen' : ''}}" bindtap="confirm">确认</view>
 
+
+ <!-- 选择图片 -->
+<check-img id="checkComponent" bindchooseImg="chooseImg" ></check-img>
 <view class="choosePhoto" wx:if="{{popWindow}}">
 	<view class="choosePhoto-container" catchtap="closePopWindow">
 		<view class="choosePhoto-content">

@@ -4,7 +4,7 @@ const co = require('../../../lib/co/co')
 const util = require('../../../utils/util')
 const _ = require('../../../lib/underscore/we-underscore')
 const showModal = util.promisify(wx.showModal)
-// import commonRequest from '../../../utils/common_request.js'
+import commonRequest from '../../../utils/common_request.js'
 import { getLogger } from '../../../utils/logger'
 const logger = new getLogger('pages/print_doc/doc_setting/doc_setting')
 import router from '../../../utils/nav'
@@ -53,6 +53,7 @@ Page({
   },
 
   onLoad: co.wrap(function*(options) {
+    this.longToast = new app.weToast()
     try {
       let query = JSON.parse(decodeURIComponent(options.postData))
 
@@ -325,8 +326,6 @@ Page({
     let  display = this.data.zoomType
     let skip_gs = !this.data.checkOpen
     let extract = this.data.extract || 'all'
-    let start_page = this.data.startPrintPage
-    let end_page = this.data.endPrintPage
     this.longToast.toast({
       type:'loading',
       title: '正在开启预览',
@@ -334,7 +333,7 @@ Page({
     })
     commonRequest.previewDocument({
       feature_key: 'doc_a4',
-      worker_data: {url, display, skip_gs, extract, start_page, end_page}
+      worker_data: {url, display, skip_gs, extract}
     }, ()=>{
       this.longToast.hide()
     })

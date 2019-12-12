@@ -1,0 +1,23 @@
+/* pages/learning/issue_list/issue_list.wxss */
+@import '/common/wxss/common.wxss';
+@import '../common/style/empty.wxss';
+
+.issue-main {
+    margin: 40rpx 54rpx 0;
+}
+
+.issue-item {
+    margin-bottom: 40rpx;
+    width: 100%;
+}
+
+.issue-item image {
+    margin-bottom: 20rpx;
+    width: 100%;
+    height: 384rpx;
+    border-radius: 20rpx;
+    background-color: #efefef;
+}
+
+
+

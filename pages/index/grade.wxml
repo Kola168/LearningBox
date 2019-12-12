@@ -1,0 +1,24 @@
+<!--pages/index/grade.wxml-->
+<nav-bar background="#fff" title="我的"></nav-bar>
+<image src="/images/home/choose_grade.png" mode="widthFix" class="choose-grade" />
+<block wx:for="{{stages[0].children}}" wx:key="beforeSchool">
+    <view class="title">{{item.name}}</view>
+    <view class="wrap">
+        <view class="title {{index>2?'top':''}} {{activeGrade==data.name?'active-grade':''}}"
+            wx:for="{{stages[0].children[index].children}}" wx:for-item="data" wx:for-index="i"  wx:key="stages[0].children.name" id="{{data.name}}" bindtap="chooseGrade" data-sn="{{data.sn}}">{{data.name}}</view>
+    </view>
+</block>
+
+
+<block wx:for="{{stages[1].children}}" wx:key="subject">
+    <view class="title">{{item.name}}</view>
+    <view class="wrap">
+        <view class="title {{index>2?'top':''}} {{activeGrade==data.name?'active-grade':''}}"
+            wx:for="{{stages[1].children[index].children}}" wx:for-item="data" wx:for-index="i" wx:key="stages[1].children.name" id="{{data.name}}" bindtap="chooseGrade" data-sn="{{data.sn}}">{{data.name}}</view>
+    </view>
+</block>
+
+<view class="bottom" bindtap="complete">完成</view>
+<!-- loading -->
+<import src="/lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />

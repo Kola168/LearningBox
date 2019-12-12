@@ -1,0 +1,16 @@
+<nav-bar background="#fff" title="我是谁我在哪"></nav-bar>
+<view class="" hover-class="none" hover-stop-propagation="false">
+  <w-progress-modal currentChooseCount="{{currentChooseCount}}" completeCount="{{completeCount}}" percent="{{percent}}" wx:if="{{showupLoad}}" bindcancel="cancel"></w-progress-modal>
+
+  <button bind:tap="chooseImgs">上传图片</button>
+  <button bind:tap="chooseFiles">上传文件</button>
+  <view class="list-item" hover-class="none" hover-stop-propagation="false">
+    <view class="list-item" wx:for="{{fileList}}" wx:key="index" hover-class="none" hover-stop-propagation="false" bindtap="toPrint" data-index="{{index}}">
+      {{item.key}}
+    </view>
+  </view>
+  <view class="" hover-class="none" hover-stop-propagation="false">
+    总数 {{totalCount}}
+  </view>
+
+</view>

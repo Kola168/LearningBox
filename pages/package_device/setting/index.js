@@ -1,9 +1,10 @@
 const app = getApp()
+const event = require('../../../lib/event/event')
 import { regeneratorRuntime, co, util, wxNav } from '../../../utils/common_import'
-import api from '../../../network/restful_request'
+import graphql from '../../../network/graphql_request'
 Page({
   data: {
-    devices: [],
+    device: null,
     settingType: "base",
     modalType: "",
     printType: "ep300",
@@ -20,10 +21,53 @@ Page({
       confirmText: ''
     }
   },
-  onLoad: function() {
-    this.resetModalObj = this.data.modalObj
+  onLoad: function(query) {
     this.weToast = new app.weToast()
+    this.resetModalObj = this.data.modalObj
+    this.deviceSn = query.sn
+    this.getDeviceDetail()
   },
+
+  getDeviceDetail: co.wrap(function*() {
+    this.weToast.toast({
+      type: 'loading'
+    })
+    try {
+      let res = yield graphql.getDeviceDetail(this.deviceSn)
+      this.weToast.hide()
+      this.setData({
+        device: res.device
+      })
+    } catch (error) {
+      this.weToast.hide()
+      util.showError(error)
+    }
+  }),
+
+  updateSetting(e) {
+    let setKey = e.currentTarget.dataset.key,
+      setVal = e.currentTarget.dataset.val
+    this.updateDeviceSetting(setKey, setVal)
+  },
+
+  // 更新打印机设置
+  updateDeviceSetting: co.wrap(function*(setKey, setVal) {
+    this.weToast.toast({
+      type: 'loading'
+    })
+    try {
+      yield graphql.updateDeviceSetting(this.deviceSn, {
+        [setKey]: setVal
+      }, setKey)
+      this.setData({
+        [`device.${setKey}`]: setVal
+      })
+      this.weToast.hide()
+    } catch (error) {
+      this.weToast.hide()
+      util.showError(error)
+    }
+  }),
 
   // 切换设置类型
   changeSettingType(e) {
@@ -70,6 +114,7 @@ Page({
           modalObj.title = "修改打印机名称"
           modalObj.hasCancel = true
           modalObj.slotContent = true
+          extraData.renameVal = ''
           break;
         case "computerPrint":
           let switchFlag = this.data.computerPrintFlag
@@ -121,21 +166,41 @@ Page({
           })
         }
         break;
+      case "rename":
+        this.updateDeviceSetting('name',this.data.renameVal)
+        event.emit('deviceChange')
+        break;
       case "clearQueue":
         break;
       case "unbindDevice":
+        this.unbindDevice()
         break;
     }
   },
 
-  // 关闭弹窗
-  closeModal() {
-
-  },
+  // 解绑打印机
+  unbindDevice:co.wrap(function*(){
+    this.weToast.toast({
+      type:'loading'
+    })
+    try {
+      let res = yield graphql.unbindDevice(this.deviceSn)
+      console.log(res,'ddddd')
+      this.weToast.hide()
+      event.emit('deviceChange')
+      wxNav.navigateBack()
+    } catch (error) {
+      this.weToast.hide()
+      util.showError(error)
+    }
+  }),
 
   // 获取重命名value
   getRenameVal(e) {
-    console.log(e)
+    let name = e.detail.value.trim()
+    this.setData({
+      renameVal: name
+    })
   },
 
   // 设备离线解决说明
@@ -161,7 +226,7 @@ Page({
         url = `../share/index`
         break;
       case "reNetwork":
-        url = `../network/index`
+        url = `../network/index/index`
         break;
     }
     wxNav.navigateTo(url)

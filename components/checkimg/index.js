@@ -1,13 +1,11 @@
-// pages/gallery/component/checkimg/index.js
 const app = getApp()
-const regeneratorRuntime = require('../../lib/co/runtime')
-const co = require('../../lib/co/co')
-const util = require('../../utils/util')
+import { regeneratorRuntime, co, wxNav, util } from '../../utils/common_import'
 
 const chooseImage = util.promisify(wx.chooseImage)
 const chooseMessageFile = util.promisify(wx.chooseMessageFile)
 
-let Loger=(app.apiServer!='https://epbox.gongfudou.com'||app.deBug)?console.log:function(){}
+import graphql from '../../network/graphql_request'
+let Loger = (app.apiServer != 'https://epbox.gongfudou.com' || app.deBug) ? console.log : function() {}
 
 Component({
 
@@ -86,32 +84,54 @@ Component({
           chooseImgNum: newval
         })
       }
+    },
+    fileType: {
+      type: String,
+      value: 'img'
+    },
+    docNum: {
+      type: Number,
+      value: 5
     }
   },
   attached: co.wrap(function*() {
+    this.weToast = new app.weToast()
     if (app.isFullScreen) {
       this.setData({
         butHigh: true
       })
-    }else if(app.isFullScreen==undefined){
-      let that=this
-      setTimeout(function(){
+    } else if (app.isFullScreen == undefined) {
+      let that = this
+      setTimeout(function() {
         that.setData({
           butHigh: app.isFullScreen
         })
-      },500)
-
+      }, 500)
     }
   }),
   methods: {
-
     showPop: function() {
       this.setData({
         popWindow: !this.data.popWindow
       })
     },
-    chooseImg: co.wrap(function*(e) {
-      let type = e.currentTarget.dataset.id
+    chooseFile(e) {
+      let fileType = this.data.fileType
+      if (fileType === 'img') {
+        this.chooseImg(e.currentTarget.dataset.id)
+      } else {
+        this.chooseDoc()
+      }
+    },
+    chooseDoc:co.wrap(function*(){
+      let res = yield chooseMessageFile({
+        count: this.data.docNum,
+        type: 'file'
+      })
+      this.showPop()
+      this.triggerEvent('choosedDoc', res)
+    }),
+    chooseImg: co.wrap(function*(type) {
       let sizeType = []
       if (this.data.original) {
         sizeType.push('original')
@@ -141,10 +161,30 @@ Component({
       imageUrl.choosePath = type
       this.triggerEvent('chooseImg', imageUrl)
     }),
-    baiduChooseImg: function() {
-      this.triggerEvent('baidutap')
-      this.showPop()
-    },
+    baiduChooseImg: co.wrap(function*() {
+      try {
+        this.weToast.toast({
+          type: 'loading'
+        })
+        let res = yield graphql.getBaiduNetAuth()
+        this.weToast.hide()
+        if (res.token.baiduTokenName) {
+          this.triggerEvent('baidutap')
+          this.showPop()
+          wxNav.navigateTo('/pages/package_feature/baidu_print/choose/index', {
+            type: this.data.fileType
+          })
+        } else {
+          this.showPop()
+          wxNav.navigateTo('/pages/print_doc/start_intro/start_intro', {
+            type: 'baiduPrint'
+          })
+        }
+      } catch (error) {
+        this.showPop()
+        util.showError(error)
+      }
+    }),
     preventScroll: function() {},
   }
 })

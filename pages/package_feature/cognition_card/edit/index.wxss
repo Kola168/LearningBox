@@ -1,4 +1,16 @@
-/* @import '../common.wxss'; */
+.container {
+  position: relative;
+  padding: 40rpx 24rpx 0;
+}
+.container-bg {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+}
+
 .tip-img {
   width: 90%;
 }
@@ -89,10 +101,28 @@
   padding: 0 13%;
   justify-content: space-between;
 }
-
-.handle-btns image {
+.view-btn,
+.btn-left,
+.btn-right {
   width: 45%;
-  position:relative;
+  color: #fff;
+  height: 84rpx;
+  line-height: 84rpx;
+  font-size: 38rpx;
+  font-weight: bold;
+  border-radius: 42rpx;
+  text-align: center;
+}
+.view-btn,
+.btn-left {
+  background: #A84C20;
+  box-shadow: 0 3px 0 0 #8A3A13;
+}
+
+.btn-right {
+  background: #FB5130;
+  box-shadow: 0 3px 0 0 #E03716;
+  position: relative;
 }
 
 .cover-but{
@@ -125,12 +155,11 @@
   padding: 12px;
 }
 
-.guide-view image {
+.guide-view .view-btn {
   width: 100%;
-  border-radius: 24rpx;
 }
 
-image.guide-tip {
+.guide-view image {
   position: absolute;
   right: -82%;
   width: 200%;
@@ -196,51 +225,3 @@ image.guide-tip {
   border-bottom-left-radius: 20rpx;
   border-bottom-right-radius: 20rpx;
 }
-
-/* .modal-content {
-  position: absolute;
-  width: 75%;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  border-radius: 20rpx;
-  text-align: center;
-  background: #fff;
-  overflow: hidden;
-}
-
-.content-main {
-  padding: 44rpx 54rpx 60rpx;
-  font-size: 36rpx;
-  font-weight: bold;
-}
-
-.content-main image {
-  width: 100%;
-}
-
-.main-title {
-  color: #333;
-  margin-bottom: 40rpx;
-}
-
-.modal-btns {
-  display: flex;
-  height: 88rpx;
-  line-height: 88rpx;
-}
-
-.modal-btns>view {
-  width: 50%;
-}
-
-.modal-btns>view:first-child {
-  color: #666;
-  border-top: 2rpx solid #CECECE;
-}
-
-.modal-btns>view:last-child {
-  color: #454545;
-  background: #FFE27A;
-  border-top: 2rpx solid #FFE27A;
-} */

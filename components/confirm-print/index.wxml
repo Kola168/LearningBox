@@ -1,32 +1,26 @@
-<view
- class="confirm-modal"
- wx:if="{{modal.isShow}}"
- bindtap="hideModal"
- catchtouchmove
->
-	<view class="confirm-modal-wrap" catchtap="tapModal">
-		<view class="confirm-modal-title">{{modal.title}}</view>
-		<view class="content-box">
-			<image src="{{modal.image}}" mode="widthFix" wx:if="{{modal.image}}" />
-			<view class="box-text" wx:if="{{modal.content}}">{{modal.content}}</view>
-			<view class="box-tip">
-				<view>不再提示</view>
-				<switch checked="{{hideConfirmPrintBox}}" color="#FFDC5E" catchchange="handleConfirmPrintBox" />
-			</view>
-		</view>
-		<view class="button">
-			<block wx:if="{{modal.hasCancel}}">
-				<view class="cancel" data-modal="cancel" catchtap="clickCancel">
-					{{modal.cancelText||'取消'}}
+<view class="confirm-print-modal" wx:if="{{modal.isShow}}" bindtap="hideModal" catchtouchmove>
+		<view class="print-modal-wrap" catchtap="tapModal">
+				<view class="print-modal-title">{{modal.title}}</view>
+				<view class="print-modal-box">
+						<image src="{{modal.image}}" mode="widthFix" wx:if="{{modal.image}}" />
+						<view class="print-modal-box__text" wx:if="{{modal.content}}">{{modal.content}}</view>
+						<view class="print-modal-box__tip">
+								<view>不再提示</view>
+								<switch checked="{{hideConfirmPrintBox}}" color="#FFDC5E" catchchange="handleConfirmPrintBox" />
+						</view>
 				</view>
-				<view data-modal="confirm" catchtap="clickConfirm">{{modal.confirmText||'开始打印'}}</view>
-			</block>
-			<block wx:else>
-				<view class="confirm" data-modal="confirm" catchtap="clickConfirm">
-					{{modal.confirmText||'开始打印'}}
+				<view class="print-modal-button">
+						<block wx:if="{{modal.hasCancel}}">
+								<view class="print-modal-button__cancel" data-modal="cancel" catchtap="clickCancel">
+										{{modal.cancelText||'取消'}}
+								</view>
+								<view data-modal="confirm" catchtap="clickConfirm">{{modal.confirmText||'开始打印'}}</view>
+						</block>
+						<block wx:else>
+								<view class="print-modal-button__confirm" data-modal="confirm" catchtap="clickConfirm">
+										{{modal.confirmText||'开始打印'}}
+								</view>
+						</block>
 				</view>
-			</block>
 		</view>
-	</view>
 </view>
-

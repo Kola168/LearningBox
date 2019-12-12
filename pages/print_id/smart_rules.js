@@ -39,7 +39,7 @@ Page({
             this.longToast.hide()
             util.showError({
                 title: '上传失败',
-                content: '请检查您的网络，请稍后重试'
+                message: '请检查您的网络，请稍后重试'
             })
         }
     }),

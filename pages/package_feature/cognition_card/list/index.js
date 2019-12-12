@@ -2,6 +2,7 @@
 
 const app = getApp()
 import { regeneratorRuntime, co, util, wxNav, storage } from '../../../../utils/common_import'
+import commonRequest from '../../../../utils/common_request'
 const showModal = util.promisify(wx.showModal)
 import api from '../../../../network/restful_request'
 Page({
@@ -19,12 +20,13 @@ Page({
       cancelText: '选购相纸',
       confirmText: '开始制作',
       title: '打印前请选择LOMO相纸',
-      image: 'https://cdn.gongfudou.com/miniapp/ec/confirm_print_lomo.png'
+      image: 'https://cdn-h.gongfudou.com/LearningBox/main/confirm_print_lomo.png'
     }
   },
   onLoad(query) {
+    this.weToast = new app.weToast()
     let cognitionCardImgs = storage.get('literacy_card')
-    this.templateId = query.id
+    this.templateSn = query.sn
     let isFull = query.isFull == 1 ? true : false
     if (isFull) {
       wx.showModal({
@@ -56,12 +58,12 @@ Page({
       name = dataset.name,
       navUrl = `../edit/index`
     wxNav.redirectTo(navUrl, {
-      templateId: this.templateId,
+      sn: this.templateSn,
       type: 'custom',
       index: index,
       hasEdit: 1,
       cardName: name,
-      editUrl
+      editUrl: encodeURIComponent(JSON.stringify(editUrl))
     })
   },
   deleteImg: co.wrap(function*(e) {
@@ -108,7 +110,7 @@ Page({
     }
   },
   getPhoneNumber: co.wrap(function*(e) {
-    yield app.getPhoneNum(e)
+    // yield app.getPhoneNum(e)
     storage.put("hasAuthPhoneNum", true)
     this.hasAuthPhoneNum = true
     this.setData({
@@ -120,35 +122,29 @@ Page({
     this.setData({
       showModal: false
     })
-    wx.showLoading({
-      title: '请稍等',
-      mask: true
+    this.weToast.toast({
+      type: 'loading'
     })
     try {
       let imgs = this.data.cognitionCardImgs,
         reImgs = []
       for (let i = 0; i < imgs.length; i++) {
         let imgObj = {
-          url: imgs[i].url,
-          pre_convert_url: imgs[i].url,
-          number: 1
+          originalUrl: imgs[i].url,
+          printUrl: imgs[i].url
         }
         reImgs.push(imgObj)
       }
-      let resp = yield api.printInvoice(app.openId, 'literacy_card', reImgs)
-      if (resp.code !== 0) {
-        throw (resp)
-      }
-      wx.hideLoading()
+      let resp = yield commonRequest.createOrder('literacy_card', reImgs)
+      this.weToast.hide()
       wxNav.redirectTo(`../../../../finish/index`, {
-        type: 'sticker',
         media_type: 'literacy_card',
-        state: resp.order.state,
+        state: resp.state,
         type: 'literacy_card'
       })
     } catch (error) {
-      wx.hideLoading()
-      util.showErr(error)
+      this.weToast.hide()
+      util.showError(error)
     }
   }),
   toAdd() {
@@ -163,7 +159,7 @@ Page({
     } else {
       let url = `../edit/index`
       wxNav.redirectTo(url, {
-        templateId: this.templateId,
+        sn: this.templateSn,
         type: 'custom',
         hasEdit: 0,
         editUrl: ''

@@ -1,24 +1,24 @@
 <view class="confirm-modal" wx:if="{{modal.isShow}}" bindtap="hideModal" catchtouchmove>
   <view class="confirm-modal-wrap" catchtap="tapModal">
     <view class="confirm-modal-title" wx:if="{{modal.title}}">{{modal.title}}</view>
-    <view class="content-box">
+    <view class="confirm-modal-content">
       <block wx:if="{{modal.slotContent}}">
         <slot></slot>
       </block>
       <block wx:else>
-        <view class="box-text" wx:if="{{modal.content}}" style="text-align:{{modal.content.length<16?'center':''}};">{{modal.content}}</view>
+        <view class="confirm-modal-content__text" wx:if="{{modal.content}}" style="text-align:{{modal.content.length<16?'center':''}};">{{modal.content}}</view>
         <image src="{{modal.image}}" mode="widthFix" wx:if="{{modal.image}}"></image>
       </block>
     </view>
-    <view class="button">
+    <view class="confirm-modal-button">
       <block wx:if="{{modal.hasCancel}}">
-        <view class="cancel" data-modal="cancel" catchtap="clickCancel">
+        <view class="confirm-modal-button__cancel" data-modal="cancel" catchtap="clickCancel">
           {{modal.cancelText||'取消'}}
         </view>
         <view data-modal="confirm" catchtap="clickConfirm">{{modal.confirmText||'确认'}}</view>
       </block>
       <block wx:else>
-        <view class="confirm" data-modal="confirm" catchtap="clickConfirm">
+        <view class="confirm-modal-button__confirm" data-modal="confirm" catchtap="clickConfirm">
           {{modal.confirmText||'确认'}}
         </view>
       </block>

@@ -17,7 +17,6 @@ Page({
   data: {
     isFullScreen: false,
     title: '',
-    popWindow: false,
     tipsWindow: false,
     idType: {
       //身份证
@@ -150,9 +149,31 @@ Page({
   chooseImage: co.wrap(function* (e) {
     this.checkedIndex = Number(e.currentTarget.dataset.index)
     this.setData({
-      popWindow: true,
       checkedIndex: this.checkedIndex
     })
+
+    if (this.data.type == 'id') {
+      var showIdTip = storage.get('showIdTip' + this.checkedIndex)
+      
+      if (showIdTip == 'showed') {
+        this.setData({
+          tipsWindow: false
+        })
+        this.selectComponent("#checkComponent").showPop()
+      } else {
+        this.setData({
+          tipsWindow: true
+        })
+      }
+    } else {
+      this.selectComponent("#checkComponent").showPop()
+    }
+  }),
+
+  chooseImg: co.wrap(function*(e) {
+    let res = e.detail
+    let tempFiles = res.tempFiles
+    this.toEditImg([tempFiles[0].path || tempFilePaths[0] || tempFilePaths])
   }),
 
   selectIndex(e) {
@@ -182,73 +203,11 @@ Page({
 
   toChooseImg() {
     storage.put('showIdTip' + this.checkedIndex, 'showed')
-   
     this.setData({
       tipsWindow: false,
     })
-    this.toCheckPhoto()
+    this.selectComponent("#checkComponent").showPop()
   },
-
-  checkAddTip(e) {
-    this.checkedType = e.currentTarget.dataset.type
-    let _this = this
-    _this.setData({
-      popWindow: false
-    })
-    if (_this.data.type == 'id') {
-      var showIdTip = storage.get('showIdTip' + _this.checkedIndex)
-      
-      if (showIdTip == 'showed') {
-        _this.setData({
-          tipsWindow: false
-        })
-        _this.toCheckPhoto()
-      } else {
-        _this.setData({
-          tipsWindow: true
-        })
-      }
-    } else {
-      _this.toCheckPhoto()
-    }
-  },
-
-  toCheckPhoto() {
-    if (this.checkedType == 'takephoto') {
-      this.toCamera()
-    } else if (this.checkedType == 'localAlbum') {
-      this.localAlbum()
-    } else {
-      this.chooseMessageFile()
-    }
-
-  },
-
-  chooseMessageFile: co.wrap(function* () {
-    const image = yield chooseMessageFile({
-      count: 1,
-      type: 'image',
-    })
-    this.toEditImg([image.tempFiles[0].path]);
-  }),
-
-  toCamera: co.wrap(function* () {
-    const image = yield chooseImage({
-      count: 1,
-      sizeType: ['original'],
-      sourceType: ['camera']
-    })
-    this.toEditImg([image.tempFilePaths[0]]);
-  }),
-
-  localAlbum: co.wrap(function* () {
-    const image = yield chooseImage({
-      count: 1,
-      sizeType: ['original'],
-      sourceType: ['album']
-    })
-    this.toEditImg(image.tempFilePaths);
-  }),
 
   toEditImg(tempFilePaths) {
     const images = encodeURIComponent(JSON.stringify(tempFilePaths))
@@ -259,15 +218,8 @@ Page({
     
     this.setData({
       toEdit: true,
-      popWindow: false,
     })
   },
-
-  closePopWindow: co.wrap(function* () {
-    this.setData({
-      popWindow: false
-    })
-  }),
 
   deleteImg({
     currentTarget: {

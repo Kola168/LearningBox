@@ -1,0 +1,54 @@
+<!--pages/package_common/account/personal_info.wxml-->
+<nav-bar background="#fff" title="我的"></nav-bar>
+<view class="item" bindtap="changeAvatar">
+    <view class="left">编辑头像</view>
+    <view class="right">
+        <image src="../images/account_avatar_small.png" mode="widthFix" class="avatar"></image>
+        <image src="/images/doc_item_arrow.png" mode="widthFix" class="after"></image>
+    </view>
+</view>
+<view class="line"></view>
+<view class="item" bindtap="changeName">
+    <view class="left">姓名</view>
+    <view class="right">
+       <view>未填写</view>
+        <image src="/images/doc_item_arrow.png" mode="widthFix" class="after"></image>
+    </view>
+</view>
+<view class="line"></view>
+<view class="item">
+    <view class="left">生日</view>
+    <view class="right">
+       <view>未填写</view>
+        <image src="/images/doc_item_arrow.png" mode="widthFix" class="after"></image>
+    </view>
+</view>
+<view class="line"></view>
+<view class="item">
+    <view class="left">性别</view>
+    <view class="right">
+       <view>未填写</view>
+        <image src="/images/doc_item_arrow.png" mode="widthFix" class="after"></image>
+    </view>
+</view>
+<view class="line"></view>
+<view class="item">
+    <view class="left">城市</view>
+    <view class="right">
+       <view>未填写</view>
+        <image src="/images/doc_item_arrow.png" mode="widthFix" class="after"></image>
+    </view>
+</view>
+<view class="line"></view>
+<view class="item">
+    <view class="left">在读年级</view>
+    <view class="right">
+       <view>未填写</view>
+        <image src="/images/doc_item_arrow.png" mode="widthFix" class="after"></image>
+    </view>
+</view>
+
+<!-- 选择照片模块 -->
+<take-photo-pop id="checkComponent" bindchooseImg="uploadImage" imgNum="{{9}}"></take-photo-pop>
+<import src="../../../lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />

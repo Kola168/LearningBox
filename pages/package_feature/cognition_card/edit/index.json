@@ -3,6 +3,7 @@
   "enablePullDownRefresh": false,
   "usingComponents": {
     "confirm-print": "../../../../components/confirm-print",
-    "check-img": "../../../components/checkimg/index"
+    "check-img": "../../../components/checkimg/index",
+    "modal": "../../../../components/modal/index"
   }
 }

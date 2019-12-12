@@ -1,0 +1,71 @@
+/* fontSize */
+.f-12 {font-size: 24rpx;}
+
+.f-13 {font-size: 26rpx;}
+
+.f-14 {font-size: 28rpx;}
+
+.f-15 {font-size: 30rpx;}
+
+.f-16 {font-size: 32rpx;}
+
+.f-18 {font-size: 36rpx;}
+
+.f-20 {font-size: 40rpx;}
+
+.f-24 {font-size: 48rpx;}
+/* color */
+
+.color-333 {
+    color: #333;
+}
+
+.color-666 {
+    color: #666;
+}
+
+.color-999 {
+    color: #999;
+}
+
+/* flex */
+.sys-flex {
+    display: flex;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+}
+
+/* flex direction */
+.flex-dir-column {
+    flex-direction: column;
+}
+
+
+
+/* axis display */
+
+.flex-m-axis-between {
+    justify-content: space-between;
+}
+
+.flex-m-axis-around {
+    justify-content: space-around;
+}
+
+.flex-m-axis-center {
+    justify-content: center;
+}
+
+.flex-cross-axis-center {
+    align-items: center;
+}
+
+
+/* over-hidden */
+
+.overflow-hidden {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-all;
+    white-space: nowrap;
+}
