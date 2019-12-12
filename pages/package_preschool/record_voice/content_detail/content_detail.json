@@ -1,0 +1,9 @@
+{
+  "disableScroll": true,
+  "enablePullDownRefresh":false,
+  "usingComponents": {
+    "consumables": "../components/consumables/index",
+    "confirm-print": "../../components/confirm-print",
+    "ios-tip":"../../components/ios_tip/index"
+  }
+}

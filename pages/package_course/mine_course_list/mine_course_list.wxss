@@ -1,0 +1,93 @@
+@import '../common/style/course_list.wxss';
+@import '/common/wxss/common.wxss';
+@import '../common/style/empty.wxss';
+
+.course-list {
+    padding: 0 24rpx;
+
+}
+
+.course-tab {
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 15;
+    width: 100%;
+    padding: 0 24rpx;
+    box-sizing: border-box;
+    background-color: #FFF;
+}
+
+.cover-box {
+    height: 100rpx;
+}
+
+.course-list .tab-item {
+    margin-right: 100rpx;
+    height: 110rpx;
+    line-height: 110rpx;
+    position: relative;
+    text-align: center;
+}
+
+.course-list .tab-item .tab-title {
+    color: #999999;
+    transition: 0.2s all linear;
+    -webkit-transform: translate3d(0, 0, 0);
+    transform-origin: left center;
+}
+
+.course-list .tab-item .tab-line {
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 0;
+    height: 8rpx;
+    border-radius: 6rpx;
+    margin-left: -20rpx;
+    background-color: #FFDC5E;
+    transition: 0.2s width linear;
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translateX(20rpx);
+}
+
+.active-line {
+    width: 40rpx !important;
+}
+
+.active-title {
+    transform: scale(1.3) !important;
+    color: #333333 !important;
+}
+
+
+
+.mine-t-item {
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.mine-b-item {
+    width: 100%;
+    height: 88rpx;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.activate-code {
+    margin-right: 24rpx;
+}
+
+.btn-active {
+    width: 68rpx;
+    height: 36rpx;
+    line-height: 36rpx;
+    background-color: #FFDC5E;
+    border-radius: 8rpx;
+    text-align: center;
+}
+
+.mine-border {
+    border-bottom: 1rpx solid #cecece;
+}

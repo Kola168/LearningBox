@@ -1,0 +1,169 @@
+/* pages/package_common/record_voice/recorder/recorder.wxss */
+@import '/common/wxss/common.wxss';
+
+.recorder-main {
+  position: relative;
+}
+
+.banner-recommend {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.banner-recommend image {
+  width: 448rpx;
+  height: 512rpx;
+}
+
+.recorder-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  width: 100%;
+  height: 100%;
+  -webkit-filter: blur(45rpx)brightness(.4);
+  filter: blur(45rpx)brightness(.4);
+}
+
+.play-view-main {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.play-view-main .source-icon {
+  margin: 120rpx auto 40rpx;
+  width: 508rpx;
+  height: 508rpx;
+}
+
+.play-view-main .source-info {
+  text-align: center;
+  color: #FFFFFF; 
+}
+
+.play-view-main .source-name {
+  margin-bottom: 16rpx;
+}
+
+.duration-main {
+    justify-content: center;
+    align-items: center;
+    margin-top: 100rpx;
+    color: #FFF;
+    font-size: 22rpx;
+}
+
+.player-time {
+  padding-right: 10rpx;
+}
+
+.total-time {
+  padding-left: 10rpx;
+}
+
+.progress-main {
+  position: relative;
+  height: 8rpx;
+  background-color: #fff;
+}
+
+.dots {
+  position: absolute;
+  top: -11rpx;
+  left: 0;
+  width: 30rpx;
+  height: 30rpx;
+  border-radius: 30rpx;
+  background-color: #FFDC5E;
+  cursor: pointer;
+}
+
+.touch-move {
+  position: absolute;
+  top: -31rpx;
+  left: -31rpx;
+  width: 70rpx;
+  height: 70rpx;
+  border-radius: 70rpx;
+  /* background-color: #FFDC5E; */
+  cursor: pointer;
+}
+
+.active-progress {
+  position: absolute;
+  top: 0rpx;
+  left: 0;
+  width: 4rpx;
+  height: 8rpx;
+  background-color: #FFDC5E;
+}
+
+.control-main {
+  align-items: center;
+  justify-content: space-around;
+  padding: 80rpx 100rpx 0;
+  width: 100%;
+  color: #FFF;
+}
+
+.control-main .btn-main {
+  flex-direction: column;
+  align-items: center;
+  width: fit-content;
+  text-align: center;
+}
+
+.control-main .btn-main .btn {
+  margin-bottom: 12rpx;
+  width: 60rpx;
+  height: 60rpx;
+  vertical-align: top;
+}
+
+.control-main .btn-voice {
+  flex-direction: column;
+  align-items: center;
+  width: 170rpx;
+  transition: 0.5;
+}
+
+.btn-recording {
+  animation:recording 1.5s infinite;
+}
+
+@keyframes recording{
+  from {
+    opacity: 0.95;
+  }
+  to {
+    opacity: 0.1;
+  }
+}
+
+.btn-voice .btn {
+  margin-bottom: 20rpx;
+  width: 132rpx;
+  height: 132rpx;
+}
+
+.recording-status {
+  height: 30rpx;
+}
+
+.btn-disabled {
+  color: #CECECE;
+}

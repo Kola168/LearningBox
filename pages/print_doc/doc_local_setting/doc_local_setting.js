@@ -4,7 +4,7 @@ const co = require('../../../lib/co/co')
 const util = require('../../../utils/util')
 const _ = require('../../../lib/underscore/we-underscore')
 const showModal = util.promisify(wx.showModal)
-// import commonRequest from '../../utils/common_request'
+import commonRequest from '../../../utils/common_request'
 import api from '../../../network/restful_request'
 import {
   getLogger
@@ -346,8 +346,6 @@ Page({
     let  display = this.data.zoomType
     let skip_gs = !this.data.checkOpen
     let extract = this.data.extract || 'all'
-    let start_page = this.data.startPrintPage
-    let end_page = this.data.endPrintPage
     this.longToast.toast({
       type:'loading',
       title: '正在开启预览',
@@ -355,7 +353,7 @@ Page({
     })
     commonRequest.previewDocument({
       feature_key: 'doc_a4',
-      worker_data: {url, display, skip_gs, extract, start_page, end_page}
+      worker_data: {url, display, skip_gs, extract}
     }, ()=>{
       this.longToast.hide()
     })

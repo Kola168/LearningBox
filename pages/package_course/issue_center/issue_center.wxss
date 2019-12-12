@@ -1,0 +1,12 @@
+/* pages/learning/issue_center/issue_center.wxss */
+@import '../common/style/course_list.wxss';
+@import '/common/wxss/common.wxss';
+@import '../common/style/empty.wxss';
+
+.course-main {
+    padding: 0 24rpx 0;
+}
+
+.issue-icon {
+    width: 100%;
+}

@@ -1,0 +1,18 @@
+<nav-bar background="#fff" title="精选专题" />
+<view class="issue-main">
+	<view
+	 class="issue-item"
+	 bindtap="toIssueDetail"
+	 wx:for="{{categoryList}}"
+	 wx:key="index"
+	 data-sn="{{item.sn}}"
+	>
+		<image class="" src="{{item.courseIntroductionImage}}" mode="widthFix" />
+		<view class="issue-title color-333 f-14">{{item.name}}</view>
+	</view>
+	<view class="empty-main" wx:if="{{is_empty}}">
+		<image src="" mode="aspectFill" />
+		<view>暂无专题~~</view>
+	</view>
+</view>
+

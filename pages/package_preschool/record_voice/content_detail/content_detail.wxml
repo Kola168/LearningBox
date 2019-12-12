@@ -1,0 +1,237 @@
+<nav-bar background="#fff" title="{{title}}" />
+<view wx:if="{{!showSetting}}" class='top'>
+	<!-- iOS提示 -->
+	<view class="ios-tip" wx:if="{{showIosTip}}">
+		<view class="ios-tip-content">
+			<view class="text-1">重要提示</view>
+			<view class="text-2">根据相关规定，ios用户暂时无法开通，可使用安卓系统进行了解</view>
+			<view class="text-3" bindtap="closeIosTip">我已了解</view>
+		</view>
+	</view>
+
+	<!-- 益智 -->
+	<view class="wrap-fun">
+		<swiper
+		 class="swiper-box"
+		 duration="500"
+		 current="{{num}}"
+		 bindchange="tab_slide"
+		 circular="{{circular}}"
+		 wx:if="{{detail.preview_urls.length>0}}"
+		>
+			<block wx:for="{{detail.preview_urls}}" wx:key="{{index}}">
+				<swiper-item style="overflow-y:scroll;overflow-x:hidden;">
+					<image style="width:100%" mode="widthFix" src="{{item}}">
+						<image src='https://cdn.gongfudou.com/miniapp/ec/shuiyin_new.png' class='watermark' />
+					</image>
+				</swiper-item>
+			</block>
+		</swiper>
+		<!-- <view wx:if="{{detail.preview_urls.length==0}}" class="study-none">
+            <image src="https://cdn.gongfudou.com/miniapp/ec/study_detail_none.png" mode="widthFix"></image>
+        </view> -->
+		<!--翻页-->
+		<view class="turn" wx:if="{{detail.preview_urls.length>0}}">
+			<view class="turn-content">
+				<text>{{num+1}}/{{detail.preview_urls.length}}</text>
+			</view>
+			<view class="turn-image">
+				<image
+				 class="turn-image-item turn-image-left"
+				 src="../../images/record_turn_left.png"
+				 mode="widthFix"
+				 data-turn="left"
+				 catchtap="turnImg"
+				/>
+				<image
+				 class="turn-image-item"
+				 src="../../images/record_turn_right.png"
+				 mode="widthFix"
+				 data-turn="right"
+				 catchtap="turnImg"
+				/>
+			</view>
+		</view>
+	</view>
+
+	<view class="bottom">
+		<view class="left">
+			<view class="collect" wx:if="{{type!='_learning'}}">
+				<view bindtap="collect">
+					<image mode="widthFix" src="../../images/collect_{{collection?'orange':'gray'}}.png" class='bottom-image' />
+					<text class="font-content">{{collection?'已收藏':'收藏'}}</text>
+				</view>
+			</view>
+			<view class="{{type!='_learning'?'share':'share-center'}}">
+				<button
+				 class="share-button"
+				 open-type="{{userAuthorize?'share':''}}"
+				 bindtap="{{userAuthorize?'':'authCheck'}}"
+				 hover-class="none"
+				>
+					<image mode="widthFix" src="../../images/gfd-share_gray.png" class='bottom-image' />
+					<text class="font-content">分享</text>
+				</button>
+			</view>
+		</view>
+
+		<view class="right">
+			<view class="right-first">适配耗材
+				<consumables
+				 class="modify"
+				 bind:myevent="onMyEvent"
+				 supply_types="{{supply_types}}"
+				 consumables-icon="consumables-icon"
+				 medium_recommend="{{mediumRecommend}}"
+				 find="library"
+				/>
+
+			</view>
+
+			<!-- 付款逻辑重构 -->
+			<!-- ios 无支付 弹窗提示 -->
+
+			<!-- 安卓付款逻辑 -->
+			<!-- 试卷付款、打印 start -->
+			<!-- 
+试卷不存在折扣、优惠价
+1、is_valid           上次购买是否还有效，有效直接打印
+2、can_free_print     设置为免费打印（会员、非会员免费次数均根据这个字段判断），付款0元
+3、sale_price         以上不满足则调起支付 -->
+			<block wx:if="{{type=='_learning'}}">
+				<button bindtap="toConfirm" class="print-button" wx:if="{{detail.is_valid}}">
+					打印
+				</button>
+				<view class="pay-button" bindtap="toPay" wx:if="{{!detail.is_valid}}">
+					<view class="price-top">
+						<view class="price">￥{{detail.can_free_print?0:detail.sale_price}}</view>
+						<view>打印</view>
+					</view>
+				</view>
+			</block>
+
+			<!-- 试卷付款 、打印end -->
+
+			<!-- 内容付款、打印 start -->
+			<!-- 
+            1、is_valid          上次购买是否还有效，有效直接打印
+            2、discout==>discountType
+            **1. non_free       内容免费直接打印
+            **2. free            设置为免费，付款0元
+            **3. free_count      免费打印次数，直接打印
+            **4. discount_price  活动价，付款
+            **5. promotion       折扣，付款 
+        -->
+			<block wx:if="{{type!='_learning'}}">
+				<button bindtap="toConfirm" class="print-button" wx:if="{{detail.is_valid||discountType=='free_count'||discountType=='non_free'}}">
+					打印
+				</button>
+
+				<view class="pay-button" bindtap="toPayContent" wx:if="{{!detail.is_valid&&discountType!='free_count'&&discountType!='non_free'}}">
+					<view class="price-top">
+						<!-- ！（设置免费&&苹果&&会员）不显示价格 -->
+						<view class="price" wx:if="{{!(discountType=='free'&&!isAndroid&&isMember)}}">
+							￥{{discount.priceY}}
+						</view>
+						<view>打印</view>
+					</view>
+					<view class=" sale-price" wx:if="{{discountType!=null&&(!(discountType=='free'&&!isAndroid&&isMember))}}">
+						原价：￥{{discount.amountY}}</view>
+				</view>
+			</block>
+			<!-- 内容付款 、打印end -->
+
+		</view>
+	</view>
+</view>
+
+<view wx:else>
+	<view class="document_title">
+		<view>{{title}}</view>
+	</view>
+	<view class="doc_setting">
+		<view class="setting_item">
+			<view class="item_label">打印份数</view>
+			<view class="item_main">
+				<image
+				 src="{{documentPrintNum==1?'/images/doc_document_cut.png':'/images/doc_minus_y.png'}}"
+				 mode="aspectFit"
+				 class="print_num"
+				 bindtap="cutPrintNum"
+				/>
+				<text class="document_print_num">{{documentPrintNum}}</text>
+				<image
+				 src="{{documentPrintNum >=30 ? '/images/doc_document_add_gray.png' : '/images/doc_plus_y.png'}}"
+				 mode="aspectFit"
+				 class="print_num"
+				 bindtap="addPrintNum"
+				/>
+			</view>
+		</view>
+
+		<view class="setting_item">
+			<view class="item_label">打印范围</view>
+			<view class="item_main">
+				<input
+				 id="1"
+				 class="page_input"
+				 type="number"
+				 bindinput="inputStartPage"
+				 bindblur="startPageJudge"
+				 value="{{startPrintPage}}"
+				/>
+				<text class="page_text">至</text>
+				<input
+				 id="2"
+				 class="page_input"
+				 type="number"
+				 bindinput="inputEndPage"
+				 bindblur="endPageJudge"
+				 value="{{endPrintPage}}"
+				/>
+				<text class="page_text">页</text>
+			</view>
+		</view>
+		<view class="setting_item" wx:if="{{isColorPrinter}}">
+			<view class="item_label">色彩选择</view>
+			<view class="item_main">
+				<view class="color_check_box" data-style="Mono" bindtap="colorCheck">
+					<text class="color_type">黑白</text>
+					<image src="{{colorcheck != 'Color' ? '/images/radio_on.png' : '/images/radio_off.png'}}" mode="widthFix" class="color_check" />
+				</view>
+				<view class="color_check_box" data-style="Color" bindtap="colorCheck">
+					<text class="color_type">全彩</text>
+					<image src="{{colorcheck == 'Color' ? '/images/radio_on.png' : '/images/radio_off.png'}}" mode="widthFix" class="color_check" />
+				</view>
+			</view>
+		</view>
+		<view class="setting_item" wx:if="{{isDuplex}}">
+			<view class="item_label">双面打印</view>
+			<view class="item_main">
+				<view class="color_check_box" data-style="0" bindtap="duplexCheck">
+					<text class="color_type">单面</text>
+					<image src="{{duplexcheck ?'/images/radio_off.png' : '/images/radio_on.png'}}" mode="widthFix" class="color_check" />
+				</view>
+				<view class="color_check_box" data-style="1" bindtap="duplexCheck">
+					<text class="color_type">双面</text>
+					<image src="{{duplexcheck ? '/images/radio_on.png' : '/images/radio_off.png'}}" mode="widthFix" class="color_check" />
+				</view>
+			</view>
+		</view>
+	</view>
+	<view class="conf_box-left" bindtap="cancelCheck">取消</view>
+	<button
+	 class="conf_box-right"
+	 bindtap="confCheck"
+	 open-type="{{hasAuthPhoneNum?'':'getPhoneNumber'}}"
+	 bindgetphonenumber="{{hasAuthPhoneNum?'':'getPhoneNumber'}}"
+	>确认
+	</button>
+</view>
+
+<!-- 打印确认框 -->
+<confirm-print bindconfirm="print" modal="{{confirmModal}}" />
+
+<import src="../../lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />
+

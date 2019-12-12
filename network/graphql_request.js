@@ -314,7 +314,287 @@ const graphqlApi = {
         input: orderParams
       }
     })
+	},
+	 /**
+   * 课程列表
+   * *@param { CategoryEnum } type 请求类型
+   */
+  getCourses: (type) => {
+    return gql.query({
+      query: `query getCourses($type: String!){
+        courses(type:$type){
+          banners
+          desc
+          code
+          introduction
+          name
+          studyUsers
+          totalLessons
+          mainImageUrl
+          priceYuan
+          recommendationImageUrl
+          sn
+          payed
+        }
+      }`,
+      variables: {
+        type: type
+      }
+    })
   },
+
+  /**
+   * 获取课程详情
+   */
+  getCourseDetail: (sn) => {
+    return gql.query({
+      query: `query getCourses($sn: String!, $type: ConsumableTypeEnum!, $period: String!){
+        course(sn: $sn){
+          banners
+          desc
+          code
+          shareSn
+          introduction
+          name
+          studyUsers
+          courseCollected
+          courseChapters {
+            name
+            shareToTrial
+            sn
+            state
+            trial
+            courseLessons{
+              courseName
+              locked
+              name
+              shareToTrial
+            }
+          }
+          finishedLessons
+          totalLessons
+          mainImageUrl
+          userCanShareToTrial
+          priceYuan
+          promotion
+          promotionNum
+          recommendationImageUrl
+          sn
+          payed
+        }
+        consumables (type: $type, sn: $sn, period: $period) {
+          appid
+          url
+          imageUrl
+          name
+        }
+      }`,
+      variables: {
+        sn: sn,
+        type: 'course',
+        period: 'before'
+      }
+    })
+  },
+
+  /**
+   * 获取分享助力信息
+   */
+  getAssistanceInfo: (sn) => {
+    return gql.query({
+      query: `query getAssistanceInfo($sn: String!){
+        courseShare(sn: $sn){
+          assistanceSucceed
+          assistanceUsers{
+            avatar
+            name
+            phone
+          }
+          canAssistance
+          course{
+            desc
+            studyUsers
+            introduction
+            mainImageUrl
+            totalLessons
+            name
+            sn
+            priceYuan
+            promotion
+            promotionNum
+          }
+          endAtTimestamp
+          owner
+        }
+      }`,
+      variables: {
+        sn: sn
+      }
+    })
+  },
+
+  // 获取最后一次学些的信息
+  getLastCourseInfo: () => {
+    return gql.query({
+      query: `query getLastCourseInfo(){
+        lastCourse{
+          finished
+          name
+          sn
+          total
+        }
+      }`,
+      variables: {
+        sn: sn
+      }
+    })
+  },
+
+  // 获取课程首页banner
+  getCourseBanner: (type) => {
+    return gql.query({
+      query: `query getCourseBanner($type:  BannerTypeEnum!){
+        banners (type: $type){
+          url: imageUrl
+          name
+        }
+      }`,
+      variables: {
+        type: type
+      }
+    })
+  },
+
+  // 分享助力
+  shareAssistance: (sn)=> {
+    return gql.mutate({
+      mutation: `mutation shareAssistance($input: CoursePromotionInput!){
+        courseShare(input:$input){
+          state
+        }
+      }`,
+      variables: {
+        input: {
+          sn
+        }
+      }
+    })
+  },
+
+  // 发起助力
+  sendCourseAssistance: (sn) => {
+    return gql.mutate({
+      mutation: `mutation shareAssistance($input: CourseAssistanceInput!){
+        courseAssistance(input:$input){
+          state
+        }
+      }`,
+      variables: {
+        input: {
+          sn
+        }
+      }
+    })
+  },
+
+  // 发起收藏
+  collectCourse: (input) => {
+    return gql.mutate({
+      mutation: `mutation collectCourse($input: ResourceCollectInput!){
+        collect(input:$input){
+          state
+        }
+      }`,
+      variables: {
+        input: input
+      }
+    })
+  },
+
+  getMyFavorList: (type) => {
+    return gql.query({
+      query: `query getMyFavorList($type: CollectionTypeEnum!){
+       collections(type: $type) {
+        ...on Course{
+          name
+          sn
+          mainImageUrl
+          desc
+          payed
+          priceYuan
+          purchasedAt
+          totalLessons
+          studyUsers
+          finishedLessons
+          introduction
+          lastCourseChapterSn
+        }
+       }
+      }`,
+      variables: {
+        type
+      }
+    })
+  },
+
+  // 获取课时详情
+  getCourseLesson: (sn) => {
+    return gql.query({
+      query: `query getCourseLesson($sn: String!){
+        courseLesson(sn: $sn) {
+          courseName
+          name
+          shareToTrial
+          videoUrl
+        }
+      }`,
+      variables: {
+        sn
+      }
+    })
+  },
+
+  // 获取课程专题
+  getCourseSubject: (key) => {
+    return gql.query({
+      query: `query getCourseSubject($key: String!){
+        feature(key: $key) {
+          categories {
+            courseIntroductionImage
+            name
+            sn
+          }
+        }
+      }`,
+      variables: {
+        key
+      }
+    })
+  },
+
+  getSubjectContent: (sn) => {
+    return gql.query({
+      query: `query getSubjectContent($sn: String!){
+        category(sn: $sn) {
+          image
+          courses{
+            sn
+            mainImageUrl
+            desc
+            payed
+            priceYuan
+            totalLessons
+            studyUsers
+          }
+        }
+      }`,
+      variables: {
+        sn
+      }
+    })
+  }
+	
+
 }
 
 export default graphqlApi

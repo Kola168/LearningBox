@@ -95,7 +95,6 @@ const api = {
   processes:(params)=>request.post(`processes`,params, {
     baseURL: `${app.apiServer}/api/v1/`
   }),
-
   /**
    * 获取百度文件sn
    * @param { Array } ids 文件id数组
