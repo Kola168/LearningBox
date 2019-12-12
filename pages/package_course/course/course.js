@@ -2,7 +2,6 @@
 
 const app = getApp()
 import { regeneratorRuntime, co, util } from '../../../utils/common_import'
-import api from '../../../network/restful_request'
 const event = require('../../../lib/event/event')
 const getSystemInfo = util.promisify(wx.getSystemInfo)
 const showModal = util.promisify(wx.showModal)
@@ -10,6 +9,8 @@ import graphql from '../../../network/graphql_request'
 import wxPay from '../../../utils/wxPay'
 import storage from '../../../utils/storage'
 import router from '../../../utils/nav.js'
+import Logger from '../../../utils/logger.js'
+const logger = new Logger.getLogger('pages/package_course/course/course')
 Page({
   data: {
     title: '',
@@ -123,17 +124,18 @@ Page({
   },
 
   toExclusive: co.wrap(function*(e) {
-    let index = e.currentTarget.id,
-      supplies = this.data.supplyTypes,
-      alias = supplies[index].alias
+    logger.info('点击了耗材推荐')
+    // let index = e.currentTarget.id,
+    //   supplies = this.data.supplyTypes,
+    //   alias = supplies[index].alias
     
-    router.navigateTo('/pages/cart/transit/transit', {
-      pageType: 'goodsDetail',
-      goodsId: alias,
-      openId: app.openId,
-      shopId: this.data.shopId,
-      appId: this.data.appId
-    })
+    // router.navigateTo('/pages/cart/transit/transit', {
+    //   pageType: 'goodsDetail',
+    //   goodsId: alias,
+    //   openId: app.openId,
+    //   shopId: this.data.shopId,
+    //   appId: this.data.appId
+    // })
   
   }),
 
@@ -333,7 +335,7 @@ Page({
         course: course,
         isCollected: course.courseCollected,
         canShare: course.userCanShareToTrial,
-        // supplyTypes: temp.supply_types,
+        supplyTypes: [...resp.consumables, ...resp.consumables],
         loadReady: true
       })
       this.setData({

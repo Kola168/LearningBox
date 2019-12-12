@@ -1,3 +1,4 @@
+<nav-bar background="#fff" title="童音录制"/>
 <view class="record-voice-main">
   <image class="" src="https://cdn-h.gongfudou.com/LearningBox/preschool/record_voice_desc.png" mode="widthFix"/>
   <view class="btn {{isFullScreen ? 'is-full-screen' : ''}}">开始使用</view>

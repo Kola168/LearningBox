@@ -72,8 +72,8 @@
         "print_balloon/typelist",
         "print_balloon/edit",
         "print_book/index",
-				"print_book/edit",
-				"cognition_card/index/index",
+        "print_book/edit",
+        "cognition_card/index/index",
         "cognition_card/list/index",
         "cognition_card/category/index",
         "cognition_card/category_list/index",
@@ -94,7 +94,9 @@
       "root": "pages/package_preschool",
       "pages": [
         "record_voice/index/index",
-        "record_voice/recorder/recorder"
+        "record_voice/recorder/recorder",
+        "record_voice/content/content",
+        "record_voice/content_detail/content_detail"
       ]
     },
     {

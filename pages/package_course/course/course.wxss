@@ -113,26 +113,27 @@
 }
 
 .exclusive-item {
+  display: inline-block;
   margin-bottom: 20rpx;
+  width: calc((100% - 30rpx) / 2 );
+  padding-top: calc((100% - 30rpx) / 2 );
+  position: relative;
 }
 
 .exclusive-item image {
+  position: absolute;
+  top:0;
   width: 100%;
-  vertical-align: middle;
-  border-top-left-radius: 18rpx;
-  border-top-right-radius: 18rpx;
+  height: 100%;
+  vertical-align: top;
+  border-radius: 20rpx;
 }
 
-.exclusive-btn {
+.exclusive-text {
+  padding-top: 20rpx;
   width: 100%;
-  height: 100rpx;
-  line-height: 100rpx;
-  color: #454545;
-  font-size: 36rpx;
-  background: #FFDC5E;
-  text-align: center;
-  border-bottom-left-radius: 18rpx;
-  border-bottom-right-radius: 18rpx;
+  color: #333333;
+  font-size: 28rpx;
 }
 
 
@@ -543,4 +544,8 @@ view.course-buy {
   width: 90%;
   margin-left: 5%;
   text-align: center;
+}
+
+.margin-r-30 {
+  margin-right: 30rpx;
 }

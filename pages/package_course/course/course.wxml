@@ -42,7 +42,7 @@ module.exports = {
           课程列表
         </view>
         <view class="nav-item {{activeTab==2?'nav-item-active':''}}" wx:if="{{supplyTypes.length>0}}" id="2" bindtap="navTap">
-          专属推荐
+          专属耗材
         </view>
       </view>
     </view>
@@ -121,10 +121,10 @@ module.exports = {
         </view>
       </view>
       <view class="nav-content-3" wx:if="{{activeTab == 2}}">
-        <!-- <view class="exclusive-item" wx:for="{{supplyTypes}}" wx:key="{{index}}" id="{{index}}" bindtap="toExclusive">
-          <image src="{{item.image_url}}" mode="widthFix" />
-          <view class="exclusive-btn">{{isAndroid?'购买':'点击查看'}}</view>
-        </view> -->
+        <view class="exclusive-item {{index % 2 != 0 ? '' : 'margin-r-30'}}" wx:for="{{supplyTypes}}" wx:key="{{index}}" id="{{index}}" bindtap="toExclusive">
+          <image src="{{item.imageUrl}}" mode="widthFix" />
+          <view class="exclusive-text">A4多功能复印纸</view>
+        </view>
       </view>
     </view>
   </view>

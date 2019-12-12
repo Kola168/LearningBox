@@ -241,7 +241,7 @@ const graphqlApi = {
    */
   getCourseDetail: (sn) => {
     return gql.query({
-      query: `query getCourses($sn: String!){
+      query: `query getCourses($sn: String!, $type: ConsumableTypeEnum!, $period: String!){
         course(sn: $sn){
           banners
           desc
@@ -275,9 +275,16 @@ const graphqlApi = {
           sn
           payed
         }
+        consumables (type: $type, sn: $sn, period: $period) {
+          alias
+          imageUrl
+          name
+        }
       }`,
       variables: {
-        sn: sn
+        sn: sn,
+        type: 'course',
+        period: 'before'
       }
     })
   },

@@ -24,7 +24,8 @@ Page({
     ],
     courseList: [],
     favorList: [],
-    index: 0 // update index
+    index: 0, // update index
+    top: 0,
   },
 
   onLoad: function (options) {
