@@ -39,8 +39,7 @@ const chooseCtx = {
     //是否过滤掉了大/小图
     //显示图片过滤提示
     showInterceptModal: false,
-    //图片选择器
-    popWindow: false,
+    isFullScreen: false,
     media_size: {
       pic2doc: { //a4尺寸
         width: 2520,
@@ -60,6 +59,9 @@ const chooseCtx = {
     this.longToast = new app.weToast()
     this.query = options || {}
     this.initUseArea()
+    this.setData({
+      isFullScreen: app.isFullScreen
+    })
     event.on('setPreData', this, (postData) => {
       this.setPostData(postData)
     })
@@ -130,15 +132,6 @@ const chooseCtx = {
     }
   }) {
     let image = this.data.images[id]
-      // let params = {
-      //   url: image.localUrl,
-      //   mode: "quadrectangle",
-      //   from: "pic2doc",
-      //   index: id,
-      //   media_type: this.media_type,
-      //   isSingle: !flag,
-      //   currentCount: Math.max(this.data.images.length - this.data.preAllCount, 0) //当前选择的图片总数
-      // }
     wxNav.navigateTo(`/pages/print_photo_doc/edit`, {
       url: encodeURIComponent(JSON.stringify(image.localUrl)),
       mode: "quadrectangle",
