@@ -79,9 +79,9 @@ module.exports = {
       </view>
     </view>
     <scroll-view class="select-project" scroll-x>
-      <view class="project-item" bindtap="toSelectProject" wx:for="{{selectCategories}}" wx:key="{{index}}" id="{{item.id}}">
-        <image src="{{item.introductionImageUrl}}" mode="widthFix" />
-        <view>{{item.desc}}</view>
+      <view class="project-item" bindtap="toSelectProject" wx:for="{{selectCategories}}" wx:key="{{index}}" id="{{item.sn}}">
+        <image src="{{item.courseIntroductionImage}}" mode="widthFix" />
+        <view>{{item.name}}</view>
       </view>
     </scroll-view>
   </view>

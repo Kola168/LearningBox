@@ -3,7 +3,6 @@
 const app = getApp()
 import { regeneratorRuntime, co, util } from '../../../utils/common_import'
 const event = require('../../../lib/event/event')
-const getSystemInfo = util.promisify(wx.getSystemInfo)
 const showModal = util.promisify(wx.showModal)
 import graphql from '../../../network/graphql_request'
 import wxPay from '../../../utils/wxPay'
@@ -24,11 +23,8 @@ Page({
     isFixedNav: false,
     isCollected: false,
     canShare: false,
-    hasCountLimit: false,
     supplyTypes: [],
     loadReady: false,
-    appId: 'wxde848be28728999c',
-    shopId: 24056376,
     showCodeCourseModal: false,
     checkboxFlag: false,
     navBarTop: 0,
@@ -43,14 +39,14 @@ Page({
       // 助力成功
     this.isShareSuccess = query.isShareSuccess ? Boolean(query.isShareSuccess) : false
     this.sn = query.sn
-    let systemInfo = yield getSystemInfo()
+    let systemInfo = wx.getSystemInfoSync()
     let screenWidth = systemInfo.screenWidth
     this.swiperHeight = screenWidth * 8 / 15
     let isAndroid = systemInfo.system.toLocaleLowerCase().indexOf('android') > -1
     let hiddenShareTip = storage.get('hiddenShareTip')
     this.setData({
       navBarTop: app.navBarInfo.navBarHeight,
-      hiddenShareTip: hiddenShareTip ? true : false,
+      hiddenShareTip: !!hiddenShareTip,
       viewHeight: systemInfo.windowHeight - 50,
       unionId: this.unionId,
       isAndroid: isAndroid
@@ -119,24 +115,22 @@ Page({
     let scrollTop = e.detail.scrollTop
     let isFixedNav = scrollTop > this.swiperHeight ? true : false
     this.setData({
-      isFixedNav: isFixedNav
+      isFixedNav
     })
   },
 
-  toExclusive: co.wrap(function*(e) {
+  toExclusive: co.wrap(function*({currentTarget: {dataset: index}}) {
     logger.info('点击了耗材推荐')
-    // let index = e.currentTarget.id,
-    //   supplies = this.data.supplyTypes,
-    //   alias = supplies[index].alias
-    
-    // router.navigateTo('/pages/cart/transit/transit', {
-    //   pageType: 'goodsDetail',
-    //   goodsId: alias,
-    //   openId: app.openId,
-    //   shopId: this.data.shopId,
-    //   appId: this.data.appId
-    // })
-  
+    let supplies = this.data.supplyTypes,
+        appId = supplies[index].appId,
+        path = supplies[index].url;
+    wx.navigateToMiniProgram({
+      appId: appId,
+      path: path,
+      success: (res)=>{
+        logger.info('navigateToMiniProgram', res)
+      }
+    })
   }),
 
   chapterClick(e) {
@@ -170,14 +164,14 @@ Page({
     })
   }),
 
-  unfoldChapterAll: co.wrap(function*(e) {
-    let index = Number(e.currentTarget.dataset.index),
-      unfoldAllTarget = "course.courseChapters[" + index + "].unfoldChapterAll"
+  unfoldChapterAll: co.wrap(function*({currentTarget: {dataset: {index}}}) {
+     var unfoldAllTarget = "course.courseChapters[" + Number(index) + "].unfoldChapterAll"
     this.setData({
       [unfoldAllTarget]: true
     })
   }),
 
+  // 跳转购买
   toBuy: co.wrap(function*() {
     let isAuth = yield this.authCheck()
     if (isAuth) {
@@ -255,9 +249,8 @@ Page({
 
   onShareAppMessage(res) {
     if (res.from === 'button') {
-      if (this.data.canShare ) {
+      if (this.data.canShare) {
         graphql.shareAssistance(this.sn)
-
         return {
           title: '你好，我想学这个，帮帮我！',
           path: `/pages/package_course/share_course/share_course?sn=${this.shareSn}`
@@ -308,6 +301,7 @@ Page({
 
   }),
 
+  // 获取课程详情
   getCourseDetail: co.wrap(function*() {
     this.longToast.toast({
       type: 'loading',
@@ -318,7 +312,6 @@ Page({
    
       let course = resp.course,
         lastStudySn = course.lastCourseChapterSn
-
 
       course.introduction = course.introduction.replace(/alt=""/g, `style="max-width:100%;vertical-align:middle;"`)
       for (let i = 0; i < course.courseChapters.length; i++) {
@@ -344,10 +337,9 @@ Page({
       this.shareSn = course.shareSn
       this.showCodeCourseModal(course.code)
       this.displayTab(course.payed) // 切换tab
-      this.longToast.toast()
+      this.longToast.hide()
     } catch (error) {
-      
-      this.longToast.toast()
+      this.longToast.hide()
       util.showError(error)
     }
   }),

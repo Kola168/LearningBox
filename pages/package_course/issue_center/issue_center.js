@@ -41,14 +41,11 @@ Page({
         type: 'loading',
         title: '请稍后'
       })
-      var resp = yield graphql.getCategory(sn)
-      if (!resp.category) {
-        throw (resp)
-      }
+      var resp = yield graphql.getSubjectContent(sn)
+   
       this.setData({
         courseList: (resp.category.courses) || [],
-        mainImageUrl: resp.category.mainImageUrl,
-        isMember: resp.user.isMember,
+        mainImageUrl: resp.category.image,
         is_empty: (resp.category.courses && resp.category.courses.length > 0) ? false : true
       })
     } catch (err) {

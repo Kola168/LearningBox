@@ -18,10 +18,10 @@ Page({
 	// 获取课程列表
 	getCategoryList: co.wrap(function*(){
 		try {
-			var resp = yield graphql.getSeletedCategories()
+			var selectCategories = yield graphql.getCourseSubject('course')
 			this.setData({
-				categoryList: resp.categories,
-				is_empty: resp.categories.length ? false : true
+				categoryList:  selectCategories.feature && selectCategories.feature.categories || [],
+				is_empty: selectCategories.feature && selectCategories.feature.categories.length ? false : true
 			})
 		} catch(err) {
 			logger.info(err)

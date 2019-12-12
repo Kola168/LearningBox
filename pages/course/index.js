@@ -161,9 +161,11 @@ Page({
     try {
       var respRecommend = yield graphql.getCourses('recommendation')
       var banners = yield graphql.getCourseBanner('course')
+      var selectCategories = yield graphql.getCourseSubject('course')
       this.setData({
         recommendCourse: respRecommend.courses,
         banners: banners.banners,
+        selectCategories: selectCategories.feature && selectCategories.feature.categories
       })
       this.longToast.hide()
     } catch (error) {

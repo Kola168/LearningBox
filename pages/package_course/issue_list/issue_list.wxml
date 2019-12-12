@@ -5,10 +5,10 @@
 	 bindtap="toIssueDetail"
 	 wx:for="{{categoryList}}"
 	 wx:key="index"
-	 data-sn="{{item.id}}"
+	 data-sn="{{item.sn}}"
 	>
-		<image class="" src="{{item.introductionImageUrl}}" mode="widthFix" />
-		<view class="issue-title color-333 f-14">{{item.desc}}</view>
+		<image class="" src="{{item.courseIntroductionImage}}" mode="widthFix" />
+		<view class="issue-title color-333 f-14">{{item.name}}</view>
 	</view>
 	<view class="empty-main" wx:if="{{is_empty}}">
 		<image src="" mode="aspectFill" />

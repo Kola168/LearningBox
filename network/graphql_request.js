@@ -276,7 +276,8 @@ const graphqlApi = {
           payed
         }
         consumables (type: $type, sn: $sn, period: $period) {
-          alias
+          appid
+          url
           imageUrl
           name
         }
@@ -310,6 +311,7 @@ const graphqlApi = {
             mainImageUrl
             totalLessons
             name
+            sn
             priceYuan
             promotion
             promotionNum
@@ -375,8 +377,8 @@ const graphqlApi = {
   // 发起助力
   sendCourseAssistance: (sn) => {
     return gql.mutate({
-      mutation: `mutation shareAssistance($input: CoursePromotionInput!){
-        courseShare(input:$input){
+      mutation: `mutation shareAssistance($input: CourseAssistanceInput!){
+        courseAssistance(input:$input){
           state
         }
       }`,
@@ -388,10 +390,10 @@ const graphqlApi = {
     })
   },
 
-  // 发起助力
+  // 发起收藏
   collectCourse: (input) => {
     return gql.mutate({
-      mutation: `mutation shareAssistance($input: ResourceCollectInput!){
+      mutation: `mutation collectCourse($input: ResourceCollectInput!){
         collect(input:$input){
           state
         }
@@ -437,6 +439,46 @@ const graphqlApi = {
           name
           shareToTrial
           videoUrl
+        }
+      }`,
+      variables: {
+        sn
+      }
+    })
+  },
+
+  // 获取课程专题
+  getCourseSubject: (key) => {
+    return gql.query({
+      query: `query getCourseSubject($key: String!){
+        feature(key: $key) {
+          categories {
+            courseIntroductionImage
+            name
+            sn
+          }
+        }
+      }`,
+      variables: {
+        key
+      }
+    })
+  },
+
+  getSubjectContent: (sn) => {
+    return gql.query({
+      query: `query getSubjectContent($sn: String!){
+        category(sn: $sn) {
+          image
+          courses{
+            sn
+            mainImageUrl
+            desc
+            payed
+            priceYuan
+            totalLessons
+            studyUsers
+          }
         }
       }`,
       variables: {

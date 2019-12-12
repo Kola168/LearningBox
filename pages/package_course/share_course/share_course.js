@@ -15,19 +15,8 @@
 	Page({
 		data: {
 			is_android: false, //是否是安卓平台
-			time: '00:00:00',
-			// shareInfo: null, //分享信息
-			shareInfo: {
-				course: {
-					main_image_url: 'https://cdn-h.gongfudou.com/epbox/picture/category_e42cf96c50534c57a8f9d102e86d237a.jpg',
-					desc: '这是一个课程',
-					total_lessons: 200,
-					study_users: 10,
-				},
-				can_assistance: false,
-				owner: false,
-				assistance_succeed: true
-			},
+			time: '00:00',
+			shareInfo: null,
 			sn: null, // 课程标示
 			endTime: null,
 			introduction: null,
@@ -41,11 +30,11 @@
 			var unionId = storage.get("unionId")
 
 			_this.longToast = new app.weToast()
-			console.log(options.sn,'=options.sn==')
 			_this.setData({
 				sn: options.sn,
 				share_user_id: options.share_user_id || '',
-				isAuth: !!unionId
+				// isAuth: !!unionId
+				isAuth: true
 			})
 
 			event.on('Authorize', this, function (data) {
@@ -92,10 +81,9 @@
 			var count = function (end_ts) {
 				var now_ts = new Date().getTime()
 				if (now_ts > end_ts) return timer && clearTimeout(timer);
-				var hh = Math.floor((end_ts - now_ts) / 1000 / 60 / 60)
-				var mm = Math.floor((end_ts - now_ts) / 1000 / 60 % 60)
+				var mm = Math.floor((end_ts - now_ts) / 1000 / 60)
 				var ss = Math.floor((end_ts - now_ts) / 1000 % 60)
-				var time = `${format(hh)}:${format(mm)}:${format(ss)}`
+				var time = `${format(mm)}:${format(ss)}`
 				timer = setTimeout(count.bind(null, end_ts), 1000)
 				callback.apply(_this, [time])
 			}
@@ -192,8 +180,10 @@
 					title: '加载中...'
 				})
 				
-				yield graphql.sendCourseAssistance(_this.data.sn)
-
+				const res = yield graphql.sendCourseAssistance(_this.data.sn)
+				if (!res) {
+					throw (res)
+				}
 				wx.showToast({
 					title: '助力成功',
 					icon: 'success',
@@ -202,6 +192,7 @@
 				_this.getShareInfo() //更新数据
 
 			} catch (err) {
+				logger.info('助力失败', err)
 				util.showError({
 					message: '助力失败'
 				})

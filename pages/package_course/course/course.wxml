@@ -121,9 +121,9 @@ module.exports = {
         </view>
       </view>
       <view class="nav-content-3" wx:if="{{activeTab == 2}}">
-        <view class="exclusive-item {{index % 2 != 0 ? '' : 'margin-r-30'}}" wx:for="{{supplyTypes}}" wx:key="{{index}}" id="{{index}}" bindtap="toExclusive">
+        <view class="exclusive-item {{index % 2 != 0 ? '' : 'margin-r-30'}}" wx:for="{{supplyTypes}}" wx:key="{{index}}" data-index="{{index}}" bindtap="toExclusive">
           <image src="{{item.imageUrl}}" mode="widthFix" />
-          <view class="exclusive-text">A4多功能复印纸</view>
+          <view class="exclusive-text">{{item.name}}</view>
         </view>
       </view>
     </view>
