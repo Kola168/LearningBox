@@ -33,7 +33,9 @@ Page({
       url: 'http://gfd-i.memeyin.com/e-FlXfVks1do_li3DqrLWVHjr-0IPr'
     }, ],
     showAuth: false, //登录
-    homeType: 'beforeSchool'
+    homeType: '学前',
+    selectedKid: null,
+    stageRoot: null
   },
 
   //事件处理函数
@@ -43,7 +45,7 @@ Page({
   onLoad: co.wrap(function* () {
     this.longToast = new app.weToast()
     try {
-      // yield this.getStage()
+
     } catch (e) {
       console.log(e)
     }
@@ -84,7 +86,24 @@ Page({
   getUserInfo: co.wrap(function* () {
     try {
       let resp = yield gql.getUser()
-      console.log('4567890-=', resp)
+      this.setData({
+        phone: resp.currentUser.phone,
+        selectedKid: resp.currentUser.selectedKid,
+        stageRoot: resp.currentUser.selectedKid.stageRoot
+      })
+      if (resp.currentUser.phone) {
+        app.hasPhoneNum = true
+        app.globalPhoneNum = resp.currentUser.phone
+        wx.setStorageSync("phoneNum", resp.currentUser.phone)
+      }
+      if (!this.data.selectedKid || !this.data.selectedKid.stageRoot) {
+        router.navigateTo('/pages/index/grade')
+      } else {
+        this.setData({
+          homeType: this.data.selectedKid.stageRoot.rootName
+        })
+      }
+
     } catch (e) {
       util.showError(e)
     }
@@ -126,12 +145,6 @@ Page({
       }
       storage.put('authToken', resp.res.auth_token)
       storage.put('unionId', resp.res.unionid)
-
-      // if (resp.data.res.phone) {
-      //   app.hasPhoneNum = true
-      //   app.globalPhoneNum = resp.data.res.phone
-      //   wx.setStorageSync("phonenum", resp.data.res.phone)
-      // }
       app.authToken = resp.res.auth_token
       this.setData({
         showAuth: false

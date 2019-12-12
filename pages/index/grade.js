@@ -21,10 +21,13 @@ Page({
       ['七年级', '八年级', '九年级'],
       ['高一', '高二', '高三']
     ],
-    activeGrade: '0~3岁'
+    activeGrade: '0~3岁',
+    stages: []
   },
   onLoad: function (options) {
     this.longToast = new app.weToast()
+    this.getAllstages()
+
   },
   getAllstages: co.wrap(function* () {
     this.longToast.toast({
@@ -32,8 +35,11 @@ Page({
       duration: 0
     })
     try {
-      resp = yield gql.getAllstages()
-      console.log(resp)
+      let resp = yield gql.getAllstages()
+      this.setData({
+        stages: resp.stages
+      })
+      console.log(resp, this.data.stages)
       this.longToast.hide()
     } catch (e) {
       util.showError(e)
@@ -41,62 +47,33 @@ Page({
     }
   }),
   chooseGrade: co.wrap(function* (e) {
+    console.log(e)
     this.setData({
-      activeGrade: e.currentTarget.id
+      activeGrade: e.currentTarget.id,
     })
+    this.sn = e.target.dataset.sn
+  }),
+  complete: co.wrap(function* () {
     this.longToast.toast({
       type: "loading",
       duration: 0
     })
-  }),
+    let params = {
+      kidAttributes: {
+        name: this.data.activeGrade,
+        stageSn: this.sn
+      }
+    }
+    console.log(params)
+    // return
+    try {
+      const resp = yield gql.changeStage(params)
+      console.log(resp)
+      this.longToast.hide()
+    } catch (e) {
+      util.showError(e)
+      this.longToast.hide()
+    }
 
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-
-  }
+  })
 })

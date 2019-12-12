@@ -13,17 +13,17 @@ var GraphQL = gqwxappGraphql.GraphQL
 // 初始化对象
 let gql = GraphQL({
   url: `${app.apiServer}/graphql`,
-  header: function() {
+  header: function () {
     if (app.authToken) {
-			console.log('authToken==1==',app.authToken)
+      console.log('authToken==1==', app.authToken)
       return {
         "AUTHORIZATION": `Token token=${app.authToken}`
       }
     } else {
       try {
         var authToken = wx.getStorageSync('authToken')
-			  console.log('authToken====',authToken)
-				if (authToken) {
+        console.log('authToken====', authToken)
+        if (authToken) {
           return {
             "AUTHORIZATION": `Token token=${authToken}`
           }
@@ -216,10 +216,24 @@ const graphqlApi = {
     return gql.query({
       query: `query{
         stages{
-            children
             name
             rootName
             sn
+            children{
+              name
+              rootName
+              sn
+              children{
+                name
+                rootName
+                sn
+                children{
+                  name
+                  rootName
+                  sn
+                }
+              }
+            }
         }
       }`
     })
@@ -238,26 +252,47 @@ const graphqlApi = {
             gender
             name
             sn
-            stage
+            stageRoot{
+              name
+              rootName
+              sn
+            }
+            stage{
+              name
+              rootName
+              sn
+            }
             }
           phone
         }
       }`
     })
   },
-  bindDevice: (deviceInfo) => {
+
+  /**
+   * 设置年级
+   *
+   * @param {*} params
+   * @returns
+   */
+  changeStage: (params) => {
     return gql.mutate({
-      mutation: `mutation updateKid($input: BindDeviceInput!){
-        bindDevice(input:$input){
-          state
+      mutation: `mutation ($input: UpdateKidInput!){
+        updateKid(input:$input){
+          kid{
+            name
+            sn
+            stage{
+              rootName
+            }
+          }
         }
       }`,
       variables: {
-        input: deviceInfo
+        input: params
       }
     })
-  },
-
+  }
 }
 
 export default graphqlApi

@@ -41,13 +41,17 @@
     "pages/print_id/smart_index",
     "pages/print_id/smart_rules",
     "components/bottom-button/test",
-    "pages/index/grade"
+    "pages/index/grade",
+    "pages/account/index"
   ],
   "subPackages": [
     {
       "root": "pages/package_common",
       "pages": [
-        "search/index"
+        "search/index",
+        "account/personal_info",
+        "account/avatar_edit",
+        "account/name_edit"
       ]
     },
     {
@@ -61,8 +65,8 @@
         "print_balloon/typelist",
         "print_balloon/edit",
         "print_book/index",
-				"print_book/edit",
-				"cognition_card/index/index",
+        "print_book/edit",
+        "cognition_card/index/index",
         "cognition_card/list/index",
         "cognition_card/category/index",
         "cognition_card/category_list/index",
@@ -137,7 +141,8 @@
     "backgroundColor": "#fff",
     "borderStyle": "black",
     "position": "bottom",
-    "list": [{
+    "list": [
+      {
         "pagePath": "pages/index/index",
         "text": "首页",
         "iconPath": "images/home/icon_tab_home_unselected.png",

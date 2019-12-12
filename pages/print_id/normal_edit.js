@@ -242,8 +242,7 @@ Page({
             })
             console.log("imgInfo", imgInfo)
         } catch (err) {
-            console.error(err)
-            util.showErr({
+            util.showError({
                 title: '照片加载失败',
                 content: '请重新选择重试'
             })

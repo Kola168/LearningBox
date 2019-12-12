@@ -1,3 +1,4 @@
+<nav-bar background="#fff" title="打印设置"></nav-bar>
 <view class="top-tip">
  <image src="../../images/icon_edit_white.png" mode="widthFix"></image>
  <text>可手动放大缩小，移动位置</text>
