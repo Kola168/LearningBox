@@ -3,7 +3,7 @@
 <view class="mode-box-size" style="width:{{areaSize.width}}px;height:{{areaSize.height}}px">
   <block wx:for="{{editAreaSize}}" wx:key="editAres">
     <view class="img-area" style="width:{{item.areaWidth}}px;height:{{item.areaHeight}}px;left:{{item.x}}px;top:{{item.y}}px;overflow:{{visible}}">
-      <image wx:if="{{imgArr[index]}}" src="{{foo.judgeOss(imgArr[index].phtotSrc,'/resize,w_1500,h_1500')}}" mode="widthFix"
+      <image wx:if="{{imgArr[index]}}" src="{{foo.judgeOss(imgArr[index].phtotSrc,'/resize,w_1000,h_1000')}}" mode="widthFix"
         style="transform-origin:(50%, 50%, 0);position:absolute;width:{{imgArr[index].width}}px;height:{{imgArr[index].height}}px;left:{{imgArr[index].left}}px;top:{{imgArr[index].top}}px;transform:rotate({{imgArr[index].rotate}}deg) scale3d({{imgArr[index].scale}},{{imgArr[index].scale}},1)">
       </image>
     </view>
@@ -12,7 +12,7 @@
       style="width:{{item.areaWidth}}px;height:{{item.areaHeight}}px;left:{{item.x}}px;top:{{item.y}}px;" data-index="{{index}}" bindtap="{{!imgArr[index] && addImgIcon && showAdd?'chooseImgs':''}}">
       <image wx:if="{{!imgArr[index] && addImgIcon && showAdd}}" src="{{addImgIcon}}" mode="widthFix" class="add-icon"></image>
     </view>
-    <image wx:if="{{imgArr[index] && deleteIcon && showAdd}}" src="{{deleteIcon}}" mode="widthFix" class="delete-icon" style="left:{{item.x+item.areaWidth+10}}px;top:{{item.y-10}}px" data-index="{{index}}" bindtap="deleteImg"></image>
+    <image wx:if="{{imgArr[index] && deleteIcon && showAdd}}" src="{{deleteIcon}}" mode="widthFix" class="delete-icon" style="left:{{item.x+item.areaWidth-(deleteEdge?20:10)}}px;top:{{item.y-(deleteEdge?0:10)}}px" data-index="{{index}}" bindtap="deleteImg"></image>
   </block>
   <image wx:if="{{TemplateSrc}}" src="{{TemplateSrc}}" mode="widthFix" class="mode-cover"></image>
 </view>

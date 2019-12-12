@@ -142,7 +142,7 @@ Page({
 			}else{
 				this.longToast.toast()
 				return wxNav.navigateTo('/pages/package_device/network/tips/step1')
-			}	
+			}
 		}
 	}),
 
@@ -167,7 +167,7 @@ Page({
 						showCancel: false,
 						confirmColor: '#ff9999'
 					})
-					return	wxNav.navigateTo('/pages/package_device/network/tips/step1')	
+					return	wxNav.navigateTo('/pages/package_device/network/tips/step1')
 				}
 				setTimeout(function () {
 					that.checkEquipment(sn)

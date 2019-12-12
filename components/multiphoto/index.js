@@ -28,8 +28,6 @@ let Loger=(app.apiServer!='https://epbox.gongfudou.com'||app.deBug)?console.log:
 //       modeSize:[{  //数组  可传入多个编辑区域
 //         x   //模板编辑区域的x轴偏移量
 //         y   //同上y轴
-//         width  //打印介质的宽度
-//         height //打印介质的高度
 //         areaWidth  //编辑区域的宽度
 //         areaHeight  //编辑区域的高度中心Ω   
 //       }]
@@ -115,21 +113,11 @@ Component({
         imgInfo:{
           type: Object,
           observer: function(newVal, oldVal) {
-              Loger(newVal)
-              // if (_.isNotEmpty(newVal)) {
-              //     if (!_.isArray(newVal.modeSize)) {
-              //         Loger(newVal.modeSize)
-              //         let newArr = []
-              //         newArr.push(newVal.modeSize)
-              //         newVal.modeSize = newArr
-              //     }
-              //     Loger(newVal.modeSize)
-              //     this.setData({
-              //         TemplateSrc: newVal.modeSrc,
-              //         TemplateSizeArr: newVal.modeSize,
-              //     })
-              //     this.changeTemplate(newVal)
-              // }
+              if (_.isNotEmpty(newVal)) {
+                  this.setData({
+                      photoInfo: newVal,
+                  })
+              }
           }
         },
         showChange: {
@@ -204,6 +192,18 @@ Component({
                 }
             }
         },
+        deleteEdge:{
+          type:Boolean,
+          value:false,
+          observer: function(newVal, oldVal) {
+            Loger(newVal)
+              if(newVal){
+                  this.setData({
+                      deleteEdge: newVal
+                  })
+              }
+          }
+        }
     },
     observers: {
       'addIcon, deleteIcon': function() {
@@ -216,6 +216,7 @@ Component({
     data: {
         TemplateSrc: '', //模板图片链接地址
         photoSrc: '', //组件传递过来的图片链接
+        photoInfo:{}, //组件传过来的图片信息
         TemplateSizeArr: [], //模板位置区域
         //窗口默认尺寸
         paperSize: {
@@ -237,6 +238,7 @@ Component({
         addImgIcon:'', //添加图片图标
         deleteIcon:'', //删除图片图标
         showAdd:false, //展示添加图标
+        deleteEdge:false, //删除图标顶边显示
     },
 
     methods: {
@@ -251,30 +253,31 @@ Component({
                 Loger(size)
                 //设置默认尺寸
                 if (!_.isNotEmpty(size.width)) {
-                    size.width = this.data.paperSize.width
+                    size.width = Number(this.data.paperSize.width)
                 }
                 if (!_.isNotEmpty(size.height)) {
-                    size.height = this.data.paperSize.height
+                    size.height = Number(this.data.paperSize.height)
                 }
                 if (!_.isNotEmpty(size.heightPer)) {
-                    size.heightPer = this.data.paperSize.heightPer
+                    size.heightPer = Number(this.data.paperSize.heightPer)
                 }
                 if (!_.isNotEmpty(size.minLeftHeight)) {
-                    size.minLeftHeight = this.data.paperSize.minLeftHeight
+                    size.minLeftHeight = Number(this.data.paperSize.minLeftHeight)
                 }
                 if (!_.isNotEmpty(size.sider)) {
-                    size.sider = this.data.paperSize.sider
+                    size.sider = Number(this.data.paperSize.sider)
                 }
                 this.setData({
                     paperSize: size
                 })
+                Loger(size)
                 //获取当前系统屏幕宽高
                 const res = yield getSystemInfo()
                 Loger(res.windowHeight)
                 let avaWidth = res.windowWidth-size.sider* res.windowWidth / 750
-                let avaHeight = res.windowHeight * size.heightPer
+                let avaHeight = res.windowHeight * size.heightPer-65
                 if ((res.windowHeight - avaHeight) < (size.minLeftHeight * res.windowWidth / 750)) {
-                    avaHeight = res.windowHeight - size.minLeftHeight * res.windowWidth / 750
+                    avaHeight = res.windowHeight - size.minLeftHeight * res.windowWidth / 750-65
                 }
                 let areaSize = {} //模板尺寸
                 if ((size.width / size.height) > (avaWidth / avaHeight)) {
@@ -312,8 +315,6 @@ Component({
                     that.data.editAreaSize[index] = {
                         x: value.x * modeScale,
                         y: value.y * modeScale,
-                        width: value.width * modeScale,
-                        height: value.height * modeScale,
                         areaWidth: value.areaWidth * modeScale,
                         areaHeight: value.areaHeight * modeScale,
                     }
@@ -353,7 +354,6 @@ Component({
             })
             let that = this
             try {
-                Loger(img)
                 if (img.size > 20000000) {
                     return wx.showModal({
                         title: '图片过大',
@@ -401,13 +401,7 @@ Component({
                 let globalData = `globalData[${this.choosedImgIndex}]`
                 this.setData({
                     [imgArr]: imgInfo,
-                    [globalData]: {
-                        moveX: sv.left,
-                        moveY: sv.top,
-                        scale: 1,
-                        rotate: 0,
-                        twoPoint: false,
-                    }
+                    [globalData]: {}
                 })
                 Loger(this.data.imgArr)
                 wx.hideLoading()
@@ -427,12 +421,21 @@ Component({
         }),
 
         upLoadAndInit: co.wrap(function*(imgPath) {
-            Loger(imgPath)
             if (imgPath.type == 'uploaded') {
                 return {
                     imgNetPath: this.data.imgArr[this.choosedImgIndex].phtotSrc,
                     imageInfo: this.data.imgArr[this.choosedImgIndex].imgOriginalInfo
                 }
+            }
+            if(_.isNotEmpty(this.data.photoInfo)){
+              let initialImgInfo=_.deepClone(this.data.photoInfo)
+              this.setData({
+                photoInfo:{}
+              })
+              return {
+                imgNetPath: imgPath.path,
+                imageInfo: initialImgInfo
+              }
             }
             try {
                 let imgNetPath
@@ -531,6 +534,9 @@ Component({
             try {
                 this.data.globalData[this.moveIndex].lastMoveX = 0
                 this.data.globalData[this.moveIndex].lastMoveY = 0
+                this.data.globalData[this.moveIndex].scale = this.data.imgArr[this.moveIndex].scale
+                this.data.globalData[this.moveIndex].rotate = this.data.imgArr[this.moveIndex].rotate
+                this.data.globalData[this.moveIndex].twoPoint = false
                 if (e.touches.length == 2) {
                     // 双指操作
                     this.data.globalData[this.moveIndex].twoPoint = true
@@ -621,14 +627,65 @@ Component({
                     [imgArr]: this.data.imgArr[this.moveIndex]
                 })
             }
+
+        },
+
+        //未初始化图片获取点位坐标信息参数信息：
+        // data:[{
+        //     templateSize:{}  //模板尺寸
+        //     imgInfo:{path:'',width:'',height:''}
+        // }]
+        getImgsPoints:function(imgData,areaScal){
+          try{
+
+
+            let imgArr=[]
+            let that=this
+            _.each(imgData,function(value,index,list){
+              let modeScale = areaScal||that.data.areaSize.scale
+              let editArea={
+                x: value.templateSize.x * modeScale,
+                y: value.templateSize.y * modeScale,
+                areaWidth: value.templateSize.areaWidth * modeScale,
+                areaHeight: value.templateSize.areaHeight * modeScale,
+              }
+              let sv = util._getSuiteValues(value.imgInfo.width, value.imgInfo.height, editArea.areaWidth, editArea.areaHeight)
+              let imgInfo = {
+                  width: sv.width,
+                  height: sv.height,
+                  scale: 1,
+                  startScale: 1,
+                  left: sv.left+(sv.width-sv.width)/2,
+                  top: sv.top+(sv.height-sv.height)/2,
+                  rotate: 0,
+                  startRotate: 0,
+              }
+              imgInfo.imgOriginalInfo = value.imgInfo
+              Loger(imgInfo.imgOriginalInfo, value.imgInfo , sv)
+              imgInfo.imgOriginalInfo.scale = sv.scale
+              imgInfo.imgOriginalInfo.left = sv.left+(sv.width-sv.width)/2
+              imgInfo.imgOriginalInfo.top = sv.top+(sv.height-sv.height)/2
+              imgInfo.imgOriginalInfo.rotate = 0
+              imgInfo.phtotSrc = value.imgInfo.path
+              imgArr.push(imgInfo)
+            })
+            return this.getImgPoint(imgArr)
+          }catch(e){
+            Loger(e)
+          }
         },
 
         //获取点位信息
-        getImgPoint: function() {
-            Loger(this.data.imgArr)
+        getImgPoint: function(arr,scaleData) {
+          try{
+
+
             let that = this
             let pointArr = []
-            _.each(this.data.imgArr, function(value, index, kist) {
+            let imgArr=arr||this.data.imgArr
+            let scale=scaleData||that.data.areaSize.scale
+            Loger(imgArr)
+            _.each(imgArr, function(value, index, kist) {
                 const result = {
                     x: Number(value.left),
                     y: Number(value.top),
@@ -655,9 +712,9 @@ Component({
                 }
                 let svw = (value.width-result.scale * (value.imgOriginalInfo.width * Math.cos(mp) + value.imgOriginalInfo.height * Math.sin(mp))) / 2
                 let svh = (value.height-result.scale * (value.imgOriginalInfo.width * Math.sin(mp) + value.imgOriginalInfo.height * Math.cos(mp))) / 2
-
+                Loger(result,svw,svh)
                 let params = {
-                    editor_scale: that.data.areaSize.scale,
+                    editor_scale: scale,
                     scale: result.scale,
                     x: result.x + svw,
                     y: result.y + svh,
@@ -667,9 +724,13 @@ Component({
                     rotate: rotate,
                     image_url: value.phtotSrc
                 }
+                Loger(params)
                 pointArr.push(params)
             })
             return pointArr
+          }catch(e){
+            Loger(e)
+          }
         },
 
         changeTemplate: co.wrap(function*(data) {

@@ -79,7 +79,13 @@
         "cognition_card/category_list/index",
         "cognition_card/edit/index",
         "baidu_print/choose/index",
-        "baidu_print/search/index"
+        "baidu_print/search/index",
+        "print_calendar/typelist",
+        "print_calendar/index",
+        "print_calendar/edit",
+        "print_thumb_album/index",
+        "print_thumb_album/photolist",
+        "print_thumb_album/edit"
       ]
     },
     {
