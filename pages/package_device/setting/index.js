@@ -50,7 +50,11 @@ Page({
     this.updateDeviceSetting(setKey, setVal)
   },
 
-  // 更新打印机设置
+  /**
+   * 更新打印机设置
+   * @param {string} setKey required 设置的选项
+   * @param {string} setVal required 设置选项值
+   */
   updateDeviceSetting: co.wrap(function*(setKey, setVal) {
     this.weToast.toast({
       type: 'loading'
@@ -167,8 +171,7 @@ Page({
         }
         break;
       case "rename":
-        this.updateDeviceSetting('name',this.data.renameVal)
-        event.emit('deviceChange')
+        this.comfirmRename()
         break;
       case "clearQueue":
         break;
@@ -178,14 +181,30 @@ Page({
     }
   },
 
+  // 确认修改名称
+  comfirmRename() {
+    if (this.data.renameVal.length > 0) {
+      this.updateDeviceSetting('name', this.data.renameVal)
+      event.emit('deviceChange')
+    } else {
+      this.setData({
+        ['modalObj.isShow']: true
+      })
+      wx.showToast({
+        title: '请输入打印机名称',
+        icon: 'none'
+      })
+    }
+  },
+
   // 解绑打印机
-  unbindDevice:co.wrap(function*(){
+  unbindDevice: co.wrap(function*() {
     this.weToast.toast({
-      type:'loading'
+      type: 'loading'
     })
     try {
       let res = yield graphql.unbindDevice(this.deviceSn)
-      console.log(res,'ddddd')
+      console.log(res, 'ddddd')
       this.weToast.hide()
       event.emit('deviceChange')
       wxNav.navigateBack()

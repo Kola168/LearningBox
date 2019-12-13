@@ -13,9 +13,9 @@ Page({
     areaHeight: 0
   },
   onLoad: co.wrap(function*() {
-    let navBarHeight = app.navBarInfo.navBarHeight
+    let topBarHeight = app.navBarInfo.topBarHeight
     this.setData({
-      areaHeight: app.sysInfo.safeArea.height - navBarHeight
+      areaHeight: app.sysInfo.screenHeight - topBarHeight
     })
     this.weToast = new app.weToast()
     yield this.getCognitionCategories()
