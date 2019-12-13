@@ -52,10 +52,6 @@ Page({
 			event.on('setPreData', this, (postData)=>{
 				this.setPostData(postData)
 			})
-			event.on('chooseBaiduFileDone', this, (baiduFiles)=>{
-				this.formatFiles(baiduFiles)
-			})
-
 		} catch(err) {
 			logger.error(err)
 		}
@@ -381,10 +377,11 @@ Page({
 			files: tempFiles
 		})
 	},
-
+	baiduPrint(res){
+		let baiduFiles = res.detail
+		this.formatFiles(baiduFiles)
+	},
 	onUnload() {
 		event.remove('setPreData', this)
-		event.remove('chooseBaiduFileDone', this)
-	},
-
+	}
 })
