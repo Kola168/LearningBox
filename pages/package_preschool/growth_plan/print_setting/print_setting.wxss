@@ -79,5 +79,12 @@ input.input-attr{
     margin-left:-30rpx;
     margin-right:-30rpx;
 }
-
+.set-color{
+    width:100%;
+    display: flex; 
+    justify-content: space-between;
+}
+.set-color .radio{
+    width:40%;  
+}
 

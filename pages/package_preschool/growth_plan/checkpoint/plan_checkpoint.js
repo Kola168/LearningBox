@@ -5,8 +5,6 @@ import {regeneratorRuntime, co, wxNav, util, logger} from '../../../../utils/com
 // import { threadId } from 'worker_threads';
 // import api from '../../../network/restful_request'
 const showModal = util.promisify(wx.showModal)
-// const logger = new Logger.getLogger('pages/package_preschool/growth_plan/plan_checkpoint/plan_checkpoint')
-
 
 Page({
 
@@ -46,20 +44,15 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    try{
-      this.longToast = new app.weToast
-      this.options = JSON.parse(decodeURIComponent(options.params))
-      this.id = this.options.id
-      this.sn = this.options.sn
-      this.setData({
-        isMember: this.options.isMember
-      })
+    this.longToast = new app.weToast
+    // this.options = JSON.parse(decodeURIComponent(options.params))
+    // this.id = this.options.id
+    // this.sn = this.options.sn
+    // this.setData({
+    //   isMember: this.options.isMember
+    // })
+    this.getDetail()
 
-      this.getDetail()
-
-    }catch(e){
-      console.log('====', e)
-    }
 
   },
 
@@ -69,9 +62,9 @@ Page({
       title: '请稍候'
     })
     try{
-
-    } catch(e){
       
+    } catch(e){
+
     }
   }),
 

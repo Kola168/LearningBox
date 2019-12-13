@@ -1,9 +1,9 @@
 // pages/package_preschool/list/index.js
 const app = getApp()
 import {regeneratorRuntime, co, wxNav, util, logger} from '../../../../utils/common_import'
-// import { threadId } from 'worker_threads';
 // import api from '../../../network/restful_request'
 const showModal = util.promisify(wx.showModal)
+// const logger = new Logger.getLogger('pages/index/index')
 
 Page({
 
@@ -77,7 +77,8 @@ Page({
 
   /** 显示列表内容 **/
   navTap: co.wrap(function* (e) {
-    // this.longToast = new app.weToast()
+    // logger.info(e)
+    // this.longToast = new app.weToast() 
     let index = e ? e.currentTarget.id : 1
     this.setData({
       tabToContent: index,
