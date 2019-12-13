@@ -52,7 +52,10 @@
         "search/index",
         "account/personal_info",
         "account/avatar_edit",
-        "account/name_edit"
+        "account/name_edit",
+        "free_resources/index/index",
+        "free_resources/content/index",
+        "free_resources/detail/index"
       ]
     },
     {

@@ -1,0 +1,29 @@
+<nav-bar title="免费资源库"></nav-bar>
+<view class="container" style="height:{{windowHeight}}px;">
+  <swiper class="swiper-box" bindchange="swpierChange" current="{{current}}">
+    <swiper-item class="box-item" wx:for="{{sources}}" wx:key="index">
+      <image src="{{item.url}}" mode="widthFix" />
+    </swiper-item>
+  </swiper>
+  <view class="handle-bottom {{isFullScreen?'is-full-screen':''}}">
+    <view class="page-over">
+      <image src="/images/doc_preview_turn_left.png" bindtap="pageTurn" id="left" mode="widthFix" />
+      <view>{{current+1}}/{{sources.length}}</view>
+      <image src="/images/doc_preview_turn_right.png" bindtap="pageTurn" id="right" mode="widthFix" />
+    </view>
+    <view class="bottom-bar">
+      <view class="bar-btn">
+        <image src="/images/doc_collect_gray.png" />
+        <view>收藏</view>
+      </view>
+      <view class="bar-btn">
+        <image src="/images/doc_gfd_share_gray.png" />
+        <view>分享</view>
+      </view>
+      <view class="bar-btns">
+        <view class="btns-consumable">适配耗材</view>
+        <view class="btns-print">打印</view>
+      </view>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,60 @@
+<nav-bar title="免费资源库"></nav-bar>
+<view class="container" style="min-height:{{minHeight}}px;">
+  <view class="resources-type" style="min-height:{{minHeight}}px;">
+    <view class="type-item">热门</view>
+    <view class="type-item">节日</view>
+    <view class="type-item type-item-active">手工类</view>
+    <view class="type-item">表格类</view>
+  </view>
+  <view class="type-content" style="min-height:{{minHeight}}px;">
+    <view class="content-item">
+      <view class="item-title">节日活动</view>
+      <view class="item-box">
+        <view class="box-item">
+          <view class="list-item" bindtap="toNext">
+            <view class="item-img">
+              <image src="/images/doc_email.png" mode="widthFix" />
+            </view>
+            <view class="item-text">
+              <view class="text-title text-overflow-points">元旦</view>
+              <view class="text-desc text-overflow-points">手工作业不烦恼</view>
+            </view>
+          </view>
+        </view>
+        <view class="box-item">
+          <view class="list-item" bindtap="toNext">
+            <view class="item-img">
+              <image src="/images/doc_email.png" mode="widthFix" />
+            </view>
+            <view class="item-text">
+              <view class="text-title text-overflow-points">元旦</view>
+              <view class="text-desc text-overflow-points">手工作业不烦恼</view>
+            </view>
+          </view>
+        </view>
+        <view class="box-item">
+          <view class="list-item" bindtap="toNext">
+            <view class="item-img">
+              <image src="/images/doc_email.png" mode="widthFix" />
+            </view>
+            <view class="item-text">
+              <view class="text-title text-overflow-points">元旦</view>
+              <view class="text-desc text-overflow-points">手工作业不烦恼</view>
+            </view>
+          </view>
+        </view>
+        <view class="box-item">
+          <view class="list-item" bindtap="toNext">
+            <view class="item-img">
+              <image src="/images/doc_email.png" mode="widthFix" />
+            </view>
+            <view class="item-text">
+              <view class="text-title text-overflow-points">元旦</view>
+              <view class="text-desc text-overflow-points">手工作业不烦恼</view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
