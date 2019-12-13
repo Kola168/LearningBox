@@ -5,19 +5,13 @@ let {
 const regeneratorRuntime = require('lib/co/runtime')
 const co = require('lib/co/co')
 const util = require('utils/util')
-import Logger from 'utils/logger.js'
 const _ = require('lib/underscore/we-underscore')
 const getSystemInfo = util.promisify(wx.getSystemInfo)
 const getStorage = util.promisify(wx.getStorage)
-
-
+import logger from 'utils/logger.js'
 const login = util.promisify(wx.login)
 const request = util.promisify(wx.request)
 import storage from 'utils/storage.js'
-import {
-  logger
-} from './utils/common_import'
-
 
 App({
   weToast,
@@ -80,7 +74,6 @@ App({
   // 是否为全面屏，rpxPixel
   handleDevice() {
     // 暂时的处理
-    console.log('this.sysInfo.screenHeight=====', this.sysInfo.screenHeight)
     this.isFullScreen = this.sysInfo.screenHeight > 750 ? true : false
     this.rpxPixel = 750 / this.sysInfo.windowWidth
   },
@@ -164,13 +157,12 @@ App({
       const sto = storage.get('openId')
       if (!sto) {
         this.login()
-        logger.warn('首页调用登录')
         return
       }
       this.openId = sto
     } catch (e) {
       this.login()
-      logger.warn('首页调用登录啦')
+      console.log(e)
     }
   }),
 
@@ -185,15 +177,12 @@ App({
           'code': loginCode.code
         }
       })
-      // console.log('login登录成功', loginInfo)
       if (loginInfo.data.code !== 0) {
         throw (loginInfo.data)
       }
       storage.put('openId', loginInfo.data.res.openid)
-      logger.warn('login登录成功', loginInfo.data.res.openid)
       this.openId = loginInfo.data.res.openid
     } catch (e) {
-      logger.error('1234567890-', e)
       util.showError({
         title: '登录失败',
         content: e.error
