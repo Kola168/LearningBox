@@ -1,4 +1,4 @@
-.container {
+/* .container {
   background: #fff;
   display: flex;
 }
@@ -88,4 +88,62 @@
 .text-desc {
   font-size: 20rpx;
   color: #666;
+} */
+
+.HZL_scroll {
+  display: flex;
+  align-items: center;
+}
+
+.HZL_scroll_left {
+  width: 180rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(240, 240, 240, 1)
+}
+
+.HZL_scroll_left_text {
+  /* display: flex;
+  align-items: center;
+  justify-content: center; */
+  width: 180rpx;
+  height: 52px;
+  line-height: 52px;
+  background-color: rgba(240, 240, 240, 1)
+}
+
+.HZL_scroll_left_text_active {
+  /* display: flex; */
+  /* align-items: center; */
+  /* justify-content: center; */
+  /* width: 180rpx;
+  height: 52px;
+  line-height: 52px; */
+  background: white;
+}
+
+.HZL_scroll_right {
+  width: calc(100% - 180rpx);
+}
+
+.HZL_scroll_right_top {
+  width: 600rpx;
+  height: 20px;
+  background: #f5f7f9;
+}
+
+.HZL_scroll_right_view {
+  width: 100%;
+  box-sizing: border-box;
+  height: 100px;
+  border-bottom: 5rpx solid lightgray;
+  display: flex;
+  align-items: center;
+}
+
+::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  color: transparent;
 }
