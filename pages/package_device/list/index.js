@@ -1,63 +1,87 @@
 const app = getApp()
+const event = require('../../../lib/event/event')
 import { regeneratorRuntime, co, util, wxNav } from '../../../utils/common_import'
-import api from '../../../network/restful_request'
+import graphql from '../../../network/graphql_request'
 const request = util.promisify(wx.request)
 Page({
   data: {
     devices: [],
+    activeDevice: {},
     isFullScreen: false
   },
   onLoad: function() {
     this.weToast = new app.weToast()
     this.setData({
-        isFullScreen: app.isFullScreen
-      })
-      // this.getDevices()
+      isFullScreen: app.isFullScreen
+    })
+    this.getDevices()
+    event.on('deviceChange',this,()=>{
+      this.getDevices()
+    })
   },
   getDevices: co.wrap(function*() {
     this.weToast.toast({
       type: 'loading'
     })
     try {
-      let resp = yield request({
-        url: app.apiServer + `/boxapi/v2/printers`,
-        method: 'GET',
-        dataType: 'json',
-        data: {
-          'openid': 'oHTe45c3u5Y5xcUMd2Vw4c2SWjj4',
+      let res = yield graphql.getDeviceList()
+      let devices = res.devices,
+        activeDevice = {}
+      for (let i = 0; i < devices.length; i++) {
+        if (devices[i].selected) {
+          activeDevice = devices[i]
         }
-      })
-      console.log(resp.data.res)
-      let tempData = resp.data
-      if (tempData.code != 0) {
-        throw (resp.data)
       }
-      let devices = tempData.res.printers,
-        activeDevice = tempData.res.selected_printer
       this.weToast.toast()
       this.setData({
         devices,
         activeDevice
       })
     } catch (e) {
-      this.weToast.toast()
+      this.weToast.hide()
       util.showError(e)
-      console.log(e)
     }
   }),
 
   // 设置打印机
-  toSetting() {
-    wxNav.navigateTo(`../setting/index`)
+  toSetting(e) {
+    if (app.preventMoreTap(e)) {
+      return
+    }
+    let sn = e.currentTarget.dataset.sn
+    console.log(e.currentTarget.dataset)
+    wxNav.navigateTo(`../setting/index`,{
+      sn:sn
+    })
   },
 
   // 分享打印机
-  toShare() {
-    wxNav.navigateTo(`../share/index`)
+  toShare(e) {
+    if (app.preventMoreTap(e)) {
+      return
+    }
+    let sn = e.currentTarget.dataset.sn
+    wxNav.navigateTo(`../share/index`, {
+      sn
+    })
   },
 
   // 切换打印机
   switchActiveDevice() {
-
+    if (app.preventMoreTap(e)) {
+      return
+    }
+    let sn = e.currentTarget.dataset.sn
+  },
+  // 添加打印机
+  addDevice() {
+    wxNav.navigateTo('../network/index/index')
+  },
+  // 下拉刷新
+  refreshData() {
+    this.getDevices()
+  },
+  onUnload(){
+    event.remove('deviceChange',this)
   }
 })

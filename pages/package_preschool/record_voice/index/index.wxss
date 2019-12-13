@@ -1,0 +1,23 @@
+/* pages/package_common/record_voice/index/index.wxss */
+
+.record-voice-main {
+  width: 100%;
+}
+
+.record-voice-main image {
+  width: 100%;
+  margin-bottom: 98rpx;
+}
+
+.record-voice-main .btn {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 98rpx;
+  line-height: 98rpx;
+  font-size: 36rpx;
+  color: #333333;
+  text-align: center;
+  background-color: #FFDC5E;
+}

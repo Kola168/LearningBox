@@ -1,0 +1,8 @@
+
+var fixPrice = function(price) {
+    return price != null ? price.toFixed(2) : price
+} 
+
+module.exports = {
+    fixPrice: fixPrice
+}

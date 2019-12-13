@@ -8,14 +8,14 @@
   </view>
   <view class="category-box">
     <view class="category-custom">
-      <image src="{{categoryList[0].image}}" id="{{categoryList[0].id}}" bindtap="toNext" mode="widthFix" />
+      <image src="{{categoryList[0].image}}" data-sn="{{categoryList[0].sn}}" id="custom" bindtap="toNext" mode="widthFix" />
     </view>
     <view class="category-template">
-      <image src="{{item.image}}" wx:for="{{categoryList}}" wx:key="id" id="{{item.id}}" wx:if="{{index!==0}}" bindtap="toNext" mode="widthFix" />
+      <image src="{{item.image}}" wx:for="{{categoryList}}" wx:key="id" data-sn="{{item.sn}}" wx:if="{{index!==0}}" bindtap="toNext" mode="widthFix" />
     </view>
   </view>
   <image src="https://cdn-h.gongfudou.com/LearningBox/feature/cognition_bg.jpg" class="container-bg" style="min-height:{{areaHeight}}px;" mode="widthFix" />
 </view>
-<!-- </block> -->
+<!-- loading -->
 <import src="/lib/toast/wetoast.wxml" />
 <template is="wetoast" data="{{...__wetoast__}}" />

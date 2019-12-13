@@ -1,0 +1,99 @@
+.bar-count,
+.handle-bar,
+.all-check,
+.img-container {
+  display: flex;
+}
+
+.img-container {
+  padding: 52rpx 24rpx 120rpx;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.img-1 .img-box {
+  width: 100%;
+}
+
+.img-2 .img-box {
+  width: calc(50% - 10rpx);
+  min-height: 300rpx;
+  position: relative;
+}
+
+.img-3 {
+  justify-content: flex-start;
+}
+
+.img-3 .img-box {
+  width: calc(33.33% - 12rpx);
+  min-height: 200rpx;
+  margin-bottom: 18rpx;
+  position: relative;
+}
+
+.img-3 .img-box:nth-child(3n-1) {
+  margin-left: 16rpx;
+  margin-right: 16rpx;
+}
+
+.box-img {
+  width: 100%;
+  display: block !important;
+}
+
+.img-check {
+  width: 40rpx;
+  height: 40rpx;
+  position: absolute;
+  right: 10rpx;
+  top: 10rpx;
+}
+
+.zoom-big {
+  position: absolute;
+  right: 8rpx;
+  bottom: 10rpx;
+  width: 42rpx;
+  height: 42rpx;
+}
+
+.handle-bar {
+  position: fixed;
+  background: #fff;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 98rpx;
+  line-height: 98rpx;
+  border-top: 2rpx solid #CECECE;
+}
+
+.bar-count {
+  width: 64%;
+  justify-content: space-between;
+  color: #666;
+  font-size: 30rpx;
+  align-items: center;
+  padding: 0 30rpx;
+}
+
+.all-check {
+  align-items: center;
+}
+
+.all-check image {
+  width: 34rpx;
+  height: 34rpx;
+  margin-right: 8rpx;
+}
+
+.bar-print {
+  width: 36%;
+  font-size: 36rpx;
+  color: #333;
+  text-align: center;
+  background: #FFE27A;
+  font-weight: bold;
+  flex-grow: 1;
+}

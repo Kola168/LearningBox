@@ -1,0 +1,263 @@
+.share-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    padding-bottom: 100rpx;
+}
+
+.top {
+  display: flex;
+  justify-content: space-between;
+  padding: 30rpx 26rpx 0;
+}
+
+.text-share {
+    color: #333;
+    font-size: 36rpx;
+}
+
+.text-share-num {
+    font-size: 14px;
+    color: #999999;
+}
+
+.text-select {
+    color: #FFC35B;
+    font-size: 30rpx;
+}
+
+.btn-stop {
+    width: 100%;
+    height: 100rpx;
+    line-height: 100rpx;
+    text-align: center;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    background: #FFE27A;
+    color: #000;
+    font-size: 36rpx;
+}
+
+.btn::after {
+    border: none;
+}
+
+.member-list {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 90%;
+    padding: 0 5%;
+}
+
+.member-item {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    /* border-bottom: 2rpx solid #cecece; */
+    padding-top: 66rpx;
+}
+
+.user-info {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.user-info image {
+    width: 100rpx;
+    border-radius: 50rpx;
+}
+
+.user-info text {
+    width: 130rpx;
+    font-size: 28rpx;
+    margin-left: 20rpx;
+}
+
+.select-image {
+    width: 40rpx;
+}
+
+.modal-wrap {
+    width: 100%;
+    height: 100%;
+    /* padding: 60rpx; */
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.modify-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 80%;
+    padding-top: 60rpx;
+    position: absolute;
+    z-index: 999999;
+    background: #fff;
+    border-radius: 10rpx;
+}
+
+.title {
+    width: 100%;
+    text-align: center;
+    color: #333333;
+    font-size: 36rpx;
+}
+
+.section-input {
+    width: 454rpx;
+    height: 68rpx;
+    /* border: 4rpx solid #999999; */
+    background: #F8F8F8;
+    margin-top: 40rpx;
+}
+
+.input {
+    width: 100%;
+    height: 68rpx;
+    line-height: 68rpx;
+    background: #F8F8F8;
+    text-align: center;
+    font-size: 28rpx;
+}
+
+.content {
+    width: 100%;
+    color: #ff9a87;
+    margin-top: 20rpx;
+    text-align: center;
+    font-size: 20rpx;
+}
+
+/* .button-bottom {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    margin-top: 40rpx;
+}
+
+.button-confirm {
+    width: 50%;
+    text-align: center;
+    font-size: 36rpx;
+    color: #000;
+    height: 80rpx;
+    line-height: 80rpx;
+    background: #FFE27A;
+    border-top: 2rpx solid #FFE27A;
+    border-radius: 0 0 10rpx 0;
+}
+
+.button-cancel {
+    width: 50%;
+    text-align: center;
+    font-size: 36rpx;
+    color: #666666;
+    height: 80rpx;
+    line-height: 80rpx;
+    border-top: 2rpx solid #CECECE;
+    border-radius: 0 0 0 10rpx;
+} */
+
+.bg-gray {
+    background: #000000;
+    opacity: 0.4;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: 888888;
+}
+
+.modal-wrap {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.confirm-title {
+    color: #333;
+    font-size: 36rpx;
+    padding: 0 46rpx;
+}
+
+.button-bottom {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    margin-top: 40rpx;
+}
+
+.button-confirm {
+    width: 50%;
+    text-align: center;
+    font-size: 36rpx;
+    color: #000;
+    height: 80rpx;
+    line-height: 80rpx;
+    background: #FFE27A;
+    border-top: 2rpx solid #FFE27A;
+    border-radius: 0 0 20rpx 0;
+}
+
+.button-cancel {
+    width: 50%;
+    text-align: center;
+    font-size: 36rpx;
+    color: #666666;
+    height: 80rpx;
+    line-height: 80rpx;
+    border-top: 2rpx solid #CECECE;
+    border-radius: 0 0 0 20rpx;
+}
+
+.confirm-modal1 {
+    width: 620rpx;
+    background: #fff;
+    color: #333;
+    border-radius: 20rpx;
+    padding-top: 80rpx;
+    text-align: center;
+}
+
+.confirm-content1 {
+    color: #505050;
+    font-size: 28rpx;
+    margin-top: 18rpx;
+    padding: 50rpx 46rpx 40rpx;
+}
+
+.no-share {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 294rpx;
+}
+
+.no-share image{
+  width: 212rpx;
+  margin-bottom: 40rpx;
+}
+
+.no-share view{
+  font-size: 32rpx;
+  color: #666;
+}

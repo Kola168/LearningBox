@@ -3,7 +3,6 @@ const app = getApp()
 const regeneratorRuntime = require('../../../lib/co/runtime')
 const co = require('../../../lib/co/co')
 const util = require('../../../utils/util')
-const scanCode = util.promisify(wx.scanCode)
 const _ = require('../../../lib/underscore/we-underscore')
 import commonRequest from '../../../utils/common_request.js'
 import { getLogger } from '../../../utils/logger'
@@ -53,6 +52,9 @@ Page({
 			event.on('setPreData', this, (postData)=>{
 				this.setPostData(postData)
 			})
+			event.on('chooseBaiduFileDone', this, (baiduFiles)=>{
+				this.formatFiles(baiduFiles)
+			})
 
 		} catch(err) {
 			logger.error(err)
@@ -94,7 +96,7 @@ Page({
 				}
 			})
 			this.setData({
-				files: docFiles || []
+				files: this.data.files.concat(docFiles) || []
 			})
 		} catch(err) {
 			logger.info(err)
@@ -187,33 +189,27 @@ Page({
 				showCancel: false
 			})
 		}
-		var _this = this
-		var leftLength = 5 - _this.data.files.length
-		wx.chooseMessageFile({
-			type: 'file',
-			count: leftLength, //暂定最多5个文档
-			success: (res) => {
-				var tempFiles = _(res.tempFiles).clone()
-				var newDocFiles = util.clearFile(res.tempFiles)
-				if (newDocFiles.length > 0) {
-					return _this.uploadMessageFile(newDocFiles)
-				}
-
-				if (tempFiles.length == 1) {
-					_this.longToast.toast({
-						type:'info',
-						title: '不支持打印的文件已为您过滤'
-					})
-				}
-
-			},
-			fail: function() {
-				util.showError({
-					message:'文件获取失败，请重试~'
-				})
-			}
-		})
+		this.selectComponent("#checkComponent").showPop()
 	}),
+
+	/**
+	 * @methods 选择文档完成
+	 */
+
+	choosedDoc(res){
+		let tempFiles = _(res.detail.tempFiles).clone(),
+		newDocFiles = util.clearFile(res.detail.tempFiles)
+		if (newDocFiles.length > 0) {
+			return this.uploadMessageFile(newDocFiles)
+		}
+
+		if (tempFiles.length == 1) {
+			_this.longToast.toast({
+				type:'info',
+				title: '不支持打印的文件已为您过滤'
+			})
+		}
+	},
 
 	/**
 	 * @methods 确认
@@ -388,6 +384,7 @@ Page({
 
 	onUnload() {
 		event.remove('setPreData', this)
+		event.remove('chooseBaiduFileDone', this)
 	},
 
 })

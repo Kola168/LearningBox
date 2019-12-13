@@ -32,33 +32,21 @@
   margin-bottom: 10rpx;
 }
 
-.content-box {
+.confirm-modal-content {
   padding: 0 30rpx 36rpx;
 }
 
-.box-text {
+.confirm-modal-content__text {
   font-size: 28rpx;
   margin-bottom: 18rpx;
 }
 
-.box-tip {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 30rpx;
-  margin-top: 24rpx;
-}
-
-.box-tip view {
-  margin-right: 10rpx;
-}
-
-.button {
+.confirm-modal-button {
   width: 100%;
   display: flex;
 }
 
-.button view {
+.confirm-modal-button view {
   width: 50%;
   height: 88rpx;
   line-height: 88rpx;
@@ -68,13 +56,13 @@
   text-align: center;
 }
 
-.button .cancel {
+.confirm-modal-button .confirm-modal-button__cancel {
   color: #666;
   background: #fff;
   border-top: 2rpx solid #CECECE;
   box-sizing: border-box;
 }
 
-.button .confirm {
+.confirm-modal-button .confirm-modal-button__confirm {
   width: 100%;
 }

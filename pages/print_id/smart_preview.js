@@ -162,7 +162,7 @@ Page({
         this.longToast.hide()
         // 其他错误
         util.showError({
-          content:resp.res.message
+          message:resp.message
         })
         return
       }
@@ -170,7 +170,7 @@ Page({
       this.longToast.hide()
       util.showError({
         title: '网络异常',
-        content: '请检查您的手机网络后重试'
+        message: '请检查您的手机网络后重试'
       })
       return
     }

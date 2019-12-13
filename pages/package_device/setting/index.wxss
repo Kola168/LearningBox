@@ -63,6 +63,14 @@
   position: relative;
 }
 
+.online-active-flag {
+  background: #4FB526;
+}
+
+.online-active-status {
+  color: #4FB526;
+}
+
 .device-status image {
   position: absolute;
   right: -36rpx;

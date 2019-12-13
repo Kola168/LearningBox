@@ -1,0 +1,19 @@
+<nav-bar background="#fff" title="支付完成" />
+<view class="payment-success-main">
+	<view class="payment-header sys-flex flex-cross-axis-center">
+		<image class="pay-success-icon" src="../images/pay_success.png" />
+		<view class="f-18 color-333 margin-b-60">支付成功</view>
+	</view>
+	<view class="btn-container sys-flex flex-m-axis-between">
+		<navigator
+		 open-type="{{item.type ? item.type : 'navigate'}}"
+		 class="btn {{item.externalClasses}}"
+		 url="{{item.url}}"
+		 wx:for="{{btnList}}"
+		 wx:key="*this"
+		>{{item.name}}
+		</navigator>
+	</view>
+	<!-- <consumable></consumable> -->
+</view>
+

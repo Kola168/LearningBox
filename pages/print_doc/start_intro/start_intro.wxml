@@ -1,4 +1,4 @@
-<nav-bar title="文档打印" />
+<nav-bar title="百度网盘" />
 <view class="img-box" style="{{type == 'baiduPrint' ? 'margin:0 auto;width:80%;' : ''}}">
 		<image wx:for="{{imgs[type]}}" src="{{item}}" wx:key="{{index}}" mode="widthFix" class="image" />
 </view>

@@ -62,7 +62,7 @@ Page({
         isEmpty: true
       })
       this.weToast.hide()
-      util.showGraphqlErr(e)
+      util.showError(e)
     }
   }),
 

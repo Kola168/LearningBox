@@ -10,6 +10,7 @@ require('../../utils/mixin.js')
 import index from "../../mixins/index.js"
 import init from "../../mixins/init.js"
 import storage from '../../utils/storage.js'
+import gql from '../../network/graphql_request.js'
 import api from '../../network/restful_request.js'
 import router from '../../utils/nav'
 const checkSession = util.promisify(wx.checkSession)
@@ -32,16 +33,24 @@ Page({
       url: 'http://gfd-i.memeyin.com/e-FlXfVks1do_li3DqrLWVHjr-0IPr'
     }, ],
     showAuth: false, //登录
-    homeType: 'beforeSchool'
+    homeType: '学前',
+    selectedKid: null,
+    stageRoot: null
   },
 
   //事件处理函数
   bindViewTap: function () {
     wxNav.navigateTo('/pages/logs/logs')
   },
-  onLoad: function () {
+  onLoad: co.wrap(function* () {
     this.longToast = new app.weToast()
-  },
+    try {
+
+    } catch (e) {
+      console.log(e)
+    }
+
+  }),
   onShow: co.wrap(function* () {
     yield this.getUnion() //授权
   }),
@@ -53,6 +62,7 @@ Page({
           showAuth: false
         })
         app.authToken = authToken
+        yield this.getUserInfo()
       }
       if (!authToken) {
         this.setData({
@@ -71,6 +81,31 @@ Page({
       return true
     } catch (e) {
       return false
+    }
+  }),
+  getUserInfo: co.wrap(function* () {
+    try {
+      let resp = yield gql.getUser()
+      this.setData({
+        phone: resp.currentUser.phone,
+        selectedKid: resp.currentUser.selectedKid,
+        stageRoot: resp.currentUser.selectedKid.stageRoot
+      })
+      if (resp.currentUser.phone) {
+        app.hasPhoneNum = true
+        app.globalPhoneNum = resp.currentUser.phone
+        wx.setStorageSync("phoneNum", resp.currentUser.phone)
+      }
+      if (!this.data.selectedKid || !this.data.selectedKid.stageRoot) {
+        router.navigateTo('/pages/index/grade')
+      } else {
+        this.setData({
+          homeType: this.data.selectedKid.stageRoot.rootName
+        })
+      }
+
+    } catch (e) {
+      util.showError(e)
     }
   }),
   userInfoHandler: co.wrap(function* (e) {
@@ -106,20 +141,17 @@ Page({
       }
       const resp = yield api.wechatDecryption(params)
       if (resp.code != 0) {
-        throw (resp.res)
+        throw (resp)
       }
       storage.put('authToken', resp.res.auth_token)
-      storage.put('unionId', resp.res.unionid)
+			storage.put('unionId', resp.res.unionid)
+			storage.put('refreshToken', resp.res.refresh_token)
 
-      // if (resp.data.res.phone) {
-      //   app.hasPhoneNum = true
-      //   app.globalPhoneNum = resp.data.res.phone
-      //   wx.setStorageSync("phonenum", resp.data.res.phone)
-      // }
       app.authToken = resp.res.auth_token
       this.setData({
         showAuth: false
       })
+      yield this.getUserInfo()
       this.longToast.hide()
     } catch (e) {
       yield app.login()

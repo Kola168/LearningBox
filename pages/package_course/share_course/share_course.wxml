@@ -1,0 +1,82 @@
+<wxs src="../common/wxs/utils.wxs" module="utils" />
+<nav-bar background="#fff" title="助力分享" />
+<view class="share-container">
+	<!-- <view class="back_index" bindtap="backIndex">返回首页</view> -->
+  <image class="share-icon" src="https://cdn-h.gongfudou.com/LearningBox/course/course_share_assitance.png" mode="widthFix"></image>
+  <view class="share-box">
+    <view class="share-wrap-box sys-flex">
+      <image class="course-icon" src="{{shareInfo.course && shareInfo.course.mainImageUrl}}" />
+      <view class="course-right-info">
+        <view class="course-desc f-15">{{shareInfo.course && shareInfo.course.desc}}</view>
+        <view class="style-process f-12">共{{shareInfo.course && shareInfo.course.totalLessons}}课时/{{shareInfo.course && shareInfo.course.studyUsers}}人已参与 </view>
+        <view class="course-price sys-flex"  wx:if="{{is_android}}">
+          <view class="origin-price f-12 {{shareInfo.course.priceYuan != null}}">￥{{shareInfo.course && utils.fixPrice(shareInfo.course.priceYuan)}}</view>
+          <!-- <image class="" src="{{shareInfo.course.discount_image_url}}" mode="widthFix"/>
+          <block wx:if="{{shareInfo.course.discount_image_url}}">
+						<image  src="{{shareInfo.course.discount_image_url}}" />
+					</block>
+					<block wx:else>
+						<view class="course-label course-label-card" wx:if="{{shareInfo.course.discount_price_yuan!= null}}">
+							限时特价
+						</view>
+					</block>
+          <view class="discount-price" wx:if="{{shareInfo.course.discount_price_yuan != null}}">¥{{utils.fixPrice(shareInfo.course.discount_price_yuan)}}</view> -->
+        </view>
+      </view>
+    </view>
+    <view class="assistance-box sys-flex">
+      <view class="assistance-state f-18">{{shareInfo && shareInfo.assistanceSucceed ? '助力成功' : '点击按钮帮我解锁'}}</view>
+      <view class="assistance-time f-14">
+        <block wx:if="{{shareInfo && !shareInfo.assistanceSucceed}}">
+          剩余时间：{{time}}
+        </block>
+      </view>
+      <view class="btn" wx:if="{{shareInfo}}">
+        <!-- 助力未成功前显示 发起人显示：继续邀请助力  助力人显示： {助力人已助力显示 ？ 点击助力 ： 我也要学 }-->
+        <!-- 助力成功前显示 发起人和助力人都不显示按钮-->
+        <button
+          wx:if="{{!shareInfo.assistanceSucceed && ( (!shareInfo.canAssistance && shareInfo.owner) || (!shareInfo.owner && shareInfo.canAssistance) )}}"
+          hover-class="btn-hover"
+          class="btn-assistance"
+          open-type="{{shareInfo.owner && !shareInfo.canAssistance ?'share' : ''}}"
+          bindtap="toHelper"
+          >{{shareInfo.owner ? '继续邀请助力' : '点击助力'}}
+        </button>
+        <!-- 已点击助力后显示我也要学 ||  -->
+        <button class="btn-learn" hover-class="btn-hover"  bindtap="toLearn" wx:if="{{(shareInfo && !shareInfo.canAssistance && !shareInfo.owner)}}">我也要学</button>
+      </view>
+    </view>
+    <view class="assistance-number">
+      <view class="assistance-num-title f-14">
+        <block>
+          已有{{shareInfo.assistanceUsers.length}}位好友助力
+        </block>
+        <block wx:if="{{shareInfo.course.promotionNum - shareInfo.assistanceUsers.length}}">
+          ,还差{{shareInfo.course.promotionNum - shareInfo.assistanceUsers.length}}位好友即可助力成功
+        </block>
+      </view>
+      <view class="share-user-avatar">
+        <block wx:if="{{shareInfo.assistanceUsers.length}}">
+          <image
+            src="{{item.avatar}}"
+            mode="aspectFit"
+            wx:for="{{shareInfo.assistanceUsers}}"
+            wx:key="*this"
+            wx:for-index="*this"
+          />
+        </block>
+        <!-- 需要几位助力的占位icon -->
+        <block wx:if="{{shareInfo.course.promotionNum - shareInfo.assistanceUsers.length}}">
+          <image src="../images/more_holder.png" mode="aspectFit" wx:for="{{shareInfo.course.promotionNum - shareInfo.assistanceUsers.length}}" wx:key="*this"/>
+        </block>
+      </view>
+    </view>
+  </view>
+
+	<view class="share-activity-img">
+		<rich-text wx:if="{{introduction}}" nodes="{{introduction}}" />
+	</view>
+</view>
+
+<import src="../../../lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />

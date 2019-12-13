@@ -1,0 +1,15 @@
+<!--pages/package_feature/print_thumb_album/edit.wxml-->
+<nav-bar title="照片编辑"></nav-bar>
+<view class="top-tips">
+  <image src="/images/print_photo_edit_face.png" mode="widthFix" class="tips-face-icon"></image>
+  <text class="tips-top-text">可手动放大缩小，移动位置</text>
+</view>
+<view class="edit-box">
+  <edit-photo id="mymulti" class="edit-mode" mode-info="{{templateInfo}}" mode-paper="{{paperSize}}" img-path="{{photoPath}}" img-info="{{imageInfo}}"></edit-photo>
+</view>
+<view class="bottom-tips">
+  虚线外的区域将会被剪裁
+</view>
+<bottom-button class="bottom-but" text-right="确认" bindrighttap="toedit"></bottom-button>
+<import src="/lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />

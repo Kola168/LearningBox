@@ -1,0 +1,16 @@
+<nav-bar background="#fff" title="{{title}}" />
+<view class="container" wx:if="{{loadReady}}">
+  <view class="back-index" bindtap="backIndex">返回首页</view>
+  <image src="../images/course_video_bg.png" mode="widthFix" class="bg" />
+  <view class="video-info">
+    <view class="info-title">{{courseLessonVideo.courseName}}</view>
+    <view class="info-sub">{{courseLessonVideo.name}}</view>
+    <video src="{{courseLessonVideo.videoUrl}}" controls></video>
+  </view>
+  <view class="video-tip">
+    <image src="../images/course_video_tip.png" mode="widthFix" />
+  </view>
+</view>
+
+<import src="../../../lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />
