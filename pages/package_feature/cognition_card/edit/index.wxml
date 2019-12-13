@@ -1,28 +1,32 @@
 <nav-bar title="认知卡"></nav-bar>
-<view class="container">
+<view class="container" style="min-height:{{areaHeight}}px;">
+  <image src="https://cdn-h.gongfudou.com/LearningBox/feature/cognition_bg.jpg" class="container-bg" style="min-height:{{areaHeight}}px;" mode="widthFix" />
   <image src="../../images/cognition_tip_3.png" class="tip-img" mode="widthFix" />
-  <!-- <image src="../../../images/cloud.png" class="cloud" mode="widthFix" /> -->
   <view hover-class="none" bindtouchstart="onTouch" bindtouchmove="onTouchMove" bindtouchend="onTouchEnd" bindtouchcancel="onTouchEnd" class="editor-area" style="width:{{areaPosition.width}}px;height:{{areaPosition.height}}px;" hidden="{{!loadReady}}">
-    <image src="/images/transparent.png" class="editor-back" />
+    <image src="../../images/transparent.png" class="editor-back" />
     <image class="area" src="{{area.image}}"></image>
-    <view class="area-border {{showAreaBorder?'show-border':''}}" style="width:{{area.area_width*areaPosition.scale-4}}px;height:{{area.area_height*areaPosition.scale-4}}px;left:{{area.area_x*areaPosition.scale}}px;top:{{area.area_y*areaPosition.scale}}px;">
-      <image src="/images/circle_add.png" class="add-btn absolute" bindtap="showImgChooseWay" hidden="{{localImgPath}}"></image>
-      <image src="/images/close_dark.png" class="delete-btn absolute" hidden="{{showAreaBorder||!localImgPath}}" bindtap="deleteImg"></image>
+    <view class="area-border {{showAreaBorder?'show-border':''}}" style="width:{{area.areaWidth*areaPosition.scale-4}}px;height:{{area.areaHeight*areaPosition.scale-4}}px;left:{{area.areaX*areaPosition.scale}}px;top:{{area.areaY*areaPosition.scale}}px;">
+      <image src="/images/add_circle.png" class="add-btn absolute" bindtap="showImgChooseWay" hidden="{{localImgPath}}"></image>
+      <image src="/images/doc_close_dark.png" class="delete-btn absolute" hidden="{{showAreaBorder||!localImgPath}}" bindtap="deleteImg"></image>
     </view>
     <image class="user-img" mode="widthFix" src="{{localImgPath}}" binderror="imageLoadError" bindload="initDesign" style="width:{{imgInfo.width}}px; height:{{imgInfo.height}}px;left:{{userImgPosition.x}}px;top:{{userImgPosition.y}}px; transform:scale3d({{realScale}},{{realScale}},1) rotate({{realRotate}}deg)" wx:if="{{localImgPath}}"></image>
     <input type="text" class="card-name" value="{{cardName}}" placeholder="输入4个汉字以内" bindblur="getCardName" maxlength="8" hidden="{{type==='template'}}" />
   </view>
   <view class="handle-btns">
-    <image src="../../../images/cognition_change.png" id="guide-view" bindtap="chooseImg" mode="widthFix" />
-    <image src="../../../images/{{type==='template'?'cognition_print':'edit_done'}}.png" mode="widthFix" hidden="{{type===''}}">
-      <button form-type='submit' open-type="{{hasAuthPhoneNum?'':'getPhoneNumber'}}" bindgetphonenumber="{{hasAuthPhoneNum?'':'getPhoneNumber'}}" bindtap="preCheck" hover-class="none" class="cover-but"></button>
-    </image>
+    <view class="btn-left" id="guide-view" bindtap="showImgChooseWay">更换照片</view>
+    <view class="btn-right" hidden="{{type===''}}">
+      {{type==='template'?'我要打印':'编辑完成'}}
+      <!-- getPhoneNumber -->
+      <button form-type='submit' open-type="{{hasAuthPhoneNum?'':''}}" bindgetphonenumber="{{hasAuthPhoneNum?'':''}}" bindtap="preCheck" hover-class="none" class="cover-but">
+        {{type==='template'?'我要打印':'编辑完成'}}
+      </button>
+    </view>
   </view>
 </view>
 <view class="cover-modal" bindtap="hideModal" wx:if="{{showModal}}" catchtouchmove>
   <view class="guide-view" wx:if="{{showGuide}}" style="width:{{guidePosition.width}}px;left:{{guidePosition.left}}px;top:{{guidePosition.top}}px;">
-    <image src="../../../images/cognition_change.png" mode="widthFix" />
-    <image src="../../../images/cognition_guide_tip_2.png" mode="widthFix" class="guide-tip" />
+    <view class="view-btn">更换照片</view>
+    <image src="../../images/cognition_guide_tip_2.png" mode="widthFix" class="guide-tip" />
   </view>
   <view class="handle-step" wx:if="{{stepView}}">
     <view class="step-box">
@@ -41,12 +45,18 @@
           <view class="item-text">点击打印即可完成</view>
         </view>
       </view>
-      <image src="../../../images/cognition_modal_img.png" mode="widthFix" />
     </view>
     <view class="modal-btn">开始制作</view>
   </view>
 </view>
+
+<!-- modal -->
+<modal modal="{{modalObj}}"></modal>
+
 <!-- 打印确认框 -->
 <confirm-print bindconfirm="print" bindcancel="toShopping" modal="{{confirmModal}}"></confirm-print>
 <!-- 选择图片 -->
-<check-img id="checkComponent" bindchooseImg="chooseImg"></check-img>
+<check-img id="checkComponent" bindchooseImg="chooseImg" imgNum="{{1}}"></check-img>
+<!-- loading -->
+<import src="/lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />

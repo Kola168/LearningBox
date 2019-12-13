@@ -1,0 +1,4 @@
+<!--pages/package_common/account/name_edit.wxml-->
+<nav-bar background="#fff" title="我的"></nav-bar>
+<input placeholder="请输入姓名" auto-focus bindinput='input' confirm-type="done" value="{{name}}"></input>
+<view class="button">确认</view>

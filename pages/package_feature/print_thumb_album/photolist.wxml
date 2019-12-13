@@ -1,0 +1,39 @@
+<!--pages/package_feature/print_thumb_album/photolist.wxml-->
+<wxs src="../common.wxs" module="foo" />
+<multi-process wx:if="{{showProcess}}" complete-count="{{completeCount}}" count="{{count}}" percent="{{percent}}" err-tip ="{{errTip}}" bindcancelprocess="cancelImg"></multi-process>
+<take-photo-pop id="checkComponent" bindchooseImg="chooseImgs" imgNum="{{chooseCount}}" bindbaidutap="baiduprint"></take-photo-pop>
+
+<nav-bar title="制作拇指相册"></nav-bar>
+<view class="top-tips">
+  <image src="../resource_images/icon_smile.png" mode="widthFix" class="top-tips-icon"></image>
+  <text>点击+上传照片，点击<text class="tips-text-red">编辑</text>可以对图片进行调整</text>
+</view>
+<view class="photo-show-box" style="height:{{imgSize.height}}px">
+  <block wx:if="{{images[selectedImgIndex].url}}">
+    <image src="{{foo.addProcess(images[selectedImgIndex].url,'/resize,w_200/quality,Q_85/format,jpg')}}" mode="aspectFill" class="photo-show-img" style="width:{{imgSize.width}}px;height:{{imgSize.height}}px">
+      <image src="../resource_images/calendar_close.png" mode="widthFix" class="photo-show-delete"></image>
+      <view class="photo-show-cover">
+        <view class="photo-edit-box" data-index="{{index}}" bindtap="toEdit">
+          <image src="../resource_images/album_edit_icon.png" mode="widthFix" class="photo-edit-icon"></image>
+          <text>编辑</text>
+        </view>
+      </view>
+    </image>
+  </block>
+  <block wx:else>
+    <image src="../resource_images/album_noimg_tip.png" mode="widthFix" class="no-img-icon"></image>
+    <text class="no-img-text">该区域没有上传照片哦，赶快上传吧</text>
+  </block>
+</view>
+<view class="bottom-box">
+  <view wx:for="{{images}}" wx:key="images" class="img-list-box" style="width:{{imgSize.imgWidth}}px;height:{{imgSize.imgHeight}}px">
+    <image wx:if="{{item.url}}" src="{{foo.addProcess(item.url,'/resize,w_80/quality,Q_85/format,jpg')}}" mode="aspectFill" class="img-list-img {{selectedImgIndex==index?'img-list-selected':''}}" data-index="{{index}}" bindtap="clickImg"></image>
+    <view wx:else class="img-list-add" data-index="{{index}}" bindtap="showCheck">
+      <image src="../resource_images/album_bg.png" mode="aspectFill" class="img-list-bg"></image>
+      <image wx:if="{{index==0}}" src="../resource_images/album_top.png" mode="widthFix" class="img-list-cover"></image>
+      <image wx:if="{{index==1}}" src="../resource_images/album_bottom.png" mode="widthFix" class="img-list-cover"></image>
+      <image src="../resource_images/balloon_add_icon.png" mode="widthFix" class="img-list-add-icon"></image>
+    </view>
+  </view>
+</view>
+<bottom-button class="bottom-but" text-right="开始打印" bindrighttap="toedit"></bottom-button>

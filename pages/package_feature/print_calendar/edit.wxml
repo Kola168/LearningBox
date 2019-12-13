@@ -1,0 +1,32 @@
+<!--pages/package_feature/print_ calendar/edit.wxml-->
+<nav-bar title="{{titleName}}"></nav-bar>
+<view class="top-check-box">
+  <view class="check-item {{direction=='horizontal'?'check-item-checked':''}}" data-type="horizontal" bindtap="{{direction=='horizontal'?'':'checkdirection'}}">
+    <text>横向</text>
+    <view wx:if="{{direction=='horizontal'}}" class="line"></view>
+  </view>
+  <view class="check-item {{direction=='vertical'?'check-item-checked':''}}" data-type="vertical" bindtap="{{direction=='vertical'?'':'checkdirection'}}">
+    <text>竖版</text>
+    <view wx:if="{{direction=='vertical'}}" class="line"></view>
+  </view>
+</view>
+<view class="tips-box">
+  <image src="../resource_images/icon_smile.png" mode="widthFix" class="tips-icon"></image>
+  <text>图片可以旋转、缩放、漂亮的模版自由搭配</text>
+</view>
+<view class="edit-box">
+  <edit-photo id="mymulti" class="edit-mode" mode-info="{{templateInfo}}" mode-paper="{{paperSize}}" add-icon="/pages/package_feature/resource_images/calendar_add.png" delete-icon="/pages/package_feature/resource_images/calendar_close.png"
+    delete-edge="{{true}}"></edit-photo>
+  <image src="../resource_images/icon_edit_bg.png" mode="aspectFill" class="edit-bg-img"></image>
+</view>
+<view class="bottom-box">
+  <scroll-view class="template-list-box" scroll-x>
+    <view class="template-item-box template-name {{index==templateTypeIndex?'template-type-selected':''}}" wx:for="{{templateList}}" wx:key="templateList" data-index="{{index}}" bindtap="{{templateTypeIndex==index?'':'checkTemplateType'}}">{{item.name}}</view>
+  </scroll-view>
+  <scroll-view class="template-list-box template-limit-height" scroll-x>
+    <view wx:for="{{templateList[templateTypeIndex].templates}}" wx:key="templates" class="template-item-box {{index==templateIndex?'template-item-selected':''}}" data-index="{{index}}" bindtap="{{templateIndex==index?'':'checkTemplate'}}">
+      <image src="{{item.preview_url}}" mode="widthFix" class="template-preview-img {{type=='wood' && direction=='vertical'?'template-vertical-img':''}}"></image>
+    </view>
+  </scroll-view>
+  <bottom-button text-right="开始打印" bindrighttap="confBut"></bottom-button>
+</view>

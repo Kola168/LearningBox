@@ -80,7 +80,7 @@ Page({
 
                 if (resp.res.length == 0) {
                     return util.showError({
-                        content: '没有搜到该类型哦'
+                        message: '没有搜到该类型哦'
                     })
                 }
                 this.setData({
@@ -89,13 +89,13 @@ Page({
                 })
             } else {
                 this.longToast.hide()
-                util.showError(e)
+                util.showError(resp)
                 return
             }
         } catch (e) {
             this.longToast.hide()
             util.showError({
-                content: '请检查您的网络，请稍后重试'
+                message: '请检查您的网络，请稍后重试'
             })
             return
         }

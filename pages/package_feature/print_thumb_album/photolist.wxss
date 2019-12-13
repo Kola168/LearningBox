@@ -1,0 +1,145 @@
+/* pages/package_feature/print_thumb_album/photolist.wxss */
+page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 120rpx;
+  box-sizing: border-box;
+  min-height: 100%;
+}
+
+view {
+  box-sizing: border-box;
+}
+
+.bottom-but {
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+}
+
+.top-tips {
+  font-size: 24rpx;
+  color: #666666;
+  margin: 30rpx 0 20rpx;
+  display: flex;
+  align-items: center;
+}
+
+.top-tips-icon {
+  width: 36rpx;
+  margin-right: 10rpx;
+}
+
+.tips-text-red {
+  color: #002010;
+}
+
+.photo-show-box {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.no-img-icon {
+  width: 230rpx;
+}
+
+.no-img-text {
+  font-size: 32rpx;
+  color: #666666;
+  margin-top: 44rpx;
+}
+
+.photo-show-img {
+  display: block;
+  position: relative;
+}
+
+.bottom-box {
+  flex: 1;
+  box-sizing: border-box;
+  padding: 12rpx 44rpx 40rpx;
+  display: flex;
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+
+.img-list-img {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.img-list-add {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.img-list-bg {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: -1;
+  left: 0;
+  top: 0;
+}
+
+.img-list-add-icon {
+  width: 44rpx;
+}
+
+.img-list-cover {
+  width: 56rpx;
+  position: absolute;
+  top: 12rpx;
+  left: 50%;
+  margin-left: -26rpx;
+}
+
+.img-list-selected {
+  border: 2rpx solid #ff5022;
+}
+
+.photo-show-delete {
+  width: 54rpx;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.photo-show-cover{
+  width:100%;
+  height:100%;
+  position:absolute;
+  top:0;
+  left:0;
+  display:flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.photo-edit-box {
+  line-height: 60rpx;
+  padding: 0 50rpx;
+  font-size: 32rpx;
+  color: #FFFFFF;
+  border-radius:60rpx;
+  background: rgba(0,0,0,0.50);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin-bottom:18rpx;
+}
+
+.photo-edit-icon{
+  width:32rpx;
+  margin-right:8rpx;
+}

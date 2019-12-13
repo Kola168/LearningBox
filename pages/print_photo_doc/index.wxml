@@ -35,7 +35,7 @@
                 </view>
             </block>
         </view>
-        <view class="bottom">
+        <view class="bottom {{isFullScreen?'is-full-screen':''}}">
             <view class="bottom-left" bindtap="changeImage" style="{{!rePrint&& images.length == maxCount ? '' : 'color:#666666;background:#fff;'}}">
                 <text>{{images.length ? '继续上传' : '上传照片'}}({{images.length}}/{{maxCount}})</text>
             </view>
@@ -70,8 +70,8 @@
     <block wx:else>
         <image src="https://cdn-h.gongfudou.com/LearningBox/main/pic2doc_intro_01.png" class="photo_doc" mode="widthFix"></image>
         <image src="https://cdn-h.gongfudou.com/LearningBox/main/pic2doc_intro_02.png" class="photo_doc photo-last" mode="widthFix"></image>
-        <view class='btn' bindtap='toUse'>
-            <button hover-class="none">开始使用</button>
+        <view class="btn {{isFullScreen?'is-full-screen':''}}" bindtap='toUse'>
+            开始使用
         </view>
     </block>
 </block>

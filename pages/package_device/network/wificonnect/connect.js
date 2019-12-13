@@ -142,7 +142,7 @@ Page({
 			}else{
 				this.longToast.toast()
 				return wxNav.navigateTo('/pages/package_device/network/tips/step1')
-			}	
+			}
 		}
 	}),
 
@@ -167,7 +167,7 @@ Page({
 						showCancel: false,
 						confirmColor: '#ff9999'
 					})
-					return	wxNav.navigateTo('/pages/package_device/network/tips/step1')	
+					return	wxNav.navigateTo('/pages/package_device/network/tips/step1')
 				}
 				setTimeout(function () {
 					that.checkEquipment(sn)
@@ -176,8 +176,9 @@ Page({
 				this.longToast.toast()
 				wx.showToast({
 					title: '配网成功',
-					duration: 5000,
+					duration: 2000,
 				})
+        wxNav.switchTab('/pages/index/index')
 			}
 		} catch (e) {
 			this.longToast.toast()

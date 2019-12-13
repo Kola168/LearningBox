@@ -2,18 +2,13 @@
 let {
   weToast
 } = require('lib/toast/wetoast.js')
-const regeneratorRuntime = require('lib/co/runtime')
-const co = require('lib/co/co')
-const util = require('utils/util')
-import Logger from 'utils/logger.js'
-const _ = require('lib/underscore/we-underscore')
+import { regeneratorRuntime, co, util, _, storage, logger } from './utils/common_import'
 const getSystemInfo = util.promisify(wx.getSystemInfo)
 const getStorage = util.promisify(wx.getStorage)
 
 
 const login = util.promisify(wx.login)
 const request = util.promisify(wx.request)
-import storage from 'utils/storage.js'
 
 
 App({
@@ -22,6 +17,10 @@ App({
   //线上地址
   // apiServer: 'https://epbox.gongfudou.com',
   // apiWbviewServer: 'https://epbox.gongfudou.com/',
+	
+	//staging
+  apiServer: 'https://lb-stg.gongfudou.com',
+  apiWbviewServer: 'https://lb-stg.gongfudou.com/',
 
   //王析理本地地址
   // apiServer: 'http://epbox.natapp1.cc',
@@ -37,8 +36,8 @@ App({
   // apiWbviewServer: 'http://jran.nat300.top/',
 
   //测试接口袁晓飞
-	// apiServer: 'https://schaffer.utools.club',
-	// apiWbviewServer: 'https://schaffer.utools.club',
+  // apiServer: 'https://schaffer.utools.club',
+  // apiWbviewServer: 'https://schaffer.utools.club',
 
   // 测试接口季慧新
   // apiServer: 'http://jhx.nat300.top',
@@ -49,28 +48,26 @@ App({
   // apiWbviewServer: 'http://jhx.nat300.top',
 
   //江然本地服务
-  // apiServer: 'http://jran.nat300.top',
-  // 测试张伟
-  apiServer: 'http://bboo.natapp1.cc',
-  apiWbviewServer: 'http://bboo.natapp1.cc',
-
-  authAppKey: 'iMToH51lZ0VrhbkTxO4t5J5m6gCZQJ6c',
+	// apiServer: 'http://jran.nat300.top',
+	// apiWbviewServer: 'http://jhx.nat300.top',
+	
+	authAppKey: 'iMToH51lZ0VrhbkTxO4t5J5m6gCZQJ6c',
   openId: '',
-  authToken:'',
+  authToken: '',
   unionId: '',
   sysInfo: null,
   navBarInfo: null,
   rpxPixel: 0.5,
-  deBug:false, //线上环境log调试
+  deBug: false, //线上环境log调试
 
-  onLaunch: co.wrap(function* () {
+  onLaunch: co.wrap(function*() {
     yield this.getOpenId()
     yield this.getSystemInfo()
     this.navBarInfo = this.getNavBarInfo()
   }),
 
   //获取系统信息
-  getSystemInfo: co.wrap(function* () {
+  getSystemInfo: co.wrap(function*() {
     let res = yield getSystemInfo()
     this.sysInfo = res
     this.handleDevice()
@@ -79,7 +76,7 @@ App({
   // 是否为全面屏，rpxPixel
   handleDevice() {
     // 暂时的处理
-    console.log('this.sysInfo.screenHeight=====',this.sysInfo.screenHeight)
+    console.log('this.sysInfo.screenHeight=====', this.sysInfo.screenHeight)
     this.isFullScreen = this.sysInfo.screenHeight > 750 ? true : false
     this.rpxPixel = 750 / this.sysInfo.windowWidth
   },
@@ -139,7 +136,7 @@ App({
     };
   },
 
-  preventMoreTap: function (e) {
+  preventMoreTap: function(e) {
     if (_.isEmpty(e)) {
       return false
     }
@@ -158,19 +155,22 @@ App({
     }
   },
 
-  getOpenId: co.wrap(function* () {
+  getOpenId: co.wrap(function*() {
     try {
       const sto = storage.get('openId')
       if (!sto) {
-        return this.login()
+        this.login()
+        logger.warn('首页调用登录')
+        return
       }
       this.openId = sto
     } catch (e) {
       this.login()
+      logger.warn('首页调用登录啦')
     }
   }),
 
-  login: co.wrap(function* () {
+  login: co.wrap(function*() {
     try {
       const loginCode = yield login()
       const loginInfo = yield request({
@@ -181,13 +181,15 @@ App({
           'code': loginCode.code
         }
       })
+      // console.log('login登录成功', loginInfo)
       if (loginInfo.data.code !== 0) {
         throw (loginInfo.data)
       }
       storage.put('openId', loginInfo.data.res.openid)
-
+      logger.warn('login登录成功', loginInfo.data.res.openid)
       this.openId = loginInfo.data.res.openid
     } catch (e) {
+      logger.error('1234567890-', e)
       util.showError({
         title: '登录失败',
         content: e.error

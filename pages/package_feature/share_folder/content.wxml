@@ -1,0 +1,127 @@
+<view class="top-tip" wx:if="{{role=='creator'}}">不可上传或传播违法内容，一经发现依法处理</view>
+<view  class="hideDevice {{ballScroll?'overflowHidden':'overflowScroll'}}">
+  <view class="{{role=='user'?'top1':'top'}}">
+    <view class="top-left">
+      <view class="text-share">
+        <text class="name">{{file_name}}</text>
+      </view>
+      <view class="text-share-date" wx:if="{{role=='user'}}">{{time}}</view>
+    </view>
+    <view class="text-select" bindtap="selectAll" wx:if="{{role=='user'&&showBaidu}}">{{selectText}}</view>
+  </view>
+
+  <view class="intro-center1" wx:if="{{!documentList.length>0}}">
+    <image src="../../images/create_document_bg.png" mode="widthFix" class="intro-bg"></image>
+    <view wx:if="{{!documentList.length>0&&role=='creator'}}">
+      <view class="intro-text">仅支持上传图片、文档</view>
+      <view class="intro-text">（视频，音频暂不支持）</view>
+    </view>
+    <view wx:if="{{!documentList.length>0&&role=='user'}}">
+      <view class="intro-text-no">暂无文件</view>
+    </view>
+  </view>
+  <view wx:else class="intro-center">
+    <view wx:for="{{documentList}}" wx:key="{{index}}" id="{{index}}" class="file-list">
+      <view class="file-left">
+        <view style="width:100rpx;">
+          <image src="{{item.url}}?x-image-process=image/resize,m_fill,h_76,w_76/quality,Q_85/format,jpg" class="file-icon" bindtap="toPreview" wx:if="{{item.file_type=='image'}}" id="{{index}}" mode="widthFix"></image>
+          <image src="/images/doc_select_pdf.png" class="file-icon" bindtap="toPreview" wx:if="{{item.file_type=='pdf'}}" id="{{index}}" mode="widthFix"></image>
+          <image src="../../images/share_fold_ppt.png" class="file-icon" bindtap="toPreview" wx:if="{{item.file_type=='pptx'||item.file_type=='ppt'}}" id="{{index}}" mode="widthFix"></image>
+          <image src="../../images/share_fold_xls.png" class="file-icon" bindtap="toPreview" wx:if="{{item.file_type=='xlsx'||item.file_type=='xls'}}" id="{{index}}" mode="widthFix"></image>
+          <image src="../../images/share_fold_word.png" class="file-icon" bindtap="toPreview" wx:if="{{item.file_type=='docx'||item.file_type=='doc'}}" id="{{index}}" mode="widthFix"></image>
+        </view>
+        <view style="width:85%" bindtap="toPreview" id="{{index}}">
+          <view class="name">{{item.name}}</view>
+          <view class="file-left-bottom">
+            <view wx:if="{{role=='creator'}}">{{item.created_at}}</view>
+          </view>
+        </view>
+      </view>
+      <view class="file-right">
+        <view class="file-right-share" data-index="{{index}}" bind:tap="toPrint" wx:if="{{!showBaidu}}">打印</view>
+        <image class="select-image" src="{{item.choose ? '/images/error_finish.png': '/images/device_share_not_select.png'}}" mode="widthFix" bindtap="choose" id="{{index}}" wx:if="{{role=='user'&&showBaidu}}"></image>
+      </view>
+    </view>
+  </view>
+</view>
+
+
+<view class="bottom-button" bindtap="newDocument" wx:if="{{!documentList.length>0&&role=='creator'}}">上传</view>
+<view class="bottom-button1" wx:if="{{documentList.length>0&&role=='creator'}}">
+  <view class="bottom-left" bindtap="manageDocument">
+    <image src="../../images/folder_manage_icon.png" class="document-icon"></image>
+    <view>管理</view>
+  </view>
+  <view class="bottom-left" bindtap="newDocument">
+    <image src="../../images/folder_upload_icon.png" class="document-icon"></image>
+    <view>上传</view>
+  </view>
+  <button class="bottom-share" hover-class="none" bindtap="showShare" wx:if="{{!firstShare}}">分享文件夹</button>
+  <button class="bottom-share" hover-class="none" open-type="share" wx:if="{{firstShare}}">分享文件夹</button>
+</view>
+
+<view class="bottom-button1" wx:if="{{role=='user'&&!showBaidu}}">
+  <view class="bottom-delete" bindtap="exitSharing">退出该共享</view>
+  <view class="bottom-save" bindtap="toBaidu" wx:if="{{documentList.length>0}}">转存至百度云</view>
+  <view class="bottom-save-no" wx:if="{{!documentList.length>0}}">转存至百度云</view>
+</view>
+
+<view class="bottom-button1" wx:if="{{role=='user'&&showBaidu}}">
+  <view class="bottom-delete" bindtap="cancelBaidu">取消</view>
+  <view class="bottom-save" bindtap="uploadBaidu" wx:if="{{firstUploadBaidu}}">确认转存</view>
+  <view class="bottom-save" bindtap="showBaiduModal" wx:if="{{!firstUploadBaidu}}">确认转存</view>
+</view>
+
+
+<import src="../../../../lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />
+
+<view class="modal-wrap" bindtap="cancelUpload" wx:if="{{uploadModel}}">
+  <view class="modify-box">
+    <view bind:tap="chooseFiles">
+      <image src="../../images/folder_wx.png" class="modify-box-wx"></image>
+      <view>微信文件</view>
+    </view>
+    <view bind:tap="chooseImgs">
+      <image src="../../images/folder_photo.png" class="modify-box-photo"></image>
+      <view>照片</view>
+    </view>
+  </view>
+</view>
+
+<w-progress-modal currentChooseCount="{{currentChooseCount}}" completeCount="{{completeCount}}" percent="{{percent}}" key="{{upKey}}" wx:if="{{showupLoad}}" bindcancel="cancel"></w-progress-modal>
+
+<view class="modal-wrap" bindtap="cancelExit" wx:if="{{exitSharingModal}}">
+  <view class="modify-box1">
+    <view class="share-confirm-modal">
+      <view>{{exitSharingModal.title}}</view>
+    </view>
+    <view class="button-confirm-exit" bindtap="confirmExit">{{exitSharingModal.bottom}}</view>
+  </view>
+</view>
+
+<view class="modal-wrap" bindtap="cancelExit" wx:if="{{exitSaveModal}}">
+  <view class="modify-box1">
+    <view class="share-confirm-modal1">
+      <view>{{exitSaveModal.title}}</view>
+      <view class="modal-content">{{exitSaveModal.content}}</view>
+      <view class="modal-role">{{exitSaveModal.role}}</view>
+    </view>
+    <view class="button-confirm-share" bindtap="confirmSave">{{exitSaveModal.confirm}}</view>
+  </view>
+</view>
+
+<view class="modal-wrap" bindtap="cancelShare" wx:if="{{showShareModel}}">
+  <view class="modify-box-share">
+    <view class="share-confirm-modal margin-modal">
+      <view class="confirm-title-share">分享后，好友可看到该文件夹内的所有内容</view>
+    </view>
+    <view class="share-content">请慎重分享到微信群中</view>
+    <view class="share-content">严禁传播违法乱纪的内容</view>
+    <button class="button-confirm-exit margin-top" open-type="share" hover-class="none">分享给微信好友</button>
+  </view>
+</view>
+
+<ball class="modify" bind:okEvent="okEvent" wx:if="{{backHome}}"></ball>
+
+<ios-tip ios-tip-modal="ios-tip-modal" bindopenmodal="openIosModal" showModal="{{iosModal}}" text="{{text}}"></ios-tip>

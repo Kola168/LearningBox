@@ -1,0 +1,139 @@
+/* pages/package_preschool/timed_print/timed_print.wxss */
+.time-block{
+    padding:0rpx 30rpx 30rpx;
+}
+.list-item{
+    display: flex;
+    justify-content: space-between;
+    border-bottom:2rpx solid #E7E7E7;
+    line-height:90rpx;
+}
+.item-left{
+    font-size: 32rpx;
+    color: #333333;
+    width: 50%;
+}
+.item-right, .list-frequency .frequency-right{
+    font-size: 28rpx;
+    color: #999999;
+    width: 35%;
+    display: flex;
+    justify-content: space-between;
+}
+.arrow-icon{
+    width:20rpx;
+    height:25rpx;
+    margin-top:33rpx;
+}
+.name{
+    margin-right: 10rpx;
+}
+.set-switch{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+.set-switch image{
+    width:76rpx;
+    height:40rpx;
+}
+
+.function-intro{
+    margin:160rpx 0rpx;
+}
+.function-intro text{
+    display: flex;
+    width:100%;
+    font-size: 24rpx;
+    color: #2A2A2A;
+    line-height:38rpx;
+}
+.set-frequency image{
+    width:40rpx;
+    height:40rpx;
+    margin-left:10rpx;
+}
+.list-frequency{
+    display: block;
+    width:100%;
+}
+.list-frequency .frequency-right{
+    width:100%;
+}
+.set-frequency{
+    width:23%;
+    display: flex;   
+}
+.set-frequency image{
+    margin-top: 24rpx;
+}
+.footer{
+    position: fixed;
+    left:0;
+    right:0;
+    bottom:0;
+    font-size: 18px;
+    color: #333333; 
+    background: #FFDC5E;
+    height:98rpx;
+    line-height:98rpx;
+    width:100%;
+    text-align:center;
+}
+
+.bottom-popup{
+    background: rgba(0,0,0,0.50);
+}
+.bottom-popup{
+    position: fixed;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    z-index:99;
+}
+.popup-cont{
+    background-color:#fff;
+    text-align: center;
+    font-size: 30rpx;
+    height:524rpx;
+    bottom:0;
+    left:0;
+    right:0;
+    position: fixed;
+}
+.popup-cont text{
+    color: #CCCCCC;
+    width:cal(100%-30rpx);
+    display: flex;
+    justify-content: center;
+    line-height:70rpx;
+}
+.popup-cont text.confirm{
+    color: #FFA200;
+    border-bottom:none;
+    justify-content: flex-end;
+    padding:0 30rpx;
+}
+.popup-cont text.on{
+    border-top:2rpx solid #E7E7E7;
+    border-bottom:2rpx solid #E7E7E7;
+    color: #333333;
+}
+.scroll-block{
+    height:500rpx;
+    overflow-y: scroll;
+}
+.scroll-block::-webkit-scrollbar{
+    display: none;
+}
+.print-num{
+    width:20%;
+}
+.print-time{
+    width:15%;
+}
+.print-num .arrow-icon{
+    width:35rpx;
+    height:35rpx;
+}

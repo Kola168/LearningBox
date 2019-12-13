@@ -1,0 +1,51 @@
+/* pages/account/index.wxss */
+page {
+    width: 100%;
+    padding: 24rpx;
+    box-sizing: border-box;
+}
+
+.user-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40rpx;
+}
+
+.user-info view {
+    display: flex;
+}
+
+.avatar {
+    width: 100rpx;
+    height: 100rpx;
+    border-radius: 50%;
+    margin-right: 20rpx;
+}
+
+.name {
+    font-family: PingFangSC-Medium;
+    font-size: 36rpx;
+    color: #333333;
+    letter-spacing: -0.62px;
+}
+
+.info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.grade {
+    font-family: PingFangSC-Regular;
+    font-size: 24rpx;
+    color: #666666;
+    letter-spacing: -0.42px;
+    margin-top: 8rpx;
+}
+
+.after {
+    width: 12rpx;
+    height: 12rpx;
+    margin-right: 20.8rpx;
+}

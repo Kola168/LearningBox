@@ -34,7 +34,7 @@ Page({
       let res = yield graphql.getHotSearch()
       return res.hotTags.tags
     } catch (error) {
-      util.showGraphqlErr(error)
+      util.showError(error)
     }
   }),
   getHistorySearch: co.wrap(function*() {
@@ -42,7 +42,7 @@ Page({
       let res = yield graphql.getHistorySearch()
       return res.userSearchRecords
     } catch (error) {
-      util.showGraphqlErr(error)
+      util.showError(error)
     }
   }),
   // 获取搜索结果
@@ -69,7 +69,7 @@ Page({
       wx.hideLoading()
     } catch (error) {
       wx.hideLoading()
-      util.showGraphqlErr(error)
+      util.showError(error)
     }
   }),
   toSearchDetail(e) {
@@ -201,7 +201,7 @@ Page({
     } catch (error) {
       console.log(error)
       wx.hideLoading()
-      util.showGraphqlErr(error)
+      util.showError(error)
     }
 
     this.setData({

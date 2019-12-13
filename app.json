@@ -41,13 +41,18 @@
     "pages/print_id/smart_index",
     "pages/print_id/smart_rules",
     "pages/course/index",
-    "components/bottom-button/test"
+		"components/bottom-button/test",
+		"pages/index/grade",
+    "pages/account/index"
   ],
   "subPackages": [
     {
       "root": "pages/package_common",
       "pages": [
-        "search/index"
+        "search/index",
+        "account/personal_info",
+        "account/avatar_edit",
+        "account/name_edit"
       ]
     },
     {
@@ -79,7 +84,13 @@
         "cognition_card/category_list/index",
         "cognition_card/edit/index",
         "baidu_print/choose/index",
-        "baidu_print/search/index"
+        "baidu_print/search/index",
+        "print_calendar/typelist",
+        "print_calendar/index",
+        "print_calendar/edit",
+        "print_thumb_album/index",
+        "print_thumb_album/photolist",
+        "print_thumb_album/edit"
       ]
     },
     {
@@ -96,7 +107,9 @@
         "record_voice/index/index",
         "record_voice/recorder/recorder",
         "record_voice/content/content",
-        "record_voice/content_detail/content_detail"
+				"record_voice/content_detail/content_detail",
+				"growth_plan/list/index",
+        "growth_plan/timed_print/timed_print"
       ]
     },
     {

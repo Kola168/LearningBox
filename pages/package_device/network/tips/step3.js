@@ -25,10 +25,6 @@ Page({
 
   },
 
-  changeWifi:function(){
-    wxNav.navigateBack()
-  },
-
   loopCheck: co.wrap(function*() {
     this.longToast.toast({
       type: "loading",

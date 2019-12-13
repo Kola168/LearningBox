@@ -1,13 +1,13 @@
 <nav-bar title="设备管理"></nav-bar>
 <view class="container">
   <view class="device-base border-bottom">
-    <image src="../images/info_icon.png" class="device-img" mode="widthFix" />
+    <image src="../images/{{device.model==='3115'?'L3115':'EP400'}}.png" class="device-img" mode="widthFix" />
     <view class="device-name">
-      <view class="text-overflow-points">给小可乐的3115</view>
-      <view class="device-flag"></view>
-      <view class="device-status">
-        <text>在线</text>
-        <image src="../images/offline_tip.png" bindtap="toNextPage" data-key="offlineSolve" mode="widthFix" />
+      <view class="text-overflow-points">{{device.name}}</view>
+      <view class="device-flag {{device.onlineState==='online'?'online-active-flag':''}}"></view>
+      <view class="device-status {{device.onlineState==='online'?'online-active-status':''}}">
+        <text>{{device.onlineState==='online'?'在线':'离线'}}</text>
+        <image src="../images/offline_tip.png" wx:if="{{device.onlineState!=='online'}}" bindtap="toNextPage" data-key="offlineSolve" mode="widthFix" />
       </view>
     </view>
     <image src="../images/share_btn_normal.png" class="share-device" bindtap="toNextPage" data-key="share" mode="widthFix" />
@@ -26,17 +26,17 @@
         <view class="setting-item">
           <view class="item-left flex-column">
             <view class="left-label">盒子编号</view>
-            <view class="label-sub">打印机型号：EPSON L805 版本号：V12</view>
+            <view class="label-sub">打印机型号：{{device.model}}</view>
           </view>
-          <view class="item-right">90123455667</view>
+          <view class="item-right">{{device.sn}}</view>
         </view>
         <view class="setting-item">
           <view class="item-left" bindtap="showModal" id="noaduit">
             <view class="left-label">免审核打印</view>
             <image src="../images/info_icon.png" class="left-explain" mode="widthFix" />
           </view>
-          <view class="item-right">
-            <image src="/images/switch_off.png" class="right-switch" />
+          <view class="item-right" bindtap="updateSetting" data-key="auditFree" data-val="{{!device.auditFree}}">
+            <image src="/images/switch_{{device.auditFree?'on':'off'}}.png" class="right-switch" />
           </view>
         </view>
         <view class="setting-item" bindtap="toNextPage" data-key="shareManage">
@@ -107,8 +107,8 @@
             <view class="left-label">无边距打印</view>
             <view class="label-sub">部分四色打印机暂无法设置边距</view>
           </view>
-          <view class="item-right">
-            <image src="/images/switch_on.png" class="right-switch" />
+          <view class="item-right" bindtap="updateSetting" data-key="marginFree" data-val="{{!device.marginFree}}">
+            <image src="/images/switch_{{device.marginFree?'on':'off'}}.png" class="right-switch" />
           </view>
         </view>
         <view class="setting-item">
@@ -116,13 +116,13 @@
             <view class="left-label">照片质量</view>
           </view>
           <view class="item-right right-radio">
-            <view>
+            <view bindtap="updateSetting" data-key="quality" data-val="normal">
               <view>标准</view>
-              <image src="/images/radio_on.png" />
+              <image src="/images/radio_{{device.quality==='normal'?'on':'off'}}.png" />
             </view>
-            <view>
+            <view bindtap="updateSetting" data-key="quality" data-val="high">
               <view>高精度</view>
-              <image src="/images/radio_off.png" />
+              <image src="/images/radio_{{device.quality==='high'?'on':'off'}}.png" />
             </view>
           </view>
         </view>
@@ -134,13 +134,13 @@
             </view>
           </view>
           <view class="item-right right-radio">
-            <view>
+            <view bindtap="updateSetting" data-key="printOrder" data-val="normal">
               <view>正序</view>
-              <image src="/images/radio_on.png" />
+              <image src="/images/radio_{{device.printOrder==='normal'?'on':'off'}}.png" />
             </view>
-            <view>
+            <view bindtap="updateSetting" data-key="printOrder" data-val="reverse">
               <view>逆序</view>
-              <image src="/images/radio_off.png" />
+              <image src="/images/radio_{{device.printOrder==='reverse'?'on':'off'}}.png" />
             </view>
           </view>
         </view>
@@ -159,8 +159,8 @@
 <!-- modal -->
 <modal modal="{{modalObj}}" bindconfirm="confirmModal">
   <view wx:if="{{modalType==='rename'}}" class="modal-rename">
-    <input placeholder="1-10个字，支持中英文、数字" value="{{renameVal}}" bindinput="getRenameVal" placeholder-style="color:#999;" />
-    <view class="rename-tip">请先输入名称</view>
+    <input placeholder="1-10个字，支持中英文、数字" value="{{renameVal}}" bindinput="getRenameVal" placeholder-style="color:#999;" maxlength="20"/>
+    <view class="rename-tip" wx:if="{{renameVal.length===0}}">请先输入名称</view>
   </view>
   <view wx:if="{{modalType==='noaduit'}}">
     <view class="noaduit-manager noaduit-item">

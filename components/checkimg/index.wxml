@@ -2,13 +2,13 @@
 <view class="component-choosePhoto" wx:if="{{popWindow}}" catch:touchmove="preventScroll">
   <view class="component-choosePhoto-container" catchtap="showPop">
     <view class="component-choosePhoto-content">
-      <view wx:if="{{showCamera}}" class="component-choosePhotoItem" catchtap="chooseImg" data-id="camera">
+      <view wx:if="{{showCamera&&fileType==='img'}}" class="component-choosePhotoItem" catchtap="chooseFile" data-id="camera">
         <text class="component-choosePhotoItem-text">拍照</text>
       </view>
-      <view wx:if="{{showAlbum}}" class="component-choosePhotoItem" catchtap="chooseImg" data-id="album">
+      <view wx:if="{{showAlbum&&fileType==='img'}}" class="component-choosePhotoItem" catchtap="chooseFile" data-id="album">
         <text class="component-choosePhotoItem-text">手机相册</text>
       </view>
-      <view wx:if="{{showMessageFile}}" class="component-choosePhotoItem" catchtap="chooseImg" data-id="chooseMessageFile">
+      <view wx:if="{{showMessageFile}}" class="component-choosePhotoItem" catchtap="chooseFile" data-id="chooseMessageFile">
         <text class="component-choosePhotoItem-text">微信聊天记录</text>
       </view>
       <view wx:if="{{showBaidu}}" class="component-choosePhotoItem" catchtap="baiduChooseImg">
@@ -20,3 +20,6 @@
     </view>
   </view>
 </view>
+<!-- loading -->
+<import src="/lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />

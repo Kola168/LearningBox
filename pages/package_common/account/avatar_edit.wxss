@@ -1,0 +1,24 @@
+/* pages/package_common/account/avatar_edit.wxss */
+page {
+    background: rgba(0, 0, 0, 0.60);
+}
+
+.tip {
+    width: 100%;
+    margin-top: 72rpx;
+    margin-bottom: 104rpx;
+    font-family: PingFangSC-Regular;
+    font-size: 32rpx;
+    color: #FFFFFF;
+    letter-spacing: -0.72rpx;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.tip image {
+    width: 36rpx;
+    height: 36rpx;
+    margin-right: 12rpx;
+}
