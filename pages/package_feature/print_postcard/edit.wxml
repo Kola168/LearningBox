@@ -1,11 +1,12 @@
-<!--pages/package_feature/print_sticker/edit.wxml-->
+<!--pages/package_feature/print_postcard/edit.wxml-->
 <nav-bar title="制作大头贴"></nav-bar>
 <view class="tips-box">
   <image src="../resource_images/icon_smile.png" mode="widthFix" class="tips-icon"></image>
-  <text>图片可以旋转、缩放、漂亮的模版自由搭配</text>
+  <text>点击+上传照片，图片可以旋转、缩放、选择图片模版</text>
 </view>
 <view class="edit-box">
-  <edit-photo id="mymulti" class="edit-mode" mode-info="{{templateInfo}}" mode-paper="{{paperSize}}" img-path="{{photoPath}}" img-info="{{imageInfo}}"></edit-photo>
+  <edit-photo id="mymulti" class="edit-mode" mode-info="{{templateInfo}}" mode-paper="{{paperSize}}"  add-icon="/pages/package_feature/resource_images/calendar_add.png" delete-icon="/pages/package_feature/resource_images/icon_delete.png"
+    delete-edge="{{true}}"></edit-photo>
   <image src="../resource_images/icon_edit_bg.png" mode="aspectFill" class="edit-bg-img"></image>
 </view>
 <view class="bottom-box">
@@ -14,7 +15,7 @@
   </scroll-view>
   <scroll-view class="template-list-box template-limit-height" scroll-x>
     <view wx:for="{{templateList[templateTypeIndex].templates}}" wx:key="templates" class="template-item-box {{index==templateIndex?'template-item-selected':''}}" data-index="{{index}}" bindtap="{{templateIndex==index?'':'checkTemplate'}}">
-      <image src="{{item.preview_url}}" mode="widthFix" class="template-preview-img {{direction=='vertical'?'template-vertical-img':''}}"></image>
+      <image src="{{item.preview_url}}" mode="widthFix" class="template-preview-img"></image>
     </view>
   </scroll-view>
   <bottom-button text-right="开始打印" bindrighttap="confBut"></bottom-button>

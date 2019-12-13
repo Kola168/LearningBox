@@ -1,3 +1,6 @@
 {
-  "usingComponents": {}
+  "usingComponents": {
+    "bottom-button":"../../../components/bottom-button/index",
+    "take-photo-pop":"../../../components/checkimg/index"
+  }
 }

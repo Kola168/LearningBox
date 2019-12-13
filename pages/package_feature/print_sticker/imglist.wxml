@@ -1,2 +1,39 @@
 <!--pages/package_feature/print_sticker/imglist.wxml-->
 <nav-bar title="制作大头贴"></nav-bar>
+<take-photo-pop id="checkComponent" bindchooseImg="chooseImgs" imgNum="{{1}}" bindbaidutap="baiduprint"></take-photo-pop>
+
+<view class="top-check-box">
+
+  <view class="check-item {{direction=='vertical'?'check-item-checked':''}}" data-type="vertical" bindtap="{{direction=='vertical'?'':'checkdirection'}}">
+    <text>竖版</text>
+    <view wx:if="{{direction=='vertical'}}" class="line"></view>
+  </view>
+  <view class="check-item {{direction=='horizontal'?'check-item-checked':''}}" data-type="horizontal" bindtap="{{direction=='horizontal'?'':'checkdirection'}}">
+    <text>横版</text>
+    <view wx:if="{{direction=='horizontal'}}" class="line"></view>
+  </view>
+</view>
+<view class="tips-box">
+  <image src="../resource_images/icon_smile.png" mode="widthFix" class="tips-icon"></image>
+  <text>图片可以旋转、缩放、漂亮的模版自由搭配</text>
+</view>
+
+<view class="flex-img-box">
+  <view wx:for="{{imgArr[direction].imgs}}" wx:key="imgs" class="img-box-item" style="width:{{imgArr[direction].width}}px;height:{{imgArr[direction].height}}px">
+    <view wx:if="{{item.url}}" class="img-item">
+      <image src="{{item.url}}" mode="aspectFill" class="img-style"></image>
+      <view class="img-edit-box">
+        <view class="img-edit-item" data-index="{{index}}" bindtap="editImg">编辑</view>
+        <view class="img-edit-line"></view>
+        <view class="img-edit-item" data-index="{{index}}" bindtap="deleteImg">删除</view>
+      </view>
+    </view>
+    <view wx:else class="img-item" data-index="{{index}}" bindtap="addImg">
+      <image src="../resource_images/icon_edit_bg.png" mode="aspectFill" class="no-img-bg"></image>
+      <image src="../resource_images/calendar_add.png" mode="widthFix" class="img-add-icon"></image>
+    </view>
+  </view>
+</view>
+<bottom-button class="bottom-but" text-right="打印预览" bindrighttap="toPreview"></bottom-button>
+<import src="/lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />

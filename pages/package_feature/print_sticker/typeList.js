@@ -1,4 +1,6 @@
 // pages/package_feature/print_sticker/typeList.js
+import wxNav from '../../../utils/nav.js'
+
 Page({
 
   data: {

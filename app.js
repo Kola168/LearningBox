@@ -17,7 +17,7 @@ App({
   //线上地址
   // apiServer: 'https://epbox.gongfudou.com',
   // apiWbviewServer: 'https://epbox.gongfudou.com/',
-	
+
 	//staging
   apiServer: 'https://lb-stg.gongfudou.com',
   apiWbviewServer: 'https://lb-stg.gongfudou.com/',
@@ -50,7 +50,7 @@ App({
   //江然本地服务
 	// apiServer: 'http://jran.nat300.top',
 	// apiWbviewServer: 'http://jhx.nat300.top',
-	
+
 	authAppKey: 'iMToH51lZ0VrhbkTxO4t5J5m6gCZQJ6c',
   openId: '',
   authToken: '',

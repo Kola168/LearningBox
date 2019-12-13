@@ -1,4 +1,4 @@
-/* pages/package_feature/print_sticker/edit.wxss */
+/* pages/package_feature/print_postcard/edit.wxss */
 page {
   width: 100%;
   box-sizing: border-box;
@@ -52,7 +52,7 @@ page {
 }
 
 .template-limit-height{
-  height:180rpx;
+  height:190rpx;
   display:flex;
   align-items:center;
   flex-wrap:nowrap;
@@ -74,7 +74,7 @@ page {
 }
 
 .template-preview-img{
-  width:163rpx;
+  width:120rpx;
 }
 
 .template-vertical-img{

@@ -6,42 +6,43 @@ Page({
 		funApplications: [{
 			name: '气球打印',
 			icon: '/images/funny_ballon.png',
+      url: '/pages/package_feature/print_balloon/index',
 			key: 'ballon'
 		},
 		{
 			name: '照片书',
 			icon: '/images/doc_more_icon.png',
-			url: '',
+			url: '/pages/package_feature/print_book/index',
 			key: 'photoBook'
 		},
 		{
 			name: '台历',
 			icon: '/images/funny_calendar.png',
-			url: '',
+			url: '/pages/package_feature/print_ calendar/index',
 			key: 'calendar'
 		},
 		{
 			name: '拇指相册',
 			icon: '/images/funny_thumb_album.png',
-			url: '',
+			url: '/pages/package_feature/print_thumb_album/edit',
 			key: 'thumbAlum'
 		},
 		{
 			name: '大头贴',
 			icon: '/images/funny_sticker.png',
-			url: '/pages/print_doc/function_list/function_list',
+			url: '/pages/package_feature/print_sticker/edit',
 			key: 'sticker'
 		},
 		{
 			name: '姓名贴',
 			icon: '/images/funny_name.png',
-			url: '',
+			url: '/pages/package_feature/print_name/edit',
 			key: 'name'
 		},
 		{
 			name: '明信片',
 			icon: '/images/funny_postcard.png',
-			url: '',
+			url: '/pages/package_feature/print_postcard/edit',
 			key: 'postcard'
 		}
 		],

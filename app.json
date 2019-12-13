@@ -41,8 +41,8 @@
     "pages/print_id/smart_index",
     "pages/print_id/smart_rules",
     "pages/course/index",
-		"components/bottom-button/test",
-		"pages/index/grade",
+    "components/bottom-button/test",
+    "pages/index/grade",
     "pages/account/index"
   ],
   "subPackages": [
@@ -98,7 +98,9 @@
         "print_sticker/typeList",
         "print_sticker/edit",
         "print_sticker/preview",
-        "print_sticker/imglist"
+        "print_sticker/imglist",
+        "print_postcard/index",
+        "print_postcard/edit"
       ]
     },
     {
@@ -115,8 +117,8 @@
         "record_voice/index/index",
         "record_voice/recorder/recorder",
         "record_voice/content/content",
-				"record_voice/content_detail/content_detail",
-				"growth_plan/list/index",
+        "record_voice/content_detail/content_detail",
+        "growth_plan/list/index",
         "growth_plan/timed_print/timed_print"
       ]
     },
