@@ -60,7 +60,6 @@ Page({
     })
     let params = {
       kidAttributes: {
-        name: this.data.activeGrade,
         stageSn: this.sn
       }
     }
@@ -70,6 +69,7 @@ Page({
       const resp = yield gql.changeStage(params)
       console.log(resp)
       this.longToast.hide()
+      router.navigateBack()
     } catch (e) {
       util.showError(e)
       this.longToast.hide()

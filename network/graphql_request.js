@@ -281,9 +281,12 @@ const graphqlApi = {
         updateKid(input:$input){
           kid{
             name
+            gender
             sn
             stage{
               rootName
+              name
+              sn
             }
           }
         }
