@@ -27,7 +27,7 @@ let gql = GraphQL({
   },
   //全局错误拦截
   errorHandler: function(res) {
-		//如果auth	
+		//如果auth
 		if(1){
 
 			}
@@ -185,6 +185,46 @@ const graphqlApi = {
       }`,
       variables: {
         sn: sn
+      }
+    })
+  },
+
+  /**
+   * 获取打印机分享用户
+   * @param { String } sn required 设备编号
+   */
+  getDeviceShareUsers: (sn) => {
+    return gql.query({
+      query: `query ($sn: String!){
+        device(sn: $sn){
+          sharers{
+            avatar,
+            name,
+            sn
+          }
+				}
+      }`,
+      variables: {
+        sn: sn
+      }
+    })
+  },
+
+  /**
+   * 打印机停止分享用户
+   * @param { String } sn required 设备编号
+   * @param { Array } userSns 停止分享用户的sn
+   */
+  stopShareDeviceUsers: (sn, userSns) => {
+    return gql.query({
+      query: `query ($sn: String!,$userSns: [String!]){
+        unbindUsers(sn: $sn,userSns: $userSns){
+          sn
+				}
+      }`,
+      variables: {
+        sn: sn,
+        userSns: userSns
       }
     })
   },
@@ -593,7 +633,7 @@ const graphqlApi = {
       }
     })
 	},
-	
+
 	/**
    * 获取所有学段
    * @returns
@@ -627,7 +667,7 @@ const graphqlApi = {
 
   /**
    * 获取当前用户信息
-   * 
+   *
    * @returns
    */
   getUser: () => {
@@ -738,6 +778,24 @@ const graphqlApi = {
     return gql.query({
       query: `query ($zipCode: String!){
         city(zipCode:$zipCode){
+           name
+           zipCode
+           children{
+            name
+            zipCode
+           }
+        }
+      }`,
+      variables: {
+        zipCode: zipCode
+      }
+    })
+	},
+	
+	getProvince1: (zipCode) => {
+    return gql.query({
+      query: `query ($zipCode: String!){
+        province(zipCode:$zipCode){
            name
            zipCode
            children{

@@ -1,6 +1,6 @@
 const app = getApp()
 import { regeneratorRuntime, co, wxNav, util } from '../../utils/common_import'
-
+const event = require('../../lib/event/event')
 const chooseImage = util.promisify(wx.chooseImage)
 const chooseMessageFile = util.promisify(wx.chooseMessageFile)
 
@@ -109,6 +109,9 @@ Component({
       }, 500)
     }
   }),
+  detached(){
+    event.remove('chooseBaiduFileDone',this)
+  },
   methods: {
     showPop: function() {
       this.setData({
@@ -123,7 +126,7 @@ Component({
         this.chooseDoc()
       }
     },
-    chooseDoc:co.wrap(function*(){
+    chooseDoc: co.wrap(function*() {
       let res = yield chooseMessageFile({
         count: this.data.docNum,
         type: 'file'
@@ -142,8 +145,6 @@ Component({
       if (sizeType == []) {
         sizeType = ['original', 'compressed']
       }
-      Loger('sizeType======', sizeType)
-      Loger('chooseImgNum=====', this.data.chooseImgNum)
       let imageUrl
       if (type == 'chooseMessageFile') {
         imageUrl = yield chooseMessageFile({
@@ -169,7 +170,9 @@ Component({
         let res = yield graphql.getBaiduNetAuth()
         this.weToast.hide()
         if (res.token.baiduTokenName) {
-          this.triggerEvent('baidutap')
+          event.on('chooseBaiduFileDone', this, (baiduFiles) => {
+            this.triggerEvent('baidutap', baiduFiles)
+          })
           this.showPop()
           wxNav.navigateTo('/pages/package_feature/baidu_print/choose/index', {
             type: this.data.fileType
