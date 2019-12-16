@@ -1,3 +1,11 @@
+/*
+ * @Author: your name
+ * @Date: 2019-12-12 19:34:39
+ * @LastEditTime: 2019-12-16 11:11:49
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: /LearningBox/pages/account/index.js
+ */
 // pages/account/index.js
 const app = getApp()
 import gql from '../../network/graphql_request.js'
@@ -49,5 +57,10 @@ Page({
   }),
   toSetInfo:function(){
     router.navigateTo('/pages/package_common/account/personal_info')
-  }
+	},
+	
+	net1:function(){
+		console.log('11111')
+		router.navigateTo('/pages/package_device/network/index/index')
+	}
 })

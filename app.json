@@ -177,7 +177,7 @@
         "selectedIconPath": "images/home/icon_tab_shop_selected.png"
       },
       {
-        "pagePath": "pages/index/index",
+        "pagePath": "pages/account/index",
         "text": "我的",
         "iconPath": "images/home/icon_tab_account_unselected.png",
         "selectedIconPath": "images/home/icon_tab_account_selected.png"

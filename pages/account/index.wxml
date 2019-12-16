@@ -13,3 +13,6 @@
 </view>
 <image class="member"></image>
 <view class="content"></view>
+
+
+<button class="net" bindtap="net1">配网</button>
