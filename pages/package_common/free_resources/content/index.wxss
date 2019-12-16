@@ -58,7 +58,7 @@
 }
 
 .content-item {
-  width: calc(33.33% - 20rpx);
+  width: calc(33.33% - 22rpx);
   height: calc(100% + 60rpx);
   flex-direction: column;
   margin-bottom: 30rpx;
