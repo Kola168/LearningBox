@@ -230,7 +230,10 @@ Page({
   // 长按打印
   toNextPage(e) {
     let pageKey = e.currentTarget.dataset.key,
-      url = ''
+      url = '',
+      params = {
+
+      }
     switch (pageKey) {
       case "longpress":
         url = `../longpress/index`
@@ -240,6 +243,7 @@ Page({
         break;
       case "shareManage":
         url = `../share_manage/index`
+        params.sn = this.deviceSn
         break;
       case "share":
         url = `../share/index`
@@ -248,6 +252,6 @@ Page({
         url = `../network/index/index`
         break;
     }
-    wxNav.navigateTo(url)
+    wxNav.navigateTo(url, params)
   },
 })
