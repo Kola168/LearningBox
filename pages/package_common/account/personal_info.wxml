@@ -3,7 +3,8 @@
 <view class="item" bindtap="changeAvatar">
     <view class="left">编辑头像</view>
     <view class="right">
-        <image src="../images/account_avatar_small.png" mode="widthFix" class="avatar"></image>
+        <image src="{{kidInfo.avatar?kidInfo.avatar:'../images/account_avatar_small.png'}}" mode="widthFix"
+            class="avatar"></image>
         <image src="/images/doc_item_arrow.png" mode="widthFix" class="after"></image>
     </view>
 </view>
@@ -19,7 +20,7 @@
 <view class="item">
     <view class="left">生日</view>
     <view class="right">
-        <view>{{birthday}}</view>
+        <view>{{kidInfo.birthday?kidInfo.birthday:'未选择'}}</view>
         <image src="/images/doc_item_arrow.png" mode="widthFix" class="after"></image>
     </view>
     <picker class="picker-birth" mode="date" value="{{birthday}}" start="1980-09-01" end=""
@@ -45,10 +46,18 @@
 <view class="item">
     <view class="left">城市</view>
     <view class="right">
-        <view>未填写</view>
+        <view wx:if="{{kidInfo.province}}">
+            {{kidInfo.province.name}} {{kidInfo.district.name}} {{kidInfo.city.name}}
+        </view>
+        <view wx:else>未填写</view>
         <image src="/images/doc_item_arrow.png" mode="widthFix" class="after"></image>
     </view>
+    <picker class="picker-birth" mode="multiSelector" bindchange="bindMultiPickerChange"
+        bindcolumnchange="locationChange" value="{{locationIndex}}" range="{{location}}" range-key="name">
+        地区选择器地区选择器地区选择器地区选择器地区选择器地区选择器地区选择器地区选择器地区选择器地区选择器地区选择器地区选择器
+    </picker>
 </view>
+
 <view class="line"></view>
 <view class="item" bindtap="changeStage">
     <view class="left">在读年级</view>
@@ -57,11 +66,6 @@
         <image src="/images/doc_item_arrow.png" mode="widthFix" class="after"></image>
     </view>
 </view>
-<picker mode="multiSelector" bindchange="bindMultiPickerChange" bindcolumnchange="locationChange" value="{{locationIndex}}" range="{{location}}" range-key="name">
-        <view class="picker">
-        {{location[0][locationIndex[0]].name}}，{{location[1][locationIndex[1]].name}}，{{location[2][locationIndex[2]].name}}
-        </view>
-      </picker>
 <!-- 选择照片模块 -->
 <take-photo-pop id="checkComponent" bindchooseImg="uploadImage" imgNum="{{9}}"></take-photo-pop>
 <import src="/lib/toast/wetoast.wxml" />

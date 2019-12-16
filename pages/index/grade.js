@@ -27,6 +27,11 @@ Page({
   onLoad: function (options) {
     this.longToast = new app.weToast()
     this.getAllstages()
+    if (options.grade) {
+      this.setData({
+        activeGrade: options.grade
+      })
+    }
 
   },
   getAllstages: co.wrap(function* () {

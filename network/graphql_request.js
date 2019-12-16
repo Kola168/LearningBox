@@ -248,10 +248,13 @@ const graphqlApi = {
     return gql.query({
       query: `query{
         currentUser{
+          phone
           selectedKid{
             gender
             name
             sn
+            birthday
+            avatar
             stageRoot{
               name
               rootName
@@ -262,15 +265,23 @@ const graphqlApi = {
               rootName
               sn
             }
+            province{
+              name
             }
-          phone
+            district{
+              name
+            }
+            city{
+              name
+            }
+            }
         }
       }`
     })
   },
 
   /**
-   * 设置年级
+   * 设置小孩信息
    *
    * @param {*} params
    * @returns
@@ -283,10 +294,21 @@ const graphqlApi = {
             name
             gender
             sn
+            birthday
+            avatar
             stage{
               rootName
               name
               sn
+            }
+            province{
+              name
+            }
+            district{
+              name
+            }
+            city{
+              name
             }
           }
         }
@@ -326,16 +348,12 @@ const graphqlApi = {
   getCity: (zipCode) => {
     return gql.query({
       query: `query ($zipCode: String!){
-        province(zipCode:$zipCode){
+        city(zipCode:$zipCode){
            name
            zipCode
            children{
             name
             zipCode
-            children{
-              name
-              zipCode
-            }
            }
         }
       }`,

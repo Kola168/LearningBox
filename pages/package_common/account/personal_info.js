@@ -13,48 +13,72 @@ Page({
   data: {
     birthday: '未填写',
     kidInfo: null,
-    location: [
-      ['江苏', '广东'],
-      // ['南京', '苏州'],
-      // ['雨花台区', '铁心桥']
-    ],
-    locationIndex: [0, 0, 0]
+    location: [],
+    locationIndex: [0, 0, 0],
+    locationName: ''
   },
   onLoad: co.wrap(function* (options) {
     this.longToast = new app.weToast()
+    // 获取省市信息
     yield this.getProvinces()
-    this.provinceZipCode=this.data.location[0][0].zipCode
+    this.provinceZipCode = this.data.location[0][0].zipCode
     yield this.getProvince()
-    this.cityZipCode=this.data.location[0][0].zipCode
+    this.cityZipCode = this.data.location[1][0].zipCode
     yield this.getCity()
   }),
   onShow: function () {
     this.getUserInfo()
   },
   getProvinces: co.wrap(function* () {
-    let resp = yield gql.getProvinces()
-    let location = resp.provinces
-    this.setData({
-      'location[0]': location
+    this.longToast.toast({
+      type: "loading",
+      duration: 0
     })
-    console.log()
+    try {
+      let resp = yield gql.getProvinces()
+      let location = resp.provinces
+      this.setData({
+        'location[0]': location
+      })
+      this.longToast.hide()
+    } catch (e) {
+      util.showError(e)
+      this.longToast.hide()
+    }
   }),
   getProvince: co.wrap(function* () {
-    let resp = yield gql.getProvince(this.provinceZipCode)
-    let location = resp.province.children
-    this.setData({
-      'location[1]': location
+    this.longToast.toast({
+      type: "loading",
+      duration: 0
     })
-    console.log()
+    try {
+      let resp = yield gql.getProvince(this.provinceZipCode)
+      let location = resp.province.children
+      this.setData({
+        'location[1]': location
+      })
+      this.longToast.hide()
+    } catch (e) {
+      util.showError(e)
+      this.longToast.hide()
+    }
   }),
   getCity: co.wrap(function* () {
-    let resp = yield gql.getCity(this.cityZipCode)
-    let location = resp.province.children[0].children
-    console.log(location)
-    this.setData({
-      'location[2]': location
+    this.longToast.toast({
+      type: "loading",
+      duration: 0
     })
-    console.log()
+    try {
+      let resp = yield gql.getCity(this.cityZipCode)
+      let location = resp.city.children
+      this.setData({
+        'location[2]': location
+      })
+      this.longToast.hide()
+    } catch (e) {
+      util.showError(e)
+      this.longToast.hide()
+    }
   }),
   getUserInfo: co.wrap(function* () {
     this.longToast.toast({
@@ -72,17 +96,43 @@ Page({
       util.showError(e)
     }
   }),
-  locationChange: function (e) {
-    console.log('修改的列为', e.detail.column, '，值为', e.detail.value);
-    this.provinceZipCode=this.data.location[e.detail.column][e.detail.value].zipCode
-    console.log(this.provinceZipCode)
-  },
-  bindMultiPickerChange: function (e) {
-    console.log('picker发送选择改变，携带值为', e.detail)
-    // this.setData({
-    //   multiIndex: e.detail.value
-    // })
-  },
+  locationChange: co.wrap(function* (e) {
+    try {
+      // console.log('修改的列为', e.detail.column, '，值为', e.detail.value);
+      console.log(this.provinceZipCode)
+      let column = e.detail.column
+      let index = e.detail.value
+      if (column == 0) {
+        this.provinceZipCode = this.data.location[0][index].zipCode
+        yield this.getProvince()
+        this.cityZipCode = this.data.location[1][0].zipCode
+        yield this.getCity()
+      }
+      if (column == 1) {
+        this.cityZipCode = this.data.location[1][index].zipCode
+        yield this.getCity()
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  }),
+  bindMultiPickerChange: co.wrap(function* (e) {
+    // console.log('picker发送选择改变，携带值为', e.detail)
+    this.setData({
+      locationIndex: e.detail.value
+    })
+    let params = {
+      kidAttributes: {
+        provinceZipCode: this.provinceZipCode,
+        cityZipCode: this.cityZipCode,
+        districtZipCode: this.data.location[2][this.data.locationIndex[2]].zipCode
+      }
+    }
+    // console.log(params)
+    // return
+    yield this.complete(params)
+
+  }),
   changeAvatar: function () {
     this.selectComponent("#checkComponent").showPop()
   },
@@ -90,9 +140,17 @@ Page({
     router.navigateTo('/pages/package_common/account/name_edit')
   },
   bindbirthChange: co.wrap(function* (e) {
-    this.setData({
-      birthday: e.detail.value
-    })
+    // this.setData({
+    //   birthday: e.detail.value
+    // })
+    let params = {
+      kidAttributes: {
+        birthday: e.detail.value
+      }
+    }
+    // console.log(params)
+    // return
+    yield this.complete(params)
   }),
   uploadImage: co.wrap(function* (e) {
     if (!e.detail.tempFilePaths[0]) {
@@ -137,6 +195,9 @@ Page({
     }
   }),
   changeStage() {
-    router.navigateTo('pages/index/grade')
+    let grade = this.data.kidInfo.stage ? this.data.kidInfo.stage.name : ''
+    router.navigateTo('pages/index/grade', {
+      grade:grade
+    })
   }
 })

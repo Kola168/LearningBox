@@ -8,6 +8,7 @@ const util = require('../../../utils/util')
 import upload from '../../../utils/upload'
 import api from '../../../network/restful_request.js'
 import router from '../../../utils/nav'
+import gql from '../../../network/graphql_request.js'
 
 const chooseImage = util.promisify(wx.chooseImage)
 const getImageInfo = util.promisify(wx.getImageInfo)
@@ -51,7 +52,6 @@ Page({
     showAreaBorder: false,
     // 是否显示换张试试
     showChangeBtn: false,
-    changeBtnWidth: 90,
     share: app.share,
     image: '',
     // isGfdAlbum: false,
@@ -73,17 +73,17 @@ Page({
   onLoad: co.wrap(function* (query) {
     try {
       this.longToast = new app.weToast()
-      // 宽度计算
-      this.setData({
-        changeBtnWidth: parseInt(200 / app.rpxPixel)
-      })
-
-      if (query.media_type) {
-        this.changeSize(query.media_type)
-        this.media_type = query.media_type
-      }
+      console.log(query.url)
       // 初始化编辑区域
       yield this.initArea()
+      const imgInfo = yield getImageInfo({
+        src: query.url
+      })
+      this.setData({
+        imgInfo: imgInfo,
+        localImgPath: query.url
+      })
+      yield this.initDesign()
     } catch (e) {
       console.log(e)
     }
@@ -100,113 +100,6 @@ Page({
     }
     this.setData({
       localImgPath: ''
-    })
-  }),
-  changeSize: co.wrap(function* (mode) {
-    let area = this.data.area
-    let name = '1寸证件照'
-    switch (mode) {
-      case '_id1in':
-        area.areaWidth = 480
-        area.areaHeight = 670
-        area.width = 480
-        area.height = 670
-        name = '1寸证件照'
-        break
-      case '_id2in':
-        area.areaWidth = 585
-        area.areaHeight = 816 //大二寸883
-        area.width = 585
-        area.height = 816
-        name = '2寸证件照'
-        break
-      case '_id1ins':
-        area.areaWidth = 286
-        area.areaHeight = 416
-        area.width = 286
-        area.height = 416
-        name = '小1寸证件照'
-        break
-      case '_id1inb':
-        area.areaWidth = 429
-        area.areaHeight = 624
-        area.width = 419
-        area.height = 624
-        name = '大1寸证件照'
-        break
-      case '_id2ins':
-        area.areaWidth = 455
-        area.areaHeight = 585
-        area.width = 455
-        area.height = 585
-        name = '小2寸证件照'
-        break
-      case '_id2inb':
-        area.areaWidth = 455
-        area.areaHeight = 689
-        area.width = 455
-        area.height = 689
-        name = '大2寸证件照'
-        break
-      case '_id3in':
-        area.areaWidth = 715
-        area.areaHeight = 1092
-        area.width = 715
-        area.height = 1092
-        name = '3寸证件照'
-        break
-      case '_visa_usa':
-        area.areaWidth = 663
-        area.areaHeight = 663
-        area.width = 663
-        area.height = 663
-        name = '美国签证'
-        break
-      case '_visa_jp':
-        area.areaWidth = 585
-        area.areaHeight = 585
-        area.width = 585
-        area.height = 585
-        name = '日本签证'
-        break
-      case '_visa_kor':
-        area.areaWidth = 455
-        area.areaHeight = 585
-        area.width = 455
-        area.height = 585
-        name = '韩国签证'
-        break
-      case '_visa_tha':
-        area.areaWidth = 455
-        area.areaHeight = 585
-        area.width = 455
-        area.height = 585
-        name = '泰国签证'
-        break
-        // case '_id3in':
-        //     area.areaWidth = 714
-        //     area.areaHeight = 1057
-        //     area.width = 714
-        //     area.height = 1057
-        //     name = '美国护照'
-        //     break
-        // case '_id4in':
-        //     area.areaWidth = 714
-        //     area.areaHeight = 1057
-        //     area.width = 714
-        //     area.height = 1057
-        //     name = '日本护照'
-        //     break
-    }
-
-    if (area.areaWidth == area.areaHeight) {
-      area.url = '/images/id/id_templete_square.png'
-    }
-
-    this.setData({
-      area,
-      mode,
-      name
     })
   }),
   showChange: co.wrap(function* () {
@@ -392,25 +285,6 @@ Page({
 
   // 初始化编辑器
   initDesign: co.wrap(function* (e) {
-
-    if (this.data.source == 'computer') {
-      this.longToast.hide()
-    }
-
-    if (e != undefined) {
-      console.log(e.detail)
-
-      // 获取图片信息bug，这里通过load重新获取长宽信息
-      if (this.data.imgInfo.width != e.detail.width) {
-        this.setData({
-          imgInfo: {
-            width: e.detail.width,
-            height: e.detail.height
-          }
-        })
-      }
-    }
-
     // 显示、实际缩放比
     this.editorScale = this.data.areaPosition.width / this.data.area.width
 
@@ -639,39 +513,34 @@ Page({
 
     let params = {
       is_async: false, //一异步请求
-      feature_key: "normal_id", //普通证件照
+      feature_key: "avatar", //头像合成
       editor_scale: this.editorScale,
       image_width: this.data.imgInfo.width,
       image_height: this.data.imgInfo.height,
       image_url: imageURL,
-      media_type: this.data.mode,
       rotate: rotate,
       scale: result.scale,
       x: result.x + svw,
       y: result.y + svh
     }
 
-    console.log('证件照合成参数', params, app.openId)
+    console.log('头像合成参数', params, app.openId)
 
     app.tmpIDParams = params
 
     try {
       const resp = yield api.convertId(params)
-
       if (resp.code != 0) {
         throw (resp)
       } else {
-        this.longToast.hide()
-        let params = {
-          url: imageURL,
-          preview_url: encodeURIComponent(resp.res.url),
-          mode: this.data.mode,
-          imageURL: imageURL,
-          name: this.data.name
+        let param = {
+          kidAttributes: {
+            avatar: resp.res.url,
+          }
         }
-        router.redirectTo(`/pages/print_id/normal_mode`, {
-          idPrint: JSON.stringify(params)
-        })
+        yield gql.changeStage(param)
+        this.longToast.hide()
+        router.navigateBack()
       }
     } catch (e) {
       this.longToast.hide()
