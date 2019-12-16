@@ -5,11 +5,13 @@
         <image src="/images/account_avatar_big.png" mode="widthFix" class="avatar"></image>
         <view class="info">
             <!-- <view class="name">{{userInfo.nickName}}</view> -->
-            <view class="name">未填写姓名</view>
-            <view class="grade">未填写年级</view>
+            <view class="name">{{kidInfo.name?kidInfo.name:'未填写'}}</view>
+            <view class="grade">{{kidInfo.stage.name?kidInfo.stage.name:'未填写'}}</view>
         </view>
     </view>
     <image src="../../images/doc_item_arrow.png" mode="widthFix" class="after"></image>
 </view>
 <image class="member"></image>
 <view class="content"></view>
+<import src="/lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />

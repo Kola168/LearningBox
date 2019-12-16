@@ -12,15 +12,50 @@ import regeneratorRuntime from '../../../lib/co/runtime'
 Page({
   data: {
     birthday: '未填写',
-    kidInfo: null
+    kidInfo: null,
+    location: [
+      ['江苏', '广东'],
+      // ['南京', '苏州'],
+      // ['雨花台区', '铁心桥']
+    ],
+    locationIndex: [0, 0, 0]
   },
-  onLoad: function (options) {
+  onLoad: co.wrap(function* (options) {
     this.longToast = new app.weToast()
-
-  },
+    yield this.getProvinces()
+    this.provinceZipCode=this.data.location[0][0].zipCode
+    yield this.getProvince()
+    this.cityZipCode=this.data.location[0][0].zipCode
+    yield this.getCity()
+  }),
   onShow: function () {
     this.getUserInfo()
   },
+  getProvinces: co.wrap(function* () {
+    let resp = yield gql.getProvinces()
+    let location = resp.provinces
+    this.setData({
+      'location[0]': location
+    })
+    console.log()
+  }),
+  getProvince: co.wrap(function* () {
+    let resp = yield gql.getProvince(this.provinceZipCode)
+    let location = resp.province.children
+    this.setData({
+      'location[1]': location
+    })
+    console.log()
+  }),
+  getCity: co.wrap(function* () {
+    let resp = yield gql.getCity(this.cityZipCode)
+    let location = resp.province.children[0].children
+    console.log(location)
+    this.setData({
+      'location[2]': location
+    })
+    console.log()
+  }),
   getUserInfo: co.wrap(function* () {
     this.longToast.toast({
       type: "loading",
@@ -37,6 +72,17 @@ Page({
       util.showError(e)
     }
   }),
+  locationChange: function (e) {
+    console.log('修改的列为', e.detail.column, '，值为', e.detail.value);
+    this.provinceZipCode=this.data.location[e.detail.column][e.detail.value].zipCode
+    console.log(this.provinceZipCode)
+  },
+  bindMultiPickerChange: function (e) {
+    console.log('picker发送选择改变，携带值为', e.detail)
+    // this.setData({
+    //   multiIndex: e.detail.value
+    // })
+  },
   changeAvatar: function () {
     this.selectComponent("#checkComponent").showPop()
   },
@@ -90,7 +136,7 @@ Page({
       this.longToast.hide()
     }
   }),
-  changeStage(){
+  changeStage() {
     router.navigateTo('pages/index/grade')
   }
 })

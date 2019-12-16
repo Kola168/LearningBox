@@ -295,7 +295,55 @@ const graphqlApi = {
         input: params
       }
     })
-  }
+  },
+  getProvinces: () => {
+    return gql.query({
+      query: `query{
+        provinces{
+           name
+           zipCode
+        }   
+      }`
+    })
+  },
+  getProvince: (zipCode) => {
+    return gql.query({
+      query: `query ($zipCode: String!){
+        province(zipCode:$zipCode){
+           name
+           zipCode
+           children{
+            name
+            zipCode
+           }
+        }
+      }`,
+      variables: {
+        zipCode: zipCode
+      }
+    })
+  },
+  getCity: (zipCode) => {
+    return gql.query({
+      query: `query ($zipCode: String!){
+        province(zipCode:$zipCode){
+           name
+           zipCode
+           children{
+            name
+            zipCode
+            children{
+              name
+              zipCode
+            }
+           }
+        }
+      }`,
+      variables: {
+        zipCode: zipCode
+      }
+    })
+  },
 }
 
 export default graphqlApi

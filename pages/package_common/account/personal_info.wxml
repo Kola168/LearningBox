@@ -57,7 +57,11 @@
         <image src="/images/doc_item_arrow.png" mode="widthFix" class="after"></image>
     </view>
 </view>
-
+<picker mode="multiSelector" bindchange="bindMultiPickerChange" bindcolumnchange="locationChange" value="{{locationIndex}}" range="{{location}}" range-key="name">
+        <view class="picker">
+        {{location[0][locationIndex[0]].name}}，{{location[1][locationIndex[1]].name}}，{{location[2][locationIndex[2]].name}}
+        </view>
+      </picker>
 <!-- 选择照片模块 -->
 <take-photo-pop id="checkComponent" bindchooseImg="uploadImage" imgNum="{{9}}"></take-photo-pop>
 <import src="/lib/toast/wetoast.wxml" />
