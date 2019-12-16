@@ -15,7 +15,7 @@ Page({
   data: {
     titleName: '',
     mainTemplateList: {
-      diy: {
+      diy_calendar: {
         horizontal: [{
             id: 52,
             name: '节日',
@@ -319,7 +319,7 @@ Page({
           }
         ]
       },
-      wood: {
+      wood_calendar: {
         horizontal: [{
             "id": 47,
             "name": "节日",
@@ -867,8 +867,8 @@ Page({
     type: '',
   },
   name: {
-    diy: '制作DIY台历',
-    wood: '制作木框台历',
+    diy_calendar: '制作DIY台历',
+    wood_calendar: '制作木框台历',
   },
   storageEditData: {
     horizontal: [],

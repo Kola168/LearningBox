@@ -7,7 +7,7 @@ Page({
 			name: '气球打印',
 			icon: '/images/funny_ballon.png',
       url: '/pages/package_feature/print_balloon/index',
-			key: 'ballon'
+			key: 'balloon'
 		},
 		{
 			name: '照片书',
@@ -18,7 +18,7 @@ Page({
 		{
 			name: '台历',
 			icon: '/images/funny_calendar.png',
-			url: '/pages/package_feature/print_ calendar/index',
+			url: '/pages/package_feature/print_calendar/index',
 			key: 'calendar'
 		},
 		{

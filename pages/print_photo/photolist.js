@@ -12,8 +12,11 @@ const showModal = util.promisify(wx.showModal)
 
 import wxNav from '../../utils/nav.js'
 import storage from '../../utils/storage.js'
+import gql from '../../network/graphql_request'
+import commonRequest from '../../utils/common_request'
 
-let Loger=(app.apiServer!='https://epbox.gongfudou.com'||app.deBug)?console.log:function(){}
+
+let Loger = (app.apiServer != 'https://epbox.gongfudou.com' || app.deBug) ? console.log : function() {}
 
 Page({
 
@@ -72,9 +75,10 @@ Page({
     count: 0, //单次上传总个数
     percent: 0, //单次上传进度条进程
     errTip: '',
-    butHigh:false,
-    showMode:false, //是否展示模板
-    showCover:false, //是否展示蒙层
+    butHigh: false,
+    showMode: false, //是否展示模板
+    showCover: false, //是否展示蒙层
+    confirmModal: {},
   },
 
   smallImgDelete: false,
@@ -84,7 +88,7 @@ Page({
     this.mediaType = options.mediaType
     this.setData({
       photoMedia: this.mediaInfo[this.mediaType],
-      showMode:JSON.parse(options.showMode)
+      showMode: JSON.parse(options.showMode)
     })
     this.initSingleArea()
     this.getStorageImages()
@@ -94,36 +98,36 @@ Page({
       })
     }
     this.checkStorage()
-    event.on('setPreData', this, (postData)=>{
+    event.on('setPreData', this, (postData) => {
       this.editPhoto(postData)
     })
   },
 
-  checkStorage(){
-    let mediaCover=''
-    try{
-      mediaCover=storage.get(`${this.mediaType}_cover`)
-    }catch(e){
+  checkStorage() {
+    let mediaCover = ''
+    try {
+      mediaCover = storage.get(`${this.mediaType}_cover`)
+    } catch (e) {
       Loger(e)
     }
-    if(mediaCover!='showed'){
+    if (mediaCover != 'showed') {
       this.setData({
-        showCover:true
+        showCover: true
       })
-      storage.put(`${this.mediaType}_cover`,'showed')
+      storage.put(`${this.mediaType}_cover`, 'showed')
     }
   },
 
-  closeCover:function(){
+  closeCover: function() {
     this.setData({
-      showCover:false
+      showCover: false
     })
   },
 
   showImgCheck: function() {
     let restCount = this.data.limitPhoto - this.data.photoList.length
     let count = restCount > 9 ? 9 : restCount
-    if(restCount<=0){
+    if (restCount <= 0) {
       return
     }
     this.setData({
@@ -318,11 +322,43 @@ Page({
     wxNav.navigateTo('/pages/print_photo/edit', {
       imgInfo: encodeURIComponent(JSON.stringify(this.data.photoList[index])),
       index: index,
-      photoMedia:encodeURIComponent(JSON.stringify(this.data.photoMedia.size)),
-      mediaType:this.mediaType,
-      showMode:JSON.stringify(this.data.showMode)
+      photoMedia: encodeURIComponent(JSON.stringify(this.data.photoMedia.size)),
+      mediaType: this.mediaType,
+      showMode: JSON.stringify(this.data.showMode)
     })
   },
+
+  confOrder: function() {
+    if (this.data.photoList.length == 0) {
+      return wx.showModal({
+        title: '提示',
+        content: '至少选择一张照片哦',
+        showCancel: false,
+        confirmColor: '#FFE27A'
+      })
+    }
+    this.setData({
+      confirmModal: {
+        isShow: true,
+        title: '请参照下图正确放置照片纸',
+        image: 'https://cdn-h.gongfudou.com/LearningBox/main/confirm_print.png'
+      },
+    })
+  },
+
+  makeOrder: co.wrap(function*() {
+    let imgs = []
+    _.each(this.data.photoList,function(value,index,list){
+      imgs[index].originalUrl=value.localUrl
+      imgs[index].printUrl=value.url
+    })
+    let resp = yield commonRequest.createOrder(this.mediaType, imgs)
+    // wxNav.redirectTo(`../../../finish/index`, {
+    //   media_type: 'literacy_card',
+    //   state: resp.state,
+    //   type: 'literacy_card'
+    // })
+  }),
 
   setStorage: function() {
     //图片存储至本地
@@ -337,9 +373,9 @@ Page({
 
   getStorageImages: function() {
     try {
-      let galleryImages =storage.get(this.mediaType)
+      let galleryImages = storage.get(this.mediaType)
       Loger(galleryImages)
-      if(galleryImages){
+      if (galleryImages) {
         this.setData({
           photoList: galleryImages.photoList,
         })
@@ -349,12 +385,12 @@ Page({
     }
   },
 
-  editPhoto:function(postData){
+  editPhoto: function(postData) {
     this.longToast.toast({
       type: "loading",
     })
     this.setData({
-      [`photoList[${postData.index}].url`]:postData.url
+      [`photoList[${postData.index}].url`]: postData.url
     })
     this.longToast.toast()
   },

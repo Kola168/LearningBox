@@ -24,24 +24,35 @@ Page({
     templateList: [], //模板列表
     templateTypeIndex: 0, // 模板主题index
     templateIndex: 0, //模板index
+
   },
 
   onLoad: function(options) {
     Loger(options)
     this.longToast = new app.weToast()
-    let imgInfo = JSON.parse(decodeURIComponent(options.imgInfo))
+    this.imgInfo = JSON.parse(decodeURIComponent(options.imgInfo))
+
     this.index = options.index
     this.mediaInfo = JSON.parse(decodeURIComponent(options.photoMedia))
     this.mediaType = options.mediaType
     this.setData({
       showMode: JSON.parse(options.showMode)
     })
-    let minLeftHeight = 260
     if (this.data.showMode) {
-      minLeftHeight = 510
       this.getTemplateList()
     } else {
       this.setData({
+        photoPath: this.imgInfo.localUrl,
+        imageInfo:{
+          width:this.imgInfo.width,
+          height:this.imgInfo.height
+        },
+        paperSize: {
+          width: this.mediaInfo.width,
+          height: this.mediaInfo.height,
+          minLeftHeight: 260,
+          sider: 220,
+        },
         templateInfo: {
           modeSize: {
             x: 0,
@@ -54,15 +65,6 @@ Page({
         }
       })
     }
-    this.setData({
-      photoPath: imgInfo.localUrl,
-      paperSize: {
-        width: this.mediaInfo.width,
-        height: this.mediaInfo.height,
-        minLeftHeight: minLeftHeight,
-        sider: 220,
-      }
-    })
   },
 
   getTemplateList: co.wrap(function*() {
@@ -70,8 +72,6 @@ Page({
       type: "loading",
     })
     try {
-
-
       let templateList = yield gql.searchTemplate(this.mediaType)
       Loger(templateList.feature.categories)
       if (templateList.errors) {
@@ -102,31 +102,50 @@ Page({
         }
       })
     }
-    this.checkTemplateType(2)
+    this.checkTemplateType(0)
     this.longToast.toast()
   }),
 
   setComponentData: function() {
-    let templateInfo = this.data.templateList[this.data.templateTypeIndex].templates[this.data.templateIndex].positionInfo
-    let modeSize = {
-      x: templateInfo.areaX,
-      y: templateInfo.areaY,
-      areaWidth: templateInfo.areaWidth,
-      areaHeight: templateInfo.areaHeight,
-    }
-    this.setData({
-      paperSize: {
-        width: Number(templateInfo.width),
-        height: Number(templateInfo.height),
-        minLeftHeight: 510,
-        sider: 220,
-      },
-      templateInfo: {
-        modeSrc: this.data.templateList[this.data.templateTypeIndex].templates[this.data.templateIndex].imageUrl,
-        modeSize: modeSize
+    try{
+      let templateInfo = this.data.templateList[this.data.templateTypeIndex].templates[this.data.templateIndex].positionInfo
+      let modeSize = {
+        x: templateInfo.areaX,
+        y: templateInfo.areaY,
+        areaWidth: templateInfo.areaWidth,
+        areaHeight: templateInfo.areaHeight,
       }
-    })
-    this.longToast.toast()
+      this.setData({
+        photoPath: this.imgInfo.localUrl,
+        imageInfo:{
+          width:this.imgInfo.width,
+          height:this.imgInfo.height
+        },
+        paperSize: {
+          width: Number(templateInfo.width),
+          height: Number(templateInfo.height),
+          minLeftHeight: 510,
+          sider: 220,
+        },
+        templateInfo: {
+          modeSrc: this.data.templateList[this.data.templateTypeIndex].templates[this.data.templateIndex].imageUrl,
+          modeSize: modeSize
+        }
+      })
+      this.longToast.toast()
+    }catch(e){
+      Loger(e)
+      this.longToast.toast()
+      wx.showModal({
+        title: '提示',
+        content: '模板加载异常',
+        showCancel: false,
+        confirmColor: '#FFE27A',
+        success: function() {
+          wxNav.navigateBack()
+        }
+      })
+    }
   },
 
   checkTemplateType: function(e) {
@@ -134,6 +153,7 @@ Page({
     this.setData({
       templateTypeIndex: index
     })
+
     this.checkTemplate(0)
   },
 
@@ -142,6 +162,7 @@ Page({
     this.setData({
       templateIndex: index
     })
+
     this.setComponentData()
   },
 
