@@ -1,0 +1,43 @@
+<!--pages/package_preschool/print_setting/print_setting.wxml-->
+<nav-bar title="打印设置"></nav-bar>
+<view class="setting-block">
+    <view class="lists">
+        <view class="list-item title">
+            <view class="item-left">绘本12333</view>
+            <view class="item-right"></view>
+        </view>
+        <view class="list-item">
+            <view class="item-left">打印份数</view>
+            <view class="item-right print-num">
+                <view class="arrow-icon"><image class="arrow-icon" bindtap="decreaseNum" src="{{printNumber > 1 ? '/images/doc_minus_y.png' : '/images/doc_document_cut.png'}}" mode="widthFix"></image></view>
+                <text class="name">{{printNumber}}</text>
+                <view class="arrow-icon"><image class="arrow-icon" bindtap="increaseNum" src="{{printNumber < 10 ? '/images/doc_plus_y.png' : '/images/doc_document_add_gray.png'}}" mode="widthFix"></image></view>
+            </view>
+        </view>
+        <view class="list-item">
+            <view class="item-left">打印范围</view>
+            <view class="item-right">
+                <input class="input-attr" bindinput="bindKeyInputStart" auto-focus type="number" value="{{inputValueStart}}" placeholder="1" />
+                <text class="name">至</text>
+                <input class="input-attr" bindinput="bindKeyInputEnd" auto-focus type="number" value="{{inputValueEnd}}" placeholder="1" />
+                <text class="name">页</text>
+            </view>
+        </view>
+        <view class="list-item">
+            <view class="item-left">色彩选择</view>
+            <view class="item-right select-color">
+                <view id="0" class="self-color" bindtap="chooseColor">
+                    <text>{{colorLists[0]}}</text>
+                    <image src="{{chooseColor ==0 ? '../../../../images/radio_on.png' : '../../../../images/radio_off.png'}}"></image>
+                </view>
+                <view id="1" class="self-color" bindtap="chooseColor">
+                    <text>{{colorLists[1]}}</text>
+                    <image src="{{chooseColor ==1 ? '../../../../images/radio_on.png' : '../../../../images/radio_off.png'}}"></image>
+                </view>
+            </view>
+        </view>
+    </view>
+</view>
+<view class="footer {{isFullScreen?'is-full-screen':''}}" bindtap="confirmPrint">确认打印</view>
+<import src="/lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />

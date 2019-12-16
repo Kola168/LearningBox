@@ -112,7 +112,10 @@
         "record_voice/content/content",
 				"record_voice/content_detail/content_detail",
 				"growth_plan/list/index",
-        "growth_plan/timed_print/timed_print"
+        "growth_plan/timed_print/timed_print",
+        "growth_plan/print_setting/print_setting",
+        "growth_plan/checkpoint/plan_checkpoint",
+        "growth_plan/checkpoint/plan_detail"
       ]
     },
     {
