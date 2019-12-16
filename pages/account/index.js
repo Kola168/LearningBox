@@ -20,39 +20,30 @@ import regeneratorRuntime from '../../lib/co/runtime'
 const getUserInfo = util.promisify(wx.getUserInfo)
 
 Page({
-
-  /**
-   * 页面的初始数据
-   */
   data: {
-    userInfo: null
+    kidInfo:null
   },
-
-  /**
-   * 生命周期函数--监听页面加载
-   */
   onLoad: function (options) {
-
+    this.longToast = new app.weToast()
   },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
   onShow: function () {
-    this.checkUserInfo()
+    this.getUserInfo()
   },
-
-  checkUserInfo: co.wrap(function* () {
-    let userInfo
+   
+  getUserInfo: co.wrap(function* () {
+    this.longToast.toast({
+      type: "loading",
+      duration: 0
+    })
     try {
-      userInfo = yield getUserInfo()
-    } catch (e) {
-      console.log(e)
-    }
-    if (userInfo.userInfo) {
+      let resp = yield gql.getUser()
       this.setData({
-        userInfo: userInfo.userInfo
+        kidInfo: resp.currentUser.selectedKid,
       })
+      this.longToast.hide()
+    } catch (e) {
+      this.longToast.hide()
+      util.showError(e)
     }
   }),
   toSetInfo:function(){

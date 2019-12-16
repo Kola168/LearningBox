@@ -27,6 +27,11 @@ Page({
   onLoad: function (options) {
     this.longToast = new app.weToast()
     this.getAllstages()
+    if (options.grade) {
+      this.setData({
+        activeGrade: options.grade
+      })
+    }
 
   },
   getAllstages: co.wrap(function* () {
@@ -60,7 +65,6 @@ Page({
     })
     let params = {
       kidAttributes: {
-        name: this.data.activeGrade,
         stageSn: this.sn
       }
     }
@@ -70,6 +74,7 @@ Page({
       const resp = yield gql.changeStage(params)
       console.log(resp)
       this.longToast.hide()
+      router.navigateBack()
     } catch (e) {
       util.showError(e)
       this.longToast.hide()
