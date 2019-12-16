@@ -18,7 +18,7 @@ Page({
 		{
 			name: '台历',
 			icon: '/images/funny_calendar.png',
-			url: '/pages/package_feature/print_calendar/index',
+			url: '/pages/package_feature/print_calendar/typelist',
 			key: 'calendar'
 		},
 		{

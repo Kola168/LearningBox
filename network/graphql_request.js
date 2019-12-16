@@ -687,6 +687,8 @@ const graphqlApi = {
       query: `query($key: String!) {
         feature(key: $key) {
           categories {
+            name
+            isHorizontal
             templates {
               previewImage
               name
@@ -717,6 +719,7 @@ const graphqlApi = {
         category(sn: $sn) {
           name
           sn
+
           templates {
             previewImage
             name

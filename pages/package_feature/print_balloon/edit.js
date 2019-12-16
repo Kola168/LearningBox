@@ -26,12 +26,18 @@ Page({
   },
 
   getTemplate:co.wrap(function*(){
+    try{
+
+
     let resp=yield graphql.searchTemplateType(this.id)
     Loger(resp.category)
     this.setData({
       templateList:resp.category.templates
     })
     this.tapTemplate(0)
+  }catch(e){
+    Loger(e)
+  }
   }),
 
   chooseTemplate:function(index){
