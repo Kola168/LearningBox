@@ -120,21 +120,14 @@ Page({
       let currentData = _(this.data.newInvoice).clone()
       currentData.forEach(item => {
         printOneInvoice.push({
-          url: item.convert_url,
-          number: 1,
-          rotate: true,
-          color: 'Color'
+          originalUrl: item.convert_url,
+          originalUrl: 1,
+          grayscale: false
         })
       })
 
       logger.info('发票提交打印参数', printOneInvoice)
-      const resp = yield commonRequest.printOrders({
-        media_type: 'invoice',
-        urls: printOneInvoice
-      })
-      if (resp.code != 0) {
-        throw (resp)
-      }
+      const resp = yield commonRequest.createOrder(invoice, printOneInvoice)
       logger.info('提交打印成功', resp)
       this.longToast.hide()
       router.redirectTo('/finish/index', {

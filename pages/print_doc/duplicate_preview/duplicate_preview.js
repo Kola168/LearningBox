@@ -162,27 +162,20 @@ Page({
         title: '请稍后'
       })
       try {
-        var param = {
-          media_type: 'copy',
-          urls: [{
-            number: this.data.count, //数量
-            pre_convert_url: this.data.img_url, //图片编辑后url
-            url: this.data.preUrl, //图片原始url
-            rotate: false,
-            thumb_url: this.data.preUrl, //图片url
-            color: this.data.color, //色彩
-          }]
-        }
-        const resp = commonRequest.printOrders(param)
-        if (resp.code != 0) {
-          throw (resp)
-        } else {
-          router.redirectTo('/pages/finish/index', {
-            type: 'id_card',
-            media_type: 'invoice',
-            state: resp.order.state
-          })
-        }
+        var param = [{
+          copies: this.data.count, //数量
+          printUrl: this.data.img_url, //图片编辑后url
+          originalUrl: this.data.preUrl, //图片原始url
+          grayscale: this.data.color == 'Mono' ? true : false, //色彩
+        }]
+        const resp = commonRequest.createOrder('reprography', param)
+        this.longToast.toast()
+        router.redirectTo('/pages/finish/index', {
+          type: 'id_card',
+          media_type: 'invoice',
+          state: resp.order.state
+        })
+        
       } catch (e) {
         logger.info(e)
         this.longToast.toast()

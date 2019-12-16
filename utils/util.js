@@ -351,6 +351,23 @@ function getStringByte(val) {
   return bytesCount
 }
 
+
+/**
+ * @methods 剔除不需要的属性值
+ * @param {Object} //obj 原始对象
+ * @param {Array} // 属性值列表
+ */
+function removeKeysToNewObj(obj, keys) {
+  var newObj = {}
+  var allKeys = Object.keys(obj)
+  allKeys.forEach(key=>{
+    if (keys.indexOf(key) <= -1) {
+      newObj[key] = obj[key]
+    }
+  })
+  return newObj
+}
+
 module.exports = {
   promisify: promisify,
   _getRotateDirection: _getRotateDirection,
@@ -369,5 +386,6 @@ module.exports = {
   resetFiles: resetFiles,
   showError: showError,
   deleteItem: deleteItem,
-  getStringByte:getStringByte
+  getStringByte:getStringByte,
+  removeKeysToNewObj: removeKeysToNewObj,
 }

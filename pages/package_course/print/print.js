@@ -2,13 +2,13 @@
 
 const app = getApp()
 import { regeneratorRuntime, co, util } from '../../../utils/common_import'
-import api from '../../../network/restful_request'
-import commonRequest from '../../../utils/common_request'
+import graphql from '../../../network/graphql_request'
 import storage from '../../../utils/storage'
 import router from '../../../utils/nav.js'
 Page({
   data: {
     lessonImgs: [],
+    featureKey: null,
     allCheck: true,
     count: 0,
     loadReady: false,
@@ -99,37 +99,29 @@ Page({
       title: '请稍等'
     })
     try {
-      let imgs = this.data.lessonImgs,
-        imgIds = []
-      let len = imgs.length
+      var imgs = this.data.lessonImgs,
+          imgIds = []
+      var len = imgs.length
       for (let i = 0; i < len; i++) {
         if (imgs[i].isCheck) {
-          imgIds.push(imgs[i].imgObj.id)
+          imgs[i]._id && imgIds.push(Number(imgs[i]._id))
         }
       }
-      let params = {
-        media_type: this.mediaType,
-        resourceable: {
-          type: this.sourceType,
+   
+      var params = {
+        resourceAttribute: {
+          resourceType: 'CourseLesson',
           sn: this.sn,
-          ids: imgIds
+          attachmentIds: imgIds
         },
-        from: 'mini_app',
+        featureKey: this.data.featureKey
       }
-      let resp = yield commonRequest.printOrders(params)
-      if (resp.code !== 0) {
-        throw (resp)
-      }
-
-      // 课程详情页刷新数据
-      let pages = getCurrentPages()
-      let prevPage = pages[pages.length - 2]
-      prevPage.reLoad = true
+      const resp = yield graphql.createResourceOrder(params)
       this.longToast.hide()
       router.redirectTo('/pages/finish/index', {
         type: course,
         media_type: '',
-        state: resp.order.state
+        state: resp.createResourceOrder.state
       })
     } catch (error) {
       this.longToast.hide()
@@ -153,27 +145,25 @@ Page({
       title: '请稍等'
     })
     try {
-      let resp = yield api.getLessonDetail(app.openId, this.sn)
-      if (resp.code !== 0) {
-        throw (resp)
-      }
-      let contents = resp.res.course_lesson.contents,
-        reContents = [],
-        len = contents.length
-      for (let i = 0; i < len; i++) {
+      let resp = yield graphql.getCourseLesson(this.sn)
+      let contents = resp.courseLesson.contents,
+        reContents = [];
+      for (let i = 0; i < contents.length; i++) {
         let obj = {
-          imgObj: contents[i],
+          url: contents[i].nameUrl,
+          _id: contents[i].id,
           isCheck: true
         }
         reContents.push(obj)
       }
       this.setData({
+        featureKey: resp.courseLesson.featureKey,
         lessonImgs: reContents,
-        count: len,
+        count: contents.length,
         loadReady: true
       })
-      this.mediaType = resp.res.media_type
-      this.sourceType = resp.res.source_type
+      // this.mediaType = resp.res.media_type
+      // this.sourceType = resp.res.source_type
       this.longToast.hide()
     } catch (error) {
       this.longToast.hide()
