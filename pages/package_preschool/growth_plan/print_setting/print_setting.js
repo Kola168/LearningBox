@@ -1,9 +1,9 @@
 // pages/package_preschool/print_setting/print_setting.js
 const app = getApp()
 import {regeneratorRuntime, co, wxNav, util, logger} from '../../../../utils/common_import'
-// import { threadId } from 'worker_threads';
-// import api from '../../../network/restful_request'
+import api from '../../../../network/restful_request';
 const showModal = util.promisify(wx.showModal)
+const request = util.promisify(wx.request)
 
 Page({
 
@@ -12,21 +12,18 @@ Page({
      */
     data: {
       printNumber: 1,  //打印份数
-      colorLists: [
-        {name:'黑白', value:'黑白'},
-        {name:'全彩', value:'全彩', checked:'true'}, 
-      ],  //色彩选择
+      colorLists: ['黑白', '全彩'],  //色彩选择
       focus: false,
       inputValueStart: 1, //打印范围起始页
       inputValueEnd: 1, //打印范围结束页
+      chooseColor: 0, //默认选择打印的色彩
     },
   
     /**
      * 生命周期函数--监听页面加载
      */
     onLoad: function (options) {
-      // this.longToast = new app.weToast
-      this.weToast = new app.weToast()
+      this.longToast = new app.weToast
   
     },
 
@@ -39,14 +36,25 @@ Page({
 
     /** 增加份数 */
     increaseNum(){
-      this.data.printNumber < 10 && this.setData({
-        printNumber: this.data.printNumber + 1
-      })
+      if(this.data.printNumber < 30){
+        this.setData({
+          printNumber: this.data.printNumber + 1
+        })
+      }else{
+        wx.showModal({
+          content: '最多可以打印30份哦~',
+          showCancel: false
+        })
+      }
     },
 
     /** 色彩选择 */
     chooseColor(e){
-      console.log('radio发生change事件，携带value值为：', e.detail.value)
+      let index = e ? e.currentTarget.id : 1
+      console.log('======选择',this.data.colorLists[index])
+      this.setData({
+        chooseColor: index
+      })
     },
 
     /** input输入 */
@@ -76,6 +84,40 @@ Page({
      * 确认打印
      */
     confirmPrint: co.wrap(function* (){
-      
+      this.longToast.weToast({
+        type:'loading',
+        duration: 0
+      })
+
+      const params = {
+        
+      }
+
+      try{
+        const resp = yield request({
+          url: app.apiServer+'',
+          dataType: 'json',
+          method: 'post',
+          data: params
+        })
+        if(resp.data.code !== 0){
+          throw(resp.data)
+        }
+        this.longToast.weToast()
+        wx.redirectTo({
+          url:``
+        })
+      }catch(e){
+        this.longToast.weToast()
+        util.showError(e)
+      }
+
+
+
+
+
+
+
+
     })
   })

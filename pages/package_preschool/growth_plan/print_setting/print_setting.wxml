@@ -9,9 +9,9 @@
         <view class="list-item">
             <view class="item-left">打印份数</view>
             <view class="item-right print-num">
-                <image class="arrow-icon" bindtap="decreaseNum" src="{{printNumber > 1 ? '/images/doc_minus_y.png' : '/images/doc_document_cut.png'}}"></image>
+                <view class="arrow-icon"><image class="arrow-icon" bindtap="decreaseNum" src="{{printNumber > 1 ? '/images/doc_minus_y.png' : '/images/doc_document_cut.png'}}" mode="widthFix"></image></view>
                 <text class="name">{{printNumber}}</text>
-                <image class="arrow-icon" bindtap="increaseNum" src="{{printNumber < 10 ? '/images/doc_plus_y.png' : '/images/doc_document_add_gray.png'}}"></image>
+                <view class="arrow-icon"><image class="arrow-icon" bindtap="increaseNum" src="{{printNumber < 10 ? '/images/doc_plus_y.png' : '/images/doc_document_add_gray.png'}}" mode="widthFix"></image></view>
             </view>
         </view>
         <view class="list-item">
@@ -26,21 +26,14 @@
         <view class="list-item">
             <view class="item-left">色彩选择</view>
             <view class="item-right select-color">
-                <radio-group class="radio-group set-color" bindchange="chooseColor">
-                    <radio class="radio" wx:for-items="{{colorLists}}" wx:key="name" value="{{item.name}}" checked="{{item.checked}}">
-                        <text>{{item.value}}</text>
-                    </radio>
-                </radio-group>
-            <!--
-                <view class="self-color">
-                    <text>黑白</text>
-                    <image src="../../../../images/radio_on.png"></image>
+                <view id="0" class="self-color" bindtap="chooseColor">
+                    <text>{{colorLists[0]}}</text>
+                    <image src="{{chooseColor ==0 ? '../../../../images/radio_on.png' : '../../../../images/radio_off.png'}}"></image>
                 </view>
-                <view class="self-color">
-                    <text>全彩</text>
-                    <image src="../../../../images/radio_off.png"></image>
+                <view id="1" class="self-color" bindtap="chooseColor">
+                    <text>{{colorLists[1]}}</text>
+                    <image src="{{chooseColor ==1 ? '../../../../images/radio_on.png' : '../../../../images/radio_off.png'}}"></image>
                 </view>
-                -->
             </view>
         </view>
     </view>

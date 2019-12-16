@@ -43,7 +43,10 @@
 .print-num .arrow-icon{
     width:35rpx;
     height:35rpx;
-    margin-top: 28rpx;
+    margin-top: 20rpx;
+}
+.print-num .arrow-icon:nth-of-type(2){
+    margin-top: 10rpx;
 }
 .select-color{
     width:40%;

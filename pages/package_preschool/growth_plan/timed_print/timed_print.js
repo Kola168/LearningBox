@@ -11,16 +11,13 @@ Page({
      * 页面的初始数据
      */
     data: {
-      isShowDetail: false,  //自动打印是否显示详情设置
+      isShowDetail: false,  //自动打印是否显示详情设置,默认false
       printNumber: 1,  //打印份数
       times:[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24],  //时间列表选择
-      currentTime: 19, //默认打印时间
-      isChooseFrequency: false, //选择打印频率
-      frequencyLists: [
-        {name:'一天一关', value:'一天一关', checked:'true'},
-        {name:'两天一关', value:'两天一关'},
-        {name:'三天一关', value:'三天一关'}
-      ], //频率选择
+      currentTime: 16, //默认打印时间
+      frequencyLists: ['一天一关','两天一关','三天一关'], //频率选择
+      chooseFrequency: 0, //默认选择打印频率
+      isShowTimeLists: false, //是否显示时间列表
     },
   
     /**
@@ -33,7 +30,7 @@ Page({
 
     /** 获取昵称 */
     getName(){
-      wxNav.navigateTo(``)
+      wxNav.navigateTo(`/pages/package_common/account/name_edit`)
     },
 
     /** 自动打印开关 */
@@ -41,6 +38,13 @@ Page({
       this.setData({
         isShowDetail: !this.data.isShowDetail
       })
+      if(this.data.isShowDetail == 'false'){
+        this.setData({
+          printNumber: 1,
+          currentTime: 16,
+          chooseFrequency: 0
+        })
+      }
     },
 
     /** 减少份数 */
@@ -52,31 +56,67 @@ Page({
 
     /** 增加份数 */
     increaseNum(){
-      this.data.printNumber < 10 && this.setData({
-        printNumber: this.data.printNumber + 1
-      })
+      if(this.data.printNumber < 30){
+        this.setData({
+          printNumber: this.data.printNumber + 1
+        })
+      }else{
+        wx.showModal({
+          content: '最多可以打印30份哦~',
+          showCancel: false
+        })
+      }
     },
 
     /** 打印时间 */
     printTime(e){
-      console.log('picker发送选择改变，携带值为', e.detail.value)
+      console.log('发送选择改变，携带值为', e)
+      console.log('发送选择改变，携带值为', e.detail.value)
+      let time = parseInt(e.detail.value)
+      time=time+1
       this.setData({
-        isShowTime: true,
-        currentTime: e.detail.value
+        isShowTimeLists: true,
+        currentTime: time
       })
+      console.log('发送选择改变，携带值为', this.data.currentTime)
     },
 
     /** 打印频率 */
-    chooseFrequency(e){
-      console.log('radio发生change事件，携带value值为：', e.detail.value)
-    },
+    chooseFrequency: co.wrap(function* (e) {
+      let index = e ? e.currentTarget.id : 1
+      console.log('======选择的频率',this.data.frequencyLists[index])
+      this.setData({
+        chooseFrequency: index
+      })
+    }),
 
   
     /**
      * 定时打印设置后的确认
      */
     confirmTimedSetting: co.wrap(function* (){
-      // this.weToast.toast('订阅成功')
-      wxNav.navigateTo('/pages/package_preschool/growth_plan/checkpoint/plan_checkpoint')
+      this.weToast.toast({
+        type: 'loading',
+        duration: 0
+      })
+      const params = {
+
+      }
+      try{
+        const resp = yield request({
+          url: app.apiServer + ``,
+          method: 'POST',
+          dataType: 'json',
+          data: params
+        })
+        if(resp.data.code !== 0){
+          throw(resp.data)
+        }
+        this.longToast.weToast()
+        wxNav.navigateTo('/pages/package_preschool/growth_plan/checkpoint/plan_checkpoint')
+      }catch(e){
+        this.longToast.weToast()
+        util.showError(e)
+      }
     })
   })

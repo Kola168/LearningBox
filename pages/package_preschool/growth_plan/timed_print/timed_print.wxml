@@ -6,6 +6,7 @@
             <view class="item-left">宝贝昵称</view>
             <view class="item-right" bindtap="getName">
                 <text class="name">请填写真实昵称</text>
+                <!--<input placeholder="请填写真实昵称" auto-focus bindinput='input' confirm-type="done" value="{{name}}"></input>-->
                 <image class="arrow-icon" src="/images/doc_item_arrow.png"></image>
             </view>
         </view>
@@ -19,46 +20,37 @@
             <view class="list-item">
                 <view class="item-left">每关打印份数</view>
                 <view class="item-right print-num">
-                    <image class="arrow-icon" bindtap="decreaseNum" src="{{printNumber > 1 ? '/images/doc_minus_y.png' : '/images/doc_document_cut.png'}}"></image>
+                    <view class="arrow-icon"><image class="arrow-icon" bindtap="decreaseNum" src="{{printNumber > 1 ? '/images/doc_minus_y.png' : '/images/doc_document_cut.png'}}" mode="widthFix"></image></view>
                     <text class="name">{{printNumber}}</text>
-                    <image class="arrow-icon" bindtap="increaseNum" src="{{printNumber < 10 ? '/images/doc_plus_y.png' : '/images/doc_document_add_gray.png'}}"></image>
+                    <view class="arrow-icon"><image class="arrow-icon" bindtap="increaseNum" src="{{printNumber < 10 ? '/images/doc_plus_y.png' : '/images/doc_document_add_gray.png'}}" mode="widthFix"></image></view>
                 </view>
             </view>
             <view class="list-item">
                 <view class="item-left">打印时间</view>
-                <view class="item-right print-time" bindtap="printTime">
+                <view class="item-right print-time">
+                
                     <picker value="{{time}}" range="{{times}}" bindchange="printTime">
                         <view class="picker">{{currentTime}}:00</view>
                     </picker>
+                    <!--<view class="picker">{{currentTime}}:00</view>-->
                     <image class="arrow-icon" src="/images/doc_item_arrow.png"></image>
                 </view>
             </view>
             <view class="list-item list-frequency">
                 <view class="frequency-left">打印频率</view>
-                <view class="frequency-right">
-                    <radio-group class="radio-group set-frequency" bindchange="chooseFrequency">
-                        <radio class="radio" wx:for-items="{{frequencyLists}}" wx:key="name" value="{{item.name}}" checked="{{item.checked}}">
-                            <text>{{item.value}}</text>
-                        </radio>
-                    </radio-group>
-                <!--
-                    <view class="set-frequency" wx:for="{{frequencyList}}" wx:key="{{index}}" id="{{index}}" bindtap="chooseFrequency">
-                        <text>{{item}}</text>
-                        <image src="{{isChooseFrequency ? '/images/radio_on.png' : '/images/radio_off.png'}}"></image>
+                <view class="frequency-right">                   
+                    <view id="0" class="set-frequency" bindtap="chooseFrequency">
+                        <text>{{frequencyLists[0]}}</text>
+                        <image src="{{chooseFrequency ==0 ? '/images/radio_on.png' : '/images/radio_off.png'}}"></image>
                     </view>
-                    <view class="set-frequency" bindtap="chooseFrequency">
-                        <text>一天一关</text>
-                        <image src="/images/radio_on.png"></image>
+                    <view id="1" class="set-frequency" bindtap="chooseFrequency">
+                        <text>{{frequencyLists[1]}}</text>
+                        <image src="{{chooseFrequency ==1 ? '/images/radio_on.png' : '/images/radio_off.png'}}"></image>
                     </view>
-                    <view class="set-frequency" bindtap="chooseFrequency">
-                        <text>两天一关</text>
-                        <image src="/images/radio_off.png"></image>
+                    <view id="2" class="set-frequency" bindtap="chooseFrequency">
+                        <text>{{frequencyLists[2]}}</text>
+                        <image src="{{chooseFrequency ==2 ? '/images/radio_on.png' : '/images/radio_off.png'}}"></image>
                     </view>
-                    <view class="set-frequency" bindtap="chooseFrequency">
-                        <text>三天一关</text>
-                        <image src="/images/radio_off.png"></image>
-                    </view>
-                    -->
                 </view>
             </view>
         </block>
@@ -71,37 +63,14 @@
     </view>
 </view>
 <view class="footer" bindtap="confirmTimedSetting">确认</view>
-<!--
-<view wx:if="{{isShowTime}}">
-    <picker mode="time" value="{{times}}" start="09:01" end="21:01" bindchange="bindTimeChange">
-        <view class="picker">
-            当前选择: {{time}}
-        </view>
-    </picker>
-</view>
-<view class="section">
-  <view class="section__title">时间选择器</view>
-  <picker value="{{item}}" range="{{times}}" bindchange="bindPickerChange">
-    <view class="picker">
-      当前选择: {{item}}
-    </view>
-  </picker>
-</view>
-<view class="bottom-popup" wx:if="{{isShowTime}}">
--->
-<!--
-    <picker value="{{item}}" range="{{times}}" bindchange="bindPickerChange">
-    <view class="picker">
-      当前选择: {{item}}
-    </view>
-  </picker>
+<!-- 
+<view class="bottom-popup" wx:if="{{isShowTimeLists}}">
     <view class="popup-bg"></view>
     <view class="popup-cont">
         <text class="confirm" bindtap="confirmTime">确定</text>
         <view class="scroll-block">
-            <text class="on" wx:for="{{times}}" wx:key="{{index}}" id="{{index}}">{{item}}:00</text>
+            <text bindtap="getValue" wx:for="{{times}}" wx:key="{{index}}" id="{{index}}">{{item}}:00</text>
         </view>
     </view>
-
 </view>
--->
+<view class="listBd"></view>-->

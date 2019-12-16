@@ -1,9 +1,6 @@
 // pages/package_preschool/growth_plan/checkpoint/plan_checkpoint.js
-
 const app = getApp()
 import {regeneratorRuntime, co, wxNav, util, logger} from '../../../../utils/common_import'
-// import { threadId } from 'worker_threads';
-// import api from '../../../network/restful_request'
 const showModal = util.promisify(wx.showModal)
 
 Page({
@@ -80,6 +77,8 @@ Page({
 
   /** 自动打印 */
   setTimedPrint: co.wrap(function* (){
+
+    
     wxNav.navigateTo(`/pages/package_preschool/growth_plan/timed_print/timed_print`)
   }),
 
@@ -87,9 +86,5 @@ Page({
   toPrintDetail: function(e){
     wxNav.navigateTo(`/pages/package_preschool/growth_plan/checkpoint/plan_detail`)
   }
-
-  
-
-
 
 })
