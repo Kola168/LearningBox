@@ -24,7 +24,8 @@ Page({
     ],
     currentPage: 1,
     allPage: 3,
-    currentImage: ''
+    currentImage: '',
+    isFullScreen: false, //iphoneX底部button兼容性
 
   },
 
@@ -35,7 +36,8 @@ Page({
     this.longToast = new app.weToast
     let currentImage=this.data.imgUrls[1].image
     this.setData({
-      currentImage: currentImage
+      currentImage: currentImage,
+      isFullScreen: app.isFullScreen
     })
 
   },

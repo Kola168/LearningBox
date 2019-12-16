@@ -38,6 +38,6 @@
         </view>
     </view>
 </view>
-<view class="footer" bindtap="confirmPrint">确认打印</view>
+<view class="footer {{isFullScreen?'is-full-screen':''}}" bindtap="confirmPrint">确认打印</view>
 <import src="/lib/toast/wetoast.wxml" />
 <template is="wetoast" data="{{...__wetoast__}}" />

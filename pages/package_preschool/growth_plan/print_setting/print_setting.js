@@ -17,6 +17,7 @@ Page({
       inputValueStart: 1, //打印范围起始页
       inputValueEnd: 1, //打印范围结束页
       chooseColor: 0, //默认选择打印的色彩
+      isFullScreen: false, //iphoneX底部button兼容性
     },
   
     /**
@@ -24,6 +25,9 @@ Page({
      */
     onLoad: function (options) {
       this.longToast = new app.weToast
+      this.setData({
+        isFullScreen: app.isFullScreen
+      })
   
     },
 
@@ -84,40 +88,33 @@ Page({
      * 确认打印
      */
     confirmPrint: co.wrap(function* (){
-      this.longToast.weToast({
-        type:'loading',
-        duration: 0
-      })
+      // this.longToast.weToast({
+      //   type:'loading',
+      //   duration: 0
+      // })
 
-      const params = {
+      // const params = {
         
-      }
+      // }
 
-      try{
-        const resp = yield request({
-          url: app.apiServer+'',
-          dataType: 'json',
-          method: 'post',
-          data: params
-        })
-        if(resp.data.code !== 0){
-          throw(resp.data)
-        }
-        this.longToast.weToast()
-        wx.redirectTo({
-          url:``
-        })
-      }catch(e){
-        this.longToast.weToast()
-        util.showError(e)
-      }
-
-
-
-
-
-
-
+      // try{
+      //   const resp = yield request({
+      //     url: app.apiServer+'',
+      //     dataType: 'json',
+      //     method: 'post',
+      //     data: params
+      //   })
+      //   if(resp.data.code !== 0){
+      //     throw(resp.data)
+      //   }
+      //   this.longToast.weToast()
+      //   wxNav.redirectTo('/pages/index/index',{
+      //     type:'test'
+      //   })
+      // }catch(e){
+      //   this.longToast.weToast()
+      //   util.showError(e)
+      // }
 
     })
   })

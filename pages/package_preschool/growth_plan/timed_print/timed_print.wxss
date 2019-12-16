@@ -48,6 +48,9 @@
     color: #2A2A2A;
     line-height:38rpx;
 }
+.set-frequency view{
+    width:100%;
+}
 .set-frequency image{
     width:40rpx;
     height:40rpx;
@@ -70,7 +73,7 @@
     width:25%;  
 }
 .set-frequency image{
-    margin-top: 24rpx;
+    margin-top: 28rpx;
 }
 .footer{
     position: fixed;

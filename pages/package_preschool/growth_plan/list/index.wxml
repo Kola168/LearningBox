@@ -11,7 +11,7 @@
         <view class="item-cont-block" wx:if="{{tabToContent==0}}">
             <block wx:if="{{!lists.length}}">
                 <view class="item-none">
-                    <image class="item-none-img" src="https://cdn-h.gongfudou.com/LearningBox/preschool/growth_plan_none.png" mode="widthFix"></image>
+                    <image mode="widthFix" class="item-none-img" src="https://cdn-h.gongfudou.com/LearningBox/preschool/growth_plan_none.png" mode="widthFix"></image>
                     <text class="item-none-desc">您还未订阅宝宝成长计划哦～</text>
                     <view class="btn-default" bindtap="toSubscribe">去订阅</view>
                 </view>
@@ -34,7 +34,7 @@
                             </view>
                             <text class="progress-num">{{item.currentProgress}}/{{item.allProgress}}</text>
                         </view>
-                        <view class="bottom-right">
+                        <view class="bottom-right bottom-right-no">
                             <view class="btn-default" id="{{index}}" bindtap="handleSubscribe">取消订阅</view>
                         </view>
                     </view>

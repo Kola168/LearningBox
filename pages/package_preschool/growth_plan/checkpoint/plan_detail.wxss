@@ -21,6 +21,11 @@
     display: flex;
     justify-content: flex-start;
 }
+.fixed-bottom{
+    position: fixed;
+    bottom: 180rpx;
+    width:100%;
+}
 .turn-page view{
     width:40%;
 }

@@ -18,6 +18,7 @@ Page({
       frequencyLists: ['一天一关','两天一关','三天一关'], //频率选择
       chooseFrequency: 0, //默认选择打印频率
       isShowTimeLists: false, //是否显示时间列表
+      isFullScreen: false, //iphoneX底部button兼容性
     },
   
     /**
@@ -25,6 +26,9 @@ Page({
      */
     onLoad: function (options) {
       this.longToast = new app.weToast
+      this.setData({
+        isFullScreen: app.isFullScreen
+      })
   
     },
 
@@ -95,28 +99,29 @@ Page({
      * 定时打印设置后的确认
      */
     confirmTimedSetting: co.wrap(function* (){
-      this.weToast.toast({
-        type: 'loading',
-        duration: 0
-      })
-      const params = {
+      wxNav.navigateTo('/pages/package_preschool/growth_plan/checkpoint/plan_checkpoint')
+    //   this.weToast.toast({
+    //     type: 'loading',
+    //     duration: 0
+    //   })
+    //   const params = {
 
-      }
-      try{
-        const resp = yield request({
-          url: app.apiServer + ``,
-          method: 'POST',
-          dataType: 'json',
-          data: params
-        })
-        if(resp.data.code !== 0){
-          throw(resp.data)
-        }
-        this.longToast.weToast()
-        wxNav.navigateTo('/pages/package_preschool/growth_plan/checkpoint/plan_checkpoint')
-      }catch(e){
-        this.longToast.weToast()
-        util.showError(e)
-      }
+    //   }
+    //   try{
+    //     const resp = yield request({
+    //       url: app.apiServer + ``,
+    //       method: 'POST',
+    //       dataType: 'json',
+    //       data: params
+    //     })
+    //     if(resp.data.code !== 0){
+    //       throw(resp.data)
+    //     }
+    //     this.longToast.weToast()
+    //     wxNav.navigateTo('/pages/package_preschool/growth_plan/checkpoint/plan_checkpoint')
+    //   }catch(e){
+    //     this.longToast.weToast()
+    //     util.showError(e)
+    //   }
     })
   })

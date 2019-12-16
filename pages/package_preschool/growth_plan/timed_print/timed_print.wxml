@@ -40,16 +40,16 @@
                 <view class="frequency-left">打印频率</view>
                 <view class="frequency-right">                   
                     <view id="0" class="set-frequency" bindtap="chooseFrequency">
-                        <text>{{frequencyLists[0]}}</text>
-                        <image src="{{chooseFrequency ==0 ? '/images/radio_on.png' : '/images/radio_off.png'}}"></image>
+                        <view>{{frequencyLists[0]}}</view>
+                        <image mode="widthFix" src="{{chooseFrequency ==0 ? '/images/radio_on.png' : '/images/radio_off.png'}}"></image>
                     </view>
                     <view id="1" class="set-frequency" bindtap="chooseFrequency">
-                        <text>{{frequencyLists[1]}}</text>
-                        <image src="{{chooseFrequency ==1 ? '/images/radio_on.png' : '/images/radio_off.png'}}"></image>
+                        <view>{{frequencyLists[1]}}</view>
+                        <image mode="widthFix" src="{{chooseFrequency ==1 ? '/images/radio_on.png' : '/images/radio_off.png'}}"></image>
                     </view>
                     <view id="2" class="set-frequency" bindtap="chooseFrequency">
-                        <text>{{frequencyLists[2]}}</text>
-                        <image src="{{chooseFrequency ==2 ? '/images/radio_on.png' : '/images/radio_off.png'}}"></image>
+                        <view>{{frequencyLists[2]}}</view>
+                        <image mode="widthFix" src="{{chooseFrequency ==2 ? '/images/radio_on.png' : '/images/radio_off.png'}}"></image>
                     </view>
                 </view>
             </view>
@@ -62,7 +62,7 @@
         <text>3、订阅成功后，用户也可在关卡页面进行修改设置</text>
     </view>
 </view>
-<view class="footer" bindtap="confirmTimedSetting">确认</view>
+<view class="footer {{isFullScreen?'is-full-screen':''}}" bindtap="confirmTimedSetting">确认</view>
 <!-- 
 <view class="bottom-popup" wx:if="{{isShowTimeLists}}">
     <view class="popup-bg"></view>

@@ -7,11 +7,13 @@
         </swiper-item>
     </block>
 </swiper>
-<view class="turn-page">
-    <view><text class="page-num">{{currentPage}}/{{allPage}}</text></view>
-    <view class="turn-img">
-        <image bindtap="prePage" src="../../../../images/doc_preview_turn_left.png" />
-        <image bindtap="nextPage" src="../../../../images/doc_preview_turn_right.png" />
+<view class="fixed-bottom">
+    <view class="turn-page">
+        <view><text class="page-num">{{currentPage}}/{{allPage}}</text></view>
+        <view class="turn-img">
+            <image bindtap="prePage" src="../../../../images/doc_preview_turn_left.png" />
+            <image bindtap="nextPage" src="../../../../images/doc_preview_turn_right.png" />
+        </view>
     </view>
 </view>
-<view class="footer" bindtap="beginPrint">开始打印</view>
+<view class="footer {{isFullScreen?'is-full-screen':''}}" bindtap="beginPrint">开始打印</view>

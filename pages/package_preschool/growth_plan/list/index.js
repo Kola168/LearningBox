@@ -15,7 +15,7 @@ Page({
       {
         image: 'https://cdn-h.gongfudou.com/LearningBox/main/pic2doc_add_img.png',
         title: '好奇宝宝培养计划',
-        desc: '简单描述描述描述描述',
+        desc: '简单描述描述描述描述简单描述描述描述描述',
         tag: '在家上早教',
         currentProgress: '30',
         allProgress: '100'
