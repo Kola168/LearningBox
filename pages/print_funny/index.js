@@ -13,7 +13,7 @@ Page({
 			name: '照片书',
 			icon: '/images/doc_more_icon.png',
 			url: '/pages/package_feature/print_book/index',
-			key: 'photoBook'
+			key: 'photo_book'
 		},
 		{
 			name: '台历',
@@ -24,25 +24,25 @@ Page({
 		{
 			name: '拇指相册',
 			icon: '/images/funny_thumb_album.png',
-			url: '/pages/package_feature/print_thumb_album/edit',
-			key: 'thumbAlum'
+			url: '/pages/package_feature/print_thumb_album/index',
+			key: 'mini_album'
 		},
 		{
 			name: '大头贴',
 			icon: '/images/funny_sticker.png',
-			url: '/pages/package_feature/print_sticker/edit',
-			key: 'sticker'
+			url: '/pages/package_feature/print_sticker/index',
+			key: 'photo_sticker'
 		},
 		{
 			name: '姓名贴',
 			icon: '/images/funny_name.png',
-			url: '/pages/package_feature/print_name/edit',
-			key: 'name'
+			url: '/pages/package_feature/print_name/index',
+			key: 'name_sticker'
 		},
 		{
 			name: '明信片',
 			icon: '/images/funny_postcard.png',
-			url: '/pages/package_feature/print_postcard/edit',
+			url: '/pages/package_feature/print_postcard/index',
 			key: 'postcard'
 		}
 		],
@@ -90,25 +90,44 @@ Page({
 		let url = e.currentTarget.dataset.url
 		switch (e.currentTarget.dataset.key) {
 			case 'ballon':
-				router.navigateTo(url)
+				router.navigateTo(url,{
+					type:type
+				})
 				break
 			case 'photoBook':
-				router.navigateTo(url)
+				router.navigateTo(url,{
+					type:type
+				})
 				break
 			case 'calendar':
-				router.navigateTo(url)
+				router.navigateTo(url,{
+					type:type
+				})
 				break
 			case 'thumbAlum':
-				router.navigateTo(url)
+				router.navigateTo(url,{
+					type:type
+				})
 				break
 			case 'sticker':
-				router.navigateTo(url)
+				router.navigateTo(url,{
+					type:type
+				})
 				break
 			case 'name':
-				router.navigateTo(url)
+				router.navigateTo(url,{
+					type:type
+				})
 				break
 			case 'calepostcardndar':
-				router.navigateTo(url)
+				router.navigateTo(url,{
+					type:type
+				})
+				break
+			default:
+				router.navigateTo(url,{
+					type:type
+				})
 				break
 		}
 	},

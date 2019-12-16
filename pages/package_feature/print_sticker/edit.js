@@ -1,4 +1,4 @@
-// pages/package_feature/print_sticker/edit.js
+// pages/package_feature/print_stickerbook/edit.js
 const app = getApp()
 const regeneratorRuntime = require('../../../lib/co/runtime')
 const co = require('../../../lib/co/co')

@@ -20,7 +20,7 @@ Page({
 
   //介质信息
   mediaInfo: {
-    pic_a6: {
+    pic_in6: {
       name: '6寸照片',
       size: {
         width: 1300,
@@ -28,7 +28,7 @@ Page({
         shrinksize: '/resize,m_fill,h_300,w_200/quality,Q_85/format,jpg',
       }
     },
-    pic_a5: {
+    pic_in5: {
       name: '5寸照片',
       size: {
         width: 1092,
@@ -36,7 +36,7 @@ Page({
         shrinksize: '/resize,m_fill,h_285,w_200/quality,Q_85/format,jpg',
       }
     },
-    pic_a7: {
+    pic_in7: {
       name: '7寸照片',
       size: {
         width: 1560,
@@ -73,14 +73,18 @@ Page({
     percent: 0, //单次上传进度条进程
     errTip: '',
     butHigh:false,
+    showMode:false, //是否展示模板
+    showCover:false, //是否展示蒙层
   },
 
   smallImgDelete: false,
   onLoad: function(options) {
+    Loger(options)
     this.longToast = new app.weToast()
     this.mediaType = options.mediaType
     this.setData({
-      photoMedia: this.mediaInfo[this.mediaType]
+      photoMedia: this.mediaInfo[this.mediaType],
+      showMode:JSON.parse(options.showMode)
     })
     this.initSingleArea()
     this.getStorageImages()
@@ -89,8 +93,30 @@ Page({
         butHigh: true
       })
     }
+    this.checkStorage()
     event.on('setPreData', this, (postData)=>{
       this.editPhoto(postData)
+    })
+  },
+
+  checkStorage(){
+    let mediaCover=''
+    try{
+      mediaCover=storage.get(`${this.mediaType}_cover`)
+    }catch(e){
+      Loger(e)
+    }
+    if(mediaCover!='showed'){
+      this.setData({
+        showCover:true
+      })
+      storage.put(`${this.mediaType}_cover`,'showed')
+    }
+  },
+
+  closeCover:function(){
+    this.setData({
+      showCover:false
     })
   },
 
@@ -293,7 +319,8 @@ Page({
       imgInfo: encodeURIComponent(JSON.stringify(this.data.photoList[index])),
       index: index,
       photoMedia:encodeURIComponent(JSON.stringify(this.data.photoMedia.size)),
-      mediaType:this.mediaType
+      mediaType:this.mediaType,
+      showMode:JSON.stringify(this.data.showMode)
     })
   },
 

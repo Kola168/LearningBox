@@ -10,8 +10,9 @@ const request = util.promisify(wx.request)
 
 import wxNav from '../../utils/nav.js'
 import api from '../../network/restful_request'
+import gql from '../../network/graphql_request'
 
-let Loger=(app.apiServer!='https://epbox.gongfudou.com'||app.deBug)?console.log:function(){}
+let Loger = (app.apiServer != 'https://epbox.gongfudou.com' || app.deBug) ? console.log : function() {}
 
 Page({
 
@@ -19,7 +20,10 @@ Page({
     templateInfo: [],
     paperSize: {},
     photoPath: '',
-    butHigh: false, //底部按钮是否拔高
+    showMode: false,
+    templateList: [], //模板列表
+    templateTypeIndex: 0, // 模板主题index
+    templateIndex: 0, //模板index
   },
 
   onLoad: function(options) {
@@ -30,50 +34,140 @@ Page({
     this.mediaInfo = JSON.parse(decodeURIComponent(options.photoMedia))
     this.mediaType = options.mediaType
     this.setData({
+      showMode: JSON.parse(options.showMode)
+    })
+    let minLeftHeight = 260
+    if (this.data.showMode) {
+      minLeftHeight = 510
+      this.getTemplateList()
+    } else {
+      this.setData({
+        templateInfo: {
+          modeSize: {
+            x: 0,
+            y: 0,
+            width: this.mediaInfo.width,
+            height: this.mediaInfo.height,
+            areaWidth: this.mediaInfo.width,
+            areaHeight: this.mediaInfo.height,
+          }
+        }
+      })
+    }
+    this.setData({
       photoPath: imgInfo.localUrl,
       paperSize: {
         width: this.mediaInfo.width,
         height: this.mediaInfo.height,
-        heightPer: 0.666,
-        minLeftHeight: 260,
+        minLeftHeight: minLeftHeight,
+        sider: 220,
+      }
+    })
+  },
+
+  getTemplateList: co.wrap(function*() {
+    this.longToast.toast({
+      type: "loading",
+    })
+    try {
+
+
+      let templateList = yield gql.searchTemplate(this.mediaType)
+      Loger(templateList.feature.categories)
+      if (templateList.errors) {
+        this.longToast.toast()
+        return wx.showModal({
+          title: '网络异常',
+          content: '请检查网络连接',
+          showCancel: false,
+          confirmColor: '#FFE27A',
+          success: function() {
+            wxNav.navigateBack()
+          }
+        })
+      }
+      this.setData({
+        templateList: templateList.feature.categories
+      })
+    } catch (e) {
+      Loger(e)
+      this.longToast.toast()
+      wx.showModal({
+        title: '网络异常',
+        content: '请检查网络连接',
+        showCancel: false,
+        confirmColor: '#FFE27A',
+        success: function() {
+          wxNav.navigateBack()
+        }
+      })
+    }
+    this.checkTemplateType(2)
+    this.longToast.toast()
+  }),
+
+  setComponentData: function() {
+    let templateInfo = this.data.templateList[this.data.templateTypeIndex].templates[this.data.templateIndex].positionInfo
+    let modeSize = {
+      x: templateInfo.areaX,
+      y: templateInfo.areaY,
+      areaWidth: templateInfo.areaWidth,
+      areaHeight: templateInfo.areaHeight,
+    }
+    this.setData({
+      paperSize: {
+        width: Number(templateInfo.width),
+        height: Number(templateInfo.height),
+        minLeftHeight: 510,
         sider: 220,
       },
       templateInfo: {
-        modeSize: {
-          x: 0,
-          y: 0,
-          width: this.mediaInfo.width,
-          height: this.mediaInfo.height,
-          areaWidth: this.mediaInfo.width,
-          areaHeight: this.mediaInfo.height,
-        }
+        modeSrc: this.data.templateList[this.data.templateTypeIndex].templates[this.data.templateIndex].imageUrl,
+        modeSize: modeSize
       }
     })
-    if (app.isFullScreen) {
-      this.setData({
-        butHigh: true
-      })
-    }
+    this.longToast.toast()
   },
+
+  checkTemplateType: function(e) {
+    let index = e.currentTarget ? e.currentTarget.dataset.index : e
+    this.setData({
+      templateTypeIndex: index
+    })
+    this.checkTemplate(0)
+  },
+
+  checkTemplate: function(e) {
+    let index = e.currentTarget ? e.currentTarget.dataset.index : e
+    this.setData({
+      templateIndex: index
+    })
+    this.setComponentData()
+  },
+
   confEdit: co.wrap(function*() {
     try {
       this.longToast.toast({
         type: "loading",
       })
       let params = this.selectComponent("#mymulti").getImgPoint()[0] //页面调用组件内方法
-      const resp = yield api.processes({
-          is_async: false,
-          editor_scale: params.editor_scale,
-          image_url: params.image_url,
-          feature_key: this.mediaType,
-          rotate: params.rotate,
-          scale: params.scale,
-          x: params.x,
-          y: params.y,
-          image_width:params.image_width,
-          image_height:params.image_height
-      })
-      event.emit('setPreData', {url:resp.res.url,index:this.index})
+      let param = {
+        is_async: false,
+        editor_scale: params.editor_scale,
+        image_url: params.image_url,
+        feature_key: this.mediaType,
+        rotate: params.rotate,
+        scale: params.scale,
+        x: params.x,
+        y: params.y,
+        image_width: params.image_width,
+        image_height: params.image_height
+      }
+      if (this.data.showMode) {
+        param.template_sn = this.data.templateList[this.data.templateTypeIndex].templates[this.data.templateIndex].sn
+      }
+      const resp = yield api.processes(param)
+      event.emit('setPreData', { url: resp.res.url, index: this.index })
       wxNav.navigateBack()
       this.longToast.toast()
     } catch (e) {

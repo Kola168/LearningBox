@@ -27,7 +27,7 @@ let gql = GraphQL({
   },
   //全局错误拦截
   errorHandler: function(res) {
-		//如果auth	
+		//如果auth
 		if(1){
 
 			}
@@ -593,7 +593,7 @@ const graphqlApi = {
       }
     })
 	},
-	
+
 	/**
    * 获取所有学段
    * @returns
@@ -627,7 +627,7 @@ const graphqlApi = {
 
   /**
    * 获取当前用户信息
-   * 
+   *
    * @returns
    */
   getUser: () => {
@@ -678,8 +678,40 @@ const graphqlApi = {
         input: params
       }
     })
+  },
+
+
+  //查询模板列表
+  searchTemplate:(type)=>{
+    return gql.query({
+      query: `query($key: String!) {
+        feature(key: $key) {
+          categories {
+            name
+            isHorizontal
+            templates {
+              previewImage
+              name
+              imageUrl
+              positionInfo {
+                width
+                areaHeight
+                areaWidth
+                areaX
+                areaY
+                height
+                width
+              }
+            }
+          }
+        }
+      }`,
+      variables: {
+        key: type
+      }
+    })
   }
-	
+
 
 }
 

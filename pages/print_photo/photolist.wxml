@@ -5,10 +5,15 @@
 
 <wxs src="commonphoto.wxs" module="foo" />
 
+
 <block wx:if="{{photoList.length>0}}">
   <view class="top-tips">
     请先行预览或编辑，未显示部分将不会打印
   </view>
+  <view wx:if="{{!showProcess && showCover}}" class="mode-tips-bg" bindtap="closeCover">
+    <image src="/images/print_photo_cover.png" mode="widthFix" class="mode-tips-img"></image>
+  </view>
+
   <view class="photo-list-box">
     <view wx:for="{{photoList}}" wx:key="photoList" class="photo-item-box">
       <image src="{{foo.shrinkPhoto(item.url,photoMedia.size.shrinksize)}}" mode="widthFix" class="photo-item-img"></image>
