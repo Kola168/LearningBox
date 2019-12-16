@@ -252,6 +252,16 @@ Page({
     })
   },
 
+  // 选择百度
+  chooseBaiduImg ({detail}) {
+    router.navigateTo('/pages/print_doc/duplicate_edit/duplicate_edit', {
+      images: {
+        localUrl: detail[0].url
+      },
+      type: 'edit'
+    })
+  },
+
   synthesis: co.wrap(function* (param) {
     this.longToast.toast({
       type: 'loading',

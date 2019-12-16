@@ -293,13 +293,13 @@ Page({
       url: this.data.arrayFile.url,
       filename: this.data.arrayFile.name,
       number: this.data.documentPrintNum, // 张数
-      start_page: this.data.startPage, // 起始页数
-      end_page: this.data.endPage, // 终止页数
-      display: this.data.zoomType,
-      skip_gs: !this.data.checkOpen, //是否检查文件修复
-      color: this.data.colorCheck, // 是否是彩色
+      startPage: this.data.startPage, // 起始页数
+      endPage: this.data.endPage, // 终止页数
+      singlePageLayoutsCount: this.data.zoomType,
+      skipGs: !this.data.checkOpen, //是否检查文件修复
+      grayscale: this.data.colorCheck == 'Color' ? false : true, // 是否是彩色
       duplex: this.data.duplexCheck ? true : false, // false单面 true双面
-      media_size: (this.data.medium === 'a4') ? 0 : 3, //纸质
+      // media_size: (this.data.medium === 'a4') ? 0 : 3, //纸质
       extract: extract //范围类型
     }
 

@@ -6,23 +6,23 @@
 	</view>
 	<image class="recorder-bg" src="https://cdn-h.gongfudou.com/epbox/picture/category_e42cf96c50534c57a8f9d102e86d237a.jpg" mode="aspectFill" />
 	<view class="play-view-main sys-flex">
-		<image class="source-icon" src="https://cdn-h.gongfudou.com/epbox/picture/category_e42cf96c50534c57a8f9d102e86d237a.jpg" mode="aspectFill" />
+		<image class="source-icon {{isPlaying ? 'source-playing' : ''}}" src="https://cdn-h.gongfudou.com/epbox/picture/category_e42cf96c50534c57a8f9d102e86d237a.jpg" mode="aspectFill" />
 		<view class="source-info">
 			<view class="source-name f-18">拉大锯</view>
 			<view class="user-name f-12">暂无朗读者</view>
 		</view>
 		<view class="duration-main sys-flex">
-			<view class="player-time">00:00</view>
+			<view class="player-time">{{curryTime || '00:00'}}</view>
 			<view class="progress-main" style="width:{{processWidth}}px;">
 				<view class="dots" style="left:{{dotX}}px;" />
 				<view class="touch-move" />
 				<view class="active-progress" style="width:{{currentProgressWidth}}px;" />
 			</view>
-			<view class="total-time">10:20</view>
+			<view class="total-time">{{totalTime || '00:00'}}</view>
 		</view>
 		<view class="control-main sys-flex">
 			<view class="btn-main btn-source f-12 sys-flex">
-				<image class="btn" bind:tap="startPlayVoice" src="{{isPlayingSource ? '../../images/record_voice_btn_play_voice.png' : '../../images/record_voice_btn_voice.png'}}" />
+				<image class="btn" bind:tap="startPlayVoice" src="{{players.source.isPlaying && !players.source.isPause ? '../../images/record_voice_btn_play_voice.png' : '../../images/record_voice_btn_voice.png'}}" />
 				<view>原声</view>
 			</view>
 			<view class="btn-voice sys-flex">
@@ -35,7 +35,7 @@
 				 class="btn"
 				 wx:else
 				 bind:tap="startPlayRecord"
-				 src="{{isPlayingRecord ? '../../images/record_voice_btn_playing.png' : '../../images/record_voice_btn_play_stop.png'}}"
+				 src="{{players.record.isPlaying && !players.record.isPause ? '../../images/record_voice_btn_playing.png' : '../../images/record_voice_btn_play_stop.png'}}"
 				/>
 				<view class="{{!recordSource ? 'btn-disabled' : '' }}">宝宝录音</view>
 			</view>

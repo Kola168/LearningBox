@@ -105,11 +105,11 @@
 		 wx:key="{{item}}"
 		 id="{{item}}"
 		>
-			<view class="item-img {{zoomType==item?'item-check-active':''}}">
+			<view class="item-img {{singlePageLayoutsCount==item?'item-check-active':''}}">
 				<image src="/images/doc_zoom_{{item}}.png" mode="widthFix" />
 				<image
 				 src="/images/doc_error_finish.png"
-				 hidden="{{zoomType!=item}}"
+				 hidden="{{singlePageLayoutsCount!=item}}"
 				 class="item-check"
 				 mode="widthFix"
 				/>

@@ -48,6 +48,13 @@
   margin: 120rpx auto 40rpx;
   width: 508rpx;
   height: 508rpx;
+  transform: rotate(0deg);
+  transition: 0.5s;
+}
+
+.source-playing {
+  border-radius: 508rpx;
+  animation:rotateIcon 7s 0s linear infinite;
 }
 
 .play-view-main .source-info {
@@ -68,14 +75,19 @@
 }
 
 .player-time {
+  width: 60rpx;
+  text-align: center;
   padding-right: 10rpx;
 }
 
 .total-time {
+  width: 60rpx;
+  text-align: center;
   padding-left: 10rpx;
 }
 
 .progress-main {
+  margin: 0 10rpx;
   position: relative;
   height: 8rpx;
   background-color: #fff;
@@ -152,6 +164,16 @@
   to {
     opacity: 0.1;
   }
+}
+
+@keyframes rotateIcon {
+  from {
+    transform: rotate(0deg);
+  }
+  to{
+    transform: rotate(360deg);
+  }
+ 
 }
 
 .btn-voice .btn {

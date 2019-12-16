@@ -6,8 +6,9 @@
 	 scroll-with-animation
 	 scroll-into-view="{{'_'+tabId}}"
 	>
-		<text wx:for="{{catesList}}"
+		<text wx:for="{{categories}}"
           wx:key="{{index}}" id="{{'_'+index}}"
+          data-sn="{{item.sn}}"
           class="tab-item {{tabId == index ? 'activeType' : ''}}"
           bindtap="changeTab"
     >{{item.name}}<text class="active-border"></text>
@@ -18,29 +19,17 @@
 	</view>
 </view>
 
-<block wx:for="{{playList}}" wx:key="{{index}}">
-	<view class="item-3" bindtap='playPreview' data-index="{{index}}">
-		<image src='{{item.icon_url}}' class='url-3' mode="aspectFill">
-			<!-- <image
-        src='{{item.discount_url}}'
-        mode="widthFix"
-        wx:if="{{item.discount_url&&isMember}}"
-        class="url-3-free"
-      /> -->
-			<!-- <image
-        src='{{item.non_vip_discount_url}}'
-        mode="widthFix"
-        wx:if="{{item.non_vip_discount_url&&!isMember}}"
-        class="url-3-free"
-      /> -->
+<block wx:for="{{contents}}" wx:key="{{index}}">
+	<view class="item-3" bindtap='playPreview' data-item="{{item}}">
+		<image src='{{item.icon}}' class='url-3' mode="aspectFill">
 		</image>
 		<view class='title-3'>{{item.title}}</view>
 		<view class='print print-3'>
 			<view>
 				<image src='../../images/printicon.png' class='print_icon' mode='widthFix' />
-				<text class='print_num'>{{item.print_count}}</text>
+				<text class='print_num'>{{item.print_count || 0}}</text>
 			</view>
-			<view class="pages">共{{item.total_page}}页</view>
+			<view class="pages">共{{item.pageCount || 0}}页</view>
 		</view>
 	</view>
 </block>
@@ -53,11 +42,11 @@
   <view catchtap="back">
     <view
       class="tab-list"
-      wx:for="{{catesList}}"
+      wx:for="{{categories}}"
       wx:key="{{index}}"
       id="{{'_'+index}}"
     >
-      <text id="{{'_'+index}}" class="tab-item {{tabId == index ? 'activeType' : ''}}"
+      <text id="{{'_'+index}}" data-sn="{{item.sn}}" class="tab-item {{tabId == index ? 'activeType' : ''}}"
                 catchtap="changeTab">{{item.name}}<text class="active-border"></text>
       </text>
     </view>
