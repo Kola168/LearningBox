@@ -4,7 +4,8 @@
     "edit-photo":"../../../components/multiphoto/index",
     "bottom-button":"../../../components/bottom-button/index",
     "take-photo-pop":"../../../components/checkimg/index",
-    "multi-process":"../../../components/process/index"
+    "multi-process":"../../../components/process/index",
+    "confirm-print": "../../../components/confStorageModal/index"
   },
   "disableScroll":true
 }

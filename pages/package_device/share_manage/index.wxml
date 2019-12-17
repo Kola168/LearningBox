@@ -7,11 +7,14 @@
   <view class="user-list">
     <view class="list-item" wx:for="{{userList}}" wx:key="{{index}}" bindtap="selectUser" id="{{index}}">
       <view class="item-left">
-        <image src="{{item.url}}" class="item-user-image" />
+        <image src="{{item.avatar}}" class="item-user-image" />
         <view class="text-overflow-points item-user-name">{{item.name}}</view>
       </view>
       <image src="../images/share_user_{{(item.selectFlag||selectAllFlag)?'':'un'}}check.png" class="item-user-select" />
     </view>
   </view>
-  <view class="stop-share {{isFullScreen?'is-full-screen':''}}">停止分享</view>
+  <view class="stop-share {{isFullScreen?'is-full-screen':''}}" bindtap="stopShare">停止分享</view>
 </view>
+<!-- loading -->
+<import src="/lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />

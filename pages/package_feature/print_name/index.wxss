@@ -1,0 +1,20 @@
+/* pages/package_feature/print_name/index.wxss */
+page{
+  padding-bottom:160rpx;
+}
+
+.wrap{
+  display:flex;
+  flex-direction:column;
+}
+
+.img-style{
+  width:100%;
+}
+
+.bottom-but{
+  width:100%;
+  position:fixed;
+  bottom:0;
+  left:0;
+}

@@ -2,6 +2,7 @@
 <nav-bar title="照片编辑"></nav-bar>
 <multi-process wx:if="{{showProcess}}" complete-count="{{completeCount}}" count="{{count}}" percent="{{percent}}" err-tip ="{{errTip}}" bindcancelprocess="cancelImg"></multi-process>
 <take-photo-pop id="checkComponent" bindchooseImg="chooseImgs" imgNum="{{chooseCount}}" bindbaidutap="baiduprint"></take-photo-pop>
+<confirm-print bindconfirm="makeOrder" modal="{{confirmModal}}" />
 
 <wxs src="common.wxs" module="foo" />
 

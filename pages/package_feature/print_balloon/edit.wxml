@@ -16,3 +16,5 @@
   </scroll-view>
   <bottom-button text-right="确认" bindrighttap="confBut"></bottom-button>
 </view>
+<import src="/lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />

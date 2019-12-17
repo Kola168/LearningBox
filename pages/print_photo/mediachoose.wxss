@@ -26,6 +26,7 @@ view {
   box-shadow: 0 2px 8px 0 rgba(204, 204, 204, 0.40);
   border-radius: 20rpx;
   margin: 15rpx;
+  position:relative;
 }
 
 .photo-media-topicon {
@@ -50,6 +51,7 @@ view {
   box-shadow: 0 2px 8px 0 rgba(204, 204, 204, 0.40);
   border-radius: 20rpx;
   margin: 15rpx;
+  position:relative;
 }
 
 .photo-media-icon {
@@ -67,4 +69,11 @@ view {
   font-size: 24rpx;
   line-height: 34rpx;
   color: #999;
+}
+
+.media-mode{
+  width:142rpx;
+  position:absolute;
+  top:0;
+  left:0;
 }

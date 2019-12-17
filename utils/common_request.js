@@ -17,6 +17,7 @@ import graphql from '../network/graphql_request'
     singlePageLayoutsCount: Int 单页布局数量
     extract: String = "all" 奇偶数打印 all odd even
     skipGs: Boolean = false 是否跳过gs强制转换
+    duplex: Boolean 是否双面打印
  * }
  */
 const createOrder = function(featureKey, fileAttributes) {

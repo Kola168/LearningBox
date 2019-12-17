@@ -56,7 +56,7 @@
 <!-- 打印确认框 -->
 <confirm-print bindconfirm="print" bindcancel="toShopping" modal="{{confirmModal}}"></confirm-print>
 <!-- 选择图片 -->
-<check-img id="checkComponent" bindchooseImg="chooseImg" imgNum="{{1}}"></check-img>
+<check-img id="checkComponent" bindchooseImg="chooseImg" bindbaidutap="chooseBaidu" imgNum="{{1}}"></check-img>
 <!-- loading -->
 <import src="/lib/toast/wetoast.wxml" />
 <template is="wetoast" data="{{...__wetoast__}}" />

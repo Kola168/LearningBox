@@ -1,20 +1,18 @@
 var app = getApp()
 var gqwxappGraphql = require('./wxgql')
 var GraphQL = gqwxappGraphql.GraphQL
-
+import storage from '../utils/storage.js'
 // 初始化对象
 let gql = GraphQL({
   url: `${app.apiServer}/graphql`,
   header: function () {
     if (app.authToken) {
-      console.log('authToken==1==', app.authToken)
       return {
         "AUTHORIZATION": `Token token=${app.authToken}`
       }
     } else {
       try {
-        var authToken = wx.getStorageSync('authToken')
-        console.log('authToken====', authToken)
+        var authToken = storage.get('authToken')
         if (authToken) {
           return {
             "AUTHORIZATION": `Token token=${authToken}`
@@ -27,7 +25,7 @@ let gql = GraphQL({
   },
   //全局错误拦截
   errorHandler: function(res) {
-		//如果auth	
+		//如果auth
 		if(1){
 
 			}
@@ -185,6 +183,46 @@ const graphqlApi = {
       }`,
       variables: {
         sn: sn
+      }
+    })
+  },
+
+  /**
+   * 获取打印机分享用户
+   * @param { String } sn required 设备编号
+   */
+  getDeviceShareUsers: (sn) => {
+    return gql.query({
+      query: `query ($sn: String!){
+        device(sn: $sn){
+          sharers{
+            avatar,
+            name,
+            sn
+          }
+				}
+      }`,
+      variables: {
+        sn: sn
+      }
+    })
+  },
+
+  /**
+   * 打印机停止分享用户
+   * @param { String } sn required 设备编号
+   * @param { Array } userSns 停止分享用户的sn
+   */
+  stopShareDeviceUsers: (sn, userSns) => {
+    return gql.query({
+      query: `query ($sn: String!,$userSns: [String!]){
+        unbindUsers(sn: $sn,userSns: $userSns){
+          sn
+				}
+      }`,
+      variables: {
+        sn: sn,
+        userSns: userSns
       }
     })
   },
@@ -599,7 +637,7 @@ const graphqlApi = {
       }
     })
 	},
-	
+
 	/**
    * 获取所有学段
    * @returns
@@ -633,17 +671,20 @@ const graphqlApi = {
 
   /**
    * 获取当前用户信息
-   * 
+   *
    * @returns
    */
   getUser: () => {
     return gql.query({
       query: `query{
         currentUser{
+          phone
           selectedKid{
             gender
             name
             sn
+            birthday
+            avatar
             stageRoot{
               name
               rootName
@@ -654,15 +695,23 @@ const graphqlApi = {
               rootName
               sn
             }
+            province{
+              name
             }
-          phone
+            district{
+              name
+            }
+            city{
+              name
+            }
+            }
         }
       }`
     })
   },
 
   /**
-   * 设置年级
+   * 设置小孩信息
    *
    * @param {*} params
    * @returns
@@ -673,9 +722,23 @@ const graphqlApi = {
         updateKid(input:$input){
           kid{
             name
+            gender
             sn
+            birthday
+            avatar
             stage{
               rootName
+              name
+              sn
+            }
+            province{
+              name
+            }
+            district{
+              name
+            }
+            city{
+              name
             }
           }
         }
@@ -754,7 +817,7 @@ const graphqlApi = {
               timeStamp
             }
           }
-         
+
         }
       }`,
       variables: {
@@ -781,7 +844,7 @@ const graphqlApi = {
 
   /**
    * 获取童音录制分类
-   * @param {String} 资源标示 
+   * @param {String} 资源标示
    */
   getRecordCategories: (key)=>{
     return gql.query({
@@ -854,8 +917,130 @@ const graphqlApi = {
       }
     })
   },
-	
 
+	getProvinces: () => {
+    return gql.query({
+      query: `query{
+        provinces{
+           name
+           zipCode
+        }
+      }`
+    })
+  },
+
+	getProvince: (zipCode) => {
+    return gql.query({
+      query: `query ($zipCode: String!){
+        province(zipCode:$zipCode){
+           name
+           zipCode
+           children{
+            name
+            zipCode
+           }
+        }
+      }`,
+      variables: {
+        zipCode: zipCode
+      }
+    })
+  },
+
+	getCity: (zipCode) => {
+    return gql.query({
+      query: `query ($zipCode: String!){
+        city(zipCode:$zipCode){
+           name
+           zipCode
+           children{
+            name
+            zipCode
+           }
+        }
+      }`,
+      variables: {
+        zipCode: zipCode
+      }
+    })
+	},
+
+	getProvince1: (zipCode) => {
+    return gql.query({
+      query: `query ($zipCode: String!){
+        province(zipCode:$zipCode){
+           name
+           zipCode
+           children{
+            name
+            zipCode
+           }
+        }
+      }`,
+      variables: {
+        zipCode: zipCode
+      }
+    })
+	},
+
+  //查询模板列表
+  searchTemplate:(type)=>{
+    return gql.query({
+      query: `query($key: String!) {
+        feature(key: $key) {
+          categories {
+            templates {
+              previewImage
+              name
+              imageUrl
+              sn
+              positionInfo {
+                width
+                areaHeight
+                areaWidth
+                areaX
+                areaY
+                height
+                width
+              }
+            }
+          }
+        }
+      }`,
+      variables: {
+        key: type
+      }
+    })
+  },
+
+  searchTemplateType:(sn)=>{
+    return gql.query({
+      query: `query($sn: String!) {
+        category(sn: $sn) {
+          name
+          sn
+          templates {
+            previewImage
+            name
+            imageUrl
+            sn
+            positionInfo {
+              width
+              areaHeight
+              areaWidth
+              areaX
+              areaY
+              height
+              width
+            }
+          }
+        }
+      }`,
+      variables: {
+        sn: sn
+      }
+    })
+  },
 }
 
 export default graphqlApi

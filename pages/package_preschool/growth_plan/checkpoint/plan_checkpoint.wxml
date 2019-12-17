@@ -1,0 +1,24 @@
+<!--pages/package_preschool/growth_plan/checkpoint/plan_checkpoint.wxml-->
+<nav-bar title="计划关卡"></nav-bar>
+<view class="checkpoint-bg">
+    <view class="{{index % 2 == 0 ? 'checkpoint-step-1' : 'checkpoint-step-2'}}" bindtap="toPrintDetail" wx:for="{{checkpoints}}" wx:key="{{index}}" id="{{index}}">
+        <image class="checkpoint-img-bg" src="{{checkpointBg}}"></image>
+        <view class="checkpoint-cont">
+            <image src="{{item.image}}"></image>
+            <text>{{item.title}}</text>
+        </view>
+        <view class="shadow-opcity-bg" wx:if="{{index == 0 ? isShadowOpcity : 'true'}}">
+            <view class="lock-icon"><image src="{{shadowOpcityImg}}"></image></view>
+        </view>
+    </view>
+</view>
+<!--<view class="footer" wx:if="{{isShowBottomBtn}}">-->
+<view class="footer" wx:if="{{!isMember && subScribe}}">
+    <image wx:if="{{!isMember && !subScribe}}" bindtap="toSubscribe" src="https://cdn-h.gongfudou.com/LearningBox/preschool/growth_plan_btn_subscribe.png"></image>
+    <image wx:if="{{isMember}}" bindtap="BuyMember" src="https://cdn-h.gongfudou.com/LearningBox/preschool/growth_plan_btn_buy.png"></image>
+
+</view>
+<!--<view class="auto-print" wx:if="{{isShowPrint}}" bindtap="setTimedPrint">-->
+<view class="auto-print" wx:if="{{!isMember || !subScribe}}" bindtap="setTimedPrint">
+    <image src="https://cdn-h.gongfudou.com/LearningBox/preschool/growth_plan_btn_print.png" />
+</view>

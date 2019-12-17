@@ -54,7 +54,7 @@
 </view>
 
 <!-- 文件选择 -->
-<check-doc fileType="doc" id="checkComponent" docNum="{{5 - files.length}}" bindchoosedDoc="choosedDoc"></check-doc>
+<check-doc fileType="doc" id="checkComponent" docNum="{{5 - files.length}}" bindbaidutap="baiduPrint" bindchoosedDoc="choosedDoc"></check-doc>
 
 <!-- 打印确认框 -->
 <confirm-print bindconfirm="print" modal="{{confirmModal}}"/>

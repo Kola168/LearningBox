@@ -720,7 +720,6 @@ Component({
                     y: result.y + svh,
                     image_width: value.imgOriginalInfo.width,
                     image_height: value.imgOriginalInfo.height,
-                    before_rotate: false,
                     rotate: rotate,
                     image_url: value.phtotSrc
                 }

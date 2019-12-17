@@ -1,8 +1,34 @@
 <!--pages/package_common/account/avatar_edit.wxml-->
-<nav-bar background="#fff" title="修改头像"></nav-bar>
- <view class="tip">
+<!-- <nav-bar background="#fff" title="修改头像"></nav-bar>
+
+
+ <view></view> -->
+
+ <nav-bar background="#fff" title="修改头像"></nav-bar>
+<!-- <view class="size">
+    <image src="/images/id/icon_edit.png" mode="widthFix"></image>
+    <text>请移动照片对准面部</text>
+</view> -->
+<view class="tip">
         <image src="/images/print_photo_edit_face.png" mode="widthFix" class="avatar"></image>
         <text>可手动放大缩小，移动位置</text>
  </view>
- <!-- 编辑区域 -->
- <view></view>
+<view hover-class="none" bindtouchstart="onTouch" bindtouchmove="onTouchMove" bindtouchend="onTouchEnd" bindtouchcancel="onTouchEnd" bindtap="showChange" class="editor-area" style="width:{{areaPosition.width}}px;height:{{areaPosition.height}}px;left:{{areaPosition.left}}px;top:{{areaPosition.top}}px;">
+    <!-- <image class="delete" src="/images/id/close_edit.png" mode="widthFix" wx:if="{{localImgPath}}" bindtap="deleteImg"></image> -->
+
+    <!-- <image class="area" mode="aspectFill" src="{{area.url}}" style="width:{{areaPosition.width}}px;height:{{areaPosition.height}}px;{{areaPosition.width==areaPosition.height?'margin-top:0':''}}">
+        <image class="btn-add" wx:if="{{!localImgPath}}" mode="widthFix" src="/images/id/id_add.png" ontap="changeImage"></image>
+    </image> -->
+    <view class="area-border" style="width:{{area.areaWidth*areaPosition.scale-4}}px;height:{{area.areaHeight*areaPosition.scale-4}}px;left:{{area.x*areaPosition.scale}}px;top:{{area.y*areaPosition.scale}}px;display:{{showAreaBorder ? 'block' : 'none'}}"></view>
+
+    <image animation="{{animationData}}" class="user-img" mode="widthFix" src="{{localImgPath}}" binderror="imageLoadError" bindload="initDesign" style="width:{{imgInfo.width}}px; height:{{imgInfo.height}}px;left:{{userImgPosition.x}}px;top:{{userImgPosition.y}}px;transform:scale3d({{realScale}},{{realScale}},1) rotate({{realRotate}}deg)"></image>
+</view>
+<form report-submit="true" bindsubmit="next" class="bottom-btn">
+    <button class="btn-print" formType="submit">下一步</button>
+</form>
+<take-photo-pop id="checkComponent" bindchooseImg="uploadImage" imgNum="{{9}}"></take-photo-pop>
+<import src="../../../lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />
+<!-- <view class="editor-bg" bindtap="hideChange">
+    <image mode="aspectFill" src="../../resources/images/gfd_id_edit_bg@2x.jpg"></image>
+</view> -->

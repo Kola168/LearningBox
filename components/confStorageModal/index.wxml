@@ -1,0 +1,27 @@
+<!--components/confStorageModal/index.wxml-->
+<view class="confirm-print-modal" wx:if="{{modalInfo.isShow}}" bindtap="hideModal" catchtouchmove>
+		<view class="print-modal-wrap" catchtap="tapModal">
+				<view class="print-modal-title">{{modalInfo.title}}</view>
+				<view class="print-modal-box">
+						<image src="{{modalInfo.image}}" mode="widthFix" wx:if="{{modalInfo.image}}" />
+						<view class="print-modal-box__text" wx:if="{{modalInfo.content}}">{{modalInfo.content}}</view>
+						<view class="print-modal-box__tip">
+								<view>不再提示</view>
+								<switch checked="{{hideConfirmPrintBox}}" color="#FFDC5E" catchchange="handleConfirmPrintBox" />
+						</view>
+				</view>
+				<view class="print-modal-button">
+						<block wx:if="{{modalInfo.hasCancel}}">
+								<view class="print-modal-button__cancel" data-modal="cancel" catchtap="clickCancel">
+										{{modalInfo.cancelText||'取消'}}
+								</view>
+								<view data-modal="confirm" catchtap="clickConfirm">{{modalInfo.confirmText||'开始打印'}}</view>
+						</block>
+						<block wx:else>
+								<view class="print-modal-button__confirm" data-modal="confirm" catchtap="clickConfirm">
+										{{modalInfo.confirmText||'开始打印'}}
+								</view>
+						</block>
+				</view>
+		</view>
+</view>
