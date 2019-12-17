@@ -68,23 +68,27 @@ Page({
         title: '请稍后'
       })
       var params = {
-        resourceInfo: {
-          resourceSign: _this.data.sn,
-          title: _this.data.courseInfo.name,
-        },
-        type: 'course',
+        sn: _this.data.sn,
+        type: "course",
       }
-      var resp = yield graphql.createOrder(params)
-      var payInfo = yield wxPay.invokeWxPay({
-        paymentSn: resp.createPayment.payment.sn,
-        usePoints: _this.data.usePoints,
-      })
-      if (payInfo.action === "cancel") {
-        return wx.showToast({
-          title: '取消支付',
-          icon: 'none',
+      var payment =  yield graphql.getPaymentCheck(params)
+      var isFree = payment.paymentCheck && payment.paymentCheck.free
+
+      console.log(payment, '====isFree===')
+      if (isFree) {
+
+        yield graphql.createResource(params)
+      } else {
+        var payOrder = yield graphql.createPaymentOrder(params)
+        var resp = yield graphql.createPayment({
+          paymentSn: payOrder.createPaymentOrder.paymentOrder.sn,
+          paymentMethod: "wechat_miniapp"
         })
+
+        var payParams = resp.payParams
+        console.log(payParams,'==payParams==')
       }
+   
       _this.paySuccess()
 
     } catch (e) {
@@ -108,6 +112,7 @@ Page({
     }
     _this.nextTick(wx.showToast.bind(wx, obj)).then(() => {
       router.redirectTo('/pages/package_course/pay_success/pay_success', {
+        tag: 'course',
         sn: _this.data.sn
       })
     })

@@ -12,7 +12,6 @@ import graphql from '../../../../network/graphql_request'
 
 const request = util.promisify(wx.request)
 const showModal = util.promisify(wx.showModal)
-const requestPayment = util.promisify(wx.requestPayment)
 import commonRequest from '../../../../utils/common_request.js'
 const event = require('../../../../lib/event/event')
 import storage from '../../../../utils/storage'
@@ -25,17 +24,15 @@ Page({
 		circular: true,
 		showGetModal: false, //耗材推荐弹窗
 		supply_types: '',
-		consumablesIcon: false, //耗材推荐图标
 		from: '',
 		showSetting: false, //显示打印设置
 		documentPrintNum: 1, //打印份数
 		startPrintPage: 1,
 		endPrintPage: 1,
-		colorcheck: 'Color', //默认彩色
-		duplexcheck: false,
+		colorCheck: 'Color', //默认彩色
+		duplexCheck: false,
 		isColorPrinter: true,
 		isDuplex: true,
-		as_type: 'common', //试卷类型
 		unionId: '',
 		userAuthorize: false,
 		hasAuthPhoneNum: false,
@@ -52,7 +49,7 @@ Page({
 	},
 	onLoad: co.wrap(function* (options) {
 		var systemInfo = wx.getSystemInfoSync()
-
+		this.longToast = new app.weToast()
 		this.setData({
 			title: decodeURIComponent(options.title),
 			type: options.type ? options.type : '',
@@ -66,62 +63,60 @@ Page({
 		this.title = decodeURIComponent(options.title)
 		this.share_user_id = options.user_id
 		this.type_id = options.type_id //父级id
-		this.way = 1 //默认自然用户
-		if (this.share_user_id) {
-			this.way = 5
-		}
+
+
+		// this.way = 1 //默认自然用户
+		// if (this.share_user_id) {
+		// 	this.way = 5
+		// }
 	
 		wx.setNavigationBarTitle({
 			title: this.title
 		})
-		this.longToast = new app.WeToast()
+		this.longToast = new app.weToast()
 		let unionId = storage.get('unionId')
 		if (unionId) {
-      yield this.updateDetail()
+      yield this.getRecordSource()
 		}
 
 		//授权成功后回调
 		event.on('Authorize', this, function (data) {
-			this.updateDetail()
+			this.getRecordSource()
 		})
 
-		let resource_category_sn = this.sn
-		this.setData({
-			mediumRecommend: resource_category_sn
-    })
-    
+	}),	
+	getRecordSource: co.wrap(function*(){
+		this.longToast.toast({
+      type: 'loading',
+      title: '请稍候'
+		})
+		
+		try {
+			var resp = yield graphql.getRecordSource(this.sn)
 
-
-		// let getSupplyBeforeFind = commonRequest.getSupplyBeforeFindSn(resource_category_sn)
-		// let that = this
-		// getSupplyBeforeFind.then(function (res) {
-		// 	const supply_types = res.supply_types
-		// 	console.log(supply_types)
-		// 	that.setData({
-		// 		supply_types: supply_types
-		// 	})
-		// })
-
+			this.setData({
+				content: resp.content
+			})
+			this.longToast.hide()
+		} catch(err) {
+			this.longToast.hide()
+			util.showError(err)
+		}
 	}),
 
-	updateDetail: co.wrap(function* () {
-		this.longToast.toast({
-			type: 'loading',
-			title: '请稍候'
-		})
-		this.getUserId()
-		this.member()
-		if (!app.activeDevice) {
-			yield this.getDevice()
-    }
-    
-    yield this.getDetail()
+	// updateDetail: co.wrap(function* () {
+	// 	this.longToast.toast({
+	// 		type: 'loading',
+	// 		title: '请稍候'
+	// 	})
 
-		if (app.activeDevice) {
-			yield this.getCapability()
-		}
-		this.longToast.toast()
-  }),
+    
+
+	// 	// if (app.activeDevice) {
+	// 	// 	yield this.getCapability()
+	// 	// }
+	// 	this.longToast.toast()
+  // }),
 
 	onShow: co.wrap(function*() {
 		let hasAuthPhoneNum = Boolean(storage.get('hasAuthPhoneNum'))
@@ -136,62 +131,8 @@ Page({
       userAuthorize: true
     })
   }),
-
-	onShareAppMessage: co.wrap(function* (res) {
-		res = res[0]
-		if (res.from === 'button') {
-			this.longToast.toast({
-				img: '/images/loading.gif',
-				title: '请稍候',
-				duration: 0
-			})
-			// try {
-			// 	const resp = yield api.shareResource(app.openId)
-			// 	if (resp.code != 0) {
-			// 		throw (resp)
-			// 	}
-			// 	this.longToast.toast()
-			// } catch (e) {
-			// 	util.hideToast(this.longToast)
-			// 	util.showErr(e)
-			// }
-
-			return {
-				title: this.title,
-				path: `/pages/library/play_preview?id=${this.id}&sn=${this.sn}&user_id=${this.user_id}&title=${this.title}&type_id=${this.type_id}&as_type=${this.data.as_type}&type=${this.data.type}`
-			}
-		} else {
-			return app.share
-		}
-
-  }),
   
-	getDevice: co.wrap(function* () {
-		try {
-			const resp = yield request({
-				url: app.apiServer + `/boxapi/v2/printers`,
-				method: 'GET',
-				dataType: 'json',
-				data: {
-					'openid': app.openId
-				}
-			})
-			console.log('查询绑定的**打印机列表', resp)
-
-			if (resp.data.code != 0) {
-				throw (resp.data)
-			}
-			if (resp.data.res.selected_printer) {
-				app.activeDevice = resp.data.res.selected_printer
-			}
-
-		} catch (e) {
-			this.longToast.hide()
-			util.showError(e)
-		}
-  }),
-  
-	tab_slide: function ({detail: {current}}) {
+	tabSlide: function ({detail: {current}}) {
 		this.setData({
 			num: current
 		})
@@ -219,77 +160,63 @@ Page({
 		})
   }),
   
-	loopGetOpenId: co.wrap(function* () {
-		let loopCount = 0
-		let _this = this
-		if (app.openId) {
-			console.log('openId++++++++++++----', app.openId)
-			this.longToast.toast({
-				img: '../../images/loading.gif',
-				title: '请稍候',
-				duration: 0
-			})
-			yield this.getUserId()
-			yield this.member()
+	// loopGetOpenId: co.wrap(function* () {
+	// 	let loopCount = 0
+	// 	let _this = this
+	// 	if (app.openId) {
+	// 		console.log('openId++++++++++++----', app.openId)
+	// 		this.longToast.toast({
+	// 			img: '../../images/loading.gif',
+	// 			title: '请稍候',
+	// 			duration: 0
+	// 		})
+	// 		yield this.getUserId()
 		
-			console.log(this.data.type)
-      yield this.getDetail()
+	// 		console.log(this.data.type)
+  //     yield this.getDetail()
 
-			if (app.activeDevice) {
-				yield this.getCapability()
-			}
+	// 		if (app.activeDevice) {
+	// 			yield this.getCapability()
+	// 		}
 
-			return
-		} else {
-			setTimeout(function () {
-				loopCount++
-				if (loopCount <= 100) {
-					console.log('openId not found loop getting...')
-					_this.loopGetOpenId()
-				} else {
-					console.log('loop too long, stop')
-				}
-			}, 2000)
-		}
-  }),
+	// 		return
+	// 	} else {
+	// 		setTimeout(function () {
+	// 			loopCount++
+	// 			if (loopCount <= 100) {
+	// 				console.log('openId not found loop getting...')
+	// 				_this.loopGetOpenId()
+	// 			} else {
+	// 				console.log('loop too long, stop')
+	// 			}
+	// 		}, 2000)
+	// 	}
+  // }),
 
-	getUnion: co.wrap(function* () {
-		try {
-			var unionId = storage.get('unionId') || ''
-			this.setData({
-				unionId
-			})
-		} catch (e) {
-			util.showErr({
-				message: '请重新打开小程序'
-			})
-		}
-	}),
+	// getDetail: co.wrap(function* () {
+	// 	this.longToast.toast({
+	// 		type: 'loading',
+	// 		title: '请稍候'
+	// 	})
+	// 	try {
+	// 		const resp = yield graphql.getContentDetail(this.sn, this.id)
+	// 		resp.resource.preview_urls = JSON.parse(resp.resource.preview_urls)
 
-	getDetail: co.wrap(function* () {
-		this.longToast.toast({
-			type: 'loading',
-			title: '请稍候'
-		})
-		try {
-			const resp = yield graphql.getContentDetail(this.sn, this.id)
-			resp.resource.preview_urls = JSON.parse(resp.resource.preview_urls)
+	// 		this.setData({
+	// 			detail: resp.resource,
+	// 			media_type: resp.resource.media_type,
+	// 			discountType: resp.resource.discount.discountType,
+	// 			discount: resp.resource.discount,
+	// 			collection: resp.resource && resp.resource.is_collected || false,
+	// 			endPrintPage: resp.resource.preview_urls.length
+	// 		})
 
-			this.setData({
-				detail: resp.resource,
-				media_type: resp.resource.media_type,
-				discountType: resp.resource.discount.discountType,
-				discount: resp.resource.discount,
-				collection: resp.resource && resp.resource.is_collected || false,
-				endPrintPage: resp.resource.preview_urls.length
-			})
-
-			this.longToast.toast()
-		} catch (e) {
-			this.longToast.toast()
-			util.showError(e)
-		}
-  }),
+	// 		this.longToast.toast()
+	// 	} catch (e) {
+	// 		this.longToast.toast()
+	// 		util.showError(e)
+	// 	}
+  // }),
 
 	collect: co.wrap(function* () {
     var auth = yield this.authCheck()
@@ -339,121 +266,11 @@ Page({
     var unionId = storage.get('unionId')
 		if (!unionId) {
 			let url = `/pages/authorize/index`
-			router.navigateTo(url,  this.share_user_id ? {
-        url,
-        share_user_id: this.share_user_id,
-        way: this.way
-      } : '')
+			router.navigateTo(url)
       return false
     }
     return true
   }),
-
-	toPay: co.wrap(function* () {
-    var auth = yield this.authCheck()
-    if (!auth) {
-      return
-    }
-		if (!app.activeDevice) {
-			return util.showError({
-        message: '您还未绑定打印机，快去绑定吧'
-      })
-    }
-    
-		let brand
-		this.longToast.toast({
-			type: 'loading',
-			title: '请稍候'
-		})
-		let params = {
-			sn: this.sn,
-			resource_sign: this.id,
-			title: this.title
-		}
-		try {
-			const resp = yield request({
-				url: app.apiServer + `/boxapi/v2/resources/prepay`,
-				header: {
-					'G-Auth': app.gAuthAppKey
-				},
-				method: 'POST',
-				dataType: 'json',
-				data: params
-			})
-			if (resp.data.code == 0) {
-				if (!resp.data.res.free_to_print) {
-					brand = resp.data.res
-				}
-			} else {
-				this.longToast.hide()
-				const res = yield showModal({
-					title: '提示',
-					content: resp.data.message,
-					showCancel: false,
-					confirmColor: '#fae100',
-				})
-				res.confirm && router.navigateBack()
-			}
-		} catch (e) {
-			this.longToast.hide()
-			yield showModal({
-				title: '网络异常',
-				content: '请检查您的手机网络后重试',
-				showCancel: false,
-				confirmColor: '#fae100'
-			})
-			return
-		}
-		this.longToast.hide()
-		if (this.data.detail.can_free_print && brand) {
-			this.setData({
-				'detail.can_free_print': false
-			})
-			yield showModal({
-				title: '温馨提示',
-				content: '该设备今日免费打印次数已用完',
-				confirmColor: '#2086ee',
-				confirmText: "确认",
-				showCancel: false
-			})
-		}
-
-		if (brand) {
-			const payment = yield requestPayment({
-				timeStamp: brand.timeStamp,
-				nonceStr: brand.nonceStr,
-				package: brand.package,
-				signType: brand.signType,
-				paySign: brand.paySign
-			})
-			console.log('支付信息=========', payment)
-		}
-		this.setData({
-			'detail.is_valid': true
-		})
-		this.toConfirm()
-  }),
-  
-	toPayContent: function () {
-		if (!(this.data.isAndroid || (!this.data.isAndroid && this.data.discountType == 'free' && this.data.isMember))) {
-			return this.setData({
-				showIosTip: true
-			})
-		}
-		let params = {
-			isColorPrinter: this.data.isColorPrinter,
-			isDuplex: this.data.isDuplex,
-			id: this.id,
-			sn: this.sn,
-			title: this.title,
-			isMember: this.data.isMember,
-			type: this.data.type,
-			memberExpiresAt: this.data.memberExpiresAt
-		}
-		wx.navigateTo({
-			url: `content_pay?params=${JSON.stringify(params)}`
-		})
-	},
 
 	closeIosTip: function () {
 		this.setData({
@@ -476,25 +293,22 @@ Page({
 
 			let _this = this
 			let setting = {}
-			setting.duplex = _this.data.duplexcheck
-			setting.color = _this.data.colorcheck
-			setting.number = _this.data.documentPrintNum
-      setting.start_page = _this.data.startPrintPage
-      setting.end_page = _this.data.endPrintPage
+			setting.duplex = _this.data.duplexCheck
+			setting.grayscale = _this.data.colorCheck == 'Color' ? false : true
+			setting.copies = _this.data.documentPrintNum
+      setting.startPage = _this.data.startPrintPage
+      setting.endPage = _this.data.endPrintPage
 
 	
-			// if (that.data.type != '_learning') {
-			// 	params.is_vip = true
-      // }
-      const resp = yield commonRequest.printOrders({
-        media_type: this.data.media_type,
-				resourceable: {
-          type: 'ec_content',
-          sn: _this.id,
-          category_sn: _this.sn
-        },
-				setting: setting,
-      })
+      // const resp = yield commonRequest.createOrder({
+      //   media_type: this.data.media_type,
+			// 	resourceable: {
+      //     type: 'ec_content',
+      //     sn: _this.id,
+      //     category_sn: _this.sn
+      //   },
+			// 	setting: setting,
+      // })
 	
 			if (resp.code == 0) {
 				this.longToast.hide()
@@ -523,6 +337,10 @@ Page({
 			util.showError(e)
 		}
 	}),
+
+	toEditAvatar: function() {
+		router.navigateTo('pages/package_common/account/name_edit')
+	},
 
 	//获取打印能力
 	getCapability: co.wrap(function* () {
@@ -626,15 +444,15 @@ Page({
 	//选择颜色
 	colorCheck(e) {
 		this.setData({
-			colorcheck: e.currentTarget.dataset.style
+			colorCheck: e.currentTarget.dataset.style
 		})
 	},
 
 	//选择单双面打印模式
 	duplexCheck(e) {
-		let duplexcheck = e.currentTarget.dataset.style == '0' ? false : true
+		let duplexCheck = e.currentTarget.dataset.style == '0' ? false : true
 		this.setData({
-			duplexcheck: duplexcheck
+			duplexCheck: duplexCheck
 		})
 	},
 
@@ -687,7 +505,36 @@ Page({
 		this.setData({
 			showSetting: false
 		})
-  },
+	},
+	
+	onShareAppMessage: co.wrap(function* (res) {
+		res = res[0]
+		if (res.from === 'button') {
+			this.longToast.toast({
+				img: '/images/loading.gif',
+				title: '请稍候',
+				duration: 0
+			})
+			// try {
+			// 	const resp = yield api.shareResource(app.openId)
+			// 	if (resp.code != 0) {
+			// 		throw (resp)
+			// 	}
+			// 	this.longToast.toast()
+			// } catch (e) {
+			// 	util.hideToast(this.longToast)
+			// 	util.showErr(e)
+			// }
+
+			return {
+				title: this.title,
+				path: `/pages/library/play_preview?id=${this.id}&sn=${this.sn}&user_id=${this.user_id}&title=${this.title}&type_id=${this.type_id}&as_type=${this.data.as_type}&type=${this.data.type}`
+			}
+		} else {
+			return app.share
+		}
+
+  }),
   
 	onUnload: function () {
 		event.remove('Authorize', this)

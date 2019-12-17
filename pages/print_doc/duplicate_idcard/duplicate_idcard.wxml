@@ -77,7 +77,7 @@
 
 
  <!-- 选择图片 -->
-<check-img id="checkComponent" bindchooseImg="chooseImg" ></check-img>
+<check-img id="checkComponent" bindchooseImg="chooseImg" imgNum="1" bindbaidutap="chooseBaiduImg"></check-img>
 <view class="choosePhoto" wx:if="{{popWindow}}">
 	<view class="choosePhoto-container" catchtap="closePopWindow">
 		<view class="choosePhoto-content">

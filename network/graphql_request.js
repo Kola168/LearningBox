@@ -27,7 +27,7 @@ let gql = GraphQL({
   },
   //全局错误拦截
   errorHandler: function(res) {
-		//如果auth	
+		//如果auth
 		if(1){
 
 			}
@@ -185,6 +185,46 @@ const graphqlApi = {
       }`,
       variables: {
         sn: sn
+      }
+    })
+  },
+
+  /**
+   * 获取打印机分享用户
+   * @param { String } sn required 设备编号
+   */
+  getDeviceShareUsers: (sn) => {
+    return gql.query({
+      query: `query ($sn: String!){
+        device(sn: $sn){
+          sharers{
+            avatar,
+            name,
+            sn
+          }
+				}
+      }`,
+      variables: {
+        sn: sn
+      }
+    })
+  },
+
+  /**
+   * 打印机停止分享用户
+   * @param { String } sn required 设备编号
+   * @param { Array } userSns 停止分享用户的sn
+   */
+  stopShareDeviceUsers: (sn, userSns) => {
+    return gql.query({
+      query: `query ($sn: String!,$userSns: [String!]){
+        unbindUsers(sn: $sn,userSns: $userSns){
+          sn
+				}
+      }`,
+      variables: {
+        sn: sn,
+        userSns: userSns
       }
     })
   },
@@ -367,6 +407,7 @@ const graphqlApi = {
             courseLessons{
               courseName
               locked
+              sn
               name
               shareToTrial
             }
@@ -436,17 +477,16 @@ const graphqlApi = {
   // 获取最后一次学些的信息
   getLastCourseInfo: () => {
     return gql.query({
-      query: `query getLastCourseInfo(){
-        lastCourse{
-          finished
-          name
-          sn
-          total
+      query: `query {
+        currentUser{
+          lastCourse{
+            finished
+            name
+            sn
+            total
+          }
         }
-      }`,
-      variables: {
-        sn: sn
-      }
+      }`
     })
   },
 
@@ -543,6 +583,11 @@ const graphqlApi = {
       query: `query getCourseLesson($sn: String!){
         courseLesson(sn: $sn) {
           courseName
+          featureKey
+          contents{
+            id
+            nameUrl
+          }
           name
           shareToTrial
           videoUrl
@@ -564,6 +609,7 @@ const graphqlApi = {
             name
             sn
           }
+
         }
       }`,
       variables: {
@@ -593,7 +639,7 @@ const graphqlApi = {
       }
     })
 	},
-	
+
 	/**
    * 获取所有学段
    * @returns
@@ -627,17 +673,20 @@ const graphqlApi = {
 
   /**
    * 获取当前用户信息
-   * 
+   *
    * @returns
    */
   getUser: () => {
     return gql.query({
       query: `query{
         currentUser{
+          phone
           selectedKid{
             gender
             name
             sn
+            birthday
+            avatar
             stageRoot{
               name
               rootName
@@ -648,15 +697,23 @@ const graphqlApi = {
               rootName
               sn
             }
+            province{
+              name
             }
-          phone
+            district{
+              name
+            }
+            city{
+              name
+            }
+            }
         }
       }`
     })
   },
 
   /**
-   * 设置年级
+   * 设置小孩信息
    *
    * @param {*} params
    * @returns
@@ -667,9 +724,23 @@ const graphqlApi = {
         updateKid(input:$input){
           kid{
             name
+            gender
             sn
+            birthday
+            avatar
             stage{
               rootName
+              name
+              sn
+            }
+            province{
+              name
+            }
+            district{
+              name
+            }
+            city{
+              name
             }
           }
         }
@@ -678,9 +749,247 @@ const graphqlApi = {
         input: params
       }
     })
-  }
-	
+  },
 
+  /**
+   * 获取商品是否免费
+   */
+  getPaymentCheck: (pms) => {
+    return gql.query({
+      query: `query getPaymentCheck($sn: String!, $type: PayableItemTypeEnum!){
+        paymentCheck(sn: $sn,type: $type){
+          free
+        }
+      }`,
+      variables: {
+        sn: pms.sn,
+        type: pms.type
+      }
+    })
+  },
+
+  /**
+   * 创建资源
+   */
+  createResource: (pms) => {
+    return gql.mutate({
+      mutation: `mutation createResource($input: CreateResourceInput!){
+        createResource(input:$input){
+          state
+        }
+      }`,
+      variables: {
+        input: pms
+      }
+    })
+  },
+
+  /**
+   * 创建支付订单
+   */
+  createPaymentOrder: (pms) => {
+    return gql.mutate({
+      mutation: `mutation createPaymentOrder($input: CreatePaymentOrderInput!){
+        createPaymentOrder(input: $input){
+          paymentOrder{
+            sn
+            state
+          }
+        }
+      }`,
+      variables: {
+        input: pms
+      }
+    })
+  },
+
+    /**
+   * 获取支付信息
+   */
+  createPayment: (pms) => {
+    return gql.mutate({
+      mutation: `mutation createPayment($input: CreatePaymentInput!){
+        createPayment(input: $input){
+          payParams{
+            ...on WxpayParams{
+              nonceStr
+              package
+              paySign
+              signType
+              timeStamp
+            }
+          }
+         
+        }
+      }`,
+      variables: {
+        input: pms
+      }
+    })
+  },
+
+  /**
+   * 创建资源订单
+   */
+  createResourceOrder: (pms)=> {
+    return gql.mutate({
+      mutation: `mutation createResourceOrder($input: CreateResourceOrderInput!) {
+        createResourceOrder(input: $input){
+          state
+        }
+      }`,
+      variables: {
+        input: pms
+      }
+    })
+  },
+
+  /**
+   * 获取童音录制分类
+   * @param {String} 资源标示 
+   */
+  getRecordCategories: (key)=>{
+    return gql.query({
+      query: `query ($key: String!){
+        feature(key: $key){
+          categories {
+            image
+            name
+            sn
+          }
+          contents{
+            title
+            icon
+            sn
+            pageCount
+          }
+        }
+      }`,
+      variables: {
+        key: key
+      }
+    })
+  },
+
+  /**
+   * 获取童音录制资源列表
+   * @param {String} 内容分类sn
+   */
+  getRecordList: (sn)=> {
+    return gql.query({
+      query: `query getRecordList($sn: String!){
+        category(sn: $sn){
+          contents{
+            title
+            icon
+            sn
+            pageCount
+          }
+        }
+      }`,
+      variables: {
+        sn: sn
+      }
+    })
+  },
+
+  /**
+   * 获取录音资源详情
+   */
+  getRecordSource: (sn)=> {
+    return gql.query({
+      query: `query getRecordSource($sn: String!){
+        content(sn: $sn){
+          title
+          icon
+          sn
+          contentImage
+          audio
+          userAudio{
+            audioUrl
+            qrCodeUrl
+          }
+          pageCount
+        }
+      }`,
+      variables: {
+        sn: sn
+      }
+    })
+  },
+  // createAudio: () => {
+  //   return gql.mutate({
+  //     mutation: `mutation createAudio($input: CreateAudioInput!) {
+
+  //     }`
+  //   })
+  // },
+
+	
+	getProvinces: () => {
+    return gql.query({
+      query: `query{
+        provinces{
+           name
+           zipCode
+        }   
+      }`
+    })
+  },
+	
+	getProvince: (zipCode) => {
+    return gql.query({
+      query: `query ($zipCode: String!){
+        province(zipCode:$zipCode){
+           name
+           zipCode
+           children{
+            name
+            zipCode
+           }
+        }
+      }`,
+      variables: {
+        zipCode: zipCode
+      }
+    })
+  },
+	
+	getCity: (zipCode) => {
+    return gql.query({
+      query: `query ($zipCode: String!){
+        city(zipCode:$zipCode){
+           name
+           zipCode
+           children{
+            name
+            zipCode
+           }
+        }
+      }`,
+      variables: {
+        zipCode: zipCode
+      }
+    })
+	},
+	
+	getProvince1: (zipCode) => {
+    return gql.query({
+      query: `query ($zipCode: String!){
+        province(zipCode:$zipCode){
+           name
+           zipCode
+           children{
+            name
+            zipCode
+           }
+        }
+      }`,
+      variables: {
+        zipCode: zipCode
+      }
+    })
+  },
 }
 
 export default graphqlApi

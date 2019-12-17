@@ -44,7 +44,6 @@ Page({
   },
 
   onLoad: co.wrap(function* (options) {
-
     this.longToast = new app.weToast();
     this.initPage(options)
     this.setData({
@@ -75,7 +74,7 @@ Page({
       }
     }
   },
-
+  
   // /初始化图片上传/
   initImg() {
     try {

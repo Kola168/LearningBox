@@ -80,10 +80,6 @@ Page({
         })
       }
     }
-    // 监听百度网盘
-    event.on('chooseBaiduFileDone', this, (baiduFile) => {
-      this.showImage(baiduFile[0].url)
-    })
   }),
   onShow: function() {
     let hasAuthPhoneNum = Boolean(storage.get('hasAuthPhoneNum'))
@@ -91,6 +87,11 @@ Page({
     this.setData({
       hasAuthPhoneNum: app.hasPhoneNum || hasAuthPhoneNum
     })
+  },
+
+  chooseBaidu(res){
+    let url = res.detail[0].url
+    this.showImage(url)
   },
 
   // 绘制引导蒙版

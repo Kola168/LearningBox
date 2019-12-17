@@ -5,7 +5,6 @@ import { regeneratorRuntime, co, util } from '../../../utils/common_import'
 const event = require('../../../lib/event/event')
 const showModal = util.promisify(wx.showModal)
 import graphql from '../../../network/graphql_request'
-import wxPay from '../../../utils/wxPay'
 import storage from '../../../utils/storage'
 import router from '../../../utils/nav.js'
 import Logger from '../../../utils/logger.js'
@@ -31,6 +30,7 @@ Page({
   },
 
   onLoad: co.wrap(function*(query) {
+   try {
     this.shareSn = ''
     this.unionId = storage.get('unionId')
     this.longToast = new app.weToast()
@@ -40,14 +40,15 @@ Page({
     this.isShareSuccess = query.isShareSuccess ? Boolean(query.isShareSuccess) : false
     this.sn = query.sn
     let systemInfo = wx.getSystemInfoSync()
+    console.log(systemInfo.windowHeight - 50,'==systemInfo.windowHeight - 50=')
     let screenWidth = systemInfo.screenWidth
     this.swiperHeight = screenWidth * 8 / 15
     let isAndroid = systemInfo.system.toLocaleLowerCase().indexOf('android') > -1
     let hiddenShareTip = storage.get('hiddenShareTip')
     this.setData({
-      navBarTop: app.navBarInfo.navBarHeight,
-      hiddenShareTip: !!hiddenShareTip,
       viewHeight: systemInfo.windowHeight - 50,
+      navBarTop: app.navBarInfo && app.navBarInfo.topBarHeight,
+      hiddenShareTip: !!hiddenShareTip,
       unionId: this.unionId,
       isAndroid: isAndroid
     })
@@ -55,6 +56,9 @@ Page({
     event.on('Authorize', this, () => {
       this.unionId = storage.get('unionId')
     })
+   } catch(err) {
+     logger.info(err)
+   }
   }),
 
   onShow: co.wrap(function*() {
@@ -63,13 +67,12 @@ Page({
 
   // 课程分享，用户打开无unionId，跳转授权
   authCheck: co.wrap(function*() {
-    // if (!this.unionId) {
-    //   router.navigateTo('/pages/authorize/index')
-    //   return false
-    // } else {
-    //   return true
-    // }
-    return true
+    if (!this.unionId) {
+      router.navigateTo('/pages/authorize/index')
+      return false
+    } else {
+      return true
+    }
   }),
 
   displayTab(isPayed) {
@@ -134,9 +137,10 @@ Page({
   }),
 
   chapterClick(e) {
+    console.log(e)
     let isLock = Boolean(Number(e.currentTarget.dataset.lock)),
       shareable = Boolean(e.currentTarget.dataset.shareable),
-      sn = e.currentTarget.id
+      sn = e.currentTarget.dataset.sn
     if (isLock) {
       let tipText = ''
       if (shareable) {
@@ -175,14 +179,18 @@ Page({
   toBuy: co.wrap(function*() {
     let isAuth = yield this.authCheck()
     if (isAuth) {
-      let payPrice = Number(this.data.course.display_price),
-        isAndroid = this.data.isAndroid
+      let isAndroid = this.data.isAndroid
       if (isAndroid) {
         router.navigateTo('/pages/package_course/pay_order/pay_order', {
           sn: this.sn
         })
       } else {
-        if (payPrice > 0) {
+        var resp = yield graphql.getPaymentCheck({
+          sn: this.sn,
+          type: "course"
+        })
+        var isFree = resp.paymentCheck && resp.paymentCheck.isFree
+        if (!isFree) {
           yield showModal({
             title: '重要提示',
             content: '根据相关规定，iOS手机暂不可学习该课程，请使用安卓手机学习，另外您可试学本课程。',
@@ -207,16 +215,10 @@ Page({
     })
     try {
       let params = {
-        resourceInfo: {
-          resourceSign: this.sn,
-          title: this.data.course.name,
-        },
+        sn: this.sn,
         type: 'course',
       }
-      let resp = yield graphql.createOrder(params)
-      yield wxPay.invokeWxPay({
-        paymentSn: resp.createPayment.payment.sn
-      })
+      let resp = yield graphql.createResource(params)
       this.longToast.hide()
       wx.showToast({
         title: `加入学习成功`,
@@ -322,17 +324,14 @@ Page({
         course.courseChapters[i].unfoldChapter = unfoldChapter
         course.courseChapters[i].unfoldChapterAll = false
       }
-      course.display_price = (course.priceYuan / 100).toFixed(2)
 
       this.setData({
+        title: course.name,
         course: course,
         isCollected: course.courseCollected,
         canShare: course.userCanShareToTrial,
-        supplyTypes: [...resp.consumables, ...resp.consumables],
+        supplyTypes: [...resp.consumables],
         loadReady: true
-      })
-      this.setData({
-        title: course.name
       })
       this.shareSn = course.shareSn
       this.showCodeCourseModal(course.code)

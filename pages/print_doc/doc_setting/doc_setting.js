@@ -22,7 +22,7 @@ Page({
     endMaxPage: 1, //最大页数
     totalPage: 1,
     showSelect: false,
-    medium: 'a4',
+    // medium: 'a4',
     defaultMedium: 'A4打印纸',
     optionsMedium: 'A5打印纸',
     fileIndex: 0,
@@ -32,7 +32,7 @@ Page({
     isDuplex: true,
     startPage: 1,
     endPage: 1,
-    zoomType: 1,
+    singlePageLayoutsCount: 1,
     showConfirm: false,
     checkOpen: false,
     extract: 'all',
@@ -63,19 +63,20 @@ Page({
         fileIndex: query.fileIndex,
         colorModes: query.colorModes,
         media_sizes: query.media_sizes,
-        duplexCheck: query.duplexcheck,
+        duplexCheck: query.duplexCheck,
         previewUrl: query.url,
         endMaxPage: query.page_count,
         totalPage: query.page_count,
       }
       if (query.isSetting) {
-        tempData.startPrintPage = query.start_page
-        tempData.endPrintPage = query.end_page
-        tempData.startPage = query.start_page
-        tempData.endPage = query.end_page
-        tempData.zoomType = query.display
-        tempData.documentPrintNum = query.number
-        tempData.checkOpen = !query.skip_gs
+        tempData.startPrintPage = query.startPage
+        tempData.colorCheck = query.colorCheck
+        tempData.endPrintPage = query.endPage
+        tempData.startPage = query.startPage
+        tempData.endPage = query.endPage
+        tempData.singlePageLayoutsCount = query.singlePageLayoutsCount
+        tempData.documentPrintNum = query.copies
+        tempData.checkOpen = !query.skipGs
         tempData.extract = query.extract
         if (query.extract !== 'all') {
           tempData.startPrintPage = 1
@@ -213,7 +214,7 @@ Page({
    * @param {Object} e 
    */
   endPageJudge(e) {
-    let endMaxPage = Math.ceil(this.data.endMaxPage / this.data.zoomType),
+    let endMaxPage = Math.ceil(this.data.endMaxPage / this.data.singlePageLayoutsCount),
       tempValue = parseInt(e.detail.value)
     if (tempValue < parseInt(this.data.startPrintPage) || tempValue > endMaxPage) {
       this.setData({
@@ -287,20 +288,20 @@ Page({
     }
 
     let postData = {
-      color: this.data.colorCheck,
+      grayscale: this.data.colorCheck == 'Color' ? false : true,
       duplex: this.data.duplexCheck,
-      number: this.data.documentPrintNum,
-      medium: this.data.medium,
+      copies: this.data.documentPrintNum,
+      // medium: this.data.medium,
       fileIndex: this.data.fileIndex,
-      display: this.data.zoomType,
-      skip_gs: !this.data.checkOpen,
+      singlePageLayoutsCount: this.data.singlePageLayoutsCount,
+      skipGs: !this.data.checkOpen,
       extract: this.data.extract,
-      start_page: this.data.startPage,
-      end_page: this.data.endPage
+      startPage: this.data.startPage,
+      endPage: this.data.endPage
     }
     if (this.data.extract !== 'all') {
-      postData.start_page = 0
-      postData.end_page = 0
+      postData.startPage = 0
+      postData.endPage = 0
     }
     event.emit('setPreData', postData)
     router.navigateBack()
@@ -311,10 +312,10 @@ Page({
    * @param {Object} e 
    */
   chooseZoomType(e) {
-    let zoomType = Number(e.currentTarget.id)
-    let endPage = Math.ceil(this.data.endMaxPage / zoomType)
+    let singlePageLayoutsCount = Number(e.currentTarget.id)
+    let endPage = Math.ceil(this.data.endMaxPage / singlePageLayoutsCount)
     this.setData({
-      zoomType: zoomType,
+      singlePageLayoutsCount: singlePageLayoutsCount,
       endPrintPage: endPage,
       endPage: endPage,
       totalPage: endPage
@@ -323,7 +324,7 @@ Page({
 
   preview: co.wrap(function*() {
     let url = this.data.previewUrl
-    let  display = this.data.zoomType
+    let  display = this.data.singlePageLayoutsCount
     let skip_gs = !this.data.checkOpen
     let extract = this.data.extract || 'all'
     this.longToast.toast({
@@ -367,9 +368,9 @@ Page({
     let type = e.currentTarget.id,
       endMaxPage = this.data.endMaxPage,
       endPage = endMaxPage,
-      zoomType = this.data.zoomType
+      singlePageLayoutsCount = this.data.singlePageLayoutsCount
     if (type !== 'all') {
-      zoomType = 1
+      singlePageLayoutsCount = 1
       if (type === 'odd') {
         endPage = Math.ceil(endMaxPage / 2)
       } else if (type === 'even') {
@@ -377,7 +378,7 @@ Page({
       }
     }
     this.setData({
-      zoomType: zoomType,
+      singlePageLayoutsCount: singlePageLayoutsCount,
       extract: type,
       endPrintPage: endPage,
       endPage: endPage,

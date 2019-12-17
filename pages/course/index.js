@@ -177,10 +177,9 @@ Page({
   // 获取最后一次学习的信息
   getLastCourseInfo: co.wrap(function* () {
     try {
-      let res = yield graphql.getLastCourseInfo(app.openId)
-      
+      let res = yield graphql.getLastCourseInfo()
       this.setData({
-        userLastCourse: res
+        userLastCourse: res.currentUser.lastCourse
       })
     } catch (error) {
       util.showError(error)

@@ -2,14 +2,79 @@
 <nav-bar background="#fff" title="个人中心"></nav-bar>
 <view class="user-info" bindtap="toSetInfo">
     <view>
-        <image src="/images/account_avatar_big.png" mode="widthFix" class="avatar"></image>
+        <image src="{{kidInfo.avatar?kidInfo.avatar:'/images/account_avatar_big.png'}}" mode="widthFix" class="avatar">
+        </image>
         <view class="info">
             <!-- <view class="name">{{userInfo.nickName}}</view> -->
-            <view class="name">未填写姓名</view>
-            <view class="grade">未填写年级</view>
+            <view class="name">{{kidInfo.name?kidInfo.name:'未填写'}}</view>
+            <view class="grade">{{kidInfo.stage.name?kidInfo.stage.name:'未填写'}}</view>
         </view>
     </view>
-    <image src="../../images/doc_item_arrow.png" mode="widthFix" class="after"></image>
+    <image src="../../images/doc_item_arrow.png" mode="widthFix" class="after"
+        wx:if="{{kidInfo.name&&kidInfo.stage&&kidInfo.avatar}}"></image>
+    <image src="../../images/tip_add_kid_info.png" mode="widthFix" class="after-tip" wx:else></image>
 </view>
-<image class="member"></image>
-<view class="content"></view>
+<image src="/images/account_member_center.png" mode="widthFix" class="member" />
+<view class="no-device">
+    <image src="/images/account_add_device.png" mode="widthFix" />
+    <view>请先添加设备</view>
+</view>
+<view class="content-wrap">
+    <view class="title">记录与收藏</view>
+    <view class="content">
+        <view class="content-item">
+            <image src="/images/account_print_record.png" mode="widthFix" />
+            <view>打印记录</view>
+        </view>
+        <view class="content-item">
+            <image src="/images/account_order.png" mode="widthFix" />
+            <view>购买记录</view>
+        </view>
+        <view class="content-item">
+            <image src="/images/account_cllection.png" mode="widthFix" />
+            <view>我的收藏</view>
+        </view>
+    </view>
+</view>
+<view class="content-wrap">
+    <view class="title">帮助与反馈</view>
+    <view class="content">
+        <view class="content-item">
+            <image src="/images/account_use_info.png" mode="widthFix" />
+            <view>使用说明</view>
+        </view>
+        <view class="content-item">
+            <image src="/images/account_feedback.png" mode="widthFix" />
+            <view>意见反馈</view>
+        </view>
+        <view class="content-item">
+            <image src="/images/account_service.png" mode="widthFix" />
+            <view>在线客服</view>
+        </view>
+    </view>
+</view>
+<view class="content-wrap">
+    <view class="title">更多服务</view>
+    <view class="content">
+        <view class="content-item">
+            <image src="/images/account_manage.png" mode="widthFix" />
+            <view>账号管理</view>
+        </view>
+        <view class="content-item">
+            <image src="/images/account_paper.png" mode="widthFix" />
+            <view>纸质化学习法</view>
+        </view>
+        <view class="content-item">
+            <image src="/images/account_family.png" mode="widthFix" />
+            <view>我的家庭</view>
+        </view>
+    </view>
+</view>
+<view class="phone-number">商务合作：89894940</view>
+<view class="article">《隐私条款》</view>
+
+<import src="/lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />
+
+
+<button class="net" bindtap="net1">配网</button>

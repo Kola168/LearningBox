@@ -6,6 +6,8 @@ page {
 }
 
 .item {
+    width: 100%;
+    position: relative;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -38,4 +40,36 @@ page {
     color: #999999;
     letter-spacing: 0;
     text-align: center;
+}
+
+.picker-birth {
+    /* background: brown; */
+    background: transparent;
+    color: transparent;
+    position: absolute;
+    top: -40rpx;
+    left: 0;
+    width: 100%;
+    height: calc(100% + 80rpx);
+    z-index: 1000;
+    overflow: hidden;
+}
+
+.gender {
+    display: flex;
+    align-items: center;
+}
+
+.gender image {
+    width: 40rpx;
+    height: 40rpx;
+    margin-right: 40rpx;
+}
+
+.gender :nth-child(4){
+    margin-right: 0
+}
+
+.gender text {
+    margin-right: 16rpx
 }
