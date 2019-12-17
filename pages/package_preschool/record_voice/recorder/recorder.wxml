@@ -30,14 +30,14 @@
 				<view class="recording-status f-14 btn-recording">{{isRecording ? '正在录制中…' : ''}}</view>
 			</view>
 			<view class="btn-main btn-user f-12 sys-flex">
-				<image class="btn" wx:if="{{!recordSource}}" src="../../images/record_voice_btn_record_disabled.png" />
+				<image class="btn" wx:if="{{!userAudio}}" src="../../images/record_voice_btn_record_disabled.png" />
 				<image
 				 class="btn"
 				 wx:else
 				 bind:tap="startPlayRecord"
 				 src="{{players.record.isPlaying && !players.record.isPause ? '../../images/record_voice_btn_playing.png' : '../../images/record_voice_btn_play_stop.png'}}"
 				/>
-				<view class="{{!recordSource ? 'btn-disabled' : '' }}">宝宝录音</view>
+				<view class="{{!userAudio ? 'btn-disabled' : '' }}">宝宝录音</view>
 			</view>
 		</view>
 	</view>

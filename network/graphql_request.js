@@ -498,9 +498,9 @@ const graphqlApi = {
   },
 
   // 发起收藏
-  collectCourse: (input) => {
+  collect: (input) => {
     return gql.mutate({
-      mutation: `mutation collectCourse($input: ResourceCollectInput!){
+      mutation: `mutation collect($input: ResourceCollectInput!){
         collect(input:$input){
           state
         }
@@ -793,7 +793,7 @@ const graphqlApi = {
             sn
           }
           contents{
-            title
+            name
             icon
             sn
             pageCount
@@ -815,7 +815,7 @@ const graphqlApi = {
       query: `query getRecordList($sn: String!){
         category(sn: $sn){
           contents{
-            title
+            name
             icon
             sn
             pageCount
@@ -835,10 +835,12 @@ const graphqlApi = {
     return gql.query({
       query: `query getRecordSource($sn: String!){
         content(sn: $sn){
-          title
+          name
           icon
           sn
-          contentImage
+          contentImage{
+            name
+          }
           audio
           userAudio{
             audioUrl
@@ -852,14 +854,6 @@ const graphqlApi = {
       }
     })
   },
-  // createAudio: () => {
-  //   return gql.mutate({
-  //     mutation: `mutation createAudio($input: CreateAudioInput!) {
-
-  //     }`
-  //   })
-  // },
-
 	
 
 }

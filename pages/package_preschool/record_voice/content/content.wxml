@@ -23,7 +23,7 @@
 	<view class="item-3" bindtap='playPreview' data-item="{{item}}">
 		<image src='{{item.icon}}' class='url-3' mode="aspectFill">
 		</image>
-		<view class='title-3'>{{item.title}}</view>
+		<view class='title-3'>{{item.name}}</view>
 		<view class='print print-3'>
 			<view>
 				<image src='../../images/printicon.png' class='print_icon' mode='widthFix' />

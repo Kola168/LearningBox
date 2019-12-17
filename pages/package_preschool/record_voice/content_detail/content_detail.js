@@ -7,7 +7,7 @@ import {
   co,
   util
 } from '../../../../utils/common_import'
-import api from '../../../../network/restful_request'
+
 import graphql from '../../../../network/graphql_request'
 
 const request = util.promisify(wx.request)
@@ -18,6 +18,7 @@ import storage from '../../../../utils/storage'
 import router from '../../../../utils/nav'
 Page({
 	data: {
+		user: null, //用户信息
 		recordDetails: {},
 		collection: false,
 		num: 0,
@@ -52,24 +53,12 @@ Page({
 		this.longToast = new app.weToast()
 		this.setData({
 			title: decodeURIComponent(options.title),
-			type: options.type ? options.type : '',
-			as_type: options.as_type ? options.as_type : 'common'
-		})
-		this.setData({
 			isAndroid: systemInfo.system.indexOf('iOS') > -1 ? false : true
 		})
-		this.id = options.id //试卷/内容单个id
+	
 		this.sn = options.sn //分类sn
 		this.title = decodeURIComponent(options.title)
-		this.share_user_id = options.user_id
-		this.type_id = options.type_id //父级id
 
-
-		// this.way = 1 //默认自然用户
-		// if (this.share_user_id) {
-		// 	this.way = 5
-		// }
-	
 		wx.setNavigationBarTitle({
 			title: this.title
 		})
@@ -160,63 +149,6 @@ Page({
 		})
   }),
   
-	// loopGetOpenId: co.wrap(function* () {
-	// 	let loopCount = 0
-	// 	let _this = this
-	// 	if (app.openId) {
-	// 		console.log('openId++++++++++++----', app.openId)
-	// 		this.longToast.toast({
-	// 			img: '../../images/loading.gif',
-	// 			title: '请稍候',
-	// 			duration: 0
-	// 		})
-	// 		yield this.getUserId()
-		
-	// 		console.log(this.data.type)
-  //     yield this.getDetail()
-
-	// 		if (app.activeDevice) {
-	// 			yield this.getCapability()
-	// 		}
-
-	// 		return
-	// 	} else {
-	// 		setTimeout(function () {
-	// 			loopCount++
-	// 			if (loopCount <= 100) {
-	// 				console.log('openId not found loop getting...')
-	// 				_this.loopGetOpenId()
-	// 			} else {
-	// 				console.log('loop too long, stop')
-	// 			}
-	// 		}, 2000)
-	// 	}
-  // }),
-
-	// getDetail: co.wrap(function* () {
-	// 	this.longToast.toast({
-	// 		type: 'loading',
-	// 		title: '请稍候'
-	// 	})
-	// 	try {
-	// 		const resp = yield graphql.getContentDetail(this.sn, this.id)
-	// 		resp.resource.preview_urls = JSON.parse(resp.resource.preview_urls)
-
-	// 		this.setData({
-	// 			detail: resp.resource,
-	// 			media_type: resp.resource.media_type,
-	// 			discountType: resp.resource.discount.discountType,
-	// 			discount: resp.resource.discount,
-	// 			collection: resp.resource && resp.resource.is_collected || false,
-	// 			endPrintPage: resp.resource.preview_urls.length
-	// 		})
-
-	// 		this.longToast.toast()
-	// 	} catch (e) {
-	// 		this.longToast.toast()
-	// 		util.showError(e)
-	// 	}
-  // }),
 
 	collect: co.wrap(function* () {
     var auth = yield this.authCheck()
@@ -226,29 +158,29 @@ Page({
     
 		this.longToast.toast({
 			type: 'loading',
-			title: '请稍候',
+			title: '请稍等'
 		})
-		var params = {
-			sn: this.id,
-			type: 'ec_content'
-		}
-		let resp
 		try {
-			if (this.data.collection) {
-				resp = yield api.deleteCollections(params)
-			} else {
-				resp = yield api.createCollections(params)
-			}
-			if (resp.code != 0) {
-				throw (resp)
-			}
-			this.longToast.hide()
-			this.setData({
-				collection: !this.data.collection
+			var collection = this.data.collection
+			yield graphql.collect({
+				type: 'content',
+				sn: this.sn,
+				action: collection ? 'destroy' : 'create'
 			})
-		} catch (e) {
+			
 			this.longToast.hide()
-			util.showError(e)
+			let tipText = collection ? '取消收藏成功' : '收藏成功'
+			wx.showToast({
+				icon: 'none',
+				title: tipText
+			})
+			this.setData({
+				collection: !collection
+			})
+
+		} catch (error) {
+			this.longToast.hide()
+			util.showError(error)
 		}
   }),
   
@@ -292,45 +224,19 @@ Page({
 			})
 
 			let _this = this
-			let setting = {}
-			setting.duplex = _this.data.duplexCheck
-			setting.grayscale = _this.data.colorCheck == 'Color' ? false : true
-			setting.copies = _this.data.documentPrintNum
-      setting.startPage = _this.data.startPrintPage
-      setting.endPage = _this.data.endPrintPage
-
-	
-      // const resp = yield commonRequest.createOrder({
-      //   media_type: this.data.media_type,
-			// 	resourceable: {
-      //     type: 'ec_content',
-      //     sn: _this.id,
-      //     category_sn: _this.sn
-      //   },
-			// 	setting: setting,
-      // })
-	
-			if (resp.code == 0) {
-				this.longToast.hide()
-        router.redirectTo('/pages/finish/index', {
-          media_type: this.data.media_type,
-          state: resp.order.state,
-          type: this.data.typ
-        })
-			} else if (resp.code == 1) {
-				this.longToast.hide()
-				const res = yield showModal({
-					title: '提示',
-					content: resp.message,
-					showCancel: false,
-					confirmColor: '#fae100',
-				})
-				if (res.confirm) {
-          router.navigateBack()
-				}
-			} else {
-				throw (resp)
+			let params = {
+				duplex: _this.data.duplexCheck,
+				grayscale: _this.data.colorCheck == 'Color' ? false : true,
+				copies: _this.data.documentPrintNum,
+				startPage: _this.data.startPrintPage,
+				endPage: _this.data.endPrintPage
 			}
+      var resp = yield commonRequest.createOrder('test', params)
+	
+			router.redirectTo('/pages/finish/index', {
+				media_type: this.data.media_type,
+				state: resp.createOrder.state
+			})
 
 		} catch (e) {
 			this.longToast.hide()
@@ -338,8 +244,18 @@ Page({
 		}
 	}),
 
+	/**
+	 * 跳转头像编辑
+	 */
 	toEditAvatar: function() {
 		router.navigateTo('pages/package_common/account/name_edit')
+	},
+
+	/**
+	 * 打开耗材弹窗
+	 */
+	openConsumable: function() {
+
 	},
 
 	//获取打印能力
@@ -515,20 +431,9 @@ Page({
 				title: '请稍候',
 				duration: 0
 			})
-			// try {
-			// 	const resp = yield api.shareResource(app.openId)
-			// 	if (resp.code != 0) {
-			// 		throw (resp)
-			// 	}
-			// 	this.longToast.toast()
-			// } catch (e) {
-			// 	util.hideToast(this.longToast)
-			// 	util.showErr(e)
-			// }
-
 			return {
 				title: this.title,
-				path: `/pages/library/play_preview?id=${this.id}&sn=${this.sn}&user_id=${this.user_id}&title=${this.title}&type_id=${this.type_id}&as_type=${this.data.as_type}&type=${this.data.type}`
+				path: `/pages/package_preschool/record_voice/content_detail/content_detail?sn=${this.sn}&title=${this.title}`
 			}
 		} else {
 			return app.share

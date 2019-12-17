@@ -17,10 +17,13 @@
 		 bindchange="tabSlide"
 		 circular="{{circular}}"
 		>
-			<block wx:for="{{[content.icon]}}" wx:key="{{index}}">
+			<block wx:for="{{content.contentImage}}" wx:key="{{index}}">
 				<swiper-item style="overflow-y:scroll;overflow-x:hidden;">
-					<image style="width:100%" mode="widthFix" src="{{item}}">
-						<image src='https://cdn.gongfudou.com/miniapp/ec/shuiyin_new.png' class='watermark' />
+					<image style="width:100%" mode="widthFix" src="{{item.name}}">
+						<!-- <image src='https://cdn.gongfudou.com/miniapp/ec/shuiyin_new.png' class='watermark' /> -->
+						<view class="user-info" bind:tap="{{!user ? 'toEditAvatar' : ''}}">
+								<view class="user-text">朗读者：未填写宝宝昵称 > </view>
+						</view>
 					</image>
 				</swiper-item>
 			</block>
@@ -31,7 +34,7 @@
 		<!--翻页-->
 		<view class="turn">
 			<view class="turn-content">
-				<text>{{num+1}}/{{6}}</text>
+				<text>{{num+1}}/{{content.contentImage.length}}</text>
 			</view>
 			<view class="turn-image">
 				<image
@@ -62,7 +65,7 @@
 			<view>分享</view>
 		</button>
 		<view class="btn-main">
-			<view class="btn comsumables" bindtap="openComsumable">适配耗材</view>
+			<view class="btn consumables" bindtap="openConsumable">适配耗材</view>
 			<view class="btn btn-print" bind:tap="toConfirm">打印</view>
 		</view>
 	</view>

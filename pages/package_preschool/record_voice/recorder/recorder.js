@@ -7,6 +7,8 @@ import {
   storage
 } from '../../../../utils/common_import'
 var app = getApp()
+const event = require('../../../../lib/event/event')
+import graphql from '../../../../network/graphql_request'
 import Logger from '../../../../utils/logger.js'
 const logger = new Logger.getLogger('pages/package_preschool/record_voice/recorder/recorder')
 Page({
@@ -19,37 +21,32 @@ Page({
     totalTime: 0, //总播放时长
     curryTime: 0, //当前播放进度时长
     usedTimeStamp: 0,//当前播放进度时长
-    players: {  // 播放控制属性
-      record: {
-        isPlaying: false,
-        isPause: false,
-        audioCtx: null,
-        currentProgressWidth: 0,
-        src:'http://up_mp4.t57.cn/2018/1/03m/13/396131226156.m4a',
-      },
-      source: {
-        isPlaying: false,
-        isPause: false,
-        count: 0,
-        audioCtx: null,
-        currentProgressWidth: 0,
-        src:'http://up_mp4.t57.cn/2018/1/03m/13/396131232171.m4a'
-      }
-    },
+    players: null,
     recordSource: [1,2], //录制的资源
     voiceSource: null, //原声资源
     showToast: false, //通知弹窗
   },
 
-  onLoad: function (options) {
-    this.timer = {}
+  onLoad: co.wrap(function *(options) {
+    this.sn = options.sn
     this.longToast = new app.weToast()
     this.initViewInfo()
     this.initRecorderManager()
     this.setData({
       showToast: storage.get('showRecordToast')
     })
-  },
+    var unionId = storage.get('unionId')
+    if (!unionId) {
+      return wxNav.navigateTo('/pages/authorize/index')
+    }
+    this.getContent()
+
+	  //授权成功后回调
+		event.on('Authorize', this, function (data) {
+			this.getContent()
+		})
+
+  }),
 
   onShow: function () {
     if (this.isPause) { //发生暂停
@@ -67,6 +64,43 @@ Page({
       })
     }
   },
+
+  getContent: co.wrap(function*(){
+    this.longToast.toast({
+      type: 'loading',
+      title: '请稍候'
+    })
+    try {
+      var resp = yield graphql.getRecordSource(this.sn)
+      var userAudio = resp.content.userAudio && resp.content.userAudio.audioUrl || null
+      this.setData({
+        content: resp.content,
+        userAudio: userAudio,
+        players: {  // 播放控制属性
+          record: {
+            isPlaying: false,
+            isPause: false,
+            audioCtx: null,
+            currentProgressWidth: 0,
+            src: userAudio
+          },
+          source: {
+            isPlaying: false,
+            isPause: false,
+            count: 0,
+            audioCtx: null,
+            currentProgressWidth: 0,
+            src: resp.content.audio || ''
+          }
+        }
+      })
+      
+			this.longToast.hide()
+    } catch(err) {
+      util.showError(err)
+      this.longToast.hide()
+    }
+  }),
 
   initViewInfo: function () {
    try {
@@ -101,6 +135,7 @@ Page({
 
       this.recorderManager.onStop((res)=>{
         this.playSource = res
+        this.uploadRecord(res) // 上传录音资源
         this.setData({isRecording: false})
         logger.info(res, '===触发停止的：onStop====')
       })
@@ -119,7 +154,7 @@ Page({
   // 初始化播放器
   initAudioContext: function (key) {
     this.destroyAudioCtx()
-    console.log('==执行了销毁==')
+    console.log(this.data.players, '==initAudioContext==')
     this.data.players[key].audioCtx = wx.createInnerAudioContext()
 
     this.data.players[key].audioCtx.src = this.data.players[key].src
@@ -160,9 +195,12 @@ Page({
   },
 
   sendCircleStatus: function(){
-    var source = Object.keys(this.data.players).filter(key=>{
-      return this.data.players[key].isPlaying && !this.data.players[key].isPause
-    })
+    var source = []
+    for(var key in this.data.players) {
+      if (this.data.players[key].isPlaying && !this.data.players[key].isPause) {
+        source.push(this.data.players[key])
+      }
+    }
     this.setData({
       isPlaying: source.length ? true : false
     })
@@ -357,14 +395,23 @@ Page({
   formatTime: function (t) {
     return t < 10 ? '0' + t : t
   },
+  
+  /**
+   * 销毁Audio
+   */
   destroyAudioCtx: function () {
-    Object.keys(this.data.players).forEach((key)=>{
+    for(var key in this.data.players) {
       if(this.data.players[key].audioCtx) {
         this.data.players[key].audioCtx.stop()
         this.data.players[key].audioCtx.destroy()
       }
-    })
+    }
   },
+
+  uploadRecord: co.wrap(function*(res){
+    console.log('==准备上传文件==', res)
+  }),
+
   onHide: function () {
     this.recorderManager.pause() //暂停录音
     this.destroyAudioCtx()
