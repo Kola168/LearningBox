@@ -15,8 +15,8 @@ App({
   // apiWbviewServer: 'https://epbox.gongfudou.com/',
 
 	//staging
-  apiServer: 'https://lb-stg.gongfudou.com',
-  apiWbviewServer: 'https://lb-stg.gongfudou.com/',
+  // apiServer: 'https://lb-stg.gongfudou.com',
+  // apiWbviewServer: 'https://lb-stg.gongfudou.com/',
 
   //王析理本地地址
   // apiServer: 'http://epbox.natapp1.cc',
@@ -36,8 +36,8 @@ App({
   // apiWbviewServer: 'https://schaffer.utools.club',
 
   // 测试接口季慧新
-  // apiServer: 'http://jhx.nat300.top',
-  // apiWbviewServer: 'http://jhx.nat300.top',
+  apiServer: 'http://jhx.nat300.top',
+  apiWbviewServer: 'http://jhx.nat300.top',
 
   // 测试接口季慧新
   // apiServer: 'http://jhx.nat300.top',
