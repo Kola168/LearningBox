@@ -9,11 +9,8 @@ import {
   storage,
   logger
 } from '../../utils/common_import'
-import {
-  uploadFiles
-} from '../../utils/upload'
+import {uploadFiles} from '../../utils/upload'
 const imginit = require('../../utils/imginit')
-
 const showModal = util.promisify(wx.showModal)
 const request = util.promisify(wx.request)
 import event from '../../lib/event/event'
@@ -55,6 +52,8 @@ const chooseCtx = {
       image: 'https://cdn.gongfudou.com/miniapp/ec/confirm_print_a4_new.png'
     }
   },
+
+
   onLoad: function(options) {
     this.longToast = new app.weToast()
     this.query = options || {}
@@ -66,6 +65,8 @@ const chooseCtx = {
       this.setPostData(postData)
     })
   },
+
+
   onShow: function() {
     let hasAuthPhoneNum = Boolean(storage.get('hasAuthPhoneNum'))
     this.hasAuthPhoneNum = hasAuthPhoneNum
@@ -74,6 +75,13 @@ const chooseCtx = {
     })
     this.needToDelete = [] //长宽比大于5，最后统一删除
   },
+
+  // 从百度网盘选择
+  chooseBaidu(res){
+    let url = res.detail[0].url
+    this.showImage(url)
+  },
+
   // 初始化当前区域信息
   initUseArea: function() {
     this.media_type = 'pic2doc'
@@ -94,6 +102,8 @@ const chooseCtx = {
       this.getSupplyBefore(this.media_type)
     }
   },
+
+
   //初始化视图区域信息
   initSingleArea: function() {
     try {
@@ -108,6 +118,8 @@ const chooseCtx = {
       logger.info(e)
     }
   },
+
+
   getStorageImages: function(media_type) {
     try {
       let galleryImages = storage.get(media_type) || {
@@ -142,6 +154,8 @@ const chooseCtx = {
       currentCount: Math.max(this.data.images.length - this.data.preAllCount, 0)
     })
   },
+
+
   previewImg: function({
     currentTarget: {
       id
@@ -153,6 +167,8 @@ const chooseCtx = {
       urls: [image.afterEditUrl || image.url]
     })
   },
+
+
   changeImage() {
     if (this.data.images.length >= this.data.maxCount) {
       return showModal({
@@ -168,6 +184,8 @@ const chooseCtx = {
     }
     this.selectComponent("#checkComponent").showPop()
   },
+
+  
   chooseImg: co.wrap(function*(e) {
     let that = this
     let res = e.detail
@@ -232,6 +250,7 @@ const chooseCtx = {
       logger.info(e, '-----')
     }
   }),
+
   cancelUpload: co.wrap(function*() {
     app.cancelUpload = true
     this.setData({
@@ -241,6 +260,7 @@ const chooseCtx = {
     })
     logger.info('手动停止上传还可以继续上传张数：', this.data.countLimit)
   }),
+
   getImageOrientation: co.wrap(function*(url) {
     let that = this
     let imageInfo
@@ -275,6 +295,8 @@ const chooseCtx = {
       })
     }
   }),
+
+
   showImage: co.wrap(function*(url, index) {
     let that = this
     let noRotate = this.data.media_size[this.media_type].noRotateMin
@@ -343,6 +365,8 @@ const chooseCtx = {
       }, delay)
     }
   }),
+
+
   hideToast: function(e) {
     if (!this.query.gallerySource || this.query.gallerySource == 'localStorage') {
       return
@@ -352,6 +376,8 @@ const chooseCtx = {
       realCount: 0
     })
   },
+
+
   errImage: function(e) {
     if (this.query.gallerySource) {
       return
@@ -365,6 +391,8 @@ const chooseCtx = {
     this.setStorage()
     logger.info('某张图片渲染失败后还可以继续上传张数：', this.data.countLimit)
   },
+
+
   //减张数
   decrease: function({
     currentTarget: {
@@ -390,6 +418,8 @@ const chooseCtx = {
       allCount: this.data.allCount - 1
     })
   },
+
+
   //加张数
   increase: function({
     currentTarget: {
@@ -420,6 +450,8 @@ const chooseCtx = {
       allCount: this.data.allCount + 1,
     })
   },
+
+
   //删除照片
   deleteImg: co.wrap(function*({
     currentTarget: {
@@ -444,6 +476,8 @@ const chooseCtx = {
     this.setStorage()
     logger.info('删除后剩余照片：', this.data.images)
   }),
+
+
   confirm: co.wrap(function*(e) {
     uploadFormId.dealFormIds(e.detail.formId, `print_${this.media_type}`)
     uploadFormId.upload()
@@ -475,6 +509,8 @@ const chooseCtx = {
       })
     }
   }),
+
+
   getPhoneNumber: co.wrap(function*(e) {
     yield app.getPhoneNum(e)
     storage.put("hasAuthPhoneNum", true)
@@ -484,6 +520,8 @@ const chooseCtx = {
     })
     this.confirm(e)
   }),
+
+
   userConfirm: co.wrap(function*(e) {
     let images = this.data.images
     let newImages = []
@@ -505,6 +543,8 @@ const chooseCtx = {
       }
     })
   }),
+
+
   uploadImg: co.wrap(function*(images) {
     // if (!app.openId) {
     //   yield this.loopGetOpenId()
@@ -546,6 +586,8 @@ const chooseCtx = {
       util.showErr(e)
     }
   }),
+
+
   //图片存储至本地
   setStorage: function() {
     try {
@@ -558,13 +600,19 @@ const chooseCtx = {
       logger.info('图片存储到本地失败')
     }
   },
+
+
   onHide: function() {
     this.setStorage()
   },
+
+
   onUnload: function() {
     this.setStorage()
     event.remove('setPreData', this)
   },
+
+
   /**
    * @methods设置回传参数
    * @param {String} images
@@ -574,6 +622,8 @@ const chooseCtx = {
       images
     })
   },
+
+
   //   loopGetOpenId: co.wrap(function*() {
   //     let loopCount = 0
   //     let _this = this
@@ -592,6 +642,8 @@ const chooseCtx = {
   //       }, 2000)
   //     }
   //   }),
+
+  
   toUse: function() {
     var useStatus = 'picToDocUSeStatus'
     storage.put(useStatus, true)
