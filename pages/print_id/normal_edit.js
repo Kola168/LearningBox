@@ -367,7 +367,7 @@ Page({
         const areaPosition = {
             width: areaWidth,
             height: areaHeight,
-            top: (designAreaMaxHeight - areaHeight) / 2 + margin + 80 * (res.windowWidth / 750),
+            top: (designAreaMaxHeight - areaHeight) / 2 + margin + 80 * (res.windowWidth / 750)+32,//自定义导航栏32px
             left: (designAreaMaxWidth - areaWidth) / 2 + margin,
             scale: areaWidth / this.data.area.width
         }

@@ -52,7 +52,10 @@
         "search/index",
         "account/personal_info",
         "account/avatar_edit",
-        "account/name_edit"
+        "account/name_edit",
+        "free_resources/index/index",
+        "free_resources/content/index",
+        "free_resources/detail/index"
       ]
     },
     {
@@ -117,9 +120,12 @@
         "record_voice/index/index",
         "record_voice/recorder/recorder",
         "record_voice/content/content",
-        "record_voice/content_detail/content_detail",
-        "growth_plan/list/index",
-        "growth_plan/timed_print/timed_print"
+				"record_voice/content_detail/content_detail",
+				"growth_plan/list/index",
+        "growth_plan/timed_print/timed_print",
+        "growth_plan/print_setting/print_setting",
+        "growth_plan/checkpoint/plan_checkpoint",
+        "growth_plan/checkpoint/plan_detail"
       ]
     },
     {
@@ -187,7 +193,7 @@
         "selectedIconPath": "images/home/icon_tab_shop_selected.png"
       },
       {
-        "pagePath": "pages/index/index",
+        "pagePath": "pages/account/index",
         "text": "我的",
         "iconPath": "images/home/icon_tab_account_unselected.png",
         "selectedIconPath": "images/home/icon_tab_account_selected.png"

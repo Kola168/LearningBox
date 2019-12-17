@@ -52,10 +52,6 @@ Page({
 			event.on('setPreData', this, (postData)=>{
 				this.setPostData(postData)
 			})
-			event.on('chooseBaiduFileDone', this, (baiduFiles)=>{
-				this.formatFiles(baiduFiles)
-			})
-
 		} catch(err) {
 			logger.error(err)
 		}
@@ -76,23 +72,24 @@ Page({
 	getPrinterCapability: co.wrap(function*(){
 		this.initPms = {
 			duplex: false, //单双面面
-			number: 1, // 份数
+			copies: 1, // 份数
 		}
 		var resp = yield commonRequest.getPrinterCapacity() //获取打印能力数据
-		this.initPms.color = resp && resp.color_modes[0] || 'Color'
+		// this.initPms.grayscale = resp && resp.color_modes[0] || 'Color'
+		this.initPms.grayscale = false
 	}),
 
 	formatFiles: function (docList) {
 		try {
 			var docFiles = docList.map(doc=>{
 				return {
-					url: doc.url,
+					originalUrl: doc.url,
 					filename: doc.filename,
-					color: this.initPms.color,
+					grayscale: this.initPms.grayscale,
 					duplex: this.initPms.duplex,
-					number: 1,
+					copies: 1, //份数
 					isSetting: false,
-					display: 1
+					singlePageLayoutsCount: 1
 				}
 			})
 			this.setData({
@@ -137,15 +134,15 @@ Page({
 			var uploadFileList = []
       yield uploadDocs(urls, function(url, name) {
         var file = {
-          url: url,
+          originalUrl: url,
           filename: name,
-          color: _this.initPms.color,
+          grayscale: _this.initPms.grayscale,
           duplex: _this.initPms.duplex,
-          number: 1,
+          copies: 1,
           isSetting: false,
-          skip_gs: true,
+          skipGs: true,
           extract: 'all',
-          display: 1
+          singlePageLayoutsCount: 1
         }
         if (url) {
           uploadFileList.push(file)
@@ -262,10 +259,10 @@ Page({
 				duration: 0
 			})
 			var types = this.data.types
-			var urls = this.data.files
-			const resp = yield commonRequest.printOrders({
-				media_type: types.printType,
-				urls
+			var urls = this.data.files.map(file => util.removeKeysToNewObj(file, ['isSetting']))
+			const resp = yield commonRequest.createOrder({
+				featureKey: "doc_a4",
+				fileAttributes: urls
 			})
       if (resp.code != 0) {
         throw (resp)
@@ -290,7 +287,7 @@ Page({
 			if (app.preventMoreTap(e)) {
 				return
 			}
-			var { url,  display, skip_gs, extract } = this.data.files[parseInt(e.currentTarget.id)]
+			var { originalUrl,  singlePageLayoutsCount, skipGs, extract } = this.data.files[parseInt(e.currentTarget.id)]
 			this.longToast.toast({
 				type:'loading',
 				title: '正在开启预览',
@@ -298,7 +295,7 @@ Page({
 			})
 			commonRequest.previewDocument({
 				feature_key: 'doc_a4',
-				worker_data: {url, display, skip_gs, extract: (extract || 'all')}
+				worker_data: {url: originalUrl, display: singlePageLayoutsCount, skip_gs: skipGs, extract: (extract || 'all')}
 			}, ()=>{
 				this.longToast.hide()
 			})
@@ -338,18 +335,18 @@ Page({
 				fileIndex: e.currentTarget.id,
 				colorModes: print_capability.color_modes,
 				media_sizes: print_capability.media_sizes,
-				colorCheck: currentFile.color,
+				colorCheck: currentFile.grayscale ? 'Mono' : 'Color',
 				duplexCheck: currentFile.duplex,
 				isSetting: currentFile.isSetting,
-				url: currentFile.url,
-				skip_gs: true
+				url: currentFile.originalUrl,
+				skipGs: true
 			}
 			if (currentFile.isSetting) {
-				postData.start_page = currentFile.start_page
-				postData.end_page = currentFile.end_page
-				postData.number = currentFile.number
-				postData.display = currentFile.display
-				postData.skip_gs = currentFile.skip_gs
+				postData.startPage = currentFile.startPage
+				postData.endPage = currentFile.endPage
+				postData.copies = currentFile.copies
+				postData.singlePageLayoutsCount = currentFile.singlePageLayoutsCount
+				postData.skipGs = currentFile.skipGs
 				postData.extract = currentFile.extract
 			}
 			router.navigateTo('/pages/print_doc/doc_setting/doc_setting',
@@ -367,24 +364,24 @@ Page({
 	 */
 	setPostData: function(postData) {
 		let tempFiles = _(this.data.files).clone()
-		tempFiles[postData.fileIndex].number = postData.number
-		tempFiles[postData.fileIndex].start_page = postData.start_page
-		tempFiles[postData.fileIndex].skip_gs = postData.skip_gs
+		tempFiles[postData.fileIndex].copies = postData.copies
+		tempFiles[postData.fileIndex].startPage = postData.startPage
+		tempFiles[postData.fileIndex].skipGs = postData.skipGs
 		tempFiles[postData.fileIndex].extract = postData.extract
-		tempFiles[postData.fileIndex].end_page = postData.end_page
-		tempFiles[postData.fileIndex].color = postData.color
+		tempFiles[postData.fileIndex].endPage = postData.endPage
+		tempFiles[postData.fileIndex].grayscale = postData.grayscale
 		tempFiles[postData.fileIndex].duplex = postData.duplex
-		tempFiles[postData.fileIndex].display = postData.display
-		tempFiles[postData.fileIndex].media_size = (postData.medium == 'a4') ? '0' : '3'
+		tempFiles[postData.fileIndex].singlePageLayoutsCount = postData.singlePageLayoutsCount
 		tempFiles[postData.fileIndex].isSetting = true
 		this.setData({
 			files: tempFiles
 		})
 	},
-
+	baiduPrint(res){
+		let baiduFiles = res.detail
+		this.formatFiles(baiduFiles)
+	},
 	onUnload() {
 		event.remove('setPreData', this)
-		event.remove('chooseBaiduFileDone', this)
-	},
-
+	}
 })

@@ -108,18 +108,17 @@ page {
 }
 
 .bottom {
-  width: 100%;
-  height: 100rpx;
   display: flex;
   justify-content: space-between;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 100rpx;
   align-items: center;
   background: #fff;
   box-sizing: border-box;
   border-top: 3rpx solid #cecece;
-  position: fixed;
-  bottom: 0;
-  padding-left: 50rpx;
-  padding-right: 24rpx;
+  padding:0 24rpx 0 50rpx;
   box-sizing: border-box;
 }
 
@@ -283,7 +282,7 @@ page {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: white;
+  background: #FFFFFF;
   width: 80%;
 }
 
@@ -389,7 +388,7 @@ page {
   font-weight: bold;
 }
 
-.setting_item {
+.setting-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -397,7 +396,7 @@ page {
   border-bottom: 1rpx solid #cecece;
 }
 
-.item_label {
+.item-label {
   font-size: 32rpx;
 }
 
@@ -413,7 +412,7 @@ page {
   height: 30rpx;
 }
 
-.document_print_num {
+.document-print-num {
   min-width: 40rpx;
   text-align: center;
   margin: 0 10rpx;
@@ -502,7 +501,7 @@ page {
 }
 
 .item_check_active {
-  border: 4rpx solid #ffe27a;
+  border: 4rpx solid #FFDC5E;
 }
 
 .item_check {
@@ -512,7 +511,7 @@ page {
   width: 36rpx;
 }
 
-.conf_box-left {
+.conf-box-left {
   color: #454545;
   width: 50%;
   background: #fff;
@@ -524,10 +523,10 @@ page {
   border-top: 3rpx solid #cecece;
 }
 
-.conf_box-right {
+.conf-box-right {
   color: #454545;
   width: 50%;
-  background: #ffe27a;
+  background: #FFDC5E;
   line-height: 98rpx;
   text-align: center;
   position: fixed;
@@ -588,7 +587,7 @@ page {
   color: #454545;
   letter-spacing: -0.98px;
   text-align: center;
-  background: #FFE27A;
+  background: #FFDC5E;
   height: 88rpx;
   line-height: 88rpx;
   margin-top: 72rpx;
@@ -612,4 +611,61 @@ page {
   font-size: 28rpx;
   color: #666666;
   letter-spacing: 0.62px;
+}
+
+.bottom-main {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  padding-left: 58rpx;
+  width: 100%;
+  height: 98rpx;
+  background-color: #FFF;
+}
+
+.bottom-main .collect, .share {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0!important;
+  margin: 0!important;
+  margin-right: 58rpx;
+  width: 80rpx!important;
+  color: #666;
+  font-size: 24rpx;
+}
+
+.bottom-main image {
+  width: 36rpx;
+  height: 36rpx;
+}
+
+.btn-main {
+  margin-left: 30rpx;
+  display: flex;
+  align-items: center;
+  width: 456rpx;
+  height: 74rpx;
+  color: #333333;
+  font-size: 32rpx;
+  border-radius: 30rpx;
+}
+
+.btn-main .btn{
+  flex: 1;
+  height: 74rpx;
+  line-height: 74rpx;
+  text-align: center;
+}
+
+.btn-main .comsumables {
+  background-color: #FFB24E;
+  border-radius: 30rpx 0 0 30rpx;
+}
+
+.btn-main .btn-print {
+  background-color: #FFDC5E;
+  border-radius: 0 30rpx 30rpx 0;
 }

@@ -1,5 +1,3 @@
-<gio-marketing />
-
 <wxs module="filter">
 var getFileType = function(url){
     var urls = url.split('.'),
@@ -19,6 +17,7 @@ module.exports = {
   getFileType:getFileType
 }
 </wxs>
+<wxs module="utils" src="../common/wxs/utils.wxs"></wxs>>
 <nav-bar background="#fff" title="{{title}}" />
 <scroll-view scroll-y bindscroll="pageScroll" class="scroll-wrap" style="height:{{viewHeight}}px;" scroll-top="{{scrollTop}}">
   <swiper class="swiper" indicator-dots indicator-active-color="#2086ee" autoplay="{{course.banners.length>0}}" interval="{{interval}}" circular>
@@ -94,7 +93,7 @@ module.exports = {
             </view>
           </view>
           <view class="chapter {{item.unfoldChapter ? 'chapter-fold-half' : ''}} {{item.unfoldChapterAll && item.unfoldChapter ? 'chapter-fold-all' : ''}}" hidden="{{!item.unfoldChapter}}">
-            <view class="chapter-item" wx:for="{{item.courseLessons}}" wx:for-index="chapterIndex" wx:key="{{chapterIndex}}" wx:for-item="chapterItem" data-lock="{{chapterItem.locked}}" data-shareable="{{chapterItem.shareToTrial}}" id="{{chapterItem.sn}}" catchtap="chapterClick">
+            <view class="chapter-item" wx:for="{{item.courseLessons}}" wx:for-index="chapterIndex" wx:key="{{chapterIndex}}" wx:for-item="chapterItem" data-lock="{{chapterItem.locked}}" data-shareable="{{chapterItem.shareToTrial}}" data-sn="{{chapterItem.sn}}" catchtap="chapterClick">
               <view class="chapter-name">
                 <view class="name-wrap {{chapterItem.state === 'finished' ? 'has-study' : ''}}">
                   {{chapterItem.name}}
@@ -152,7 +151,7 @@ module.exports = {
   <view class="course-buy" bindtap="toBuy" wx:if="{{!course.payed}}">
     <block wx:if="{{isAndroid}}">
       <view>我要学习</view>
-      <view class="course-price">¥{{course.display_price}}</view>
+      <view class="course-price">¥{{utils.fixPrice(course.priceYuan)}}</view>
     </block>
     <block wx:else>加入学习</block>
   </view>
@@ -183,7 +182,7 @@ module.exports = {
       </view>
       <checkbox-group class="not-tip" bindchange="checkboxChange">
           <checkbox checked="{{checkboxFlag}}" color="#FFDC5E" id="not-tip" />
-          <label for="not-tip">不再提示</label>
+          <label for="not-tip">不再提醒</label>
       </checkbox-group>
       <view class="unlock-btn" bindtap="closeCodeCourseModal">知道了</view>
     </view>

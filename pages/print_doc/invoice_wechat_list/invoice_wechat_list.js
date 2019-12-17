@@ -86,7 +86,7 @@ Page({
     try {
       yield uploadDocs(urls, function (url, name) {
         let fileItem = {
-          url: url,
+          originalUrl: url,
           filename: name
         }
 
@@ -131,10 +131,9 @@ Page({
       }
       let tempFiles = _(this.data.files).clone()
       tempFiles.forEach((item, index) => {
-        item.url = resp.res.convert_urls[index].url,
-          item.number = 1,
-          item.rotate = true,
-          item.color = 'Color'
+        item.originalUrl = resp.res.convert_urls[index].url
+        item.copies = 1
+        item.grayscale = false
       });
       this.setData({
         files: tempFiles
@@ -204,14 +203,7 @@ Page({
     })
     try {
       logger.info('发票提交打印参数=====', this.data.files)
-      const resp = yield commonRequest.printOrders({
-        media_type: 'invoice',
-        urls: this.data.files
-      })
-      // const resp = yield api.printInvoice(app.openId, 'invoice', this.data.files)
-      if (resp.code != 0) {
-        throw (resp)
-      }
+      const resp = yield commonRequest.createOrder(invoice, this.data.files)
       logger.info('提交打印成功=====', resp)
       this.longToast.hide()
       router.redirectTo('', {
@@ -235,7 +227,7 @@ Page({
     })
     try {
       let previewObj = yield downloadFile({
-        url: this.data.files[parseInt(e.currentTarget.id)].url
+        url: this.data.files[parseInt(e.currentTarget.id)].originalUrl
       })
       let previewUrl = previewObj.tempFilePath
       yield openDocument({
