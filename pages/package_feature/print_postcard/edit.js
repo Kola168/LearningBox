@@ -11,6 +11,8 @@ const showModal = util.promisify(wx.showModal)
 
 import api from '../../../network/restful_request'
 import gql from '../../../network/graphql_request'
+import commonRequest from '../../../utils/common_request'
+
 let Loger=(app.apiServer!='https://epbox.gongfudou.com'||app.deBug)?console.log:function(){}
 
 Page({
@@ -82,6 +84,24 @@ Page({
   },
 
   confBut:co.wrap(function*(){
+    if(this.selectComponent("#mymulti").data.imgArr.length==0){
+      return wx.showModal({
+        title: '提示',
+        content: '至少上传一张照片哦',
+        showCancel: false,
+        confirmColor: '#FFE27A'
+      })
+    }
+    this.setData({
+      confirmModal: {
+        isShow: true,
+        title: '请参照下图正确放置明信片打印纸',
+        image: 'https://cdn-h.gongfudou.com/LearningBox/main/confirm_print.png'
+      },
+    })
+  }),
+
+  makeOrder:co.wrap(function*(){
     try {
       this.longToast.toast({
         type: "loading",
@@ -101,16 +121,15 @@ Page({
       }
       param.template_sn = this.data.templateList[this.data.templateTypeIndex].templates[this.data.templateIndex].sn
       const resp = yield api.processes(param)
-
+      let imgs = [{
+        originalUrl: resp.res.url,
+        printUrl: param.image_url
+      }]
+      let orderSn = yield commonRequest.createOrder(this.type, imgs)
       this.longToast.toast()
     } catch (e) {
       this.longToast.toast()
-      wx.showModal({
-        title: '合成出错',
-        content: '请检查网络连接',
-        showCancel: false,
-        confirmColor: '#FFE27A'
-      })
+      util.showError(e)
       Loger(e)
     }
   }),

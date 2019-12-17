@@ -1,5 +1,7 @@
 <!--pages/package_feature/print_ calendar/edit.wxml-->
 <nav-bar title="{{titleName}}"></nav-bar>
+<confirm-print bindconfirm="makeOrder" modal="{{confirmModal}}" />
+
 <view class="top-check-box">
   <view class="check-item {{direction=='horizontal'?'check-item-checked':''}}" data-type="horizontal" bindtap="{{direction=='horizontal'?'':'checkdirection'}}">
     <text>横向</text>
@@ -30,3 +32,5 @@
   </scroll-view>
   <bottom-button text-right="开始打印" bindrighttap="confBut"></bottom-button>
 </view>
+<import src="/lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />

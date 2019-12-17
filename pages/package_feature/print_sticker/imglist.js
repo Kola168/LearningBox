@@ -13,6 +13,7 @@ const showModal = util.promisify(wx.showModal)
 
 import wxNav from '../../../utils/nav.js'
 import api from '../../../network/restful_request'
+import commonRequest from '../../../utils/common_request'
 
 let Loger = (app.apiServer != 'https://epbox.gongfudou.com' || app.deBug) ? console.log : function() {}
 
@@ -136,6 +137,7 @@ Page({
       this.editImg(this.checkedIndex)
       this.longToast.toast()
     }catch(e){
+      this.longToast.toast()
       console.log(e)
     }
   }),
@@ -183,6 +185,14 @@ Page({
   },
 
   toPreview: co.wrap(function*() {
+    if(_.without(_.pluck(this.data.imgArr[this.data.direction].imgs,'url'),'').length==0){
+      return wx.showModal({
+        title: '提示',
+        content: '至少上传一张照片哦',
+        showCancel: false,
+        confirmColor: '#FFE27A'
+      })
+    }
     try{
       let params={
         paper_type:this.data.type,
@@ -192,6 +202,11 @@ Page({
         urls:_.without(_.pluck(this.data.imgArr[this.data.direction].imgs,'url'),'')
       }
       const resp = yield api.processes(params)
+      wxNav.navigateTo('/pages/package_feature/print_sticker/preview',{
+        type:this.mediaType,
+        sn:resp.res.sn,
+        imgSrc:encodeURIComponent(JSON.stringify(resp.res.url))
+      })
       Loger(resp)
     }catch(e){
       Loger(e)
