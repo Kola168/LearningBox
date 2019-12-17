@@ -7,6 +7,7 @@ const util = require('../../../utils/util')
 
 import wxNav from '../../../utils/nav.js'
 import api from '../../../network/restful_request'
+import graphql from '../../../network/graphql_request'
 
 let Loger=(app.apiServer!='https://epbox.gongfudou.com'||app.deBug)?console.log:function(){}
 
@@ -1103,9 +1104,26 @@ Page({
   },
 
   onLoad: function (options) {
+    this.type=options.type||'name_sticker'
+    this.getTemplateList()
     this.getnameAttr(this.data.templateList)
     this.checkTemplateType(0)
   },
+
+  getTemplateList:co.wrap(function*(){
+    try{
+      let resp=yield graphql.searchTemplate(this.type)
+      Loger(resp.feature.categories)
+    
+      console.log(  this.data.mainTemplateList)
+      this.setData({
+        templateList:this.data.mainTemplateList
+      })
+      this.checkTemplateType(this.data.templateTypeIndex)
+    }catch(e){
+      console.log(e)
+    }
+  }),
 
   checkTemplateType:function(e){
     let index=e.currentTarget?e.currentTarget.dataset.index:e

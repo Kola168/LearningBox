@@ -20,3 +20,5 @@
   </scroll-view>
   <bottom-button text-right="开始打印" bindrighttap="confBut"></bottom-button>
 </view>
+<import src="/lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />

@@ -23,7 +23,7 @@ Page({
     templateInfo: {}, //传入组件的模板信息
     paperSize: {}, //传入组件的纸张信息
     templateList: [], //模板数组
-    direction: 'horizontal', //模板方向
+    direction: 'vertical', //模板方向
     templateIndex: 0, //选择的模板index
     templateTypeIndex: 0, //选择的模板种类index
     type: '',
@@ -53,7 +53,7 @@ Page({
     this.setData({
       templateList:this.data.mainTemplateList
     })
-    this.checkdirection('horizontal')
+    this.checkdirection(this.data.direction)
   }),
 
   checkTemplateDirection: function() {
@@ -73,24 +73,24 @@ Page({
 
   setModeData: function() {
 
-    let checkedTemplate = this.data.templateList[this.data.templateTypeIndex].templates[this.data.templateIndex]
+    let checkedTemplate = this.data.templateList[this.data.templateTypeIndex].templates[this.data.templateIndex].positionInfo
     console.log(checkedTemplate)
     let modeSize = []
-    if (checkedTemplate.area_info) {
-      _.each(checkedTemplate.area_info, function(value, index, list) {
+    if (checkedTemplate.length>0) {
+      _.each(checkedTemplate, function(value, index, list) {
         modeSize.push({
-          x: value.area_x,
-          y: value.area_y,
-          areaWidth: value.area_width,
-          areaHeight: value.area_height,
+          x: value.areaX,
+          y: value.areaY,
+          areaWidth: value.areaWidth,
+          areaHeight: value.areaHeight,
         })
       })
     } else {
       modeSize.push({
-        x: checkedTemplate.area_x,
-        y: checkedTemplate.area_y,
-        areaWidth: checkedTemplate.area_width,
-        areaHeight: checkedTemplate.area_height,
+        x: checkedTemplate.areaX,
+        y: checkedTemplate.areaY,
+        areaWidth: checkedTemplate.areaWidth,
+        areaHeight: checkedTemplate.areaHeight,
       })
     }
     this.setData({
@@ -101,7 +101,7 @@ Page({
         sider: 64,
       },
       templateInfo: {
-        modeSrc: checkedTemplate.img_url,
+        modeSrc: this.data.templateList[this.data.templateTypeIndex].templates[this.data.templateIndex].imageUrl,
         modeSize: modeSize
       }
     })
@@ -111,32 +111,37 @@ Page({
   },
 
   checkModeStorage: function() {
-    let storage = {}
-    storage.storageImgArr = _.deepClone(this.selectComponent("#mymulti").data.imgArr)
-    storage.storageAreaSize = _.deepClone(this.selectComponent("#mymulti").data.areaSize)
-    storage.storageEditAreaSize = _.deepClone(this.selectComponent("#mymulti").data.editAreaSize)
-    storage.storageTemplateSrc = _.deepClone(this.selectComponent("#mymulti").data.TemplateSrc)
-    storage.id = this.storageEditData[this.preDirection][this.preTemplateTypeIndex].templates[this.preTemplateIndex].id
-    if (_.isNotEmpty(storage.storageImgArr) && _.isNotEmpty(storage.storageAreaSize) && _.isNotEmpty(storage.storageEditAreaSize)) {
-      this.storageEditData[this.preDirection][this.preTemplateTypeIndex].templates[this.preTemplateIndex].storage = storage
-      this.preDirection = this.data.direction
-      this.preTemplateTypeIndex = this.data.templateTypeIndex
-      this.preTemplateIndex = this.data.templateIndex
-    }
-    let checkedStorage = this.storageEditData[this.data.direction][this.data.templateTypeIndex].templates[this.data.templateIndex].storage
-    console.log(this.storageEditData)
-    if (_.isNotEmpty(checkedStorage)) {
-      this.selectComponent("#mymulti").setData({
-        imgArr: checkedStorage.storageImgArr,
-        areaSize: checkedStorage.storageAreaSize,
-        editAreaSize: checkedStorage.storageEditAreaSize,
-        TemplateSrc: checkedStorage.storageTemplateSrc
-      })
-      this.preDirection = this.data.direction
-      this.preTemplateTypeIndex = this.data.templateTypeIndex
-      this.preTemplateIndex = this.data.templateIndex
-    } else {
-      this.setModeData()
+    try{
+      console.log(this.storageEditData,this.preDirection,this.preTemplateTypeIndex)
+      let storage = {}
+      storage.storageImgArr = _.deepClone(this.selectComponent("#mymulti").data.imgArr)
+      storage.storageAreaSize = _.deepClone(this.selectComponent("#mymulti").data.areaSize)
+      storage.storageEditAreaSize = _.deepClone(this.selectComponent("#mymulti").data.editAreaSize)
+      storage.storageTemplateSrc = _.deepClone(this.selectComponent("#mymulti").data.TemplateSrc)
+      storage.id = this.storageEditData[this.preDirection][this.preTemplateTypeIndex].templates[this.preTemplateIndex].sn
+      if (_.isNotEmpty(storage.storageImgArr) && _.isNotEmpty(storage.storageAreaSize) && _.isNotEmpty(storage.storageEditAreaSize)) {
+        this.storageEditData[this.preDirection][this.preTemplateTypeIndex].templates[this.preTemplateIndex].storage = storage
+        this.preDirection = this.data.direction
+        this.preTemplateTypeIndex = this.data.templateTypeIndex
+        this.preTemplateIndex = this.data.templateIndex
+      }
+      let checkedStorage = this.storageEditData[this.data.direction][this.data.templateTypeIndex].templates[this.data.templateIndex].storage
+      console.log(this.storageEditData)
+      if (_.isNotEmpty(checkedStorage)) {
+        this.selectComponent("#mymulti").setData({
+          imgArr: checkedStorage.storageImgArr,
+          areaSize: checkedStorage.storageAreaSize,
+          editAreaSize: checkedStorage.storageEditAreaSize,
+          TemplateSrc: checkedStorage.storageTemplateSrc
+        })
+        this.preDirection = this.data.direction
+        this.preTemplateTypeIndex = this.data.templateTypeIndex
+        this.preTemplateIndex = this.data.templateIndex
+      } else {
+        this.setModeData()
+      }
+    }catch(e){
+      Loger(e)
     }
   },
 
@@ -171,13 +176,13 @@ Page({
     this.checkModeStorage()
   },
 
-  confBut: function() {
+  confBut: co.wrap(function*() {
     let storage = {}
     storage.storageImgArr = _.deepClone(this.selectComponent("#mymulti").data.imgArr)
     storage.storageAreaSize = _.deepClone(this.selectComponent("#mymulti").data.areaSize)
     storage.storageEditAreaSize = _.deepClone(this.selectComponent("#mymulti").data.editAreaSize)
     storage.storageTemplateSrc = _.deepClone(this.selectComponent("#mymulti").data.TemplateSrc)
-    storage.id = this.storageEditData[this.preDirection][this.preTemplateTypeIndex].templates[this.preTemplateIndex].id
+    storage.id = this.storageEditData[this.preDirection][this.preTemplateTypeIndex].templates[this.preTemplateIndex].sn
     if (_.isNotEmpty(storage.storageImgArr) && _.isNotEmpty(storage.storageAreaSize) && _.isNotEmpty(storage.storageEditAreaSize)) {
       this.storageEditData[this.data.direction][this.data.templateTypeIndex].templates[this.data.templateIndex].storage = storage
     }
@@ -187,11 +192,26 @@ Page({
     let that = this
     _.each(templateArr, function(value, index, list) {
       let params = {}
-      params.id=value.id
+      params.template_sn=value.id
       let pointData=value.storageImgArr
-      params.points=that.selectComponent("#mymulti").getImgPoint(pointData,value.storageAreaSize.scale)
+      params.sub_images=that.selectComponent("#mymulti").getImgPoint(pointData,value.storageAreaSize.scale)
       paramData.push(params)
     })
     console.log(paramData)
-  }
+    let param={
+      is_async:false,
+      feature_key:this.data.type,
+      images:paramData
+    }
+    const resp = yield api.processes(param)
+    if(resp.code==0){
+      this.setData({
+        confirmModal: {
+          isShow: true,
+          title: '请参照下图正确放置照片纸',
+          image: 'https://cdn-h.gongfudou.com/LearningBox/main/confirm_print.png'
+        },
+      })
+    }
+  })
 })

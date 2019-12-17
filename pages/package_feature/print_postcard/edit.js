@@ -9,7 +9,9 @@ const imginit = require('../../../utils/imginit')
 
 const showModal = util.promisify(wx.showModal)
 
+import api from '../../../network/restful_request'
 import gql from '../../../network/graphql_request'
+let Loger=(app.apiServer!='https://epbox.gongfudou.com'||app.deBug)?console.log:function(){}
 
 Page({
 
@@ -27,12 +29,13 @@ Page({
   },
 
   onLoad: function(options) {
+    this.longToast = new app.weToast()
     this.type=options.type||'postcard'
     this.getTemplateList()
   },
 
   getTemplateList:co.wrap(function*(){
-    let templateList=yield gql.searchTemplate(this.mediaType)
+    let templateList=yield gql.searchTemplate(this.type)
     Loger(templateList.feature.categories)
     this.setData({
       templateList:templateList.feature.categories
@@ -43,10 +46,10 @@ Page({
   setComponentData: function() {
     let templateInfo = this.data.templateList[this.data.templateTypeIndex].templates[this.data.templateIndex].positionInfo
     let modeSize = {
-      x: templateInfo.area_x,
-      y: templateInfo.area_y,
-      areaWidth: templateInfo.area_width,
-      areaHeight: templateInfo.area_height,
+      x: templateInfo.areaX,
+      y: templateInfo.areaY,
+      areaWidth: templateInfo.areaWidth,
+      areaHeight: templateInfo.areaHeight,
     }
     this.setData({
       paperSize: {
@@ -61,7 +64,7 @@ Page({
       }
     })
   },
-  
+
   checkTemplateType: function(e) {
     let index = e.currentTarget ? e.currentTarget.dataset.index : e
     this.setData({
@@ -77,4 +80,38 @@ Page({
     })
     this.setComponentData()
   },
+
+  confBut:co.wrap(function*(){
+    try {
+      this.longToast.toast({
+        type: "loading",
+      })
+      let params = this.selectComponent("#mymulti").getImgPoint()[0] //页面调用组件内方法
+      let param = {
+        is_async: false,
+        editor_scale: params.editor_scale,
+        image_url: params.image_url,
+        feature_key: this.type,
+        rotate: params.rotate,
+        scale: params.scale,
+        x: params.x,
+        y: params.y,
+        image_width: params.image_width,
+        image_height: params.image_height
+      }
+      param.template_sn = this.data.templateList[this.data.templateTypeIndex].templates[this.data.templateIndex].sn
+      const resp = yield api.processes(param)
+
+      this.longToast.toast()
+    } catch (e) {
+      this.longToast.toast()
+      wx.showModal({
+        title: '合成出错',
+        content: '请检查网络连接',
+        showCancel: false,
+        confirmColor: '#FFE27A'
+      })
+      Loger(e)
+    }
+  }),
 })

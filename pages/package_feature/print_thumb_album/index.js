@@ -3,22 +3,23 @@ import wxNav from '../../../utils/nav.js'
 
 Page({
   data: {
-    urls: ['http://cdn.gongfudou.com/miniapp/ec/print_thumb_index_1.png',
-      'http://cdn.gongfudou.com/miniapp/ec/quweidayin/thumb/a11.png',
-      'http://cdn.gongfudou.com/miniapp/ec/quweidayin/thumb/a22.png',
-      'http://cdn.gongfudou.com/miniapp/ec/quweidayin/thumb/a33.png',
-      'http://cdn.gongfudou.com/miniapp/ec/quweidayin/thumb/a44.png',
-      'http://cdn.gongfudou.com/miniapp/ec/quweidayin/thumb/a55.png',
+    urls: ['https://cdn-h.gongfudou.com/LearningBox/feature/thumb_album/thumb_album_1.jpg',
+      'https://cdn-h.gongfudou.com/LearningBox/feature/thumb_album/thumb_album_2.jpg',
+      'https://cdn-h.gongfudou.com/LearningBox/feature/thumb_album/thumb_album_3.jpg',
+      'https://cdn-h.gongfudou.com/LearningBox/feature/thumb_album/thumb_album_4.jpg',
+      'https://cdn-h.gongfudou.com/LearningBox/feature/thumb_album/thumb_album_5.jpg'
     ],
   },
 
   onLoad: function(options) {
-
+    this.type=options.type||'mini_album'
   },
   buysth: function() {
 
   },
   toedit: function(e) {
-    wxNav.navigateTo('/pages/package_feature/print_thumb_album/photolist')
+    wxNav.navigateTo('/pages/package_feature/print_thumb_album/photolist',{
+      type:this.type
+    })
   },
 })

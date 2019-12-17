@@ -36,13 +36,13 @@ Page({
     errTip: '',
 
     chooseCount: 1,
-    mediaType:''
   },
   clickIndex: 0, //当前点击的idnex
   onLoad: function(options) {
     this.setData({
       images: Array(this.data.imagesLength).fill([])
     })
+    this.type=options.type||'mini_album'
     this.calculateSize()
     event.on('setPreData', this, (postData)=>{
       this.editPhoto(postData)
@@ -226,7 +226,7 @@ Page({
       imgInfo: encodeURIComponent(JSON.stringify(this.data.images[index])),
       index: index,
       photoMedia: encodeURIComponent(JSON.stringify(this.data.photoSize)),
-      mediaType:this.mediaType
+      mediaType:this.type
     })
   },
 
