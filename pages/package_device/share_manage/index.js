@@ -7,23 +7,6 @@ Page({
     selectAllFlag: false,
     isFullScreen: false,
     userList: []
-      // [{
-      //   url: '/images/doc_member_circle.png',
-      //   name: '十月的雨季',
-      //   selectFlag: false
-      // }, {
-      //   url: '/images/doc_member_circle.png',
-      //   name: '遇见',
-      //   selectFlag: true
-      // }, {
-      //   url: '/images/doc_member_circle.png',
-      //   name: '千余秋安讯',
-      //   selectFlag: false
-      // }, {
-      //   url: '/images/doc_member_circle.png',
-      //   name: '十月的预计',
-      //   selectFlag: false
-      // }]
   },
   onLoad(query) {
     this.weToast = new app.weToast()
@@ -85,7 +68,7 @@ Page({
     })
   },
   // 停止分享
-  stopShare(e) {
+  stopShare: co.wrap(function*(e) {
     if (app.preventMoreTap(e)) return
     this.weToast.toast({
       type: 'loading'
@@ -105,5 +88,5 @@ Page({
       this.weToast.hide()
       util.showError(error)
     }
-  }
+  })
 })
