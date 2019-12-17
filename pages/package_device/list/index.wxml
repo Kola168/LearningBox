@@ -5,7 +5,7 @@
     <view class="device-item device-item-active">
       <view class="item-left" bindtap="toSetting" data-sn="{{activeDevice.sn}}">
         <view class="left-img">
-          <image src="../images/{{activeDevice.model==='3115'?'L3115':'EP400'}}.png" mode="widthFix" />
+          <image src="/images/{{activeDevice.model==='3115'?'L3115':'EP400'}}.png" mode="widthFix" />
         </view>
         <view class="left-name text-overflow-points active-name-box">
           <view>{{activeDevice.name}}</view>
