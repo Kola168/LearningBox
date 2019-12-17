@@ -679,6 +679,12 @@ const graphqlApi = {
       query: `query{
         currentUser{
           phone
+          selectedDevice{
+            sn
+            name
+            model
+            onlineState
+          }
           selectedKid{
             gender
             name
@@ -988,7 +994,7 @@ const graphqlApi = {
       }
     })
 	},
-	
+
 	//查询模板列表
   searchTemplate:(type)=>{
     return gql.query({

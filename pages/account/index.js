@@ -27,7 +27,6 @@ Page({
   },
   onShow: co.wrap(function*() {
     yield this.getUserInfo()
-    yield this.getActiveDevice()
   }),
 
   getUserInfo: co.wrap(function*() {
@@ -39,30 +38,12 @@ Page({
       let resp = yield gql.getUser()
       this.setData({
         kidInfo: resp.currentUser.selectedKid,
+        activeDevice: resp.currentUser.selectedDevice
       })
       this.longToast.hide()
     } catch (e) {
       this.longToast.hide()
       util.showError(e)
-    }
-  }),
-  // 获取选中的打印机
-  getActiveDevice: co.wrap(function*() {
-    try {
-      let res = yield gql.getDeviceList(),
-        devices = res.devices,
-        activeDevice = {}
-      if (devices.length === 0) return
-      for (let i = 0; i < devices.length; i++) {
-        if (devices[i].selected) {
-          activeDevice = devices[i]
-        }
-      }
-      this.setData({
-        activeDevice
-      })
-    } catch (error) {
-      util.showError(error)
     }
   }),
 
