@@ -1,7 +1,7 @@
 <nav-bar title="设备管理"></nav-bar>
 <view class="container">
   <view class="device-base border-bottom">
-    <image src="../images/{{device.model==='3115'?'L3115':'EP400'}}.png" class="device-img" mode="widthFix" />
+    <image src="/images/{{device.model==='3115'?'L3115':'EP400'}}.png" class="device-img" mode="widthFix" />
     <view class="device-name">
       <view class="text-overflow-points">{{device.name}}</view>
       <view class="device-flag {{device.onlineState==='online'?'online-active-flag':''}}"></view>

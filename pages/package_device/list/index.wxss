@@ -43,6 +43,7 @@
 .device-active-status {
   font-size: 24rpx;
   margin-top: 8rpx;
+  color: #999;
 }
 
 .online-active-status {

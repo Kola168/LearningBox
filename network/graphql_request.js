@@ -25,6 +25,7 @@ let gql = GraphQL({
   },
   //全局错误拦截
   errorHandler: function(res) {
+		console.log('graphql全局错误拦截',res)
 		//如果auth
 		if(1){
 
@@ -679,6 +680,12 @@ const graphqlApi = {
       query: `query{
         currentUser{
           phone
+          selectedDevice{
+            sn
+            name
+            model
+            onlineState
+          }
           selectedKid{
             gender
             name
@@ -985,7 +992,7 @@ const graphqlApi = {
     })
 	},
 
-  //查询模板列表
+	//查询模板列表
   searchTemplate:(type)=>{
     return gql.query({
       query: `query($key: String!) {
