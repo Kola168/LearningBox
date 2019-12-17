@@ -3,24 +3,24 @@
   <!-- 左 -->
   <scroll-view class='resources-type' scroll-with-animation="true" scroll-y="true" style="height:{{minHeight}}px" scroll-top="{{leftToTop}}">
     <view style="padding-bottom: 50rpx;">
-      <view wx:for="{{constants}}" wx:key="id" bindtap="changeType" data-id="{{item.id}}" class='type-item {{item.id === currentLeftSelect ?"type-item-active":""}}'>
+      <view wx:for="{{allData}}" wx:key="id" bindtap="changeType" data-id="{{item.id}}" class='type-item {{item.id === currentLeftSelect ?"type-item-active":""}}'>
         <view>{{item.name}}</view>
       </view>
     </view>
   </scroll-view>
   <!-- 右 -->
   <scroll-view scroll-with-animation="true" scroll-y="true" style="height:{{minHeight}}px" bindscroll="rightScroll" scroll-into-view="{{toViewId}}" bindtouchend="test" class='type-content'>
-    <view wx:for="{{constants}}" wx:for-index='parentIndex' wx:key="id" id="{{item.id}}" class="content-item">
+    <view wx:for="{{allData}}" wx:for-index='parentIndex' wx:key="id" id="{{item.id}}" class="content-item">
       <view class="item-title">{{item.name}}</view>
       <view class="item-box">
-        <view class="box-item" style="height:{{rightItemHeight}}px;" wx:for="{{item.category}}" wx:key="category_id">
-          <view class="list-item" bindtap="toNext">
+        <view class="box-item" style="height:{{rightItemHeight}}px;" wx:for="{{item.children}}" wx:for-item="childItem" wx:key="sn">
+          <view class="list-item" bindtap="toNext" data-sn="{{childItem.sn}}">
             <view class="item-img">
               <image src="/images/doc_email.png" lazy-load mode="widthFix" />
             </view>
             <view class="item-text">
-              <view class="text-title text-overflow-points">元旦</view>
-              <view class="text-desc text-overflow-points">手工作业不烦恼</view>
+              <view class="text-title text-overflow-points">{{childItem.name}}</view>
+              <view class="text-desc text-overflow-points">{{childItem.subTitle}}</view>
             </view>
           </view>
         </view>

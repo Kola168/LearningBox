@@ -3,7 +3,7 @@ import getLoopsEvent from './worker'
 import graphql from '../network/graphql_request'
 
 /**
- * 创建订单订单
+ * 创建订单
  * @param { String } featureKey required 对应功能的key
  * @param { Array } fileAttributes required 需要打印的文件列表
  * ArrayItem {

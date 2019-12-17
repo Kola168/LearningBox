@@ -1054,6 +1054,73 @@ const graphqlApi = {
       }
     })
   },
+
+  /**
+   * 获取免费资源库
+   * @param { String } key feature_key
+   */
+  getFreeSources: (key)=>{
+    return gql.query({
+      query: `query ($key: String!){
+        feature(key: $key){
+          categories{
+            name
+            children{
+              name
+              subTitle
+              image
+              sn
+            }
+          }
+        }
+      }`,
+      variables: {
+        key: key
+      }
+    })
+  },
+
+  /**
+   * 免费资源库内容类型
+   * @param { string } sn 资源sn
+   */
+  getFreeSourcesContentType: (sn)=>{
+    return gql.query({
+      query: `query ($sn: String!){
+        category(sn: $sn){
+          children{
+            name
+            sn
+          }
+        }
+      }`,
+      variables: {
+        sn: sn
+      }
+    })
+  },
+
+  /**
+   * 免费资源库内容
+   * @param { string } sn 资源sn
+   */
+  getFreeSourcesContents: (sn)=>{
+    return gql.query({
+      query: `query ($sn: String!){
+        category(sn: $sn){
+          contents {
+            contentImages
+            pageCount
+            sn
+            title
+          }
+        }
+      }`,
+      variables: {
+        sn: sn
+      }
+    })
+  },
 }
 
 export default graphqlApi
