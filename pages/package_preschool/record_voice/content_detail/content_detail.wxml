@@ -1,14 +1,5 @@
 <nav-bar background="#fff" title="{{title}}" />
 <view wx:if="{{!showSetting}}" class='top'>
-	<!-- iOS提示 -->
-	<!-- <view class="ios-tip" wx:if="{{showIosTip}}">
-		<view class="ios-tip-content">
-			<view class="text-1">重要提示</view>
-			<view class="text-2">根据相关规定，ios用户暂时无法开通，可使用安卓系统进行了解</view>
-			<view class="text-3" bindtap="closeIosTip">我已了解</view>
-		</view>
-	</view> -->
-
 	<view class="wrap-fun">
 		<swiper
 		 class="swiper-box"
@@ -21,9 +12,6 @@
 				<swiper-item style="overflow-y:scroll;overflow-x:hidden;">
 					<image style="width:100%" mode="widthFix" src="{{item.name}}">
 						<!-- <image src='https://cdn.gongfudou.com/miniapp/ec/shuiyin_new.png' class='watermark' /> -->
-						<view class="user-info" bind:tap="{{!user ? 'toEditAvatar' : ''}}">
-								<view class="user-text">朗读者：未填写宝宝昵称 > </view>
-						</view>
 					</image>
 				</swiper-item>
 			</block>
@@ -32,6 +20,9 @@
             <image src="https://cdn.gongfudou.com/miniapp/ec/study_detail_none.png" mode="widthFix"></image>
         </view> -->
 		<!--翻页-->
+		<view class="user-info" bind:tap="{{!kidInfo ? 'toEditAvatar' : ''}}">
+			<view class="user-text">{{kidInfo.name ? kidInfo.name : '朗读者：未填写宝宝昵称 >'}} </view>
+		</view>
 		<view class="turn">
 			<view class="turn-content">
 				<text>{{num+1}}/{{content.contentImage.length}}</text>
@@ -56,7 +47,7 @@
 	</view>
 
 	<view class="bottom-main">
-		<view class="collect">
+		<view class="collect" bind:tap="collect">
 			<image  src="../../images/collect_{{collection ? 'orange' : 'gray'}}.png"/>
 			<view>{{collection ? '已收藏' : '收藏'}}</view>
 		</view>
@@ -64,88 +55,18 @@
 			<image  src="../../images/share_btn.png"/>
 			<view>分享</view>
 		</button>
-		<view class="btn-main">
+		<view class="btn-main {{isFullScreen ? 'is-full-screen' : ''}}">
 			<view class="btn consumables" bindtap="openConsumable">适配耗材</view>
 			<view class="btn btn-print" bind:tap="toConfirm">打印</view>
 		</view>
 	</view>
-<!-- <consumables
+	<consumables
 		class="modify"
-		bind:myevent="onMyEvent"
+		bind:close="closeConsumable"
+		wx:if="{{showConsumable}}"
 		supply_types="{{supply_types}}"
-	/> -->
+	/>
 
-	<!-- <view class="bottom"> -->
-		<!-- <view class="left">
-			<view class="collect">
-				<view bindtap="collect">
-					<image mode="widthFix" src="g" class='bottom-image' />
-					<text class="font-content">{{collection?'已收藏':'收藏'}}</text>
-				</view>
-			</view>
-			<view class="share">
-				<button
-				 class="share-button"
-				 open-type="{{userAuthorize ? 'share' : ''}}"
-				 bindtap="{{userAuthorize ? '' : 'authCheck'}}"
-				 hover-class="none"
-				>
-					<image mode="widthFix" src="../../images/gfd-share_gray.png" class='bottom-image' />
-					<text class="font-content">分享</text>
-				</button>
-			</view>
-		</view> -->
-
-		<!-- <view class="right"> -->
-			<!-- <view class="right-first">适配耗材
-				<consumables
-				 class="modify"
-				 bind:myevent="onMyEvent"
-				 supply_types="{{supply_types}}"
-				/>
-
-			</view> -->
-			<!-- <button bindtap="toConfirm" class="print-button">打印</button> -->
-				<!-- <view class="pay-button" bindtap="toPay" wx:if="{{!detail.is_valid}}">
-					<view class="price-top">
-						<view class="price">￥{{detail.can_free_print?0:detail.sale_price}}</view>
-						<view>打印</view>
-					</view>
-				</view> -->
-
-			<!-- 试卷付款 、打印end -->
-
-			<!-- 内容付款、打印 start -->
-			<!-- 
-            1、is_valid          上次购买是否还有效，有效直接打印
-            2、discout==>discountType
-            **1. non_free       内容免费直接打印
-            **2. free            设置为免费，付款0元
-            **3. free_count      免费打印次数，直接打印
-            **4. discount_price  活动价，付款
-            **5. promotion       折扣，付款 
-        -->
-			<!-- <block wx:if="{{type!='_learning'}}">
-				<button bindtap="toConfirm" class="print-button" wx:if="{{detail.is_valid||discountType=='free_count'||discountType=='non_free'}}">
-					打印
-				</button> -->
-
-				<!-- <view class="pay-button" bindtap="toPayContent" wx:if="{{!detail.is_valid&&discountType!='free_count'&&discountType!='non_free'}}"> -->
-					<!-- <view class="price-top"> -->
-						<!-- ！（设置免费&&苹果&&会员）不显示价格 -->
-						<!-- <view class="price" wx:if="{{!(discountType=='free'&&!isAndroid&&isMember)}}"> -->
-							<!-- ￥{{discount.priceY}} -->
-						<!-- </view> -->
-						<!-- <view>打印</view> -->
-					<!-- </view> -->
-					<!-- <view class=" sale-price" wx:if="{{discountType!=null&&(!(discountType=='free'&&!isAndroid&&isMember))}}"> -->
-						<!-- 原价：￥{{discount.amountY}}</view> -->
-				<!-- </view> -->
-			<!-- </block> -->
-			<!-- 内容付款 、打印end -->
-
-			<!-- </view> -->
-		<!-- </view> -->
 </view>
 
 <view wx:else>
@@ -222,9 +143,9 @@
 			</view>
 		</view>
 	</view>
-	<view class="conf-box-left" bindtap="cancelCheck">取消</view>
+	<view class="conf-box-left {{isFullScreen ? 'is-full-screen' : ''}}" bindtap="cancelCheck">取消</view>
 	<button
-	 class="conf-box-right"
+	 class="conf-box-right {{isFullScreen ? 'is-full-screen' : ''}}"
 	 bindtap="confCheck"
 	 open-type="{{hasAuthPhoneNum ? '' : 'getPhoneNumber'}}"
 	 bindgetphonenumber="{{hasAuthPhoneNum ? '' : 'getPhoneNumber'}}"

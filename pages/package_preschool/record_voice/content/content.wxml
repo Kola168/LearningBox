@@ -27,7 +27,7 @@
 		<view class='print print-3'>
 			<view>
 				<image src='../../images/printicon.png' class='print_icon' mode='widthFix' />
-				<text class='print_num'>{{item.print_count || 0}}</text>
+				<text class='print_num'>{{item.printerOrdersCount || 0}}</text>
 			</view>
 			<view class="pages">共{{item.pageCount || 0}}页</view>
 		</view>

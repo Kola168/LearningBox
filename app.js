@@ -47,6 +47,14 @@ App({
 	// apiServer: 'http://jran.nat300.top',
 	// apiWbviewServer: 'http://jhx.nat300.top',
 
+  // apiWbviewServer: 'http://jhx.nat300.top',
+  
+  // 张伟本地服务
+  // apiServer: 'http://bboo.natapp1.cc',
+
+  // 许成本地服务
+  // apiServer: 'http://xucheng.nat100.top',
+	
 	authAppKey: 'iMToH51lZ0VrhbkTxO4t5J5m6gCZQJ6c',
   openId: '',
   authToken: '',
@@ -57,9 +65,10 @@ App({
   deBug: false, //线上环境log调试
 
   onLaunch: co.wrap(function*() {
-    yield this.getOpenId()
     yield this.getSystemInfo()
     this.navBarInfo = this.getNavBarInfo()
+    yield this.getOpenId()
+
   }),
 
   //获取系统信息

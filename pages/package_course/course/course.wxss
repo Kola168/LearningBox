@@ -384,7 +384,7 @@
   font-size: 36rpx;
 }
 
-.handle-bar>view image {
+.handle-bar .btn-action {
   width: 34rpx;
   height: 34rpx;
   margin-right: 8rpx;
@@ -408,7 +408,6 @@ view.course-buy {
   transform: translateX(-50%);
   color: #333;
   font-size: 28rpx;
-  background: #FFDC5E;
   box-shadow: 0 2px 4px 0 rgba(255, 226, 122, 0.50);
   border-radius: 18rpx;
   min-width: 200%;
@@ -420,20 +419,7 @@ view.course-buy {
   position: absolute;
   right: 6rpx;
   top: 8rpx;
-  width: 16rpx;
-  height: 16rpx;
-}
-
-.share-tip:after {
-  content: '';
-  position: absolute;
-  left: 60%;
-  bottom: -46rpx;
-  width: 0;
-  height: 0;
-  border-width: 24rpx;
-  border-style: solid;
-  border-color: #FFDC5E transparent transparent transparent;
+  width: 100%;
 }
 
 

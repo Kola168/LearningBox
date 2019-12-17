@@ -524,14 +524,15 @@ page {
 }
 
 .conf-box-right {
-  color: #454545;
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  padding: 0!important;
   width: 50%;
   background: #FFDC5E;
   line-height: 98rpx;
   text-align: center;
-  position: fixed;
-  right: 0;
-  bottom: 0;
+  color: #454545;
   border-top: 3rpx solid #cecece;
 }
 
@@ -672,7 +673,7 @@ page {
 
 .user-info {
   position: absolute;
-  bottom: 53rpx;
+  bottom: 180rpx;
   left: 0;
   padding-right: 22rpx;
   width: 100%;

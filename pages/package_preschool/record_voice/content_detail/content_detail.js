@@ -25,7 +25,7 @@ Page({
 		circular: true,
 		showGetModal: false, //耗材推荐弹窗
 		supply_types: '',
-		from: '',
+		showConsumable: false,
 		showSetting: false, //显示打印设置
 		documentPrintNum: 1, //打印份数
 		startPrintPage: 1,
@@ -47,12 +47,15 @@ Page({
 		member: true,
 		discountType: null,
 		discount: null,
+		kidInfo: null, //宝宝信息
+		isFullScreen: false,
 	},
 	onLoad: co.wrap(function* (options) {
 		var systemInfo = wx.getSystemInfoSync()
 		this.longToast = new app.weToast()
 		this.setData({
 			title: decodeURIComponent(options.title),
+			isFullScreen: app.isFullScreen,
 			isAndroid: systemInfo.system.indexOf('iOS') > -1 ? false : true
 		})
 	
@@ -65,15 +68,43 @@ Page({
 		this.longToast = new app.weToast()
 		let unionId = storage.get('unionId')
 		if (unionId) {
-      yield this.getRecordSource()
+			yield this.getRecordSource()
+			yield this.getConsumables()
+			yield this.getUserInfo()
 		}
 
 		//授权成功后回调
 		event.on('Authorize', this, function (data) {
 			this.getRecordSource()
+			 this.getConsumables()
+			 this.getUserInfo()
 		})
 
 	}),	
+
+	/**
+	 * 获取宝宝信息
+	 */
+	getUserInfo: co.wrap(function* () {
+    this.longToast.toast({
+      type: "loading",
+      duration: 0
+    })
+    try {
+      let resp = yield graphql.getUser()
+      this.setData({
+        kidInfo: resp.currentUser.selectedKid,
+      })
+      this.longToast.hide()
+    } catch (e) {
+      this.longToast.hide()
+      util.showError(e)
+    }
+	}),
+	
+	/**
+	 * 获取内容详情
+	 */
 	getRecordSource: co.wrap(function*(){
 		this.longToast.toast({
       type: 'loading',
@@ -84,7 +115,8 @@ Page({
 			var resp = yield graphql.getRecordSource(this.sn)
 
 			this.setData({
-				content: resp.content
+				content: resp.content,
+				collection: resp.content.contentCollected
 			})
 			this.longToast.hide()
 		} catch(err) {
@@ -92,20 +124,6 @@ Page({
 			util.showError(err)
 		}
 	}),
-
-	// updateDetail: co.wrap(function* () {
-	// 	this.longToast.toast({
-	// 		type: 'loading',
-	// 		title: '请稍候'
-	// 	})
-
-    
-
-	// 	// if (app.activeDevice) {
-	// 	// 	yield this.getCapability()
-	// 	// }
-	// 	this.longToast.toast()
-  // }),
 
 	onShow: co.wrap(function*() {
 		let hasAuthPhoneNum = Boolean(storage.get('hasAuthPhoneNum'))
@@ -149,7 +167,6 @@ Page({
 		})
   }),
   
-
 	collect: co.wrap(function* () {
     var auth = yield this.authCheck()
     if (!auth) {
@@ -212,30 +229,29 @@ Page({
   
 	print: co.wrap(function* (e) {
 		try {
-			if (!app.activeDevice) {
-				return util.showError({
-          message: '您还未绑定打印机，快去绑定吧'
-        })
-      }
-      
 			this.longToast.toast({
 				type: 'loading',
 				title: '请稍候'
 			})
 
-			let _this = this
-			let params = {
-				duplex: _this.data.duplexCheck,
-				grayscale: _this.data.colorCheck == 'Color' ? false : true,
-				copies: _this.data.documentPrintNum,
-				startPage: _this.data.startPrintPage,
-				endPage: _this.data.endPrintPage
-			}
-      var resp = yield commonRequest.createOrder('test', params)
+			var _this = this
+			var params = {
+        resourceAttribute: {
+          resourceType: 'Content',
+					sn: this.sn,
+					duplex: _this.data.duplexCheck,
+					copies: _this.data.documentPrintNum,
+					startPage: _this.data.startPrintPage,
+					endPage: _this.data.endPrintPage,
+					grayscale: _this.data.colorCheck == 'Color' ? false : true,
+        },
+        featureKey: "kid_record"
+      }
+      var resp = yield graphql.createResourceOrder(params)
 	
 			router.redirectTo('/pages/finish/index', {
 				media_type: this.data.media_type,
-				state: resp.createOrder.state
+				state: resp.createResourceOrder.state
 			})
 
 		} catch (e) {
@@ -255,8 +271,38 @@ Page({
 	 * 打开耗材弹窗
 	 */
 	openConsumable: function() {
-
+		this.setData({
+			showConsumable: true
+		})
 	},
+
+		/**
+	 * 关闭耗材弹窗
+	 */
+	closeConsumable: function() {
+		this.setData({
+			showConsumable: false
+		})
+	},
+
+	getConsumables: co.wrap(function*(){
+		this.longToast.toast({
+      type: 'loading',
+      title: '请稍候'
+		})
+		
+		try {
+			var resp = yield graphql.getConsumables("content", this.sn, 'before')
+
+			this.setData({
+				supply_types: resp.consumables
+			})
+			this.longToast.hide()
+		} catch(err) {
+			this.longToast.hide()
+			util.showError(err)
+		}
+	}),
 
 	//获取打印能力
 	getCapability: co.wrap(function* () {
@@ -344,7 +390,7 @@ Page({
 	endPageJudge(e) {
 		if (parseInt(e.detail.value) < parseInt(this.data.startPrintPage) || parseInt(e.detail.value) > this.data.detail.preview_urls.length) {
 			this.setData({
-				endPrintPage: this.data.detail.preview_urls.length,
+				endPrintPage: this.data.content.contentImage.length,
 			})
 			wx.showModal({
 				content: '请输入正确的结束页',

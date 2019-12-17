@@ -881,6 +881,7 @@ const graphqlApi = {
             name
             icon
             sn
+            printerOrdersCount  
             pageCount
           }
         }
@@ -905,6 +906,7 @@ const graphqlApi = {
             name
           }
           audio
+          contentCollected
           userAudio{
             audioUrl
             qrCodeUrl
@@ -1041,6 +1043,70 @@ const graphqlApi = {
       }
     })
   },
+
+  /**
+   * 获取耗材
+   */
+  getConsumables: (type, sn, period) => {
+    return gql.query({
+      query: `query ($type: ConsumableTypeEnum!, $sn: String!, $period: String!){
+        consumables(type:$type, sn: $sn, period: $period){
+          appid
+          url
+          imageUrl
+          name
+        }
+      }`,
+      variables: {
+        type,
+        sn,
+        period
+      }
+    })
+  },
+
+  /**
+   * 上传录音音频
+   */
+  createAudio: (pms) => {
+    return gql.mutate({
+      mutation: `mutation createAudio($input: CreateAudioInput!) {
+        createAudio(input: $input){
+          qrCodeUrl
+        }
+      }`,
+      variables: {
+        input: pms
+      }
+    })
+  },
+  
+  /**
+   * 获取用户录制信息
+   */
+  getRecordInfo: (sn, userId) => {
+    return gql.query({
+      query: `query getRecordInfo($sn: String!, $userId: Int!){
+        userContentAudio(sn: $sn, userId: $userId){
+          audioUrl
+        }
+        content(sn: $sn){
+          name
+          icon
+          sn
+          contentImage{
+            name
+          }
+          audio
+          contentCollected
+        }
+      }`,
+      variables: {
+        sn,
+        userId
+      }
+    })
+  }
 }
 
 export default graphqlApi

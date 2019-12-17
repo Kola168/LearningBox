@@ -37,9 +37,11 @@ const getUploadAuth = co.wrap(function*(params = {}) {
  * 上传单个文件,包括图片和音频
  * @param { String } path 文件路径path required
  */
-let uploadFile = co.wrap(function*(path) {
+let uploadFile = co.wrap(function*(path, suffix) {
   try {
-    let authInfo = yield getUploadAuth()
+    let fileName = path.split('.')
+    let params = suffix  ? {suffix: fileName[fileName.length - 1].length >= 5 ? '' : fileName[fileName.length - 1]} : {}
+    let authInfo = yield getUploadAuth(params)
     let uploadRes = yield wxUploadFile({
       url: authInfo.host,
       filePath: path,

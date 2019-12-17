@@ -1,8 +1,8 @@
 <!-- 耗材推荐 -->
 <!-- <image src='https://cdn.gongfudou.com/miniapp/ec/consumables_icon1.gif' mode="widthFix" class='consumables-icon' catchtap='controlModal' data-medium="{{medium_recommend}}" data-find="{{find}}"></image> -->
-<view class="{{supply_types.length>2?'mask2':'mask'}}" wx:if="{{showGetModal}}" catchtap='hideModal'>
+<view class="{{supply_types.length>2?'mask2':'mask'}}" catchtap='hideModal'>
     <view class="{{supply_types.length>2?'consumables-bg2':'consumables-bg1'}}">
-        <image src="/images/consumables-top-bg.png" mode="widthFix" class='consumables-top-bg'></image>
+        <image src="/images/consumables_top_bg.png" mode="widthFix" class='consumables-top-bg'></image>
         <image src="/images/print_photo_delete.png" mode="widthFix" class='consumables-close' catchtap='hideModal'></image>
         <view class="{{supply_types.length > 1 ? 'content1' : 'content2'}}">
             <view wx:for="{{supply_types}}" wx:key="{{index}}" class='type' id="{{index}}" bindtap="order">

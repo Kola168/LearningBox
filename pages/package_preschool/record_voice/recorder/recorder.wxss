@@ -126,7 +126,7 @@
 
 .control-main {
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-between;
   padding: 80rpx 100rpx 0;
   width: 100%;
   box-sizing: border-box;

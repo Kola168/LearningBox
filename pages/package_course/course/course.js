@@ -189,7 +189,7 @@ Page({
           sn: this.sn,
           type: "course"
         })
-        var isFree = resp.paymentCheck && resp.paymentCheck.isFree
+        var isFree = resp.paymentCheck && resp.paymentCheck.free
         if (!isFree) {
           yield showModal({
             title: '重要提示',
