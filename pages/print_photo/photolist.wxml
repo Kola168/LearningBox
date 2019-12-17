@@ -2,13 +2,19 @@
 <nav-bar title="{{photoMedia.name}}"></nav-bar>
 <multi-process wx:if="{{showProcess}}" complete-count="{{completeCount}}" count="{{count}}" percent="{{percent}}" err-tip ="{{errTip}}" bindcancelprocess="cancelImg"></multi-process>
 <take-photo-pop id="checkComponent" bindchooseImg="chooseImgs" imgNum="{{chooseCount}}" bindbaidutap="baiduprint"></take-photo-pop>
+<confirm-print bindconfirm="makeOrder" modal="{{confirmModal}}" />
 
 <wxs src="commonphoto.wxs" module="foo" />
+
 
 <block wx:if="{{photoList.length>0}}">
   <view class="top-tips">
     请先行预览或编辑，未显示部分将不会打印
   </view>
+  <view wx:if="{{!showProcess && showCover}}" class="mode-tips-bg" bindtap="closeCover">
+    <image src="/images/print_photo_cover.png" mode="widthFix" class="mode-tips-img"></image>
+  </view>
+
   <view class="photo-list-box">
     <view wx:for="{{photoList}}" wx:key="photoList" class="photo-item-box">
       <image src="{{foo.shrinkPhoto(item.url,photoMedia.size.shrinksize)}}" mode="widthFix" class="photo-item-img"></image>
@@ -43,7 +49,7 @@
   <view class="bottom-button-style bottom-button-white" bindtap="showImgCheck">
     {{photoList.length>0?'继续上传':'上传照片'}}({{photoList.length}}/{{limitPhoto}})
   </view>
-  <view class="bottom-button-style {{photoList.length>0?'common-button-bg bottom-button-conf':'bottom-button-refuse'}}">
+  <view class="bottom-button-style {{photoList.length>0?'common-button-bg bottom-button-conf':'bottom-button-refuse'}}" bindtap="confOrder">
     确认打印
   </view>
 </view>

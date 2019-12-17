@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2019-12-12 19:34:39
- * @LastEditTime: 2019-12-16 11:11:49
+ * @LastEditTime: 2019-12-17 09:46:12
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /LearningBox/pages/account/index.js
@@ -21,7 +21,8 @@ const getUserInfo = util.promisify(wx.getUserInfo)
 
 Page({
   data: {
-    kidInfo:null
+		kidInfo:null,
+		devices:[]
   },
   onLoad: function (options) {
     this.longToast = new app.weToast()
@@ -50,8 +51,7 @@ Page({
     router.navigateTo('/pages/package_common/account/personal_info')
 	},
 	
-	net1:function(){
-		console.log('11111')
+	addDevice:function(){
 		router.navigateTo('/pages/package_device/network/index/index')
 	}
 })

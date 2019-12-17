@@ -989,6 +989,65 @@ const graphqlApi = {
         zipCode: zipCode
       }
     })
+	},
+	
+	//查询模板列表
+  searchTemplate:(type)=>{
+    return gql.query({
+      query: `query($key: String!) {
+        feature(key: $key) {
+          categories {
+            templates {
+              previewImage
+              name
+              imageUrl
+              sn
+              positionInfo {
+                width
+                areaHeight
+                areaWidth
+                areaX
+                areaY
+                height
+                width
+              }
+            }
+          }
+        }
+      }`,
+      variables: {
+        key: type
+      }
+    })
+  },
+
+  searchTemplateType:(sn)=>{
+    return gql.query({
+      query: `query($sn: String!) {
+        category(sn: $sn) {
+          name
+          sn
+          templates {
+            previewImage
+            name
+            imageUrl
+            sn
+            positionInfo {
+              width
+              areaHeight
+              areaWidth
+              areaX
+              areaY
+              height
+              width
+            }
+          }
+        }
+      }`,
+      variables: {
+        sn: sn
+      }
+    })
   },
 }
 

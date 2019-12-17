@@ -1,0 +1,8 @@
+{
+  "usingComponents": {
+    "nav-bar": "../../../components/nav-bar/index",
+    "edit-photo":"../../../components/multiphoto/index",
+    "bottom-button":"../../../components/bottom-button/index"
+  },
+  "disableScroll":true
+}

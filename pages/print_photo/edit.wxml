@@ -1,17 +1,28 @@
 <!--pages/print_photo/edit.wxml-->
 <nav-bar title="照片编辑"></nav-bar>
-<view class="top-tips">
-  <image src="/images/print_photo_edit_face.png" mode="widthFix" class="tips-face-icon"></image>
-  <text class="tips-top-text">可手动放大缩小，移动位置</text>
+<view class="container-box {{showMode?'bg-white':''}}">
+  <view class="top-tips">
+    <image src="{{showMode?'/images/icon-smile.png':'/images/print_photo_edit_face.png'}}" mode="widthFix" class="tips-face-icon"></image>
+    <text class="tips-top-text {{showMode?'tips-top-text-small':''}}">{{showMode?'图片可以旋转、缩放、漂亮的模版自由搭配':'可手动放大缩小，移动位置'}}</text>
+  </view>
+  <view class="edit-box">
+    <edit-photo id="mymulti" class="edit-mode" mode-info="{{templateInfo}}" mode-paper="{{paperSize}}" img-path="{{photoPath}}" img-info="{{imageInfo}}"></edit-photo>
+  </view>
+  <view class="bottom-tips">
+    {{showMode?'':'虚线外的区域将会被剪裁'}}
+  </view>
+  <view class="edit-button">
+    <scroll-view class="template-list-box" scroll-x>
+      <view class="template-item-box template-name {{index==templateTypeIndex?'template-type-selected':''}}" wx:for="{{templateList}}" wx:key="templateList" data-index="{{index}}" bindtap="{{templateTypeIndex==index?'':'checkTemplateType'}}">{{item.name}}</view>
+    </scroll-view>
+    <scroll-view class="template-list-box template-limit-height" scroll-x>
+      <view wx:for="{{templateList[templateTypeIndex].templates}}" wx:key="templates" class="template-item-box {{index==templateIndex?'template-item-selected':''}}" data-index="{{index}}" bindtap="{{templateIndex==index?'':'checkTemplate'}}">
+        <image src="{{item.preview_url}}" mode="widthFix" class="template-preview-img"></image>
+      </view>
+    </scroll-view>
+    <bottom-button text-right="{{showMode?'编辑完成':'确认修改'}}" bindrighttap="confEdit"></bottom-button>
+  </view>
 </view>
-<view class="edit-box">
-  <edit-photo id="mymulti" class="edit-mode" mode-info="{{templateInfo}}" mode-paper="{{paperSize}}" img-path="{{photoPath}}"></edit-photo>
-</view>
-<view class="bottom-tips">
-  虚线外的区域将会被剪裁
-</view>
-<view class="edit-button {{butHigh?'button-heigher':''}}" bindtap="confEdit">
-  确认修改
-</view>
+
 <import src="/lib/toast/wetoast.wxml" />
 <template is="wetoast" data="{{...__wetoast__}}" />

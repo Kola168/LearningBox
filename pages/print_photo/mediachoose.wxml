@@ -1,48 +1,17 @@
-<!--
- * @Author: your name
- * @Date: 2019-12-05 21:14:27
- * @LastEditTime: 2019-12-06 14:44:28
- * @LastEditors: Please set LastEditors
- * @Description: In User Settings Edit
- * @FilePath: /LearningBox/pages/print_photo/mediachoose.wxml
- -->
 <!--pages/print_photo/mediachoose.wxml-->
 <nav-bar title="照片打印"></nav-bar>
 
 <view class="media-box">
-  <view class="photo-media-topbox" data-type="pic_a6" bindtap="choosemedia">
-    <image src="/images/printphoto_6inch.png" mode="widthFix" class="photo-media-topicon"></image>
-    <text class="media-toptitle">6寸照片</text>
-    <text class="media-size">102*152mm</text>
+  <view wx:for="{{topImgList}}" wx:key="topImgList" class="photo-media-topbox" data-type="{{item.type}}" data-mode="{{item.mode}}" bindtap="{{item.bindFun}}">
+    <image wx:if="{{item.mode}}" src="/images/printphoto_mode.png" mode="widthFix" class="media-mode"></image>
+    <image src="{{item.iconPath}}" mode="widthFix" class="photo-media-topicon"></image>
+    <text class="media-toptitle">{{item.name}}</text>
+    <text class="media-size">{{item.size}}</text>
   </view>
-  <view class="photo-media-topbox" bindtap="printPhotoDoc">
-    <image src="/images/printphoto_a4_to_file.png" mode="widthFix" class="photo-media-topicon"></image>
-    <text class="media-toptitle">在A4纸上打印</text>
-    <text class="media-size">速度快 耗墨少</text>
-  </view>
-  <view class="photo-media-box" data-type="pic_a5" bindtap="choosemedia">
-    <image src="/images/printphoto_5inch.png" mode="widthFix" class="photo-media-icon"></image>
-    <text class="media-title">5寸照片</text>
-    <text class="media-size">89*127mm</text>
-  </view>
-  <view class="photo-media-box" data-type="lomo" bindtap="choosemedia">
-    <image src="/images/printphoto_lomo.png" mode="widthFix" class="photo-media-icon"></image>
-    <text class="media-title">lomo照片</text>
-    <text class="media-size">74*105mm</text>
-  </view>
-  <view class="photo-media-box" data-type="pic_a7" bindtap="choosemedia">
-    <image src="/images/printphoto_7inch.png" mode="widthFix" class="photo-media-icon"></image>
-    <text class="media-title">7寸照片</text>
-    <text class="media-size">127*178mm</text>
-  </view>
-  <view class="photo-media-box" data-type="pic_a4" bindtap="choosemedia">
-    <image src="/images/printphoto_a4.png" mode="widthFix" class="photo-media-icon"></image>
-    <text class="media-title">A4照片</text>
-    <text class="media-size">A4尺寸照片纸</text>
-  </view>
-  <view class="photo-media-box" bindtap="printId">
-    <image src="/images/printphoto_id.png" mode="widthFix" class="photo-media-icon"></image>
-    <text class="media-title">证件照</text>
-    <text class="media-size">多尺寸可换背景</text>
+  <view wx:for="{{smallImgList}}" wx:key="smallImgList" class="photo-media-box" data-type="{{item.type}}" data-mode="{{item.mode}}" bindtap="{{item.bindFun}}">
+    <image wx:if="{{item.mode}}" src="/images/printphoto_mode.png" mode="widthFix" class="media-mode"></image>
+    <image src="{{item.iconPath}}" mode="widthFix" class="photo-media-icon"></image>
+    <text class="media-title">{{item.name}}</text>
+    <text class="media-size">{{item.size}}</text>
   </view>
 </view>

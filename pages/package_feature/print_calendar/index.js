@@ -5,27 +5,27 @@ Page({
 
   data: {
     urls: [],
-    diy: [
-      'https://cdn.gongfudou.com/miniapp/ec/calendar_diy_a.png',
-      'https://cdn.gongfudou.com/miniapp/ec/calendar_diy_b.png',
-      'https://cdn.gongfudou.com/miniapp/ec/calendar_diy_c.png',
-      'https://cdn.gongfudou.com/miniapp/ec/calendar_diy_d.png',
-      'https://cdn.gongfudou.com/miniapp/ec/calendar_diy_e.png',
-      'https://cdn.gongfudou.com/miniapp/ec/calendar_diy_f.png',
+    diy_calendar: [
+      'https://cdn-h.gongfudou.com/LearningBox/feature/diy/calendar_diy_1.png',
+      'https://cdn-h.gongfudou.com/LearningBox/feature/diy/calendar_diy_2.png',
+      'https://cdn-h.gongfudou.com/LearningBox/feature/diy/calendar_diy_3.png',
+      'https://cdn-h.gongfudou.com/LearningBox/feature/diy/calendar_diy_4.png',
+      'https://cdn-h.gongfudou.com/LearningBox/feature/diy/calendar_diy_5.png',
+      'https://cdn-h.gongfudou.com/LearningBox/feature/diy/calendar_diy_6.png',
     ],
-    wood: [
-      'https://cdn.gongfudou.com/miniapp/ec/calendar_solid_wood_acalendar_solid_wood_a.png',
-      'https://cdn.gongfudou.com/miniapp/ec/calendar_solid_wood_b.png',
-      'https://cdn.gongfudou.com/miniapp/ec/calendar_solid_wood_c.png',
-      'https://cdn.gongfudou.com/miniapp/ec/calendar_solid_wood_d.png',
-      'https://cdn.gongfudou.com/miniapp/ec/calendar_solid_wood_e.png',
-      'https://cdn.gongfudou.com/miniapp/ec/calendar_solid_wood_f1.png',
+    wood_calendar: [
+      'https://cdn-h.gongfudou.com/LearningBox/feature/wood/calendar_solid_wood_1.png',
+      'https://cdn-h.gongfudou.com/LearningBox/feature/wood/calendar_solid_wood_2.png',
+      'https://cdn-h.gongfudou.com/LearningBox/feature/wood/calendar_solid_wood_3.png',
+      'https://cdn-h.gongfudou.com/LearningBox/feature/wood/calendar_solid_wood_4.png',
+      'https://cdn-h.gongfudou.com/LearningBox/feature/wood/calendar_solid_wood_5.png',
+      'https://cdn-h.gongfudou.com/LearningBox/feature/wood/calendar_solid_wood_6.png',
     ],
     titleName:'',
   },
   name:{
-    diy:'DIY生活台历',
-    wood:'实木相框台历',
+    diy_calendar:'DIY生活台历',
+    wood_calendar:'实木相框台历',
   },
   onLoad: function(options) {
     this.type=options.type
