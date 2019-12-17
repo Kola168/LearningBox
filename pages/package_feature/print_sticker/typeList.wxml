@@ -1,0 +1,23 @@
+<!--pages/package_feature/print_sticker/typeList.wxml-->
+<nav-bar title="大头贴"></nav-bar>
+<view class="container">
+  <view class="flex-item" data-type="two" bindtap="checkType">
+    <view class="mode-box">
+      <view class="mode-style mode-horizontal"></view>
+      <view class="mode-style mode-horizontal"></view>
+    </view>
+    <text class="mode-text">二合一</text>
+  </view>
+  <view class="flex-item" data-type="four" bindtap="checkType">
+    <view class="mode-box">
+      <view class="mode-style mode-vertical"></view>
+      <view class="mode-style mode-vertical"></view>
+      <view class="mode-style mode-vertical"></view>
+      <view class="mode-style mode-vertical"></view>
+    </view>
+    <text class="mode-text">四合一</text>
+  </view>
+  <view class="flex-item">
+    敬请期待
+  </view>
+</view>

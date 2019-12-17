@@ -15,9 +15,13 @@
     <image src="../../images/tip_add_kid_info.png" mode="widthFix" class="after-tip" wx:else></image>
 </view>
 <image src="/images/account_member_center.png" mode="widthFix" class="member" />
-<view class="no-device">
+<view class="no-device" wx:if="{{devices.length ===0}}" bindtap="addDevice">
     <image src="/images/account_add_device.png" mode="widthFix" />
     <view>请先添加设备</view>
+</view>
+<view class="no-device" wx:else bindtap="">
+	<image src="/images/account_add_device.png" mode="widthFix" />
+	<view>已经有设备 待展示</view>
 </view>
 <view class="content-wrap">
     <view class="title">记录与收藏</view>
@@ -77,4 +81,3 @@
 <template is="wetoast" data="{{...__wetoast__}}" />
 
 
-<button class="net" bindtap="net1">配网</button>

@@ -1,0 +1,7 @@
+{
+  "usingComponents": {
+    "edit-photo":"../../../components/multiphoto/index",
+    "bottom-button":"../../../components/bottom-button/index"
+  },
+  "disableScroll":true
+}

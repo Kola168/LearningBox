@@ -10,6 +10,9 @@ const imginit = require('../../../utils/imginit')
 const showModal = util.promisify(wx.showModal)
 
 import wxNav from '../../../utils/nav.js'
+import api from '../../../network/restful_request'
+import commonRequest from '../../../utils/common_request'
+
 let Loger = (app.apiServer != 'https://epbox.gongfudou.com' || app.deBug) ? console.log : function() {}
 
 Page({
@@ -45,7 +48,7 @@ Page({
   limitCount: 9, //最大上传数量
 
   onLoad: co.wrap(function*(options) {
-
+    this.type=options.type||'photo_book'
   }),
 
   tapTemplate: function(e) {
@@ -68,6 +71,14 @@ Page({
   },
 
   confBut: co.wrap(function*() {
+    if(this.data.imgList.length<=0){
+      return wx.showModal({
+        title: '提示',
+        content: '至少上传一张照片哦',
+        showCancel: false,
+        confirmColor: '#FFE27A'
+      })
+    }
     try {
       let that = this
       let pointArr = []
@@ -92,6 +103,22 @@ Page({
         pointArr.push(pointItem[0])
       })
       console.log(pointArr)
+      let param={
+        is_async:false,
+        feature_key:this.type,
+        images_info:pointArr
+      }
+      const resp = yield api.processes(param)
+      if(resp.code==0){
+        this.setData({
+          confirmModal: {
+            isShow: true,
+            title: '请参照下图正确放置照片纸',
+            image: 'https://cdn-h.gongfudou.com/LearningBox/main/confirm_print.png'
+          },
+        })
+      }
+      console.log(resp)
     } catch (e) {
       console.log(e)
     }
@@ -217,11 +244,25 @@ Page({
     })
     this.showEdit(choosedIndex)
   }),
+
   //取消照片上传
   cancelImg: co.wrap(function*() {
     app.cancelUpload = true
     this.setData({
       showProcess: false
     })
+  }),
+
+  makeOrder:co.wrap(function*(){
+    // let imgs = [{
+    //   originalUrl: this.compoundUrl,
+    //   printUrl: this.compoundUrl
+    // }]
+    // let resp = yield commonRequest.createOrder('literacy_card', imgs)
+    // wxNav.redirectTo(`../../../finish/index`, {
+    //   media_type: 'literacy_card',
+    //   state: resp.state,
+    //   type: 'literacy_card'
+    // })
   }),
 })

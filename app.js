@@ -4,7 +4,6 @@ let {
 } = require('lib/toast/wetoast.js')
 import { regeneratorRuntime, co, util, _, storage, logger } from './utils/common_import'
 const getSystemInfo = util.promisify(wx.getSystemInfo)
-const getStorage = util.promisify(wx.getStorage)
 const login = util.promisify(wx.login)
 const request = util.promisify(wx.request)
 
@@ -14,7 +13,7 @@ App({
   //线上地址
   // apiServer: 'https://epbox.gongfudou.com',
   // apiWbviewServer: 'https://epbox.gongfudou.com/',
-	
+
 	//staging
   apiServer: 'https://lb-stg.gongfudou.com',
   apiWbviewServer: 'https://lb-stg.gongfudou.com/',
@@ -47,7 +46,7 @@ App({
   //江然本地服务
 	// apiServer: 'http://jran.nat300.top',
 	// apiWbviewServer: 'http://jhx.nat300.top',
-	
+
 	authAppKey: 'iMToH51lZ0VrhbkTxO4t5J5m6gCZQJ6c',
   openId: '',
   authToken: '',
