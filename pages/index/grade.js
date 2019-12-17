@@ -15,25 +15,25 @@ Page({
    * 页面的初始数据
    */
   data: {
-    discipline: [
-      ['0~3岁', '小班', '中、大班'],
-      ['一年级', '二年级', '三年级', '四年级', '五年级', '六年级'],
-      ['七年级', '八年级', '九年级'],
-      ['高一', '高二', '高三']
-    ],
-    activeGrade: '0~3岁',
+    activeGrade: '',
     stages: []
   },
-  onLoad: function (options) {
+  onLoad: co.wrap(function* (options) {
     this.longToast = new app.weToast()
-    this.getAllstages()
+    yield this.getAllstages()
     if (options.grade) {
       this.setData({
         activeGrade: options.grade
       })
+      this.sn = options.sn
+    } else {
+      this.sn = this.data.stages[0].children[0].children[0].sn
+      this.setData({
+        activeGrade: this.data.stages[0].children[0].children[0].name
+      })
     }
 
-  },
+  }),
   getAllstages: co.wrap(function* () {
     this.longToast.toast({
       type: "loading",
@@ -72,13 +72,11 @@ Page({
     // return
     try {
       const resp = yield gql.changeStage(params)
-      console.log(resp)
       this.longToast.hide()
       router.navigateBack()
     } catch (e) {
       util.showError(e)
       this.longToast.hide()
     }
-
   })
 })
