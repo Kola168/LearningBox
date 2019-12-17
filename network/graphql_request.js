@@ -1,20 +1,18 @@
 var app = getApp()
 var gqwxappGraphql = require('./wxgql')
 var GraphQL = gqwxappGraphql.GraphQL
-
+import storage from '../utils/storage.js'
 // 初始化对象
 let gql = GraphQL({
   url: `${app.apiServer}/graphql`,
   header: function () {
     if (app.authToken) {
-      console.log('authToken==1==', app.authToken)
       return {
         "AUTHORIZATION": `Token token=${app.authToken}`
       }
     } else {
       try {
-        var authToken = wx.getStorageSync('authToken')
-        console.log('authToken====', authToken)
+        var authToken = storage.get('authToken')
         if (authToken) {
           return {
             "AUTHORIZATION": `Token token=${authToken}`
@@ -819,7 +817,7 @@ const graphqlApi = {
               timeStamp
             }
           }
-         
+
         }
       }`,
       variables: {
@@ -846,7 +844,7 @@ const graphqlApi = {
 
   /**
    * 获取童音录制分类
-   * @param {String} 资源标示 
+   * @param {String} 资源标示
    */
   getRecordCategories: (key)=>{
     return gql.query({
@@ -925,18 +923,18 @@ const graphqlApi = {
   //   })
   // },
 
-	
+
 	getProvinces: () => {
     return gql.query({
       query: `query{
         provinces{
            name
            zipCode
-        }   
+        }
       }`
     })
   },
-	
+
 	getProvince: (zipCode) => {
     return gql.query({
       query: `query ($zipCode: String!){
@@ -954,7 +952,7 @@ const graphqlApi = {
       }
     })
   },
-	
+
 	getCity: (zipCode) => {
     return gql.query({
       query: `query ($zipCode: String!){
@@ -972,7 +970,7 @@ const graphqlApi = {
       }
     })
 	},
-	
+
 	getProvince1: (zipCode) => {
     return gql.query({
       query: `query ($zipCode: String!){

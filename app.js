@@ -4,7 +4,6 @@ let {
 } = require('lib/toast/wetoast.js')
 import { regeneratorRuntime, co, util, _, storage, logger } from './utils/common_import'
 const getSystemInfo = util.promisify(wx.getSystemInfo)
-const getStorage = util.promisify(wx.getStorage)
 const login = util.promisify(wx.login)
 const request = util.promisify(wx.request)
 
