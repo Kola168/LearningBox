@@ -99,7 +99,7 @@ const chooseCtx = {
         mediumRecommend: this.media_type,
         showIndex: true
       })
-      this.getSupplyBefore(this.media_type)
+      // this.getSupplyBefore(this.media_type)
     }
   },
 

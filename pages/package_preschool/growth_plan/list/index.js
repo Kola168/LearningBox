@@ -5,7 +5,7 @@ import {regeneratorRuntime, co, wxNav, util, logger} from '../../../../utils/com
 const showModal = util.promisify(wx.showModal)
 // const logger = new Logger.getLogger('pages/index/index')
 import Logger from '../../../../utils/logger.js'
-const logger = new Logger.getLogger('pages/package_preschool/growth_plan/list/index')
+// const logger = new Logger.getLogger('pages/package_preschool/growth_plan/list/index')
 
 Page({
 
