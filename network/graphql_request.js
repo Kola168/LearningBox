@@ -930,8 +930,13 @@ const graphqlApi = {
   //   })
   // },
 
-
-	getProvinces: () => {
+	
+	/**
+   *获取省列表
+   *
+   * @returns
+   */
+  getProvinces: () => {
     return gql.query({
       query: `query{
         provinces{
@@ -941,8 +946,14 @@ const graphqlApi = {
       }`
     })
   },
-
-	getProvince: (zipCode) => {
+	
+	/**
+   *获取市列表
+   *
+   * @param {*} zipCode
+   * @returns
+   */
+  getProvince: (zipCode) => {
     return gql.query({
       query: `query ($zipCode: String!){
         province(zipCode:$zipCode){
@@ -959,8 +970,14 @@ const graphqlApi = {
       }
     })
   },
-
-	getCity: (zipCode) => {
+	
+	/**
+   *获取区列表
+   *
+   * @param {*} zipCode
+   * @returns
+   */
+  getCity: (zipCode) => {
     return gql.query({
       query: `query ($zipCode: String!){
         city(zipCode:$zipCode){
