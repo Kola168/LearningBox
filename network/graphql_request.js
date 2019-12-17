@@ -25,6 +25,7 @@ let gql = GraphQL({
   },
   //全局错误拦截
   errorHandler: function(res) {
+		console.log('graphql全局错误拦截',res)
 		//如果auth
 		if(1){
 
