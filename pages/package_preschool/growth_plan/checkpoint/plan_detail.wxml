@@ -1,0 +1,19 @@
+<!--pages/package_preschool/growth_plan/checkpoint/plan_detail.wxml-->
+<nav-bar title="计划详情"></nav-bar>
+<swiper class="detail-images" indicator-dots="{{indicatorDots}}" autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">
+    <block wx:for="{{imgUrls}}" wx:key="{{index}}" id="{{index}}">
+        <swiper-item class="detail-item">
+            <image src="{{currentImage}}" class="slide-image" />
+        </swiper-item>
+    </block>
+</swiper>
+<view class="fixed-bottom">
+    <view class="turn-page">
+        <view><text class="page-num">{{currentPage}}/{{allPage}}</text></view>
+        <view class="turn-img">
+            <image bindtap="prePage" src="../../../../images/doc_preview_turn_left.png" />
+            <image bindtap="nextPage" src="../../../../images/doc_preview_turn_right.png" />
+        </view>
+    </view>
+</view>
+<view class="footer {{isFullScreen?'is-full-screen':''}}" bindtap="beginPrint">开始打印</view>

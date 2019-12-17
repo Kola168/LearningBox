@@ -41,8 +41,9 @@
     margin-bottom:50rpx;
 }
 .item-left{
-    width:30%;
     margin-right:3%;
+    width:200rpx;
+    height:200rpx;
 }
 .item-img{
     width:200rpx;
@@ -51,7 +52,7 @@
     background-color:#FFDC5E;
 }
 .item-right{
-    width:67%;
+    width: calc(100% - 230rpx)
 }
 .item-right-top{
    text-align: left; 
@@ -60,6 +61,12 @@
     color: #333333;
     font-size: 30rpx;
     margin:10rpx 0rpx;
+    width: 100%;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    align-content: flex-start;
+    align-items: flex-start;
 }
 .item-desc, .item-tag, .btn-primary, .progress-num{
     font-size: 24rpx;
@@ -67,19 +74,24 @@
 .item-desc{
     color: #666666;
     margin-bottom: 10rpx;
+    width: 100%;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 .item-tag, .progress-num{
     color: #999999;
 }
-.item-title, .item-desc, .item-tag{
+/* .item-title, .item-desc, .item-tag{
     height: 38rpx;
     line-height: 38rpx;
     overflow: hidden;
-}
+} */
 .item-right-bottom{
     margin-top: 10rpx;
     display: flex;
     justify-content: space-between;
+    width: 100%;
 }
 .progress-cont{
     width:68%;
@@ -106,9 +118,12 @@
     display: flex;
     justify-content: space-between;
 }
-.bottom-right{
-    width:30%;
+.bottom-right, .bottom-right-no{
+    width:35%;
     text-align: center;
+}
+.bottom-right-no{
+    width:32%;
 }
 .item-right-bottom .btn-primary{
     background: #FFDC5E;

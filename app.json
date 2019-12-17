@@ -41,8 +41,8 @@
     "pages/print_id/smart_index",
     "pages/print_id/smart_rules",
     "pages/course/index",
-		"components/bottom-button/test",
-		"pages/index/grade",
+    "components/bottom-button/test",
+    "pages/index/grade",
     "pages/account/index"
   ],
   "subPackages": [
@@ -93,7 +93,17 @@
         "print_calendar/edit",
         "print_thumb_album/index",
         "print_thumb_album/photolist",
-        "print_thumb_album/edit"
+        "print_thumb_album/edit",
+        "print_name/index",
+        "print_name/edit",
+        "print_name/preview",
+        "print_sticker/index",
+        "print_sticker/typeList",
+        "print_sticker/edit",
+        "print_sticker/preview",
+        "print_sticker/imglist",
+        "print_postcard/index",
+        "print_postcard/edit"
       ]
     },
     {
@@ -112,7 +122,10 @@
         "record_voice/content/content",
 				"record_voice/content_detail/content_detail",
 				"growth_plan/list/index",
-        "growth_plan/timed_print/timed_print"
+        "growth_plan/timed_print/timed_print",
+        "growth_plan/print_setting/print_setting",
+        "growth_plan/checkpoint/plan_checkpoint",
+        "growth_plan/checkpoint/plan_detail"
       ]
     },
     {

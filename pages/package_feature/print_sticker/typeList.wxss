@@ -1,0 +1,52 @@
+/* pages/package_feature/print_sticker/typeList.wxss */
+.container {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  padding: 30rpx 24rpx;
+  box-sizing: border-box;
+}
+
+.flex-item {
+  width: 336rpx;
+  height: 432rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 2px 8px 0 rgba(204, 204, 204, 0.40);
+  border-radius: 10rpx;
+  margin-top: 30rpx;
+  font-size: 28rpx;
+  color: #999999;
+}
+
+.mode-box {
+  width: 204rpx;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.mode-style {
+  background: #FFEEB2;
+  margin-bottom: 20rpx;
+  flex-shrink: 0;
+}
+
+.mode-horizontal {
+  width: 178rpx;
+  height: 128rpx;
+}
+
+.mode-vertical {
+  width: 92rpx;
+  height: 128rpx
+}
+
+.mode-text {
+  font-size: 36rpx;
+  color: #454545;
+  margin-top: 10rpx;
+}

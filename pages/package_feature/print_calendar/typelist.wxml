@@ -1,13 +1,13 @@
 <!--pages/package_feature/print_ calendar/typelist.wxml-->
 <nav-bar title="模板选择"></nav-bar>
 <view class="flex-box">
-  <view class="item-box" data-type="diy" bindtap="tapType">
+  <view class="item-box" data-type="diy_calendar" bindtap="tapType">
     <image src="../resource_images/calendar_diy.png" mode="widthFix" class="item-img"></image>
     <view class="item-text">
       DIY生活台历
     </view>
   </view>
-  <view class="item-box" data-type="wood" bindtap="tapType">
+  <view class="item-box" data-type="wood_calendar" bindtap="tapType">
     <image src="../resource_images/calendar_wood.png" mode="widthFix" class="item-img"></image>
     <view class="item-text">
       实木相框台历

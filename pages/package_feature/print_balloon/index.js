@@ -5,17 +5,15 @@ import wxNav from '../../../utils/nav.js'
 Page({
 
   data: {
-    urls: ['https://cdn.gongfudou.com/miniapp/ec/quweidayin/balloon/balloon_intro_04.png',
-      'https://cdn.gongfudou.com/miniapp/ec/quweidayin/balloon/balloon_intro_05.png',
-      'https://cdn.gongfudou.com/miniapp/ec/quweidayin/balloon/balloon_intro_06.png',
-      'https://cdn.gongfudou.com/miniapp/ec/quweidayin/balloon/balloon_intro_07.png',
-      'https://cdn.gongfudou.com/miniapp/ec/quweidayin/balloon/balloon_intro_08.png',
-      'https://cdn.gongfudou.com/miniapp/ec/quweidayin/balloon/balloon_intro_10.png'
+    urls: ['https://cdn-h.gongfudou.com/LearningBox/feature/balloon/balloon_intro_01.jpg',
+      'https://cdn-h.gongfudou.com/LearningBox/feature/balloon/balloon_intro_02.jpg',
+      'https://cdn-h.gongfudou.com/LearningBox/feature/balloon/balloon_intro_03.jpg',
+      'https://cdn-h.gongfudou.com/LearningBox/feature/balloon/balloon_intro_04.jpg',
     ],
   },
 
   onLoad: function(options) {
-
+    this.type=options.type||'balloon'
   },
 
   buysth:function(){
@@ -24,7 +22,9 @@ Page({
 
   toedit:function(e){
     try{
-        wxNav.navigateTo('/pages/package_feature/print_balloon/typelist')
+        wxNav.navigateTo('/pages/package_feature/print_balloon/typelist',{
+          type:this.type
+        })
     }catch(e){
       console.log(e)
     }

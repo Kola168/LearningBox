@@ -1,0 +1,55 @@
+/* pages/package_preschool/growth_plan/checkpoint/plan_detail.wxss */
+.detail-images{
+    display: flex;
+    white-space: nowrap;
+    flex-wrap: nowrap;
+    width: 100%;
+    height:980rpx;
+}
+.detail-item, .detail-images image{
+    width:100%;
+    height:980rpx;
+}
+.detail-item{
+    display: inline-block;
+}
+
+.turn-page{
+    margin:50rpx 0rpx 40rpx;
+}
+.turn-page, .turn-img{
+    display: flex;
+    justify-content: flex-start;
+}
+.fixed-bottom{
+    position: fixed;
+    bottom: 180rpx;
+    width:100%;
+}
+.turn-page view{
+    width:40%;
+}
+.turn-page text{
+    font-size: 24rpx;
+    color: #999999;
+    padding:0rpx 30rpx;
+}
+.turn-img image{
+    width:50rpx;
+    height:50rpx;
+    margin-left:20rpx;
+    margin-right:20rpx;
+}
+.footer{
+    position: fixed;
+    left:0;
+    right:0;
+    bottom:0;
+    font-size: 18px;
+    color: #333333; 
+    background: #FFDC5E;
+    height:98rpx;
+    line-height:98rpx;
+    width:100%;
+    text-align:center;
+}

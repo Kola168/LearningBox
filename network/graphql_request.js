@@ -1,20 +1,18 @@
 var app = getApp()
 var gqwxappGraphql = require('./wxgql')
 var GraphQL = gqwxappGraphql.GraphQL
-
+import storage from '../utils/storage.js'
 // 初始化对象
 let gql = GraphQL({
   url: `${app.apiServer}/graphql`,
   header: function () {
     if (app.authToken) {
-      console.log('authToken==1==', app.authToken)
       return {
         "AUTHORIZATION": `Token token=${app.authToken}`
       }
     } else {
       try {
-        var authToken = wx.getStorageSync('authToken')
-        console.log('authToken====', authToken)
+        var authToken = storage.get('authToken')
         if (authToken) {
           return {
             "AUTHORIZATION": `Token token=${authToken}`
@@ -819,7 +817,7 @@ const graphqlApi = {
               timeStamp
             }
           }
-         
+
         }
       }`,
       variables: {
@@ -846,7 +844,7 @@ const graphqlApi = {
 
   /**
    * 获取童音录制分类
-   * @param {String} 资源标示 
+   * @param {String} 资源标示
    */
   getRecordCategories: (key)=>{
     return gql.query({
@@ -937,7 +935,7 @@ const graphqlApi = {
         provinces{
            name
            zipCode
-        }   
+        }
       }`
     })
   },
@@ -989,7 +987,7 @@ const graphqlApi = {
       }
     })
 	},
-	
+
 	getProvince1: (zipCode) => {
     return gql.query({
       query: `query ($zipCode: String!){
@@ -1004,6 +1002,65 @@ const graphqlApi = {
       }`,
       variables: {
         zipCode: zipCode
+      }
+    })
+	},
+	
+	//查询模板列表
+  searchTemplate:(type)=>{
+    return gql.query({
+      query: `query($key: String!) {
+        feature(key: $key) {
+          categories {
+            templates {
+              previewImage
+              name
+              imageUrl
+              sn
+              positionInfo {
+                width
+                areaHeight
+                areaWidth
+                areaX
+                areaY
+                height
+                width
+              }
+            }
+          }
+        }
+      }`,
+      variables: {
+        key: type
+      }
+    })
+  },
+
+  searchTemplateType:(sn)=>{
+    return gql.query({
+      query: `query($sn: String!) {
+        category(sn: $sn) {
+          name
+          sn
+          templates {
+            previewImage
+            name
+            imageUrl
+            sn
+            positionInfo {
+              width
+              areaHeight
+              areaWidth
+              areaX
+              areaY
+              height
+              width
+            }
+          }
+        }
+      }`,
+      variables: {
+        sn: sn
       }
     })
   },
