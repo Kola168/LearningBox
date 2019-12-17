@@ -2,7 +2,6 @@ const app = getApp()
 const event = require('../../../lib/event/event')
 import { regeneratorRuntime, co, util, wxNav } from '../../../utils/common_import'
 import graphql from '../../../network/graphql_request'
-const request = util.promisify(wx.request)
 Page({
   data: {
     devices: [],
@@ -15,7 +14,7 @@ Page({
       isFullScreen: app.isFullScreen
     })
     this.getDevices()
-    event.on('deviceChange',this,()=>{
+    event.on('deviceChange', this, () => {
       this.getDevices()
     })
   },
@@ -49,9 +48,8 @@ Page({
       return
     }
     let sn = e.currentTarget.dataset.sn
-    console.log(e.currentTarget.dataset)
-    wxNav.navigateTo(`../setting/index`,{
-      sn:sn
+    wxNav.navigateTo(`../setting/index`, {
+      sn: sn
     })
   },
 
@@ -67,12 +65,24 @@ Page({
   },
 
   // 切换打印机
-  switchActiveDevice() {
+  switchActiveDevice:co.wrap(function*(e) {
     if (app.preventMoreTap(e)) {
       return
     }
-    let sn = e.currentTarget.dataset.sn
-  },
+    this.weToast.toast({
+      type: 'loading'
+    })
+    try {
+      let sn = e.currentTarget.dataset.sn
+      yield graphql.updateDeviceSetting(sn, {
+        select: true
+      }, 'selected')
+      this.getDevices()
+    } catch (error) {
+      this.weToast.hide()
+      util.showError(error)
+    }
+  }),
   // 添加打印机
   addDevice() {
     wxNav.navigateTo('../network/index/index')
@@ -81,7 +91,7 @@ Page({
   refreshData() {
     this.getDevices()
   },
-  onUnload(){
-    event.remove('deviceChange',this)
+  onUnload() {
+    event.remove('deviceChange', this)
   }
 })

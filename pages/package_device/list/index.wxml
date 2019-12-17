@@ -5,11 +5,11 @@
     <view class="device-item device-item-active">
       <view class="item-left" bindtap="toSetting" data-sn="{{activeDevice.sn}}">
         <view class="left-img">
-          <image src="../images/{{activeDevice.model==='3115'?'L3115':'EP400'}}.png" mode="widthFix" />
+          <image src="/images/{{activeDevice.model==='3115'?'L3115':'EP400'}}.png" mode="widthFix" />
         </view>
         <view class="left-name text-overflow-points active-name-box">
-          <view>{{activeDevice.name}}</view>
-          <view class="device-active-status online-active-status">
+          <view>{{activeDevice.name||activeDevice.model}}</view>
+          <view class="device-active-status {{activeDevice.onlineState==='online'?'online-active-status':''}}">
             <view class="status-flag {{activeDevice.onlineState==='online'?'online-status':''}}"></view>
             <view>{{activeDevice.onlineState==='online'?'在线':'离线'}}</view>
           </view>
@@ -28,9 +28,9 @@
     <view class="device-item" wx:for="{{devices}}" wx:key="sn" wx:if="{{!item.selected}}">
       <view class="item-left" bindtap="toSetting" data-sn="{{item.sn}}">
         <view class="left-img">
-          <image src="../images/{{item.model==='3115'?'L3115':'EP400'}}.png" mode="widthFix" />
+          <image src="/images/{{item.model==='3115'?'L3115':'EP400'}}.png" mode="widthFix" />
         </view>
-        <view class="left-name text-overflow-points">{{item.name}}</view>
+        <view class="left-name text-overflow-points">{{item.name||item.model}}</view>
       </view>
       <view class="item-right">
         <view class="right-btn" bindtap="switchActiveDevice" data-sn="{{item.sn}}">切换</view>
