@@ -45,3 +45,15 @@
 .main-right {
   font-size: 24rpx;
 }
+
+.status-warning {
+  color: #FFA200;
+}
+
+.status-error {
+  color: #FB5130;
+}
+
+.status-success {
+  color: #4FB526;
+}

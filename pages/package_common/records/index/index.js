@@ -6,17 +6,11 @@ import graphql from '../../../../network/graphql_request'
 Page({
   data: {
     orders: [],
-    // isOwner: false,
-    // showInterceptModal: '',
     devices: [],
+    userSn: null,
     activeDevice: null,
     changeType: false,
-    // activeType: 'all',
-    // showDeleteRecordModal: false,
-    // recordModalType: 'delete',
-    // deleteRecordSn: null,
-    showRemind: false, //是否显示展示数据提示
-    // hasEcPrinter: false,
+    showRemind: false,
     navBarHeight: 0,
     showDeviceList: false,
     modalObj: {
@@ -29,12 +23,10 @@ Page({
   onLoad: co.wrap(function*(options) {
     this.weToast = new app.weToast()
     this.page = 1
-    let userSn = storage.get('userSn')
     setTimeout(() => {
       let navBarHeight = app.navBarInfo.topBarHeight
       this.setData({
-        navBarHeight,
-        userSn
+        navBarHeight
       })
     }, 300)
     this.getDeviceList()
@@ -56,7 +48,8 @@ Page({
     try {
       let res = yield graphql.getDeviceList(),
         devices = res.devices,
-        activeDevice = null
+        activeDevice = null,
+        userSn = res.currentUser.sn
       for (let i = 0; i < devices.length; i++) {
         if (devices[i].selected) {
           activeDevice = devices[i]
@@ -64,7 +57,8 @@ Page({
       }
       this.setData({
         devices,
-        activeDevice
+        activeDevice,
+        userSn
       })
       if (activeDevice) {
         this.getPrinterRecords()
@@ -77,8 +71,7 @@ Page({
   }),
   // 切换打印机
   changeDevice(e){
-    let sn = e.currentTarget.id,
-    index = e.currentTarget.dataset.index
+    let index = e.currentTarget.dataset.index
     this.setData({
       showDeviceList:false,
       activeDevice:this.data.devices[index]
@@ -109,7 +102,7 @@ Page({
     console.log(e)
     if (app.preventMoreTap(e)) return
     let userSn = e.currentTarget.dataset.userSn
-    if (this.data.userSn == userSn) {
+    if (this.data.usersn == userSn) {
       let sn = e.currentTarget.dataset.sn
       wxNav.navigateTo(`../detail/index`, {
         sn: sn
