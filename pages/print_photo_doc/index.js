@@ -16,7 +16,6 @@ const imginit = require('../../utils/imginit')
 const showModal = util.promisify(wx.showModal)
 const request = util.promisify(wx.request)
 import event from '../../lib/event/event'
-// const logger = new Logger.getLogger('pages/print_photo_doc/index')
 
 const chooseCtx = {
   data: {
@@ -115,7 +114,6 @@ const chooseCtx = {
         mediumRecommend: this.media_type,
         showIndex: true
       })
-      // this.getSupplyBefore(this.media_type)
     }
   },
 
