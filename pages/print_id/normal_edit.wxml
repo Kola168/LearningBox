@@ -22,7 +22,7 @@
 <form report-submit="true" bindsubmit="next" class="bottom-btn">
     <button class="btn-print" formType="submit">下一步</button>
 </form>
-<take-photo-pop id="checkComponent" bindchooseImg="uploadImage" imgNum="{{9}}"></take-photo-pop>
+<take-photo-pop id="checkComponent" bindchooseImg="uploadImage" bindbaidutap="baiduprint" imgNum="{{1}}"></take-photo-pop>
 <import src="../../lib/toast/wetoast.wxml" />
 <template is="wetoast" data="{{...__wetoast__}}" />
 <!-- <view class="editor-bg" bindtap="hideChange">

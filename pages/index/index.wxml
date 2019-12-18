@@ -1,4 +1,5 @@
 <!--index.wxml-->
+<nav-bar background="#fff" title="共享文件夹"></nav-bar>
 <nav-bar background="#fff" title="小白智慧打印"></nav-bar>
 <button open-type="getUserInfo" bindgetuserinfo="userInfoHandler" form-type='submit' hover-class="none"
   class="auth-button" wx:if="{{showAuth}}"></button>
@@ -7,7 +8,7 @@
   circular bindchange="changeSwiper" bindtap="clickAds">
   <block wx:for="{{bannerUrls}}" wx:key="{{index}}">
     <swiper-item>
-      <image src="{{item.url}}" mode="widthFix" />
+      <image src="{{item.imageUrl}}" mode="widthFix" />
     </swiper-item>
   </block>
 </swiper>

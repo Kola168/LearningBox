@@ -78,7 +78,6 @@ Page({
         this.selectComponent("#checkComponent").showPop()
     }),
     takePhoto: co.wrap(function* (e) {
-        console.log(e)
         this.path = e.detail.tempFilePaths[0]
         try {
             yield this.uploadImage()
@@ -86,5 +85,17 @@ Page({
         } catch (err) {
             util.showError(err)
         }
-    })
+    }),
+    baiduprint: co.wrap(function* (e) {
+        this.path = e.detail[0].url
+        try {
+            yield this.uploadImage()
+            yield this.confirm()
+        } catch (err) {
+            util.showError({
+                title: '照片加载失败',
+                content: '请重新选择重试'
+            })
+        }
+    }),
 })

@@ -196,8 +196,10 @@ Page({
   }),
   changeStage() {
     let grade = this.data.kidInfo.stage ? this.data.kidInfo.stage.name : ''
+    let sn = this.data.kidInfo.stage ? this.data.kidInfo.stage.sn : ''
     router.navigateTo('pages/index/grade', {
-      grade:grade
+      grade: grade,
+      sn: sn
     })
   }
 })
