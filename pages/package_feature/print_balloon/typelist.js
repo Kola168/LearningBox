@@ -32,7 +32,8 @@ Page({
   checkType:function(e){
     wxNav.navigateTo('/pages/package_feature/print_balloon/edit',{
       id:e.currentTarget.dataset.id,
-      type:this.type
+      type:this.type,
+      name:e.currentTarget.dataset.name
     })
   },
 

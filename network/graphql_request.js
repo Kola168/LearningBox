@@ -680,16 +680,12 @@ const graphqlApi = {
       query: `query{
         currentUser{
           phone
-<<<<<<< HEAD
           selectedDevice{
             sn
             name
             model
             onlineState
           }
-=======
-          sn
->>>>>>> develop-lis
           selectedKid{
             gender
             name
@@ -1017,65 +1013,6 @@ const graphqlApi = {
     })
 	},
 
-	//查询模板列表
-  searchTemplate:(type)=>{
-    return gql.query({
-      query: `query($key: String!) {
-        feature(key: $key) {
-          categories {
-            templates {
-              previewImage
-              name
-              imageUrl
-              sn
-              positionInfo {
-                width
-                areaHeight
-                areaWidth
-                areaX
-                areaY
-                height
-                width
-              }
-            }
-          }
-        }
-      }`,
-      variables: {
-        key: type
-      }
-    })
-  },
-
-  searchTemplateType: (sn) => {
-    return gql.query({
-      query: `query($sn: String!) {
-        category(sn: $sn) {
-          name
-          sn
-          templates {
-            previewImage
-            name
-            imageUrl
-            sn
-            positionInfo {
-              width
-              areaHeight
-              areaWidth
-              areaX
-              areaY
-              height
-              width
-            }
-          }
-        }
-      }`,
-      variables: {
-        sn: sn
-      }
-    })
-  },
-
   /**
    * 获取banner图
    *
@@ -1120,7 +1057,138 @@ const graphqlApi = {
         name
       }
     })
-  }
+	},
+		//查询模板列表
+		searchTemplate:(type)=>{
+			return gql.query({
+				query: `query($key: String!) {
+					feature(key: $key) {
+						categories {
+							name
+							sn
+							isHorizontal
+							templates {
+								previewImage
+								name
+								imageUrl
+								sn
+								positionInfo {
+									width
+									areaHeight
+									areaWidth
+									areaX
+									areaY
+									height
+									width
+								}
+							}
+						}
+					}
+				}`,
+				variables: {
+					key: type
+				}
+			})
+		},
+	
+		//查询主模板下详细信息
+		searchTemplateType:(sn)=>{
+			return gql.query({
+				query: `query($sn: String!) {
+					category(sn: $sn) {
+						name
+						sn
+						templates {
+							previewImage
+							name
+							imageUrl
+							sn
+							positionInfo {
+								width
+								areaHeight
+								areaWidth
+								areaX
+								areaY
+								height
+								width
+							}
+						}
+					}
+				}`,
+				variables: {
+					sn: sn
+				}
+			})
+		},
+	
+		//查询姓名贴模板
+		searchNameTemplate:(type)=>{
+			return gql.query({
+				query: `query($key: String!) {
+					feature(key: $key) {
+						categories {
+							name
+							sn
+							isHorizontal
+							attrsInfo
+							isHidden
+							templates {
+								previewImage
+								name
+								imageUrl
+								uploadable
+								sn
+								positionInfo {
+									width
+									areaHeight
+									areaWidth
+									areaX
+									areaY
+									height
+									width
+								}
+							}
+						}
+					}
+				}`,
+				variables: {
+					key: type
+				}
+			})
+		},
+	
+		//查询台历模板信息
+		searchCalendarTemplate:(type)=>{
+			return gql.query({
+				query: `query($key: String!) {
+					feature(key: $key) {
+						categories {
+							name
+							sn
+							isHorizontal
+							templates {
+								previewImage
+								name
+								imageUrl
+								sn
+								calendarInfos {
+									width
+									areaHeight
+									areaWidth
+									areaX
+									areaY
+									height
+									width
+								}
+							}
+						}
+					}
+				}`,
+				variables: {
+					key: type
+				}
+			})
+		},
 }
 
 export default graphqlApi

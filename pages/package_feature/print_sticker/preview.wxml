@@ -1,5 +1,7 @@
 <!--pages/package_feature/print_sticker/preview.wxml-->
 <nav-bar title="打印预览"></nav-bar>
+<confirm-print bindconfirm="makeOrder" modal="{{confirmModal}}" />
+
 <view class="container">
     <view class="preview_img" style="width:{{width}}px;height:{{height}}px">
         <image src="{{compoundImg}}" />
@@ -37,3 +39,5 @@
     </view>
     <view bindtap="backIndex" class="back-index" wx:if="{{isShare}}">返回首页</view>
 </view>
+<import src="/lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />

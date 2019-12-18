@@ -196,6 +196,19 @@ Page({
     } catch (e) { Loger(e) }
   }),
 
+  baiduprint:co.wrap(function*(files){
+    let that=this
+    this.setData({
+      showProcess: true,
+      count: files.length
+    })
+    _.each(files,function(value,index,list){
+      that.showImage(value,index)
+      that.setData({
+        completeCount: index
+      })
+    })
+  }),
 
   //展示图片
   showImage: co.wrap(function*(url, index) {
