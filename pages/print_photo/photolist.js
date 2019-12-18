@@ -379,10 +379,14 @@ Page({
       //   state: resp.state,
       //   type: 'literacy_card'
       // })
+      storage.remove(this.mediaType)
     }catch(e){
       Loger(e)
+      util.showError(e)
     }
   }),
+
+
 
   setStorage: function() {
     //图片存储至本地
@@ -417,10 +421,6 @@ Page({
       [`photoList[${postData.index}].url`]: postData.url
     })
     this.longToast.toast()
-  },
-
-  onHide: function() {
-    this.setStorage()
   },
 
   onUnload: function() {
