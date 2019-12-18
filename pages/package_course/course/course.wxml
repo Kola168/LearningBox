@@ -21,7 +21,7 @@ module.exports = {
 <nav-bar background="#fff" title="{{title}}" />
 <scroll-view scroll-y bindscroll="pageScroll" class="scroll-wrap" style="height:{{viewHeight}}px;" scroll-top="{{scrollTop}}">
   <swiper class="swiper" indicator-dots indicator-active-color="#2086ee" autoplay="{{course.banners.length>0}}" interval="{{interval}}" circular>
-    <swiper-item wx:for="{{course.banners}}" wx:key="{{index}}">
+    <swiper-item wx:for="{{course.banners}}" wx:key="*this">
       <block wx:if="{{filter.getFileType(item)==='pic'}}">
         <image src="{{item}}" class="slide-img" mode="widthFix" />
       </block>
@@ -70,7 +70,7 @@ module.exports = {
             课程可打印次数{{course.printLimit}}次
           </view>
         </view>
-        <view class="course-item course-item-{{index}}" wx:for="{{course.courseChapters}}" wx:key="{{index}}" id="{{index}}" bindtap="unfoldChapter" wx:if="{{item.courseLessons.length>0}}">
+        <view class="course-item course-item-{{index}}" wx:for="{{course.courseChapters}}" wx:key="name" id="{{index}}" bindtap="unfoldChapter" wx:if="{{item.courseLessons.length>0}}">
           <view class="chapter-fold">
             <view class="fold-left">
               <view class="name-wrap {{item.state === 'finished' ? 'has-study' : ''}}">
@@ -93,7 +93,7 @@ module.exports = {
             </view>
           </view>
           <view class="chapter {{item.unfoldChapter ? 'chapter-fold-half' : ''}} {{item.unfoldChapterAll && item.unfoldChapter ? 'chapter-fold-all' : ''}}" hidden="{{!item.unfoldChapter}}">
-            <view class="chapter-item" wx:for="{{item.courseLessons}}" wx:for-index="chapterIndex" wx:key="{{chapterIndex}}" wx:for-item="chapterItem" data-lock="{{chapterItem.locked}}" data-shareable="{{chapterItem.shareToTrial}}" data-sn="{{chapterItem.sn}}" catchtap="chapterClick">
+            <view class="chapter-item" wx:for="{{item.courseLessons}}" wx:for-index="chapterIndex" wx:key="*this" wx:for-item="chapterItem" data-lock="{{chapterItem.locked}}" data-shareable="{{chapterItem.shareToTrial}}" data-sn="{{chapterItem.sn}}" catchtap="chapterClick">
               <view class="chapter-name">
                 <view class="name-wrap {{chapterItem.state === 'finished' ? 'has-study' : ''}}">
                   {{chapterItem.name}}
@@ -120,7 +120,7 @@ module.exports = {
         </view>
       </view>
       <view class="nav-content-3" wx:if="{{activeTab == 2}}">
-        <view class="exclusive-item {{index % 2 != 0 ? '' : 'margin-r-30'}}" wx:for="{{supplyTypes}}" wx:key="{{index}}" data-index="{{index}}" bindtap="toExclusive">
+        <view class="exclusive-item {{index % 2 != 0 ? '' : 'margin-r-30'}}" wx:for="{{supplyTypes}}" wx:key="name" data-index="{{index}}" bindtap="toExclusive">
           <image src="{{item.imageUrl}}" mode="widthFix" />
           <view class="exclusive-text">{{item.name}}</view>
         </view>

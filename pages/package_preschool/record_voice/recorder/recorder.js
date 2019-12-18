@@ -14,9 +14,9 @@ import Logger from '../../../../utils/logger'
 const logger = new Logger.getLogger('pages/package_preschool/record_voice/recorder/recorder')
 Page({
   data: {
-    title: '',
+    title: '', //默认顶栏标题
     navBarHeight: 0,
-    dotX: 0, 
+    dotX: 0, //进度点进度数
     isPlaying: false,  //是否播放
     currentProgressWidth: 0,
     totalTime: 0, //总播放时长
@@ -27,36 +27,36 @@ Page({
     voiceSource: null, //原声资源
     showToast: false, //通知弹窗
     kidInfo: null, // 宝宝信息
+    showTips: false,
   },
 
   onLoad: co.wrap(function *(options) {
     if (options.scene) {
+      var showToast = !storage.get('showRecordToast')
       var scene = decodeURIComponent(options.scene)
       var params = {} 
       scene.split('&').forEach(str => {
         params[`${str.split('=')[0]}`] =  str.split('=')[1]
       })
-      console.log(params,'params==')
+      // console.log(params,'params==')
       this.sn = params.content
       this.userId = params.user
       this.longToast = new app.weToast()
       this.initViewInfo()
       this.initRecorderManager()
       this.setData({
-        showToast: !storage.get('showRecordToast')
+        showToast
       })
       var unionId = storage.get('unionId')
-      if (unionId) {
-        yield this.getContent()
-        yield this.getUserInfo()
+      if (unionId) { // 授权完成执行
+        this.getPageInfo(showToast)
       }
     }
     
    
 	  //授权成功后回调
 		event.on('Authorize', this, co.wrap(function*(){
-      yield this.getContent()
-      yield this.getUserInfo()
+      this.getPageInfo(showToast)
     }))
   }),
 
@@ -81,7 +81,20 @@ Page({
       })
     }
   },
-  	/**
+
+  getPageInfo: co.wrap(function*(showToast){
+    try {
+      yield this.getContent()
+      yield this.getUserInfo()
+      if (!showToast) { //弹窗确认过 自动播放
+        yield this.startPlayVoice()
+      }
+    } catch(err) {
+      util.showError(err)
+    }
+  }),
+
+  /**
 	 * 获取宝宝信息
 	 */
 	getUserInfo: co.wrap(function* () {
@@ -159,7 +172,9 @@ Page({
    }
   },
 
-  //初始化录音 
+  /**
+   * 初始化录音
+   */ 
   initRecorderManager: function () {
     try {
       this.recorderManager = wx.getRecorderManager()
@@ -177,9 +192,18 @@ Page({
       })
 
       this.recorderManager.onStop((res)=>{
-        this.playSource = res
-        this.uploadRecord(res) // 上传录音资源
-        this.setData({isRecording: false})
+        var playSource = res
+        this.setData({isRecording: false, showTips: !storage.get('showRecordTip')})
+        storage.put('showRecordTip', true)
+        wx.showModal({
+          title: '提示',
+          content: '是否保存录音',
+          success: (res) => {
+            if (res.confirm) {
+              this.uploadRecord(playSource) // 上传录音资源
+            }
+          }
+        })
         logger.info(res, '===触发停止的：onStop====')
       })
 
@@ -337,23 +361,23 @@ Page({
   /**
    * 播放录音
    */
-  startPlayRecord: function () {
+  startPlayRecord: co.wrap(function *() {
     this.onPlayer({
       key: 'record',
       btnState: 'isPlayingRecord'
     })
 
-  },
+  }),
 
   /**
    * 播放原声
    */
-  startPlayVoice: function () {
+  startPlayVoice: co.wrap(function *() {
     this.onPlayer({
       key: 'source',
       btnState: 'isPlayingSource' 
     })
-  },
+  }),
 
   /**
    * 初始化当前控制信息
@@ -384,7 +408,10 @@ Page({
     try {
       var player = this.data.players[state.key]
       if (this.data.isRecording) { //是否正在录制中
-        this.stopRecord()
+        return wx.showToast({
+          icon: 'none',
+          title: '录音完成可播放'
+        })
        }
 
       // 判断是否点击了不同类型的btn 初始化控制状态
@@ -453,6 +480,8 @@ Page({
       showToast: false
     })
     storage.put('showRecordToast', true)
+    this.startPlayVoice()
+
   },
 
   /**
@@ -469,9 +498,9 @@ Page({
       curryTime,
       usedTimeStamp
     }
-    var mm = Math.floor(totalTimeStamp / 60)
-    var ss = Math.floor(totalTimeStamp % 60)
-    data.totalTime = `${this.formatTime(mm)}:${this.formatTime(ss)}`
+    var minute = Math.floor(totalTimeStamp / 60)
+    var second = Math.floor(totalTimeStamp % 60)
+    data.totalTime = `${this.formatTime(minute)}:${this.formatTime(second)}`
     this.setData(data)
   },
 
@@ -519,10 +548,7 @@ Page({
   },
 
   onUnload: function() {
+    this.recorderManager.pause() //暂停录音
     this.destroyAudioCtx()
-  },
-
-  onShareAppMessage: function () {
-
   }
 })

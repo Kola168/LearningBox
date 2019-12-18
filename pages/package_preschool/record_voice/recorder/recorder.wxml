@@ -31,6 +31,7 @@
 				<view class="recording-status f-14 btn-recording">{{isRecording ? '正在录制中…' : ''}}</view>
 			</view>
 			<view class="btn-main btn-user f-12 sys-flex">
+				<image src="../../images/record_tips.png" class="record-tip" wx:if="{{showTips}}"/>
 				<image class="btn" wx:if="{{!userAudio}}" src="../../images/record_voice_btn_record_disabled.png" />
 				<image
 				 class="btn"
