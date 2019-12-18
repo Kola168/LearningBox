@@ -54,7 +54,11 @@ Page({
     })
     this.getFreeSourcesContents()
   },
-  toNext() {
-    wxNav.navigateTo(`../detail/index`)
+  toNext(e) {
+    if (app.preventMoreTap(e)) return
+    let sn = e.currentTarget.dataset.sn
+    wxNav.navigateTo(`../detail/index`, {
+      sn
+    })
   }
 })

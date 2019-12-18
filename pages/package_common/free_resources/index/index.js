@@ -22,7 +22,8 @@ Page({
     leftToTop: 0
   },
   onLoad: co.wrap(function*() {
-    // 右侧每类数据到顶部的距离（用来与 右 => 左 联动时监听右侧滚动到顶部的距离比较）
+    this.weTosat = new app.weToast()
+      // 右侧每类数据到顶部的距离（用来与 右 => 左 联动时监听右侧滚动到顶部的距离比较）
     this.eachRightItemToTop = []
     setTimeout(() => {
       let screenWidth = app.sysInfo.screenWidth,
@@ -32,18 +33,19 @@ Page({
       } else if (screenWidth >= 410) {
         rightItemHeight = 150
       }
-
       this.setData({
         minHeight: app.sysInfo.screenHeight - app.navBarInfo.topBarHeight,
         rightItemHeight,
       })
       this.getFreeSources()
-
     }, 500)
   }),
 
   // 获取免费资源
   getFreeSources: co.wrap(function*() {
+    this.weTosat.toast({
+      type: 'loading'
+    })
     try {
       let res = yield graphql.getFreeSources('free_resource'),
         allData = res.feature.categories

@@ -1,8 +1,8 @@
 <nav-bar title="免费资源库"></nav-bar>
-<view class="container" style="height:{{windowHeight}}px;">
+<view class="container" style="height:{{windowHeight}}px;" wx:if="{{false}}">
   <swiper class="swiper-box" bindchange="swpierChange" current="{{current}}">
     <swiper-item class="box-item" wx:for="{{sources}}" wx:key="index">
-      <image src="{{item.url}}" mode="widthFix" />
+      <image src="{{item.nameUrl}}" mode="widthFix" />
     </swiper-item>
   </swiper>
   <view class="handle-bottom {{isFullScreen?'is-full-screen':''}}">
@@ -25,5 +25,42 @@
         <view class="btns-print">打印</view>
       </view>
     </view>
+  </view>
+</view>
+
+<!-- 打印设置 -->
+<view class="setting-container" style="height:{{windowHeight}}px;">
+  <view class="source-title">拉大锯</view>
+  <view class="setting-box">
+    <view class="box-item">
+      <view class="box-label">打印份数</view>
+      <view class="box-set set-count">
+        <image src="../../images/minus_{{printCount>1?'y':'g'}}.png" bindtap="changeCount" id="minus" mode="widthFix" />
+        <view>{{printCount}}</view>
+        <image src="../../images/plus_{{printCount>=30?'g':'y'}}.png" bindtap="changeCount" id="plus" mode="widthFix" />
+      </view>
+    </view>
+    <view class="box-item">
+      <view class="box-label">打印范围</view>
+      <view class="box-set set-range">
+        <input type="number" value="1"/>
+        <view>至</view>
+        <input type="number" value="3"/>
+        <view>页</view>
+      </view>
+    </view>
+    <view class="box-item">
+      <view class="box-label">色彩选择</view>
+      <view class="box-set set-color">
+        <view>黑白</view>
+        <image src="/images/radio_off.png" />
+        <view>全彩</view>
+        <image src="/images/radio_on.png" />
+      </view>
+    </view>
+  </view>
+  <view class="handle-bar {{isFullScreen?'is-full-screen':''}}">
+    <view class="bar-left">取消</view>
+    <view class="bar-right">确定</view>
   </view>
 </view>
