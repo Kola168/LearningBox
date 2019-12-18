@@ -13,6 +13,7 @@ const getImageInfo = util.promisify(wx.getImageInfo)
 const getSystemInfo = util.promisify(wx.getSystemInfo)
 const showModal = util.promisify(wx.showModal)
 const chooseMessageFile = util.promisify(wx.chooseMessageFile)
+let Loger = (app.apiServer != 'https://epbox.gongfudou.com' || app.deBug) ? console.log : function() {}
 Page({
     data: {
         // 本地照片地址
@@ -248,18 +249,8 @@ Page({
             })
         }
     }),
-    takePhoto: co.wrap(function* () {
-        const image = yield chooseImage({
-            count: 1,
-            sizeType: ['original'],
-            sourceType: ['camera']
-        })
-        console.log(`chooseImage ${image.tempFilePaths[0]}`)
-        this.path = image.tempFilePaths[0]
-        this.setData({
-            showChangeBtn: false,
-            popWindow: false,
-        })
+    baiduprint: co.wrap(function* (e) {
+        this.path = e.detail[0].url
         try {
             const imgInfo = yield getImageInfo({
                 src: this.path
@@ -270,53 +261,11 @@ Page({
             })
             console.log("imgInfo", imgInfo)
         } catch (err) {
-            console.error(err)
-            wx.showModal({
+            util.showError({
                 title: '照片加载失败',
-                content: '请重新选择重试',
-                showCancel: false,
-                confirmColor: '#2086ee',
-                success: function () {
-                    router.navigateBack()
-                }
+                content: '请重新选择重试'
             })
         }
-    }),
-
-    localAlbum: co.wrap(function* () {
-        const image = yield chooseImage({
-            count: 1,
-            sizeType: ['original'],
-            sourceType: ['album']
-        })
-        console.log(`chooseImage ${image.tempFilePaths}`)
-        this.path = image.tempFilePaths[0]
-        this.setData({
-            showChangeBtn: false,
-            popWindow: false,
-        })
-        try {
-            // 初始化编辑区域
-            const imgInfo = yield getImageInfo({
-                src: this.path
-            })
-            this.setData({
-                imgInfo: imgInfo,
-                localImgPath: this.path
-            })
-        } catch (err) {
-            console.error(err)
-            wx.showModal({
-                title: '照片加载失败',
-                content: '请重新选择重试',
-                showCancel: false,
-                confirmColor: '#2086ee',
-                success: function () {
-                    router.navigateBack()
-                }
-            })
-        }
-
     }),
     imageLoadError: co.wrap(function* () {
         // wx.showModal({
@@ -367,7 +316,7 @@ Page({
         const areaPosition = {
             width: areaWidth,
             height: areaHeight,
-            top: (designAreaMaxHeight - areaHeight) / 2 + margin + 80 * (res.windowWidth / 750)+32,//自定义导航栏32px
+            top: (designAreaMaxHeight - areaHeight) / 2 + margin + 80 * (res.windowWidth / 750) + 32, //自定义导航栏32px
             left: (designAreaMaxWidth - areaWidth) / 2 + margin,
             scale: areaWidth / this.data.area.width
         }
@@ -561,9 +510,6 @@ Page({
 
     // 下一步
     next: co.wrap(function* (e) {
-        // if (!app.openId) {
-        //     yield this.loopGetOpenId()
-        // }
         if (!this.data.localImgPath) {
             return yield showModal({
                 title: '提示',
@@ -625,19 +571,6 @@ Page({
         let svw = (this.data.imgInfo.width - result.scale * (this.data.imgInfo.width * Math.cos(mp) + this.data.imgInfo.height * Math.sin(mp))) / 2
 
         let svh = (this.data.imgInfo.height - result.scale * (this.data.imgInfo.width * Math.sin(mp) + this.data.imgInfo.height * Math.cos(mp))) / 2
-        // {
-        //     "is_async": false
-        //     "feature_key": "normal_id",  # 自定义默认普通证件照key
-        //       "editor_scale": 0.6013186813186814,
-        //       "image_height": 579,
-        //       "image_url": "https://cdn-h.gongfudou.com/Hyperion/miniapp/2019/12/3/f322a4eb-f30e-4eb6-85bf-ac185ca80ccb.png",
-        //       "image_width": 413,
-        //       "media_type": "_id2in",  # 普通证件照media_type _id1in _id2in _id3in
-        //       "rotate": 0,
-        //       "scale": 0.662,
-        //       "x": 0.796999999999997,
-        //       "y": 1.0
-        //   }
         let params = {
             is_async: false, //一异步请求
             feature_key: "normal_id", //普通证件照
@@ -680,24 +613,5 @@ Page({
             return null
         }
 
-    }),
-    // loopGetOpenId: co.wrap(function* () {
-    //     let loopCount = 0
-    //     let _this = this
-    //     if (app.openId) {
-    //         console.log('openId++++++++++++----', app.openId)
-    //         return
-    //     } else {
-    //         setTimeout(function () {
-    //             loopCount++
-    //             if (loopCount <= 100) {
-    //                 console.log('openId not found loop getting...')
-    //                 _this.loopGetOpenId()
-    //             } else {
-    //                 console.log('loop too long, stop')
-    //             }
-    //         }, 2000)
-    //     }
-    // }),
-
+    })
 })

@@ -1,4 +1,4 @@
-<!-- <nav-bar background="#fff" title="共享文件夹"></nav-bar> -->
+<nav-bar background="#fff" title="共享文件夹"></nav-bar>
 <view class="top-tip">不可上传或传播违法内容，一经发现依法处理</view>
 <view class="title">
     <view class="tab-item {{tabId == 0 ? 'activeType' : ''}}" bindtap="changeTab" id="0">
