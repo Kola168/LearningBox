@@ -23,25 +23,8 @@
             </view>
         </view>
     </view>
-   
-    <view class='bottom flex-center' bindtap="changeImage">
-        <text class='fs-32'>选择照片</text>
-    </view>
-    <view class='fail-wrap flex-center' wx-if='{{fail}}'>
-        <view class='fail bg-white'>
-            <image mode='widthFix' src='../../images/id/complex_invalidImg.png'></image>
-            <view class='mg-t-20'>
-                <text class='color-darkgray'>{{failMessage}}</text>
-            </view>
-            <view>
-                <text class='color-gray fs-32'>请重新选择照片</text>
-            </view>
-            <view class='reChoose' bindtap='chooseImg'>
-                <text>重新拍照</text>
-            </view>
-        </view>
-    </view>
+
 </view>
-<take-photo-pop id="checkComponent" bindchooseImg="takePhoto" imgNum="{{9}}"></take-photo-pop>
+<take-photo-pop id="checkComponent" bindchooseImg="takePhoto" bindbaidutap="baiduprint" imgNum="{{1}}"></take-photo-pop>
 <import src="../../lib/toast/wetoast.wxml" />
 <template is="wetoast" data="{{...__wetoast__}}" />

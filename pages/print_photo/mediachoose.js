@@ -65,7 +65,7 @@ Page({
       iconPath:'/images/printphoto_id.png',
       size:'多尺寸可换背景',
       mode:false,
-      bindFun:'printPhotoDoc'
+      bindFun:'printId'
     }]
   },
 

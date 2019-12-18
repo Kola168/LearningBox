@@ -238,7 +238,7 @@ Page({
               printUrl:value
             })
           })
-          let orderSn = yield commonRequest.createOrder(that.type, imgs)
+          let orderSn = yield commonRequest.createOrder(that.data.type, imgs)
           that.longToast.toast()
         }
       }), ()=>{

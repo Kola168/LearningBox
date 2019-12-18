@@ -796,7 +796,7 @@ Component({
         }),
 
         baiduprint:function(e){
-          this.imgChooseInit(e.detail[0])
+          this.imgChooseInit(e.detail[0].url)
         },
     }
 })
