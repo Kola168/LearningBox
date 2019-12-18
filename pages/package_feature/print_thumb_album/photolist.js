@@ -14,6 +14,7 @@ import wxNav from '../../../utils/nav.js'
 import getLoopsEvent from '../../../utils/worker'
 import api from '../../../network/restful_request'
 import commonRequest from '../../../utils/common_request'
+import storage from '../../../utils/storage.js'
 
 let Loger = (app.apiServer != 'https://epbox.gongfudou.com' || app.deBug) ? console.log : function() {}
 
@@ -49,13 +50,44 @@ Page({
     })
     this.type=options.type||'mini_album'
     this.calculateSize()
+    this.getStorageImages()
     event.on('setPreData', this, (postData)=>{
       this.editPhoto(postData)
     })
   },
+
+  onHide: function() {
+    this.setStorage()
+  },
+
+  getStorageImages: function() {
+    try {
+      let galleryImages = storage.get(this.type)
+      Loger(galleryImages)
+      if (galleryImages) {
+        this.setData({
+          images: galleryImages.images,
+        })
+      }
+    } catch (e) {
+      Loger('获取本地图片失败')
+    }
+  },
+
+  setStorage: function() {
+    //图片存储至本地
+    try {
+      storage.put(this.type, {
+        images: this.data.images
+      })
+    } catch (e) {
+      Loger('图片存储到本地失败')
+    }
+  },
   onUnload: function() {
     event.remove('setPreData', this)
   },
+
   editPhoto:function(postData){
     this.longToast.toast({
       type: "loading",
@@ -162,6 +194,22 @@ Page({
     } catch (e) { Loger(e) }
   },
 
+  baiduprint:co.wrap(function*(e){
+    let imgs=e.detail
+    this.setData({
+      showProcess: true,
+      count: imgs.length
+    })
+    let that=this
+    _.each(imgs,function(value,index,list){
+      index+=1
+      that.setData({
+        completeCount: index
+      })
+      that.showImage(value.url, index)
+    })
+  }),
+
   //展示图片
   showImage: co.wrap(function*(url, index) {
     try {
@@ -246,6 +294,22 @@ Page({
     })
   },
 
+  deleteImg:co.wrap(function*(e){
+    let that=this
+    let index=e.currentTarget.dataset.index
+    wx.showModal({
+      title: '提示',
+      content: '确认删除此照片？',
+      confirmColor: '#FFE27A',
+      success:function(res){
+        let imgIndex=`images[${index}]`
+        that.setData({
+          [imgIndex]:{}
+        })
+      }
+    })
+  }),
+
   createOrder:co.wrap(function*(){
     if(_.without(_.pluck(this.data.images,'url'),undefined).length==0){
       return wx.showModal({
@@ -296,6 +360,7 @@ Page({
             printUrl: resp.data.url
           }]
           let orderSn = yield commonRequest.createOrder(that.type, imgs)
+          storage.remove(that.type)
           that.longToast.toast()
         }
       }), ()=>{

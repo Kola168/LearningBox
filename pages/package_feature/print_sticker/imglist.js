@@ -14,6 +14,7 @@ const showModal = util.promisify(wx.showModal)
 import wxNav from '../../../utils/nav.js'
 import api from '../../../network/restful_request'
 import commonRequest from '../../../utils/common_request'
+import storage from '../../../utils/storage.js'
 
 let Loger = (app.apiServer != 'https://epbox.gongfudou.com' || app.deBug) ? console.log : function() {}
 
@@ -67,16 +68,49 @@ Page({
   },
   checkedIndex: 0,
   onLoad: function(options) {
+    this.longToast = new app.weToast()
     this.mediaType=options.mediaType||'photo_sticker'
     this.setData({
       type: options.type
     })
     this.modeSize = this.data.modeSize[options.type]
-    this.calculateMode()
-    this.longToast = new app.weToast()
+
+    this.getStorageImages()
     event.on('setPreData', this, (postData) => {
       this.editPhoto(postData)
     })
+  },
+
+  onHide: function() {
+    this.setStorage()
+  },
+
+  getStorageImages: function() {
+    try {
+      let galleryImages = storage.get(`${this.mediaType}_${this.data.type}`)
+      Loger(galleryImages)
+      if (galleryImages) {
+        this.setData({
+          imgArr: galleryImages.imgArr,
+        })
+      }else{
+        this.calculateMode()
+      }
+    } catch (e) {
+      this.calculateMode()
+      Loger('获取本地图片失败')
+    }
+  },
+
+  setStorage: function() {
+    //图片存储至本地
+    try {
+      storage.put(`${this.mediaType}_${this.data.type}`, {
+        imgArr: this.data.imgArr
+      })
+    } catch (e) {
+      Loger('图片存储到本地失败')
+    }
   },
 
   calculateMode: function() {
@@ -142,6 +176,22 @@ Page({
     }
   }),
 
+  baiduprint:co.wrap(function*(e){
+    let imgSrc=e.detail[0].url
+    let imaPath = yield imginit.imgInit(imgSrc, 'vertical')
+    let localUrl = imaPath.imgNetPath
+    let imageInfo = imaPath.imageInfo
+    this.data.imgArr[this.data.direction].imgs[this.checkedIndex]={
+      url:localUrl,
+      localUrl:localUrl,
+      imgInfo:imageInfo
+    }
+    this.setData({
+      imgArr:this.data.imgArr
+    })
+    this.editImg(this.checkedIndex)
+  }),
+
   editImg: co.wrap(function*(e) {
     let index = e.currentTarget?e.currentTarget.dataset.index:e
     wxNav.navigateTo('/pages/package_feature/print_sticker/edit', {
@@ -202,6 +252,7 @@ Page({
         urls:_.without(_.pluck(this.data.imgArr[this.data.direction].imgs,'url'),'')
       }
       const resp = yield api.processes(params)
+      storage.remove(`${this.mediaType}_${this.data.type}`)
       wxNav.navigateTo('/pages/package_feature/print_sticker/preview',{
         type:this.mediaType,
         sn:resp.res.sn,

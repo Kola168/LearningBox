@@ -1148,7 +1148,7 @@ const graphqlApi = {
 				}
 			})
 		},
-	
+
 		//查询主模板下详细信息
 		searchTemplateType:(sn)=>{
 			return gql.query({
@@ -1178,7 +1178,7 @@ const graphqlApi = {
 				}
 			})
 		},
-	
+
 		//查询姓名贴模板
 		searchNameTemplate:(type)=>{
 			return gql.query({
@@ -1214,7 +1214,7 @@ const graphqlApi = {
 				}
 			})
 		},
-	
+
 		//查询台历模板信息
 		searchCalendarTemplate:(type)=>{
 			return gql.query({

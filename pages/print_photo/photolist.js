@@ -196,14 +196,17 @@ Page({
     } catch (e) { Loger(e) }
   }),
 
-  baiduprint:co.wrap(function*(files){
+  baiduprint:co.wrap(function*(e){
+    Loger(e)
     let that=this
+    let files=e.detail
     this.setData({
       showProcess: true,
       count: files.length
     })
     _.each(files,function(value,index,list){
-      that.showImage(value,index)
+      index+=1
+      that.showImage(value.url,index)
       that.setData({
         completeCount: index
       })
@@ -360,18 +363,30 @@ Page({
   },
 
   makeOrder: co.wrap(function*() {
-    let imgs = []
-    _.each(this.data.photoList,function(value,index,list){
-      imgs[index].originalUrl=value.localUrl
-      imgs[index].printUrl=value.url
-    })
-    let resp = yield commonRequest.createOrder(this.mediaType, imgs)
-    // wxNav.redirectTo(`../../../finish/index`, {
-    //   media_type: 'literacy_card',
-    //   state: resp.state,
-    //   type: 'literacy_card'
-    // })
+    try{
+
+
+      let imgs = []
+      _.each(this.data.photoList,function(value,index,list){
+        imgs[index]={
+          originalUrl:value.localUrl,
+          printUrl:value.url
+        }
+      })
+      let resp = yield commonRequest.createOrder(this.mediaType, imgs)
+      // wxNav.redirectTo(`../../../finish/index`, {
+      //   media_type: 'literacy_card',
+      //   state: resp.state,
+      //   type: 'literacy_card'
+      // })
+      storage.remove(this.mediaType)
+    }catch(e){
+      Loger(e)
+      util.showError(e)
+    }
   }),
+
+
 
   setStorage: function() {
     //图片存储至本地
@@ -406,10 +421,6 @@ Page({
       [`photoList[${postData.index}].url`]: postData.url
     })
     this.longToast.toast()
-  },
-
-  onHide: function() {
-    this.setStorage()
   },
 
   onUnload: function() {

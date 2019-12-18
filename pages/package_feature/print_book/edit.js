@@ -12,6 +12,7 @@ const showModal = util.promisify(wx.showModal)
 import wxNav from '../../../utils/nav.js'
 import api from '../../../network/restful_request'
 import commonRequest from '../../../utils/common_request'
+import storage from '../../../utils/storage.js'
 
 let Loger = (app.apiServer != 'https://epbox.gongfudou.com' || app.deBug) ? console.log : function() {}
 
@@ -50,7 +51,37 @@ Page({
   onLoad: co.wrap(function*(options) {
     this.longToast = new app.weToast()
     this.type=options.type||'photo_book'
+    this.getStorageImages()
   }),
+
+  onHide: function() {
+    this.setStorage()
+  },
+
+  getStorageImages: function() {
+    try {
+      let galleryImages = storage.get(this.type)
+      Loger(galleryImages)
+      if (galleryImages) {
+        this.setData({
+          imgList: galleryImages.imgList,
+        })
+      }
+    } catch (e) {
+      Loger('获取本地图片失败')
+    }
+  },
+
+  setStorage: function() {
+    //图片存储至本地
+    try {
+      storage.put(this.type, {
+        imgList: this.data.imgList
+      })
+    } catch (e) {
+      Loger('图片存储到本地失败')
+    }
+  },
 
   tapTemplate: function(e) {
     let index = e.currentTarget.dataset.index
@@ -149,6 +180,23 @@ Page({
       }
     } catch (e) { Loger(e) }
   }),
+
+  baiduprint:co.wrap(function*(e){
+    let imgs=e.detail
+    this.setData({
+      showProcess: true,
+      count: imgs.length
+    })
+    let that=this
+    _.each(imgs,function(value,index,list){
+      index+=1
+      that.setData({
+        completeCount: index
+      })
+      that.showImage(value.url, index)
+    })
+  }),
+
   //展示图片
   showImage: co.wrap(function*(url, index) {
     try {
@@ -261,8 +309,9 @@ Page({
           printUrl:value
         })
       })
-      
+
       let orderSn = yield commonRequest.createOrder(this.type, imgs)
+      storage.remove(this.type)
       this.longToast.toast()
       Loger(orderSn)
     } catch (e) {
