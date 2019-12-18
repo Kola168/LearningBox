@@ -143,7 +143,7 @@ Page({
    * @methods 获取手机号
    */
   getPhoneNumber: co.wrap(function* (e) {
-    yield app.getPhoneNum(e)
+    // yield app.getPhoneNum(e)
     storage.put("hasAuthPhoneNum", true)
     this.hasAuthPhoneNum = true
     this.setData({
@@ -168,12 +168,12 @@ Page({
           originalUrl: this.data.preUrl, //图片原始url
           grayscale: this.data.color == 'Mono' ? true : false, //色彩
         }]
-        const resp = commonRequest.createOrder('reprography', param)
+        const resp = yield commonRequest.createOrder('reprography', param)
         this.longToast.toast()
         router.redirectTo('/pages/finish/index', {
           type: 'id_card',
           media_type: 'invoice',
-          state: resp.order.state
+          state: resp.createOrder.state
         })
         
       } catch (e) {

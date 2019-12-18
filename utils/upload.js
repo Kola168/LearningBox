@@ -70,13 +70,16 @@ let uploadFile = co.wrap(function*(path, suffix) {
  * @param { Array } array required 上传文件数组
  * @param { Function } callIndexBack required 上传回调函数
  */
-let uploadDocs = co.wrap(function*(array, callIndexBack) {
+let uploadDocs = co.wrap(function*(array, callIndexBack, suffix) {
   // 获取上传权限
   if (array.length > 0) {
     try {
-      let authInfo = yield getUploadAuth({
-        'file_name': array[0].name
-      })
+      // let authInfo = yield getUploadAuth({
+      //   'file_name': array[0].name
+      // })
+      let fileName = array[0].path.split('.')
+      let params = suffix  ? {suffix: fileName[fileName.length - 1].length >= 5 ? '' : fileName[fileName.length - 1]} : {}
+      let authInfo = yield getUploadAuth(params)
       let uploadRes = yield wxUploadFile({
         url: authInfo.host,
         filePath: array[0].path,

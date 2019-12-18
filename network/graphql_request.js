@@ -679,6 +679,7 @@ const graphqlApi = {
     return gql.query({
       query: `query{
         currentUser{
+          sn
           phone
           selectedDevice{
             sn
@@ -909,9 +910,10 @@ const graphqlApi = {
           name
           icon
           sn
-          contentImage{
-            name
+          contentImages{
+            nameUrl
           }
+          audioContentImage
           audio
           contentCollected
           userAudio{
@@ -1101,9 +1103,10 @@ const graphqlApi = {
           name
           icon
           sn
-          contentImage{
-            name
+          contentImages{
+            nameUrl
           }
+          audioContentImage
           audio
           contentCollected
         }
