@@ -217,7 +217,7 @@ Page({
   },
 
   getPhoneNumber: co.wrap(function* (e) {
-    yield app.getPhoneNum(e)
+    // yield app.getPhoneNum(e)
     storage.put("hasAuthPhoneNum", true)
     this.hasAuthPhoneNum = true
     this.setData({

@@ -19,7 +19,7 @@ page {
 }
 
 .wrap-fun {
-  height: calc(100% - 100rpx - 130rpx);
+  height: calc(100% - 330rpx);
   padding-bottom: 130rpx;
   position: relative;
 }
@@ -524,14 +524,15 @@ page {
 }
 
 .conf-box-right {
-  color: #454545;
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  padding: 0!important;
   width: 50%;
   background: #FFDC5E;
   line-height: 98rpx;
   text-align: center;
-  position: fixed;
-  right: 0;
-  bottom: 0;
+  color: #454545;
   border-top: 3rpx solid #cecece;
 }
 
@@ -660,7 +661,7 @@ page {
   text-align: center;
 }
 
-.btn-main .comsumables {
+.btn-main .consumables {
   background-color: #FFB24E;
   border-radius: 30rpx 0 0 30rpx;
 }
@@ -668,4 +669,19 @@ page {
 .btn-main .btn-print {
   background-color: #FFDC5E;
   border-radius: 0 30rpx 30rpx 0;
+}
+
+.user-info {
+  position: absolute;
+  bottom: 180rpx;
+  left: 0;
+  padding-right: 22rpx;
+  width: 100%;
+  height: 54rpx;
+  line-height: 54rpx;
+  text-align: right;
+  box-sizing: border-box;
+  color: #FFF;
+  font-size: 24rpx;
+  background-color: rgba(0, 0, 0, 0.4);
 }
