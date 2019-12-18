@@ -3,6 +3,8 @@ const app = getApp()
 const regeneratorRuntime = require('../../lib/co/runtime')
 const co = require('../../lib/co/co')
 const util = require('../../utils/util')
+
+import commonRequest from '../../utils/common_request'
 import router from '../../utils/nav'
 
 Page({
@@ -105,39 +107,37 @@ Page({
             type: "loading",
             duration: 0
         })
-        let images = [{
-            url: this.data.imageURL,
-            pre_convert_url: this.data.url,
-            thumb_url: this.data.preview_url,
-            number: this.data.num,
-            rotate: false,
-            media_type: this.data.mode,
-            // height: data.height,
-            // width: data.width
-        }]
-        console.log('证件照生成参数', images)
-        let params = {
-            openid: app.openId,
-            urls: images,
-            media_type: this.data.mode
-        }
+        // let images = [{
+        //     url: this.data.imageURL,
+        //     pre_convert_url: this.data.url,
+        //     thumb_url: this.data.preview_url,
+        //     number: this.data.num,
+        //     rotate: false,
+        //     media_type: this.data.mode,
+        //     // height: data.height,
+        //     // width: data.width
+        // }]
+        // console.log('证件照生成参数', images)
+        // let params = {
+        //     openid: app.openId,
+        //     urls: images,
+        //     media_type: this.data.mode
+        // }
         // 提交制作信息
         try {
-            const resp = yield request({
-                url: app.apiServer + `/ec/v2/orders`,
-                method: 'POST',
-                dataType: 'json',
-                data: params
+            var param = [{
+                originalUrl: this.data.imageURL, //  用户上传的原文件
+                printUrl: this.data.url, // 编辑后可打印的连接
+                copies: this.data.num, // 打印份数
+                grayscale: false, // 是否使用灰度打印
+            }]
+            const resp = commonRequest.createOrder('normal_id', param)
+            console.log(resp)
+            router.redirectTo('/pages/finish/index', {
+              type: 'normal_id',
+              media_type: 'invoice',
+              state: resp.createOrder.state
             })
-            if (resp.data.code != 0) {
-                throw (resp.data)
-            } else {
-                this.longToast.hide()
-                router.redirectTo(`/pages/finish/index`, {
-                    type: id,
-                    state: resp.data.order.state
-                })
-            }
         } catch (e) {
             this.longToast.hide()
             util.showError(e)

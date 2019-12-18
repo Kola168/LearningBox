@@ -1,6 +1,7 @@
 "use strict"
 const app = getApp()
 import api from '../../../network/restful_request.js'
+import gql from '../../../network/graphql_request.js'
 import {
   co,
   util
@@ -40,7 +41,6 @@ Page({
   onShow: co.wrap(function* () {
 
   }),
-
   checkProtocolSeivice: co.wrap(function* () {
     this.longToast.toast({
       type: 'loading',
@@ -103,6 +103,15 @@ Page({
       })
       this.pageEnd = false
     }
+    try {
+      const resp = yield gql.getFolders(true)
+      console.log(resp)
+      this.longToast.hide()
+    } catch (e) {
+      util.showError(e)
+      this.longToast.hide()
+    }
+    
     try {
       const resp = yield api.getFoldersList(app.openId, this.page)
       if (resp.code != 0) {
