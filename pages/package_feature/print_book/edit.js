@@ -162,7 +162,7 @@ Page({
       that.setData({
         completeCount: index
       })
-      that.showImage(value, index)
+      that.showImage(value.url, index)
     })
   }),
 

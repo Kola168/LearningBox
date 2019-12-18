@@ -142,6 +142,22 @@ Page({
     }
   }),
 
+  baiduprint:co.wrap(function*(e){
+    let imgSrc=e.detail[0].url
+    let imaPath = yield imginit.imgInit(imgSrc, 'vertical')
+    let localUrl = imaPath.imgNetPath
+    let imageInfo = imaPath.imageInfo
+    this.data.imgArr[this.data.direction].imgs[this.checkedIndex]={
+      url:localUrl,
+      localUrl:localUrl,
+      imgInfo:imageInfo
+    }
+    this.setData({
+      imgArr:this.data.imgArr
+    })
+    this.editImg(this.checkedIndex)
+  }),
+
   editImg: co.wrap(function*(e) {
     let index = e.currentTarget?e.currentTarget.dataset.index:e
     wxNav.navigateTo('/pages/package_feature/print_sticker/edit', {

@@ -197,6 +197,7 @@ Page({
   }),
 
   baiduprint:co.wrap(function*(e){
+    Loger(e)
     let that=this
     let files=e.detail
     this.setData({
@@ -205,7 +206,7 @@ Page({
     })
     _.each(files,function(value,index,list){
       index+=1
-      that.showImage(value,index)
+      that.showImage(value.url,index)
       that.setData({
         completeCount: index
       })
