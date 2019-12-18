@@ -101,7 +101,7 @@ Page({
   }),
 
   getPhoneNumber: co.wrap(function* (e) {
-    yield app.getPhoneNum(e)
+    // yield app.getPhoneNum(e)
     storage.put("hasAuthPhoneNum", true)
     this.hasAuthPhoneNum = true
     this.setData({
@@ -121,19 +121,20 @@ Page({
       currentData.forEach(item => {
         printOneInvoice.push({
           originalUrl: item.convert_url,
+          printUrl: item.convert_url,
           originalUrl: 1,
           grayscale: false
         })
       })
 
       logger.info('发票提交打印参数', printOneInvoice)
-      const resp = yield commonRequest.createOrder(invoice, printOneInvoice)
+      const resp = yield commonRequest.createOrder('invoice', printOneInvoice)
       logger.info('提交打印成功', resp)
       this.longToast.hide()
       router.redirectTo('/finish/index', {
         type: 'invoice',
         media_type: 'invoice',
-        state: resp.order.state
+        state: resp.createOrder.state
       })
     } catch (e) {
       this.longToast.hide()

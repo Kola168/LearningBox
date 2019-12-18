@@ -254,10 +254,11 @@ Page({
 
   // 选择百度
   chooseBaiduImg ({detail}) {
+    const images = encodeURIComponent(JSON.stringify({
+      localUrl: detail[0].url
+    }))
     router.navigateTo('/pages/print_doc/duplicate_edit/duplicate_edit', {
-      images: {
-        localUrl: detail[0].url
-      },
+      images,
       type: 'edit'
     })
   },

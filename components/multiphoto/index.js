@@ -794,5 +794,9 @@ Component({
                 Loger(e)
             }
         }),
+
+        baiduprint:function(e){
+          this.imgChooseInit(e.detail[0].url)
+        },
     }
 })

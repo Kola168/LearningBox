@@ -1,6 +1,6 @@
 // pages/print_doc/duplicate/index.js
 const app = getApp();
-
+import router from '../../../utils/nav'
 Page({
   data: {
     cardList: [{
@@ -25,7 +25,18 @@ Page({
       }
     ]
   },
+
+  toNavCard () {
+    router.navigateTo('/pages/print_doc/duplicate_idcard/duplicate_idcard', {
+      type: "id"
+    })
+  },
   
+  toNav ({currentTarget: {dataset: {item}}}) {
+    router.navigateTo('/pages/print_doc/duplicate_idcard/duplicate_idcard', {
+      type: item.key
+    })
+  },
   onShareAppMessage() {
     return app.share
   }

@@ -10,7 +10,7 @@ Page({
       'https://cdn-h.gongfudou.com/LearningBox/feature/diy/calendar_diy_2.png',
       'https://cdn-h.gongfudou.com/LearningBox/feature/diy/calendar_diy_3.png',
       'https://cdn-h.gongfudou.com/LearningBox/feature/diy/calendar_diy_4.png',
-      'https://cdn-h.gongfudou.com/LearningBox/feature/diy/calendar_diy_5.png',
+      'https://cdn-h.gongfudou.com/LearningBox/feature/diy/calendar_diy_5.jpg',
       'https://cdn-h.gongfudou.com/LearningBox/feature/diy/calendar_diy_6.png',
     ],
     wood_calendar: [
@@ -18,7 +18,7 @@ Page({
       'https://cdn-h.gongfudou.com/LearningBox/feature/wood/calendar_solid_wood_2.png',
       'https://cdn-h.gongfudou.com/LearningBox/feature/wood/calendar_solid_wood_3.png',
       'https://cdn-h.gongfudou.com/LearningBox/feature/wood/calendar_solid_wood_4.png',
-      'https://cdn-h.gongfudou.com/LearningBox/feature/wood/calendar_solid_wood_5.png',
+      'https://cdn-h.gongfudou.com/LearningBox/feature/wood/calendar_solid_wood_5.jpg',
       'https://cdn-h.gongfudou.com/LearningBox/feature/wood/calendar_solid_wood_6.png',
     ],
     titleName:'',

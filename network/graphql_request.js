@@ -537,9 +537,9 @@ const graphqlApi = {
   },
 
   // 发起收藏
-  collectCourse: (input) => {
+  collect: (input) => {
     return gql.mutate({
-      mutation: `mutation collectCourse($input: ResourceCollectInput!){
+      mutation: `mutation collect($input: ResourceCollectInput!){
         collect(input:$input){
           state
         }
@@ -863,7 +863,7 @@ const graphqlApi = {
             sn
           }
           contents{
-            title
+            name
             icon
             sn
             pageCount
@@ -885,9 +885,10 @@ const graphqlApi = {
       query: `query getRecordList($sn: String!){
         category(sn: $sn){
           contents{
-            title
+            name
             icon
             sn
+            printerOrdersCount
             pageCount
           }
         }
@@ -905,11 +906,15 @@ const graphqlApi = {
     return gql.query({
       query: `query getRecordSource($sn: String!){
         content(sn: $sn){
-          title
+          name
           icon
           sn
-          contentImage
+          contentImages{
+            nameUrl
+          }
+          audioContentImage
           audio
+          contentCollected
           userAudio{
             audioUrl
             qrCodeUrl
@@ -922,14 +927,6 @@ const graphqlApi = {
       }
     })
   },
-  // createAudio: () => {
-  //   return gql.mutate({
-  //     mutation: `mutation createAudio($input: CreateAudioInput!) {
-
-  //     }`
-  //   })
-  // },
-
 
   /**
    *获取省列表
@@ -1012,62 +1009,23 @@ const graphqlApi = {
       }
     })
   },
-
-  //查询模板列表
-  searchTemplate: (type) => {
+  /**
+   * 获取耗材
+   */
+  getConsumables: (type, sn, period) => {
     return gql.query({
-      query: `query($key: String!) {
-        feature(key: $key) {
-          categories {
-            templates {
-              previewImage
-              name
-              imageUrl
-              sn
-              positionInfo {
-                width
-                areaHeight
-                areaWidth
-                areaX
-                areaY
-                height
-                width
-              }
-            }
-          }
-        }
-      }`,
-      variables: {
-        key: type
-      }
-    })
-  },
-
-  searchTemplateType: (sn) => {
-    return gql.query({
-      query: `query($sn: String!) {
-        category(sn: $sn) {
+      query: `query ($type: ConsumableTypeEnum!, $sn: String!, $period: String!){
+        consumables(type:$type, sn: $sn, period: $period){
+          appid
+          url
+          imageUrl
           name
-          sn
-          templates {
-            previewImage
-            name
-            imageUrl
-            sn
-            positionInfo {
-              width
-              areaHeight
-              areaWidth
-              areaX
-              areaY
-              height
-              width
-            }
-          }
         }
       }`,
       variables: {
-        sn: sn
+        type,
+        sn,
+        period
       }
     })
   },
@@ -1096,8 +1054,9 @@ const graphqlApi = {
       }
     })
   },
-  /* 获取banner图
-   *
+
+  /**
+   *获取banner图
    * @param {*} type course/home
    * @returns
    */
@@ -1157,7 +1116,49 @@ const graphqlApi = {
       }
     })
   },
+  /**
+   * 上传录音音频
+   */
+  createAudio: (pms) => {
+    return gql.mutate({
+      mutation: `mutation createAudio($input: CreateAudioInput!) {
+        createAudio(input: $input){
+          qrCodeUrl
+        }
+      }`,
+      variables: {
+        input: pms
+      }
+    })
+  },
 
+  /**
+   * 获取用户录制信息
+   */
+  getRecordInfo: (sn, userId) => {
+    return gql.query({
+      query: `query getRecordInfo($sn: String!, $userId: Int!){
+        userContentAudio(sn: $sn, userId: $userId){
+          audioUrl
+        }
+        content(sn: $sn){
+          name
+          icon
+          sn
+          contentImages{
+            nameUrl
+          }
+          audioContentImage
+          audio
+          contentCollected
+        }
+      }`,
+      variables: {
+        sn,
+        userId
+      }
+    })
+  },
   /**
    * 获取文件夹列表
    *
@@ -1233,7 +1234,138 @@ const graphqlApi = {
         sn: sn
       }
     })
-  }
+	},
+  //查询模板列表
+  searchTemplate:(type)=>{
+    return gql.query({
+      query: `query($key: String!) {
+        feature(key: $key) {
+          categories {
+            name
+            sn
+            isHorizontal
+            templates {
+              previewImage
+              name
+              imageUrl
+              sn
+              positionInfo {
+                width
+                areaHeight
+                areaWidth
+                areaX
+                areaY
+                height
+                width
+              }
+            }
+          }
+        }
+      }`,
+      variables: {
+        key: type
+      }
+    })
+  },
+
+  //查询主模板下详细信息
+  searchTemplateType:(sn)=>{
+    return gql.query({
+      query: `query($sn: String!) {
+        category(sn: $sn) {
+          name
+          sn
+          templates {
+            previewImage
+            name
+            imageUrl
+            sn
+            positionInfo {
+              width
+              areaHeight
+              areaWidth
+              areaX
+              areaY
+              height
+              width
+            }
+          }
+        }
+      }`,
+      variables: {
+        sn: sn
+      }
+    })
+  },
+
+  //查询姓名贴模板
+  searchNameTemplate:(type)=>{
+    return gql.query({
+      query: `query($key: String!) {
+        feature(key: $key) {
+          categories {
+            name
+            sn
+            isHorizontal
+            attrsInfo
+            isHidden
+            templates {
+              previewImage
+              name
+              imageUrl
+              uploadable
+              sn
+              positionInfo {
+                width
+                areaHeight
+                areaWidth
+                areaX
+                areaY
+                height
+                width
+              }
+            }
+          }
+        }
+      }`,
+      variables: {
+        key: type
+      }
+    })
+  },
+
+  //查询台历模板信息
+  searchCalendarTemplate:(type)=>{
+    return gql.query({
+      query: `query($key: String!) {
+        feature(key: $key) {
+          categories {
+            name
+            sn
+            isHorizontal
+            templates {
+              previewImage
+              name
+              imageUrl
+              sn
+              calendarInfos {
+                width
+                areaHeight
+                areaWidth
+                areaX
+                areaY
+                height
+                width
+              }
+            }
+          }
+        }
+      }`,
+      variables: {
+        key: type
+      }
+    })
+  },
 }
 
 export default graphqlApi

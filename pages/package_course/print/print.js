@@ -13,6 +13,7 @@ Page({
     count: 0,
     loadReady: false,
     hasAuthPhoneNum: false,
+    isFullScreen: false,
     confirmModal: {
       isShow: false,
       title: '请正确放置A4打印纸',
@@ -24,6 +25,9 @@ Page({
     this.sn = query.sn
     this.longToast = new app.weToast()
     this.getLessonDetail()
+    this.setData({
+      isFullScreen: app.isFullScreen,
+    })
   },
   onShow: function() {
     let hasAuthPhoneNum = Boolean(storage.get('hasAuthPhoneNum'))
@@ -119,7 +123,7 @@ Page({
       const resp = yield graphql.createResourceOrder(params)
       this.longToast.hide()
       router.redirectTo('/pages/finish/index', {
-        type: course,
+        type: 'course',
         media_type: '',
         state: resp.createResourceOrder.state
       })
@@ -130,7 +134,7 @@ Page({
   }),
 
   getPhoneNumber: co.wrap(function*(e) {
-    yield app.getPhoneNum(e)
+    // yield app.getPhoneNum(e)
     storage.put("hasAuthPhoneNum", true)
     this.hasAuthPhoneNum = true
     this.setData({

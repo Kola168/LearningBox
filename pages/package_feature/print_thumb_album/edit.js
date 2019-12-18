@@ -72,7 +72,8 @@ Page({
             x: params.x,
             y: params.y,
             image_width:params.image_width,
-            image_height:params.image_height
+            image_height:params.image_height,
+            step_method:'one'
         })
         event.emit('setPreData', {url:resp.res.url,index:this.index})
         wxNav.navigateBack()
