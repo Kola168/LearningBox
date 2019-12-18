@@ -1,24 +1,22 @@
 "use strict"
 const app = getApp()
-import { regeneratorRuntime, co, wxNav, util } from '../../../../utils/common_import'
+import { regeneratorRuntime, co, wxNav, util, storage } from '../../../../utils/common_import'
 import graphql from '../../../../network/graphql_request'
 
 Page({
   data: {
     orders: [],
-    isOwner: false,
-    //黑色浮层提示
-    showInterceptModal: '',
-    activeDevice: null,
+    // isOwner: false,
+    // showInterceptModal: '',
     devices: [],
     activeDevice: null,
     changeType: false,
-    activeType: 'all',
-    showDeleteRecordModal: false,
-    recordModalType: 'delete',
-    deleteRecordSn: null,
+    // activeType: 'all',
+    // showDeleteRecordModal: false,
+    // recordModalType: 'delete',
+    // deleteRecordSn: null,
     showRemind: false, //是否显示展示数据提示
-    hasEcPrinter: false,
+    // hasEcPrinter: false,
     navBarHeight: 0,
     showDeviceList: false,
     modalObj: {
@@ -31,10 +29,12 @@ Page({
   onLoad: co.wrap(function*(options) {
     this.weToast = new app.weToast()
     this.page = 1
+    let userSn = storage.get('userSn')
     setTimeout(() => {
       let navBarHeight = app.navBarInfo.topBarHeight
       this.setData({
-        navBarHeight
+        navBarHeight,
+        userSn
       })
     }, 300)
     this.getDeviceList()
@@ -67,7 +67,6 @@ Page({
         activeDevice
       })
       if (activeDevice) {
-        this.activeDeviceSn = activeDevice.sn
         this.getPrinterRecords()
       }
       this.weToast.hide()
@@ -76,11 +75,22 @@ Page({
       util.showError(error)
     }
   }),
+  // 切换打印机
+  changeDevice(e){
+    let sn = e.currentTarget.id,
+    index = e.currentTarget.dataset.index
+    this.setData({
+      showDeviceList:false,
+      activeDevice:this.data.devices[index]
+    })
+  },
   // 获取打印记录
   getPrinterRecords: co.wrap(function*() {
     try {
-      let res = yield graphql.getPrinterRecords(this.activeDeviceSn, this.page++)
-      console.log('iii', res)
+      let res = yield graphql.getPrinterRecords(this.data.activeDevice.sn, this.page++)
+      this.setData({
+        orders: res.printOrders
+      })
       this.weToast.hide()
     } catch (error) {
       this.weToast.hide()
@@ -94,4 +104,16 @@ Page({
       ['modalObj.content']: '未完成状态的订单暂时无法删除，如需取消打印，可点击下方按钮了解'
     })
   },
+  // 跳转详情
+  toDetail(e) {
+    console.log(e)
+    if (app.preventMoreTap(e)) return
+    let userSn = e.currentTarget.dataset.userSn
+    if (this.data.userSn == userSn) {
+      let sn = e.currentTarget.dataset.sn
+      wxNav.navigateTo(`../detail/index`, {
+        sn: sn
+      })
+    }
+  }
 })

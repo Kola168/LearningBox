@@ -61,7 +61,6 @@
   margin-right: 30rpx;
 }
 
-
 .item-name-active {
   font-size: 36rpx;
   font-weight: bold;
@@ -92,7 +91,7 @@
   padding: 38rpx 24rpx;
 }
 
-.list-item:not(:last-of-type){
+.list-item:not(:last-of-type) {
   border-bottom: 2rpx solid #e7e7e7;
 }
 
@@ -150,9 +149,36 @@
 
 .main-right {
   width: 40%;
+}
+
+.main-right-column {
   flex-direction: column;
   justify-content: space-between;
   align-items: flex-end;
+}
+
+.main-right-row {
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.main-right-row>view {
+  height: 44rpx;
+  line-height: 44rpx;
+  padding: 0 20rpx;
+  font-size: 24rpx;
+}
+
+.audit-reject {
+  color: #999;
+  border: 2rpx solid #CECECE;
+}
+
+.audit-allow {
+  color: #000;
+  background: #FFDC5E;
+  border: 2rpx solid #FFDC5E;
+  margin-left: 20rpx;
 }
 
 .right-status {

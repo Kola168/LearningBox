@@ -38,7 +38,7 @@ Page({
     try {
       let res = yield graphql.getFreeSourcesContents(this.typeSn)
       this.setData({
-        typeContents:res.category.contents
+        typeContents: res.category.contents
       })
       this.weToast.hide()
     } catch (error) {
@@ -48,9 +48,11 @@ Page({
   }),
   changeType(e) {
     let tabId = e.currentTarget.id
+    this.typeSn = e.currentTarget.dataset.sn
     this.setData({
       tabId
     })
+    this.getFreeSourcesContents()
   },
   toNext() {
     wxNav.navigateTo(`../detail/index`)

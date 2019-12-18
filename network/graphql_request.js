@@ -680,7 +680,12 @@ const graphqlApi = {
       query: `query{
         currentUser{
           phone
-          sn
+          selectedDevice{
+            sn
+            name
+            model
+            onlineState
+          }
           selectedKid{
             gender
             name
@@ -706,7 +711,7 @@ const graphqlApi = {
             city{
               name
             }
-            }
+          }
         }
       }`
     })
@@ -1192,16 +1197,40 @@ const graphqlApi = {
             avatar
             name
           }
+          copies
           name
           sn
-          designs{
-            sn
-          }
+          state
         }
       }`,
       variables: {
         deviceSn: deviceSn,
         page: page
+      }
+    })
+  },
+
+  /**
+   * 获取打印机打印记录详情
+   * @param { String } sn 打印订单sn
+   */
+  getPrinterRecordDetail: (sn) => {
+    return gql.query({
+      query: `query($sn: String!) {
+        printOrder(sn:$sn){
+          name
+          createdAt
+          designs {
+            failedReason
+            copies
+            previewUrl
+            state
+            printUrl
+          }
+        }
+      }`,
+      variables: {
+        sn: sn
       }
     })
   }

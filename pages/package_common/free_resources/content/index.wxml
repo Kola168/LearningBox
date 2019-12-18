@@ -2,7 +2,7 @@
 <view class="container">
   <scroll-view scroll-x="{{true}}" class="tab" scroll-with-animation scroll-into-view="{{tabId}}">
     <view class="tab-box">
-      <view wx:for="{{contentTypes}}" class="tab-item {{tabId==='tab_'+index?'tab-item-active':''}}" bindtap="changeType" wx:key="sn" id="{{'tab_'+index}}">
+      <view wx:for="{{contentTypes}}" class="tab-item {{tabId==='tab_'+index?'tab-item-active':''}}" bindtap="changeType" wx:key="sn" data-sn="{{item.sn}}" id="{{'tab_'+index}}">
         {{item.name}}
       </view>
       <!-- <view class="tab-item {{tabId==='tab_1'?'tab-item-active':''}}" bindtap="changeType" id="tab_1">

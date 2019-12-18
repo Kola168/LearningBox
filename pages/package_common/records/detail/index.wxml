@@ -1,23 +1,31 @@
-<view class='title'>
-  <view>{{title}}</view>
-  <view>{{date}}</view>
+<nav-bar title="记录详情"></nav-bar>
+<view class="order-title flex">
+  <view>a4文档</view>
+  <view>2019.12.20</view>
 </view>
-<view class='line-blod'></view>
-<view wx:for="{{list}}" wx:key="{{index}}" id="{{index}}" style='padding:40rpx 24rpx 0'>
-  <view class='list'>
-    <view class='left'>
-      <image src="{{item.thumbnail_url}}" class='icon' mode='widthFix'></image>
-      <view class='text'>
-        <view>{{item.filename}}</view>
-        <view class='number'>
-          <view wx:if="{{title=='A4文件'||title=='发票'||title=='微信文章'}}" style='margin-right:35rpx'>打印范围：{{item.start_page}}-{{item.end_page}}页</view>
-          <view>打印数量：{{item.number}}份</view>
-        </view>
-      </view>
+<view class="order-detail">
+  <view class="detail-item flex">
+    <view class="item-img flex">
+      <image src="/images/doc_document_wps.png" mode="widthFix" />
     </view>
-    <view class='state' wx:if="{{item.state=='已打印'||item.state=='已取消'||item.state=='已删除'}}">{{item.state}}</view>
-    <view class='state yellow' wx:if="{{item.state=='待打印'||item.state=='打印中'||item.state=='待审核'}}">{{item.state}}</view>
-    <view class='state orange' wx:if="{{item.state=='已拒绝'||item.state=='下载失败'||item.state=='暂停(卡纸)'||item.state=='暂停(缺纸)'||item.state=='暂停(缺墨)'||item.state=='暂停(其他错误)'||item.state=='打印失败(发送超时)'||item.state=='打印失败(邮箱失效)'||item.state=='打印失败(发送失败)'||item.state=='打印失败(页数超限)'||item.state=='打印失败(文件加密)'||item.state=='打印失败'}}">{{item.state}}</view>
+    <view class="item-main flex">
+      <view class="main-left flex">
+        <view class="left-name">小码过河</view>
+        <view class="left-count">打印数量：1份</view>
+      </view>
+      <view class="main-right">已打印</view>
+    </view>
   </view>
-  <view class="line"></view>
+  <view class="detail-item flex">
+    <view class="item-img flex">
+      <image src="/images/doc_document_wps.png" mode="widthFix" />
+    </view>
+    <view class="item-main flex">
+      <view class="main-left flex">
+        <view class="left-name">小码过河</view>
+        <view class="left-count">打印数量：1份</view>
+      </view>
+      <view class="main-right">已打印</view>
+    </view>
+  </view>
 </view>

@@ -1,3 +1,42 @@
+<wxs module="filter">
+  var formatState = function(state){
+      switch (state){
+        case 'init':
+          return {
+            state: 'warning',
+            text: '等待审核'
+          }
+          break
+        case 'printing':
+          return {
+            state: 'warning',
+            text: '正在打印'
+          }
+          break
+        case 'rejected':
+          return {
+            state: 'error',
+            text: '已拒绝'
+          }
+          break
+        case 'paused':
+          return {
+            state: 'error',
+            text: '打印暂停'
+          }
+          break
+        case 'finished':
+          return {
+            state: 'success',
+            text: '订单完成'
+          }
+          break
+      }
+  }
+  module.exports = {
+    formatState:formatState
+  }
+</wxs>
 <nav-bar title="打印记录"></nav-bar>
 <view class="container">
   <view class="modal-bg" wx:if="{{showDeviceList}}"></view>
@@ -12,39 +51,45 @@
       </view>
       <image wx:if="{{devices.length>1}}" src="../../images/{{showDeviceList?'arrow_up_active':'arrow_down'}}.png" class="filter-arrow" mode="widthFix" />
       <view class="device-list" wx:if="{{showDeviceList}}">
-        <view class="device-item flex-align-center">
-          <image src="/images/L3115.png" mode="widthFix" />
-          <view class="item-name text-overflow-points {{showDeviceList?'item-name-active__show':''}}">
-            小白学习盒子
+        <view class="device-item flex-align-center" wx:for="{{devices}}" wx:key="sn" bindtap="changeDevice" data-index="{{index}}" id="{{item.sn}}">
+          <image src="/images/{{activeDevice.model==='EP400'?'EP400':'L3115'}}.png" mode="widthFix" />
+          <view class="item-name text-overflow-points {{item.sn==activeDevice.sn?'item-name-active__show':''}}">
+            {{item.name}}
           </view>
         </view>
       </view>
     </view>
   </view>
   <view class="order-list">
-    <view class="list-item flex">
+    <view class="list-item flex" wx:for="{{orders}}" wx:key="sn" bindtap="toDetail" data-usersn="{{item.creator.sn}}" data-sn="{{item.sn}}">
       <view class="item-user">
-        <image src="/images/doc_document_qq.png" />
-        <view>赵亚飞</view>
+        <image src="{{item.creator.avatar}}" />
+        <view class="text-overflow-points">{{item.creator.name}}</view>
       </view>
       <view class="item-main flex">
         <view class="main-left flex">
           <view class="left-type flex-align-center">
-            <view>A4文档</view>
-            <view class="type-user type-user-admin">管理员</view>
+            <view>{{item.name}}</view>
+            <view class="type-user type-user-admin">{{item.adminCreate?'管理员':'使用者'}}</view>
           </view>
-          <view class="left-count">打印分数1</view>
-          <view class="left-data">2018.08.12 18:00</view>
+          <view class="left-count">打印数量：{{item.copies}}份</view>
+          <view class="left-data">{{item.createdAt}}</view>
         </view>
-        <view class="main-right flex">
+        <view class="main-right main-right-row flex" wx:if="{{item.isAdmin&&item.state==='init'}}">
+          <view class="audit-reject">拒绝</view>
+          <view class="audit-allow">同意</view>
+        </view>
+        <view class="main-right main-right-column flex" wx:else>
           <view class="right-status flex-align-center">
-            <view class="status-warning">正在打印</view>
-            <image src="../../images/arrow_right.png" mode="widthFix" />
+            <view class="status-{{filter.formatState(item.state).state}}">
+              {{filter.formatState(item.state).text}}
+            </view>
+            <image src="../../images/arrow_right.png" wx:if="{{item.creator.sn==userSn}}" mode="widthFix" />
           </view>
         </view>
       </view>
     </view>
-    <view class="list-item flex">
+    <!-- <view class="list-item flex">
       <view class="item-user">
         <image src="/images/doc_document_qq.png" />
         <view>哈哈哈</view>
@@ -222,7 +267,7 @@
           </view>
         </view>
       </view>
-    </view>
+    </view> -->
   </view>
   <view class="no-more-tip">仅展示近三个月的打印记录</view>
 </view>
@@ -230,5 +275,4 @@
 <import src="/lib/toast/wetoast.wxml" />
 <template is="wetoast" data="{{...__wetoast__}}" />
 <!-- modal -->
-<modal modal="{{modalObj}}" bindconfirm="confirmModal">
-</modal>
+<modal modal="{{modalObj}}" bindconfirm="confirmModal"></modal>
