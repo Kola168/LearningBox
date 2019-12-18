@@ -149,6 +149,23 @@ Page({
       }
     } catch (e) { Loger(e) }
   }),
+
+  baiduprint:co.wrap(function*(e){
+    let imgs=e.detail
+    this.setData({
+      showProcess: true,
+      count: imgs.length
+    })
+    let that=this
+    _.each(imgs,function(value,index,list){
+      index+=1
+      that.setData({
+        completeCount: index
+      })
+      that.showImage(value, index)
+    })
+  }),
+
   //展示图片
   showImage: co.wrap(function*(url, index) {
     try {
@@ -261,7 +278,7 @@ Page({
           printUrl:value
         })
       })
-      
+
       let orderSn = yield commonRequest.createOrder(this.type, imgs)
       this.longToast.toast()
       Loger(orderSn)
