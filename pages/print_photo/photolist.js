@@ -364,7 +364,9 @@ Page({
 
   makeOrder: co.wrap(function*() {
     try{
-
+      this.longToast.toast({
+        type: "loading",
+      })
 
       let imgs = []
       _.each(this.data.photoList,function(value,index,list){
@@ -379,9 +381,11 @@ Page({
       //   state: resp.state,
       //   type: 'literacy_card'
       // })
+      this.longToast.toast()
       storage.remove(this.mediaType)
     }catch(e){
       Loger(e)
+      this.longToast.toast()
       util.showError(e)
     }
   }),
