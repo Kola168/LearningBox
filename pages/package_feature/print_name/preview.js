@@ -8,6 +8,7 @@ const event = require('../../../lib/event/event')
 
 import wxNav from '../../../utils/nav.js'
 import api from '../../../network/restful_request'
+import commonRequest from '../../../utils/common_request'
 
 const showModal = util.promisify(wx.showModal)
 const saveImageToPhotosAlbum = util.promisify(wx.saveImageToPhotosAlbum)
@@ -25,14 +26,12 @@ Page({
     width: 0,
     height: 0,
     hasAuthPhoneNum: false,
-    confirmModal: {
-      isShow: false,
-      title: '请确认6寸照片纸放置正确',
-      image: 'https://cdn.gongfudou.com/miniapp/ec/confirm_print_a4_new.png'
-    }
+    confirmModal: {}
   },
   onLoad: co.wrap(function*(query) {
     this.sn = query.sn
+    this.type=query.type||'name_sticker'
+    this.longToast = new app.weToast()
     if (query.share_user_id) {
       this.way = 5
       this.share_user_id = query.share_user_id
@@ -41,12 +40,12 @@ Page({
       })
       this.getStickerPreview()
     } else {
-      let userId = wx.getStorageSync('userId')
-      if (!userId || userId == undefined) {
-        yield this.getUserId()
-      } else {
-        this.user_id = userId
-      }
+      // let userId = wx.getStorageSync('userId')
+      // if (!userId || userId == undefined) {
+      //   yield this.getUserId()
+      // } else {
+      //   this.user_id = userId
+      // }
       this.setData({
         compoundImg: JSON.parse(decodeURIComponent(query.imgSrc))
       })
@@ -129,23 +128,13 @@ Page({
 
   },
   confirm: co.wrap(function*(e) {
-    console.log('照片打印时form发生了submit事件，携带数据为：', e.detail)
-    uploadFormId.dealFormIds(e.detail.formId, `print_photo_sticker`)
-    uploadFormId.upload()
-    if (!this.hasAuthPhoneNum && !app.hasPhoneNum) {
-      return
-    }
-    if (app.preventMoreTap(e)) {
-      return
-    }
-    let hideConfirmPrintBox = Boolean(wx.getStorageSync("hideConfirmPrintBox"))
-    if (hideConfirmPrintBox) {
-      this.userConfirm()
-    } else {
-      this.setData({
-        ['confirmModal.isShow']: true
-      })
-    }
+    this.setData({
+      confirmModal: {
+        isShow: true,
+        title: '请参照下图正确放置台历打印纸',
+        image: 'https://cdn-h.gongfudou.com/LearningBox/main/doc_confirm_print_a4_new.png'
+      },
+    })
   }),
   getPhoneNumber: co.wrap(function*(e) {
     yield app.getPhoneNum(e)
@@ -156,34 +145,23 @@ Page({
     })
     this.confirm(e)
   }),
-  userConfirm: co.wrap(function*(e) {
-    let images = [{
-      url: this.url,
-      pre_convert_url: this.url,
-      number: this.data.count
-    }]
-    wx.showLoading({
-      title: '正在提交',
-      mask: true
+  makeOrder: co.wrap(function*(e) {
+    this.longToast.toast({
+      type: "loading",
     })
     try {
-      // 姓名贴大头贴打印与发票打印接口通用
-      const resp = yield api.printInvoice(app.openId, 'name_sticker', images)
-      console.log(resp)
-      if (resp.code !== 0) {
-        throw (resp)
-      }
-
-      wx.hideLoading()
-      console.log('订单创建成功', resp)
-      wx.redirectTo({
-        url: `../../../finish/index?type=name_sticker&media_type=name_sticker&state=${resp.order.state}`
-      })
+      let imgs = [{
+        originalUrl: this.url,
+        printUrl: this.url
+      }]
+      let orderSn = yield commonRequest.createOrder(this.type, imgs)
+      this.longToast.toast()
     } catch (e) {
-      wx.hideLoading()
+      this.longToast.toast()
       util.showErr(e)
     }
   }),
+
   allowSave: function(e) {
     if (!e.detail.authSetting['scope.writePhotosAlbum']) {
       return

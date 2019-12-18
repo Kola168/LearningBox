@@ -3,16 +3,14 @@ import wxNav from '../../../utils/nav.js'
 
 Page({
   data: {
-    urls: ['https://cdn.gongfudou.com/miniapp/ec/quweidayin/name/a1.png',
-				'https://cdn.gongfudou.com/miniapp/ec/quweidayin/name/a2.png',
-				'https://cdn.gongfudou.com/miniapp/ec/quweidayin/name/a3.png',
-				'https://cdn.gongfudou.com/miniapp/ec/quweidayin/name/a4.png',
-				'https://cdn.gongfudou.com/miniapp/ec/quweidayin/name/a5.png',
+    urls: ['https://cdn-h.gongfudou.com/LearningBox/feature/print_name/print_name_1.jpg',
+				'https://cdn-h.gongfudou.com/LearningBox/feature/print_name/print_name_2.jpg',
+				'https://cdn-h.gongfudou.com/LearningBox/feature/print_name/print_name_3.jpg'
     ],
   },
 
   onLoad: function(options) {
-
+    this.type=options.type||'name_sticker'
   },
   buysth: function() {
 

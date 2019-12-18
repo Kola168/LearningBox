@@ -2,6 +2,7 @@
 <wxs src="../common.wxs" module="foo" />
 <multi-process wx:if="{{showProcess}}" complete-count="{{completeCount}}" count="{{count}}" percent="{{percent}}" err-tip ="{{errTip}}" bindcancelprocess="cancelImg"></multi-process>
 <take-photo-pop id="checkComponent" bindchooseImg="chooseImgs" imgNum="{{chooseCount}}" bindbaidutap="baiduprint"></take-photo-pop>
+<confirm-print bindconfirm="makeOrder" modal="{{confirmModal}}" />
 
 <nav-bar title="制作拇指相册"></nav-bar>
 <view class="top-tips">
@@ -36,4 +37,6 @@
     </view>
   </view>
 </view>
-<bottom-button class="bottom-but" text-right="开始打印" bindrighttap="toedit"></bottom-button>
+<bottom-button class="bottom-but" text-right="开始打印" bindrighttap="createOrder"></bottom-button>
+<import src="/lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />

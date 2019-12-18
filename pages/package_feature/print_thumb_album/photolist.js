@@ -11,6 +11,10 @@ const event = require('../../../lib/event/event')
 const showModal = util.promisify(wx.showModal)
 
 import wxNav from '../../../utils/nav.js'
+import getLoopsEvent from '../../../utils/worker'
+import api from '../../../network/restful_request'
+import commonRequest from '../../../utils/common_request'
+
 let Loger = (app.apiServer != 'https://epbox.gongfudou.com' || app.deBug) ? console.log : function() {}
 
 Page({
@@ -36,17 +40,21 @@ Page({
     errTip: '',
 
     chooseCount: 1,
-    mediaType:''
   },
   clickIndex: 0, //当前点击的idnex
   onLoad: function(options) {
+    this.longToast = new app.weToast()
     this.setData({
-      images: Array(this.data.imagesLength).fill([])
+      images: Array(this.data.imagesLength).fill({})
     })
+    this.type=options.type||'mini_album'
     this.calculateSize()
     event.on('setPreData', this, (postData)=>{
       this.editPhoto(postData)
     })
+  },
+  onUnload: function() {
+    event.remove('setPreData', this)
   },
   editPhoto:function(postData){
     this.longToast.toast({
@@ -88,6 +96,14 @@ Page({
     })
     this.selectComponent("#checkComponent").showPop()
   },
+
+  //取消照片上传
+  cancelImg: co.wrap(function*() {
+    app.cancelUpload = true
+    this.setData({
+      showProcess: false
+    })
+  }),
 
   chooseImgs: function(e) {
     let imgs = e.detail.tempFiles
@@ -226,8 +242,70 @@ Page({
       imgInfo: encodeURIComponent(JSON.stringify(this.data.images[index])),
       index: index,
       photoMedia: encodeURIComponent(JSON.stringify(this.data.photoSize)),
-      mediaType:this.mediaType
+      mediaType:this.type
     })
   },
+
+  createOrder:co.wrap(function*(){
+    if(_.without(_.pluck(this.data.images,'url'),undefined).length==0){
+      return wx.showModal({
+        title: '提示',
+        content: '至少上传一张照片哦',
+        showCancel: false,
+        confirmColor: '#FFE27A'
+      })
+    }
+    this.setData({
+      confirmModal: {
+        isShow: true,
+        title: '请参照下图正确放置台历打印纸',
+        image: 'https://cdn-h.gongfudou.com/LearningBox/feature/thumb_album/mini_thumb_confirm_print.png'
+      },
+    })
+  }),
+
+  makeOrder:co.wrap(function*(){
+    this.longToast.toast({
+      type: 'loading',
+      title: '请稍后',
+    })
+    try {
+      let that=this
+      _.each(this.data.images,function(value,index,list){
+        if(value.url){
+          list[index]={
+            url:imginit.mediaResize(value.url,that.type),
+          }
+        }
+      })
+      let params={
+        images:this.data.images,
+        step_method:'two'
+      }
+      getLoopsEvent({
+        feature_key: this.type,
+        worker_data: params,
+
+      }, co.wrap(function*(resp){
+        Loger(resp)
+        if (resp.status == 'finished') {
+          that.longToast.hide()
+          Loger(resp.data.url)
+          let imgs = [{
+            originalUrl: resp.data.url,
+            printUrl: resp.data.url
+          }]
+          let orderSn = yield commonRequest.createOrder(that.type, imgs)
+          that.longToast.toast()
+        }
+      }), ()=>{
+        that.longToast.hide()
+      })
+    } catch (err) {
+      Loger(err)
+      this.longToast.hide()
+      util.showError(err)
+    }
+  }),
 
 })

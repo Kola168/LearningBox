@@ -1,5 +1,7 @@
 <!--pages/package_feature/print_postcard/edit.wxml-->
-<nav-bar title="制作大头贴"></nav-bar>
+<nav-bar title="制作明信片"></nav-bar>
+<confirm-print bindconfirm="makeOrder" modal="{{confirmModal}}" />
+
 <view class="tips-box">
   <image src="../resource_images/icon_smile.png" mode="widthFix" class="tips-icon"></image>
   <text>点击+上传照片，图片可以旋转、缩放、选择图片模版</text>
@@ -20,3 +22,5 @@
   </scroll-view>
   <bottom-button text-right="开始打印" bindrighttap="confBut"></bottom-button>
 </view>
+<import src="/lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />

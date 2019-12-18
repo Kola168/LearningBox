@@ -48,6 +48,7 @@ Page({
   limitCount: 9, //最大上传数量
 
   onLoad: co.wrap(function*(options) {
+    this.longToast = new app.weToast()
     this.type=options.type||'photo_book'
   }),
 
@@ -70,59 +71,7 @@ Page({
     }
   },
 
-  confBut: co.wrap(function*() {
-    if(this.data.imgList.length<=0){
-      return wx.showModal({
-        title: '提示',
-        content: '至少上传一张照片哦',
-        showCancel: false,
-        confirmColor: '#FFE27A'
-      })
-    }
-    try {
-      let that = this
-      let pointArr = []
-      _.each(this.data.imgList, function(value, index, list) {
-        console.log(value)
-        let pointItem = {}
-        if (index == that.data.selectedIndex) {
-          pointItem = that.selectComponent("#mymulti").getImgPoint()
-        } else if (value.storage) {
-          pointItem = that.selectComponent("#mymulti").getImgPoint(value.storage)
-        } else {
-          pointItem = that.selectComponent("#mymulti").getImgsPoints([{
-            templateSize: that.data.templateInfo.modeSize,
-            imgInfo: {
-              path: value.imgNetPath,
-              width: value.imageInfo.width,
-              height: value.imageInfo.height,
-            }
-          }])
-        }
-        console.log(pointItem)
-        pointArr.push(pointItem[0])
-      })
-      console.log(pointArr)
-      let param={
-        is_async:false,
-        feature_key:this.type,
-        images_info:pointArr
-      }
-      const resp = yield api.processes(param)
-      if(resp.code==0){
-        this.setData({
-          confirmModal: {
-            isShow: true,
-            title: '请参照下图正确放置照片纸',
-            image: 'https://cdn-h.gongfudou.com/LearningBox/main/confirm_print.png'
-          },
-        })
-      }
-      console.log(resp)
-    } catch (e) {
-      console.log(e)
-    }
-  }),
+
 
   showEdit: function(index) {
     this.setData({
@@ -253,16 +202,74 @@ Page({
     })
   }),
 
+  confBut: co.wrap(function*() {
+    if(this.data.imgList.length<=0){
+      return wx.showModal({
+        title: '提示',
+        content: '至少上传一张照片哦',
+        showCancel: false,
+        confirmColor: '#FFE27A'
+      })
+    }
+    this.setData({
+      confirmModal: {
+        isShow: true,
+        title: '请参照下图正确放置照片书打印纸',
+        image: 'https://cdn-h.gongfudou.com/LearningBox/main/confirm_print.png'
+      },
+    })
+  }),
+
   makeOrder:co.wrap(function*(){
-    // let imgs = [{
-    //   originalUrl: this.compoundUrl,
-    //   printUrl: this.compoundUrl
-    // }]
-    // let resp = yield commonRequest.createOrder('literacy_card', imgs)
-    // wxNav.redirectTo(`../../../finish/index`, {
-    //   media_type: 'literacy_card',
-    //   state: resp.state,
-    //   type: 'literacy_card'
-    // })
+    try {
+      this.longToast.toast({
+        type: "loading",
+      })
+      let that = this
+      let pointArr = []
+      _.each(this.data.imgList, function(value, index, list) {
+        Loger(value)
+        let pointItem = {}
+        if (index == that.data.selectedIndex) {
+          pointItem = that.selectComponent("#mymulti").getImgPoint()
+        } else if (value.storage) {
+          pointItem = that.selectComponent("#mymulti").getImgPoint(value.storage)
+        } else {
+          pointItem = that.selectComponent("#mymulti").getImgsPoints([{
+            templateSize: that.data.templateInfo.modeSize,
+            imgInfo: {
+              path: value.imgNetPath,
+              width: value.imageInfo.width,
+              height: value.imageInfo.height,
+            }
+          }])
+        }
+        Loger(pointItem)
+        pointArr.push(pointItem[0])
+      })
+      Loger(pointArr)
+      let param={
+        is_async:false,
+        feature_key:this.type,
+        images_info:pointArr
+      }
+      const resp = yield api.processes(param)
+      let imgs=[]
+      _.each(resp.res.urls,function(value,index,list){
+        imgs.push({
+          originalUrl:value,
+          printUrl:value
+        })
+      })
+      
+      let orderSn = yield commonRequest.createOrder(this.type, imgs)
+      this.longToast.toast()
+      Loger(orderSn)
+    } catch (e) {
+      this.longToast.toast()
+      util.showError(e)
+      Loger(e)
+    }
+
   }),
 })
