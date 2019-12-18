@@ -12,7 +12,7 @@
 <view class="photo-show-box" style="height:{{imgSize.height}}px">
   <block wx:if="{{images[selectedImgIndex].url}}">
     <image src="{{foo.addProcess(images[selectedImgIndex].url,'/resize,w_200/quality,Q_85/format,jpg')}}" mode="aspectFill" class="photo-show-img" style="width:{{imgSize.width}}px;height:{{imgSize.height}}px">
-      <image src="../resource_images/calendar_close.png" mode="widthFix" class="photo-show-delete"></image>
+      <image src="../resource_images/calendar_close.png" mode="widthFix" class="photo-show-delete" data-index="{{index}}" bindtap="deleteImg"></image>
       <view class="photo-show-cover">
         <view class="photo-edit-box" bindtap="toEdit">
           <image src="../resource_images/album_edit_icon.png" mode="widthFix" class="photo-edit-icon"></image>
