@@ -15,7 +15,7 @@
                         <text class="moreEdit" bindtap="toMoreEdit" wx:if="{{!rePrint}}" id="{{index}}" key="1">编辑</text>
                         <view>
                             <image class="count-button" src="{{item.count<2?'../../images/print_photo_cutgray.png':'../../images/print_photo_cutimg.png'}}" mode="widthFix" bindtap="decrease" id="{{index}}"></image>
-                            <view class="count-num">{{item.copies}}</view>
+                            <view class="count-num">{{item.count}}</view>
                             <image class="count-button" src="{{item.count<49&&item.count!==0?'../../images/print_photo_plussimg.png':'../../images/doc_document_add_gray.png'}}" mode="widthFix" bindtap="increase" id="{{index}}"></image>
                         </view>
                     </view>
@@ -41,7 +41,7 @@
             </view>
             <view class="bottom-right">
                 <form report-submit="true" bindsubmit="confirm">
-                    <button class="{{images.length==0?'button-gray':''}}" open-type="{{hasAuthPhoneNum?'':'getPhoneNumber'}}" bindgetphonenumber="{{hasAuthPhoneNum?'':'getPhoneNumber'}}" formType="submit">确认打印</button>
+                    <button class="{{images.length==0?'button-gray':''}}" formType="submit">确认打印</button>
                 </form>
             </view>
         </view>
