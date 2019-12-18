@@ -138,8 +138,11 @@ Page({
           app_version: app.version
         },
         decr_type: 'login'
-      }
-      const resp = yield api.wechatDecryption(params)
+			}
+			
+			console.log('授权参数==========',params)
+			const resp = yield api.wechatDecryption(params)
+			console.log('resp=========',resp)
       if (resp.code != 0) {
         throw (resp)
       }
