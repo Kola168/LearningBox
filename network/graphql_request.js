@@ -5,7 +5,7 @@ import storage from '../utils/storage.js'
 // 初始化对象
 let gql = GraphQL({
   url: `${app.apiServer}/graphql`,
-  header: function () {
+  header: function() {
     if (app.authToken) {
       return {
         "AUTHORIZATION": `Token token=${app.authToken}`
@@ -25,9 +25,9 @@ let gql = GraphQL({
   },
   //全局错误拦截
   errorHandler: function(res) {
-		console.log('graphql全局错误拦截',res)
-		//如果auth
-		if(1){
+    console.log('graphql全局错误拦截', res)
+      //如果auth
+    if (1) {
 
     }
   }
@@ -1006,10 +1006,10 @@ const graphqlApi = {
         zipCode: zipCode
       }
     })
-	},
+  },
 
-	//查询模板列表
-  searchTemplate:(type)=>{
+  //查询模板列表
+  searchTemplate: (type) => {
     return gql.query({
       query: `query($key: String!) {
         feature(key: $key) {
@@ -1071,7 +1071,7 @@ const graphqlApi = {
    * 获取免费资源库
    * @param { String } key feature_key
    */
-  getFreeSources: (key)=>{
+  getFreeSources: (key) => {
     return gql.query({
       query: `query ($key: String!){
         feature(key: $key){
@@ -1092,10 +1092,10 @@ const graphqlApi = {
     })
   },
   /* 获取banner图
-  *
-  * @param {*} type course/home
-  * @returns
-  */
+   *
+   * @param {*} type course/home
+   * @returns
+   */
   getBanners: (type) => {
     return gql.query({
       query: `query($type: BannerTypeEnum!) {
@@ -1115,7 +1115,7 @@ const graphqlApi = {
    * 免费资源库内容类型
    * @param { string } sn 资源sn
    */
-  getFreeSourcesContentType: (sn)=>{
+  getFreeSourcesContentType: (sn) => {
     return gql.query({
       query: `query ($sn: String!){
         category(sn: $sn){
@@ -1135,7 +1135,7 @@ const graphqlApi = {
    * 免费资源库内容
    * @param { string } sn 资源sn
    */
-  getFreeSourcesContents: (sn)=>{
+  getFreeSourcesContents: (sn) => {
     return gql.query({
       query: `query ($sn: String!){
         category(sn: $sn){
@@ -1173,6 +1173,35 @@ const graphqlApi = {
       variables: {
         isOwner,
         name
+      }
+    })
+  },
+
+  /**
+   * 获取打印机打印记录
+   * @param { String } sn 打印机sn
+   * @param { Number } page 页数
+   */
+  getPrinterRecords: (deviceSn, page) => {
+    return gql.query({
+      query: `query($deviceSn: String!,$page: Int) {
+        printOrders(deviceSn:$deviceSn,page:$page){
+          adminCreate
+          createdAt
+          creator{
+            avatar
+            name
+          }
+          name
+          sn
+          designs{
+            sn
+          }
+        }
+      }`,
+      variables: {
+        deviceSn: deviceSn,
+        page: page
       }
     })
   }

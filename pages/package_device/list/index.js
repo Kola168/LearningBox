@@ -5,7 +5,7 @@ import graphql from '../../../network/graphql_request'
 Page({
   data: {
     devices: [],
-    activeDevice: {},
+    activeDevice: null,
     isFullScreen: false
   },
   onLoad: function() {
@@ -25,7 +25,7 @@ Page({
     try {
       let res = yield graphql.getDeviceList()
       let devices = res.devices,
-        activeDevice = {}
+        activeDevice = null
       for (let i = 0; i < devices.length; i++) {
         if (devices[i].selected) {
           activeDevice = devices[i]

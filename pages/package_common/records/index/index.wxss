@@ -7,28 +7,42 @@
   align-items: center;
 }
 
+.container {
+  padding-bottom: 200rpx;
+}
+
+.modal-bg {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  min-height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 600;
+}
+
 .container-top {
-  position: absolute;
+  position: fixed;
   left: 0;
   width: 100%;
-  position: relative;
+  z-index: 1000;
+  background: #fff;
 }
 
 .delete-tip {
   color: #fff;
   font-size: 24rpx;
-  font-weight: bold;
   text-align: center;
-  padding: 6rpx 0;
-  background: rgba(0,0,0,0.50);
+  height: 24px;
+  line-height: 24px;
+  background: rgba(0, 0, 0, 0.50);
 }
 
 .device-filter {
   padding: 0 38rpx;
   border-bottom: 2rpx solid #E7E7E7;
-  font-size: 36rpx;
   color: #454545;
-  font-weight: 500;
+  font-size: 30rpx;
   position: relative;
 }
 
@@ -38,7 +52,7 @@
 }
 
 .device-item {
-  height: 112rpx;
+  height: 56px;
   max-width: calc(100% - 64rpx);
 }
 
@@ -47,23 +61,38 @@
   margin-right: 30rpx;
 }
 
+
+.item-name-active {
+  font-size: 36rpx;
+  font-weight: bold;
+}
+
+.item-name-active__show {
+  color: #FFA200;
+}
+
 .device-list {
   position: absolute;
   left: 0;
-  top: 112rpx;
+  top: 56px;
   width: 100%;
   padding: 0 38rpx;
-  z-index: 600;
+  z-index: 1000;
+  background: #fff;
 }
 
 
 /* 列表 */
-.order-list {
 
+.order-list {
+  padding-top: 80px;
 }
 
 .list-item {
   padding: 38rpx 24rpx;
+}
+
+.list-item:not(:last-of-type){
   border-bottom: 2rpx solid #e7e7e7;
 }
 
@@ -158,4 +187,18 @@
   width: 88rpx;
   border-radius: 22rpx;
   text-align: center;
+}
+
+.no-more-tip {
+  position: fixed;
+  left: 50%;
+  bottom: 60rpx;
+  transform: translateX(-50%);
+  color: #999;
+  font-size: 24rpx;
+  border-radius: 8rpx;
+  height: 50rpx;
+  line-height: 50rpx;
+  padding: 0 10rpx;
+  background: #f7f7f7;
 }

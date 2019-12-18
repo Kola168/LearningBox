@@ -188,9 +188,9 @@ Page({
         })
       } else {
         // 从各个照片打印、文档打印及各个小应用跳转过来，计算层级返回
-        event.emit('chooseBaiduFileDone', cdnFiles)
         let delta = this.findLastUrlAndQueryDelta()
         wxNav.navigateBack(delta, () => {
+          event.emit('chooseBaiduFileDone', cdnFiles)
           this.weToast.hide()
         })
       }

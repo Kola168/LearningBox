@@ -4,7 +4,7 @@
   <scroll-view class='resources-type' scroll-with-animation="true" scroll-y="true" style="height:{{minHeight}}px" scroll-top="{{leftToTop}}">
     <view style="padding-bottom: 50rpx;">
       <view wx:for="{{allData}}" wx:key="id" bindtap="changeType" data-id="{{item.id}}" class='type-item {{item.id === currentLeftSelect ?"type-item-active":""}}'>
-        <view>{{item.name}}</view>
+        <view class="text-overflow-points">{{item.name}}</view>
       </view>
     </view>
   </scroll-view>
@@ -16,7 +16,7 @@
         <view class="box-item" style="height:{{rightItemHeight}}px;" wx:for="{{item.children}}" wx:for-item="childItem" wx:key="sn">
           <view class="list-item" bindtap="toNext" data-sn="{{childItem.sn}}">
             <view class="item-img">
-              <image src="/images/doc_email.png" lazy-load mode="widthFix" />
+              <image src="{{childItem.image}}" lazy-load mode="widthFix" />
             </view>
             <view class="item-text">
               <view class="text-title text-overflow-points">{{childItem.name}}</view>

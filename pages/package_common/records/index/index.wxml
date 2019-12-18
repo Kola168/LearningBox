@@ -1,17 +1,22 @@
 <nav-bar title="打印记录"></nav-bar>
 <view class="container">
-  <view class="container-top">
+  <view class="modal-bg" wx:if="{{showDeviceList}}"></view>
+  <view class="container-top" style="top:{{navBarHeight}}px;">
     <view class="delete-tip">删除功能只适用于自己发送的打印任务</view>
     <view class="device-filter flex-align-center">
-      <view class="device-item flex-align-center">
-        <image src="/images/L3115.png" mode="widthFix" />
-        <view class="item-name text-overflow-points">小白学习盒子</view>
+      <view class="device-item flex-align-center" bindtap="showDeviceList">
+        <image src="/images/{{activeDevice.model==='EP400'?'EP400':'L3115'}}.png" mode="widthFix" />
+        <view class="item-name text-overflow-points item-name-active {{showDeviceList?'item-name-active__show':''}}">
+          {{activeDevice.name}}
+        </view>
       </view>
-      <image src="../../images/arrow_down.png" class="filter-arrow" mode="widthFix" />
-      <view class="device-list" wx:if="{{true}}">
+      <image wx:if="{{devices.length>1}}" src="../../images/{{showDeviceList?'arrow_up_active':'arrow_down'}}.png" class="filter-arrow" mode="widthFix" />
+      <view class="device-list" wx:if="{{showDeviceList}}">
         <view class="device-item flex-align-center">
           <image src="/images/L3115.png" mode="widthFix" />
-          <view class="item-name text-overflow-points">小白学习盒子</view>
+          <view class="item-name text-overflow-points {{showDeviceList?'item-name-active__show':''}}">
+            小白学习盒子
+          </view>
         </view>
       </view>
     </view>
@@ -58,7 +63,7 @@
             <view class="status-success">已完成</view>
             <image src="../../images/arrow_right.png" mode="widthFix" />
           </view>
-          <view class="right-delete">删除</view>
+          <view class="right-delete" bindtap="deleteRecord">删除</view>
         </view>
       </view>
     </view>
@@ -219,7 +224,11 @@
       </view>
     </view>
   </view>
+  <view class="no-more-tip">仅展示近三个月的打印记录</view>
 </view>
 <!-- loading -->
 <import src="/lib/toast/wetoast.wxml" />
 <template is="wetoast" data="{{...__wetoast__}}" />
+<!-- modal -->
+<modal modal="{{modalObj}}" bindconfirm="confirmModal">
+</modal>
