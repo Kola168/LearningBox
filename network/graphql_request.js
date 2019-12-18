@@ -25,10 +25,11 @@ let gql = GraphQL({
   },
   //全局错误拦截
   errorHandler: function(res) {
+		console.log('graphql全局错误拦截',res)
 		//如果auth
 		if(1){
 
-			}
+    }
   }
 }, true);
 
@@ -352,8 +353,8 @@ const graphqlApi = {
         input: orderParams
       }
     })
-	},
-	 /**
+  },
+  /**
    * 课程列表
    * *@param { CategoryEnum } type 请求类型
    */
@@ -504,7 +505,7 @@ const graphqlApi = {
   },
 
   // 分享助力
-  shareAssistance: (sn)=> {
+  shareAssistance: (sn) => {
     return gql.mutate({
       mutation: `mutation shareAssistance($input: CoursePromotionInput!){
         courseShare(input:$input){
@@ -636,9 +637,9 @@ const graphqlApi = {
         sn
       }
     })
-	},
+  },
 
-	/**
+  /**
    * 获取所有学段
    * @returns
    */
@@ -679,12 +680,13 @@ const graphqlApi = {
       query: `query{
         currentUser{
           phone
+          sn
           selectedKid{
             gender
             name
-            sn
             birthday
             avatar
+            sn
             stageRoot{
               name
               rootName
@@ -801,7 +803,7 @@ const graphqlApi = {
     })
   },
 
-    /**
+  /**
    * 获取支付信息
    */
   createPayment: (pms) => {
@@ -829,7 +831,7 @@ const graphqlApi = {
   /**
    * 创建资源订单
    */
-  createResourceOrder: (pms)=> {
+  createResourceOrder: (pms) => {
     return gql.mutate({
       mutation: `mutation createResourceOrder($input: CreateResourceOrderInput!) {
         createResourceOrder(input: $input){
@@ -846,7 +848,7 @@ const graphqlApi = {
    * 获取童音录制分类
    * @param {String} 资源标示
    */
-  getRecordCategories: (key)=>{
+  getRecordCategories: (key) => {
     return gql.query({
       query: `query ($key: String!){
         feature(key: $key){
@@ -873,7 +875,7 @@ const graphqlApi = {
    * 获取童音录制资源列表
    * @param {String} 内容分类sn
    */
-  getRecordList: (sn)=> {
+  getRecordList: (sn) => {
     return gql.query({
       query: `query getRecordList($sn: String!){
         category(sn: $sn){
@@ -894,7 +896,7 @@ const graphqlApi = {
   /**
    * 获取录音资源详情
    */
-  getRecordSource: (sn)=> {
+  getRecordSource: (sn) => {
     return gql.query({
       query: `query getRecordSource($sn: String!){
         content(sn: $sn){
@@ -924,7 +926,12 @@ const graphqlApi = {
   // },
 
 
-	getProvinces: () => {
+  /**
+   *获取省列表
+   *
+   * @returns
+   */
+  getProvinces: () => {
     return gql.query({
       query: `query{
         provinces{
@@ -935,7 +942,13 @@ const graphqlApi = {
     })
   },
 
-	getProvince: (zipCode) => {
+  /**
+   *获取市列表
+   *
+   * @param {*} zipCode
+   * @returns
+   */
+  getProvince: (zipCode) => {
     return gql.query({
       query: `query ($zipCode: String!){
         province(zipCode:$zipCode){
@@ -953,7 +966,13 @@ const graphqlApi = {
     })
   },
 
-	getCity: (zipCode) => {
+  /**
+   *获取区列表
+   *
+   * @param {*} zipCode
+   * @returns
+   */
+  getCity: (zipCode) => {
     return gql.query({
       query: `query ($zipCode: String!){
         city(zipCode:$zipCode){
@@ -969,9 +988,9 @@ const graphqlApi = {
         zipCode: zipCode
       }
     })
-	},
+  },
 
-	getProvince1: (zipCode) => {
+  getProvince1: (zipCode) => {
     return gql.query({
       query: `query ($zipCode: String!){
         province(zipCode:$zipCode){
@@ -1022,8 +1041,7 @@ const graphqlApi = {
     })
   },
 
-  //查询主模板下详细信息
-  searchTemplateType:(sn)=>{
+  searchTemplateType: (sn) => {
     return gql.query({
       query: `query($sn: String!) {
         category(sn: $sn) {
@@ -1052,74 +1070,51 @@ const graphqlApi = {
     })
   },
 
-  //查询姓名贴模板
-  searchNameTemplate:(type)=>{
+  /**
+   * 获取banner图
+   *
+   * @param {*} type course/home
+   * @returns
+   */
+  getBanners: (type) => {
     return gql.query({
-      query: `query($key: String!) {
-        feature(key: $key) {
-          categories {
-            name
-            sn
-            isHorizontal
-            attrsInfo
-            isHidden
-            templates {
-              previewImage
-              name
-              imageUrl
-              uploadable
-              sn
-              positionInfo {
-                width
-                areaHeight
-                areaWidth
-                areaX
-                areaY
-                height
-                width
-              }
-            }
-          }
+      query: `query($type: BannerTypeEnum!) {
+        banners(type:$type){
+          imageUrl
+          name
+          path
         }
       }`,
       variables: {
-        key: type
+        type: type
       }
     })
   },
 
-  //查询台历模板信息
-  searchCalendarTemplate:(type)=>{
+
+  /**
+   * 获取文件夹列表
+   *
+   * @param {*} isOwner 是否为创建者
+   * @param {*} name
+   * @returns
+   */
+  getFolders: (isOwner, name) => {
     return gql.query({
-      query: `query($key: String!) {
-        feature(key: $key) {
-          categories {
-            name
-            sn
-            isHorizontal
-            templates {
-              previewImage
-              name
-              imageUrl
-              sn
-              calendarInfos {
-                width
-                areaHeight
-                areaWidth
-                areaX
-                areaY
-                height
-                width
-              }
-            }
-          }
+      query: `query($isOwner: Boolean!,$name:String) {
+        folders(isOwner:$isOwner,name:$name){
+          joinedUsersCount
+          name
+          roleType
+          sn
         }
       }`,
       variables: {
-        key: type
+        isOwner,
+        name
       }
     })
-  },
+  }
 }
 
 export default graphqlApi
