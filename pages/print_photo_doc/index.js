@@ -7,13 +7,16 @@ import {
   util,
   wxNav,
   storage,
-  logger
+  logger,
+  uploadFormId
 } from '../../utils/common_import'
 import {uploadFiles} from '../../utils/upload'
+import commonRequest from '../../utils/common_request.js'
 const imginit = require('../../utils/imginit')
 const showModal = util.promisify(wx.showModal)
 const request = util.promisify(wx.request)
 import event from '../../lib/event/event'
+// const logger = new Logger.getLogger('pages/print_photo_doc/index')
 
 const chooseCtx = {
   data: {
@@ -26,13 +29,14 @@ const chooseCtx = {
     canUseProgressBar: true, //判断进度条是否可用
     uploadImg: false, //上传进度条显示、隐藏
     percent: 0, //进度条百分比
-    count: 0, //每次上传张数
+    copies: 0, //每次上传张数
     chooseCount: 0, // 用户选择的数量
     realCount: 0, //图片渲染前计数
     completeCount: 0, //每次上传完成数
     allCount: 0, //当前可打印图片总数
     maxCount: 8, //最大数量限制
     preAllCount: 0, //上一次所选图片数量
+    currentStartIndex: 0,
     //是否过滤掉了大/小图
     //显示图片过滤提示
     showInterceptModal: false,
@@ -78,8 +82,27 @@ const chooseCtx = {
 
   // 从百度网盘选择
   chooseBaidu(res){
-    let url = res.detail[0].url
-    this.showImage(url)
+    console.log('------res', res)
+    let images = res.detail
+    let len = this.data.images.length
+    console.log('+++len', len)
+    this.increaseNum = len + images.length // 初始化自增数量标识符
+    console.log('00000',this.increaseNum)
+    this.setData({
+      // realCount: len + images.length,
+      chooseCount: images.length,
+      allCount: len + images.length,
+      currentStartIndex: len + images.length + 1
+    })
+    this.data.images = this.data.images.concat(images)
+    // console.log('+++++allCount', this.data.allCount)
+    // console.log('+++++this.data.images', this.data.images)
+    // console.log('+++++this.data.currentStartIndex', this.data.currentStartIndex)
+    images.forEach((item, index)=>{
+      let url = item.url
+      this.chooseImg(url)
+      this.showImage(url, index+len)
+    })
   },
 
   // 初始化当前区域信息
@@ -115,7 +138,7 @@ const chooseCtx = {
         height
       })
     } catch (e) {
-      logger.info(e)
+      // logger.info(e)
     }
   },
 
@@ -133,7 +156,7 @@ const chooseCtx = {
         })
       }
     } catch (e) {
-      logger.info('getStorageImages == 获取本地图片失败')
+      // logger.info('getStorageImages == 获取本地图片失败')
     }
   },
 
@@ -191,14 +214,14 @@ const chooseCtx = {
     let res = e.detail
     try {
       let tempFiles = res.tempFiles
-      let count = tempFiles.length //每次选择的数量
+      let copies = tempFiles.length //每次选择的数量
       let paths = [] // 所有选择的临时文件路径
       let maxSize = 20000000
       that.setData({
-        count: count,
+        copies: copies,
         preAllCount: that.data.images.length, //上一次所选图片数量
-        chooseCount: count, //用户单次选择的数量 不是最终过滤的数量
-        realCount: that.data.realCount + count,
+        chooseCount: copies, //用户单次选择的数量 不是最终过滤的数量
+        realCount: that.data.realCount + copies,
         currentStartIndex: that.data.images.length
       })
 
@@ -209,7 +232,7 @@ const chooseCtx = {
           } else {
             that.needToDelete.push(index)
             that.setData({
-              count: that.data.count - 1,
+              copies: that.data.copies - 1,
               realCount: this.data.realCount - 1
             })
           }
@@ -229,7 +252,7 @@ const chooseCtx = {
           }
           that.setData({
             uploadImg: false,
-            count: 0,
+            copies: 0,
             completeCount: 0,
           })
           wx.showModal({
@@ -247,7 +270,7 @@ const chooseCtx = {
         }
       })
     } catch (e) {
-      logger.info(e, '-----')
+      // logger.info(e, '-----')
     }
   }),
 
@@ -255,10 +278,10 @@ const chooseCtx = {
     app.cancelUpload = true
     this.setData({
       uploadImg: false,
-      count: 0,
+      copies: 0,
       completeCount: 0
     })
-    logger.info('手动停止上传还可以继续上传张数：', this.data.countLimit)
+    // logger.info('手动停止上传还可以继续上传张数：', this.data.countLimit)
   }),
 
   getImageOrientation: co.wrap(function*(url) {
@@ -266,7 +289,7 @@ const chooseCtx = {
     let imageInfo
     let index = that.data.images.length
     let image = {
-      count: 1,
+      copies: 1,
       isSmallImage: false
     }
     that.data.images[index] = image
@@ -312,9 +335,9 @@ const chooseCtx = {
       })
     } else {
       let image = {
-          url: imginit.addProcess(localUrl, noRotate),
+        url: imginit.addProcess(localUrl, noRotate),
           localUrl: localUrl,
-          count: 1,
+          copies: 1,
           width: imageInfo.width,
           height: imageInfo.height,
           isSmallImage: false
@@ -327,7 +350,7 @@ const chooseCtx = {
 
       that.setData({
         percent: 0,
-        images: that.data.images,
+        images: that.data.images
       })
     }
     //最后一张图结束清空隐藏进度条
@@ -335,7 +358,7 @@ const chooseCtx = {
       var delay = 0
       that.setData({
         uploadImg: false,
-        count: 0,
+        copies: 0,
         completeCount: 0
       })
       if (that.needToDelete.length) {
@@ -389,7 +412,7 @@ const chooseCtx = {
       allCount: this.data.allCount - 1
     })
     this.setStorage()
-    logger.info('某张图片渲染失败后还可以继续上传张数：', this.data.countLimit)
+    // logger.info('某张图片渲染失败后还可以继续上传张数：', this.data.countLimit)
   },
 
 
@@ -401,7 +424,7 @@ const chooseCtx = {
   }) {
     let images = this.data.images
     let item = this.data.images[id]
-    if (item.count == 0) {
+    if (item.copies == 0) {
       return wx.showModal({
         title: '提示',
         content: '请先选中该照片',
@@ -410,11 +433,11 @@ const chooseCtx = {
       })
     }
     //最少一张
-    if (item.count <= 1) {
+    if (item.copies <= 1) {
       return
     }
     this.setData({
-      [`images[${id}].count`]: --images[id].count,
+      [`images[${id}].copies`]: --images[id].copies,
       allCount: this.data.allCount - 1
     })
   },
@@ -428,7 +451,7 @@ const chooseCtx = {
   }) {
     let images = this.data.images
     let item = this.data.images[id]
-    if (item.count == 0) {
+    if (item.copies == 0) {
       return wx.showModal({
         title: '提示',
         content: '请先选中该照片',
@@ -437,7 +460,7 @@ const chooseCtx = {
       })
     }
     //最多49张
-    if (item.count > 49) {
+    if (item.copies > 49) {
       return wx.showModal({
         title: '提示',
         content: '每张数量最50张哦',
@@ -446,7 +469,7 @@ const chooseCtx = {
       })
     }
     this.setData({
-      [`images[${id}].count`]: ++images[id].count,
+      [`images[${id}].copies`]: ++images[id].copies,
       allCount: this.data.allCount + 1,
     })
   },
@@ -467,52 +490,55 @@ const chooseCtx = {
     if (!res.confirm) {
       return
     }
-    let count = this.data.images[id].count
+    let copies = this.data.images[id].copies
     images.splice(id, 1)
     this.setData({
       images: images,
-      allCount: this.data.allCount - count,
+      allCount: this.data.allCount - copies,
     })
     this.setStorage()
-    logger.info('删除后剩余照片：', this.data.images)
+    // logger.info('删除后剩余照片：', this.data.images)
   }),
 
 
   confirm: co.wrap(function*(e) {
-    uploadFormId.dealFormIds(e.detail.formId, `print_${this.media_type}`)
-    uploadFormId.upload()
-    if (!this.hasAuthPhoneNum && !app.hasPhoneNum) {
-      return
-    }
-    if (app.preventMoreTap(e)) {
-      return
-    }
-
-    if (this.data.uploadImg) {
-      return
-    }
-
-    if (!this.data.images.length) {
-      return wx.showModal({
-        title: '提示',
-        content: '至少选择一张照片哦',
-        showCancel: false,
-        confirmColor: '#ffe27a'
-      })
-    }
-    let hideConfirmPrintBox = Boolean(storage.get("hideConfirmPrintBox"))
-    if (hideConfirmPrintBox) {
-      this.userConfirm()
-    } else {
-      this.setData({
-        ['confirmModal.isShow']: true
-      })
+    try{
+      // uploadFormId.dealFormIds(e.detail.formId, `print_${this.media_type}`)
+      // uploadFormId.upload()
+      if (!this.hasAuthPhoneNum && !app.hasPhoneNum) {
+        return
+      }
+      if (app.preventMoreTap(e)) {
+        return
+      }
+  
+      if (this.data.uploadImg) {
+        return
+      }
+  
+      if (!this.data.images.length) {
+        return wx.showModal({
+          title: '提示',
+          content: '至少选择一张照片哦',
+          showCancel: false,
+          confirmColor: '#ffe27a'
+        })
+      }
+      let hideConfirmPrintBox = Boolean(storage.get("hideConfirmPrintBox"))
+      if (hideConfirmPrintBox) {
+        this.userConfirm()
+      } else {
+        this.setData({
+          ['confirmModal.isShow']: true
+        })
+      }
+    }catch(e){
+      util.showError(e)
     }
   }),
 
-
   getPhoneNumber: co.wrap(function*(e) {
-    yield app.getPhoneNum(e)
+    // yield app.getPhoneNum(e)
     storage.put("hasAuthPhoneNum", true)
     this.hasAuthPhoneNum = true
     this.setData({
@@ -523,40 +549,45 @@ const chooseCtx = {
 
 
   userConfirm: co.wrap(function*(e) {
-    let images = this.data.images
-    let newImages = []
-    let _this = this
-    images.forEach((data, index) => {
-      if (data.choose == undefined || data.choose == true) {
-        let newImage = {
-          url: imginit.mediaResize(data.localUrl, this.media_type), //原图
-          number: data.count,
-          color: data.color ? data.color : 'Color',
+    try{
+      let images = this.data.images
+      let newImages = []
+      images.forEach((data, index) => {
+        if (data.choose == undefined || data.choose == true) {
+          let newImage = {
+            // url: imginit.mediaResize(data.localUrl, this.media_type), //原图
+            // number: data.count,
+            // color: data.color ? data.color : 'Color',
+            originalUrl: imginit.mediaResize(data.localUrl, this.media_type), //原图
+            copies: data.copies,
+            // grayscale: data.grayscale ? data.grayscale : 'Color',
+          }
+          if (data.afterEditUrl) {
+            newImage.pre_convert_url = data.afterEditUrl //编辑之后的图
+          }
+          newImages.push(newImage)
         }
-        if (data.afterEditUrl) {
-          newImage.pre_convert_url = data.afterEditUrl //编辑之后的图
+        if (index === images.length - 1) {
+          this.print(newImages)
         }
-        newImages.push(newImage)
-      }
-      if (index === images.length - 1) {
-        _this.uploadImg(newImages)
-      }
-    })
+      })
+    }catch(e){
+      util.showError(e)
+    }
   }),
 
-
-  uploadImg: co.wrap(function*(images) {
+  print: co.wrap(function*(images) {
     // if (!app.openId) {
     //   yield this.loopGetOpenId()
     // }
-    let params = {
-      //   openid: app.openId,
-      urls: images,
-      media_type: this.media_type,
-      from: 'mini_app'
-    }
+    // let params = {
+    //   //   openid: app.openId,
+    //   urls: images,
+    //   media_type: this.media_type,
+    //   from: 'mini_app'
+    // }
 
-    logger.info('订单生成参数', params)
+    // logger.info('订单生成参数', params)
     this.setData({
       showConfirmModal: null,
     })
@@ -564,26 +595,28 @@ const chooseCtx = {
       type: 'loading'
     })
     try {
-      const resp = yield request({
-        url: app.apiServer + `/ec/v2/orders`,
-        method: 'POST',
-        dataType: 'json',
-        data: params
-      })
-      logger.info(resp)
-      if (resp.data.code !== 0) {
-        throw (resp.data)
-      }
+      // const resp = yield request({
+      //   url: app.apiServer + `/ec/v2/orders`,
+      //   method: 'POST',
+      //   dataType: 'json',
+      //   data: params
+      // })
+      const resp = yield commonRequest.createOrder("pic_to_doc",images)
+      // logger.info(resp)
+      // if (resp.data.code !== 0) {
+      //   throw (resp.data)
+      // }
 
       this.longToast.toast()
-      logger.info('订单创建成功', resp)
+      // logger.info('订单创建成功', resp)
+      console.log('success+++',resp)
       wx.redirectTo({
-        url: `../finish/index?type=photo_doc&media_type=${this.media_type}&state=${resp.data.order.state}`
+        url: `../finish/index?type=photo_doc&media_type=${this.media_type}&state=${resp.createOrder.state}`
       })
 
     } catch (e) {
       this.longToast.toast()
-      util.showErr(e)
+      util.showError(e)
     }
   }),
 
@@ -597,7 +630,7 @@ const chooseCtx = {
         allCount: this.data.images.length
       })
     } catch (e) {
-      logger.info('图片存储到本地失败')
+      // logger.info('图片存储到本地失败')
     }
   },
 

@@ -63,7 +63,7 @@
             <view class="showInterceptModal" wx:if="{{showInterceptModal}}">{{showInterceptModal}}</view>
         </view>
         <!-- 选择图片 -->
-        <check-img id="checkComponent" bindchooseImg="chooseImg" bindbaidutap="chooseBaidu" imgNum="{{1}}"></check-img>
+        <check-img id="checkComponent" bindchooseImg="chooseImg" bindbaidutap="chooseBaidu" imgNum="{{maxCount}}"></check-img>
         <!-- 打印确认框 -->
         <confirm-print bindconfirm="userConfirm" modal="{{confirmModal}}"></confirm-print>
     </block>

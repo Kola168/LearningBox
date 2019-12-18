@@ -175,7 +175,8 @@ Component({
           })
           this.showPop()
           wxNav.navigateTo('/pages/package_feature/baidu_print/choose/index', {
-            type: this.data.fileType
+            type: this.data.fileType,
+            countLimit: this.data.chooseImgNum
           })
         } else {
           this.showPop()
