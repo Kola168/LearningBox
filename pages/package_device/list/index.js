@@ -58,14 +58,13 @@ Page({
     if (app.preventMoreTap(e)) {
       return
     }
-    let sn = e.currentTarget.dataset.sn
     wxNav.navigateTo(`../share/index`, {
-      sn
+      shareQrcode: encodeURIComponent(JSON.stringify(this.data.activeDevice.shareQrcode))
     })
   },
 
   // 切换打印机
-  switchActiveDevice:co.wrap(function*(e) {
+  switchActiveDevice: co.wrap(function*(e) {
     if (app.preventMoreTap(e)) {
       return
     }

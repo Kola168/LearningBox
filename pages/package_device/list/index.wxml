@@ -17,7 +17,7 @@
         </view>
       </view>
       <view class="item-right">
-        <view class="right-btn" bindtap="toShare" data-sn="{{activeDevice.sn}}">分享</view>
+        <view class="right-btn" wx:if="{{activeDevice.isAdmin}}" bindtap="toShare">分享</view>
         <view class="right-arrow">
           <image src="../images/arrow_right.png" />
         </view>
@@ -40,34 +40,6 @@
         </view>
       </view>
     </view>
-    <!-- <view class="device-item">
-      <view class="item-left" bindtap="toSetting">
-        <view class="left-img">
-          <image src="https://cdn-h.gongfudou.com/e-FpdiBnM3QbjrdiMTUMLY_Zf8tnGU" mode="widthFix" />
-        </view>
-        <view class="left-name text-overflow-points">小白盒子小白盒子小白盒子小白盒子小白盒子小白盒子</view>
-      </view>
-      <view class="item-right">
-        <view class="right-btn" bindtap="switchActiveDevice">切换</view>
-        <view class="right-arrow">
-          <image src="../images/arrow_right.png" />
-        </view>
-      </view>
-    </view>
-    <view class="device-item">
-      <view class="item-left" bindtap="toSetting">
-        <view class="left-img">
-          <image src="https://cdn-h.gongfudou.com/e-FpdiBnM3QbjrdiMTUMLY_Zf8tnGU" mode="widthFix" />
-        </view>
-        <view class="left-name text-overflow-points">小白盒子小白盒子小白盒子小白盒子小白盒子小白盒子</view>
-      </view>
-      <view class="item-right">
-        <view class="right-btn" bindtap="switchActiveDevice">切换</view>
-        <view class="right-arrow">
-          <image src="../images/arrow_right.png" />
-        </view>
-      </view>
-    </view> -->
   </view>
   <view class="device-add {{isFullScreen?'is-full-screen':''}}" bindtap="addDevice">添加打印设备</view>
 </view>

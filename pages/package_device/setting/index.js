@@ -4,7 +4,9 @@ import { regeneratorRuntime, co, util, wxNav } from '../../../utils/common_impor
 import graphql from '../../../network/graphql_request'
 Page({
   data: {
-    device: null,
+    device: {
+      isAdmin: false
+    },
     settingType: "base",
     modalType: "",
     printType: "ep300",
@@ -247,6 +249,7 @@ Page({
         break;
       case "share":
         url = `../share/index`
+        params.shareQrcode = encodeURIComponent(JSON.stringify(this.data.device.shareQrcode))
         break;
       case "reNetwork":
         url = `../network/index/index`

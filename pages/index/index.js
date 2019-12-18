@@ -103,8 +103,6 @@ Page({
         selectedKid: resp.currentUser.selectedKid,
         stageRoot: resp.currentUser.selectedKid.stageRoot
       })
-      // 存储用户sn
-      storage.put('userSn',resp.currentUser.sn)
       if (resp.currentUser.phone) {
         app.hasPhoneNum = true
         app.globalPhoneNum = resp.currentUser.phone

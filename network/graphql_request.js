@@ -156,8 +156,13 @@ const graphqlApi = {
           name,
           selected,
           sn,
+          isAdmin,
           model,
-          onlineState
+          onlineState,
+          shareQrcode
+        }
+        currentUser {
+          sn
         }
       }`
     })
@@ -175,11 +180,13 @@ const graphqlApi = {
           selected,
           sn,
           model,
+          isAdmin,
           auditFree,
           marginFree,
           onlineState,
           quality,
-					printOrder
+          printOrder,
+          shareQrcode
 				}
       }`,
       variables: {
@@ -1104,7 +1111,7 @@ const graphqlApi = {
       query: `query ($sn: String!){
         category(sn: $sn){
           contents {
-            contentImages
+            iconUrl
             pageCount
             sn
             title
@@ -1116,6 +1123,27 @@ const graphqlApi = {
       }
     })
   },
+
+  /**
+   * 免费资源库详情
+   * @param { string } sn 资源sn
+   */
+  getFreeSourcesDetail: (sn) => {
+    return gql.query({
+      query: `query ($sn: String!){
+        content(sn: $sn){
+          contentImages{
+            nameUrl
+          }
+          sn
+        }
+      }`,
+      variables: {
+        sn: sn
+      }
+    })
+  },
+
   /**
    * 上传录音音频
    */
@@ -1197,6 +1225,7 @@ const graphqlApi = {
           creator{
             avatar
             name
+            sn
           }
           copies
           name
