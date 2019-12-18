@@ -122,8 +122,8 @@ Page({
       param.template_sn = this.data.templateList[this.data.templateTypeIndex].templates[this.data.templateIndex].sn
       const resp = yield api.processes(param)
       let imgs = [{
-        originalUrl: resp.res.url,
-        printUrl: param.image_url
+        originalUrl: param.image_url,
+        printUrl: resp.res.url
       }]
       let orderSn = yield commonRequest.createOrder(this.type, imgs)
       this.longToast.toast()
