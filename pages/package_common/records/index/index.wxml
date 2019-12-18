@@ -1,0 +1,225 @@
+<nav-bar title="打印记录"></nav-bar>
+<view class="container">
+  <view class="container-top">
+    <view class="delete-tip">删除功能只适用于自己发送的打印任务</view>
+    <view class="device-filter flex-align-center">
+      <view class="device-item flex-align-center">
+        <image src="/images/L3115.png" mode="widthFix" />
+        <view class="item-name text-overflow-points">小白学习盒子</view>
+      </view>
+      <image src="../../images/arrow_down.png" class="filter-arrow" mode="widthFix" />
+      <view class="device-list" wx:if="{{true}}">
+        <view class="device-item flex-align-center">
+          <image src="/images/L3115.png" mode="widthFix" />
+          <view class="item-name text-overflow-points">小白学习盒子</view>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class="order-list">
+    <view class="list-item flex">
+      <view class="item-user">
+        <image src="/images/doc_document_qq.png" />
+        <view>赵亚飞</view>
+      </view>
+      <view class="item-main flex">
+        <view class="main-left flex">
+          <view class="left-type flex-align-center">
+            <view>A4文档</view>
+            <view class="type-user type-user-admin">管理员</view>
+          </view>
+          <view class="left-count">打印分数1</view>
+          <view class="left-data">2018.08.12 18:00</view>
+        </view>
+        <view class="main-right flex">
+          <view class="right-status flex-align-center">
+            <view class="status-warning">正在打印</view>
+            <image src="../../images/arrow_right.png" mode="widthFix" />
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="list-item flex">
+      <view class="item-user">
+        <image src="/images/doc_document_qq.png" />
+        <view>哈哈哈</view>
+      </view>
+      <view class="item-main flex">
+        <view class="main-left flex">
+          <view class="left-type flex-align-center">
+            <view>A4文档</view>
+            <view class="type-user type-user-use">使用者</view>
+          </view>
+          <view class="left-count">打印分数1</view>
+          <view class="left-data">2018.08.12 18:00</view>
+        </view>
+        <view class="main-right flex">
+          <view class="right-status flex-align-center">
+            <view class="status-success">已完成</view>
+            <image src="../../images/arrow_right.png" mode="widthFix" />
+          </view>
+          <view class="right-delete">删除</view>
+        </view>
+      </view>
+    </view>
+    <view class="list-item flex">
+      <view class="item-user">
+        <image src="/images/doc_document_qq.png" />
+        <view>啊啊啊</view>
+      </view>
+      <view class="item-main flex">
+        <view class="main-left flex">
+          <view class="left-type flex-align-center">
+            <view>A4文档</view>
+            <view class="type-user type-user-admin">管理员</view>
+          </view>
+          <view class="left-count">打印分数1</view>
+          <view class="left-data">2018.08.12 18:00</view>
+        </view>
+        <view class="main-right flex">
+          <view class="right-status flex-align-center">
+            <view class="status-error">打印失败</view>
+            <image src="../../images/arrow_right.png" mode="widthFix" />
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="list-item flex">
+      <view class="item-user">
+        <image src="/images/doc_document_qq.png" />
+        <view>赵亚飞</view>
+      </view>
+      <view class="item-main flex">
+        <view class="main-left flex">
+          <view class="left-type flex-align-center">
+            <view>A4文档</view>
+            <view class="type-user type-user-admin">管理员</view>
+          </view>
+          <view class="left-count">打印分数1</view>
+          <view class="left-data">2018.08.12 18:00</view>
+        </view>
+        <view class="main-right flex">
+          <view class="right-status flex-align-center">
+            <view class="status-warning">正在打印</view>
+            <image src="../../images/arrow_right.png" mode="widthFix" />
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="list-item flex">
+      <view class="item-user">
+        <image src="/images/doc_document_qq.png" />
+        <view>哈哈哈</view>
+      </view>
+      <view class="item-main flex">
+        <view class="main-left flex">
+          <view class="left-type flex-align-center">
+            <view>A4文档</view>
+            <view class="type-user type-user-use">使用者</view>
+          </view>
+          <view class="left-count">打印分数1</view>
+          <view class="left-data">2018.08.12 18:00</view>
+        </view>
+        <view class="main-right flex">
+          <view class="right-status flex-align-center">
+            <view class="status-success">已完成</view>
+            <image src="../../images/arrow_right.png" mode="widthFix" />
+          </view>
+          <view class="right-delete">删除</view>
+        </view>
+      </view>
+    </view>
+    <view class="list-item flex">
+      <view class="item-user">
+        <image src="/images/doc_document_qq.png" />
+        <view>啊啊啊</view>
+      </view>
+      <view class="item-main flex">
+        <view class="main-left flex">
+          <view class="left-type flex-align-center">
+            <view>A4文档</view>
+            <view class="type-user type-user-admin">管理员</view>
+          </view>
+          <view class="left-count">打印分数1</view>
+          <view class="left-data">2018.08.12 18:00</view>
+        </view>
+        <view class="main-right flex">
+          <view class="right-status flex-align-center">
+            <view class="status-error">打印失败</view>
+            <image src="../../images/arrow_right.png" mode="widthFix" />
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="list-item flex">
+      <view class="item-user">
+        <image src="/images/doc_document_qq.png" />
+        <view>赵亚飞</view>
+      </view>
+      <view class="item-main flex">
+        <view class="main-left flex">
+          <view class="left-type flex-align-center">
+            <view>A4文档</view>
+            <view class="type-user type-user-admin">管理员</view>
+          </view>
+          <view class="left-count">打印分数1</view>
+          <view class="left-data">2018.08.12 18:00</view>
+        </view>
+        <view class="main-right flex">
+          <view class="right-status flex-align-center">
+            <view class="status-warning">正在打印</view>
+            <image src="../../images/arrow_right.png" mode="widthFix" />
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="list-item flex">
+      <view class="item-user">
+        <image src="/images/doc_document_qq.png" />
+        <view>哈哈哈</view>
+      </view>
+      <view class="item-main flex">
+        <view class="main-left flex">
+          <view class="left-type flex-align-center">
+            <view>A4文档</view>
+            <view class="type-user type-user-use">使用者</view>
+          </view>
+          <view class="left-count">打印分数1</view>
+          <view class="left-data">2018.08.12 18:00</view>
+        </view>
+        <view class="main-right flex">
+          <view class="right-status flex-align-center">
+            <view class="status-success">已完成</view>
+            <image src="../../images/arrow_right.png" mode="widthFix" />
+          </view>
+          <view class="right-delete">删除</view>
+        </view>
+      </view>
+    </view>
+    <view class="list-item flex">
+      <view class="item-user">
+        <image src="/images/doc_document_qq.png" />
+        <view>啊啊啊</view>
+      </view>
+      <view class="item-main flex">
+        <view class="main-left flex">
+          <view class="left-type flex-align-center">
+            <view>A4文档</view>
+            <view class="type-user type-user-admin">管理员</view>
+          </view>
+          <view class="left-count">打印分数1</view>
+          <view class="left-data">2018.08.12 18:00</view>
+        </view>
+        <view class="main-right flex">
+          <view class="right-status flex-align-center">
+            <view class="status-error">打印失败</view>
+            <image src="../../images/arrow_right.png" mode="widthFix" />
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
+<!-- loading -->
+<import src="/lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />

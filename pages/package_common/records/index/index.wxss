@@ -1,0 +1,161 @@
+.flex {
+  display: flex;
+}
+
+.flex-align-center {
+  display: flex;
+  align-items: center;
+}
+
+.container-top {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  position: relative;
+}
+
+.delete-tip {
+  color: #fff;
+  font-size: 24rpx;
+  font-weight: bold;
+  text-align: center;
+  padding: 6rpx 0;
+  background: rgba(0,0,0,0.50);
+}
+
+.device-filter {
+  padding: 0 38rpx;
+  border-bottom: 2rpx solid #E7E7E7;
+  font-size: 36rpx;
+  color: #454545;
+  font-weight: 500;
+  position: relative;
+}
+
+.filter-arrow {
+  width: 24rpx;
+  margin-left: 8rpx;
+}
+
+.device-item {
+  height: 112rpx;
+  max-width: calc(100% - 64rpx);
+}
+
+.device-item image {
+  width: 56rpx;
+  margin-right: 30rpx;
+}
+
+.device-list {
+  position: absolute;
+  left: 0;
+  top: 112rpx;
+  width: 100%;
+  padding: 0 38rpx;
+  z-index: 600;
+}
+
+
+/* 列表 */
+.order-list {
+
+}
+
+.list-item {
+  padding: 38rpx 24rpx;
+  border-bottom: 2rpx solid #e7e7e7;
+}
+
+.item-user {
+  margin-right: 32rpx;
+  font-size: 20rpx;
+  color: #333;
+  text-align: center;
+}
+
+.item-user image {
+  width: 92rpx;
+  height: 92rpx;
+  border-radius: 50%;
+  margin-bottom: 4rpx;
+}
+
+.item-main {
+  width: calc(100% - 124rpx);
+  padding: 6rpx 0;
+}
+
+.main-left {
+  width: 60%;
+  color: #333;
+  font-size: 20rpx;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.left-type {
+  font-size: 28rpx;
+}
+
+.type-user {
+  font-size: 20rpx;
+  border-radius: 4rpx;
+  margin-left: 10rpx;
+  padding: 4rpx 6rpx;
+}
+
+.type-user-admin {
+  background: #FFF8E3;
+  color: #C68C13;
+}
+
+.type-user-use {
+  background: #EBF6FB;
+  color: #78B8FF;
+}
+
+.left-data {
+  color: #999;
+}
+
+.main-right {
+  width: 40%;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.right-status {
+  justify-content: flex-end;
+  font-size: 24rpx;
+}
+
+.right-status image {
+  width: 12rpx;
+  margin-left: 8rpx;
+}
+
+.status-warning {
+  color: #FFA200;
+}
+
+.status-error {
+  color: #FB5130;
+}
+
+.status-success {
+  color: #4FB526;
+}
+
+.right-delete {
+  display: inline-block;
+  color: #999;
+  font-size: 24rpx;
+  border: 2rpx solid #cecece;
+  height: 44rpx;
+  line-height: 44rpx;
+  width: 88rpx;
+  border-radius: 22rpx;
+  text-align: center;
+}
