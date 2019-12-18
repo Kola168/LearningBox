@@ -6,32 +6,30 @@
  * @Description: In User Settings Edit
  * @FilePath: /LearningBox/pages/account/index.js
  */
-// pages/account/index.js
 const app = getApp()
 import gql from '../../network/graphql_request.js'
-import api from '../../network/restful_request.js'
-import router from '../../utils/nav'
 import {
+  regeneratorRuntime,
   co,
-  util
+  util,
+  wxNav
 } from '../../utils/common_import.js'
-import regeneratorRuntime from '../../lib/co/runtime'
 
 const getUserInfo = util.promisify(wx.getUserInfo)
 
 Page({
   data: {
-		kidInfo:null,
-		devices:[]
+    kidInfo: null,
+    activeDevice: null
   },
-  onLoad: function (options) {
+  onLoad: function(options) {
     this.longToast = new app.weToast()
   },
-  onShow: function () {
-    this.getUserInfo()
-  },
-   
-  getUserInfo: co.wrap(function* () {
+  onShow: co.wrap(function*() {
+    yield this.getUserInfo()
+  }),
+
+  getUserInfo: co.wrap(function*() {
     this.longToast.toast({
       type: "loading",
       duration: 0
@@ -40,6 +38,7 @@ Page({
       let resp = yield gql.getUser()
       this.setData({
         kidInfo: resp.currentUser.selectedKid,
+        activeDevice: resp.currentUser.selectedDevice
       })
       this.longToast.hide()
     } catch (e) {
@@ -47,11 +46,16 @@ Page({
       util.showError(e)
     }
   }),
-  toSetInfo:function(){
-    router.navigateTo('/pages/package_common/account/personal_info')
-	},
-	
-	addDevice:function(){
-		router.navigateTo('/pages/package_device/network/index/index')
-	}
+
+  toDeviceList(){
+    wxNav.navigateTo('/pages/package_device/list/index')
+  },
+
+  toSetInfo: function() {
+    wxNav.navigateTo('/pages/package_common/account/personal_info')
+  },
+
+  addDevice: function() {
+    wxNav.navigateTo('/pages/package_device/network/index/index')
+  }
 })

@@ -77,36 +77,102 @@ Page({
 		}
 	}),
 
+	//检查网络状态
+	networkManage: co.wrap(function* () {
+		var that = this;
+		//监听网络状态
+		wx.onNetworkStatusChange(function (res) {
+			console.log('执行到这里===========55555===', res)
+			if (!res.isConnected) {
+				console.log('网络似乎不太顺畅');
+				return false
+			} else {
+				//在网络通的情况下，并且5秒还是有网
+				wx.getNetworkType({
+					success (res) {
+						const networkType = res.networkType
+						if (networkType != 'none') {
+							setTimeout(function () {
+								wx.offNetworkStatusChange()
+								that.bindCode()
+							}, 5000)
+						}
+					}
+				})
+			}
+		})
+	}),
+
 	//检查物理网络状态
 	checkNet: co.wrap(function* () {
+		console.log('执行到这里===========111111===')
 		let that = this
-		try {
-			let netWorkType = yield getNetworkType()
-			if (netWorkType.networkType != 'none') {  //物理状态不一定有网
-				console.log('netWorkType.networkType====', netWorkType.networkType)
-				setTimeout(function () {
-					that.bindCode()
-				}, 3000)
-			} else {
-				if (!that.checkNet.time) {
-					that.checkNet.time = 0
-				}
-				that.checkNet.time++
-				if (that.checkNet.time >= 10) {
-					this.longToast.toast()
-					wx.showModal({
-						title: '提示',
-						content: '请检查网络状态',
-					})
-					return
-				}
-				setTimeout(function () {
-					that.checkNet()
-				}, 1500)
-			}
-		} catch (e) {
-			return wxNav.navigateTo('/pages/package_device/network/tips/step1')
-		}
+		this.networkManage()
+		// try {
+		// 	if (!this.networkManage()) { 
+		// 		console.log('执行到这里===========222222===')
+		// 		// wx.offNetworkStatusChange()
+		// 		console.log('执行到这里===========333333===')
+
+		// 		if (!that.checkNet.time) {
+		// 			that.checkNet.time = 0
+		// 		}
+		// 		that.checkNet.time++
+		// 		if (that.checkNet.time >= 10) {
+		// 			this.longToast.toast()
+		// 			wx.showModal({
+		// 				title: '提示',
+		// 				content: '请检查网络状态',
+		// 			})
+		// 			return
+		// 		}
+		// 		setTimeout(function () {
+		// 			that.checkNet()
+		// 		}, 3500)
+		// 	} else {
+
+		// 	}
+		// } catch (e) {
+		// 	return wxNav.navigateTo('/pages/package_device/network/tips/step1')
+		// }
+
+
+
+		// try {
+		// 	let netWorkType = yield getNetworkType()
+		// 	if (netWorkType.networkType != 'none') {  //物理状态不一定有网
+		// 		console.log('netWorkType.networkType====', netWorkType.networkType)
+		// 		let platform = app.sysInfo.platform.toLowerCase()
+		// 		if(platform == 'android'){
+		// 			setTimeout(function () {
+		// 				that.bindCode()
+		// 			}, 25000)
+		// 		}else{
+		// 			setTimeout(function () {
+		// 				that.bindCode()
+		// 			}, 6000)
+		// 		}
+
+		// 	} else {
+		// 		if (!that.checkNet.time) {
+		// 			that.checkNet.time = 0
+		// 		}
+		// 		that.checkNet.time++
+		// 		if (that.checkNet.time >= 10) {
+		// 			this.longToast.toast()
+		// 			wx.showModal({
+		// 				title: '提示',
+		// 				content: '请检查网络状态',
+		// 			})
+		// 			return
+		// 		}
+		// 		setTimeout(function () {
+		// 			that.checkNet()
+		// 		}, 1500)
+		// 	}
+		// } catch (e) {
+		// 	return wxNav.navigateTo('/pages/package_device/network/tips/step1')
+		// }
 	}),
 
 	//上报code信息
@@ -119,13 +185,21 @@ Page({
 			}
 			console.log('deviceInfo=====', deviceInfo)
 			let res = yield graphql.bindDevice(deviceInfo)
+			// yield graphql.bindDevice(deviceInfo).then(function(res){
+			// console.log('res====1======', res)
+
+			// }).catch(ex => {
+			// 	console.log('ex: ', ex);
+
+			// })
+
 			console.log('res====1======', res)
 			let sn = res.bindDevice.device.sn
 			this.checkEquipment(sn)
 		} catch (e) {
-			console.log('e==bindCode===',e)
+			console.log('e==bindCode===', e)
 			//如果是没有网络或者超时的情况下重试一次
-			if(e.errMsg ==="request:fail timeout" || e.errMsg ==="request:fail"){
+			if (e.errMsg === "request:fail timeout" || e.errMsg === "request:fail") {
 				if (!that.bindCode.time) {
 					that.bindCode.time = 0
 				}
@@ -139,7 +213,7 @@ Page({
 					this.longToast.toast()
 					return wxNav.navigateTo('/pages/package_device/network/tips/step1')
 				}
-			}else{
+			} else {
 				this.longToast.toast()
 				return wxNav.navigateTo('/pages/package_device/network/tips/step1')
 			}
@@ -167,7 +241,7 @@ Page({
 						showCancel: false,
 						confirmColor: '#ff9999'
 					})
-					return	wxNav.navigateTo('/pages/package_device/network/tips/step1')
+					return wxNav.navigateTo('/pages/package_device/network/tips/step1')
 				}
 				setTimeout(function () {
 					that.checkEquipment(sn)
@@ -178,7 +252,7 @@ Page({
 					title: '配网成功',
 					duration: 2000,
 				})
-        wxNav.switchTab('/pages/index/index')
+				wxNav.switchTab('/pages/index/index')
 			}
 		} catch (e) {
 			this.longToast.toast()

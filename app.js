@@ -2,7 +2,14 @@
 let {
   weToast
 } = require('lib/toast/wetoast.js')
-import { regeneratorRuntime, co, util, _, storage, logger } from './utils/common_import'
+import {
+  regeneratorRuntime,
+  co,
+  util,
+  _,
+  storage,
+  logger
+} from './utils/common_import'
 const getSystemInfo = util.promisify(wx.getSystemInfo)
 const login = util.promisify(wx.login)
 const request = util.promisify(wx.request)
@@ -14,7 +21,7 @@ App({
   // apiServer: 'https://epbox.gongfudou.com',
   // apiWbviewServer: 'https://epbox.gongfudou.com/',
 
-	//staging
+  //staging
   apiServer: 'https://lb-stg.gongfudou.com',
   apiWbviewServer: 'https://lb-stg.gongfudou.com/',
 
@@ -22,10 +29,9 @@ App({
   // apiServer: 'http://epbox.natapp1.cc',
   // apiWbviewServer: 'http://epbox.natapp1.cc/',
 
-
   // 袁小飞接口
   // apiServer: 'http://schaffer.utools.club',
-	// apiWbviewServer: 'http://schaffer.utools.club',
+  // apiWbviewServer: 'http://schaffer.utools.club',
 
   //一个秃子的服务器地址
   // apiServer: 'http://jran.nat300.top',
@@ -44,9 +50,21 @@ App({
   // apiWbviewServer: 'http://jhx.nat300.top',
 
   //江然本地服务
-	// apiServer: 'http://jran.nat300.top',
-	// apiWbviewServer: 'http://jhx.nat300.top',
+  // apiServer: 'http://jran.nat300.top',
+  // apiWbviewServer: 'http://jhx.nat300.top',
 
+  //张伟服务器
+  // apiServer: 'http://bboo.natapp1.cc',
+  // apiWbviewServer: 'http://bboo.natapp1.cc/',
+
+  // apiWbviewServer: 'http://jhx.nat300.top',
+  
+  // 张伟本地服务
+  // apiServer: 'http://bboo.natapp1.cc',
+
+  // 许成本地服务
+  // apiServer: 'http://xucheng.nat100.top',
+	
 	authAppKey: 'iMToH51lZ0VrhbkTxO4t5J5m6gCZQJ6c',
   openId: '',
   authToken: '',
@@ -57,9 +75,10 @@ App({
   deBug: false, //线上环境log调试
 
   onLaunch: co.wrap(function*() {
-    yield this.getOpenId()
     yield this.getSystemInfo()
     this.navBarInfo = this.getNavBarInfo()
+    yield this.getOpenId()
+
   }),
 
   //获取系统信息

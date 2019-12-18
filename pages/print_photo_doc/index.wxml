@@ -15,7 +15,7 @@
                         <text class="moreEdit" bindtap="toMoreEdit" wx:if="{{!rePrint}}" id="{{index}}" key="1">编辑</text>
                         <view>
                             <image class="count-button" src="{{item.count<2?'../../images/print_photo_cutgray.png':'../../images/print_photo_cutimg.png'}}" mode="widthFix" bindtap="decrease" id="{{index}}"></image>
-                            <view class="count-num">{{item.count}}</view>
+                            <view class="count-num">{{item.copies}}</view>
                             <image class="count-button" src="{{item.count<49&&item.count!==0?'../../images/print_photo_plussimg.png':'../../images/doc_document_add_gray.png'}}" mode="widthFix" bindtap="increase" id="{{index}}"></image>
                         </view>
                     </view>

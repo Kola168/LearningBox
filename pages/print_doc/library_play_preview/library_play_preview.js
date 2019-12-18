@@ -814,7 +814,7 @@ Page({
 	},
 
 	getPhoneNumber: co.wrap(function* (e) {
-		yield app.getPhoneNum(e)
+		// yield app.getPhoneNum(e)
 		wx.setStorageSync("hasAuthPhoneNum", true)
 		this.hasAuthPhoneNum = true
 		this.setData({

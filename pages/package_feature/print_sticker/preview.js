@@ -4,10 +4,10 @@ const regeneratorRuntime = require('../../../lib/co/runtime')
 const co = require('../../../lib/co/co')
 const _ = require('../../../lib/underscore/we-underscore')
 const util = require('../../../utils/util')
-const event = require('../../../lib/event/event')
 
 import wxNav from '../../../utils/nav.js'
 import api from '../../../network/restful_request'
+import commonRequest from '../../../utils/common_request'
 
 const showModal = util.promisify(wx.showModal)
 const saveImageToPhotosAlbum = util.promisify(wx.saveImageToPhotosAlbum)
@@ -25,14 +25,13 @@ Page({
     width: 0,
     height: 0,
     hasAuthPhoneNum: false,
-    confirmModal: {
-      isShow: false,
-      title: '请确认6寸照片纸放置正确',
-      image: 'https://cdn.gongfudou.com/miniapp/ec/confirm_print_a4_new.png'
-    }
+    confirmModal: {}
   },
   onLoad: co.wrap(function*(query) {
+    this.longToast = new app.weToast
     this.sn = query.sn
+    console.log(query)
+    this.type=query.type||'photo_sticker'
     if (query.share_user_id) {
       this.way = 5
       this.share_user_id = query.share_user_id
@@ -41,12 +40,12 @@ Page({
       })
       this.getStickerPreview()
     } else {
-      let userId = wx.getStorageSync('userId')
-      if (!userId || userId == undefined) {
-        yield this.getUserId()
-      } else {
-        this.user_id = userId
-      }
+      // let userId = wx.getStorageSync('userId')
+      // if (!userId || userId == undefined) {
+      //   yield this.getUserId()
+      // } else {
+      //   this.user_id = userId
+      // }
       this.setData({
         compoundImg: JSON.parse(decodeURIComponent(query.imgSrc))
       })
@@ -88,7 +87,7 @@ Page({
       mask: true
     })
     try {
-      const resp = yield api.getNameStickerPreview(this.sn)
+      const resp = yield api.synthesisSnResult(this.sn)
       if (resp.code != 0) {
         throw (resp)
       } else {
@@ -129,23 +128,13 @@ Page({
 
   },
   confirm: co.wrap(function*(e) {
-    console.log('照片打印时form发生了submit事件，携带数据为：', e.detail)
-    uploadFormId.dealFormIds(e.detail.formId, `print_photo_sticker`)
-    uploadFormId.upload()
-    if (!this.hasAuthPhoneNum && !app.hasPhoneNum) {
-      return
-    }
-    if (app.preventMoreTap(e)) {
-      return
-    }
-    let hideConfirmPrintBox = Boolean(wx.getStorageSync("hideConfirmPrintBox"))
-    if (hideConfirmPrintBox) {
-      this.userConfirm()
-    } else {
-      this.setData({
-        ['confirmModal.isShow']: true
-      })
-    }
+    this.setData({
+      confirmModal: {
+        isShow: true,
+        title: '请参照下图正确放置台历打印纸',
+        image: 'https://cdn-h.gongfudou.com/LearningBox/main/confirm_print.png'
+      },
+    })
   }),
   getPhoneNumber: co.wrap(function*(e) {
     yield app.getPhoneNum(e)
@@ -156,31 +145,20 @@ Page({
     })
     this.confirm(e)
   }),
-  userConfirm: co.wrap(function*(e) {
-    let images = [{
-      url: this.url,
-      pre_convert_url: this.url,
-      number: this.data.count
-    }]
-    wx.showLoading({
-      title: '正在提交',
-      mask: true
+  makeOrder: co.wrap(function*(e) {
+
+    this.longToast.toast({
+      type: "loading",
     })
     try {
-      // 姓名贴大头贴打印与发票打印接口通用
-      const resp = yield api.printInvoice(app.openId, 'name_sticker', images)
-      console.log(resp)
-      if (resp.code !== 0) {
-        throw (resp)
-      }
-
-      wx.hideLoading()
-      console.log('订单创建成功', resp)
-      wx.redirectTo({
-        url: `../../../finish/index?type=name_sticker&media_type=name_sticker&state=${resp.order.state}`
-      })
+      let imgs = [{
+        originalUrl: this.url,
+        printUrl: this.url
+      }]
+      let orderSn = yield commonRequest.createOrder(this.type, imgs)
+      this.longToast.toast()
     } catch (e) {
-      wx.hideLoading()
+      this.longToast.toast()
       util.showErr(e)
     }
   }),
@@ -232,27 +210,27 @@ Page({
     }
   }),
 
-  getUserId: co.wrap(function*() {
-    try {
-      const resp = yield request({
-        url: app.apiServer + `/ec/v2/users/user_id`,
-        method: 'GET',
-        dataType: 'json',
-        data: {
-          openid: app.openId
-        }
-      })
-      if (resp.data.code != 0) {
-        throw (resp.data)
-      }
-      console.log('获取user_id', resp.data)
-      this.user_id = resp.data.user_id
-      wx.setStorageSync('userId', this.user_id)
-    } catch (e) {
-      console.log(e)
-      // util.showErr(e)
-    }
-  }),
+  // getUserId: co.wrap(function*() {
+  //   try {
+  //     const resp = yield request({
+  //       url: app.apiServer + `/ec/v2/users/user_id`,
+  //       method: 'GET',
+  //       dataType: 'json',
+  //       data: {
+  //         openid: app.openId
+  //       }
+  //     })
+  //     if (resp.data.code != 0) {
+  //       throw (resp.data)
+  //     }
+  //     console.log('获取user_id', resp.data)
+  //     this.user_id = resp.data.user_id
+  //     wx.setStorageSync('userId', this.user_id)
+  //   } catch (e) {
+  //     console.log(e)
+  //     // util.showErr(e)
+  //   }
+  // }),
   onShareAppMessage: function(res) {
     console.log('this.sn', this.sn)
     if (res.from === 'button' || res[0].from === 'button') {

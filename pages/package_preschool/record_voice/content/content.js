@@ -130,7 +130,7 @@ Page({
    */
   playPreview: co.wrap(function* ({currentTarget: {dataset: {item}}}) {
     router.navigateTo('/pages/package_preschool/record_voice/content_detail/content_detail', {
-      title: item.title,
+      title: item.name,
       sn: item.sn,
     })
 

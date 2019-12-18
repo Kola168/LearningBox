@@ -19,9 +19,7 @@ Page({
   mixins: [index, init],
   data: {
     userInfo: {},
-    bannerUrls: [{
-      url: 'http://gfd-i.memeyin.com/e-FlXfVks1do_li3DqrLWVHjr-0IPr'
-    }],
+    bannerUrls: [],
     contentList: [{
       title: '家庭早教',
       url: 'http://gfd-i.memeyin.com/e-FlXfVks1do_li3DqrLWVHjr-0IPr'
@@ -32,6 +30,8 @@ Page({
       title: '入园早准备',
       url: 'http://gfd-i.memeyin.com/e-FlXfVks1do_li3DqrLWVHjr-0IPr'
     }, ],
+    autoplay: true,
+    interval: 5000,
     showAuth: false, //登录
     homeType: '学前',
     selectedKid: null,
@@ -63,6 +63,7 @@ Page({
         })
         app.authToken = authToken
         yield this.getUserInfo()
+        yield this.getBanners()
       }
       if (!authToken) {
         this.setData({
@@ -81,6 +82,17 @@ Page({
       return true
     } catch (e) {
       return false
+    }
+  }),
+  getBanners: co.wrap(function* () {
+    try {
+      let resp = yield gql.getBanners('home')
+      this.setData({
+        bannerUrls: resp.banners
+      })
+      console.log(resp)
+    } catch (e) {
+      util.showError(e)
     }
   }),
   getUserInfo: co.wrap(function* () {
@@ -138,20 +150,21 @@ Page({
           app_version: app.version
         },
         decr_type: 'login'
-      }
-      const resp = yield api.wechatDecryption(params)
+			}
+			const resp = yield api.wechatDecryption(params)
       if (resp.code != 0) {
         throw (resp)
       }
       storage.put('authToken', resp.res.auth_token)
-			storage.put('unionId', resp.res.unionid)
-			storage.put('refreshToken', resp.res.refresh_token)
+      storage.put('unionId', resp.res.unionid)
+      storage.put('refreshToken', resp.res.refresh_token)
 
       app.authToken = resp.res.auth_token
       this.setData({
         showAuth: false
       })
       yield this.getUserInfo()
+      yield this.getBanners()
       this.longToast.hide()
     } catch (e) {
       yield app.login()

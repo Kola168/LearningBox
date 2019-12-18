@@ -8,6 +8,7 @@ const util = require('../../../utils/util')
 import wxNav from '../../../utils/nav.js'
 import graphql from '../../../network/graphql_request'
 import api from '../../../network/restful_request'
+import commonRequest from '../../../utils/common_request'
 
 let Loger = (app.apiServer != 'https://epbox.gongfudou.com' || app.deBug) ? console.log : function() {}
 
@@ -16,22 +17,30 @@ Page({
   data: {
     templateList: [], // 模板列表
     selectedIndex:0,  //选中的模板的index
+    confirmModal: {},
   },
 
   onLoad: function(options) {
     this.longToast = new app.weToast()
     this.id = options.id
+    this.name=options.name
     this.type=options.type||'balloon'
     this.getTemplate()
   },
 
   getTemplate:co.wrap(function*(){
+    try{
+
+
     let resp=yield graphql.searchTemplateType(this.id)
     Loger(resp.category)
     this.setData({
       templateList:resp.category.templates
     })
     this.tapTemplate(0)
+  }catch(e){
+    Loger(e)
+  }
   }),
 
   chooseTemplate:function(index){
@@ -66,7 +75,17 @@ Page({
     this.chooseTemplate(index)
   },
 
-  confBut:co.wrap(function*(){
+  confBut:function(){
+    this.setData({
+      confirmModal: {
+        isShow: true,
+        title: '请将气球打印纸按照参照图正确放置',
+        image: `https://cdn-h.gongfudou.com/LearningBox/feature/balloon/balloon_confirm_print_${this.name=='圆形气球'?'balloon':(this.name=='心形气球'?'heart':(this.name=='星形气球'?'star':''))}.png`
+      },
+    })
+  },
+
+  makeOrder:co.wrap(function*(){
     try {
       this.longToast.toast({
         type: "loading",
@@ -87,16 +106,15 @@ Page({
       param.template_sn = this.data.templateList[this.data.selectedIndex].sn
       const resp = yield api.processes(param)
 
-
+      let imgs=[{
+        printUrl:resp.res.url,
+        originalUrl:param.image_url
+      }]
+      let orderSn = yield commonRequest.createOrder(this.type, imgs)
       this.longToast.toast()
     } catch (e) {
       this.longToast.toast()
-      wx.showModal({
-        title: '合成出错',
-        content: '请检查网络连接',
-        showCancel: false,
-        confirmColor: '#FFE27A'
-      })
+      util.showError(e)
       Loger(e)
     }
   }),

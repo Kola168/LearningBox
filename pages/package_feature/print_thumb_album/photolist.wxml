@@ -2,6 +2,7 @@
 <wxs src="../common.wxs" module="foo" />
 <multi-process wx:if="{{showProcess}}" complete-count="{{completeCount}}" count="{{count}}" percent="{{percent}}" err-tip ="{{errTip}}" bindcancelprocess="cancelImg"></multi-process>
 <take-photo-pop id="checkComponent" bindchooseImg="chooseImgs" imgNum="{{chooseCount}}" bindbaidutap="baiduprint"></take-photo-pop>
+<confirm-print bindconfirm="makeOrder" modal="{{confirmModal}}" />
 
 <nav-bar title="制作拇指相册"></nav-bar>
 <view class="top-tips">
@@ -11,7 +12,7 @@
 <view class="photo-show-box" style="height:{{imgSize.height}}px">
   <block wx:if="{{images[selectedImgIndex].url}}">
     <image src="{{foo.addProcess(images[selectedImgIndex].url,'/resize,w_200/quality,Q_85/format,jpg')}}" mode="aspectFill" class="photo-show-img" style="width:{{imgSize.width}}px;height:{{imgSize.height}}px">
-      <image src="../resource_images/calendar_close.png" mode="widthFix" class="photo-show-delete"></image>
+      <image src="../resource_images/calendar_close.png" mode="widthFix" class="photo-show-delete" data-index="{{index}}" bindtap="deleteImg"></image>
       <view class="photo-show-cover">
         <view class="photo-edit-box" bindtap="toEdit">
           <image src="../resource_images/album_edit_icon.png" mode="widthFix" class="photo-edit-icon"></image>
@@ -36,4 +37,6 @@
     </view>
   </view>
 </view>
-<bottom-button class="bottom-but" text-right="开始打印" bindrighttap="toedit"></bottom-button>
+<bottom-button class="bottom-but" text-right="开始打印" bindrighttap="createOrder"></bottom-button>
+<import src="/lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />

@@ -87,6 +87,7 @@ Page({
       yield uploadDocs(urls, function (url, name) {
         let fileItem = {
           originalUrl: url,
+          printUrl: url,
           filename: name
         }
 
@@ -111,7 +112,7 @@ Page({
             _this.filterNotify()
           }
         }
-      })
+      }, true)
     } catch (e) {
       _this.longToast.hide()
       util.showError(e)
@@ -119,19 +120,19 @@ Page({
   }),
 
   covertPdf: co.wrap(function* () {
-    let covertUrls = this.data.files.map(item=>item.url)
+    let covertUrls = this.data.files.map(item=>item.originalUrl)
     logger.info('covertUrls=====', covertUrls)
     try {
       const resp = yield api.getInvoiceInfo({
         pdf_urls: covertUrls
       })
-      console.log(resp,'==resp===')
       if (resp.code != 0) {
         throw (resp)
       }
       let tempFiles = _(this.data.files).clone()
       tempFiles.forEach((item, index) => {
         item.originalUrl = resp.res.convert_urls[index].url
+        item.printUrl = resp.res.convert_urls[index].url
         item.copies = 1
         item.grayscale = false
       });
@@ -187,7 +188,7 @@ Page({
   }),
 
   getPhoneNumber: co.wrap(function* (e) {
-    yield app.getPhoneNum(e)
+    // yield app.getPhoneNum(e)
     storage.put("hasAuthPhoneNum", true)
     this.hasAuthPhoneNum = true
     this.setData({
@@ -203,13 +204,13 @@ Page({
     })
     try {
       logger.info('发票提交打印参数=====', this.data.files)
-      const resp = yield commonRequest.createOrder(invoice, this.data.files)
+      const resp = yield commonRequest.createOrder('invoice', this.data.files)
       logger.info('提交打印成功=====', resp)
       this.longToast.hide()
       router.redirectTo('', {
         type: 'invoice',
         media_type: 'invoice',
-        state: resp.order.state
+        state: resp.createOrder.state
       })
       // wx.redirectTo({
       //   url: `/pages/finish/index?type=invoice&media_type=invoice&state=${resp.order.state}`

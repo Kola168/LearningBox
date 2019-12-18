@@ -76,7 +76,7 @@ Page({
         tempData.endPage = query.endPage
         tempData.singlePageLayoutsCount = query.singlePageLayoutsCount
         tempData.documentPrintNum = query.copies
-        tempData.checkOpen = !query.skipGs
+        tempData.checkOpen = query.skipGs
         tempData.extract = query.extract
         if (query.extract !== 'all') {
           tempData.startPrintPage = 1
@@ -294,7 +294,7 @@ Page({
       // medium: this.data.medium,
       fileIndex: this.data.fileIndex,
       singlePageLayoutsCount: this.data.singlePageLayoutsCount,
-      skipGs: !this.data.checkOpen,
+      skipGs: this.data.checkOpen,
       extract: this.data.extract,
       startPage: this.data.startPage,
       endPage: this.data.endPage

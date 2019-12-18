@@ -134,7 +134,8 @@ Page({
 			var uploadFileList = []
       yield uploadDocs(urls, function(url, name) {
         var file = {
-          originalUrl: url,
+					originalUrl: url,
+					printUrl: url,
           filename: name,
           grayscale: _this.initPms.grayscale,
           duplex: _this.initPms.duplex,
@@ -166,7 +167,7 @@ Page({
 					}
 					_this.longToast.hide()
         }
-			})
+			}, true)
 
     } catch (e) {
       this.longToast.hide()
@@ -239,7 +240,7 @@ Page({
 	 * @methods 获取手机号
 	 */
 	getPhoneNumber: co.wrap(function*(e){
-		yield app.getPhoneNum(e)
+		// yield app.getPhoneNum(e)
 		storage.put('hasAuthPhoneNum', true)
     this.hasAuthPhoneNum = true
     this.setData({
@@ -260,17 +261,11 @@ Page({
 			})
 			var types = this.data.types
 			var urls = this.data.files.map(file => util.removeKeysToNewObj(file, ['isSetting']))
-			const resp = yield commonRequest.createOrder({
-				featureKey: "doc_a4",
-				fileAttributes: urls
-			})
-      if (resp.code != 0) {
-        throw (resp)
-			}
+			const resp = yield commonRequest.createOrder('doc_a4', urls)
 			router.navigateTo('/pages/finish/index',
 				{
 					type: types.mediaType,
-					state: resp.order.state
+					state: resp.createOrder.state
 			})
     } catch (e) {
       util.showError(e)

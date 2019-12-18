@@ -9,11 +9,11 @@
     delete-edge="{{true}}"></edit-photo>
 </view>
 <view wx:else class="edit-box">
-  <image src="{{templateList[templateTypeIndex].templates[templateIndex].image.url}}" mode="widthFix" class="no-edit-mode"></image>
+  <image src="{{templateList[templateTypeIndex].templates[templateIndex].imageUrl}}" mode="widthFix" class="no-edit-mode"></image>
 </view>
 <view class="input-box">
-  <view wx:for="{{templateList[templateTypeIndex].nameArr}}" wx:key="nameArr" class="input-item-box">
-    <text wx:if="{{!templateList[templateTypeIndex].hidden}}" class="input-item-key">{{item}}</text>
+  <view wx:for="{{templateList[templateTypeIndex].attrsInfo}}" wx:key="nameArr" class="input-item-box">
+    <text wx:if="{{!templateList[templateTypeIndex].isHidden}}" class="input-item-key">{{item=='name'?'姓名':(item=='class'?'班级':(item=='tel'?'电话':''))}}</text>
     <input class="input-item" placeholder="点击输入文字" type="text" data-index="{{index}}" bindinput="getTextAttr"/>
   </view>
 </view>
@@ -28,3 +28,5 @@
   </scroll-view>
   <bottom-button class="button-conf" text-right="打印预览" bindrighttap="getParamsData"></bottom-button>
 </view>
+<import src="/lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />

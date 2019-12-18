@@ -82,25 +82,18 @@ const chooseCtx = {
 
   // 从百度网盘选择
   chooseBaidu(res){
-    console.log('------res', res)
     let images = res.detail
     let len = this.data.images.length
-    console.log('+++len', len)
-    this.increaseNum = len + images.length // 初始化自增数量标识符
-    console.log('00000',this.increaseNum)
+    this.increaseNum = 0 // 初始化自增数量标识符
     this.setData({
-      // realCount: len + images.length,
+      realCount: len + images.length,
       chooseCount: images.length,
       allCount: len + images.length,
-      currentStartIndex: len + images.length + 1
+      currentStartIndex: len
     })
-    this.data.images = this.data.images.concat(images)
-    // console.log('+++++allCount', this.data.allCount)
-    // console.log('+++++this.data.images', this.data.images)
-    // console.log('+++++this.data.currentStartIndex', this.data.currentStartIndex)
+    console.log('---',this.data.currentStartIndex)
     images.forEach((item, index)=>{
       let url = item.url
-      this.chooseImg(url)
       this.showImage(url, index+len)
     })
   },
@@ -138,7 +131,7 @@ const chooseCtx = {
         height
       })
     } catch (e) {
-      // logger.info(e)
+      logger.info(e)
     }
   },
 
@@ -156,7 +149,7 @@ const chooseCtx = {
         })
       }
     } catch (e) {
-      // logger.info('getStorageImages == 获取本地图片失败')
+      logger.info('getStorageImages == 获取本地图片失败')
     }
   },
 
@@ -270,7 +263,7 @@ const chooseCtx = {
         }
       })
     } catch (e) {
-      // logger.info(e, '-----')
+      logger.info(e, '-----')
     }
   }),
 
@@ -281,7 +274,7 @@ const chooseCtx = {
       copies: 0,
       completeCount: 0
     })
-    // logger.info('手动停止上传还可以继续上传张数：', this.data.countLimit)
+    logger.info('手动停止上传还可以继续上传张数：', this.data.countLimit)
   }),
 
   getImageOrientation: co.wrap(function*(url) {
@@ -412,7 +405,7 @@ const chooseCtx = {
       allCount: this.data.allCount - 1
     })
     this.setStorage()
-    // logger.info('某张图片渲染失败后还可以继续上传张数：', this.data.countLimit)
+    logger.info('某张图片渲染失败后还可以继续上传张数：', this.data.countLimit)
   },
 
 
@@ -497,7 +490,7 @@ const chooseCtx = {
       allCount: this.data.allCount - copies,
     })
     this.setStorage()
-    // logger.info('删除后剩余照片：', this.data.images)
+    logger.info('删除后剩余照片：', this.data.images)
   }),
 
 
@@ -587,7 +580,7 @@ const chooseCtx = {
     //   from: 'mini_app'
     // }
 
-    // logger.info('订单生成参数', params)
+    logger.info('订单生成参数', params)
     this.setData({
       showConfirmModal: null,
     })
@@ -608,7 +601,7 @@ const chooseCtx = {
       // }
 
       this.longToast.toast()
-      // logger.info('订单创建成功', resp)
+      logger.info('订单创建成功', resp)
       console.log('success+++',resp)
       wx.redirectTo({
         url: `../finish/index?type=photo_doc&media_type=${this.media_type}&state=${resp.createOrder.state}`
@@ -630,7 +623,7 @@ const chooseCtx = {
         allCount: this.data.images.length
       })
     } catch (e) {
-      // logger.info('图片存储到本地失败')
+      logger.info('图片存储到本地失败')
     }
   },
 

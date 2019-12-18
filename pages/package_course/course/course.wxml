@@ -133,7 +133,7 @@ module.exports = {
 <!-- 底部按钮控制区域 -->
 <view class="handle-bar" wx:if="{{loadReady}}">
   <view bindtap="collectCourse">
-    <image src="../images/collection_{{isCollected?'on':'off'}}.png"></image>
+    <image class="btn-action" src="../images/collection_{{isCollected?'on':'off'}}.png"></image>
     <view>收藏</view>
   </view>
   <view>
@@ -143,7 +143,7 @@ module.exports = {
 
     <form report-submit="{{true}}" bindsubmit="uploadFormId">
       <button open-type="share" form-type="submit" hover-class="none" class="{{course.payed ? 'has-buy' : ''}}">
-        <image src="/images/doc_gfd_share_gray.png" wx:if="{{!course.payed}}"></image>
+        <image class="btn-action" src="/images/doc_gfd_share_gray.png" wx:if="{{!course.payed}}"></image>
         <text>{{canShare && unionId ? '助力' : '分享'}}</text>
       </button>
     </form>

@@ -6,7 +6,7 @@ const app = getApp()
 
 var workerId //定义的loop状态
 var time = 3000 //单次查询时间3s
-const MAX_TIME = 60000 //处理最长时间60s
+const MAX_TIME = 600000 //处理最长时间60s
 var removeTimer = function (_id) {
   _id && clearTimeout(_id)
 }
@@ -29,7 +29,7 @@ const getWorkerSn = co.wrap(function*(feature_key, worker_data={}) {
     }
     if (resp && resp.res) {
       return resp.res.sn
-    } 
+    }
   }catch(err) {
   }
 })
@@ -48,7 +48,7 @@ const getWorkerResult = co.wrap(function*(sn) {
     }
     if (resp && resp.res) {
       return resp.res
-    } 
+    }
   } catch(err) {
     util.showError(err)
   }
@@ -57,7 +57,7 @@ const getWorkerResult = co.wrap(function*(sn) {
 /**
  * @methods sn换取具体处理完成的值
  * @param {Object} *worker 处理数据
- * @param {Function} 单次触发的回调 
+ * @param {Function} 单次触发的回调
  * @param {Function} 触发抛出错误回调
  */
 const getLoopsEvent = co.wrap(function*(data, triggerCallbackFn = function(){}, triggerError = function(){}){
@@ -81,15 +81,15 @@ const getLoopsEvent = co.wrap(function*(data, triggerCallbackFn = function(){}, 
             return removeTimer(workerId) //关闭定时器
           }
 
-    
+
           if (workers && workers.state === 'send') { //处理中
              triggerCallbackFn({
               status: 'processing',
               message: ''
             })
             return counter()
-          } 
-    
+          }
+
           removeTimer(workerId) //关闭定时器
           if (workers && workers.state === 'finished') {
             triggerCallbackFn({
@@ -97,13 +97,13 @@ const getLoopsEvent = co.wrap(function*(data, triggerCallbackFn = function(){}, 
               status: 'finished',
               message: ''
             })
-          } 
-  
+          }
+
         }), time)
       }
       counter()
     } catch (err) {
-      removeTimer(workerId) //接口异常时 关闭定时器 
+      removeTimer(workerId) //接口异常时 关闭定时器
     }
 
   } catch(err) {
