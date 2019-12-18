@@ -2,7 +2,14 @@
 let {
   weToast
 } = require('lib/toast/wetoast.js')
-import { regeneratorRuntime, co, util, _, storage, logger } from './utils/common_import'
+import {
+  regeneratorRuntime,
+  co,
+  util,
+  _,
+  storage,
+  logger
+} from './utils/common_import'
 const getSystemInfo = util.promisify(wx.getSystemInfo)
 const login = util.promisify(wx.login)
 const request = util.promisify(wx.request)
@@ -14,7 +21,7 @@ App({
   // apiServer: 'https://epbox.gongfudou.com',
   // apiWbviewServer: 'https://epbox.gongfudou.com/',
 
-	//staging
+  //staging
   apiServer: 'https://lb-stg.gongfudou.com',
   apiWbviewServer: 'https://lb-stg.gongfudou.com/',
 
@@ -25,7 +32,7 @@ App({
 
   // 袁小飞接口
   // apiServer: 'http://schaffer.utools.club',
-	// apiWbviewServer: 'http://schaffer.utools.club',
+  // apiWbviewServer: 'http://schaffer.utools.club',
 
   //一个秃子的服务器地址
   // apiServer: 'http://jran.nat300.top',
@@ -44,8 +51,12 @@ App({
   // apiWbviewServer: 'http://jhx.nat300.top',
 
   //江然本地服务
-	// apiServer: 'http://jran.nat300.top',
-	// apiWbviewServer: 'http://jhx.nat300.top',
+  // apiServer: 'http://jran.nat300.top',
+  // apiWbviewServer: 'http://jhx.nat300.top',
+
+  //张伟服务器
+  // apiServer: 'http://bboo.natapp1.cc',
+  // apiWbviewServer: 'http://bboo.natapp1.cc/',
 
   // apiWbviewServer: 'http://jhx.nat300.top',
   

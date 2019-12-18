@@ -7,7 +7,7 @@
   circular bindchange="changeSwiper" bindtap="clickAds">
   <block wx:for="{{bannerUrls}}" wx:key="{{index}}">
     <swiper-item>
-      <image src="{{item.url}}" mode="widthFix" />
+      <image src="{{item.imageUrl}}" mode="widthFix" />
     </swiper-item>
   </block>
 </swiper>
