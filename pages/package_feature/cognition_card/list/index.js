@@ -137,11 +137,14 @@ Page({
       }
       let resp = yield commonRequest.createOrder('literacy_card', reImgs)
       this.weToast.hide()
-      wxNav.redirectTo(`../../../../finish/index`, {
-        media_type: 'literacy_card',
-        state: resp.state,
-        type: 'literacy_card'
-      })
+      if(resp.createOrder.state) {
+        wxNav.redirectTo(`/pages/index/index`)
+      }
+      // wxNav.redirectTo(`../../../../finish/index`, {
+      //   media_type: 'literacy_card',
+      //   state: resp.state,
+      //   type: 'literacy_card'
+      // })
     } catch (error) {
       this.weToast.hide()
       util.showError(error)

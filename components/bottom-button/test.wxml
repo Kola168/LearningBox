@@ -1,2 +1,2 @@
 <!--components/bottom-button/test.wxml-->
-<botttom-button class="bottom-but" text-left="购买耗材" text-right="开始制作" bindlefttap="buysth" bindrighttap="toedit"></botttom-button>
+<botttom-button class="component-bottom-button" text-left="购买耗材" bindlefttap="buysth" text-right="开始制作" bindrighttap="toedit"></botttom-button>

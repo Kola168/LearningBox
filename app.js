@@ -22,8 +22,8 @@ App({
   // apiWbviewServer: 'https://epbox.gongfudou.com/',
 
   //staging
-  apiServer: 'https://lb-stg.gongfudou.com',
-  apiWbviewServer: 'https://lb-stg.gongfudou.com/',
+  // apiServer: 'https://lb-stg.gongfudou.com',
+  // apiWbviewServer: 'https://lb-stg.gongfudou.com/',
 
   //王析理本地地址
   // apiServer: 'http://epbox.natapp1.cc',
@@ -34,8 +34,8 @@ App({
   // apiWbviewServer: 'http://schaffer.utools.club',
 
   //一个秃子的服务器地址
-  // apiServer: 'http://jran.nat300.top',
-  // apiWbviewServer: 'http://jran.nat300.top/',
+  apiServer: 'http://jran.nat300.top',
+  apiWbviewServer: 'http://jran.nat300.top/',
 
   //测试接口袁晓飞
   // apiServer: 'https://schaffer.utools.club',
@@ -45,9 +45,9 @@ App({
   // apiServer: 'http://jhx.nat300.top',
   // apiWbviewServer: 'http://jhx.nat300.top',
 
-  // 测试接口季慧新
-  // apiServer: 'http://jhx.nat300.top',
-  // apiWbviewServer: 'http://jhx.nat300.top',
+  // 测试接口张伟
+  apiServer: 'http://bboo.natapp1.cc',
+  apiWbviewServer: 'http://bboo.natapp1.cc/',
 
   //江然本地服务
   // apiServer: 'http://jran.nat300.top',
@@ -82,7 +82,7 @@ App({
   }),
 
   //获取系统信息
-  getSystemInfo: co.wrap(function*() {
+  getSystemInfo: co.wrap(function* () {
     let res = yield getSystemInfo()
     this.sysInfo = res
     this.handleDevice()
@@ -150,7 +150,7 @@ App({
     };
   },
 
-  preventMoreTap: function(e) {
+  preventMoreTap: function (e) {
     if (_.isEmpty(e)) {
       return false
     }
@@ -169,7 +169,7 @@ App({
     }
   },
 
-  getOpenId: co.wrap(function*() {
+  getOpenId: co.wrap(function* () {
     try {
       const sto = storage.get('openId')
       if (!sto) {
@@ -182,8 +182,7 @@ App({
       console.log(e)
     }
   }),
-
-  login: co.wrap(function*() {
+  login: co.wrap(function* () {
     try {
       const loginCode = yield login()
       const loginInfo = yield request({

@@ -42,8 +42,11 @@ Page({
   bindViewTap: function () {
     wxNav.navigateTo('/pages/logs/logs')
   },
-  onLoad: co.wrap(function* () {
+  onLoad: co.wrap(function* (query) {
     this.longToast = new app.weToast()
+    if (query.scene) {
+      this.handleScene(query.scene)
+    }
     try {
 
     } catch (e) {
@@ -152,8 +155,8 @@ Page({
           app_version: app.version
         },
         decr_type: 'login'
-			}
-			const resp = yield api.wechatDecryption(params)
+      }
+      const resp = yield api.wechatDecryption(params)
       if (resp.code != 0) {
         throw (resp)
       }
@@ -203,4 +206,41 @@ Page({
   // toId: function () {
   //   router.navigateTo('/pages/print_id/index')
   // }
+
+  // 处理scene
+  handleScene(scene){
+    let sceneArr = scene.split('_'),
+    sceneKey = sceneArr[0],
+    sceneVal = sceneArr[1]
+    switch (sceneKey) {
+      case 'device':
+        this.handleShareQrcode(sceneVal)
+        break;
+    }
+  },
+
+  // 处理分享打印机二维码
+  handleShareQrcode: co.wrap(function*(val) {
+    this.longToast.toast({
+      type: 'loading'
+    })
+    try {
+      let info = yield api.getShareDeviceInfo(val)
+      if (info.code != 0) {
+        throw (info)
+      }
+      let res = yield gql.bindShareDevice(info.res.device_sn)
+      if(res.bindSharer.device){
+        this.longToast.hide()
+        wx.showToast({
+          title: '绑定成功',
+          icon: 'none',
+          duration: 3000
+        })
+      }
+    } catch (error) {
+      this.longToast.hide()
+      util.showError(error)
+    }
+  })
 })

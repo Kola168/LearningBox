@@ -5,7 +5,7 @@
         <view class="list-item">
             <view class="item-left">宝贝昵称</view>
             <view class="item-right" bindtap="getName">
-                <text class="name">请填写真实昵称</text>
+                <text class="name">{{name}}</text>
                 <!--<input placeholder="请填写真实昵称" auto-focus bindinput='input' confirm-type="done" value="{{name}}"></input>-->
                 <image class="arrow-icon" src="/images/doc_item_arrow.png"></image>
             </view>

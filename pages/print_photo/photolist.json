@@ -3,6 +3,7 @@
     "nav-bar": "../../components/nav-bar/index",
     "multi-process":"../../components/process/index",
     "take-photo-pop":"../../components/checkimg/index",
-    "confirm-print": "../../components/confStorageModal/index"
+    "confirm-print": "../../components/confStorageModal/index",
+    "botttom-button":"../../components/bottom-button/index"
   }
 }

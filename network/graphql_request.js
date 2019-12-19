@@ -2,10 +2,11 @@ var app = getApp()
 var gqwxappGraphql = require('./wxgql')
 var GraphQL = gqwxappGraphql.GraphQL
 import storage from '../utils/storage.js'
+import { co } from '../utils/common_import.js';
 // 初始化对象
 let gql = GraphQL({
   url: `${app.apiServer}/graphql`,
-  header: function () {
+  header: function() {
     if (app.authToken) {
       return {
         "AUTHORIZATION": `Token token=${app.authToken}`
@@ -25,9 +26,9 @@ let gql = GraphQL({
   },
   //全局错误拦截
   errorHandler: function(res) {
-		console.log('graphql全局错误拦截',res)
-		//如果auth
-		if(1){
+    console.log('graphql全局错误拦截', res)
+      //如果auth
+    if (1) {
 
     }
   }
@@ -152,12 +153,26 @@ const graphqlApi = {
   getDeviceList: () => {
     return gql.query({
       query: `query {
-        devices {
-          name,
-          selected,
+        currentUser {
           sn,
-          model,
-          onlineState
+          devices{
+            name,
+            selected,
+            sn,
+            isAdmin,
+            model,
+            onlineState,
+            shareQrcode
+          },
+          selectedDevice{
+            name,
+            selected,
+            sn,
+            isAdmin,
+            model,
+            onlineState,
+            shareQrcode
+          }
         }
       }`
     })
@@ -170,17 +185,21 @@ const graphqlApi = {
   getDeviceDetail: (sn) => {
     return gql.query({
       query: `query ($sn: String!){
-        device(sn: $sn){
-          name,
-          selected,
-          sn,
-          model,
-          auditFree,
-          marginFree,
-          onlineState,
-          quality,
-					printOrder
-				}
+        currentUser{
+          devices(sn:$sn){
+            name,
+            selected,
+            sn,
+            model,
+            isAdmin,
+            auditFree,
+            marginFree,
+            onlineState,
+            quality,
+            printOrder,
+            shareQrcode
+          }
+        }
       }`,
       variables: {
         sn: sn
@@ -195,11 +214,13 @@ const graphqlApi = {
   getDeviceShareUsers: (sn) => {
     return gql.query({
       query: `query ($sn: String!){
-        device(sn: $sn){
-          sharers{
-            avatar,
-            name,
-            sn
+        currentUser{
+          devices(sn: $sn){
+            sharers{
+              avatar,
+              name,
+              sn
+            }
           }
 				}
       }`,
@@ -680,6 +701,7 @@ const graphqlApi = {
       query: `query{
         currentUser{
           phone
+          sn
           selectedDevice{
             sn
             name
@@ -711,7 +733,7 @@ const graphqlApi = {
             city{
               name
             }
-            }
+          }
         }
       }`
     })
@@ -890,7 +912,7 @@ const graphqlApi = {
             name
             iconUrl
             sn
-            printerOrdersCount  
+            printerOrdersCount
             pageCount
           }
         }
@@ -1010,8 +1032,7 @@ const graphqlApi = {
         zipCode: zipCode
       }
     })
-	},
-
+  },
   /**
    * 获取耗材
    */
@@ -1031,9 +1052,35 @@ const graphqlApi = {
         period
       }
     })
-   },
-   /*
-   *
+  },
+
+  /**
+   * 获取免费资源库
+   * @param { String } key feature_key
+   */
+  getFreeSources: (key) => {
+    return gql.query({
+      query: `query ($key: String!){
+        feature(key: $key){
+          categories{
+            name
+            children{
+              name
+              subTitle
+              image
+              sn
+            }
+          }
+        }
+      }`,
+      variables: {
+        key: key
+      }
+    })
+  },
+
+  /**
+   *获取banner图
    * @param {*} type course/home
    * @returns
    */
@@ -1053,6 +1100,70 @@ const graphqlApi = {
   },
 
   /**
+   * 免费资源库内容类型
+   * @param { string } sn 资源sn
+   */
+  getFreeSourcesContentType: (sn) => {
+    return gql.query({
+      query: `query ($sn: String!){
+        category(sn: $sn){
+          children{
+            name
+            sn
+          }
+        }
+      }`,
+      variables: {
+        sn: sn
+      }
+    })
+  },
+
+  /**
+   * 免费资源库内容
+   * @param { string } sn 资源sn
+   */
+  getFreeSourcesContents: (sn) => {
+    return gql.query({
+      query: `query ($sn: String!){
+        category(sn: $sn){
+          contents {
+            iconUrl
+            pageCount
+            sn
+            title
+          }
+        }
+      }`,
+      variables: {
+        sn: sn
+      }
+    })
+  },
+
+  /**
+   * 免费资源库详情
+   * @param { string } sn 资源sn
+   */
+  getFreeSourcesDetail: (sn) => {
+    return gql.query({
+      query: `query ($sn: String!){
+        content(sn: $sn){
+          contentImages{
+            nameUrl
+          }
+          pageCount
+          title
+          featureKey
+        }
+      }`,
+      variables: {
+        sn: sn
+      }
+    })
+  },
+
+  /**
    * 上传录音音频
    */
   createAudio: (pms) => {
@@ -1067,7 +1178,7 @@ const graphqlApi = {
       }
     })
   },
-  
+
   /**
    * 获取用户录制信息
    */
@@ -1110,10 +1221,10 @@ const graphqlApi = {
     return gql.query({
       query: `query($isOwner: Boolean!,$name:String) {
         folders(isOwner:$isOwner,name:$name){
-          joinedUsersCount
           name
-          roleType
           sn
+          created_at:createdDate
+          ${isOwner?'users_count:joinedUsersCount':'nickname:ownedUserNickname'}
         }
       }`,
       variables: {
@@ -1121,138 +1232,427 @@ const graphqlApi = {
         name
       }
     })
+  },
+
+  /**
+   * 获取打印机打印记录
+   * @param { String } sn 打印机sn
+   * @param { Number } page 页数
+   */
+  getPrinterRecords: (sn, page) => {
+    return gql.query({
+      query: `query($sn: String!,$page: Int) {
+        currentUser {
+          devices(sn:$sn){
+            orders(page:$page){
+              adminCreate
+              createdAt
+              creator{
+                avatar
+                name
+                sn
+              }
+              copies
+              name
+              sn
+              state
+            }
+          }
+        }
+      }`,
+      variables: {
+        sn: sn,
+        page: page
+      }
+    })
+  },
+
+  /**
+   * 获取打印机打印记录详情
+   * @param { String } sn 打印订单sn
+   */
+  getPrinterRecordDetail: (sn) => {
+    return gql.query({
+      query: `query($sn: String!) {
+        printOrder(sn:$sn){
+          name
+          createdAt
+          designs {
+            failedReason
+            copies
+            previewUrl
+            state
+            printUrl
+          }
+        }
+      }`,
+      variables: {
+        sn: sn
+      }
+    })
 	},
-		//查询模板列表
-		searchTemplate:(type)=>{
-			return gql.query({
-				query: `query($key: String!) {
-					feature(key: $key) {
-						categories {
-							name
-							sn
-							isHorizontal
-							templates {
-								previewImage
-								name
-								imageUrl
-								sn
-								positionInfo {
-									width
-									areaHeight
-									areaWidth
-									areaX
-									areaY
-									height
-									width
-								}
-							}
-						}
-					}
-				}`,
-				variables: {
-					key: type
-				}
-			})
-		},
+  //查询模板列表
+  searchTemplate:(type)=>{
+    return gql.query({
+      query: `query($key: String!) {
+        feature(key: $key) {
+          categories {
+            name
+            sn
+            isHorizontal
+            templates {
+              previewImage
+              name
+              imageUrl
+              sn
+              positionInfo {
+                width
+                areaHeight
+                areaWidth
+                areaX
+                areaY
+                height
+                width
+              }
+            }
+          }
+        }
+      }`,
+      variables: {
+        key: type
+      }
+    })
+  },
 
-		//查询主模板下详细信息
-		searchTemplateType:(sn)=>{
-			return gql.query({
-				query: `query($sn: String!) {
-					category(sn: $sn) {
-						name
-						sn
-						templates {
-							previewImage
-							name
-							imageUrl
-							sn
-							positionInfo {
-								width
-								areaHeight
-								areaWidth
-								areaX
-								areaY
-								height
-								width
-							}
-						}
-					}
-				}`,
-				variables: {
-					sn: sn
-				}
-			})
-		},
+  //查询主模板下详细信息
+  searchTemplateType:(sn)=>{
+    return gql.query({
+      query: `query($sn: String!) {
+        category(sn: $sn) {
+          name
+          sn
+          templates {
+            previewImage
+            name
+            imageUrl
+            sn
+            positionInfo {
+              width
+              areaHeight
+              areaWidth
+              areaX
+              areaY
+              height
+              width
+            }
+          }
+        }
+      }`,
+      variables: {
+        sn: sn
+      }
+    })
+  },
 
-		//查询姓名贴模板
-		searchNameTemplate:(type)=>{
-			return gql.query({
-				query: `query($key: String!) {
-					feature(key: $key) {
-						categories {
-							name
-							sn
-							isHorizontal
-							attrsInfo
-							isHidden
-							templates {
-								previewImage
-								name
-								imageUrl
-								uploadable
-								sn
-								positionInfo {
-									width
-									areaHeight
-									areaWidth
-									areaX
-									areaY
-									height
-									width
-								}
-							}
-						}
-					}
-				}`,
-				variables: {
-					key: type
-				}
-			})
-		},
+  //查询姓名贴模板
+  searchNameTemplate:(type)=>{
+    return gql.query({
+      query: `query($key: String!) {
+        feature(key: $key) {
+          categories {
+            name
+            sn
+            isHorizontal
+            attrsInfo
+            isHidden
+            templates {
+              previewImage
+              name
+              imageUrl
+              uploadable
+              sn
+              positionInfo {
+                width
+                areaHeight
+                areaWidth
+                areaX
+                areaY
+                height
+                width
+              }
+            }
+          }
+        }
+      }`,
+      variables: {
+        key: type
+      }
+    })
+  },
 
-		//查询台历模板信息
-		searchCalendarTemplate:(type)=>{
-			return gql.query({
-				query: `query($key: String!) {
-					feature(key: $key) {
-						categories {
-							name
-							sn
-							isHorizontal
-							templates {
-								previewImage
-								name
-								imageUrl
-								sn
-								calendarInfos {
-									width
-									areaHeight
-									areaWidth
-									areaX
-									areaY
-									height
-									width
-								}
-							}
-						}
-					}
-				}`,
-				variables: {
-					key: type
-				}
-			})
-		},
+  //查询台历模板信息
+  searchCalendarTemplate:(type)=>{
+    return gql.query({
+      query: `query($key: String!) {
+        feature(key: $key) {
+          categories {
+            name
+            sn
+            isHorizontal
+            templates {
+              previewImage
+              name
+              imageUrl
+              sn
+              calendarInfos {
+                width
+                areaHeight
+                areaWidth
+                areaX
+                areaY
+                height
+                width
+              }
+            }
+          }
+        }
+      }`,
+      variables: {
+        key: type
+      }
+    })
+  },
+
+  /**
+   * 绑定分享设备
+   * @param { String } deviceSn 设备sn
+   */
+  bindShareDevice:(deviceSn) => {
+    return gql.mutate({
+      mutation: `mutation ($input: BindSharerInput!) {
+        bindSharer(input: $input){
+          device {
+            name
+          }
+        }
+      }`,
+      variables: {
+        input: {
+          deviceSn: deviceSn
+        }
+      }
+    })
+  },
+
+  /**
+   * 清空打印队列
+   * @param { String } deviceSn 设备sn
+   */
+  clearJobs:(deviceSn) => {
+    return gql.mutate({
+      mutation: `mutation ($input: CancelJobInput!) {
+        cancelJob(input: $input){
+          state
+        }
+      }`,
+      variables: {
+        input: {
+          deviceSn: deviceSn
+        }
+      }
+    })
+	},
+	
+	/**
+     * 创建新文件夹
+     *
+     * @param {*} input
+     * @returns
+     */
+    createFolder: (input) => {
+      return gql.mutate({
+        mutation: `mutation ($input: CreateFolderInput!){
+          createFolder(input:$input){
+            folder{
+              joinedUsersCount
+              name
+              sn
+            }
+            state
+          }
+        }`,
+        variables: {
+          input
+        }
+      })
+    },
+    /**
+     * 共享文件夹协议
+     *
+     * @returns
+     */
+    checkProtocol: () => {
+      return gql.query({
+        query: `query {
+          currentUser{
+            folderAgreement
+          }
+        }`
+      })
+    },
+    /**
+     * 同意共享文件夹协议
+     *
+     * @param {*} input
+     * @returns
+     */
+    signFolderAgreement: (input) => {
+      return gql.mutate({
+        mutation: `mutation ($input: SignFolderAgreementInput!){
+          signFolderAgreement (input:$input){
+            state
+          }
+        }`,
+        variables: {
+          input
+        }
+      })
+    },
+  
+    /**
+     * 修改文件夹名称
+     *
+     * @param {*} input
+     * @returns
+     */
+    updateFolder: (input) => {
+      return gql.mutate({
+        mutation: `mutation ($input: UpdateFolderInput!){
+          updateFolder (input:$input){
+            state
+          }
+        }`,
+        variables: {
+          input
+        }
+      })
+    },
+    /**
+     * 删除文件夹
+     *
+     * @param {*} input
+     * @returns
+     */
+    deleteFolder: (input) => {
+      return gql.mutate({
+        mutation: `mutation ($input: DeleteFolderInput!){
+          deleteFolder (input:$input){
+            state
+          }
+        }`,
+        variables: {
+          input
+        }
+      })
+    },
+    /**
+     * 获取文件夹文件列表
+     *
+     * @param {*} sn 
+     * @returns
+     */
+    getDocuments: (sn,page) => {
+      return gql.query({
+        query: `query($sn: String!,$page: Int!) {
+          documents(sn:$sn,page:$page){
+            file_type:fileType
+            name
+            sn
+            url
+            created_at:createdDate
+          }
+        }`,
+        variables: {
+         sn:sn,
+         page:page
+        }
+      })
+    },
+  
+    /**
+     * 存储文件到文件夹
+     *
+     * @param {*} input
+     * @input {
+     *    sn
+     *    documents{
+     *      name
+     *      url
+     *      fileType   
+     *     } 
+     *  }        
+     * @returns
+     */
+    createDocument:(input) => {
+      return gql.mutate({
+        mutation: `mutation($input: CreateDocumentInput!) {
+          createDocument(input:$input){
+            state
+          }
+        }`,
+        variables: {
+            input
+        }
+      })
+    },
+  
+    /**
+     * 删除文件
+     *
+     * @param {*} input
+     * input{
+     * }
+     * @returns
+     */
+    deleteDocument:(input) => {
+      return gql.mutate({
+        mutation: `mutation($input: DeleteDocumentInput!) {
+          deleteDocument(input:$input){
+            state
+          }
+        }`,
+        variables: {
+            input
+        }
+      })
+    },
+  
+    /**
+     * 百度token校验
+     *
+     * @returns
+     */
+    checkBaiduAuth: () => {
+      return gql.query({
+        query: `query{
+          token{
+            baiduTokenName
+          }
+        }`
+      })
+    },
+    uploadBaidu:(input) => {
+      return gql.mutate({
+        mutation: `mutation($input: UploadDocumentToBaiduInput!) {
+          uploadDocumentToBaidu(input:$input){
+            state
+          }
+        }`,
+        variables: {
+            input
+        }
+      })
+    },
 }
 
 export default graphqlApi

@@ -7,16 +7,16 @@ import {
   util,
   wxNav,
   storage,
-  logger
+  uploadFormId
 } from '../../utils/common_import'
-import {
-  uploadFiles
-} from '../../utils/upload'
+import {uploadFiles} from '../../utils/upload'
+import commonRequest from '../../utils/common_request.js'
 const imginit = require('../../utils/imginit')
-
 const showModal = util.promisify(wx.showModal)
 const request = util.promisify(wx.request)
 import event from '../../lib/event/event'
+import Logger from '../../utils/logger.js'
+const logger = new Logger.getLogger('pages/print_photo_doc/index')
 
 const chooseCtx = {
   data: {
@@ -36,6 +36,7 @@ const chooseCtx = {
     allCount: 0, //当前可打印图片总数
     maxCount: 8, //最大数量限制
     preAllCount: 0, //上一次所选图片数量
+    currentStartIndex: 0,
     //是否过滤掉了大/小图
     //显示图片过滤提示
     showInterceptModal: false,
@@ -52,9 +53,11 @@ const chooseCtx = {
     confirmModal: {
       isShow: false,
       title: '请正确放置A4打印纸',
-      image: 'https://cdn.gongfudou.com/miniapp/ec/confirm_print_a4_new.png'
+      image: 'https://cdn-h.gongfudou.com/LearningBox/main/doc_confirm_print_a4_new.png'
     }
   },
+
+
   onLoad: function(options) {
     this.longToast = new app.weToast()
     this.query = options || {}
@@ -66,6 +69,8 @@ const chooseCtx = {
       this.setPostData(postData)
     })
   },
+
+
   onShow: function() {
     let hasAuthPhoneNum = Boolean(storage.get('hasAuthPhoneNum'))
     this.hasAuthPhoneNum = hasAuthPhoneNum
@@ -74,6 +79,24 @@ const chooseCtx = {
     })
     this.needToDelete = [] //长宽比大于5，最后统一删除
   },
+
+  // 从百度网盘选择
+  chooseBaidu(res){
+    let images = res.detail
+    let len = this.data.images.length
+    this.increaseNum = 0 // 初始化自增数量标识符
+    this.setData({
+      realCount: len + images.length,
+      chooseCount: images.length,
+      allCount: len + images.length,
+      currentStartIndex: len
+    })
+    images.forEach((item, index)=>{
+      let url = item.url
+      this.showImage(url, index+len)
+    })
+  },
+
   // 初始化当前区域信息
   initUseArea: function() {
     this.media_type = 'pic2doc'
@@ -91,9 +114,10 @@ const chooseCtx = {
         mediumRecommend: this.media_type,
         showIndex: true
       })
-      this.getSupplyBefore(this.media_type)
     }
   },
+
+
   //初始化视图区域信息
   initSingleArea: function() {
     try {
@@ -108,6 +132,8 @@ const chooseCtx = {
       logger.info(e)
     }
   },
+
+
   getStorageImages: function(media_type) {
     try {
       let galleryImages = storage.get(media_type) || {
@@ -142,6 +168,8 @@ const chooseCtx = {
       currentCount: Math.max(this.data.images.length - this.data.preAllCount, 0)
     })
   },
+
+
   previewImg: function({
     currentTarget: {
       id
@@ -153,6 +181,8 @@ const chooseCtx = {
       urls: [image.afterEditUrl || image.url]
     })
   },
+
+
   changeImage() {
     if (this.data.images.length >= this.data.maxCount) {
       return showModal({
@@ -168,6 +198,8 @@ const chooseCtx = {
     }
     this.selectComponent("#checkComponent").showPop()
   },
+
+  
   chooseImg: co.wrap(function*(e) {
     let that = this
     let res = e.detail
@@ -232,6 +264,7 @@ const chooseCtx = {
       logger.info(e, '-----')
     }
   }),
+
   cancelUpload: co.wrap(function*() {
     app.cancelUpload = true
     this.setData({
@@ -241,6 +274,7 @@ const chooseCtx = {
     })
     logger.info('手动停止上传还可以继续上传张数：', this.data.countLimit)
   }),
+
   getImageOrientation: co.wrap(function*(url) {
     let that = this
     let imageInfo
@@ -275,6 +309,8 @@ const chooseCtx = {
       })
     }
   }),
+
+
   showImage: co.wrap(function*(url, index) {
     let that = this
     let noRotate = this.data.media_size[this.media_type].noRotateMin
@@ -290,7 +326,7 @@ const chooseCtx = {
       })
     } else {
       let image = {
-          url: imginit.addProcess(localUrl, noRotate),
+        url: imginit.addProcess(localUrl, noRotate),
           localUrl: localUrl,
           count: 1,
           width: imageInfo.width,
@@ -305,7 +341,7 @@ const chooseCtx = {
 
       that.setData({
         percent: 0,
-        images: that.data.images,
+        images: that.data.images
       })
     }
     //最后一张图结束清空隐藏进度条
@@ -343,6 +379,8 @@ const chooseCtx = {
       }, delay)
     }
   }),
+
+
   hideToast: function(e) {
     if (!this.query.gallerySource || this.query.gallerySource == 'localStorage') {
       return
@@ -352,6 +390,8 @@ const chooseCtx = {
       realCount: 0
     })
   },
+
+
   errImage: function(e) {
     if (this.query.gallerySource) {
       return
@@ -365,6 +405,8 @@ const chooseCtx = {
     this.setStorage()
     logger.info('某张图片渲染失败后还可以继续上传张数：', this.data.countLimit)
   },
+
+
   //减张数
   decrease: function({
     currentTarget: {
@@ -390,6 +432,8 @@ const chooseCtx = {
       allCount: this.data.allCount - 1
     })
   },
+
+
   //加张数
   increase: function({
     currentTarget: {
@@ -420,6 +464,8 @@ const chooseCtx = {
       allCount: this.data.allCount + 1,
     })
   },
+
+
   //删除照片
   deleteImg: co.wrap(function*({
     currentTarget: {
@@ -444,79 +490,91 @@ const chooseCtx = {
     this.setStorage()
     logger.info('删除后剩余照片：', this.data.images)
   }),
+
+
   confirm: co.wrap(function*(e) {
-    uploadFormId.dealFormIds(e.detail.formId, `print_${this.media_type}`)
-    uploadFormId.upload()
-    if (!this.hasAuthPhoneNum && !app.hasPhoneNum) {
-      return
-    }
-    if (app.preventMoreTap(e)) {
-      return
-    }
-
-    if (this.data.uploadImg) {
-      return
-    }
-
-    if (!this.data.images.length) {
-      return wx.showModal({
-        title: '提示',
-        content: '至少选择一张照片哦',
-        showCancel: false,
-        confirmColor: '#ffe27a'
-      })
-    }
-    let hideConfirmPrintBox = Boolean(storage.get("hideConfirmPrintBox"))
-    if (hideConfirmPrintBox) {
-      this.userConfirm()
-    } else {
-      this.setData({
-        ['confirmModal.isShow']: true
-      })
+    try{
+      // uploadFormId.dealFormIds(e.detail.formId, `print_${this.media_type}`)
+      // uploadFormId.upload()
+      // if (!this.hasAuthPhoneNum && !app.hasPhoneNum) {
+      //   return
+      // }
+      if (app.preventMoreTap(e)) {
+        return
+      }
+  
+      if (this.data.uploadImg) {
+        return
+      }
+  
+      if (!this.data.images.length) {
+        return wx.showModal({
+          title: '提示',
+          content: '至少选择一张照片哦',
+          showCancel: false,
+          confirmColor: '#ffe27a'
+        })
+      }
+      let hideConfirmPrintBox = Boolean(storage.get("hideConfirmPrintBox"))
+      if (hideConfirmPrintBox) {
+        this.userConfirm()
+      } else {
+        this.setData({
+          ['confirmModal.isShow']: true
+        })
+      }
+    }catch(e){
+      util.showError(e)
     }
   }),
-  getPhoneNumber: co.wrap(function*(e) {
-    yield app.getPhoneNum(e)
-    storage.put("hasAuthPhoneNum", true)
-    this.hasAuthPhoneNum = true
-    this.setData({
-      hasAuthPhoneNum: true
-    })
-    this.confirm(e)
-  }),
+
+  // getPhoneNumber: co.wrap(function*(e) {
+  //   // yield app.getPhoneNum(e)
+  //   storage.put("hasAuthPhoneNum", true)
+  //   this.hasAuthPhoneNum = true
+  //   this.setData({
+  //     hasAuthPhoneNum: true
+  //   })
+  //   this.confirm(e)
+  // }),
+
+
   userConfirm: co.wrap(function*(e) {
-    let images = this.data.images
-    let newImages = []
-    let _this = this
-    images.forEach((data, index) => {
-      if (data.choose == undefined || data.choose == true) {
-        let newImage = {
-          url: imginit.mediaResize(data.localUrl, this.media_type), //原图
-          number: data.count,
-          color: data.color ? data.color : 'Color',
+    try{
+      let images = this.data.images
+      let newImages = []
+      images.forEach((data, index) => {
+        if (data.choose == undefined || data.choose == true) {
+          let newImage = {
+            originalUrl: imginit.mediaResize(data.localUrl, this.media_type), //原图
+            copies: data.count,
+          }
+          if (data.afterEditUrl) {
+            newImage.printUrl = data.afterEditUrl //编辑之后的图
+          }
+          newImages.push(newImage)
         }
-        if (data.afterEditUrl) {
-          newImage.pre_convert_url = data.afterEditUrl //编辑之后的图
+        if (index === images.length - 1) {
+          this.print(newImages)
         }
-        newImages.push(newImage)
-      }
-      if (index === images.length - 1) {
-        _this.uploadImg(newImages)
-      }
-    })
+      })
+    }catch(e){
+      util.showError(e)
+    }
   }),
-  uploadImg: co.wrap(function*(images) {
+
+  print: co.wrap(function*(images) {
     // if (!app.openId) {
     //   yield this.loopGetOpenId()
     // }
-    let params = {
-      //   openid: app.openId,
-      urls: images,
-      media_type: this.media_type,
-      from: 'mini_app'
-    }
+    // let params = {
+    //   //   openid: app.openId,
+    //   urls: images,
+    //   media_type: this.media_type,
+    //   from: 'mini_app'
+    // }
 
-    logger.info('订单生成参数', params)
+    // logger.info('订单生成参数', params)
     this.setData({
       showConfirmModal: null,
     })
@@ -524,28 +582,32 @@ const chooseCtx = {
       type: 'loading'
     })
     try {
-      const resp = yield request({
-        url: app.apiServer + `/ec/v2/orders`,
-        method: 'POST',
-        dataType: 'json',
-        data: params
-      })
-      logger.info(resp)
-      if (resp.data.code !== 0) {
-        throw (resp.data)
-      }
+      // const resp = yield request({
+      //   url: app.apiServer + `/ec/v2/orders`,
+      //   method: 'POST',
+      //   dataType: 'json',
+      //   data: params
+      // })
+      const resp = yield commonRequest.createOrder("pic_to_doc",images)
+      // logger.info(resp)
+      // if (resp.data.code !== 0) {
+      //   throw (resp.data)
+      // }
 
       this.longToast.toast()
       logger.info('订单创建成功', resp)
       wx.redirectTo({
-        url: `../finish/index?type=photo_doc&media_type=${this.media_type}&state=${resp.data.order.state}`
+        // url: `../finish/index?type=photo_doc&media_type=${this.media_type}&state=${resp.createOrder.state}`
+        url: `pages/finish/index`
       })
 
     } catch (e) {
       this.longToast.toast()
-      util.showErr(e)
+      util.showError(e)
     }
   }),
+
+
   //图片存储至本地
   setStorage: function() {
     try {
@@ -558,13 +620,19 @@ const chooseCtx = {
       logger.info('图片存储到本地失败')
     }
   },
+
+
   onHide: function() {
     this.setStorage()
   },
+
+
   onUnload: function() {
     this.setStorage()
     event.remove('setPreData', this)
   },
+
+
   /**
    * @methods设置回传参数
    * @param {String} images
@@ -574,6 +642,8 @@ const chooseCtx = {
       images
     })
   },
+
+
   //   loopGetOpenId: co.wrap(function*() {
   //     let loopCount = 0
   //     let _this = this
@@ -592,6 +662,8 @@ const chooseCtx = {
   //       }, 2000)
   //     }
   //   }),
+
+  
   toUse: function() {
     var useStatus = 'picToDocUSeStatus'
     storage.put(useStatus, true)

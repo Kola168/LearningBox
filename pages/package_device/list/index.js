@@ -5,7 +5,7 @@ import graphql from '../../../network/graphql_request'
 Page({
   data: {
     devices: [],
-    activeDevice: {},
+    activeDevice: null,
     isFullScreen: false
   },
   onLoad: function() {
@@ -24,13 +24,8 @@ Page({
     })
     try {
       let res = yield graphql.getDeviceList()
-      let devices = res.devices,
-        activeDevice = {}
-      for (let i = 0; i < devices.length; i++) {
-        if (devices[i].selected) {
-          activeDevice = devices[i]
-        }
-      }
+      let devices = res.currentUser.devices,
+        activeDevice = res.currentUser.selectedDevice
       this.weToast.toast()
       this.setData({
         devices,
@@ -58,14 +53,13 @@ Page({
     if (app.preventMoreTap(e)) {
       return
     }
-    let sn = e.currentTarget.dataset.sn
     wxNav.navigateTo(`../share/index`, {
-      sn
+      shareQrcode: encodeURIComponent(JSON.stringify(this.data.activeDevice.shareQrcode))
     })
   },
 
   // 切换打印机
-  switchActiveDevice:co.wrap(function*(e) {
+  switchActiveDevice: co.wrap(function*(e) {
     if (app.preventMoreTap(e)) {
       return
     }

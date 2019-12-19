@@ -41,7 +41,7 @@
             </view>
             <view class="bottom-right">
                 <form report-submit="true" bindsubmit="confirm">
-                    <button class="{{images.length==0?'button-gray':''}}" open-type="{{hasAuthPhoneNum?'':'getPhoneNumber'}}" bindgetphonenumber="{{hasAuthPhoneNum?'':'getPhoneNumber'}}" formType="submit">确认打印</button>
+                    <button class="{{images.length==0?'button-gray':''}}" formType="submit">确认打印</button>
                 </form>
             </view>
         </view>
@@ -63,7 +63,7 @@
             <view class="showInterceptModal" wx:if="{{showInterceptModal}}">{{showInterceptModal}}</view>
         </view>
         <!-- 选择图片 -->
-        <check-img id="checkComponent" bindchooseImg="chooseImg" ></check-img>
+        <check-img id="checkComponent" bindchooseImg="chooseImg" bindbaidutap="chooseBaidu" imgNum="{{maxCount}}"></check-img>
         <!-- 打印确认框 -->
         <confirm-print bindconfirm="userConfirm" modal="{{confirmModal}}"></confirm-print>
     </block>
