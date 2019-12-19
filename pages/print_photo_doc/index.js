@@ -597,7 +597,8 @@ const chooseCtx = {
       this.longToast.toast()
       logger.info('订单创建成功', resp)
       wx.redirectTo({
-        url: `../finish/index?type=photo_doc&media_type=${this.media_type}&state=${resp.createOrder.state}`
+        // url: `../finish/index?type=photo_doc&media_type=${this.media_type}&state=${resp.createOrder.state}`
+        url: `pages/finish/index`
       })
 
     } catch (e) {
