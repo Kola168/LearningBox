@@ -33,7 +33,7 @@ Page({
   onLoad: co.wrap(function *(options) {
     if (options.scene) {
       var showToast = !storage.get('showRecordToast')
-      var scene = decodeURIComponent(options.scene)
+      var scene = options.scene
       var params = {} 
       scene.split('&').forEach(str => {
         params[`${str.split('=')[0]}`] =  str.split('=')[1]
@@ -168,7 +168,7 @@ Page({
     })
     
    } catch(err) {
-    
+    logger.info(err)
    }
   },
 
@@ -177,24 +177,33 @@ Page({
    */ 
   initRecorderManager: function () {
     try {
-      this.recorderManager = wx.getRecorderManager()
       this.isPause = false // 默认不是暂停状态
-      this.recorderManager.onInterruptionBegin((res)=>{ //微信语音 微信视频触发中断回调
-        logger.info(res, '===触发暂停的：onInterruptionBegin====')
+      this.recorderManager = wx.getRecorderManager()
+
+      this.recorderManager.onInterruptionBegin(()=>{ //微信语音 微信视频触发中断回调
         this.recorderManager.pause() //手动暂停
         this.isPause = true //状态暂停
         this.setData({isRecording: false})
+        logger.info('===onInterruptionBegin====触发微信语音 微信视频触发暂停的：onInterruptionBegin')
       })
 
       this.recorderManager.onStart(()=>{
-        logger.info('===onStart====')
         this.setData({isRecording: true})
+        logger.info('===onStart====触发开始录音')
+      })
+
+      this.recorderManager.onResume(()=>{
+        this.setData({isRecording: true})
+        logger.info('===onResume====触发继续录音')
       })
 
       this.recorderManager.onStop((res)=>{
-        var playSource = res
-        this.setData({isRecording: false, showTips: !storage.get('showRecordTip')})
-        storage.put('showRecordTip', true)
+        var playSource = res.tempFilePath
+        this.setData({
+          isRecording: false,
+          showTips: !storage.get('showRecordTip') //录音完成后判断是否显示提醒卡片
+        })
+        storage.put('showRecordTip', true) //记录提示tips状态
         wx.showModal({
           title: '提示',
           content: '是否保存录音',
@@ -204,12 +213,12 @@ Page({
             }
           }
         })
-        logger.info(res, '===触发停止的：onStop====')
+        logger.info(res, '===onStop====触发录音停止')
       })
 
       this.recorderManager.onError((errMsg)=>{
-        util.showError({message: errMsg})
         this.setData({isRecording: false})
+        util.showError({message: errMsg})
         logger.info(errMsg, '===触发停止的：onError====')
       })
     } catch(err) {
@@ -224,7 +233,6 @@ Page({
   initAudioContext: function (key) {
     this.destroyAudioCtx() //销毁音频
     this.data.players[key].audioCtx = wx.createInnerAudioContext()
-
     this.data.players[key].audioCtx.src = this.data.players[key].src
     this.data.players[key].audioCtx.onPlay(()=> {
       this.longToast.toast({
@@ -298,7 +306,6 @@ Page({
     }
 
     if (this.data.isPlaying) { //是否正在播放
-      console.log()
       this.clearPlayers()
       this.destroyAudioCtx()    
     }
@@ -392,12 +399,12 @@ Page({
           currentProgressWidth: 0
         }
       ),
-      isPlaying: false,
-      currentProgressWidth: 0,
-      dotX: 0,
-      curryTime: '00:00',
-      totalTime: '00:00',
-      [this.state.btnState]: false
+      isPlaying: false, //关闭播放状态
+      currentProgressWidth: 0, //播放进度清零
+      dotX: 0, //播放标点清零
+      curryTime: '00:00', //播放时间清零
+      totalTime: '00:00', //资源时长清零
+      [this.state.btnState]: false //播放按钮状态重置
     })
   },
 
@@ -414,7 +421,7 @@ Page({
         })
        }
 
-      // 判断是否点击了不同类型的btn 初始化控制状态
+      // 判断是否点击了不同类型的btn 初始化上一个播放源控制状态
       if (this.state && this.state.key != state.key) {
         this.clearPlayers()
       }
@@ -434,7 +441,7 @@ Page({
         logger.info('开始播放')
       }   
 
-      this.state = state //存下默认标志对象
+      this.state = state //存下默认标示对象
 
     } catch(err) {
       logger.info(err)
@@ -480,7 +487,7 @@ Page({
       showToast: false
     })
     storage.put('showRecordToast', true)
-    this.startPlayVoice()
+    this.startPlayVoice() //开始播放原声音频
 
   },
 
@@ -523,13 +530,13 @@ Page({
   /**
    * 上传录音
    */
-  uploadRecord: co.wrap(function*(res){
+  uploadRecord: co.wrap(function*(src){
     this.longToast.toast({
       type: 'loading',
       title: '请稍候'
     })
     try {
-      var audioUrl = yield upload.uploadFile(res.tempFilePath, true)
+      var audioUrl = yield upload.uploadFile(src, true)
       yield graphql.createAudio({
         audioUrl,
         sn: this.sn
