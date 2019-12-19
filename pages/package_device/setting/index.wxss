@@ -49,6 +49,10 @@
   width: 160rpx;
 }
 
+.device-setting {
+  padding-bottom: 40rpx;
+}
+
 .setting-tab {
   width: 64%;
   height: 60rpx;

@@ -1,0 +1,64 @@
+<wxs module="filter">
+  var formatState = function(state){
+      switch (state){
+        case 'init':
+          return {
+            state: 'warning',
+            text: '等待审核'
+          }
+          break;
+        case 'printing':
+          return {
+            state: 'warning',
+            text: '正在打印'
+          }
+          break;
+        case 'paused':
+          return {
+            state: 'error',
+            text: '打印暂停'
+          }
+          break;
+        case 'printed':
+          return {
+            state: 'success',
+            text: '打印完成'
+          }
+          break;
+        case 'canceled':
+          return {
+            state: 'success',
+            text: '已取消'
+          }
+          break;
+        case 'error':
+          return {
+            state: 'error',
+            text: '异常'
+          }
+          break;
+      }
+  }
+  module.exports = {
+    formatState:formatState
+  }
+</wxs>
+<nav-bar title="记录详情"></nav-bar>
+<view class="order-title flex">
+  <view>{{order.name}}</view>
+  <view>{{order.createdAt}}</view>
+</view>
+<view class="order-detail">
+  <view class="detail-item flex" wx:for="{{order.designs}}" wx:key="index">
+    <view class="item-img flex">
+      <image src="{{item.previewUrl}}" mode="widthFix" />
+    </view>
+    <view class="item-main flex">
+      <view class="main-left flex">
+        <view class="left-name">{{item.name}}</view>
+        <view class="left-count">打印数量：{{item.copies}}份</view>
+      </view>
+      <view class="main-right status-{{filter.formatState(item.state).state}}">{{filter.formatState(item.state).text}}{{item.failedReason?"("+item.failedReason+")":""}}</view>
+    </view>
+  </view>
+</view>
