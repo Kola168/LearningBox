@@ -273,6 +273,7 @@
     </view> -->
   </view>
   <view class="no-more-tip" wx:if="{{showRemind}}">仅展示近三个月的打印记录</view>
+  <view class="no-records" wx:if="{{orders.length===0&&loadReady}}">该打印机暂无打印记录</view>
 </view>
 <!-- loading -->
 <import src="/lib/toast/wetoast.wxml" />

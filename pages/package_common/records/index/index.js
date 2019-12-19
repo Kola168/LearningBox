@@ -13,6 +13,7 @@ Page({
     showRemind: false,
     navBarHeight: 0,
     showDeviceList: false,
+    loadReady: false,
     modalObj: {
       isShow: false,
       title: '温馨提示',
@@ -23,12 +24,10 @@ Page({
   onLoad: co.wrap(function*(options) {
     this.weToast = new app.weToast()
     this.page = 1
-    setTimeout(() => {
-      let navBarHeight = app.navBarInfo.topBarHeight
-      this.setData({
-        navBarHeight
-      })
-    }, 300)
+    let navBarHeight = app.navBarInfo.topBarHeight
+    this.setData({
+      navBarHeight
+    })
     this.getDeviceList()
   }),
   showDeviceList() {
@@ -70,6 +69,7 @@ Page({
     this.setData({
       showDeviceList: false,
       showRemind: false,
+      loadReady: false,
       orders: [],
       activeDevice: this.data.devices[index]
     })
@@ -83,6 +83,9 @@ Page({
         orders = this.data.orders,
         showRemind = false
       if (currentOrders.length === 0) {
+        this.setData({
+          loadReady: true
+        })
         this.weToast.hide()
         return
       }
@@ -91,6 +94,7 @@ Page({
       }
       this.setData({
         orders: orders.concat(currentOrders),
+        loadReady: true,
         showRemind
       })
       this.weToast.hide()

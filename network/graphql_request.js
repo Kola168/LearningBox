@@ -213,11 +213,13 @@ const graphqlApi = {
   getDeviceShareUsers: (sn) => {
     return gql.query({
       query: `query ($sn: String!){
-        device(sn: $sn){
-          sharers{
-            avatar,
-            name,
-            sn
+        currentUser{
+          devices(sn: $sn){
+            sharers{
+              avatar,
+              name,
+              sn
+            }
           }
 				}
       }`,
@@ -1419,7 +1421,6 @@ const graphqlApi = {
    * @param { String } deviceSn 设备sn
    */
   bindShareDevice:(deviceSn) => {
-    console.log('deviceSn',deviceSn)
     return gql.mutate({
       mutation: `mutation ($input: BindSharerInput!) {
         bindSharer(input: $input){
@@ -1434,7 +1435,26 @@ const graphqlApi = {
         }
       }
     })
-  }
+  },
+
+  /**
+   * 清空打印队列
+   * @param { String } deviceSn 设备sn
+   */
+  clearJobs:(deviceSn) => {
+    return gql.mutate({
+      mutation: `mutation ($input: CancelJobInput!) {
+        cancelJob(input: $input){
+          state
+        }
+      }`,
+      variables: {
+        input: {
+          deviceSn: deviceSn
+        }
+      }
+    })
+  },
 }
 
 export default graphqlApi

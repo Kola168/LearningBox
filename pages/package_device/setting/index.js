@@ -176,6 +176,7 @@ Page({
         this.comfirmRename()
         break;
       case "clearQueue":
+        this.clearJobs()
         break;
       case "unbindDevice":
         this.unbindDevice()
@@ -257,4 +258,24 @@ Page({
     }
     wxNav.navigateTo(url, params)
   },
+
+  // 清空打印队列
+  clearJobs: co.wrap(function*() {
+    this.weToast.toast({
+      type: 'loading'
+    })
+    try {
+      let res = yield graphql.clearJobs(this.deviceSn)
+      this.weToast.hide()
+      if(res.cancelJob.state){
+        wx.showToast({
+          title: '已清空',
+          icon: 'none'
+        })
+      }
+    } catch (error) {
+      this.weToast.hide()
+      util.showError(error)
+    }
+  })
 })
