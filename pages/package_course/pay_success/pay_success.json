@@ -1,5 +1,5 @@
 {
   "usingComponents": {
-    "consumable": "../../../../../components/consumable/consumable"
+    "consumable": "../../../../../components/consumables/index"
   }
 }

@@ -25,9 +25,10 @@ let gql = GraphQL({
     }
   },
   //全局错误拦截
-  errorHandler: function (res) {
-    //如果auth
-    if (1) {
+  errorHandler: function(res) {
+		console.log('graphql全局错误拦截',res)
+		//如果auth
+		if(1){
 
     }
   }
@@ -537,9 +538,9 @@ const graphqlApi = {
   },
 
   // 发起收藏
-  collectCourse: (input) => {
+  collect: (input) => {
     return gql.mutate({
-      mutation: `mutation collectCourse($input: ResourceCollectInput!){
+      mutation: `mutation collect($input: ResourceCollectInput!){
         collect(input:$input){
           state
         }
@@ -680,7 +681,12 @@ const graphqlApi = {
       query: `query{
         currentUser{
           phone
-          sn
+          selectedDevice{
+            sn
+            name
+            model
+            onlineState
+          }
           selectedKid{
             gender
             name
@@ -858,7 +864,7 @@ const graphqlApi = {
             sn
           }
           contents{
-            title
+            name
             icon
             sn
             pageCount
@@ -880,9 +886,10 @@ const graphqlApi = {
       query: `query getRecordList($sn: String!){
         category(sn: $sn){
           contents{
-            title
+            name
             icon
             sn
+            printerOrdersCount  
             pageCount
           }
         }
@@ -900,11 +907,15 @@ const graphqlApi = {
     return gql.query({
       query: `query getRecordSource($sn: String!){
         content(sn: $sn){
-          title
+          name
           icon
           sn
-          contentImage
+          contentImages{
+            nameUrl
+          }
+          audioContentImage
           audio
+          contentCollected
           userAudio{
             audioUrl
             qrCodeUrl
@@ -917,14 +928,6 @@ const graphqlApi = {
       }
     })
   },
-  // createAudio: () => {
-  //   return gql.mutate({
-  //     mutation: `mutation createAudio($input: CreateAudioInput!) {
-
-  //     }`
-  //   })
-  // },
-
 
   /**
    *获取省列表
@@ -1006,69 +1009,29 @@ const graphqlApi = {
         zipCode: zipCode
       }
     })
-  },
-
-  //查询模板列表
-  searchTemplate: (type) => {
-    return gql.query({
-      query: `query($key: String!) {
-        feature(key: $key) {
-          categories {
-            templates {
-              previewImage
-              name
-              imageUrl
-              sn
-              positionInfo {
-                width
-                areaHeight
-                areaWidth
-                areaX
-                areaY
-                height
-                width
-              }
-            }
-          }
-        }
-      }`,
-      variables: {
-        key: type
-      }
-    })
-  },
-
-  searchTemplateType: (sn) => {
-    return gql.query({
-      query: `query($sn: String!) {
-        category(sn: $sn) {
-          name
-          sn
-          templates {
-            previewImage
-            name
-            imageUrl
-            sn
-            positionInfo {
-              width
-              areaHeight
-              areaWidth
-              areaX
-              areaY
-              height
-              width
-            }
-          }
-        }
-      }`,
-      variables: {
-        sn: sn
-      }
-    })
-  },
+	},
 
   /**
-   * 获取banner图
+   * 获取耗材
+   */
+  getConsumables: (type, sn, period) => {
+    return gql.query({
+      query: `query ($type: ConsumableTypeEnum!, $sn: String!, $period: String!){
+        consumables(type:$type, sn: $sn, period: $period){
+          appid
+          url
+          imageUrl
+          name
+        }
+      }`,
+      variables: {
+        type,
+        sn,
+        period
+      }
+    })
+   },
+   /*
    *
    * @param {*} type course/home
    * @returns
@@ -1088,7 +1051,49 @@ const graphqlApi = {
     })
   },
 
-
+  /**
+   * 上传录音音频
+   */
+  createAudio: (pms) => {
+    return gql.mutate({
+      mutation: `mutation createAudio($input: CreateAudioInput!) {
+        createAudio(input: $input){
+          qrCodeUrl
+        }
+      }`,
+      variables: {
+        input: pms
+      }
+    })
+  },
+  
+  /**
+   * 获取用户录制信息
+   */
+  getRecordInfo: (sn, userId) => {
+    return gql.query({
+      query: `query getRecordInfo($sn: String!, $userId: Int!){
+        userContentAudio(sn: $sn, userId: $userId){
+          audioUrl
+        }
+        content(sn: $sn){
+          name
+          icon
+          sn
+          contentImages{
+            nameUrl
+          }
+          audioContentImage
+          audio
+          contentCollected
+        }
+      }`,
+      variables: {
+        sn,
+        userId
+      }
+    })
+  },
   /**
    * 获取文件夹列表
    *
@@ -1111,200 +1116,329 @@ const graphqlApi = {
         name
       }
     })
-  },
+	},
+		//查询模板列表
+		searchTemplate:(type)=>{
+			return gql.query({
+				query: `query($key: String!) {
+					feature(key: $key) {
+						categories {
+							name
+							sn
+							isHorizontal
+							templates {
+								previewImage
+								name
+								imageUrl
+								sn
+								positionInfo {
+									width
+									areaHeight
+									areaWidth
+									areaX
+									areaY
+									height
+									width
+								}
+							}
+						}
+					}
+				}`,
+				variables: {
+					key: type
+				}
+			})
+		},
 
-  /**
-   * 创建新文件夹
-   *
-   * @param {*} input
-   * @returns
-   */
-  createFolder: (input) => {
-    return gql.mutate({
-      mutation: `mutation ($input: CreateFolderInput!){
-        createFolder(input:$input){
-          folder{
-            joinedUsersCount
+		//查询主模板下详细信息
+		searchTemplateType:(sn)=>{
+			return gql.query({
+				query: `query($sn: String!) {
+					category(sn: $sn) {
+						name
+						sn
+						templates {
+							previewImage
+							name
+							imageUrl
+							sn
+							positionInfo {
+								width
+								areaHeight
+								areaWidth
+								areaX
+								areaY
+								height
+								width
+							}
+						}
+					}
+				}`,
+				variables: {
+					sn: sn
+				}
+			})
+		},
+
+		//查询姓名贴模板
+		searchNameTemplate:(type)=>{
+			return gql.query({
+				query: `query($key: String!) {
+					feature(key: $key) {
+						categories {
+							name
+							sn
+							isHorizontal
+							attrsInfo
+							isHidden
+							templates {
+								previewImage
+								name
+								imageUrl
+								uploadable
+								sn
+								positionInfo {
+									width
+									areaHeight
+									areaWidth
+									areaX
+									areaY
+									height
+									width
+								}
+							}
+						}
+					}
+				}`,
+				variables: {
+					key: type
+				}
+			})
+		},
+
+		//查询台历模板信息
+		searchCalendarTemplate:(type)=>{
+			return gql.query({
+				query: `query($key: String!) {
+					feature(key: $key) {
+						categories {
+							name
+							sn
+							isHorizontal
+							templates {
+								previewImage
+								name
+								imageUrl
+								sn
+								calendarInfos {
+									width
+									areaHeight
+									areaWidth
+									areaX
+									areaY
+									height
+									width
+								}
+							}
+						}
+					}
+				}`,
+				variables: {
+					key: type
+				}
+			})
+		},
+    /**
+     * 创建新文件夹
+     *
+     * @param {*} input
+     * @returns
+     */
+    createFolder: (input) => {
+      return gql.mutate({
+        mutation: `mutation ($input: CreateFolderInput!){
+          createFolder(input:$input){
+            folder{
+              joinedUsersCount
+              name
+              sn
+            }
+            state
+          }
+        }`,
+        variables: {
+          input
+        }
+      })
+    },
+    /**
+     * 共享文件夹协议
+     *
+     * @returns
+     */
+    checkProtocol: () => {
+      return gql.query({
+        query: `query {
+          currentUser{
+            folderAgreement
+          }
+        }`
+      })
+    },
+    /**
+     * 同意共享文件夹协议
+     *
+     * @param {*} input
+     * @returns
+     */
+    signFolderAgreement: (input) => {
+      return gql.mutate({
+        mutation: `mutation ($input: SignFolderAgreementInput!){
+          signFolderAgreement (input:$input){
+            state
+          }
+        }`,
+        variables: {
+          input
+        }
+      })
+    },
+  
+    /**
+     * 修改文件夹名称
+     *
+     * @param {*} input
+     * @returns
+     */
+    updateFolder: (input) => {
+      return gql.mutate({
+        mutation: `mutation ($input: UpdateFolderInput!){
+          updateFolder (input:$input){
+            state
+          }
+        }`,
+        variables: {
+          input
+        }
+      })
+    },
+    /**
+     * 删除文件夹
+     *
+     * @param {*} input
+     * @returns
+     */
+    deleteFolder: (input) => {
+      return gql.mutate({
+        mutation: `mutation ($input: DeleteFolderInput!){
+          deleteFolder (input:$input){
+            state
+          }
+        }`,
+        variables: {
+          input
+        }
+      })
+    },
+    /**
+     * 获取文件夹文件列表
+     *
+     * @param {*} sn 
+     * @returns
+     */
+    getDocuments: (sn,page) => {
+      return gql.query({
+        query: `query($sn: String!,$page: Int!) {
+          documents(sn:$sn,page:$page){
+            file_type:fileType
             name
             sn
+            url
+            created_at:createdDate
           }
-          state
+        }`,
+        variables: {
+         sn:sn,
+         page:page
         }
-      }`,
-      variables: {
-        input
-      }
-    })
-  },
-  /**
-   * 共享文件夹协议
-   *
-   * @returns
-   */
-  checkProtocol: () => {
-    return gql.query({
-      query: `query {
-        currentUser{
-          folderAgreement
+      })
+    },
+  
+    /**
+     * 存储文件到文件夹
+     *
+     * @param {*} input
+     * @input {
+     *    sn
+     *    documents{
+     *      name
+     *      url
+     *      fileType   
+     *     } 
+     *  }        
+     * @returns
+     */
+    createDocument:(input) => {
+      return gql.mutate({
+        mutation: `mutation($input: CreateDocumentInput!) {
+          createDocument(input:$input){
+            state
+          }
+        }`,
+        variables: {
+            input
         }
-      }`
-    })
-  },
-  /**
-   * 同意共享文件夹协议
-   *
-   * @param {*} input
-   * @returns
-   */
-  signFolderAgreement: (input) => {
-    return gql.mutate({
-      mutation: `mutation ($input: SignFolderAgreementInput!){
-        signFolderAgreement (input:$input){
-          state
+      })
+    },
+  
+    /**
+     * 删除文件
+     *
+     * @param {*} input
+     * input{
+     * }
+     * @returns
+     */
+    deleteDocument:(input) => {
+      return gql.mutate({
+        mutation: `mutation($input: DeleteDocumentInput!) {
+          deleteDocument(input:$input){
+            state
+          }
+        }`,
+        variables: {
+            input
         }
-      }`,
-      variables: {
-        input
-      }
-    })
-  },
-
-  /**
-   * 修改文件夹名称
-   *
-   * @param {*} input
-   * @returns
-   */
-  updateFolder: (input) => {
-    return gql.mutate({
-      mutation: `mutation ($input: UpdateFolderInput!){
-        updateFolder (input:$input){
-          state
+      })
+    },
+  
+    /**
+     * 百度token校验
+     *
+     * @returns
+     */
+    checkBaiduAuth: () => {
+      return gql.query({
+        query: `query{
+          token{
+            baiduTokenName
+          }
+        }`
+      })
+    },
+    uploadBaidu:(input) => {
+      return gql.mutate({
+        mutation: `mutation($input: UploadDocumentToBaiduInput!) {
+          uploadDocumentToBaidu(input:$input){
+            state
+          }
+        }`,
+        variables: {
+            input
         }
-      }`,
-      variables: {
-        input
-      }
-    })
-  },
-  /**
-   * 删除文件夹
-   *
-   * @param {*} input
-   * @returns
-   */
-  deleteFolder: (input) => {
-    return gql.mutate({
-      mutation: `mutation ($input: DeleteFolderInput!){
-        deleteFolder (input:$input){
-          state
-        }
-      }`,
-      variables: {
-        input
-      }
-    })
-  },
-  /**
-   * 获取文件夹文件列表
-   *
-   * @param {*} sn 
-   * @returns
-   */
-  getDocuments: (sn,page) => {
-    return gql.query({
-      query: `query($sn: String!,$page: Int!) {
-        documents(sn:$sn,page:$page){
-          file_type:fileType
-          name
-          sn
-          url
-          created_at:createdDate
-        }
-      }`,
-      variables: {
-       sn:sn,
-       page:page
-      }
-    })
-  },
-
-  /**
-   * 存储文件到文件夹
-   *
-   * @param {*} input
-   * @input {
-   *    sn
-   *    documents{
-   *      name
-   *      url
-   *      fileType   
-   *     } 
-   *  }        
-   * @returns
-   */
-  createDocument:(input) => {
-    return gql.mutate({
-      mutation: `mutation($input: CreateDocumentInput!) {
-        createDocument(input:$input){
-          state
-        }
-      }`,
-      variables: {
-          input
-      }
-    })
-  },
-
-  /**
-   * 删除文件
-   *
-   * @param {*} input
-   * input{
-   * }
-   * @returns
-   */
-  deleteDocument:(input) => {
-    return gql.mutate({
-      mutation: `mutation($input: DeleteDocumentInput!) {
-        deleteDocument(input:$input){
-          state
-        }
-      }`,
-      variables: {
-          input
-      }
-    })
-  },
-
-  /**
-   * 百度token校验
-   *
-   * @returns
-   */
-  checkBaiduAuth: () => {
-    return gql.query({
-      query: `query{
-        token{
-          baiduTokenName
-        }
-      }`
-    })
-  },
-  uploadBaidu:(input) => {
-    return gql.mutate({
-      mutation: `mutation($input: UploadDocumentToBaiduInput!) {
-        uploadDocumentToBaidu(input:$input){
-          state
-        }
-      }`,
-      variables: {
-          input
-      }
-    })
-  },
-
-
+      })
+    },
+  
 }
 
 export default graphqlApi

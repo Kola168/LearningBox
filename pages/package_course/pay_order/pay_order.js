@@ -74,9 +74,7 @@ Page({
       var payment =  yield graphql.getPaymentCheck(params)
       var isFree = payment.paymentCheck && payment.paymentCheck.free
 
-      console.log(payment, '====isFree===')
       if (isFree) {
-
         yield graphql.createResource(params)
       } else {
         var payOrder = yield graphql.createPaymentOrder(params)

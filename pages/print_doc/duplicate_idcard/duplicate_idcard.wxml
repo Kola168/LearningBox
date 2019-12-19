@@ -78,7 +78,7 @@
 
  <!-- 选择图片 -->
 <check-img id="checkComponent" bindchooseImg="chooseImg" imgNum="1" bindbaidutap="chooseBaiduImg"></check-img>
-<view class="choosePhoto" wx:if="{{popWindow}}">
+<!-- <view class="choosePhoto" wx:if="{{popWindow}}">
 	<view class="choosePhoto-container" catchtap="closePopWindow">
 		<view class="choosePhoto-content">
 			<view class="choosePhotoItem" data-type="messagefile" catchtap="checkAddTip">
@@ -95,7 +95,7 @@
 			</view>
 		</view>
 	</view>
-</view>
+</view> -->
 
 <view wx:if="{{tipsWindow}}" class="tips-box">
 	<view class="tips-cont">

@@ -7,7 +7,7 @@ import {
   co,
   util
 } from '../../../../utils/common_import'
-import api from '../../../../network/restful_request'
+
 import graphql from '../../../../network/graphql_request'
 
 const request = util.promisify(wx.request)
@@ -18,13 +18,14 @@ import storage from '../../../../utils/storage'
 import router from '../../../../utils/nav'
 Page({
 	data: {
+		user: null, //用户信息
 		recordDetails: {},
 		collection: false,
 		num: 0,
 		circular: true,
 		showGetModal: false, //耗材推荐弹窗
 		supply_types: '',
-		from: '',
+		showConsumable: false,
 		showSetting: false, //显示打印设置
 		documentPrintNum: 1, //打印份数
 		startPrintPage: 1,
@@ -46,45 +47,64 @@ Page({
 		member: true,
 		discountType: null,
 		discount: null,
+		kidInfo: null, //宝宝信息
+		isFullScreen: false,
 	},
 	onLoad: co.wrap(function* (options) {
 		var systemInfo = wx.getSystemInfoSync()
 		this.longToast = new app.weToast()
 		this.setData({
 			title: decodeURIComponent(options.title),
-			type: options.type ? options.type : '',
-			as_type: options.as_type ? options.as_type : 'common'
-		})
-		this.setData({
+			isFullScreen: app.isFullScreen,
 			isAndroid: systemInfo.system.indexOf('iOS') > -1 ? false : true
 		})
-		this.id = options.id //试卷/内容单个id
+	
 		this.sn = options.sn //分类sn
 		this.title = decodeURIComponent(options.title)
-		this.share_user_id = options.user_id
-		this.type_id = options.type_id //父级id
 
-
-		// this.way = 1 //默认自然用户
-		// if (this.share_user_id) {
-		// 	this.way = 5
-		// }
-	
 		wx.setNavigationBarTitle({
 			title: this.title
 		})
 		this.longToast = new app.weToast()
 		let unionId = storage.get('unionId')
 		if (unionId) {
-      yield this.getRecordSource()
+			yield this.getRecordSource()
+			yield this.getConsumables()
+			yield this.getUserInfo()
 		}
 
 		//授权成功后回调
 		event.on('Authorize', this, function (data) {
 			this.getRecordSource()
+			 this.getConsumables()
+			 this.getUserInfo()
 		})
 
 	}),	
+
+	/**
+	 * 获取宝宝信息
+	 */
+	getUserInfo: co.wrap(function* () {
+    this.longToast.toast({
+      type: "loading",
+      duration: 0
+    })
+    try {
+      let resp = yield graphql.getUser()
+      this.setData({
+        kidInfo: resp.currentUser.selectedKid,
+      })
+      this.longToast.hide()
+    } catch (e) {
+      this.longToast.hide()
+      util.showError(e)
+    }
+	}),
+	
+	/**
+	 * 获取内容详情
+	 */
 	getRecordSource: co.wrap(function*(){
 		this.longToast.toast({
       type: 'loading',
@@ -95,7 +115,8 @@ Page({
 			var resp = yield graphql.getRecordSource(this.sn)
 
 			this.setData({
-				content: resp.content
+				content: resp.content,
+				collection: resp.content.contentCollected
 			})
 			this.longToast.hide()
 		} catch(err) {
@@ -103,20 +124,6 @@ Page({
 			util.showError(err)
 		}
 	}),
-
-	// updateDetail: co.wrap(function* () {
-	// 	this.longToast.toast({
-	// 		type: 'loading',
-	// 		title: '请稍候'
-	// 	})
-
-    
-
-	// 	// if (app.activeDevice) {
-	// 	// 	yield this.getCapability()
-	// 	// }
-	// 	this.longToast.toast()
-  // }),
 
 	onShow: co.wrap(function*() {
 		let hasAuthPhoneNum = Boolean(storage.get('hasAuthPhoneNum'))
@@ -160,64 +167,6 @@ Page({
 		})
   }),
   
-	// loopGetOpenId: co.wrap(function* () {
-	// 	let loopCount = 0
-	// 	let _this = this
-	// 	if (app.openId) {
-	// 		console.log('openId++++++++++++----', app.openId)
-	// 		this.longToast.toast({
-	// 			img: '../../images/loading.gif',
-	// 			title: '请稍候',
-	// 			duration: 0
-	// 		})
-	// 		yield this.getUserId()
-		
-	// 		console.log(this.data.type)
-  //     yield this.getDetail()
-
-	// 		if (app.activeDevice) {
-	// 			yield this.getCapability()
-	// 		}
-
-	// 		return
-	// 	} else {
-	// 		setTimeout(function () {
-	// 			loopCount++
-	// 			if (loopCount <= 100) {
-	// 				console.log('openId not found loop getting...')
-	// 				_this.loopGetOpenId()
-	// 			} else {
-	// 				console.log('loop too long, stop')
-	// 			}
-	// 		}, 2000)
-	// 	}
-  // }),
-
-	// getDetail: co.wrap(function* () {
-	// 	this.longToast.toast({
-	// 		type: 'loading',
-	// 		title: '请稍候'
-	// 	})
-	// 	try {
-	// 		const resp = yield graphql.getContentDetail(this.sn, this.id)
-	// 		resp.resource.preview_urls = JSON.parse(resp.resource.preview_urls)
-
-	// 		this.setData({
-	// 			detail: resp.resource,
-	// 			media_type: resp.resource.media_type,
-	// 			discountType: resp.resource.discount.discountType,
-	// 			discount: resp.resource.discount,
-	// 			collection: resp.resource && resp.resource.is_collected || false,
-	// 			endPrintPage: resp.resource.preview_urls.length
-	// 		})
-
-	// 		this.longToast.toast()
-	// 	} catch (e) {
-	// 		this.longToast.toast()
-	// 		util.showError(e)
-	// 	}
-  // }),
-
 	collect: co.wrap(function* () {
     var auth = yield this.authCheck()
     if (!auth) {
@@ -226,29 +175,29 @@ Page({
     
 		this.longToast.toast({
 			type: 'loading',
-			title: '请稍候',
+			title: '请稍等'
 		})
-		var params = {
-			sn: this.id,
-			type: 'ec_content'
-		}
-		let resp
 		try {
-			if (this.data.collection) {
-				resp = yield api.deleteCollections(params)
-			} else {
-				resp = yield api.createCollections(params)
-			}
-			if (resp.code != 0) {
-				throw (resp)
-			}
-			this.longToast.hide()
-			this.setData({
-				collection: !this.data.collection
+			var collection = this.data.collection
+			yield graphql.collect({
+				type: 'content',
+				sn: this.sn,
+				action: collection ? 'destroy' : 'create'
 			})
-		} catch (e) {
+			
 			this.longToast.hide()
-			util.showError(e)
+			let tipText = collection ? '取消收藏成功' : '收藏成功'
+			wx.showToast({
+				icon: 'none',
+				title: tipText
+			})
+			this.setData({
+				collection: !collection
+			})
+
+		} catch (error) {
+			this.longToast.hide()
+			util.showError(error)
 		}
   }),
   
@@ -280,57 +229,30 @@ Page({
   
 	print: co.wrap(function* (e) {
 		try {
-			if (!app.activeDevice) {
-				return util.showError({
-          message: '您还未绑定打印机，快去绑定吧'
-        })
-      }
-      
 			this.longToast.toast({
 				type: 'loading',
 				title: '请稍候'
 			})
 
-			let _this = this
-			let setting = {}
-			setting.duplex = _this.data.duplexCheck
-			setting.grayscale = _this.data.colorCheck == 'Color' ? false : true
-			setting.copies = _this.data.documentPrintNum
-      setting.startPage = _this.data.startPrintPage
-      setting.endPage = _this.data.endPrintPage
-
+			var _this = this
+			var params = {
+        resourceAttribute: {
+          resourceType: 'Content',
+					sn: this.sn,
+					duplex: _this.data.duplexCheck,
+					copies: _this.data.documentPrintNum,
+					startPage: _this.data.startPrintPage,
+					endPage: _this.data.endPrintPage,
+					grayscale: _this.data.colorCheck == 'Color' ? false : true,
+        },
+        featureKey: "kid_record"
+      }
+      var resp = yield graphql.createResourceOrder(params)
 	
-      // const resp = yield commonRequest.createOrder({
-      //   media_type: this.data.media_type,
-			// 	resourceable: {
-      //     type: 'ec_content',
-      //     sn: _this.id,
-      //     category_sn: _this.sn
-      //   },
-			// 	setting: setting,
-      // })
-	
-			if (resp.code == 0) {
-				this.longToast.hide()
-        router.redirectTo('/pages/finish/index', {
-          media_type: this.data.media_type,
-          state: resp.order.state,
-          type: this.data.typ
-        })
-			} else if (resp.code == 1) {
-				this.longToast.hide()
-				const res = yield showModal({
-					title: '提示',
-					content: resp.message,
-					showCancel: false,
-					confirmColor: '#fae100',
-				})
-				if (res.confirm) {
-          router.navigateBack()
-				}
-			} else {
-				throw (resp)
-			}
+			router.redirectTo('/pages/finish/index', {
+				media_type: this.data.media_type,
+				state: resp.createResourceOrder.state
+			})
 
 		} catch (e) {
 			this.longToast.hide()
@@ -338,9 +260,49 @@ Page({
 		}
 	}),
 
+	/**
+	 * 跳转头像编辑
+	 */
 	toEditAvatar: function() {
 		router.navigateTo('pages/package_common/account/name_edit')
 	},
+
+	/**
+	 * 打开耗材弹窗
+	 */
+	openConsumable: function() {
+		this.setData({
+			showConsumable: true
+		})
+	},
+
+		/**
+	 * 关闭耗材弹窗
+	 */
+	closeConsumable: function() {
+		this.setData({
+			showConsumable: false
+		})
+	},
+
+	getConsumables: co.wrap(function*(){
+		this.longToast.toast({
+      type: 'loading',
+      title: '请稍候'
+		})
+		
+		try {
+			var resp = yield graphql.getConsumables("content", this.sn, 'before')
+
+			this.setData({
+				supply_types: resp.consumables
+			})
+			this.longToast.hide()
+		} catch(err) {
+			this.longToast.hide()
+			util.showError(err)
+		}
+	}),
 
 	//获取打印能力
 	getCapability: co.wrap(function* () {
@@ -428,7 +390,7 @@ Page({
 	endPageJudge(e) {
 		if (parseInt(e.detail.value) < parseInt(this.data.startPrintPage) || parseInt(e.detail.value) > this.data.detail.preview_urls.length) {
 			this.setData({
-				endPrintPage: this.data.detail.preview_urls.length,
+				endPrintPage: this.data.content.contentImage.length,
 			})
 			wx.showModal({
 				content: '请输入正确的结束页',
@@ -492,7 +454,7 @@ Page({
   },
   
 	getPhoneNumber: co.wrap(function* (e) {
-    yield app.getPhoneNum(e)
+    // yield app.getPhoneNum(e)
     storage.put('hasAuthPhoneNum', true)
 		this.hasAuthPhoneNum = true
 		this.setData({
@@ -515,20 +477,9 @@ Page({
 				title: '请稍候',
 				duration: 0
 			})
-			// try {
-			// 	const resp = yield api.shareResource(app.openId)
-			// 	if (resp.code != 0) {
-			// 		throw (resp)
-			// 	}
-			// 	this.longToast.toast()
-			// } catch (e) {
-			// 	util.hideToast(this.longToast)
-			// 	util.showErr(e)
-			// }
-
 			return {
 				title: this.title,
-				path: `/pages/library/play_preview?id=${this.id}&sn=${this.sn}&user_id=${this.user_id}&title=${this.title}&type_id=${this.type_id}&as_type=${this.data.as_type}&type=${this.data.type}`
+				path: `/pages/package_preschool/record_voice/content_detail/content_detail?sn=${this.sn}&title=${this.title}`
 			}
 		} else {
 			return app.share

@@ -1,5 +1,7 @@
 <!--pages/package_feature/print_balloon/edit.wxml-->
 <nav-bar title="照片编辑"></nav-bar>
+<confirm-print bindconfirm="makeOrder" modal="{{confirmModal}}" />
+
 <view class="top-tips">
   <image src="../resource_images/icon_smile.png" mode="widthFix" class="top-tip-icon"></image>
   <text>点击+上传照片，图片可以旋转缩放，调整后点击提交</text>

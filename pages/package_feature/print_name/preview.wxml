@@ -1,5 +1,7 @@
 <!--pages/package_feature/print_name/preview.wxml-->
 <nav-bar title="打印预览"></nav-bar>
+<confirm-print bindconfirm="makeOrder" modal="{{confirmModal}}" />
+
 <view class="container">
     <view class="preview_img" style="width:{{width}}px;height:{{height}}px">
         <image src="{{compoundImg}}" />

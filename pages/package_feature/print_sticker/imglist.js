@@ -13,6 +13,8 @@ const showModal = util.promisify(wx.showModal)
 
 import wxNav from '../../../utils/nav.js'
 import api from '../../../network/restful_request'
+import commonRequest from '../../../utils/common_request'
+import storage from '../../../utils/storage.js'
 
 let Loger = (app.apiServer != 'https://epbox.gongfudou.com' || app.deBug) ? console.log : function() {}
 
@@ -66,12 +68,49 @@ Page({
   },
   checkedIndex: 0,
   onLoad: function(options) {
+    this.longToast = new app.weToast()
+    this.mediaType=options.mediaType||'photo_sticker'
     this.setData({
       type: options.type
     })
     this.modeSize = this.data.modeSize[options.type]
-    this.calculateMode()
-    this.longToast = new app.weToast()
+
+    this.getStorageImages()
+    event.on('setPreData', this, (postData) => {
+      this.editPhoto(postData)
+    })
+  },
+
+  onHide: function() {
+    this.setStorage()
+  },
+
+  getStorageImages: function() {
+    try {
+      let galleryImages = storage.get(`${this.mediaType}_${this.data.type}`)
+      Loger(galleryImages)
+      if (galleryImages) {
+        this.setData({
+          imgArr: galleryImages.imgArr,
+        })
+      }else{
+        this.calculateMode()
+      }
+    } catch (e) {
+      this.calculateMode()
+      Loger('获取本地图片失败')
+    }
+  },
+
+  setStorage: function() {
+    //图片存储至本地
+    try {
+      storage.put(`${this.mediaType}_${this.data.type}`, {
+        imgArr: this.data.imgArr
+      })
+    } catch (e) {
+      Loger('图片存储到本地失败')
+    }
   },
 
   calculateMode: function() {
@@ -114,33 +153,53 @@ Page({
       this.longToast.toast({
         type: "loading",
       })
-    let imgs = e.detail.tempFiles[0].path
-    console.log(imgs)
-    let that = this
-    let imgSrc=yield upload.uploadFile(imgs)
+      let imgs = e.detail.tempFiles[0].path
+      console.log(imgs)
+      let that = this
+      let imgSrc=yield upload.uploadFile(imgs)
+      let imaPath = yield imginit.imgInit(imgSrc, 'vertical')
+      let localUrl = imaPath.imgNetPath
+      let imageInfo = imaPath.imageInfo
+      this.data.imgArr[this.data.direction].imgs[this.checkedIndex]={
+        url:localUrl,
+        localUrl:localUrl,
+        imgInfo:imageInfo
+      }
+      this.setData({
+        imgArr:this.data.imgArr
+      })
+      this.editImg(this.checkedIndex)
+      this.longToast.toast()
+    }catch(e){
+      this.longToast.toast()
+      console.log(e)
+    }
+  }),
+
+  baiduprint:co.wrap(function*(e){
+    let imgSrc=e.detail[0].url
     let imaPath = yield imginit.imgInit(imgSrc, 'vertical')
     let localUrl = imaPath.imgNetPath
     let imageInfo = imaPath.imageInfo
     this.data.imgArr[this.data.direction].imgs[this.checkedIndex]={
       url:localUrl,
+      localUrl:localUrl,
       imgInfo:imageInfo
     }
     this.setData({
       imgArr:this.data.imgArr
     })
-    this.longToast.toast()
-  }catch(e){
-    console.log(e)
-  }
+    this.editImg(this.checkedIndex)
   }),
 
   editImg: co.wrap(function*(e) {
-    let index = e.currentTarget.dataset.index
+    let index = e.currentTarget?e.currentTarget.dataset.index:e
     wxNav.navigateTo('/pages/package_feature/print_sticker/edit', {
       imgInfo: encodeURIComponent(JSON.stringify(this.data.imgArr[this.data.direction].imgs[index])),
       index: index,
       photoMedia: encodeURIComponent(JSON.stringify(this.modeSize[this.data.direction])),
-      mediaType:this.mediaType
+      mediaType:this.mediaType,
+      direction:this.data.direction,
     })
   }),
 
@@ -159,8 +218,50 @@ Page({
     }
   }),
 
-  toPreview: function() {
 
+  editPhoto: function(postData) {
+    this.longToast.toast({
+      type: "loading",
+    })
+    this.data.imgArr[postData.direction].imgs[postData.index].url=postData.url
+    this.setData({
+      imgArr: this.data.imgArr
+    })
+    this.longToast.toast()
   },
+
+  onUnload: function() {
+    event.remove('setPreData', this)
+  },
+
+  toPreview: co.wrap(function*() {
+    if(_.without(_.pluck(this.data.imgArr[this.data.direction].imgs,'url'),'').length==0){
+      return wx.showModal({
+        title: '提示',
+        content: '至少上传一张照片哦',
+        showCancel: false,
+        confirmColor: '#FFE27A'
+      })
+    }
+    try{
+      let params={
+        paper_type:this.data.type,
+        step_method:'two',
+        before_rotate:(this.data.type=='two'&&this.data.direction=='vertical'||this.data.type=='four'&&this.data.direction=='horizontal')?true:false,
+        feature_key:this.mediaType,
+        urls:_.without(_.pluck(this.data.imgArr[this.data.direction].imgs,'url'),'')
+      }
+      const resp = yield api.processes(params)
+      storage.remove(`${this.mediaType}_${this.data.type}`)
+      wxNav.navigateTo('/pages/package_feature/print_sticker/preview',{
+        type:this.mediaType,
+        sn:resp.res.sn,
+        imgSrc:encodeURIComponent(JSON.stringify(resp.res.url))
+      })
+      Loger(resp)
+    }catch(e){
+      Loger(e)
+    }
+  }),
 
 })
