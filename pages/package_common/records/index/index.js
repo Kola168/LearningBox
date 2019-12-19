@@ -44,14 +44,10 @@ Page({
     })
     try {
       let res = yield graphql.getDeviceList(),
-        devices = res.devices,
-        activeDevice = null,
+        devices = res.currentUser.devices,
+        activeDevice = res.currentUser.selectedDevice,
         userSn = res.currentUser.sn
-      for (let i = 0; i < devices.length; i++) {
-        if (devices[i].selected) {
-          activeDevice = devices[i]
-        }
-      }
+
       this.setData({
         devices,
         activeDevice,
@@ -62,6 +58,7 @@ Page({
       }
       this.weToast.hide()
     } catch (error) {
+      console.log(error)
       this.weToast.hide()
       util.showError(error)
     }
@@ -82,7 +79,7 @@ Page({
   getPrinterRecords: co.wrap(function*() {
     try {
       let res = yield graphql.getPrinterRecords(this.data.activeDevice.sn, this.page++),
-        currentOrders = res.printOrders,
+        currentOrders = res.currentUser.devices[0].orders,
         orders = this.data.orders,
         showRemind = false
       if (currentOrders.length === 0) {
@@ -98,6 +95,7 @@ Page({
       })
       this.weToast.hide()
     } catch (error) {
+      console.log(error)
       this.weToast.hide()
       util.showError(error)
     }

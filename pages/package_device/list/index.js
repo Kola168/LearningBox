@@ -24,13 +24,8 @@ Page({
     })
     try {
       let res = yield graphql.getDeviceList()
-      let devices = res.devices,
-        activeDevice = null
-      for (let i = 0; i < devices.length; i++) {
-        if (devices[i].selected) {
-          activeDevice = devices[i]
-        }
-      }
+      let devices = res.currentUser.devices,
+        activeDevice = res.currentUser.selectedDevice
       this.weToast.toast()
       this.setData({
         devices,

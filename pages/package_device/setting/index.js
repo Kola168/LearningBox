@@ -38,7 +38,7 @@ Page({
       let res = yield graphql.getDeviceDetail(this.deviceSn)
       this.weToast.hide()
       this.setData({
-        device: res.device
+        device: res.currentUser.devices[0]
       })
     } catch (error) {
       this.weToast.hide()

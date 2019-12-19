@@ -152,17 +152,26 @@ const graphqlApi = {
   getDeviceList: () => {
     return gql.query({
       query: `query {
-        devices {
-          name,
-          selected,
-          sn,
-          isAdmin,
-          model,
-          onlineState,
-          shareQrcode
-        }
         currentUser {
-          sn
+          sn,
+          devices{
+            name,
+            selected,
+            sn,
+            isAdmin,
+            model,
+            onlineState,
+            shareQrcode
+          },
+          selectedDevice{
+            name,
+            selected,
+            sn,
+            isAdmin,
+            model,
+            onlineState,
+            shareQrcode
+          }
         }
       }`
     })
@@ -175,19 +184,21 @@ const graphqlApi = {
   getDeviceDetail: (sn) => {
     return gql.query({
       query: `query ($sn: String!){
-        device(sn: $sn){
-          name,
-          selected,
-          sn,
-          model,
-          isAdmin,
-          auditFree,
-          marginFree,
-          onlineState,
-          quality,
-          printOrder,
-          shareQrcode
-				}
+        currentUser{
+          devices(sn:$sn){
+            name,
+            selected,
+            sn,
+            model,
+            isAdmin,
+            auditFree,
+            marginFree,
+            onlineState,
+            quality,
+            printOrder,
+            shareQrcode
+          }
+        }
       }`,
       variables: {
         sn: sn
@@ -687,6 +698,7 @@ const graphqlApi = {
       query: `query{
         currentUser{
           phone
+          sn
           selectedDevice{
             sn
             name
@@ -1218,25 +1230,29 @@ const graphqlApi = {
    * @param { String } sn 打印机sn
    * @param { Number } page 页数
    */
-  getPrinterRecords: (deviceSn, page) => {
+  getPrinterRecords: (sn, page) => {
     return gql.query({
-      query: `query($deviceSn: String!,$page: Int) {
-        printOrders(deviceSn:$deviceSn,page:$page){
-          adminCreate
-          createdAt
-          creator{
-            avatar
-            name
-            sn
+      query: `query($sn: String!,$page: Int) {
+        currentUser {
+          devices(sn:$sn){
+            orders(page:$page){
+              adminCreate
+              createdAt
+              creator{
+                avatar
+                name
+                sn
+              }
+              copies
+              name
+              sn
+              state
+            }
           }
-          copies
-          name
-          sn
-          state
         }
       }`,
       variables: {
-        deviceSn: deviceSn,
+        sn: sn,
         page: page
       }
     })
@@ -1397,6 +1413,28 @@ const graphqlApi = {
       }
     })
   },
+
+  /**
+   * 绑定分享设备
+   * @param { String } deviceSn 设备sn
+   */
+  bindShareDevice:(deviceSn) => {
+    console.log('deviceSn',deviceSn)
+    return gql.mutate({
+      mutation: `mutation ($input: BindSharerInput!) {
+        bindSharer(input: $input){
+          device {
+            name
+          }
+        }
+      }`,
+      variables: {
+        input: {
+          deviceSn: deviceSn
+        }
+      }
+    })
+  }
 }
 
 export default graphqlApi
