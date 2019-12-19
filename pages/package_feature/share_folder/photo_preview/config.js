@@ -1,7 +1,7 @@
 var config = {
     aliCloud: {
         _5inch: {
-            key: 'pic_a5',
+            key: 'pic_in5',
             name: '5寸',
             width: 1092,
             height: 1560,
@@ -9,7 +9,7 @@ var config = {
             noRotateMin: '?x-oss-process=image/resize,h_800/auto-orient,1/resize,m_fill,h_285,w_200/quality,Q_85/format,jpg'
         },
         _6inch: {
-            key: 'pic_a6',
+            key: 'pic_in6',
             name: '6寸',
             width: 1300,
             height: 1950,
@@ -17,7 +17,7 @@ var config = {
             noRotateMin: '?x-oss-process=image/resize,h_800/auto-orient,1/resize,m_fill,h_300,w_200/quality,Q_85/format,jpg'
         },
         _7inch: {
-            key: 'pic_a7',
+            key: 'pic_in7',
             name: '7寸',
             width: 1560,
             height: 2148,
@@ -35,21 +35,21 @@ var config = {
     },
     huaweiCloud: {
         _5inch: {
-            key: 'pic_a5',
+            key: 'pic_in5',
             name: '5寸',
             width: 1092,
             height: 1560,
             noRotateMin: '/resize,h_800/resize,m_fill,h_285,w_200/quality,Q_85/format,jpg'
         },
         _6inch: {
-            key: 'pic_a6',
+            key: 'pic_in6',
             name: '6寸',
             width: 1300,
             height: 1950,
             noRotateMin: '/resize,h_800/resize,m_fill,h_300,w_200/quality,Q_85/format,jpg',
         },
         _7inch: {
-            key: 'pic_a7',
+            key: 'pic_in7',
             name: '7寸',
             width: 1560,
             height: 2148,

@@ -1723,6 +1723,25 @@ const graphqlApi = {
         }
       })
     },
+    /**
+     * 加入文件夹
+     *
+     * @param {*} input
+     * @returns
+     */
+    joinFolder: (input) => {
+      return gql.mutate({
+        mutation: `mutation($input: JoinFolderInput!) {
+          joinFolder(input:$input){
+           state
+          }
+        }`,
+        variables: {
+          input:input
+      }
+      })
+    },
+  
   
 }
 

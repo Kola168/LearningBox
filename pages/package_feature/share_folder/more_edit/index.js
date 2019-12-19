@@ -13,6 +13,7 @@ const getSystemInfo = util.promisify(wx.getSystemInfo)
 const request = util.promisify(wx.request)
 const showModal = util.promisify(wx.showModal)
 const imginit = require('../../../../utils/imginit')
+import router from '../../../../utils/nav'
 
 Page({
     data: {
@@ -283,8 +284,8 @@ Page({
             is_async: false, //一异步请求
             feature_key: this.feature_key, 
             editor_scale: this.editorScale,
-            // image_width: this.data.imgInfo.width,
-            // image_height: this.data.imgInfo.height,
+            image_width: this.data.imgInfo.width,
+            image_height: this.data.imgInfo.height,
             image_url: imageURL,
             rotate: rotate,
             scale: result.scale,
@@ -350,25 +351,13 @@ Page({
 
     // 开始打印
     print: co.wrap(function* (e) {
-    
-        var param = [{
+        var param = {
             originalUrl: this.image.url, //  用户上传的原文件
             printUrl: this.data.convertImg.pre_convert_url || '', // 编辑后可打印的连接
             copies: this.data.print_count, // 打印份数
             grayscale: false, // 是否使用灰度打印
-        }]
-        if (!this.checkImagesIsValid(images)) return;
-
-        if (!app.openId) {
-            yield this.loopGetOpenId()
         }
-        const params = {
-            openid: app.openId,
-            urls: images,
-            media_type: this.image.media_type,
-            from: 'mini_app'
-        }
-
+        // if (!this.checkImagesIsValid(images)) return;
         this.longToast.toast({
             type: 'loading',
             duration: 0
@@ -377,12 +366,12 @@ Page({
         try {
             const resp = commonRequest.createOrder('normal_id', param)
             this.longToast.hide()
+            console.log(resp)
             router.redirectTo('/pages/finish/index', {
-                type: this.feature_key,
+                // type: this.feature_key,
                 media_type:this.data.media_type,
-                state: resp.createOrder.state
+                // state: resp.createOrder.state
               })
-
         } catch (e) {
             this.longToast.toast()
             util.showError(e)
