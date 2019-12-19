@@ -47,10 +47,14 @@ Page({
   },
 
   onLoad: co.wrap(function*(options) {
+    this.longToast = new app.weToast()
     try {
       const MAX_PAGE = 150;
       const arrayFile = this.data.arrayFile = JSON.parse(decodeURIComponent(options.files))
-      let print_capability = yield commonRequest.getPrinterCapability(arrayFile.url)
+      let print_capability = yield commonRequest.getPrinterCapacity(arrayFile.url)
+      if (!print_capability) {
+				return
+			}
       const page_count = print_capability.page_count;
       this.setData({
         isExcel: this.isExcelFiles(arrayFile.name),
@@ -225,9 +229,9 @@ Page({
 
   //确认按钮提交
   confcheck(e) {
-    if(!this.hasAuthPhoneNum&&!app.hasPhoneNum){
-      return
-    }
+    // if(!this.hasAuthPhoneNum&&!app.hasPhoneNum){
+    //   return
+    // }
     if (parseInt(this.data.startPage) > parseInt(this.data.endPage) || parseInt(this.data.startPage) <= 0) {
       this.setData({
         startPrintPage: 1,
@@ -275,43 +279,46 @@ Page({
   }),
 
   print: co.wrap(function*() {
-    let extract = this.data.extract
-    let tempObj = {
-      url: this.data.arrayFile.url,
-      filename: this.data.arrayFile.name,
-      number: this.data.documentPrintNum, // 张数
-      start_page: this.data.startPage, // 起始页数
-      end_page: this.data.endPage, // 终止页数
-      display: this.data.zoomType,
-      skip_gs: !this.data.checkOpen, //是否检查文件修复
-      color: this.data.colorcheck, // 是否是彩色
-      duplex: this.data.duplexcheck ? true : false, // false单面 true双面
-      media_size: (this.data.medium === 'a4') ? 0 : 3, //纸质
-      extract: extract //范围类型
-    }
-    if (extract !== 'all') {
-      tempObj.start_page = 0
-      tempObj.end_page = 0
-    }
-    let files = [tempObj];
-
-    this.longToast.toast({
-        type: 'loading',
-        duration: 0
-      })
     try {
-      const resp = yield api.printInvoice(app.openId, '_docA4', files)
-      if (resp.code != 0) {
-        throw (resp)
+      let extract = this.data.extract
+      let tempObj = {
+        url: this.data.arrayFile.url,
+        filename: this.data.arrayFile.name,
+        number: this.data.documentPrintNum, // 张数
+        start_page: this.data.startPage, // 起始页数
+        end_page: this.data.endPage, // 终止页数
+        display: this.data.zoomType,
+        skip_gs: !this.data.checkOpen, //是否检查文件修复
+        color: this.data.colorcheck, // 是否是彩色
+        duplex: this.data.duplexcheck ? true : false, // false单面 true双面
+        media_size: (this.data.medium === 'a4') ? 0 : 3, //纸质
+        extract: extract //范围类型
       }
-      console.log('提交打印成功', resp)
-      wx.hideLoading()
-      wx.redirectTo({
-        url: `/pages/finish/index?type=shareFile&state=${resp.order.state}`
-      })
+      if (extract !== 'all') {
+        tempObj.start_page = 0
+        tempObj.end_page = 0
+      }
+      let files = [tempObj];
+  
+      this.longToast.toast({
+          type: 'loading',
+          duration: 0
+        })
+      const resp = yield commonRequest.createOrder('doc_a4', files)
+			router.navigateTo('/pages/finish/index',
+				{
+					type: types.mediaType,
+					state: resp.createOrder.state
+			})
+      // const resp = yield api.printInvoice(app.openId, '_docA4', files)
+      // if (resp.code != 0) {
+      //   throw (resp)
+      // }
+      this.longToast.hide()
     } catch (e) {
-      wx.hideLoading()
-      util.showErr(e)
+      console.log(e)
+      this.longToast.hide()
+      util.showError(e)
     }
   }),
   // 选择缩印模式

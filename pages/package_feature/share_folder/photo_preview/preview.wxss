@@ -14,7 +14,8 @@
 }
 
 .preview-main{
-    height: calc( 100vh - 204rpx );
+    /* 导航栏128rpx */
+    height: calc( 100vh - 204rpx - 128rpx );
     display: flex;
     align-items: center;
     justify-content: center;

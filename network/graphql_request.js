@@ -1426,6 +1426,13 @@ const graphqlApi = {
         }`
       })
     },
+
+    /**
+     * 上传到百度文件
+     *
+     * @param {*} input
+     * @returns
+     */
     uploadBaidu:(input) => {
       return gql.mutate({
         mutation: `mutation($input: UploadDocumentToBaiduInput!) {
@@ -1436,6 +1443,46 @@ const graphqlApi = {
         variables: {
             input
         }
+      })
+    },
+    /**
+     * 获取被分享者列表
+     *
+     * @param {*} sn
+     * @param {*} page
+     * @returns
+     */
+    userFolderRelations: (sn) => {
+      return gql.query({
+        query: `query($sn: String!) {
+          userFolderRelations(sn:$sn){
+            id
+            avatar:userAvatar
+            nickname:userName
+          }
+        }`,
+        variables: {
+          sn:sn
+      }
+      })
+    },
+
+    /**
+     * 删除分享的好友
+     *
+     * @param {*} input
+     * @returns
+     */
+    deleteUserFolderRelations: (input) => {
+      return gql.mutate({
+        mutation: `mutation($input:DeleteUserFolderRelationsInput!) {
+          deleteUserFolderRelations(input:$input){
+           state
+          }
+        }`,
+        variables: {
+          input:input
+      }
       })
     },
   

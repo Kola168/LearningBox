@@ -13,7 +13,7 @@ import {
 } from '../../../utils/common_import'
 const imginit = require('../../../utils/imginit')
 var imgInit = imginit.imgInit
-
+import router from '../../../utils/nav'
 
 const event = require('../../../lib/event/event')
 const getFileInfo = util.promisify(wx.getFileInfo)
@@ -1061,7 +1061,9 @@ Page({
 		console.log(printData, '==printData===')
 		switch (key) {
 			case 'image':
-				routerUrl = `./photo_preview/preview?image=${encodeURIComponent(JSON.stringify(printData))}`
+				router.navigateTo('/pages/package_feature/share_folder/photo_preview/preview', {
+					image: encodeURIComponent(JSON.stringify(printData))
+				})
 				break;
 			default:
 				let postData = {
@@ -1069,12 +1071,11 @@ Page({
 					number: 1,
 					url: printData.url
 				}
-				routerUrl = `./setting/index?files=${encodeURIComponent(JSON.stringify(postData))}`;
+				router.navigateTo('/pages/package_feature/share_folder/setting/index', {
+					files: encodeURIComponent(JSON.stringify(postData))
+				})
 		}
-		wx.hideLoading()
-		wx.navigateTo({
-			url: routerUrl
-		})
+		this.longToast.hide()
 	}),
 	cancel: function () {
 		app.cancelUpload = true //手动取消上传
