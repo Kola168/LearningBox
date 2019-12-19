@@ -1462,7 +1462,7 @@ const graphqlApi = {
       }
     })
 	},
-	
+
 	/**
      * 创建新文件夹
      *
@@ -1518,7 +1518,7 @@ const graphqlApi = {
         }
       })
     },
-  
+
     /**
      * 修改文件夹名称
      *
@@ -1558,7 +1558,7 @@ const graphqlApi = {
     /**
      * 获取文件夹文件列表
      *
-     * @param {*} sn 
+     * @param {*} sn
      * @returns
      */
     getDocuments: (sn,page) => {
@@ -1578,7 +1578,7 @@ const graphqlApi = {
         }
       })
     },
-  
+
     /**
      * 存储文件到文件夹
      *
@@ -1588,9 +1588,9 @@ const graphqlApi = {
      *    documents{
      *      name
      *      url
-     *      fileType   
-     *     } 
-     *  }        
+     *      fileType
+     *     }
+     *  }
      * @returns
      */
     createDocument:(input) => {
@@ -1605,7 +1605,7 @@ const graphqlApi = {
         }
       })
     },
-  
+
     /**
      * 删除文件
      *
@@ -1626,7 +1626,7 @@ const graphqlApi = {
         }
       })
     },
-  
+
     /**
      * 百度token校验
      *
@@ -1650,6 +1650,29 @@ const graphqlApi = {
         }`,
         variables: {
             input
+        }
+      })
+    },
+
+    /**
+     * 审核打印
+     * @param { String } orderSn 订单sn
+     * @param { String } action 审核类型：pass/reject
+     */
+    verifyOrder:(orderSn,action) => {
+      return gql.mutate({
+        mutation: `mutation($input: VerifyOrderInput!) {
+          verifyOrder(input:$input){
+            order{
+              state
+            }
+          }
+        }`,
+        variables: {
+          input: {
+            orderSn:orderSn,
+            action:action
+          }
         }
       })
     },

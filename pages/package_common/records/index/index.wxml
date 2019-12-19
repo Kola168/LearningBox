@@ -76,8 +76,8 @@
           <view class="left-data">{{item.createdAt}}</view>
         </view>
         <view class="main-right main-right-row flex" wx:if="{{item.isAdmin&&item.state==='init'}}">
-          <view class="audit-reject">拒绝</view>
-          <view class="audit-allow">同意</view>
+          <view class="audit-reject" catchtap="verifyOrder" id="reject" data-sn="{{item.sn}}">拒绝</view>
+          <view class="audit-allow" catchtap="verifyOrder" id="pass" data-sn="{{item.sn}}">同意</view>
         </view>
         <view class="main-right main-right-column flex" wx:else>
           <view class="right-status flex-align-center">
@@ -86,191 +86,12 @@
             </view>
             <image src="../../images/arrow_right.png" wx:if="{{item.creator.sn==userSn}}" mode="widthFix" />
           </view>
-          <view class="right-delete" catchtap="deleteRecord" wx:if="{{(item.state==='printing'||item.state==='finished')&&item.creator.sn==userSn}}">
+          <view class="right-delete" catchtap="deleteRecord" data-state="{{item.state}}" wx:if="{{(item.state==='printing'||item.state==='finished')&&item.creator.sn==userSn}}">
             删除
           </view>
         </view>
       </view>
     </view>
-    <!-- <view class="list-item flex">
-      <view class="item-user">
-        <image src="/images/doc_document_qq.png" />
-        <view>哈哈哈</view>
-      </view>
-      <view class="item-main flex">
-        <view class="main-left flex">
-          <view class="left-type flex-align-center">
-            <view>A4文档</view>
-            <view class="type-user type-user-use">使用者</view>
-          </view>
-          <view class="left-count">打印分数1</view>
-          <view class="left-data">2018.08.12 18:00</view>
-        </view>
-        <view class="main-right flex">
-          <view class="right-status flex-align-center">
-            <view class="status-success">已完成</view>
-            <image src="../../images/arrow_right.png" mode="widthFix" />
-          </view>
-          <view class="right-delete" bindtap="deleteRecord">删除</view>
-        </view>
-      </view>
-    </view>
-    <view class="list-item flex">
-      <view class="item-user">
-        <image src="/images/doc_document_qq.png" />
-        <view>啊啊啊</view>
-      </view>
-      <view class="item-main flex">
-        <view class="main-left flex">
-          <view class="left-type flex-align-center">
-            <view>A4文档</view>
-            <view class="type-user type-user-admin">管理员</view>
-          </view>
-          <view class="left-count">打印分数1</view>
-          <view class="left-data">2018.08.12 18:00</view>
-        </view>
-        <view class="main-right flex">
-          <view class="right-status flex-align-center">
-            <view class="status-error">打印失败</view>
-            <image src="../../images/arrow_right.png" mode="widthFix" />
-          </view>
-        </view>
-      </view>
-    </view>
-    <view class="list-item flex">
-      <view class="item-user">
-        <image src="/images/doc_document_qq.png" />
-        <view>赵亚飞</view>
-      </view>
-      <view class="item-main flex">
-        <view class="main-left flex">
-          <view class="left-type flex-align-center">
-            <view>A4文档</view>
-            <view class="type-user type-user-admin">管理员</view>
-          </view>
-          <view class="left-count">打印分数1</view>
-          <view class="left-data">2018.08.12 18:00</view>
-        </view>
-        <view class="main-right flex">
-          <view class="right-status flex-align-center">
-            <view class="status-warning">正在打印</view>
-            <image src="../../images/arrow_right.png" mode="widthFix" />
-          </view>
-        </view>
-      </view>
-    </view>
-    <view class="list-item flex">
-      <view class="item-user">
-        <image src="/images/doc_document_qq.png" />
-        <view>哈哈哈</view>
-      </view>
-      <view class="item-main flex">
-        <view class="main-left flex">
-          <view class="left-type flex-align-center">
-            <view>A4文档</view>
-            <view class="type-user type-user-use">使用者</view>
-          </view>
-          <view class="left-count">打印分数1</view>
-          <view class="left-data">2018.08.12 18:00</view>
-        </view>
-        <view class="main-right flex">
-          <view class="right-status flex-align-center">
-            <view class="status-success">已完成</view>
-            <image src="../../images/arrow_right.png" mode="widthFix" />
-          </view>
-          <view class="right-delete">删除</view>
-        </view>
-      </view>
-    </view>
-    <view class="list-item flex">
-      <view class="item-user">
-        <image src="/images/doc_document_qq.png" />
-        <view>啊啊啊</view>
-      </view>
-      <view class="item-main flex">
-        <view class="main-left flex">
-          <view class="left-type flex-align-center">
-            <view>A4文档</view>
-            <view class="type-user type-user-admin">管理员</view>
-          </view>
-          <view class="left-count">打印分数1</view>
-          <view class="left-data">2018.08.12 18:00</view>
-        </view>
-        <view class="main-right flex">
-          <view class="right-status flex-align-center">
-            <view class="status-error">打印失败</view>
-            <image src="../../images/arrow_right.png" mode="widthFix" />
-          </view>
-        </view>
-      </view>
-    </view>
-    <view class="list-item flex">
-      <view class="item-user">
-        <image src="/images/doc_document_qq.png" />
-        <view>赵亚飞</view>
-      </view>
-      <view class="item-main flex">
-        <view class="main-left flex">
-          <view class="left-type flex-align-center">
-            <view>A4文档</view>
-            <view class="type-user type-user-admin">管理员</view>
-          </view>
-          <view class="left-count">打印分数1</view>
-          <view class="left-data">2018.08.12 18:00</view>
-        </view>
-        <view class="main-right flex">
-          <view class="right-status flex-align-center">
-            <view class="status-warning">正在打印</view>
-            <image src="../../images/arrow_right.png" mode="widthFix" />
-          </view>
-        </view>
-      </view>
-    </view>
-    <view class="list-item flex">
-      <view class="item-user">
-        <image src="/images/doc_document_qq.png" />
-        <view>哈哈哈</view>
-      </view>
-      <view class="item-main flex">
-        <view class="main-left flex">
-          <view class="left-type flex-align-center">
-            <view>A4文档</view>
-            <view class="type-user type-user-use">使用者</view>
-          </view>
-          <view class="left-count">打印分数1</view>
-          <view class="left-data">2018.08.12 18:00</view>
-        </view>
-        <view class="main-right flex">
-          <view class="right-status flex-align-center">
-            <view class="status-success">已完成</view>
-            <image src="../../images/arrow_right.png" mode="widthFix" />
-          </view>
-          <view class="right-delete">删除</view>
-        </view>
-      </view>
-    </view>
-    <view class="list-item flex">
-      <view class="item-user">
-        <image src="/images/doc_document_qq.png" />
-        <view>啊啊啊</view>
-      </view>
-      <view class="item-main flex">
-        <view class="main-left flex">
-          <view class="left-type flex-align-center">
-            <view>A4文档</view>
-            <view class="type-user type-user-admin">管理员</view>
-          </view>
-          <view class="left-count">打印分数1</view>
-          <view class="left-data">2018.08.12 18:00</view>
-        </view>
-        <view class="main-right flex">
-          <view class="right-status flex-align-center">
-            <view class="status-error">打印失败</view>
-            <image src="../../images/arrow_right.png" mode="widthFix" />
-          </view>
-        </view>
-      </view>
-    </view> -->
   </view>
   <view class="no-more-tip" wx:if="{{showRemind}}">仅展示近三个月的打印记录</view>
   <view class="no-records" wx:if="{{orders.length===0&&loadReady}}">
