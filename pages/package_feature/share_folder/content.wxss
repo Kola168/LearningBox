@@ -5,7 +5,7 @@
   text-align: center;
   line-height: 48rpx;
   position: fixed;
-  top: 0;
+  top: 128rpx;
   left: 0;
   font-size: 24rpx;
 	color: #ff9a55;

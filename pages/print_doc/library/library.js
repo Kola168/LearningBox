@@ -43,9 +43,9 @@ Page({
     this.setData({
       isAndroid: systemInfo.system.indexOf('iOS') > -1 ? false : true
     })
-    var unionId = storage.get('unionId')
+    var userSn = storage.get('user_sn')
 
-    if (unionId) {
+    if (userSn) {
       yield this.getTypeList()
     }
     event.on('Authorize', this, function (data) {
@@ -54,9 +54,9 @@ Page({
   }),
 
   onShow: co.wrap(function* () {
-    let unionId = storage.get('unionId')
+    let userSn = storage.get('user_sn')
     logger.info('应用二维码参数传参', this.share_user_id, this.way)
-    if (!unionId) {
+    if (!userSn) {
       let url = this.share_user_id ? `/pages/authorize/index` : `/pages/authorize/index`
       router.navigateTo(url, this.share_user_id ? {
         url: url,

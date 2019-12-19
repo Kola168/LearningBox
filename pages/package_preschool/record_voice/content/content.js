@@ -31,8 +31,8 @@ Page({
       isAndroid: systemInfo.system.indexOf('iOS') > -1 ? false : true,
       top: app.navBarInfo.topBarHeight,
     })
-    let unionId = storage.get('unionId')
-    if (unionId) {
+    let userSn = storage.get('user_sn')
+    if (userSn) {
       yield this.getCategory()
     }
   }),

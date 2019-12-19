@@ -14,9 +14,9 @@ import Logger from '../../../../utils/logger'
 const logger = new Logger.getLogger('pages/package_preschool/record_voice/recorder/recorder')
 Page({
   data: {
-    title: '',
+    title: '', //默认顶栏标题
     navBarHeight: 0,
-    dotX: 0, 
+    dotX: 0, //进度点进度数
     isPlaying: false,  //是否播放
     currentProgressWidth: 0,
     totalTime: 0, //总播放时长
@@ -26,43 +26,44 @@ Page({
     recordSource: [1,2], //录制的资源
     voiceSource: null, //原声资源
     showToast: false, //通知弹窗
-    kidInfo: null, // 宝宝信息
+    showTips: false,
+    userContentAudio: null, //用户录制者信息
   },
 
   onLoad: co.wrap(function *(options) {
     if (options.scene) {
+      var showToast = !storage.get('showRecordToast')
       var scene = decodeURIComponent(options.scene)
+      
       var params = {} 
       scene.split('&').forEach(str => {
         params[`${str.split('=')[0]}`] =  str.split('=')[1]
       })
-      console.log(params,'params==')
+      // console.log(params,'params==')
       this.sn = params.content
       this.userId = params.user
       this.longToast = new app.weToast()
       this.initViewInfo()
       this.initRecorderManager()
       this.setData({
-        showToast: !storage.get('showRecordToast')
+        showToast
       })
-      var unionId = storage.get('unionId')
-      if (unionId) {
-        yield this.getContent()
-        yield this.getUserInfo()
+      var userSn = storage.get('user_sn')
+      if (userSn) { // 授权完成执行
+        this.getPageInfo(showToast)
       }
     }
     
    
 	  //授权成功后回调
 		event.on('Authorize', this, co.wrap(function*(){
-      yield this.getContent()
-      yield this.getUserInfo()
+      this.getPageInfo(showToast)
     }))
   }),
 
   onShow: function () {
-    var unionId = storage.get('unionId')
-    if (!unionId) {
+    var userSn = storage.get('user_sn')
+    if (!userSn) {
       return wxNav.navigateTo('/pages/authorize/index')
     }
 
@@ -81,25 +82,17 @@ Page({
       })
     }
   },
-  	/**
-	 * 获取宝宝信息
-	 */
-	getUserInfo: co.wrap(function* () {
-    this.longToast.toast({
-      type: "loading",
-      duration: 0
-    })
+
+  getPageInfo: co.wrap(function*(showToast){
     try {
-      let resp = yield graphql.getUser()
-      this.setData({
-        kidInfo: resp.currentUser.selectedKid,
-      })
-      this.longToast.hide()
-    } catch (e) {
-      this.longToast.hide()
-      util.showError(e)
+      yield this.getContent()
+      if (!showToast) { //弹窗确认过 自动播放
+        yield this.startPlayVoice()
+      }
+    } catch(err) {
+      util.showError(err)
     }
-	}),
+  }),
 
   /**
    * 获取内容详情
@@ -114,6 +107,7 @@ Page({
       var userAudio = resp.userContentAudio && resp.userContentAudio.audioUrl || null
       this.setData({
         content: resp.content,
+        userContentAudio: resp.userContentAudio,
         title: resp.content && resp.content.name,
         userAudio: userAudio,
         players: {  // 播放控制属性
@@ -155,37 +149,57 @@ Page({
     })
     
    } catch(err) {
-    
+    logger.info(err)
    }
   },
 
-  //初始化录音 
+  /**
+   * 初始化录音
+   */ 
   initRecorderManager: function () {
     try {
-      this.recorderManager = wx.getRecorderManager()
       this.isPause = false // 默认不是暂停状态
-      this.recorderManager.onInterruptionBegin((res)=>{ //微信语音 微信视频触发中断回调
-        logger.info(res, '===触发暂停的：onInterruptionBegin====')
+      this.recorderManager = wx.getRecorderManager()
+
+      this.recorderManager.onInterruptionBegin(()=>{ //微信语音 微信视频触发中断回调
         this.recorderManager.pause() //手动暂停
         this.isPause = true //状态暂停
         this.setData({isRecording: false})
+        logger.info('===onInterruptionBegin====触发微信语音 微信视频触发暂停的：onInterruptionBegin')
       })
 
       this.recorderManager.onStart(()=>{
-        logger.info('===onStart====')
         this.setData({isRecording: true})
+        logger.info('===onStart====触发开始录音')
+      })
+
+      this.recorderManager.onResume(()=>{
+        this.setData({isRecording: true})
+        logger.info('===onResume====触发继续录音')
       })
 
       this.recorderManager.onStop((res)=>{
-        this.playSource = res
-        this.uploadRecord(res) // 上传录音资源
-        this.setData({isRecording: false})
-        logger.info(res, '===触发停止的：onStop====')
+        var playSource = res.tempFilePath
+        this.setData({
+          isRecording: false,
+          showTips: !storage.get('showRecordTip') //录音完成后判断是否显示提醒卡片
+        })
+        storage.put('showRecordTip', true) //记录提示tips状态
+        wx.showModal({
+          title: '提示',
+          content: '是否保存录音',
+          success: (res) => {
+            if (res.confirm) {
+              this.uploadRecord(playSource) // 上传录音资源
+            }
+          }
+        })
+        logger.info(res, '===onStop====触发录音停止')
       })
 
       this.recorderManager.onError((errMsg)=>{
-        util.showError({message: errMsg})
         this.setData({isRecording: false})
+        util.showError({message: errMsg})
         logger.info(errMsg, '===触发停止的：onError====')
       })
     } catch(err) {
@@ -200,7 +214,6 @@ Page({
   initAudioContext: function (key) {
     this.destroyAudioCtx() //销毁音频
     this.data.players[key].audioCtx = wx.createInnerAudioContext()
-
     this.data.players[key].audioCtx.src = this.data.players[key].src
     this.data.players[key].audioCtx.onPlay(()=> {
       this.longToast.toast({
@@ -269,12 +282,19 @@ Page({
    * 录制
    */
   recordVoice: function () {
+    // 判断是否是本人进入 默认权限者打印者本人
+    if (this.data.userContentAudio && !this.data.userContentAudio.isOwner) {
+      return wx.showModal({
+        title: '提示',
+        content: '分享暂不可录音，请至“童音录制”打印扫码录音',
+        showCancel: false
+      })
+    }
     if (this.data.isRecording) { //是否正在录制中
       return this.stopRecord()
     }
 
     if (this.data.isPlaying) { //是否正在播放
-      console.log()
       this.clearPlayers()
       this.destroyAudioCtx()    
     }
@@ -337,23 +357,23 @@ Page({
   /**
    * 播放录音
    */
-  startPlayRecord: function () {
+  startPlayRecord: co.wrap(function *() {
     this.onPlayer({
       key: 'record',
       btnState: 'isPlayingRecord'
     })
 
-  },
+  }),
 
   /**
    * 播放原声
    */
-  startPlayVoice: function () {
+  startPlayVoice: co.wrap(function *() {
     this.onPlayer({
       key: 'source',
       btnState: 'isPlayingSource' 
     })
-  },
+  }),
 
   /**
    * 初始化当前控制信息
@@ -368,12 +388,12 @@ Page({
           currentProgressWidth: 0
         }
       ),
-      isPlaying: false,
-      currentProgressWidth: 0,
-      dotX: 0,
-      curryTime: '00:00',
-      totalTime: '00:00',
-      [this.state.btnState]: false
+      isPlaying: false, //关闭播放状态
+      currentProgressWidth: 0, //播放进度清零
+      dotX: 0, //播放标点清零
+      curryTime: '00:00', //播放时间清零
+      totalTime: '00:00', //资源时长清零
+      [this.state.btnState]: false //播放按钮状态重置
     })
   },
 
@@ -384,10 +404,13 @@ Page({
     try {
       var player = this.data.players[state.key]
       if (this.data.isRecording) { //是否正在录制中
-        this.stopRecord()
+        return wx.showToast({
+          icon: 'none',
+          title: '录音完成可播放'
+        })
        }
 
-      // 判断是否点击了不同类型的btn 初始化控制状态
+      // 判断是否点击了不同类型的btn 初始化上一个播放源控制状态
       if (this.state && this.state.key != state.key) {
         this.clearPlayers()
       }
@@ -407,7 +430,7 @@ Page({
         logger.info('开始播放')
       }   
 
-      this.state = state //存下默认标志对象
+      this.state = state //存下默认标示对象
 
     } catch(err) {
       logger.info(err)
@@ -453,6 +476,8 @@ Page({
       showToast: false
     })
     storage.put('showRecordToast', true)
+    this.startPlayVoice() //开始播放原声音频
+
   },
 
   /**
@@ -469,9 +494,9 @@ Page({
       curryTime,
       usedTimeStamp
     }
-    var mm = Math.floor(totalTimeStamp / 60)
-    var ss = Math.floor(totalTimeStamp % 60)
-    data.totalTime = `${this.formatTime(mm)}:${this.formatTime(ss)}`
+    var minute = Math.floor(totalTimeStamp / 60)
+    var second = Math.floor(totalTimeStamp % 60)
+    data.totalTime = `${this.formatTime(minute)}:${this.formatTime(second)}`
     this.setData(data)
   },
 
@@ -494,13 +519,13 @@ Page({
   /**
    * 上传录音
    */
-  uploadRecord: co.wrap(function*(res){
+  uploadRecord: co.wrap(function*(src){
     this.longToast.toast({
       type: 'loading',
       title: '请稍候'
     })
     try {
-      var audioUrl = yield upload.uploadFile(res.tempFilePath, true)
+      var audioUrl = yield upload.uploadFile(src, true)
       yield graphql.createAudio({
         audioUrl,
         sn: this.sn
@@ -519,10 +544,7 @@ Page({
   },
 
   onUnload: function() {
+    this.recorderManager.pause() //暂停录音
     this.destroyAudioCtx()
-  },
-
-  onShareAppMessage: function () {
-
   }
 })

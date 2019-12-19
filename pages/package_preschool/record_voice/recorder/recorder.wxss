@@ -138,6 +138,7 @@
   align-items: center;
   width: fit-content;
   text-align: center;
+  position: relative;
 }
 
 .control-main .btn-main .btn {
@@ -189,4 +190,12 @@
 
 .btn-disabled {
   color: #CECECE;
+}
+
+.record-tip {
+  width: 200rpx;
+  height: 80rpx;
+  position: absolute;
+  top: -85rpx;
+  left: -80rpx;
 }

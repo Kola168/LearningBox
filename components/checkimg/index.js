@@ -109,8 +109,8 @@ Component({
       }, 500)
     }
   }),
-  detached(){
-    event.remove('chooseBaiduFileDone',this)
+  detached() {
+    event.remove('chooseBaiduFileDone', this)
   },
   methods: {
     showPop: function() {

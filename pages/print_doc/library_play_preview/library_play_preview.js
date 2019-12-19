@@ -40,7 +40,7 @@ Page({
 		isColorPrinter: true,
 		isDuplex: true,
 		as_type: 'common', //试卷类型
-		unionId: '',
+		userSn: '',
 		userAuthorize: true,
 		hasAuthPhoneNum: false,
 		confirmModal: {
@@ -85,8 +85,8 @@ Page({
 		this.setData({
 			title: options.title
 		})
-		var unionId = storage.get('unionId')
-		if (unionId) {
+		var userSn = storage.get('user_sn')
+		if (userSn) {
 			yield this.updateDetail()
 		}
 
@@ -122,61 +122,14 @@ Page({
 		this.longToast.toast()
 	}),
 
-	// member: co.wrap(function* () {
-	// 	var authToken = storage.get('authToken')
-	// 	var unionId = storage.get('unionId')
-
-	// 	if (authToken) {
-	// 		var res = yield graphql.isMember()
-	// 		this.setData({
-	// 			isMember: res.user && res.user.isMember || false,
-	// 			memberExpiresAt:  res.user.selectedPrinter ? res.user.selectedPrinter.memberExpiresAt : null
-	// 		})
-	// 	}
-	// 	if (!authToken && unionId) {
-	// 		if (app.openId) {
-	// 			try {
-	// 				const resp = yield request({
-	// 					url: app.apiServer + `/ec/v2/users/user_id`,
-	// 					method: 'GET',
-	// 					dataType: 'json',
-	// 					data: {
-	// 						openid: app.openId
-	// 					}
-	// 				})
-	// 				if (resp.data.code != 0) {
-	// 					throw (resp.data)
-  //         }
-  //         storage.put('authToken', resp.data.auth_token)
-	// 				let res = yield graphql.isMember()
-	// 				this.setData({
-	// 					isMember: res.user && res.user.isMember || false,
-	// 					memberExpiresAt: res.user.selectedPrinter.memberExpiresAt
-	// 				})
-	// 			} catch (e) {
-	// 				util.showError(e)
-	// 			}
-	// 		} else {
-	// 			setTimeout(function () {
-	// 				loopCount++
-	// 				if (loopCount <= 100) {
-	// 					_this.member()
-	// 				} else {
-  //           logger.info('loop too long, stop')
-	// 				}
-	// 			}, 2000)
-	// 		}
-	// 	}
-	// }),
-
 	onShow: function () {
 		let hasAuthPhoneNum = Boolean(storage.get('hasAuthPhoneNum'))
 		this.hasAuthPhoneNum = hasAuthPhoneNum
 		this.setData({
 			hasAuthPhoneNum: app.hasPhoneNum || hasAuthPhoneNum
 		})
-		let unionId = storage.get('unionId')
-		if (!unionId) {
+		let userSn = storage.get('user_sn')
+		if (!userSn) {
 			let url = this.share_user_id ? `/pages/authorize/index?url=${url}&share_user_id=${this.share_user_id}&way=${this.way}` : `/pages/authorize/index`
 			return router.navigateTo(url, {
         url: url,
@@ -186,7 +139,7 @@ Page({
 		}
 
     this.setData({
-      userAuthorize: unionId ? true : false
+      userAuthorize: userSn ? true : false
     })
 	
   },
@@ -389,8 +342,8 @@ Page({
   }),
   
 	collect: co.wrap(function* () {
-		var unionId = storage.get('unionId')
-		if (!unionId) {
+		var userSn = storage.get('user_sn')
+		if (!userSn) {
 			var url = this.share_user_id ? `/pages/authorize/index?url=${url}&share_user_id=${this.share_user_id}&way=${this.way}` : `/pages/authorize/index`
 	
       return router.navigateTo('', {
@@ -429,8 +382,8 @@ Page({
   }),
   
 	toConfirm: co.wrap(function* (e) {
-		var unionId = storage.get('unionId')
-		if (!unionId) {
+		var userSn = storage.get('user_sn')
+		if (!userSn) {
 			var url = this.share_user_id ? `/pages/authorize/index?url=${url}&share_user_id=${this.share_user_id}&way=${this.way}` : `/pages/authorize/index`
 	
       return router.navigateTo(url, {
@@ -452,9 +405,9 @@ Page({
   },
   
 	toPay: co.wrap(function* () {
-		var unionId = storage.get('unionId')
+		var userSn = storage.get('user_sn')
 		// 判断授权
-		if (!unionId) {
+		if (!userSn) {
 			var url = this.share_user_id ? `/pages/authorize/index?url=${url}&share_user_id=${this.share_user_id}&way=${this.way}` : `/pages/authorize/index`
       return router.navigateTo(url, {
         url: url,

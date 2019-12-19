@@ -1,6 +1,6 @@
 <nav-bar title="分享管理"></nav-bar>
-<view class="container">
-  <view class="share-top">
+<view class="container" wx:if="{{loadReady}}">
+  <view class="share-top" wx:if="{{userList.length>0}}">
     <view class="top-left">分享管理</view>
     <view class="top-right" bindtap="selectAllUser">{{selectAllFlag?'取消全选':'全选'}}</view>
   </view>
@@ -13,7 +13,11 @@
       <image src="../images/share_user_{{(item.selectFlag||selectAllFlag)?'':'un'}}check.png" class="item-user-select" />
     </view>
   </view>
-  <view class="stop-share {{isFullScreen?'is-full-screen':''}}" bindtap="stopShare">停止分享</view>
+  <view class="stop-share {{isFullScreen?'is-full-screen':''}}" bindtap="stopShare" wx:if="{{userList.length>0}}">停止分享</view>
+  <view wx:if="{{userList.length===0}}" class="no-share">
+    <image src="../images/empty_list.png" mode="widthFix" />
+    <view>暂无分享记录</view>
+  </view>
 </view>
 <!-- loading -->
 <import src="/lib/toast/wetoast.wxml" />
