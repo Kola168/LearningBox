@@ -1,8 +1,7 @@
 // pages/package_preschool/timed_print/timed_print.js
 const app = getApp()
 import {regeneratorRuntime, co, wxNav, util, logger} from '../../../../utils/common_import'
-// import { threadId } from 'worker_threads';
-// import api from '../../../network/restful_request'
+import gql from './../../../../network/graphql_request.js'
 const showModal = util.promisify(wx.showModal)
 
 Page({
@@ -19,23 +18,51 @@ Page({
       chooseFrequency: 0, //默认选择打印频率
       isShowTimeLists: false, //是否显示时间列表
       isFullScreen: false, //iphoneX底部button兼容性
+      name: '请填写真实昵称', //没有填写昵称时
     },
   
     /**
      * 生命周期函数--监听页面加载
      */
-    onLoad: function (options) {
+    onLoad: co.wrap(function* (options) {
       this.longToast = new app.weToast
+      // let resp = yield gql.getUser()
       this.setData({
-        isFullScreen: app.isFullScreen
+        isFullScreen: app.isFullScreen,
+        // name: resp.currentUser.selectedKid.name
       })
-  
-    },
+      try{
+          let resp = yield gql.getUser()
+          resp.currentUser.selectedKid.name == 'MM'
+          if(resp.currentUser.selectedKid.name == '未命名'){
+            resp.currentUser.selectedKid.name = '请填写真实昵称'
+          }
+          this.setData({
+            name: resp.currentUser.selectedKid.name
+          })
+        }catch(e){
+          this.longToast.weToast()
+          util.showError(e)
+        }
+    }),
 
     /** 获取昵称 */
-    getName(){
-      wxNav.navigateTo(`/pages/package_common/account/name_edit`)
-    },
+    getName: co.wrap(function* (){
+      // wxNav.navigateTo(`/pages/package_common/account/name_edit`)
+      // try{
+      //   let resp = yield gql.getUser()
+      //   resp.currentUser.selectedKid.name == 'MM'
+      //   if(resp.currentUser.selectedKid.name !== '未命名'){
+      //     resp.currentUser.selectedKid.name = '请填写真实昵称'
+      //   }
+      //   this.setData({
+      //     name: resp.currentUser.selectedKid.name
+      //   })
+      // }catch(e){
+      //   this.longToast.weToast()
+      //   util.showError(e)
+      // }
+    }),
 
     /** 自动打印开关 */
     setPrint(){
