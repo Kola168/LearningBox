@@ -14,7 +14,10 @@
     </view>
   </view>
   <view class="stop-share {{isFullScreen?'is-full-screen':''}}" bindtap="stopShare" wx:if="{{userList.length>0}}">停止分享</view>
-  <view wx:if="{{userList.length===0}}" class="no-share">暂未分享</view>
+  <view wx:if="{{userList.length===0}}" class="no-share">
+    <image src="../images/empty_list.png" mode="widthFix" />
+    <view>暂无分享记录</view>
+  </view>
 </view>
 <!-- loading -->
 <import src="/lib/toast/wetoast.wxml" />
