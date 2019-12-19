@@ -45,7 +45,11 @@ Page({
   onLoad: co.wrap(function* (query) {
     this.longToast = new app.weToast()
     if (query.scene) {
-      this.handleScene(query.scene)
+      this.scene = query.scene
+      let userSn = storage.get('userSn')
+      if(userSn){
+        this.handleScene(query.scene)
+      }
     }
     try {
 
@@ -95,8 +99,6 @@ Page({
       })
       console.log(resp)
     } catch (e) {
-			console.log('哈哈哈哈====')
-			console.log(e)
       util.showError(e)
     }
   }),
@@ -108,6 +110,7 @@ Page({
         selectedKid: resp.currentUser.selectedKid,
         stageRoot: resp.currentUser.selectedKid.stageRoot
       })
+      storage.put("userSn", resp.currentUser.sn)
       if (resp.currentUser.phone) {
         app.hasPhoneNum = true
         app.globalPhoneNum = resp.currentUser.phone
@@ -170,6 +173,7 @@ Page({
       })
       yield this.getUserInfo()
       yield this.getBanners()
+      this.handleScene(this.scene)
       this.longToast.hide()
     } catch (e) {
       yield app.login()
