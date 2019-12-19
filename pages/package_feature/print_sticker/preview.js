@@ -24,7 +24,6 @@ Page({
     url: null,
     width: 0,
     height: 0,
-    hasAuthPhoneNum: false,
     confirmModal: {}
   },
   onLoad: co.wrap(function*(query) {
@@ -59,13 +58,7 @@ Page({
       url: "/pages/index/index"
     })
   },
-  onShow: co.wrap(function*() {
-    let hasAuthPhoneNum = Boolean(wx.getStorageSync('hasAuthPhoneNum'))
-    this.hasAuthPhoneNum = hasAuthPhoneNum
-    this.setData({
-      hasAuthPhoneNum: app.hasPhoneNum || hasAuthPhoneNum
-    })
-  }),
+
   initDisplayArea: function() {
     try {
       let res = wx.getSystemInfoSync()
@@ -135,15 +128,6 @@ Page({
         image: 'https://cdn-h.gongfudou.com/LearningBox/main/confirm_print.png'
       },
     })
-  }),
-  getPhoneNumber: co.wrap(function*(e) {
-    yield app.getPhoneNum(e)
-    wx.setStorageSync("hasAuthPhoneNum", true)
-    this.hasAuthPhoneNum = true
-    this.setData({
-      hasAuthPhoneNum: true
-    })
-    this.confirm(e)
   }),
   makeOrder: co.wrap(function*(e) {
 

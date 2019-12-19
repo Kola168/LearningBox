@@ -64,9 +64,10 @@ view {
   color: #454545;
 }
 
-.component-bottom-button-right {
-  color: #A5A5A5;
-  background: #EAEAEA;
+.component-button {
+  color: #A5A5A5 !important;
+  background: #EAEAEA !important;
+  border-top: 1px solid #EAEAEA !important;
 }
 
 .top-tips {

@@ -52,7 +52,7 @@
 			 src='/images/doc_icon_play_selected_green.png'
 			 mode="widthFix"
 			 class="item-right-image"
-			 wx:if="{{discount.canPoint&&choosePoint}}"
+			 wx:if="{{discount.canPoint && choosePoint}}"
 			 bindtap="checkPoint"
 			/>
 
@@ -154,18 +154,11 @@
 			</view>
 		</view>
 	</view>
-	<view class="conf-box-left" bindtap="cancelCheck">取消</view>
-	<button
-	 class="conf-box-right"
-	 bindtap="confCheck"
-	 open-type="{{hasAuthPhoneNum ? '' : 'getPhoneNumber'}}"
-	 bindgetphonenumber="{{hasAuthPhoneNum ? '' : 'getPhoneNumber'}}"
-	>确认
-	</button>
+	<botttom-button class="bottom-button-box" text-left="取消" bindlefttap="cancelCheck" text-right="确认" bindrighttap="confCheck" get-phone="{{true}}"></botttom-button>
+
 </view>
 <!-- 打印确认框 -->
 <confirm-print bindconfirm="print" modal="{{confirmModal}}" />
 
 <import src="../../../lib/toast/wetoast.wxml" />
 <template is="wetoast" data="{{...__wetoast__}}" />
-

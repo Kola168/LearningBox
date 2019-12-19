@@ -6,7 +6,7 @@
 </view>
 <view class="line" style="width:{{width}}px" />
 
-<view class="bottom-main {{isFullScreen ? 'is-full-screen' : ''}}">
+<view class="bottom-main">
 	<view class="number">
 		<view>打印份数</view>
 		<view class="count">
@@ -42,22 +42,12 @@
 			</block>
 		</view>
 	</view>
-	<view class="bottom">
-		<view class="btn-left" bindtap="backPrePage">返回</view>
-		<form report-submit="true" bindsubmit="confirm">
-			<button
-			 class="btn-print"
-			 open-type="{{hasAuthPhoneNum ? '' : 'getPhoneNumber'}}"
-			 bindgetphonenumber="{{hasAuthPhoneNum ? '' : 'getPhoneNumber'}}"
-			 formType="submit"
-			>确认打印
-			</button>
-		</form>
-	</view>
+
+	<botttom-button class="bottom-button" text-left="返回" bindlefttap="backPrePage" text-right="确认打印" bindrighttap="confirm" get-phone="{{true}}"></botttom-button>
+
 </view>
 
 <!-- 打印确认框 -->
 <confirm-print bindconfirm="print" modal="{{confirmModal}}" />
 <import src="../../../lib/toast/wetoast.wxml" />
 <template is="wetoast" data="{{...__wetoast__}}" />
-

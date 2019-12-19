@@ -22,7 +22,10 @@
       </view>
       <view class="bar-btns">
         <view class="btns-consumable">适配耗材</view>
-        <view class="btns-print" bindtap="showPrintSetting">打印</view>
+        <view class="btns-print">
+          打印
+          <botttom-button class="cover-but" text-right="打印" bindrighttap="showPrintSetting" get-phone="{{true}}"></botttom-button>
+        </view>
       </view>
     </view>
   </view>

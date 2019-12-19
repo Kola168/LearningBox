@@ -98,6 +98,17 @@
   background: #FFDC5E;
   border-top-right-radius: 38rpx;
   border-bottom-right-radius: 38rpx;
+  position:relative;
+}
+
+.cover-but{
+  position:absolute;
+  width:100%;
+  height:100%;
+  opacity:0;
+  left:0;
+  top:0;
+  overflow:hidden;
 }
 
 

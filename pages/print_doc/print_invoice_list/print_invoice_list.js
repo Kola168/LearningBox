@@ -18,7 +18,6 @@ Page({
     count: 0,
     invoiceList: [],
     newInvoice: [],
-    hasAuthPhoneNum: false,
     isFullScreen: false,
     confirmModal: {
       isShow: false,
@@ -35,14 +34,6 @@ Page({
     this.setData({
       invoiceList: invoiceList,
       isFullScreen: app.isFullScreen
-    })
-  },
-
-  onShow: function () {
-    let hasAuthPhoneNum = Boolean(storage.get('hasAuthPhoneNum'))
-    this.hasAuthPhoneNum = hasAuthPhoneNum
-    this.setData({
-      hasAuthPhoneNum: app.hasPhoneNum || hasAuthPhoneNum
     })
   },
 
@@ -76,9 +67,7 @@ Page({
 
 
   confirm: co.wrap(function* (e) {
-    if (!this.hasAuthPhoneNum && !app.hasPhoneNum) {
-      return
-    }
+
     logger.info('发票打印时form发生了submit事件，携带数据为：', e.detail.formId, 'print_invoice')
 
     if (this.data.count == 0) {
@@ -100,16 +89,6 @@ Page({
     }
   }),
 
-  getPhoneNumber: co.wrap(function* (e) {
-    // yield app.getPhoneNum(e)
-    storage.put("hasAuthPhoneNum", true)
-    this.hasAuthPhoneNum = true
-    this.setData({
-      hasAuthPhoneNum: true
-    })
-    this.confirm(e)
-  }),
-  
   print: co.wrap(function* () {
     this.longToast.toast({
       type: 'loading',

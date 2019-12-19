@@ -119,11 +119,8 @@
 		</view>
 	</view>
 </view>
-<view class="conf-box {{isFullScreen ? 'is-full-screen' : ''}}">
-	<form report-submit="true" bindsubmit="confCheck">
-		<button open-type="{{hasAuthPhoneNum ? '' : 'getPhoneNumber'}}" bindgetphonenumber="{{hasAuthPhoneNum ? '' : 'getPhoneNumber'}}" formType="submit">确认打印</button>
-	</form>
-</view>
+<botttom-button class="conf-box" text-right="确认打印" bindrighttap="confCheck" get-phone="{{true}}"></botttom-button>
+
 
 <!-- 打印确认框 -->
 <confirm-print bindconfirm="print" modal="{{confirmModal}}" />
@@ -145,4 +142,3 @@
 
 <import src="../../../lib/toast/wetoast.wxml" />
 <template is="wetoast" data="{{...__wetoast__}}" />
-
