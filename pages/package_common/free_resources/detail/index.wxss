@@ -1,6 +1,10 @@
 .handle-bottom,
 .page-over,
+.box-item,
+.box-set,
+.color-item,
 .bottom-bar,
+.handle-bar,
 .bar-btn,
 .bar-btns {
   display: flex;
@@ -11,18 +15,23 @@
   flex-direction: column;
 }
 
+.box-set,
+.box-item,
 .page-over,
 .bottom-bar,
 .bar-btn {
   align-items: center;
 }
 
-.swiper-box {
+.swiper {
   height: 80%;
+}
+
+.swiper-item {
   overflow-y: scroll;
 }
 
-.box-item image {
+.swiper-item image {
   width: 100%;
 }
 
@@ -112,14 +121,10 @@
   font-size: 32rpx;
   color: #333;
   border-bottom: 2rpx solid #E7E7E7;
-  display: flex;
-  align-items: center;
   justify-content: space-between;
 }
 
 .box-set {
-  display: flex;
-  align-items: center;
   justify-content: flex-end;
   color: #666;
   font-size: 28rpx;
@@ -153,12 +158,11 @@
   margin-left: 16rpx;
 }
 
-.set-color image:first-of-type {
+.color-item:first-of-type {
   margin-right: 30rpx;
 }
 
 .handle-bar {
-  display: flex;
   height: 100rpx;
   line-height: 100rpx;
   font-size: 36rpx;

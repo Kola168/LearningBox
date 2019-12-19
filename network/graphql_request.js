@@ -1135,7 +1135,9 @@ const graphqlApi = {
           contentImages{
             nameUrl
           }
-          sn
+          pageCount
+          title
+          featureKey
         }
       }`,
       variables: {
