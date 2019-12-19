@@ -1,12 +1,6 @@
-<!--
- * @Author: your name
- * @Date: 2019-12-19 18:40:47
- * @LastEditTime: 2019-12-19 18:42:14
- * @LastEditors: your name
- * @Description: In User Settings Edit
- * @FilePath: /LearningBox/pages/mall/index.wxml
- -->
 <gio-marketing />
+<nav-bar background="#fff" title="小白智慧打印"></nav-bar>
+
 <view class='center'>
 		<image src='https://cdn.gongfudou.com/miniapp/ec/mall_banckground2.png' mode='widthFix' class='center-bg'></image>
 		<view class="recommend">
