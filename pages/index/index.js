@@ -1,9 +1,9 @@
 const app = getApp()
-import {regeneratorRuntime,co,wxNav,util,storage } from '../../utils/common_import'
+import { regeneratorRuntime, co, wxNav, util, storage } from '../../utils/common_import'
 
 import Logger from '../../utils/logger.js'
 const logger = new Logger.getLogger('pages/index/index')
-// page mixins
+  // page mixins
 require('../../utils/mixin.js')
 import index from "../../mixins/index.js"
 import init from "../../mixins/init.js"
@@ -35,16 +35,21 @@ Page({
   },
 
   //事件处理函数
-  bindViewTap: function () {
+  bindViewTap: function() {
     wxNav.navigateTo('/pages/logs/logs')
   },
-  onLoad: co.wrap(function* (query) {
+  onLoad: co.wrap(function*(query) {
     this.longToast = new app.weToast()
+    let userSn = storage.get('userSn')
     if (query.scene) {
       this.scene = query.scene
-      let userSn = storage.get('userSn')
-      if(userSn){
+      if (userSn) {
         this.handleScene(query.scene)
+      }
+    } else if (query.deviceSn) {
+      this.deviceSn = query.deviceSn
+      if (userSn) {
+        this.bindShareDevice(query.deviceSn)
       }
     }
     try {
@@ -54,10 +59,10 @@ Page({
     }
 
   }),
-  onShow: co.wrap(function* () {
+  onShow: co.wrap(function*() {
     yield this.getUnion() //授权
   }),
-  getUnion: co.wrap(function* () {
+  getUnion: co.wrap(function*() {
     try {
       let authToken = storage.get('authToken')
       if (authToken) {
@@ -79,7 +84,7 @@ Page({
       })
     }
   }),
-  checkSession: co.wrap(function* () {
+  checkSession: co.wrap(function*() {
     try {
       yield checkSession()
       return true
@@ -87,7 +92,7 @@ Page({
       return false
     }
   }),
-  getBanners: co.wrap(function* () {
+  getBanners: co.wrap(function*() {
     try {
       let resp = yield gql.getBanners('home')
       this.setData({
@@ -98,7 +103,7 @@ Page({
       util.showError(e)
     }
   }),
-  getUserInfo: co.wrap(function* () {
+  getUserInfo: co.wrap(function*() {
     try {
       let resp = yield gql.getUser()
       this.setData({
@@ -124,7 +129,7 @@ Page({
       util.showError(e)
     }
   }),
-  userInfoHandler: co.wrap(function* (e) {
+  userInfoHandler: co.wrap(function*(e) {
     logger.info('********** userInfoHandler', e)
     if (!e.detail.userInfo || !e.detail.encryptedData) {
       return
@@ -169,9 +174,14 @@ Page({
       })
       yield this.getUserInfo()
       yield this.getBanners()
-      if(this.scene) {
+      if (this.scene) {
         this.handleScene(this.scene)
       }
+      // 通过分享打印机
+      if(this.deviceSn){
+        this.bindShareDevice(this.deviceSn)
+      }
+
       this.longToast.hide()
     } catch (e) {
       yield app.login()
@@ -182,7 +192,7 @@ Page({
       util.showError(e)
     }
   }),
-  toNomalPrint: function (e) {
+  toNomalPrint: function(e) {
     let url
     switch (e.currentTarget.id) {
       case 'photo':
@@ -200,16 +210,16 @@ Page({
     wxNav.navigateTo(url)
   },
   // TODO:以下两个为测试函数，待删除
-  changeSubject: function () {
+  changeSubject: function() {
     this.setData({
       homeType: this.data.homeType == 'subject' ? 'beforSchool' : 'subject'
     })
   },
 
   // 跳转小功能
-  toFunction(e){
+  toFunction(e) {
     let functionId = e.currentTarget.id,
-    url = ''
+      url = ''
     switch (functionId) {
       case 'cognitionCard':
         url = '/pages/package_feature/cognition_card/index/index'
@@ -226,10 +236,10 @@ Page({
   // }
 
   // 处理scene
-  handleScene(scene){
+  handleScene(scene) {
     let sceneArr = scene.split('_'),
-    sceneKey = sceneArr[0],
-    sceneVal = sceneArr[1]
+      sceneKey = sceneArr[0],
+      sceneVal = sceneArr[1]
     switch (sceneKey) {
       case 'device':
         this.handleShareQrcode(sceneVal)
@@ -247,8 +257,22 @@ Page({
       if (info.code != 0) {
         throw (info)
       }
-      let res = yield gql.bindShareDevice(info.res.device_sn)
-      if(res.bindSharer.device){
+      this.bindShareDevice(info.res.device_sn)
+      yield gql.bindShareDevice()
+    } catch (error) {
+      this.longToast.hide()
+      util.showError(error)
+    }
+  }),
+
+  // 绑定分享打印机
+  bindShareDevice: co.wrap(function*(deviceSn) {
+    this.longToast.toast({
+      type: 'loading'
+    })
+    try {
+      let res = yield gql.bindShareDevice(deviceSn)
+      if (res.bindSharer.device) {
         this.longToast.hide()
         wx.showToast({
           title: '绑定成功',
