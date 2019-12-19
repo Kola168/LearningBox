@@ -1,0 +1,31 @@
+<!--
+ * @Author: your name
+ * @Date: 2019-12-19 18:40:47
+ * @LastEditTime: 2019-12-19 18:42:14
+ * @LastEditors: your name
+ * @Description: In User Settings Edit
+ * @FilePath: /LearningBox/pages/mall/index.wxml
+ -->
+<gio-marketing />
+<view class='center'>
+		<image src='https://cdn.gongfudou.com/miniapp/ec/mall_banckground2.png' mode='widthFix' class='center-bg'></image>
+		<view class="recommend">
+				<image src='https://cdn.gongfudou.com/miniapp/ec/mall_title1.png' mode='widthFix' class='recommend-image'></image>
+				<image src='https://cdn.gongfudou.com/miniapp/ec/mall_sub_title.png' mode='widthFix' class='recommend-image recommend-image-top'></image>
+		</view>
+		<view class="top" bindtap="toAuth">
+				<image src='https://cdn.gongfudou.com/miniapp/ec/mall_printer_xiaobai.png' mode='widthFix' class='image'></image>
+		</view>
+		<view class="top" bindtap="toAuth">
+			<image src='https://cdn.gongfudou.com/miniapp/ec/mall_box_xiaobai.png' mode='widthFix' class='image'></image>
+	</view>
+		<view class="top" bindtap="toAuth">
+				<image src='https://cdn.gongfudou.com/miniapp/ec/mall_preferential.png' mode='widthFix' class='image'></image>
+		</view>
+		<view class="top" bindtap="toAuth">
+				<image src='https://cdn.gongfudou.com/miniapp/ec/mall_printer_consumables.png' mode='widthFix' class='image'></image>
+		</view>
+		<view class="top" bindtap="toAuth">
+				<image src='https://cdn.gongfudou.com/miniapp/ec/mall_my_order.png' mode='widthFix' class='to-order'></image>
+		</view>
+</view>
