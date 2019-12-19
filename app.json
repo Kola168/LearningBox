@@ -45,7 +45,9 @@
     "pages/index/grade",
 		"pages/account/index",
 		"pages/finish/index",
-		"pages/mall/index"
+		"pages/mall/index",
+		"pages/webview/index",
+		"pages/webview/member"
   ],
   "subPackages": [{
       "root": "pages/package_common",
