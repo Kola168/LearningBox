@@ -27,7 +27,7 @@
 		},
 		onLoad: co.wrap(function* (options) {
 			var _this = this
-			var userSn = storage.get("user_sn")
+			var userSn = storage.get("userSn")
 
 			_this.longToast = new app.weToast()
 			_this.setData({
