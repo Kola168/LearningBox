@@ -304,6 +304,14 @@ Page({
    * 录制
    */
   recordVoice: function () {
+    // 判断是否是本人进入 默认权限者打印者本人
+    if (this.data.userContentAudio && !this.data.userContentAudio.isOwner) {
+      return wx.showModal({
+        title: '提示',
+        content: '分享暂不可录音，请至“童音录制”打印扫码录音',
+        showCancel: false
+      })
+    }
     if (this.data.isRecording) { //是否正在录制中
       return this.stopRecord()
     }
