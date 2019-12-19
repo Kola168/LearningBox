@@ -122,53 +122,6 @@ Page({
 		this.longToast.toast()
 	}),
 
-	// member: co.wrap(function* () {
-	// 	var authToken = storage.get('authToken')
-	// 	var unionId = storage.get('unionId')
-
-	// 	if (authToken) {
-	// 		var res = yield graphql.isMember()
-	// 		this.setData({
-	// 			isMember: res.user && res.user.isMember || false,
-	// 			memberExpiresAt:  res.user.selectedPrinter ? res.user.selectedPrinter.memberExpiresAt : null
-	// 		})
-	// 	}
-	// 	if (!authToken && unionId) {
-	// 		if (app.openId) {
-	// 			try {
-	// 				const resp = yield request({
-	// 					url: app.apiServer + `/ec/v2/users/user_id`,
-	// 					method: 'GET',
-	// 					dataType: 'json',
-	// 					data: {
-	// 						openid: app.openId
-	// 					}
-	// 				})
-	// 				if (resp.data.code != 0) {
-	// 					throw (resp.data)
-  //         }
-  //         storage.put('authToken', resp.data.auth_token)
-	// 				let res = yield graphql.isMember()
-	// 				this.setData({
-	// 					isMember: res.user && res.user.isMember || false,
-	// 					memberExpiresAt: res.user.selectedPrinter.memberExpiresAt
-	// 				})
-	// 			} catch (e) {
-	// 				util.showError(e)
-	// 			}
-	// 		} else {
-	// 			setTimeout(function () {
-	// 				loopCount++
-	// 				if (loopCount <= 100) {
-	// 					_this.member()
-	// 				} else {
-  //           logger.info('loop too long, stop')
-	// 				}
-	// 			}, 2000)
-	// 		}
-	// 	}
-	// }),
-
 	onShow: function () {
 		let hasAuthPhoneNum = Boolean(storage.get('hasAuthPhoneNum'))
 		this.hasAuthPhoneNum = hasAuthPhoneNum

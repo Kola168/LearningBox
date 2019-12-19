@@ -26,7 +26,6 @@ Page({
     recordSource: [1,2], //录制的资源
     voiceSource: null, //原声资源
     showToast: false, //通知弹窗
-    kidInfo: null, // 宝宝信息
     showTips: false,
     userContentAudio: null, //用户录制者信息
   },
@@ -87,7 +86,6 @@ Page({
   getPageInfo: co.wrap(function*(showToast){
     try {
       yield this.getContent()
-      yield this.getUserInfo()
       if (!showToast) { //弹窗确认过 自动播放
         yield this.startPlayVoice()
       }
@@ -95,26 +93,6 @@ Page({
       util.showError(err)
     }
   }),
-
-  /**
-	 * 获取宝宝信息
-	 */
-	getUserInfo: co.wrap(function* () {
-    this.longToast.toast({
-      type: "loading",
-      duration: 0
-    })
-    try {
-      let resp = yield graphql.getUser()
-      this.setData({
-        kidInfo: resp.currentUser.selectedKid,
-      })
-      this.longToast.hide()
-    } catch (e) {
-      this.longToast.hide()
-      util.showError(e)
-    }
-	}),
 
   /**
    * 获取内容详情
@@ -304,6 +282,14 @@ Page({
    * 录制
    */
   recordVoice: function () {
+    // 判断是否是本人进入 默认权限者打印者本人
+    if (this.data.userContentAudio && !this.data.userContentAudio.isOwner) {
+      return wx.showModal({
+        title: '提示',
+        content: '分享暂不可录音，请至“童音录制”打印扫码录音',
+        showCancel: false
+      })
+    }
     if (this.data.isRecording) { //是否正在录制中
       return this.stopRecord()
     }
