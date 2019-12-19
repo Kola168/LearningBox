@@ -1,4 +1,5 @@
 {
   "usingComponents": {
+    "confirm-print": "../../../components/confirm-print"
   }
 }
