@@ -17,7 +17,7 @@
     </scroll-view>
     <scroll-view class="template-list-box template-limit-height" scroll-x>
       <view wx:for="{{templateList[templateTypeIndex].templates}}" wx:key="templates" class="template-item-box {{index==templateIndex?'template-item-selected':''}}" data-index="{{index}}" bindtap="{{templateIndex==index?'':'checkTemplate'}}">
-        <image src="{{item.preview_url}}" mode="widthFix" class="template-preview-img"></image>
+        <image src="{{item.previewImage}}" mode="widthFix" class="template-preview-img"></image>
       </view>
     </scroll-view>
     <bottom-button text-right="{{showMode?'编辑完成':'确认修改'}}" bindrighttap="confEdit"></bottom-button>

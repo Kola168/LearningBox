@@ -13,7 +13,7 @@
 <view class="bottom-box">
   <scroll-view class="template-list-box" scroll-x>
     <view wx:for="{{templateList}}" wx:key="templateList" data-index="{{index}}" class="template-item {{index==selectedIndex?'img-selected':''}}" bindtap="tapTemplate">
-      <image src="{{item.preview_url}}" mode="widthFix" class="template-img"></image>
+      <image src="{{item.previewImage}}" mode="widthFix" class="template-img"></image>
     </view>
   </scroll-view>
   <bottom-button text-right="确认" bindrighttap="confBut"  get-phone="{{true}}"></bottom-button>
