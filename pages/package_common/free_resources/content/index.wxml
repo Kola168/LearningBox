@@ -2,10 +2,10 @@
 <view class="container">
   <scroll-view scroll-x="{{true}}" class="tab" scroll-with-animation scroll-into-view="{{tabId}}">
     <view class="tab-box">
-      <view class="tab-item {{tabId==='tab_0'?'tab-item-active':''}}" bindtap="changeType" id="tab_0">
-        全部
+      <view wx:for="{{contentTypes}}" class="tab-item {{tabId==='tab_'+index?'tab-item-active':''}}" bindtap="changeType" wx:key="sn" data-sn="{{item.sn}}" id="{{'tab_'+index}}">
+        {{item.name}}
       </view>
-      <view class="tab-item {{tabId==='tab_1'?'tab-item-active':''}}" bindtap="changeType" id="tab_1">
+      <!-- <view class="tab-item {{tabId==='tab_1'?'tab-item-active':''}}" bindtap="changeType" id="tab_1">
         基础版
       </view>
       <view class="tab-item {{tabId==='tab_2'?'tab-item-active':''}}" bindtap="changeType" id="tab_2">
@@ -28,11 +28,26 @@
       </view>
       <view class="tab-item {{tabId==='tab_8'?'tab-item-active':''}}" bindtap="changeType" id="tab_8">
         进阶版
-      </view>
+      </view> -->
     </view>
   </scroll-view>
   <view class="tab-content">
-    <view class="content-item" bindtap="toNext">
+    <view class="content-item" wx:for="{{typeContents}}" wx:key="sn" data-sn="{{item.sn}}" bindtap="toNext">
+      <view class="item-img">
+        <image src="{{item.iconUrl}}" mode="widthFix" />
+      </view>
+      <view class="item-text">
+        <view class="text-title">{{item.title}}</view>
+        <view class="text-number">
+          <view class="number-left">
+            <image src="/images/doc_print_icon.png" />
+            <view>暂无</view>
+          </view>
+          <view>共{{item.pageCount}}页</view>
+        </view>
+      </view>
+    </view>
+    <!-- <view class="content-item" bindtap="toNext">
       <view class="item-img">
         <image src="/images/doc_email.png" mode="widthFix" />
       </view>
@@ -76,21 +91,6 @@
           <view>共1页</view>
         </view>
       </view>
-    </view>
-    <view class="content-item" bindtap="toNext">
-      <view class="item-img">
-        <image src="/images/doc_email.png" mode="widthFix" />
-      </view>
-      <view class="item-text">
-        <view class="text-title">拉大锯</view>
-        <view class="text-number">
-          <view class="number-left">
-            <image src="/images/doc_print_icon.png" />
-            <view>999</view>
-          </view>
-          <view>共1页</view>
-        </view>
-      </view>
-    </view>
+    </view> -->
   </view>
 </view>

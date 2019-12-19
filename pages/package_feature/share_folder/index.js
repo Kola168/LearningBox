@@ -19,6 +19,8 @@ Page({
     inputContent: '',
     showShareModel: false, //分享弹窗
     popWindow: false, //底部弹窗
+    fileList: [],
+    shareFileList: []
   },
 
   onLoad: function (options) {
@@ -38,21 +40,16 @@ Page({
     }
   },
 
-  onShow: co.wrap(function* () {
-
-  }),
+  onShow: co.wrap(function* () {}),
   checkProtocolSeivice: co.wrap(function* () {
     this.longToast.toast({
       type: 'loading',
       duration: 0
     })
     try {
-      const resp = yield api.checkProtocol(app.openId)
-      if (resp.code != 0) {
-        throw (resp)
-      }
-      console.log('是否同意服务协议', resp)
-      if (!resp.res) { //没有同意
+      const resp = yield gql.checkProtocol()
+      console.log(resp)
+      if (!resp.currentUser.folderAgreement) { //没有同意
         this.setData({
           showConfirmModal: {
             title: `共享文件夹用户使用协议`,
@@ -78,14 +75,15 @@ Page({
       duration: 0
     })
     try {
-      const resp = yield api.setProtocol(app.openId)
-      if (resp.code != 0) {
-        throw (resp)
+      const resp = yield gql.signFolderAgreement({
+        sign: true
+      })
+      if (resp.signFolderAgreement.state == true) {
+        wx.setStorageSync('protocol', true)
+        this.longToast.toast()
+        this.newFile()
       }
-      console.log('设置服务协议', resp)
-      wx.setStorageSync('protocol', true)
-      this.longToast.toast()
-      this.newFile()
+
     } catch (e) {
       this.longToast.toast()
       util.showErr(e)
@@ -105,36 +103,20 @@ Page({
     }
     try {
       const resp = yield gql.getFolders(true)
-      console.log(resp)
       this.longToast.hide()
+      if (resp.folders.length < 20) {
+        this.pageEnd = true
+      }
+      if (resp.folders.length == 0) {
+        return
+      }
+      this.setData({
+        fileList: this.data.fileList.concat(resp.folders),
+      })
+      this.page++
     } catch (e) {
       util.showError(e)
       this.longToast.hide()
-    }
-    
-    try {
-      const resp = yield api.getFoldersList(app.openId, this.page)
-      if (resp.code != 0) {
-        throw (resp)
-      }
-      console.log('获取文件夹列表', resp)
-      this.longToast.toast()
-      if (resp.res.length < 20) {
-        this.pageEnd = true
-      }
-      if (resp.res.length == 0) {
-        return
-      }
-
-      this.setData({
-        fileList: this.data.fileList.concat(resp.res),
-      })
-      console.log("22222", this.data.fileList)
-      this.page++
-
-    } catch (e) {
-      this.longToast.toast()
-      util.showErr(e)
     }
   }),
 
@@ -150,26 +132,21 @@ Page({
       this.pageEnd = false
     }
     try {
-      const resp = yield api.getShareFoldersList(app.openId, this.page)
-      if (resp.code != 0) {
-        throw (resp)
-      }
-      console.log('获取分享文件夹列表', resp)
-      this.longToast.toast()
-
-      if (resp.res.length < 20) {
+      const resp = yield gql.getFolders(false)
+      this.setData({
+        fileList: this.data.fileList.concat(resp.folders),
+      })
+      this.longToast.hide()
+      if (resp.folders.length < 20) {
         this.pageEnd = true
       }
-      if (resp.res.length == 0) {
+      if (resp.folders.length == 0) {
         return
       }
-
       this.setData({
-        shareFileList: this.data.shareFileList.concat(resp.res),
+        shareFileList: this.data.shareFileList.concat(resp.folders),
       })
-      console.log("111111", this.data.shareFileList)
       this.page++
-
     } catch (e) {
       this.longToast.toast()
       util.showErr(e)
@@ -211,13 +188,11 @@ Page({
   }),
 
   newFile: co.wrap(function* () {
-    console.log("qqq")
     let protocol = wx.getStorageSync('protocol')
     if (!protocol) {
       yield this.checkProtocolSeivice()
       return
     }
-    console.log("111111")
     if (this.data.fileList.length < 20) {
       this.setData({
         fileModal: true,
@@ -277,11 +252,9 @@ Page({
         duration: 0
       })
       try {
-        const resp = yield api.createFolders(app.openId, this.data.inputContent)
-        if (resp.code != 0) {
-          throw (resp)
-        }
-        console.log('创建文件夹成功', resp)
+        const resp = yield gql.createFolder({
+          name: this.data.inputContent
+        })
         this.setData({
           inputContent: ''
         })
@@ -347,20 +320,20 @@ Page({
         duration: 0
       })
       try {
-        const resp = yield api.changeFoldersName(app.openId, this.data.inputContent, this.sn)
-        if (resp.code != 0) {
-          throw (resp)
-        }
+        const resp = yield gql.updateFolder({
+          sn: this.sn,
+          name: this.data.inputContent
+        })
         console.log('修改文件夹名称成功', resp)
         this.setData({
           inputContent: ''
         })
-        this.longToast.toast()
+        this.longToast.hide()
         this.page = 1
         this.getFoldersList()
       } catch (e) {
         this.longToast.toast()
-        util.showErr(e)
+        util.showError(e)
       }
     }
   }),
@@ -392,17 +365,15 @@ Page({
       duration: 0
     })
     try {
-      const resp = yield api.deleteFolders(app.openId, this.sn)
-      if (resp.code != 0) {
-        throw (resp)
-      }
-      console.log('删除文件夹成功', resp)
+      const resp = yield gql.deleteFolder({
+        sn: this.sn
+      })
       this.page = 1
       this.getFoldersList()
       // this.longToast.toast()
     } catch (e) {
-      this.longToast.toast()
-      util.showErr(e)
+      this.longToast.hide()
+      util.showError(e)
     }
   }),
 

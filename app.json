@@ -55,7 +55,9 @@
         "account/name_edit",
         "free_resources/index/index",
         "free_resources/content/index",
-        "free_resources/detail/index"
+        "free_resources/detail/index",
+        "records/index/index",
+        "records/detail/index"
       ]
     },
     {

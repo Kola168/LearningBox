@@ -108,6 +108,7 @@ Page({
           sn: this.sn,
           attachmentIds: imgIds
         },
+        resourceOrderType: 'Course',
         featureKey: this.data.featureKey
       }
       const resp = yield graphql.createResourceOrder(params)

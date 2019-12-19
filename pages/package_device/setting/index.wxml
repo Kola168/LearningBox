@@ -10,10 +10,10 @@
         <image src="../images/offline_tip.png" wx:if="{{device.onlineState!=='online'}}" bindtap="toNextPage" data-key="offlineSolve" mode="widthFix" />
       </view>
     </view>
-    <image src="../images/share_btn_normal.png" class="share-device" bindtap="toNextPage" data-key="share" mode="widthFix" />
+    <image src="../images/share_btn_normal.png" wx:if="{{device.isAdmin}}" class="share-device" bindtap="toNextPage" data-key="share" mode="widthFix" />
   </view>
   <view class="device-setting">
-    <view class="setting-tab">
+    <view class="setting-tab" wx:if="{{device.isAdmin}}">
       <view class="base-setting {{settingType==='base'?'active-setting':''}}" data-type="base" bindtap="changeSettingType">
         基本设置
       </view>
@@ -21,7 +21,7 @@
         打印设置
       </view>
     </view>
-    <block wx:if="{{settingType==='base'}}">
+    <block wx:if="{{settingType==='base'&&device.isAdmin}}">
       <view class="setting-box border-bottom">
         <view class="setting-item">
           <view class="item-left flex-column">
@@ -100,7 +100,7 @@
         </view>
       </view>
     </block>
-    <block wx:if="{{settingType==='print'}}">
+    <block wx:if="{{settingType==='print'&&device.isAdmin}}">
       <view class="setting-box">
         <view class="setting-item">
           <view class="item-left flex-column">
@@ -154,12 +154,29 @@
         </view>
       </view>
     </block>
+    <view class="setting-box border-bottom" wx:if="{{!device.isAdmin}}">
+      <view class="setting-item">
+        <view class="item-left flex-column">
+          <view class="left-label">盒子编号</view>
+          <view class="label-sub">打印机型号：{{device.model}}</view>
+        </view>
+        <view class="item-right">{{device.sn}}</view>
+      </view>
+      <view class="setting-item">
+          <view class="item-left">
+            <view class="left-label">解除绑定</view>
+          </view>
+          <view class="item-right" bindtap="showModal" id="unbindDevice">
+            <view class="right-btn">解绑</view>
+          </view>
+        </view>
+    </view>
   </view>
 </view>
 <!-- modal -->
 <modal modal="{{modalObj}}" bindconfirm="confirmModal">
   <view wx:if="{{modalType==='rename'}}" class="modal-rename">
-    <input placeholder="1-10个字，支持中英文、数字" value="{{renameVal}}" bindinput="getRenameVal" placeholder-style="color:#999;" maxlength="20"/>
+    <input placeholder="1-10个字，支持中英文、数字" value="{{renameVal}}" bindinput="getRenameVal" placeholder-style="color:#999;" maxlength="20" />
     <view class="rename-tip" wx:if="{{renameVal.length===0}}">请先输入名称</view>
   </view>
   <view wx:if="{{modalType==='noaduit'}}">

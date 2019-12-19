@@ -1,6 +1,10 @@
 .handle-bottom,
 .page-over,
+.box-item,
+.box-set,
+.color-item,
 .bottom-bar,
+.handle-bar,
 .bar-btn,
 .bar-btns {
   display: flex;
@@ -11,18 +15,23 @@
   flex-direction: column;
 }
 
+.box-set,
+.box-item,
 .page-over,
 .bottom-bar,
 .bar-btn {
   align-items: center;
 }
 
-.swiper-box {
+.swiper {
   height: 80%;
+}
+
+.swiper-item {
   overflow-y: scroll;
 }
 
-.box-item image {
+.swiper-item image {
   width: 100%;
 }
 
@@ -100,4 +109,93 @@
   left:0;
   top:0;
   overflow:hidden;
+}
+
+
+/* 打印设置 */
+
+.setting {
+  background: #fff;
+  width: 100%;
+}
+
+.source-title {
+  padding: 30rpx 24rpx;
+  color: #333;
+  font-weight: bold;
+  font-size: 36rpx;
+  border-bottom: 20rpx solid #F5F5F5;
+}
+
+.box-item {
+  padding: 30rpx 24rpx;
+  font-size: 32rpx;
+  color: #333;
+  border-bottom: 2rpx solid #E7E7E7;
+  justify-content: space-between;
+}
+
+.box-set {
+  justify-content: flex-end;
+  color: #666;
+  font-size: 28rpx;
+}
+
+.set-count image {
+  width: 28rpx;
+}
+
+.set-count view {
+  margin: 0 16rpx;
+}
+
+.set-range {
+  color: #999;
+}
+
+.set-range input {
+  width: 80rpx;
+  height: 48rpx;
+  text-align: center;
+  box-shadow: inset 0 2px 4px 0 rgba(204, 204, 204, 0.50);
+  border-radius: 2px;
+  margin: 0 16rpx;
+  color: #666;
+}
+
+.set-color image {
+  width: 40rpx;
+  height: 40rpx;
+  margin-left: 16rpx;
+}
+
+.color-item:first-of-type {
+  margin-right: 30rpx;
+}
+
+.handle-bar {
+  height: 100rpx;
+  line-height: 100rpx;
+  font-size: 36rpx;
+  text-align: center;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+}
+
+.handle-bar>view {
+  width: 50%;
+}
+
+.bar-left {
+  color: #666;
+  background: #fff;
+  border-top: 2rpx solid #f7f7f7;
+}
+
+.bar-right {
+  color: #454545;
+  background: #FFDC5E;
+  border-top: 2rpx solid #FFDC5E;
 }

@@ -34,7 +34,7 @@ Page({
 		duplexCheck: false,
 		isColorPrinter: true,
 		isDuplex: true,
-		unionId: '',
+		userSn: '',
 		userAuthorize: false,
 		confirmModal: {
 			isShow: false,
@@ -65,8 +65,8 @@ Page({
 			title: this.title
 		})
 		this.longToast = new app.weToast()
-		let unionId = storage.get('unionId')
-		if (unionId) {
+		let userSn = storage.get('user_sn')
+		if (userSn) {
 			yield this.getRecordSource()
 			yield this.getConsumables()
 			yield this.getUserInfo()
@@ -207,8 +207,8 @@ Page({
 	}),
 
   authCheck: co.wrap(function *(){
-    var unionId = storage.get('unionId')
-		if (!unionId) {
+    var userSn = storage.get('user_sn')
+		if (!userSn) {
 			let url = `/pages/authorize/index`
 			router.navigateTo(url)
       return false

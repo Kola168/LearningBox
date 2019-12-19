@@ -1,7 +1,7 @@
 
 <nav-bar background="#fff" title="课程" />
 <view class="img-container img-{{lessonImgs.length>2?3:lessonImgs.length}}">
-  <view class="img-box" wx:for="{{lessonImgs}}" wx:key="{{index}}" id="{{index}}" data-check="{{item.isCheck}}" bindtap="checkImg">
+  <view class="img-box" wx:for="{{lessonImgs}}" wx:key="_id" id="{{index}}" data-check="{{item.isCheck}}" bindtap="checkImg">
     <image src="{{lessonImgs.length===1 ? item.url : item.url+'?x-image-process=image/resize,w_300'}}" class="box-img" mode="widthFix" />
     <image src="../images/selected.png" wx:if="{{(item.isCheck&&lessonImgs.length>1)}}" class="img-check" />
     <image src="../images/zoom_big.png" class="zoom-big" wx:if="{{lessonImgs.length>1}}" catchtap="zoomImg" id="{{index}}" />

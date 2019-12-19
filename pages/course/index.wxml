@@ -18,12 +18,12 @@ module.exports = {
 <nav-bar background="#fff" title="学习" />
 <view class="swiper-main">
   <swiper class="swiper"  bindchange="changeDots" autoplay="{{autoplay}}" interval="{{interval}}" circular>
-    <swiper-item wx:for="{{banners}}" wx:key="{{index}}" class="swpier-i" id="{{index}}" bindtap="swiperClick">
+    <swiper-item wx:for="{{banners}}" wx:key="url" class="swpier-i" id="{{index}}" bindtap="swiperClick">
       <image src="{{item.url}}" class="slide-img" mode="widthFix" />
     </swiper-item>
   </swiper>
   <view class="dots-main">
-    <view class="dot-item {{activeIndex == index ? 'dot-item-active' : ''}}" wx:for="{{banners}}" wx:key="{{index}}"></view>
+    <view class="dot-item {{activeIndex == index ? 'dot-item-active' : ''}}" wx:for="{{banners}}" wx:key="url"></view>
   </view>
 </view>
 <view class="container">
@@ -41,7 +41,7 @@ module.exports = {
       <view>我的课程</view>
     </view>
   </view>
-  <view class="user" wx:if="{{unionId}}">
+  <view class="user" wx:if="{{userSn}}">
     <view class="user-info">
       <view class="user-avatar">
         <open-data type="userAvatarUrl"></open-data>
@@ -79,7 +79,7 @@ module.exports = {
       </view>
     </view>
     <scroll-view class="select-project" scroll-x>
-      <view class="project-item" bindtap="toSelectProject" wx:for="{{selectCategories}}" wx:key="{{index}}" id="{{item.sn}}">
+      <view class="project-item" bindtap="toSelectProject" wx:for="{{selectCategories}}" wx:key="sn" id="{{item.sn}}">
         <image src="{{item.courseIntroductionImage}}" mode="widthFix" />
         <view>{{item.name}}</view>
       </view>
@@ -95,7 +95,7 @@ module.exports = {
         <image src="/images/doc_item_arrow.png" />
       </view>
     </view>
-    <view class="recommend-item" wx:for="{{recommendCourse}}" wx:key="{{index}}" id="{{item.sn}}" bindtap="toCourseDetail">
+    <view class="recommend-item" wx:for="{{recommendCourse}}" wx:key="sn" id="{{item.sn}}" bindtap="toCourseDetail">
       <view class="course-cover">
         <image src="{{item.recommendationImageUrl}}" mode="widthFix" />
       </view>
@@ -106,7 +106,7 @@ module.exports = {
               {{filter.formatCount(item.studyUsers)}}人已学习 共{{item.totalLessons}}课时
             </view>
         </view>
-        <view class="bottom-price" wx:if="{{isAndroid && unionId}}">
+        <view class="bottom-price" wx:if="{{isAndroid && userSn}}">
           <block wx:if="{{item.payed}}">
             <view class="buy-btn-ed">已购买</view>
           </block>

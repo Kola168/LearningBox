@@ -684,7 +684,7 @@ page {
 
 .user-info {
   position: absolute;
-  bottom: 180rpx;
+  bottom: 170rpx;
   left: 0;
   padding-right: 22rpx;
   width: 100%;

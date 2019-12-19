@@ -6,7 +6,7 @@
     <image src="https://cdn-h.gongfudou.com/LearningBox/device/device_share_intro_3.png" mode="widthFix" />
     <view class="qrcode-box">
       <view class="box-wrap">
-        <image src="/images/doc_email.png" />
+        <image src="{{shareQrcode}}" />
       </view>
       <view wx:if="{{savable}}" class="qrcode-btn" bindtap="saveImg">保存</view>
       <view wx:if="{{!savable}}" class="qrcode-btn">

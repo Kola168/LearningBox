@@ -4,13 +4,13 @@
 	<view class="banner-recommend sys-flex" wx:if="{{showToast}}">
 		<image class="" src="../../images/record_voice_record_desc.png" bind:tap="receivedInform" />
 	</view>
-	<image class="recorder-bg" src="{{content.icon}}" mode="aspectFill" />
+	<image class="recorder-bg" src="{{content.iconUrl}}" mode="aspectFill" />
 	<view class="play-view-main sys-flex">
 		<!-- <image class="source-icon {{isPlaying ? 'source-playing' : ''}}" src="{{content.icon}}" mode="aspectFill" /> -->
-		<image class="source-icon" src="{{content.icon}}" mode="aspectFill" />
+		<image class="source-icon" src="{{content.iconUrl}}" mode="aspectFill" />
 		<view class="source-info">
 			<view class="source-name f-18">{{content.name}}</view>
-			<view class="user-name f-12">{{userAudio && kidInfo.name ? kidInfo.name : '暂无朗读者'}}</view>
+			<view class="user-name f-12">{{userAudio && userContentAudio.kid ? userContentAudio.kid.name : '暂无朗读者'}}</view>
 		</view>
 		<view class="duration-main sys-flex">
 			<view class="player-time">{{curryTime || '00:00'}}</view>
@@ -31,6 +31,7 @@
 				<view class="recording-status f-14 btn-recording">{{isRecording ? '正在录制中…' : ''}}</view>
 			</view>
 			<view class="btn-main btn-user f-12 sys-flex">
+				<image src="../../images/record_tips.png" class="record-tip" wx:if="{{showTips}}" />
 				<image class="btn" wx:if="{{!userAudio}}" src="../../images/record_voice_btn_record_disabled.png" />
 				<image
 				 class="btn"

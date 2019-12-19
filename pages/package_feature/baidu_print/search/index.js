@@ -253,6 +253,7 @@ Page({
     wxNav.navigateTo('../choose/index', {
       type: this.data.type,
       from: this.chooseBaiduFrom,
+      countLimit: this.countLimit,
       path
     })
   },

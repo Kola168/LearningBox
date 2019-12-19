@@ -1,5 +1,6 @@
+<nav-bar background="#fff" title="{{file_name}}"></nav-bar>
 <view class="top-tip" wx:if="{{role=='creator'}}">不可上传或传播违法内容，一经发现依法处理</view>
-<view  class="hideDevice {{ballScroll?'overflowHidden':'overflowScroll'}}">
+<view class="hideDevice {{ballScroll?'overflowHidden':'overflowScroll'}}">
   <view class="{{role=='user'?'top1':'top'}}">
     <view class="top-left">
       <view class="text-share">
@@ -11,7 +12,7 @@
   </view>
 
   <view class="intro-center1" wx:if="{{!documentList.length>0}}">
-    <image src="../../images/create_document_bg.png" mode="widthFix" class="intro-bg"></image>
+    <image src="../images/create_document_bg.png" mode="widthFix" class="intro-bg"></image>
     <view wx:if="{{!documentList.length>0&&role=='creator'}}">
       <view class="intro-text">仅支持上传图片、文档</view>
       <view class="intro-text">（视频，音频暂不支持）</view>
@@ -24,11 +25,17 @@
     <view wx:for="{{documentList}}" wx:key="{{index}}" id="{{index}}" class="file-list">
       <view class="file-left">
         <view style="width:100rpx;">
-          <image src="{{item.url}}?x-image-process=image/resize,m_fill,h_76,w_76/quality,Q_85/format,jpg" class="file-icon" bindtap="toPreview" wx:if="{{item.file_type=='image'}}" id="{{index}}" mode="widthFix"></image>
-          <image src="/images/doc_select_pdf.png" class="file-icon" bindtap="toPreview" wx:if="{{item.file_type=='pdf'}}" id="{{index}}" mode="widthFix"></image>
-          <image src="../../images/share_fold_ppt.png" class="file-icon" bindtap="toPreview" wx:if="{{item.file_type=='pptx'||item.file_type=='ppt'}}" id="{{index}}" mode="widthFix"></image>
-          <image src="../../images/share_fold_xls.png" class="file-icon" bindtap="toPreview" wx:if="{{item.file_type=='xlsx'||item.file_type=='xls'}}" id="{{index}}" mode="widthFix"></image>
-          <image src="../../images/share_fold_word.png" class="file-icon" bindtap="toPreview" wx:if="{{item.file_type=='docx'||item.file_type=='doc'}}" id="{{index}}" mode="widthFix"></image>
+          <image src="{{item.url}}?x-image-process=image/resize,m_fill,h_76,w_76/quality,Q_85/format,jpg"
+            class="file-icon" bindtap="toPreview" wx:if="{{item.file_type=='image'}}" id="{{index}}" mode="widthFix">
+          </image>
+          <image src="/images/doc_select_pdf.png" class="file-icon" bindtap="toPreview"
+            wx:if="{{item.file_type=='pdf'}}" id="{{index}}" mode="widthFix"></image>
+          <image src="../images/share_fold_ppt.png" class="file-icon" bindtap="toPreview"
+            wx:if="{{item.file_type=='pptx'||item.file_type=='ppt'}}" id="{{index}}" mode="widthFix"></image>
+          <image src="../images/share_fold_xls.png" class="file-icon" bindtap="toPreview"
+            wx:if="{{item.file_type=='xlsx'||item.file_type=='xls'}}" id="{{index}}" mode="widthFix"></image>
+          <image src="../images/share_fold_word.png" class="file-icon" bindtap="toPreview"
+            wx:if="{{item.file_type=='docx'||item.file_type=='doc'}}" id="{{index}}" mode="widthFix"></image>
         </view>
         <view style="width:85%" bindtap="toPreview" id="{{index}}">
           <view class="name">{{item.name}}</view>
@@ -39,7 +46,9 @@
       </view>
       <view class="file-right">
         <view class="file-right-share" data-index="{{index}}" bind:tap="toPrint" wx:if="{{!showBaidu}}">打印</view>
-        <image class="select-image" src="{{item.choose ? '/images/error_finish.png': '/images/device_share_not_select.png'}}" mode="widthFix" bindtap="choose" id="{{index}}" wx:if="{{role=='user'&&showBaidu}}"></image>
+        <image class="select-image"
+          src="{{item.choose ? '/images/error_finish.png': '/images/device_share_not_select.png'}}" mode="widthFix"
+          bindtap="choose" id="{{index}}" wx:if="{{role=='user'&&showBaidu}}"></image>
       </view>
     </view>
   </view>
@@ -49,11 +58,11 @@
 <view class="bottom-button" bindtap="newDocument" wx:if="{{!documentList.length>0&&role=='creator'}}">上传</view>
 <view class="bottom-button1" wx:if="{{documentList.length>0&&role=='creator'}}">
   <view class="bottom-left" bindtap="manageDocument">
-    <image src="../../images/folder_manage_icon.png" class="document-icon"></image>
+    <image src="../images/folder_manage_icon.png" class="document-icon"></image>
     <view>管理</view>
   </view>
   <view class="bottom-left" bindtap="newDocument">
-    <image src="../../images/folder_upload_icon.png" class="document-icon"></image>
+    <image src="../images/folder_upload_icon.png" class="document-icon"></image>
     <view>上传</view>
   </view>
   <button class="bottom-share" hover-class="none" bindtap="showShare" wx:if="{{!firstShare}}">分享文件夹</button>
@@ -73,23 +82,24 @@
 </view>
 
 
-<import src="../../../../lib/toast/wetoast.wxml" />
+<import src="../../../lib/toast/wetoast.wxml" />
 <template is="wetoast" data="{{...__wetoast__}}" />
 
 <view class="modal-wrap" bindtap="cancelUpload" wx:if="{{uploadModel}}">
   <view class="modify-box">
     <view bind:tap="chooseFiles">
-      <image src="../../images/folder_wx.png" class="modify-box-wx"></image>
+      <image src="../images/folder_wx.png" class="modify-box-wx"></image>
       <view>微信文件</view>
     </view>
-    <view bind:tap="chooseImgs">
-      <image src="../../images/folder_photo.png" class="modify-box-photo"></image>
+    <view bind:tap="showImgCheck">
+      <image src="../images/folder_photo.png" class="modify-box-photo"></image>
       <view>照片</view>
     </view>
   </view>
 </view>
 
-<w-progress-modal currentChooseCount="{{currentChooseCount}}" completeCount="{{completeCount}}" percent="{{percent}}" key="{{upKey}}" wx:if="{{showupLoad}}" bindcancel="cancel"></w-progress-modal>
+<w-progress-modal currentChooseCount="{{currentChooseCount}}" completeCount="{{completeCount}}" percent="{{percent}}"
+  key="{{upKey}}" wx:if="{{showupLoad}}" bindcancel="cancel"></w-progress-modal>
 
 <view class="modal-wrap" bindtap="cancelExit" wx:if="{{exitSharingModal}}">
   <view class="modify-box1">
@@ -123,5 +133,6 @@
 </view>
 
 <ball class="modify" bind:okEvent="okEvent" wx:if="{{backHome}}"></ball>
-
+<take-photo-pop id="checkComponent" bindchooseImg="chooseImgs" imgNum="{{chooseCount}}" bindbaidutap="baiduImage">
+</take-photo-pop>
 <ios-tip ios-tip-modal="ios-tip-modal" bindopenmodal="openIosModal" showModal="{{iosModal}}" text="{{text}}"></ios-tip>

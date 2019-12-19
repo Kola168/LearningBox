@@ -1,0 +1,6 @@
+{
+  "onReachBottomDistance": 50,
+  "usingComponents":{
+    "modal":"../../../components/modal/index"
+  }
+}

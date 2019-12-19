@@ -27,14 +27,13 @@
 		},
 		onLoad: co.wrap(function* (options) {
 			var _this = this
-			var unionId = storage.get("unionId")
+			var userSn = storage.get("user_sn")
 
 			_this.longToast = new app.weToast()
 			_this.setData({
 				sn: options.sn,
 				share_user_id: options.share_user_id || '',
-				// isAuth: !!unionId
-				isAuth: true
+				isAuth: !!userSn
 			})
 
 			event.on('Authorize', this, function (data) {
@@ -43,8 +42,7 @@
 				})
 			})
 
-			// if (unionId && options.share_user_id) { // 上报小白客与推广客关系
-			// 	commonRequest.updateUserIdRelationship(unionId, options.share_user_id)
+			// if (userSn && options.share_user_id) { // 上报小白客与推广客关系
 			// }
 
 		}),

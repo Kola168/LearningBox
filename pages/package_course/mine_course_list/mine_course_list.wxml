@@ -20,7 +20,7 @@
 		<view
 		 class="mine-item sys-flex flex-dir-column"
 		 wx:for="{{active_index ? favorList : courseList}}"
-		 wx:key="{{index}}"
+		 wx:key="sn"
 		 bindtap="enterDetail"
 		 data-sn="{{item.sn}}"
 		>
