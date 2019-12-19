@@ -28,12 +28,14 @@ Page({
     showToast: false, //通知弹窗
     kidInfo: null, // 宝宝信息
     showTips: false,
+    userContentAudio: null, //用户录制者信息
   },
 
   onLoad: co.wrap(function *(options) {
     if (options.scene) {
       var showToast = !storage.get('showRecordToast')
-      var scene = options.scene
+      var scene = decodeURIComponent(options.scene)
+      
       var params = {} 
       scene.split('&').forEach(str => {
         params[`${str.split('=')[0]}`] =  str.split('=')[1]
@@ -47,8 +49,8 @@ Page({
       this.setData({
         showToast
       })
-      var unionId = storage.get('unionId')
-      if (unionId) { // 授权完成执行
+      var userSn = storage.get('user_sn')
+      if (userSn) { // 授权完成执行
         this.getPageInfo(showToast)
       }
     }
@@ -61,8 +63,8 @@ Page({
   }),
 
   onShow: function () {
-    var unionId = storage.get('unionId')
-    if (!unionId) {
+    var userSn = storage.get('user_sn')
+    if (!userSn) {
       return wxNav.navigateTo('/pages/authorize/index')
     }
 
@@ -127,6 +129,7 @@ Page({
       var userAudio = resp.userContentAudio && resp.userContentAudio.audioUrl || null
       this.setData({
         content: resp.content,
+        userContentAudio: resp.userContentAudio,
         title: resp.content && resp.content.name,
         userAudio: userAudio,
         players: {  // 播放控制属性

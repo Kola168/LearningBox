@@ -40,7 +40,7 @@ Page({
 		isColorPrinter: true,
 		isDuplex: true,
 		as_type: 'common', //试卷类型
-		unionId: '',
+		userSn: '',
 		userAuthorize: true,
 		hasAuthPhoneNum: false,
 		confirmModal: {
@@ -85,8 +85,8 @@ Page({
 		this.setData({
 			title: options.title
 		})
-		var unionId = storage.get('unionId')
-		if (unionId) {
+		var userSn = storage.get('user_sn')
+		if (userSn) {
 			yield this.updateDetail()
 		}
 
@@ -175,8 +175,8 @@ Page({
 		this.setData({
 			hasAuthPhoneNum: app.hasPhoneNum || hasAuthPhoneNum
 		})
-		let unionId = storage.get('unionId')
-		if (!unionId) {
+		let userSn = storage.get('user_sn')
+		if (!userSn) {
 			let url = this.share_user_id ? `/pages/authorize/index?url=${url}&share_user_id=${this.share_user_id}&way=${this.way}` : `/pages/authorize/index`
 			return router.navigateTo(url, {
         url: url,
@@ -186,7 +186,7 @@ Page({
 		}
 
     this.setData({
-      userAuthorize: unionId ? true : false
+      userAuthorize: userSn ? true : false
     })
 	
   },
@@ -389,8 +389,8 @@ Page({
   }),
   
 	collect: co.wrap(function* () {
-		var unionId = storage.get('unionId')
-		if (!unionId) {
+		var userSn = storage.get('user_sn')
+		if (!userSn) {
 			var url = this.share_user_id ? `/pages/authorize/index?url=${url}&share_user_id=${this.share_user_id}&way=${this.way}` : `/pages/authorize/index`
 	
       return router.navigateTo('', {
@@ -429,8 +429,8 @@ Page({
   }),
   
 	toConfirm: co.wrap(function* (e) {
-		var unionId = storage.get('unionId')
-		if (!unionId) {
+		var userSn = storage.get('user_sn')
+		if (!userSn) {
 			var url = this.share_user_id ? `/pages/authorize/index?url=${url}&share_user_id=${this.share_user_id}&way=${this.way}` : `/pages/authorize/index`
 	
       return router.navigateTo(url, {
@@ -452,9 +452,9 @@ Page({
   },
   
 	toPay: co.wrap(function* () {
-		var unionId = storage.get('unionId')
+		var userSn = storage.get('user_sn')
 		// 判断授权
-		if (!unionId) {
+		if (!userSn) {
 			var url = this.share_user_id ? `/pages/authorize/index?url=${url}&share_user_id=${this.share_user_id}&way=${this.way}` : `/pages/authorize/index`
       return router.navigateTo(url, {
         url: url,

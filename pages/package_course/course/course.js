@@ -32,7 +32,7 @@ Page({
   onLoad: co.wrap(function*(query) {
    try {
     this.shareSn = ''
-    this.unionId = storage.get('unionId')
+    this.userSn = storage.get('user_sn')
     this.longToast = new app.weToast()
       // 继续学习
     this.isContinue = query.isContinue ? Number(query.isContinue) : 0
@@ -49,12 +49,12 @@ Page({
       viewHeight: systemInfo.windowHeight - 50,
       navBarTop: app.navBarInfo && app.navBarInfo.topBarHeight,
       hiddenShareTip: !!hiddenShareTip,
-      unionId: this.unionId,
+      userSn: this.userSn,
       isAndroid: isAndroid
     })
     // 分享
     event.on('Authorize', this, () => {
-      this.unionId = storage.get('unionId')
+      this.userSn = storage.get('user_sn')
     })
    } catch(err) {
      logger.info(err)
@@ -65,9 +65,9 @@ Page({
     this.getCourseDetail()
   }),
 
-  // 课程分享，用户打开无unionId，跳转授权
+  // 课程分享，用户打开无userSn，跳转授权
   authCheck: co.wrap(function*() {
-    if (!this.unionId) {
+    if (!this.userSn) {
       router.navigateTo('/pages/authorize/index')
       return false
     } else {
@@ -189,7 +189,7 @@ Page({
           sn: this.sn,
           type: "course"
         })
-        var isFree = resp.paymentCheck && resp.paymentCheck.free
+        var isFree = resp.currentUser.paymentCheck && resp.currentUser.paymentCheck.free
         if (!isFree) {
           yield showModal({
             title: '重要提示',
@@ -257,7 +257,7 @@ Page({
           title: '你好，我想学这个，帮帮我！',
           path: `/pages/package_course/share_course/share_course?sn=${this.shareSn}`
         }
-      } else if (this.unionId) {
+      } else if (this.userSn) {
         return {
           title: '这个课程好棒啊 快来看看吧',
           path: `/pages/package_course/course/course?sn=${this.sn}`

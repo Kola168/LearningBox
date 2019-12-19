@@ -76,8 +76,8 @@ Page({
 				backHome: true
 			})
 		}
-		let unionId = wx.getStorageSync('unionId')
-		if (unionId) {
+		let userSn = wx.getStorageSync('user_sn')
+		if (userSn) {
 			this.joinAndGetList()
 		}
 		event.on('Authorize', this, function (data) {
@@ -127,9 +127,9 @@ Page({
 	}),
 
 	onShow: co.wrap(function* (options) {
-		let unionId = wx.getStorageSync('unionId')
+		let userSn = wx.getStorageSync('user_sn')
 		console.log('应用参数传参', this.share_user_id, this.way)
-		if (!unionId) {
+		if (!userSn) {
 			console.log('执行到文件夹授权===========')
 			let url = this.share_user_id ? `/pages/authorize/index?url=${url}&share_user_id=${this.share_user_id}&way=${this.way}` : `/pages/authorize/index`
 			wx.navigateTo({

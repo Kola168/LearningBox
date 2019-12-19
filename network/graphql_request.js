@@ -762,8 +762,10 @@ const graphqlApi = {
   getPaymentCheck: (pms) => {
     return gql.query({
       query: `query getPaymentCheck($sn: String!, $type: PayableItemTypeEnum!){
-        paymentCheck(sn: $sn,type: $type){
-          free
+        currentUser{
+          paymentCheck(sn: $sn,type: $type){
+            free
+          }
         }
       }`,
       variables: {
@@ -864,7 +866,7 @@ const graphqlApi = {
           }
           contents{
             name
-            icon
+            iconUrl
             sn
             pageCount
           }
@@ -886,7 +888,7 @@ const graphqlApi = {
         category(sn: $sn){
           contents{
             name
-            icon
+            iconUrl
             sn
             printerOrdersCount  
             pageCount
@@ -907,13 +909,13 @@ const graphqlApi = {
       query: `query getRecordSource($sn: String!){
         content(sn: $sn){
           name
-          icon
+          iconUrl
           sn
           contentImages{
             nameUrl
           }
           audioContentImage
-          audio
+          audioUrl
           contentCollected
           userAudio{
             audioUrl
@@ -1073,17 +1075,21 @@ const graphqlApi = {
     return gql.query({
       query: `query getRecordInfo($sn: String!, $userId: Int!){
         userContentAudio(sn: $sn, userId: $userId){
-          audioUrl
+          audioUrl,
+          isOwner,
+          kid{
+            name
+          }
         }
         content(sn: $sn){
           name
-          icon
+          iconUrl
           sn
           contentImages{
             nameUrl
           }
           audioContentImage
-          audio
+          audioUrl
           contentCollected
         }
       }`,
