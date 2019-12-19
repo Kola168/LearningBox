@@ -24,7 +24,6 @@ Page({
     files: [],
     showInterceptModal: '',
     isCleared: false,
-    hasAuthPhoneNum: false,
     isFullScreen: false,
     confirmModal: {
       isShow: false,
@@ -41,14 +40,6 @@ Page({
       isFullScreen: app.isFullScreen
     })
   }),
-
-  onShow: function () {
-    let hasAuthPhoneNum = Boolean(storage.get('hasAuthPhoneNum'))
-    this.hasAuthPhoneNum = hasAuthPhoneNum
-    this.setData({
-      hasAuthPhoneNum: app.hasPhoneNum || hasAuthPhoneNum
-    })
-  },
 
   filterNotify: function () {
     let _this = this
@@ -165,9 +156,6 @@ Page({
   }),
 
   confirm: co.wrap(function* (e) {
-    if (!this.hasAuthPhoneNum && !app.hasPhoneNum) {
-      return
-    }
 
     if (this.data.allCount <= 0) {
       return wx.showModal({
@@ -185,16 +173,6 @@ Page({
         ['confirmModal.isShow']: true
       })
     }
-  }),
-
-  getPhoneNumber: co.wrap(function* (e) {
-    // yield app.getPhoneNum(e)
-    storage.put("hasAuthPhoneNum", true)
-    this.hasAuthPhoneNum = true
-    this.setData({
-      hasAuthPhoneNum: true
-    })
-    this.confirm(e)
   }),
 
   print: co.wrap(function* () {

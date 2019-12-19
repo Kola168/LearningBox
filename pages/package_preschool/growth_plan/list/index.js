@@ -4,6 +4,8 @@ import {regeneratorRuntime, co, wxNav, util, logger} from '../../../../utils/com
 // import api from '../../../network/restful_request'
 const showModal = util.promisify(wx.showModal)
 // const logger = new Logger.getLogger('pages/index/index')
+import Logger from '../../../../utils/logger.js'
+// const logger = new Logger.getLogger('pages/package_preschool/growth_plan/list/index')
 
 Page({
 
@@ -61,6 +63,20 @@ Page({
         ['modalObj.isShow']:true
       })
     }
+
+
+    // let res = yield showModal({
+    //   title: '提示',
+    //   content: '确认删除此订阅？',
+    //   confirmColor: '#fae100',
+    // })
+    // if(!res.confirm){
+    //   return
+    // }
+    // let index = e.currentTarget.dataset.id
+
+
+
   },
 
   /*** 订阅弹出框 ***/

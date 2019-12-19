@@ -84,12 +84,7 @@
         </view>
     </view>
 </view>
-<view class="conf_box">
-    <form report-submit="true" bindsubmit="confcheck">
-            <button formType="submit">确认打印</button>
-        <!-- <button open-type="{{hasAuthPhoneNum?'':'getPhoneNumber'}}" bindgetphonenumber="{{hasAuthPhoneNum?'':'getPhoneNumber'}}" formType="submit">确认打印</button> -->
-    </form>
-</view>
+<botttom-button class="conf_box" text-right="确认打印" bindrighttap="confcheck" get-phone="{{true}}"></botttom-button>
 
 <!-- 打印确认框 -->
 <confirm-print bindconfirm="print" modal="{{confirmModal}}"></confirm-print>

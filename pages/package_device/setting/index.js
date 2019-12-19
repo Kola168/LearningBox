@@ -4,7 +4,9 @@ import { regeneratorRuntime, co, util, wxNav } from '../../../utils/common_impor
 import graphql from '../../../network/graphql_request'
 Page({
   data: {
-    device: null,
+    device: {
+      isAdmin: false
+    },
     settingType: "base",
     modalType: "",
     printType: "ep300",
@@ -36,7 +38,7 @@ Page({
       let res = yield graphql.getDeviceDetail(this.deviceSn)
       this.weToast.hide()
       this.setData({
-        device: res.device
+        device: res.currentUser.devices[0]
       })
     } catch (error) {
       this.weToast.hide()
@@ -174,6 +176,7 @@ Page({
         this.comfirmRename()
         break;
       case "clearQueue":
+        this.clearJobs()
         break;
       case "unbindDevice":
         this.unbindDevice()
@@ -247,6 +250,7 @@ Page({
         break;
       case "share":
         url = `../share/index`
+        params.shareQrcode = encodeURIComponent(JSON.stringify(this.data.device.shareQrcode))
         break;
       case "reNetwork":
         url = `../network/index/index`
@@ -254,4 +258,24 @@ Page({
     }
     wxNav.navigateTo(url, params)
   },
+
+  // 清空打印队列
+  clearJobs: co.wrap(function*() {
+    this.weToast.toast({
+      type: 'loading'
+    })
+    try {
+      let res = yield graphql.clearJobs(this.deviceSn)
+      this.weToast.hide()
+      if(res.cancelJob.state){
+        wx.showToast({
+          title: '已清空',
+          icon: 'none'
+        })
+      }
+    } catch (error) {
+      this.weToast.hide()
+      util.showError(error)
+    }
+  })
 })

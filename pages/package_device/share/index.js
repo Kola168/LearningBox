@@ -7,10 +7,14 @@ const getSetting = util.promisify(wx.getSetting)
 
 Page({
   data: {
-    savable: true
+    savable: true,
+    shareQrcode:''
   },
-  onLoad() {
+  onLoad(query) {
     this.weToast = new app.weToast()
+    this.setData({
+      shareQrcode: JSON.parse(decodeURIComponent(query.shareQrcode))
+    })
   },
   allowSave: function(e) {
     if (!e.detail.authSetting['scope.writePhotosAlbum']) {
@@ -25,19 +29,18 @@ Page({
       type: 'loading'
     })
     try {
-      let title = '保存成功',
-        content = '请到相册查看'
       let data = yield downloadFile({
-        url: 'https://cdn-h.gongfudou.com/LearningBox/device/device_share_intro_3.png'
+        url: this.data.shareQrcode
       })
       let tempPath = data.tempFilePath
+
       yield saveImageToPhotosAlbum({
         filePath: tempPath
       })
       this.weToast.hide()
       yield showModal({
-        title: title,
-        content: content,
+        title: '保存成功',
+        content: '请到相册查看',
         showCancel: false,
         confirmColor: '#FFDC5E'
       })

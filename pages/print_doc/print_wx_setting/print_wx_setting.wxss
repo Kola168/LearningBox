@@ -90,9 +90,23 @@ input {
   width: 45rpx;
   padding-right: 10rpx;
 }
-.confirm {
-  background: #FFDC5E;
+
+.conf-botton{
   width: 50%;
+  position:relative;
+  background: #FFDC5E;
+  line-height: 100rpx;
+  text-align:center;
+  font-size:36rpx;
+}
+.bottom-button-box{
+  position:absolute;
+  width:100%;
+  height:100%;
+  top:0;
+  left:0;
+  opacity:0;
+  overflow:hidden;
 }
 button {
   height: 100rpx;

@@ -45,14 +45,6 @@
   <text class="add-img-tps-text">点击此处上传照片吧</text>
   <image src="/images/print_photo_print_tips.png" mode="widthFix" class="add-img-tips"></image>
 </view>
-<view class="bottom-button-box {{butHigh?'but-heigher':''}}">
-  <view class="bottom-button-style bottom-button-white" bindtap="showImgCheck">
-    {{photoList.length>0?'继续上传':'上传照片'}}({{photoList.length}}/{{limitPhoto}})
-  </view>
-  <view class="bottom-button-style {{photoList.length>0?'common-button-bg bottom-button-conf':'bottom-button-refuse'}}" bindtap="confOrder">
-    确认打印
-  </view>
-</view>
-
+<botttom-button class="bottom-button-box" extra-class="{{photoList.length>0?'':'component-button'}}" text-left="{{photoList.length>0?'继续上传':'上传照片'}}({{photoList.length}}/{{limitPhoto}})" bindlefttap="showImgCheck" text-right="确认打印" bindrighttap="confOrder" get-phone="{{true}}"></botttom-button>
 <import src="/lib/toast/wetoast.wxml" />
 <template is="wetoast" data="{{...__wetoast__}}" />

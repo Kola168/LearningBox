@@ -25,7 +25,6 @@ Page({
     duplexCheck: false,
     isColorPrinter: true,
     isDuplex: true,
-    hasAuthPhoneNum: false,
     confirmModal: {
       isShow: false,
       title: '请正确放置A4打印纸',
@@ -61,11 +60,6 @@ Page({
       })
 
       yield this.getDetail()
-      let hasAuthPhoneNum = Boolean(storage.get('hasAuthPhoneNum'))
-      this.hasAuthPhoneNum = hasAuthPhoneNum
-      this.setData({
-        hasAuthPhoneNum: app.hasPhoneNum || hasAuthPhoneNum
-      })
     } catch (e) {
       logger.info(e)
     }
@@ -128,8 +122,8 @@ Page({
         confirmText: "确认",
         showCancel: false
       })
-      
-    } 
+
+    }
 
     this.data.startPrintPage = value
   },
@@ -150,14 +144,14 @@ Page({
         confirmText: "确认",
         showCancel: false
       })
-      
-    } 
+
+    }
     this.data.endPrintPage = e.detail.value
   },
 
   /**
    * @methods 选择颜色
-   * @param {Object} e 
+   * @param {Object} e
    */
   colorCheck({currentTarget: {dataset: {style}}}) {
     this.setData({
@@ -167,7 +161,7 @@ Page({
 
   /**
    * @methods 选择单双面打印模式
-   * @param {Object} e 
+   * @param {Object} e
    */
   duplexCheck(e) {
     let duplexCheck = e.currentTarget.dataset.style == 0 ? false : true
@@ -178,9 +172,7 @@ Page({
 
   //确认按钮提交
   confCheck() {
-    if (!this.hasAuthPhoneNum && !app.hasPhoneNum) {
-      return
-    }
+
     if (this.data.startPrintPage == '') {
       return wx.showModal({
         content: '请输入正确的开始页',
@@ -188,7 +180,7 @@ Page({
         confirmText: "确认",
         showCancel: false
       })
-      
+
     }
 
     if (this.data.endPrintPage == '') {
@@ -198,7 +190,7 @@ Page({
         confirmText: "确认",
         showCancel: false
       })
-      
+
     }
     let hideConfirmPrintBox = Boolean(storage.get('hideConfirmPrintBox'))
     if (hideConfirmPrintBox) {
@@ -215,16 +207,6 @@ Page({
       showSetting: false
     })
   },
-
-  getPhoneNumber: co.wrap(function* (e) {
-    // yield app.getPhoneNum(e)
-    storage.put("hasAuthPhoneNum", true)
-    this.hasAuthPhoneNum = true
-    this.setData({
-      hasAuthPhoneNum: true
-    })
-    this.confCheck()
-  }),
 
   checkPoint: function () {
     let choosePoint
@@ -323,7 +305,7 @@ Page({
         sn: _this.id,
         category_sn: _this.sn,
       }
-      
+
 
       var setting = {
         duplex: _this.data.duplexCheck,

@@ -107,14 +107,7 @@
   position: fixed;
   left: 0;
   bottom: 0;
-  height: 100rpx;
   width: 100%;
-  background: #fff;
-  display: flex;
-  align-items: center;
-  box-sizing: border-box;
-  z-index: 888;
-  border-top: 2rpx solid #cecece;
 }
 
 .bottom-left {
@@ -148,21 +141,6 @@
   font-size: 24rpx;
   padding: 6rpx 0;
   text-align: center;
-}
-
-.bottom form {
-  width: 100%;
-}
-
-.bottom button {
-  width: 100%;
-  padding: 0;
-  padding-left: 60rpx;
-  padding-right: 60rpx;
-  line-height: 100rpx;
-  border-radius: 0;
-  background: #FFDC5E!important;
-  color: #000;
 }
 
 .button-gray {

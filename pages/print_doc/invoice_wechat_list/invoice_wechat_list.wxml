@@ -26,26 +26,12 @@
 		</view>
 	</view>
 </view>
-
-<view class="bottom-tip-medium">
-	<view class="bottom-tip-medium-text">只支持打pdf发票</view>
-</view>
-
-<view class="bottom {{isFullScreen ? 'is-full-screen' : ''}}">
-	<view class="bottom-left" bindtap="chooseFile" style="color:{{ allCount == 5 ? '#cecece' : '#666666'}};background:#fff;">
-		<text>继续选择</text>
+<view class="bottom-box">
+	<view class="bottom-tip-medium">
+		<view class="bottom-tip-medium-text">只支持打pdf发票</view>
 	</view>
-	<view class="bottom-right">
-		<form report-submit="true" bindsubmit="confirm">
-			<button
-			 class="{{allCount == 0 ? 'button-gray' : ''}}"
-			 formType="submit"
-			 open-type="{{hasAuthPhoneNum ? '' : 'getPhoneNumber'}}"
-			 bindgetphonenumber="{{hasAuthPhoneNum ? '' : 'getPhoneNumber'}}"
-			>确认打印
-			</button>
-		</form>
-	</view>
+	<botttom-button class="bottom" left-class="{{allCount == 5 ?'button-left-class':''}}" extra-class="{{allCount == 0 ? 'button-gray' : ''}}" text-left="继续选择" bindlefttap="chooseFile" text-right="确认打印" bindrighttap="confirm" get-phone="{{true}}"></botttom-button>
+
 </view>
 
 

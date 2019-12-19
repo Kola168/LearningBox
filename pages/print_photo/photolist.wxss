@@ -39,15 +39,10 @@ view {
 }
 
 .bottom-button-box {
-  width: 100%;
-  line-height: 100rpx;
-  font-size: 36rpx;
-  display: flex;
+  width:100%;
   position: fixed;
-  border-top: 1px solid #eaeaea;
   bottom: 0;
   left: 0;
-  background:#fff;
 }
 
 .but-heigher{
@@ -69,9 +64,10 @@ view {
   color: #454545;
 }
 
-.bottom-button-refuse {
-  color: #A5A5A5;
-  background: #EAEAEA;
+.component-button {
+  color: #A5A5A5 !important;
+  background: #EAEAEA !important;
+  border-top: 1px solid #EAEAEA !important;
 }
 
 .top-tips {

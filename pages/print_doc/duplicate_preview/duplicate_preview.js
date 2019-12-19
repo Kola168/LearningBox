@@ -33,7 +33,6 @@ Page({
       }
     ],
     img_url: null,
-    hasAuthPhoneNum: false,
     isFullScreen: false,
     confirmModal: {
       isShow: false,
@@ -49,14 +48,6 @@ Page({
       isFullScreen: app.isFullScreen,
       preUrl: decodeURIComponent(options.preUrl),
       img_url: decodeURIComponent(options.url)
-    })
-  },
-
-  onShow () {
-    let hasAuthPhoneNum = Boolean(storage.get("hasAuthPhoneNum"))
-    this.hasAuthPhoneNum = hasAuthPhoneNum
-    this.setData({
-      hasAuthPhoneNum: app.hasPhoneNum || hasAuthPhoneNum
     })
   },
 
@@ -126,9 +117,7 @@ Page({
    * @methods 提交前确认打印
    */
   confirm() {
-    if (!this.hasAuthPhoneNum && !app.hasPhoneNum) {
-      return
-    }
+
     var hideConfirmPrintBox = Boolean(storage.get("hideConfirmPrintBox"))
     if (hideConfirmPrintBox) {
       this.print()
@@ -139,19 +128,6 @@ Page({
     }
   },
   
-  /**
-   * @methods 获取手机号
-   */
-  getPhoneNumber: co.wrap(function* (e) {
-    // yield app.getPhoneNum(e)
-    storage.put("hasAuthPhoneNum", true)
-    this.hasAuthPhoneNum = true
-    this.setData({
-      hasAuthPhoneNum: true
-    })
-    this.confirm()
-  }),
-
   /**
    * @methods 提交打印照片
    */
@@ -175,7 +151,7 @@ Page({
           media_type: 'invoice',
           state: resp.createOrder.state
         })
-        
+
       } catch (e) {
         logger.info(e)
         this.longToast.toast()

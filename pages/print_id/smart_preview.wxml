@@ -16,13 +16,13 @@
         </view>
         <view class="line" wx:if="{{type=='paper'}}"></view>
         <view class="price">
-            
+
             <view>价格</view>
             <view class='price-right'>
                 <image class="specials" mode='widthFix' src='/images/id/print_id_specials.png' wx:if="{{!can_free_print}}">
                 </image>
                 <view class="after">{{can_free_print?0:price}} 元
-                        <image class="member_tip" mode="widthFix" src="../../images/id/id_member.png" wx:if="{{can_free_print&&isMember}}"></image>
+                        <image class="member_tip" mode="widthFix" src="../../images/id/id_member.png" wx:if="{{can_free_print && isMember}}"></image>
                 </view>
             </view>
         </view>
@@ -32,12 +32,14 @@
 <image class="download_tip" mode="widthFix" src="../../images/id/id_download_tip.png" wx:if="{{pay}}"></image>
 <view class='bottom fs-32' style="{{pay?'border-top:none':''}}">
     <block wx:if="{{!pay}}">
-        <view class='flex-center left' bindtap='toSavePay' id="digital">
+        <view class='flex-center left conf-button' bindtap='toSavePay' id="digital">
             <text>保存图片</text>
         </view>
-        <button class="flex-center +{{idPrint?'':'forbid'}} right" bindtap='toPrint'
-            open-type="{{hasAuthPhoneNum?'':'getPhoneNumber'}}"
-            bindgetphonenumber="{{hasAuthPhoneNum?'':'getPhoneNumber'}}" id="paper">确认打印</button>
+        <view class="flex-center +{{idPrint?'':'forbid'}} right conf-button">
+          确认打印
+          <botttom-button class="bottom-button-box" text-right="确认打印" id="paper" bindrighttap="toPrint" get-phone="{{true}}"></botttom-button>
+        </view>
+
     </block>
     <block wx:if="{{pay}}">
         <view class="flex-center right width" bindtap="{{type=='paper'?'print':'submit'}}">

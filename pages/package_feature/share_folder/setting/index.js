@@ -38,7 +38,6 @@ Page({
     checkOpen: false,
     extract: 'all',
     fileTitle: null,
-    hasAuthPhoneNum:false,
     confirmModal: {
         isShow: false,
         title: '请正确放置A4打印纸',
@@ -88,13 +87,7 @@ Page({
     }
 
   }),
-  onShow:function(){
-    let hasAuthPhoneNum = Boolean(wx.getStorageSync('hasAuthPhoneNum'))
-    this.hasAuthPhoneNum = hasAuthPhoneNum
-    this.setData({
-      hasAuthPhoneNum: app.hasPhoneNum || hasAuthPhoneNum
-    })
-  },
+
   isExcelFiles(name = '') {
     const rgx = "(.xlsx|.xls|.xlsm|.xltx|.xltm)$";
     const reg = new RegExp(rgx);
@@ -229,9 +222,13 @@ Page({
 
   //确认按钮提交
   confcheck(e) {
+<<<<<<< HEAD
     // if(!this.hasAuthPhoneNum&&!app.hasPhoneNum){
     //   return
     // }
+=======
+
+>>>>>>> origin/develop
     if (parseInt(this.data.startPage) > parseInt(this.data.endPage) || parseInt(this.data.startPage) <= 0) {
       this.setData({
         startPrintPage: 1,
@@ -268,15 +265,7 @@ Page({
         })
     }
   },
-  getPhoneNumber:co.wrap(function*(e){
-    yield app.getPhoneNum(e)
-    wx.setStorageSync("hasAuthPhoneNum",true)
-    this.hasAuthPhoneNum = true
-    this.setData({
-      hasAuthPhoneNum:true
-    })
-    this.confcheck(e)
-  }),
+
 
   print: co.wrap(function*() {
     try {

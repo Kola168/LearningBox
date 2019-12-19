@@ -6,6 +6,7 @@ Page({
   data: {
     selectAllFlag: false,
     isFullScreen: false,
+    loadReady: false,
     userList: []
   },
   onLoad(query) {
@@ -22,12 +23,13 @@ Page({
     })
     try {
       let res = yield graphql.getDeviceShareUsers(this.deviceSn)
-      let shareUsers = res.device.shareUsers
+      let shareUsers = res.currentUser.devices[0].sharers
       for (let i = 0; i < shareUsers.length; i++) {
         shareUsers[i].selectFlag = false
       }
       this.setData({
-        userList: shareUsers
+        userList: shareUsers,
+        loadReady: true
       })
       this.weToast.hide()
     } catch (error) {

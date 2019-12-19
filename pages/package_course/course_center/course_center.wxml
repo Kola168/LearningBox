@@ -7,7 +7,7 @@
 		<view
 		 class="mine-item sys-flex"
 		 wx:for="{{courseList}}"
-		 wx:key="{{index}}"
+		 wx:key="sn"
 		 bindtap="enterDetail"
 		 data-sn="{{item.sn}}"
 		>

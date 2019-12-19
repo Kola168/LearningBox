@@ -44,7 +44,8 @@
     "components/bottom-button/test",
     "pages/index/grade",
 		"pages/account/index",
-		"pages/finish/index"
+		"pages/finish/index",
+		"pages/mall/index"
   ],
   "subPackages": [{
       "root": "pages/package_common",
@@ -55,7 +56,9 @@
         "account/name_edit",
         "free_resources/index/index",
         "free_resources/content/index",
-        "free_resources/detail/index"
+        "free_resources/detail/index",
+        "records/index/index",
+        "records/detail/index"
       ]
     },
     {
@@ -172,7 +175,8 @@
     "navigationStyle": "custom"
   },
   "usingComponents": {
-    "nav-bar": "components/nav-bar/index"
+    "nav-bar": "components/nav-bar/index",
+    "botttom-button":"components/bottom-button/index"
   },
   "style": "v2",
   "sitemapLocation": "sitemap.json",
@@ -195,7 +199,7 @@
         "selectedIconPath": "images/home/icon_tab_study_selected.png"
       },
       {
-        "pagePath": "pages/index/index",
+        "pagePath": "pages/mall/index",
         "text": "商城",
         "iconPath": "images/home/icon_tab_shop_unselected.png",
         "selectedIconPath": "images/home/icon_tab_shop_selected.png"

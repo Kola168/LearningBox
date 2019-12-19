@@ -1,5 +1,5 @@
 <!--components/bottom-button/index.wxml-->
 <view class="components-bottom-box {{butHigh?'bottom-heigher':''}}">
-  <button wx:if="{{textLeft}}" class="components-button-style components-left-botton {{butHigh?'bottom-left-heigher':''}}" bindtap="leftTap">{{textLeft}}</button>
-  <button wx:if="{{textRight}}" class="components-button-style components-right-botton" bindtap="rightTap">{{textRight}}</button>
+  <button wx:if="{{textLeft}}" class="components-button-style components-left-botton left-class {{butHigh?'bottom-left-heigher':''}}" bindtap="leftTap">{{textLeft}}</button>
+  <button wx:if="{{textRight}}" class=" components-button-style components-right-botton extra-class" open-type="{{showPhone && phoneNumGet=='notShown'?'getPhoneNumber':''}}" bindgetphonenumber="{{showPhone && phoneNumGet=='notShown'?'getPhoneNum':''}}" bindtap="{{showPhone && phoneNumGet=='notShown'?'':'rightTap'}}">{{textRight}}</button>
 </view>

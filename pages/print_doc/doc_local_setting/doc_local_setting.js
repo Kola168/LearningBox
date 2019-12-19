@@ -48,7 +48,6 @@ Page({
         _id: 'even'
     }],
     fileTitle: null,
-    hasAuthPhoneNum: false,
     isFullScreen: false,
     confirmModal: {
       isShow: false,
@@ -98,14 +97,6 @@ Page({
     }
 
   }),
-
-  onShow: function () {
-    let hasAuthPhoneNum = Boolean(storage.get('hasAuthPhoneNum'))
-    this.hasAuthPhoneNum = hasAuthPhoneNum
-    this.setData({
-      hasAuthPhoneNum: app.hasPhoneNum || hasAuthPhoneNum
-    })
-  },
 
   isExcelFiles(name = '') {
     const rgx = "(.xlsx|.xls|.xlsm|.xltx|.xltm)$";
@@ -238,9 +229,7 @@ Page({
 
   //确认按钮提交
   confCheck(e) {
-    if (!this.hasAuthPhoneNum && !app.hasPhoneNum) {
-      return
-    }
+
     if (parseInt(this.data.startPage) > parseInt(this.data.endPage) || parseInt(this.data.startPage) <= 0) {
       this.setData({
         startPrintPage: 1,
@@ -277,35 +266,25 @@ Page({
     }
   },
 
-  getPhoneNumber: co.wrap(function* (e) {
-    // yield app.getPhoneNum(e)
-    storage.put("hasAuthPhoneNum", true)
-    this.hasAuthPhoneNum = true
-    this.setData({
-      hasAuthPhoneNum: true
-    })
-    this.confCheck(e)
-  }),
-
   print: co.wrap(function* () {
     let extract = this.data.extract
     let tempObj = {
-      url: this.data.arrayFile.url,
+      originalUrl: this.data.arrayFile.url,
+      printUrl: this.data.arrayFile.url,
       filename: this.data.arrayFile.name,
-      number: this.data.documentPrintNum, // 张数
+      copies: this.data.documentPrintNum, // 张数
       startPage: this.data.startPage, // 起始页数
       endPage: this.data.endPage, // 终止页数
       singlePageLayoutsCount: this.data.zoomType,
-      skipGs: !this.data.checkOpen, //是否检查文件修复
+      skipGs: this.data.checkOpen, //是否检查文件修复
       grayscale: this.data.colorCheck == 'Color' ? false : true, // 是否是彩色
       duplex: this.data.duplexCheck ? true : false, // false单面 true双面
-      // media_size: (this.data.medium === 'a4') ? 0 : 3, //纸质
       extract: extract //范围类型
     }
 
     if (extract !== 'all') {
-      tempObj.start_page = 0
-      tempObj.end_page = 0
+      tempObj.startPage = 0
+      tempObj.endPage = 0
     }
     this.longToast.toast({
       type: 'loading',
@@ -313,10 +292,7 @@ Page({
     })
 
     try {
-      const resp = yield api.printInvoice(app.openId, '_docA4', [tempObj])
-      if (resp.code != 0) {
-        throw (resp)
-      }
+      const resp = yield commonRequest.createOrder('doc_a4', [tempObj])
       this.longToast.hide()
       router.redirectTo('/pages/finish/index', {
         type: 'doc',

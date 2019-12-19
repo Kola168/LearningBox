@@ -49,7 +49,7 @@
     width:200rpx;
     height:200rpx;
     border-radius: 12rpx;
-    background-color:#FFDC5E;
+    /* background-color:#FFDC5E; */
 }
 .item-right{
     width: calc(100% - 230rpx)

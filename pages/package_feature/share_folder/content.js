@@ -77,8 +77,8 @@ Page({
 				backHome: true
 			})
 		}
-		let unionId = wx.getStorageSync('unionId')
-		if (unionId) {
+		let userSn = wx.getStorageSync('user_sn')
+		if (userSn) {
 			this.joinAndGetList()
 		}
 		event.on('Authorize', this, function (data) {

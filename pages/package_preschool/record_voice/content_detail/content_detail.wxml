@@ -57,7 +57,11 @@
 		</button>
 		<view class="btn-main {{isFullScreen ? 'is-full-screen' : ''}}">
 			<view class="btn consumables" bindtap="openConsumable">适配耗材</view>
-			<view class="btn btn-print" bind:tap="toConfirm">打印</view>
+			<view class="btn btn-print" bind:tap="toConfirm">
+			打印
+			<botttom-button class="bottom-button-box" text-right="确认打印" bindrighttap="toConfirm" get-phone="{{true}}"></botttom-button>
+
+			</view>
 		</view>
 	</view>
 	<consumables
@@ -158,4 +162,3 @@
 
 <import src="../../../../lib/toast/wetoast.wxml" />
 <template is="wetoast" data="{{...__wetoast__}}" />
-

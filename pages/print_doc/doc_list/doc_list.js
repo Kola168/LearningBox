@@ -16,7 +16,6 @@ Page({
 		isFullScreen: false,
 		allCount: 0, //上传总数
 		type: null, //打印类型
-		hasAuthPhoneNum: false, //是否授权手机号
 		types: {},
 		files: [], //文件列表
 		checkboxFlag: false,
@@ -57,14 +56,6 @@ Page({
 		}
 
 	}),
-
-	onShow () {
-		let hasAuthPhoneNum = Boolean(storage.get('hasAuthPhoneNum'))
-		this.hasAuthPhoneNum = hasAuthPhoneNum
-		this.setData({
-			hasAuthPhoneNum: app.hasPhoneNum || hasAuthPhoneNum
-		})
-	},
 
 	/**
 	 * @methods 获取打印能力数据
@@ -214,9 +205,7 @@ Page({
 	 */
 	confirm: co.wrap(function*(e) {
 		// 判断是否授权手机号
-    if(!this.hasAuthPhoneNum && !app.hasPhoneNum){
-      return
-		}
+
 		// 判断是否选择文档
     if (this.data.allCount == 0) {
        return wx.showModal({
@@ -234,19 +223,6 @@ Page({
 		this.setData({
 				['confirmModal.isShow']: true
 		})
-	}),
-
-	/**
-	 * @methods 获取手机号
-	 */
-	getPhoneNumber: co.wrap(function*(e){
-		// yield app.getPhoneNum(e)
-		storage.put('hasAuthPhoneNum', true)
-    this.hasAuthPhoneNum = true
-    this.setData({
-      hasAuthPhoneNum: true
-    })
-    this.confirm(e)
 	}),
 
 	/**

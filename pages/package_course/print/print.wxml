@@ -1,7 +1,7 @@
 
 <nav-bar background="#fff" title="课程" />
 <view class="img-container img-{{lessonImgs.length>2?3:lessonImgs.length}}">
-  <view class="img-box" wx:for="{{lessonImgs}}" wx:key="{{index}}" id="{{index}}" data-check="{{item.isCheck}}" bindtap="checkImg">
+  <view class="img-box" wx:for="{{lessonImgs}}" wx:key="_id" id="{{index}}" data-check="{{item.isCheck}}" bindtap="checkImg">
     <image src="{{lessonImgs.length===1 ? item.url : item.url+'?x-image-process=image/resize,w_300'}}" class="box-img" mode="widthFix" />
     <image src="../images/selected.png" wx:if="{{(item.isCheck&&lessonImgs.length>1)}}" class="img-check" />
     <image src="../images/zoom_big.png" class="zoom-big" wx:if="{{lessonImgs.length>1}}" catchtap="zoomImg" id="{{index}}" />
@@ -15,7 +15,10 @@
     </view>
     <view class="all-check">已选：{{count}}张</view>
   </view>
-  <button class="bar-print" open-type="{{hasAuthPhoneNum ? '' : 'getPhoneNumber'}}" bindgetphonenumber="{{hasAuthPhoneNum ? '' : 'getPhoneNumber'}}" bindtap="toConfirm">开始打印</button>
+  <view class="bar-print">
+  开始打印
+  <botttom-button class="bottom-button-box" text-right="确认打印" bindrighttap="toConfirm" get-phone="{{true}}"></botttom-button>
+  </view>
 </view>
 
 <!-- 打印确认框 -->

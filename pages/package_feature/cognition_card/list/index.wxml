@@ -19,7 +19,7 @@
     <view class="btn-add {{cognitionCardImgs.length===18?'unable':''}}" bindtap="toAdd">新增</view>
     <view class="btn-print {{cognitionCardImgs.length===0?'unable':''}}">
       <text>打印</text>
-      <button form-type='submit' open-type="{{hasAuthPhoneNum?'':'getPhoneNumber'}}" bindgetphonenumber="{{hasAuthPhoneNum?'':'getPhoneNumber'}}" bindtap="preConfirm" hover-class="none" class="cover-but"></button>
+      <botttom-button class="cover-but" text-right="打印" bindrighttap="preConfirm" get-phone="{{true}}"></botttom-button>
     </view>
   </view>
 </view>

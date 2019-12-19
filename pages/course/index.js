@@ -25,30 +25,30 @@ Page({
 
   onLoad: co.wrap(function* () {
     this.activeDevice = app.activeDevice
-    let unionId = storage.get('unionId')
-    this.unionId = unionId
+    let userSn = storage.get('user_sn')
+    this.userSn = userSn
     this.longToast = new app.weToast()
     yield this.getCourseIndex()
     let isAndroid = app.sysInfo.system.toLocaleLowerCase().indexOf('android') > -1
     this.setData({
       isAndroid: isAndroid,
-      unionId: unionId
+      userSn: userSn
     })
 
     event.on('Authorize', this, () => {
-      this.unionId = storage.get('unionId')
+      this.userSn = storage.get('user_sn')
       this.getCourseIndex()
     })
 
   }),
 
   onShow() {
-    let unionId = storage.get('unionId')
-    this.unionId = unionId
-    if (unionId) {
+    let userSn = storage.get('user_sn')
+    this.userSn = userSn
+    if (userSn) {
       this.getLastCourseInfo()
       this.setData({
-        unionId
+        userSn
       })
       if (app.activeDevice) {
         let isMember = app.activeDevice.is_member
@@ -143,13 +143,12 @@ Page({
   }),
 
   authCheck: co.wrap(function* () {
-    // if (!this.unionId) {
-    //   router.navigateTo('/pages/authorize/index')
-    //   return false
-    // } else {
-    //   return true
-    // }
-    return true
+    if (!this.userSn) {
+      router.navigateTo('/pages/authorize/index')
+      return false
+    } else {
+      return true
+    }
   }),
 
   // 获取推荐 || banner
@@ -194,7 +193,7 @@ Page({
 
   onPullDownRefresh: co.wrap(function* () {
     yield this.getCourseIndex()
-    this.unionId && this.getLastCourseInfo()
+    this.userSn && this.getLastCourseInfo()
     wx.stopPullDownRefresh()
   }),
 

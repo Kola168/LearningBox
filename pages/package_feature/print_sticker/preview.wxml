@@ -29,13 +29,7 @@
                 <text>分享</text>
             </button>
         </view>
-        <view class="confirm_print">
-            <form report-submit="true" bindsubmit="confirm">
-                <button open-type="{{hasAuthPhoneNum?'':'getPhoneNumber'}}" bindgetphonenumber="{{hasAuthPhoneNum?'':'getPhoneNumber'}}" formType="submit">
-                    确认打印
-                </button>
-            </form>
-        </view>
+        <botttom-button class="confirm_print" text-right="确认打印" bindrighttap="confirm" get-phone="{{true}}"></botttom-button>
     </view>
     <view bindtap="backIndex" class="back-index" wx:if="{{isShare}}">返回首页</view>
 </view>

@@ -13,7 +13,6 @@ Page({
     printerAlias: '3nfe8xk3b6vew',
     appId: 'wxde848be28728999c',
     shopId: 24056376,
-    hasAuthPhoneNum: false,
     confirmModal: {
       isShow: false,
       hasCancel: true,
@@ -41,13 +40,7 @@ Page({
       loadReady: true
     })
   },
-  onShow: function() {
-    let hasAuthPhoneNum = Boolean(storage.get('hasAuthPhoneNum'))
-    this.hasAuthPhoneNum = hasAuthPhoneNum
-    this.setData({
-      hasAuthPhoneNum: app.hasPhoneNum || hasAuthPhoneNum
-    })
-  },
+
   toShopping: function() {
     wxNav.navigateTo(`/pages/cart/transit/transit?pageType=goodsDetail&goodsId=${this.data.printerAlias}&openId=${app.openId}&shopId=${this.data.shopId}&appId=${this.data.appId}`)
   },
@@ -87,9 +80,7 @@ Page({
     }
   }),
   preConfirm() {
-    if (!this.hasAuthPhoneNum && !app.hasPhoneNum) {
-      return
-    }
+
     if (this.data.cognitionCardImgs.length === 0) {
       wx.showModal({
         title: '提示',
@@ -109,15 +100,7 @@ Page({
       })
     }
   },
-  getPhoneNumber: co.wrap(function*(e) {
-    // yield app.getPhoneNum(e)
-    storage.put("hasAuthPhoneNum", true)
-    this.hasAuthPhoneNum = true
-    this.setData({
-      hasAuthPhoneNum: true
-    })
-    this.preConfirm()
-  }),
+
   print: co.wrap(function*() {
     this.setData({
       showModal: false
@@ -137,11 +120,14 @@ Page({
       }
       let resp = yield commonRequest.createOrder('literacy_card', reImgs)
       this.weToast.hide()
-      wxNav.redirectTo(`../../../../finish/index`, {
-        media_type: 'literacy_card',
-        state: resp.state,
-        type: 'literacy_card'
-      })
+      if(resp.createOrder.state) {
+        wxNav.redirectTo(`/pages/index/index`)
+      }
+      // wxNav.redirectTo(`../../../../finish/index`, {
+      //   media_type: 'literacy_card',
+      //   state: resp.state,
+      //   type: 'literacy_card'
+      // })
     } catch (error) {
       this.weToast.hide()
       util.showError(error)
