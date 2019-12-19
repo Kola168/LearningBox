@@ -312,6 +312,9 @@ Page({
 
       let orderSn = yield commonRequest.createOrder(this.type, imgs)
       storage.remove(this.type)
+      wxNav.redirectTo(`/pages/finish/index`, {
+        media_type: this.type
+      })
       this.longToast.toast()
       Loger(orderSn)
     } catch (e) {

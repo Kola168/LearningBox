@@ -376,11 +376,9 @@ Page({
         }
       })
       let resp = yield commonRequest.createOrder(this.mediaType, imgs)
-      // wxNav.redirectTo(`../../../finish/index`, {
-      //   media_type: 'literacy_card',
-      //   state: resp.state,
-      //   type: 'literacy_card'
-      // })
+      wxNav.redirectTo(`pages/finish/index`, {
+        media_type: this.mediaType
+      })
       this.longToast.toast()
       storage.remove(this.mediaType)
     }catch(e){

@@ -239,6 +239,9 @@ Page({
             })
           })
           let orderSn = yield commonRequest.createOrder(that.data.type, imgs)
+          wxNav.redirectTo(`/pages/finish/index`, {
+            media_type: that.data.type
+          })
           that.longToast.toast()
         }
       }), ()=>{
