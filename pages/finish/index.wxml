@@ -1,0 +1,5 @@
+
+
+
+<button class="back" bindtap="backToHome">返回首页</button>
+<view class="back">点击返回按钮回首页</view>
