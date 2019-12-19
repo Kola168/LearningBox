@@ -53,7 +53,7 @@ const chooseCtx = {
     confirmModal: {
       isShow: false,
       title: '请正确放置A4打印纸',
-      image: 'https://cdn.gongfudou.com/miniapp/ec/confirm_print_a4_new.png'
+      image: 'https://cdn-h.gongfudou.com/LearningBox/main/doc_confirm_print_a4_new.png'
     }
   },
 
@@ -91,7 +91,6 @@ const chooseCtx = {
       allCount: len + images.length,
       currentStartIndex: len
     })
-    console.log('---',this.data.currentStartIndex)
     images.forEach((item, index)=>{
       let url = item.url
       this.showImage(url, index+len)
@@ -565,7 +564,6 @@ const chooseCtx = {
   }),
 
   print: co.wrap(function*(images) {
-    // console.log('订单生成参数', params)
     // if (!app.openId) {
     //   yield this.loopGetOpenId()
     // }
@@ -590,7 +588,6 @@ const chooseCtx = {
       //   dataType: 'json',
       //   data: params
       // })
-      console.log(images, 'xxxxxxxxxx')
       const resp = yield commonRequest.createOrder("pic_to_doc",images)
       // logger.info(resp)
       // if (resp.data.code !== 0) {
