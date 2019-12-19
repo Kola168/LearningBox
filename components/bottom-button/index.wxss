@@ -15,7 +15,6 @@ button::after {
 .components-bottom-box {
   width: 100%;
   display: flex;
-  align-items: center;
   font-size: 36rpx;
   background: #fff;
 }

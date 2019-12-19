@@ -79,15 +79,8 @@ page {
   margin-left: 20rpx;
 }
 
-.bottom {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.bottom-button {
   width: 100%;
-  height: 100rpx;
-  color: #333;
-  font-size: 36rpx;
-  border-top: 1px solid #cecece;
 }
 
 .btn-left {
@@ -95,23 +88,6 @@ page {
   color: #666666;
   font-size: 36rpx;
   text-align: center;
-}
-
-.bottom form {
-  flex: 1;
-}
-
-.bottom button {
-  width: 100%;
-  height: 100rpx;
-  padding: 0;
-  line-height: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: #000;
-  background: #FFDC5E;
-  margin: 0!important;
 }
 
 .choose {

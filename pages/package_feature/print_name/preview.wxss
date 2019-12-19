@@ -68,11 +68,5 @@
     margin-right: 8rpx;
 }
 .confirm_print{
-    width: 40% !important;
-    background: #ffe27a;
-}
-.confirm_print form,
-.confirm_print button{
-    color: #333;
-    width: 100%;
+    width: 40%;
 }

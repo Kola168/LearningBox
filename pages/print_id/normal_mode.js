@@ -19,7 +19,6 @@ Page({
         price: 0,
         price_count: 0,
         showConfirmModal: null,
-        hasAuthPhoneNum: false,
         confirmModal: {
             isShow: false,
             title: '请确认6寸照片纸放置正确',
@@ -53,13 +52,7 @@ Page({
             console.log(e)
         }
     }),
-    onShow: function () {
-        let hasAuthPhoneNum = Boolean(wx.getStorageSync('hasAuthPhoneNum'))
-        this.hasAuthPhoneNum = hasAuthPhoneNum
-        this.setData({
-            hasAuthPhoneNum: app.hasPhoneNum || hasAuthPhoneNum
-        })
-    },
+
     tapMin: co.wrap(function* () {
         if (this.data.num > 1) {
             this.setData({
@@ -79,9 +72,6 @@ Page({
     toConfirm: co.wrap(function* (e) {
         console.log('证件照打印时form发生了submit事件，携带数据为：', e.detail.formId, `print${this.data.mode}`)
 
-        // if (!this.hasAuthPhoneNum && !app.hasPhoneNum) {
-        //     return
-        // }
 
         let hideConfirmPrintBox = Boolean(wx.getStorageSync("hideConfirmPrintBox"))
         if (hideConfirmPrintBox) {
@@ -93,15 +83,6 @@ Page({
         }
     }),
 
-    getPhoneNumber: co.wrap(function* (e) {
-        yield app.getPhoneNum(e)
-        wx.setStorageSync("hasAuthPhoneNum", true)
-        this.hasAuthPhoneNum = true
-        this.setData({
-            hasAuthPhoneNum: true
-        })
-        this.toConfirm(e)
-    }),
     print: co.wrap(function* () {
         this.longToast.toast({
             type: "loading",

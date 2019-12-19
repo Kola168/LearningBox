@@ -39,22 +39,7 @@
 	</view>
 </view>
 
-<view class="bottom {{isFullScreen ? 'is-full-screen' : ''}}">
-	<view class='bottom-left' bindtap='choose'>
-		<text>继续选择</text>
-	</view>
-	<view class='bottom-right'>
-		<form report-submit='true' bindsubmit='confirm'>
-			<button
-			 class="{{count== 0 ? 'button-gray' : ''}}"
-			 open-type="{{hasAuthPhoneNum ? '' : 'getPhoneNumber'}}"
-			 bindgetphonenumber="{{hasAuthPhoneNum ? '' : 'getPhoneNumber'}}"
-			 form-type='submit'
-			>确认打印
-			</button>
-		</form>
-	</view>
-</view>
+<botttom-button class="bottom" text-left="继续选择" bindlefttap="choose" text-right="确认打印" bindrighttap="confirm" get-phone="{{true}}"></botttom-button>
 
 <import src="../../../lib/toast/wetoast.wxml" />
 <template is="wetoast" data="{{...__wetoast__}}" />
@@ -95,5 +80,3 @@
 		{{showInterceptModal}}
 	</view>
 </view>
-
-

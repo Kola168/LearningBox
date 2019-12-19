@@ -48,7 +48,6 @@ Page({
         _id: 'even'
     }],
     fileTitle: null,
-    hasAuthPhoneNum: false,
     isFullScreen: false,
     confirmModal: {
       isShow: false,
@@ -98,14 +97,6 @@ Page({
     }
 
   }),
-
-  onShow: function () {
-    let hasAuthPhoneNum = Boolean(storage.get('hasAuthPhoneNum'))
-    this.hasAuthPhoneNum = hasAuthPhoneNum
-    this.setData({
-      hasAuthPhoneNum: app.hasPhoneNum || hasAuthPhoneNum
-    })
-  },
 
   isExcelFiles(name = '') {
     const rgx = "(.xlsx|.xls|.xlsm|.xltx|.xltm)$";
@@ -238,9 +229,7 @@ Page({
 
   //确认按钮提交
   confCheck(e) {
-    if (!this.hasAuthPhoneNum && !app.hasPhoneNum) {
-      return
-    }
+
     if (parseInt(this.data.startPage) > parseInt(this.data.endPage) || parseInt(this.data.startPage) <= 0) {
       this.setData({
         startPrintPage: 1,
@@ -276,16 +265,6 @@ Page({
       })
     }
   },
-
-  getPhoneNumber: co.wrap(function* (e) {
-    // yield app.getPhoneNum(e)
-    storage.put("hasAuthPhoneNum", true)
-    this.hasAuthPhoneNum = true
-    this.setData({
-      hasAuthPhoneNum: true
-    })
-    this.confCheck(e)
-  }),
 
   print: co.wrap(function* () {
     let extract = this.data.extract

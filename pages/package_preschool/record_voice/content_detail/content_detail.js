@@ -36,7 +36,6 @@ Page({
 		isDuplex: true,
 		unionId: '',
 		userAuthorize: false,
-		hasAuthPhoneNum: false,
 		confirmModal: {
 			isShow: false,
 			title: '请正确放置A4打印纸',
@@ -58,7 +57,7 @@ Page({
 			isFullScreen: app.isFullScreen,
 			isAndroid: systemInfo.system.indexOf('iOS') > -1 ? false : true
 		})
-	
+
 		this.sn = options.sn //分类sn
 		this.title = decodeURIComponent(options.title)
 
@@ -80,7 +79,7 @@ Page({
 			 this.getUserInfo()
 		})
 
-	}),	
+	}),
 
 	/**
 	 * 获取宝宝信息
@@ -101,7 +100,7 @@ Page({
       util.showError(e)
     }
 	}),
-	
+
 	/**
 	 * 获取内容详情
 	 */
@@ -110,7 +109,7 @@ Page({
       type: 'loading',
       title: '请稍候'
 		})
-		
+
 		try {
 			var resp = yield graphql.getRecordSource(this.sn)
 
@@ -126,25 +125,21 @@ Page({
 	}),
 
 	onShow: co.wrap(function*() {
-		let hasAuthPhoneNum = Boolean(storage.get('hasAuthPhoneNum'))
-		this.hasAuthPhoneNum = hasAuthPhoneNum
-		this.setData({
-			hasAuthPhoneNum: app.hasPhoneNum || hasAuthPhoneNum
-    })
-    
+
+
     var auth = yield this.authCheck()
 
     auth && this.setData({
       userAuthorize: true
     })
   }),
-  
+
 	tabSlide: function ({detail: {current}}) {
 		this.setData({
 			num: current
 		})
   },
-  
+
 	turnImg: co.wrap(function* (e) {
 		let num = this.data.num;
 		let turn = e.currentTarget.dataset.turn;
@@ -166,13 +161,13 @@ Page({
 			turn: turn
 		})
   }),
-  
+
 	collect: co.wrap(function* () {
     var auth = yield this.authCheck()
     if (!auth) {
       return
     }
-    
+
 		this.longToast.toast({
 			type: 'loading',
 			title: '请稍等'
@@ -184,7 +179,7 @@ Page({
 				sn: this.sn,
 				action: collection ? 'destroy' : 'create'
 			})
-			
+
 			this.longToast.hide()
 			let tipText = collection ? '取消收藏成功' : '收藏成功'
 			wx.showToast({
@@ -200,7 +195,7 @@ Page({
 			util.showError(error)
 		}
   }),
-  
+
 	toConfirm: co.wrap(function* (e) {
     var auth = yield this.authCheck()
     if (!auth) {
@@ -226,7 +221,7 @@ Page({
 			showIosTip: false
 		})
   },
-  
+
 	print: co.wrap(function* (e) {
 		try {
 			this.longToast.toast({
@@ -248,7 +243,7 @@ Page({
         featureKey: "kid_record"
       }
       var resp = yield graphql.createResourceOrder(params)
-	
+
 			router.redirectTo('/pages/finish/index', {
 				media_type: this.data.media_type,
 				state: resp.createResourceOrder.state
@@ -290,7 +285,7 @@ Page({
       type: 'loading',
       title: '请稍候'
 		})
-		
+
 		try {
 			var resp = yield graphql.getConsumables("content", this.sn, 'before')
 
@@ -359,7 +354,7 @@ Page({
 			})
 		}
   }),
-  
+
 	//输入打印起始页
 	inputStartPage: function (e) {
 		this.data.startPrintPage = e.detail.value
@@ -376,17 +371,17 @@ Page({
 				confirmText: "确认",
 				showCancel: false
 			})
-			
+
 		} else {
 			this.data.startPrintPage = e.detail.value
 		}
 	},
-  
+
   //输入打印结束页
 	inputEndPage(e) {
 		this.data.endPrintPage = e.detail.value
   },
-  
+
 	endPageJudge(e) {
 		if (parseInt(e.detail.value) < parseInt(this.data.startPrintPage) || parseInt(e.detail.value) > this.data.detail.preview_urls.length) {
 			this.setData({
@@ -420,9 +415,7 @@ Page({
 
 	//确认按钮提交
 	confCheck() {
-		if (!this.hasAuthPhoneNum && !app.hasPhoneNum) {
-			return
-		}
+
     if (this.data.startPrintPage == '') {
       return wx.showModal({
         content: '请输入正确的开始页',
@@ -430,7 +423,7 @@ Page({
         confirmText: "确认",
         showCancel: false
       })
-      
+
     }
 
     if (this.data.endPrintPage == '') {
@@ -440,7 +433,7 @@ Page({
         confirmText: "确认",
         showCancel: false
       })
-      
+
     }
 
 		let hideConfirmPrintBox = Boolean(storage.get("hideConfirmPrintBox"))
@@ -452,23 +445,13 @@ Page({
 			})
 		}
   },
-  
-	getPhoneNumber: co.wrap(function* (e) {
-    // yield app.getPhoneNum(e)
-    storage.put('hasAuthPhoneNum', true)
-		this.hasAuthPhoneNum = true
-		this.setData({
-			hasAuthPhoneNum: true
-		})
-		this.confCheck()
-	}),
 
 	cancelCheck() {
 		this.setData({
 			showSetting: false
 		})
 	},
-	
+
 	onShareAppMessage: co.wrap(function* (res) {
 		res = res[0]
 		if (res.from === 'button') {
@@ -486,7 +469,7 @@ Page({
 		}
 
   }),
-  
+
 	onUnload: function () {
 		event.remove('Authorize', this)
 	}

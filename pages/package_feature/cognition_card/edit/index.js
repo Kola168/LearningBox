@@ -27,7 +27,6 @@ Page({
     printerAlias: '3nfe8xk3b6vew',
     appId: 'wxde848be28728999c',
     shopId: 24056376,
-    hasAuthPhoneNum: false,
     modalObj: {
       isShow: false,
       hasCancel: false,
@@ -82,11 +81,7 @@ Page({
     }
   }),
   onShow: function() {
-    let hasAuthPhoneNum = Boolean(storage.get('hasAuthPhoneNum'))
-    this.hasAuthPhoneNum = hasAuthPhoneNum
-    this.setData({
-      hasAuthPhoneNum: app.hasPhoneNum || hasAuthPhoneNum
-    })
+
   },
 
   chooseBaidu(res){
@@ -305,9 +300,7 @@ Page({
     if (app.preventMoreTap(e)) {
       return
     }
-    // if (!this.hasAuthPhoneNum && !app.hasPhoneNum) {
-    //   return
-    // }
+
     let type = this.data.type,
       tipFlag = null,
       contentText = ''
@@ -342,15 +335,7 @@ Page({
     }
 
   }),
-  getPhoneNumber: co.wrap(function*(e) {
-    // yield app.getPhoneNum(e)
-    // storage.put("hasAuthPhoneNum", true)
-    // this.hasAuthPhoneNum = true
-    // this.setData({
-    //   hasAuthPhoneNum: true
-    // })
-    // this.preCheck()
-  }),
+
   print: co.wrap(function*() {
     this.weToast.toast({
       type: 'loading'

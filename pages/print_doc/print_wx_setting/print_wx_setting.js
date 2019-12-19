@@ -34,14 +34,13 @@ Page({
     page_count: '',
     duplex: false,
     isDuplex: false,
-    hasAuthPhoneNum: false,
     confirmModal: {
       isShow: false,
       title: '请正确放置A4打印纸',
       image: 'https://cdn-h.gongfudou.com/LearningBox/main/doc_confirm_print_a4_new.png'
     }
   },
-  
+
   onLoad: co.wrap(function* (options) {
     this.longToast = new app.weToast()
     this.setData({
@@ -52,14 +51,6 @@ Page({
     this.from = options.from
     yield this.setting()
   }),
-  
-  onShow: function () {
-    var hasAuthPhoneNum = Boolean(storage.get('hasAuthPhoneNum'))
-    this.hasAuthPhoneNum = hasAuthPhoneNum
-    this.setData({
-      hasAuthPhoneNum: app.hasPhoneNum || hasAuthPhoneNum
-    })
-  },
 
   setting: co.wrap(function* (e) {
     //获取打印能力
@@ -90,7 +81,7 @@ Page({
             checked: true
           }]
         })
-       
+
       } else if (resp.data.code != 0) {
         throw (resp.data)
       }
@@ -182,9 +173,6 @@ Page({
   },
 
   confirm (e) {
-    if (!this.hasAuthPhoneNum && !app.hasPhoneNum) {
-      return
-    }
 
     let num1 = parseInt(this.data.start_page)
     let num2 = parseInt(this.data.end_page)
@@ -208,16 +196,6 @@ Page({
       })
     }
   },
-
-  getPhoneNumber: co.wrap(function* (e) {
-    // yield app.getPhoneNum(e)
-    storage.put('hasAuthPhoneNum', true)
-    this.hasAuthPhoneNum = true
-    this.setData({
-      hasAuthPhoneNum: true
-    })
-    this.confirm(e)
-  }),
 
   print: co.wrap(function* (e) {
     this.longToast.toast({
