@@ -14,7 +14,7 @@
                     <image src="{{item.avatar}}" mode="widthFix"></image>
                     <text>{{item.nickname}}</text>
                 </view>
-                <image class="select-image" src="{{item.choose ? '../../images/error_finish.png': '../../images/device_share_not_select.png'}}" mode="widthFix" bindtap="choose" id="{{index}}"></image>
+                <image class="select-image" src="{{item.choose ? '../images/error_finish.png': '../images/device_share_not_select.png'}}" mode="widthFix" bindtap="choose" id="{{index}}"></image>
             </view>
         </view>
     </view>
@@ -31,7 +31,7 @@
 </view>
 
 <view wx:if="{{memberList.length == 0}}" class='no-share'>
-    <image src='../../images/file_no_share.png' mode='widthFix'></image>
+    <image src='../images/file_no_share.png' mode='widthFix'></image>
     <view>将文件夹分享给好友吧</view>
 </view>
 

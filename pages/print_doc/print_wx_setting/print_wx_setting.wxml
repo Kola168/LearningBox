@@ -13,7 +13,7 @@
 					bindtap='chooseColors'
 					/>
 			</view>
-				
+
 			<view class='kind'>
 				<text class='type'>黑白</text>
 				<image
@@ -76,15 +76,11 @@
 			<image src='/images/doc_setting_preview.png' class='preview_icon' mode='widthFix' />
 			<text>打印预览</text>
 		</button>
-		<form report-submit="true" bindsubmit="confirm" class='confirm'>
-			<button
-			 formType="submit"
-			 hover-class="none"
-			 open-type="{{hasAuthPhoneNum ? '' : 'getPhoneNumber'}}"
-			 bindgetphonenumber="{{ hasAuthPhoneNum ? '' : 'getPhoneNumber' }}"
-			>确认打印
-			</button>
-		</form>
+		<view class="conf-botton">
+			确认打印
+			<botttom-button class="bottom-button-box" text-right="确认打印" bindrighttap="confirm" get-phone="{{true}}"></botttom-button>
+		</view>
+
 	</view>
 </view>
 
@@ -93,4 +89,3 @@
 
 <import src="../../../lib/toast/wetoast.wxml" />
 <template is="wetoast" data="{{...__wetoast__}}" />
-

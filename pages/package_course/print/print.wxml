@@ -15,7 +15,10 @@
     </view>
     <view class="all-check">已选：{{count}}张</view>
   </view>
-  <button class="bar-print" open-type="{{hasAuthPhoneNum ? '' : 'getPhoneNumber'}}" bindgetphonenumber="{{hasAuthPhoneNum ? '' : 'getPhoneNumber'}}" bindtap="toConfirm">开始打印</button>
+  <view class="bar-print">
+  开始打印
+  <botttom-button class="bottom-button-box" text-right="确认打印" bindrighttap="toConfirm" get-phone="{{true}}"></botttom-button>
+  </view>
 </view>
 
 <!-- 打印确认框 -->

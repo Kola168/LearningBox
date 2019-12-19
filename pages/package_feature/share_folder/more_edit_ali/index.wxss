@@ -94,13 +94,7 @@ page {
 }
 
 .bottom {
-    position: fixed;
-    bottom: 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    z-index: 1000
+    width:100%;
 }
 
 .btn-print {
@@ -114,9 +108,6 @@ page {
     font-size: 36rpx;
 }
 
-.bottom form {
-    width: 100%;
-}
 
 .top-tip {
     width: 100%;
@@ -134,14 +125,18 @@ page {
     margin-right: 10rpx;
 }
 
+.bottom-box{
+  width:100%;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+}
+
 /* 打印数量 start */
 .setting-main {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    position: fixed;
-    left: 0;
-    bottom: 100rpx;
     z-index: 10;
     margin: auto;
     width: 100%;

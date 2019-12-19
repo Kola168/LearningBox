@@ -1,6 +1,6 @@
 <nav-bar background="#fff" title="打印设置"></nav-bar>
 <view class="top-tip">
- <image src="../../images/icon_edit_white.png" mode="widthFix"></image>
+ <image src="../../images/doc_icon_edit_white.png" mode="widthFix"></image>
  <text>可手动放大缩小，移动位置</text>
 </view>
 <view hover-class="none" bindtouchstart="onTouch" bindtouchmove="onTouchMove" bindtouchend="onTouchEnd" bindtouchcancel="onTouchEnd"
@@ -15,18 +15,19 @@
     <view class="set-num">
         <image class="decrease-number" mode="widthFix" src="{{print_count >= 2 ? '../../images/minus_y.png' : '../../images/document_cut.png' }}" bindtap="decrease"/>
         <view class="print-number">{{print_count}}</view>
-        <image class="increase-number" mode="widthFix" src="{{print_count < 50 ? '../../images/plus_y.png' : '../../images/document_add_gray.png'}}" bindtap="increase"/>
+        <image class="increase-number" mode="widthFix" src="{{print_count < 50 ? '../../images/doc_plus_y.png' : '../../images/document_add_gray.png'}}" bindtap="increase"/>
     </view>
 
 </view>
 <view class="bottom">
     <form report-submit="true" bindsubmit="editConvert">
-        <button class="btn-print" open-type="{{hasAuthPhoneNum?'':'getPhoneNumber'}}" bindgetphonenumber="{{hasAuthPhoneNum?'':'getPhoneNumber'}}" formType="submit">确认打印</button>
+            <button class="btn-print" formType="submit">确认打印</button>
+        <!-- <button class="btn-print" open-type="{{hasAuthPhoneNum?'':'getPhoneNumber'}}" bindgetphonenumber="{{hasAuthPhoneNum?'':'getPhoneNumber'}}" formType="submit">确认打印</button> -->
     </form>
 </view>
 
 <!-- 打印确认框 -->
 <confirm-print bindconfirm="print" modal="{{confirmModal}}"></confirm-print>
 
-<import src="../../../lib/toast/wetoast.wxml" />
+<import src="../../../../lib/toast/wetoast.wxml" />
 <template is="wetoast" data="{{...__wetoast__}}" />

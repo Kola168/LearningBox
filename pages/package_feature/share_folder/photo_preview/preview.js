@@ -7,6 +7,7 @@ import {
     util
   } from '../../../../utils/common_import'
 import config from './config'
+import router from '../../../../utils/nav'
 Page({
     data: {
         url: null,
@@ -30,6 +31,13 @@ Page({
             image, //原始图片信息保留
             print_size: media_size[this.data.media_type]
         })
+        try{
+            this.feature_key= media_size[this.data.media_type].key
+        }catch(e)
+    {
+       console.log(e) 
+    }
+       
     }),
     initDisplayArea() {
         try {
@@ -81,8 +89,9 @@ Page({
             imageHeight: image.height
         };
         var path = util.isHuaweiCloud(image.url) ? 'more_edit' : 'more_edit_ali'
-        wx.navigateTo({
-            url: `../${path}/index?image=${encodeURIComponent(JSON.stringify(query))}`,
+        router.navigateTo(`/pages/package_feature/share_folder/${path}/index`,{
+            image:encodeURIComponent(JSON.stringify(query)),
+            feature_key: this.feature_key
         })
     },
     /**

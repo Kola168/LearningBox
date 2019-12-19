@@ -7,9 +7,9 @@
 }
 
 .top {
-  display: flex;
-  justify-content: space-between;
-  padding: 30rpx 26rpx 0;
+    display: flex;
+    justify-content: space-between;
+    padding: 30rpx 26rpx 0;
 }
 
 .text-share {
@@ -39,6 +39,15 @@
     color: #000;
     font-size: 36rpx;
 }
+
+.btn-stop:not([size='mini']) {
+    font-weight: 400;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding:0
+}
+
 
 .btn::after {
     border: none;
@@ -246,18 +255,18 @@
 }
 
 .no-share {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 294rpx;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 294rpx;
 }
 
-.no-share image{
-  width: 212rpx;
-  margin-bottom: 40rpx;
+.no-share image {
+    width: 212rpx;
+    margin-bottom: 40rpx;
 }
 
-.no-share view{
-  font-size: 32rpx;
-  color: #666;
+.no-share view {
+    font-size: 32rpx;
+    color: #666;
 }

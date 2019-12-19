@@ -16,7 +16,7 @@
       <image src="{{item.preview_url}}" mode="widthFix" class="template-img"></image>
     </view>
   </scroll-view>
-  <bottom-button text-right="确认" bindrighttap="confBut"></bottom-button>
+  <bottom-button text-right="确认" bindrighttap="confBut"  get-phone="{{true}}"></bottom-button>
 </view>
 <import src="/lib/toast/wetoast.wxml" />
 <template is="wetoast" data="{{...__wetoast__}}" />

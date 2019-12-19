@@ -11,7 +11,7 @@ import gql from '../../network/graphql_request'
 let Loger = (app.apiServer != 'https://epbox.gongfudou.com' || app.deBug) ? console.log : function() {}
 
 Component({
-  externalClasses:['my-class'],
+  externalClasses:['extra-class','left-class'],
   properties: {
     textLeft: {
       type: String,
@@ -35,6 +35,16 @@ Component({
         if(newval){
           this.setData({
             showPhone: newval
+          })
+        }
+      }
+    },
+    mustGet:{
+      type: Boolean,
+      observer: function(newval) {
+        if(newval){
+          this.setData({
+            mustGetPhone: newval
           })
         }
       }

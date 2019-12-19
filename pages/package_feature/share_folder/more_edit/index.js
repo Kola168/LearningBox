@@ -1,11 +1,13 @@
 "use strict"
 
 const app = getApp()
+import api from '../../../../network/restful_request.js'
+import commonRequest from '../../../../utils/common_request'
 const regeneratorRuntime = require('../../../../lib/co/runtime')
 import {
     co,
     util
-  } from '../../../../utils/common_import'
+} from '../../../../utils/common_import'
 const _ = require('../../../../lib/underscore/we-underscore')
 const getSystemInfo = util.promisify(wx.getSystemInfo)
 const request = util.promisify(wx.request)
@@ -70,7 +72,8 @@ Page({
     onLoad: co.wrap(function* (query) {
         this.longToast = new app.weToast()
         this.image = JSON.parse(decodeURIComponent(query.image))
-        console.log(this.image)
+        console.log(this.image, query)
+        this.feature_key = query.feature_key
         this.setData({
             changeBtnWidth: parseInt(200 / app.rpxPixel), // 宽度计算
         })
@@ -238,14 +241,14 @@ Page({
     // 合成图片
     editConvert: co.wrap(function* (e) {
 
-        if (!this.hasAuthPhoneNum && !app.hasPhoneNum) {
-            return
-        }
+        // if (!this.hasAuthPhoneNum && !app.hasPhoneNum) {
+        //     return
+        // }
 
         this.longToast.toast({
             type: 'loading',
             duration: 0
-          })
+        })
         let imageURL = this.image.url
 
         // canvas绘图
@@ -277,35 +280,31 @@ Page({
         let svh = (this.data.imgInfo.height - result.scale * (this.data.imgInfo.width * Math.sin(mp) + this.data.imgInfo.height * Math.cos(mp))) / 2
 
         let params = {
-            image_url: imageURL,
+            is_async: false, //一异步请求
+            feature_key: this.feature_key, 
             editor_scale: this.editorScale,
+            // image_width: this.data.imgInfo.width,
+            // image_height: this.data.imgInfo.height,
+            image_url: imageURL,
+            rotate: rotate,
             scale: result.scale,
             x: result.x + svw,
-            y: result.y + svh,
-            image_width: this.data.imgInfo.width,
-            image_height: this.data.imgInfo.height,
-            rotate: rotate,
-            media_type: this.image.media_type,
-            openid: app.openId
+            y: result.y + svh
         }
 
-        app.tmpIDParams = params
 
+        app.tmpIDParams = params
         try {
-            const resp = yield request({
-                url: app.apiServer + `/boxapi/v3/images/edit_convert`,
-                method: 'POST',
-                dataType: 'json',
-                data: params
-            })
-            this.longToast.toast()
-            if (resp.data.code != 0) {
-                throw (resp.data)
+             const resp = yield api.convertId(params)
+            this.longToast.hide()
+            console.log(resp)
+            if (resp.code != 0) {
+                throw (resp)
             } else {
                 this.setData({
                     convertImg: {
-                        pre_convert_url: resp.data.res,
-                        url: resp.data.res+this.image.print_size.noRotateMin
+                        pre_convert_url: resp.res.url,
+                        url: resp.res.url + this.image.print_size.noRotateMin
                     }
                 })
                 this.confirm(e)
@@ -321,7 +320,6 @@ Page({
             })
             return null
         }
-
     }),
     // 确认打印
     confirm: co.wrap(function* (e) {
@@ -341,28 +339,24 @@ Page({
         }
     }),
     getPhoneNumber: co.wrap(function* (e) {
-        yield app.getPhoneNum(e)
-        wx.setStorageSync("hasAuthPhoneNum", true)
-        this.hasAuthPhoneNum = true
-        this.setData({
-            hasAuthPhoneNum: true
-        })
+        // yield app.getPhoneNum(e)
+        // wx.setStorageSync("hasAuthPhoneNum", true)
+        // this.hasAuthPhoneNum = true
+        // this.setData({
+        //     hasAuthPhoneNum: true
+        // })
         this.editConvert(e)
     }),
 
     // 开始打印
     print: co.wrap(function* (e) {
-        const images = [{
-            url: this.image.url, //为编辑之前原图
-            thumb_url: this.data.convertImg.url, //编辑后的缩略图
-            pre_convert_url: this.data.convertImg.pre_convert_url || '', // //编辑之后的原图
-            number: this.data.print_count,
-            rotate: this.image.orientation,
-            media_type: this.image.media_type,
-            height: this.image.imageHeight,
-            width: this.image.imageWidth
+    
+        var param = [{
+            originalUrl: this.image.url, //  用户上传的原文件
+            printUrl: this.data.convertImg.pre_convert_url || '', // 编辑后可打印的连接
+            copies: this.data.print_count, // 打印份数
+            grayscale: false, // 是否使用灰度打印
         }]
-
         if (!this.checkImagesIsValid(images)) return;
 
         if (!app.openId) {
@@ -378,25 +372,20 @@ Page({
         this.longToast.toast({
             type: 'loading',
             duration: 0
-          })
+        })
+    
         try {
-            const resp = yield request({
-                url: app.apiServer + `/ec/v2/orders`,
-                method: 'POST',
-                dataType: 'json',
-                data: params
-            })
-            if (resp.data.code !== 0) {
-                throw (resp.data)
-            }
-            this.longToast.toast()
-            wx.redirectTo({
-                url: `/pages/finish/index?type=shareFile&state=${resp.data.order.state}`
-            })
+            const resp = commonRequest.createOrder('normal_id', param)
+            this.longToast.hide()
+            router.redirectTo('/pages/finish/index', {
+                type: this.feature_key,
+                media_type:this.data.media_type,
+                state: resp.createOrder.state
+              })
 
         } catch (e) {
             this.longToast.toast()
-            util.showErr(e)
+            util.showError(e)
         }
     }),
     loopGetOpenId: co.wrap(function* () {

@@ -3,6 +3,7 @@ const app = getApp()
 
 import api from '../../../network/restful_request.js'
 const regeneratorRuntime = require('../../../lib/co/runtime')
+import gql from '../../../network/graphql_request.js'
 
 import {
   co,
@@ -42,7 +43,7 @@ Page({
       this.data.memberIds = []
       for (var i = 0; i < this.data.memberList.length; i++) {
         this.data.memberList[i].choose = true,
-          this.data.memberIds.push(this.data.memberList[i].user_id)
+          this.data.memberIds.push(this.data.memberList[i].id)
       }
     } else {
       for (var i = 0; i < this.data.memberList.length; i++) {
@@ -58,7 +59,7 @@ Page({
   choose: co.wrap(function* (e) {
     console.log('e.currentTarget.id======', e.currentTarget.id)
     if (!this.data.memberList[parseInt(e.currentTarget.id)].choose) { //选中
-      this.data.memberIds.push(this.data.memberList[parseInt(e.currentTarget.id)].user_id)
+      this.data.memberIds.push(this.data.memberList[parseInt(e.currentTarget.id)].id)
     } else {
       this.deleteOneId(this.data.memberIds, this.data.memberList[parseInt(e.currentTarget.id)].user_id)
     }
@@ -116,16 +117,15 @@ Page({
   stopShare: co.wrap(function* () {
     console.log('this.data.memberIds===', this.data.memberIds)
     this.longToast.toast({
-        type: 'loading',
-        duration: 0
-      })
+      type: 'loading',
+      duration: 0
+    })
     try {
-      const resp = yield api.deleteFoldersUsers(app.openId, this.sn, this.data.memberIds)
-      if (resp.code != 0) {
-        throw (resp)
-      }
-      this.longToast.toast()
-      console.log('删除成员成功', resp.data)
+      const resp = yield gql.deleteUserFolderRelations({
+        sn: this.sn,
+        ids:this.data.memberIds
+      })
+      this.longToast.hide()
       //刷新
       this.getShareList()
 
@@ -138,24 +138,26 @@ Page({
   //获取分享成员列表
   getShareList: co.wrap(function* () {
     this.longToast.toast({
-        type: 'loading',
-        duration: 0
-      })
+      type: 'loading',
+      duration: 0
+    })
     try {
-      const resp = yield api.getFoldersUsers(app.openId, this.sn)
-      if (resp.code != 0) {
-        throw (resp)
-      }
+      const resp = yield gql.userFolderRelations(this.sn)
+      // const resp = yield api.getFoldersUsers(app.openId, this.sn)
+      // if (resp.code != 0) {
+      //   throw (resp)
+      // }
       console.log('获取被分享成员列表成功', resp)
+
       this.setData({
-        memberList: resp.res,
+        memberList: resp.userFolderRelations,
       })
       if (this.data.selectText == '取消') {
         console.log("zzzzzz")
         this.data.memberIds = []
         for (var i = 0; i < this.data.memberList.length; i++) {
           this.data.memberList[i].choose = true,
-            this.data.memberIds.push(this.data.memberList[i].user_id)
+            this.data.memberIds.push(this.data.memberList[i].id)
         }
         this.setData({
           memberList: this.data.memberList

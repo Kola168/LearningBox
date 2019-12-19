@@ -12,7 +12,6 @@ Page({
     allCheck: true,
     count: 0,
     loadReady: false,
-    hasAuthPhoneNum: false,
     isFullScreen: false,
     confirmModal: {
       isShow: false,
@@ -27,13 +26,6 @@ Page({
     this.getLessonDetail()
     this.setData({
       isFullScreen: app.isFullScreen,
-    })
-  },
-  onShow: function() {
-    let hasAuthPhoneNum = Boolean(storage.get('hasAuthPhoneNum'))
-    this.hasAuthPhoneNum = hasAuthPhoneNum
-    this.setData({
-      hasAuthPhoneNum: app.hasPhoneNum || hasAuthPhoneNum
     })
   },
 
@@ -78,9 +70,7 @@ Page({
   },
 
   toConfirm() {
-    if (!this.hasAuthPhoneNum && !app.hasPhoneNum) {
-      return
-    }
+
     if (this.data.count === 0) {
       return wx.showToast({
         title: '请先选择需要打印的图片',
@@ -111,7 +101,7 @@ Page({
           imgs[i]._id && imgIds.push(Number(imgs[i]._id))
         }
       }
-   
+
       var params = {
         resourceAttribute: {
           resourceType: 'CourseLesson',
@@ -132,16 +122,6 @@ Page({
       this.longToast.hide()
       util.showError(error)
     }
-  }),
-
-  getPhoneNumber: co.wrap(function*(e) {
-    // yield app.getPhoneNum(e)
-    storage.put("hasAuthPhoneNum", true)
-    this.hasAuthPhoneNum = true
-    this.setData({
-      hasAuthPhoneNum: true
-    })
-    this.toConfirm()
   }),
 
   getLessonDetail: co.wrap(function*() {

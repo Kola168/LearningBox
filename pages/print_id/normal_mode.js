@@ -19,7 +19,6 @@ Page({
         price: 0,
         price_count: 0,
         showConfirmModal: null,
-        hasAuthPhoneNum: false,
         confirmModal: {
             isShow: false,
             title: '请确认6寸照片纸放置正确',
@@ -53,13 +52,7 @@ Page({
             console.log(e)
         }
     }),
-    onShow: function () {
-        let hasAuthPhoneNum = Boolean(wx.getStorageSync('hasAuthPhoneNum'))
-        this.hasAuthPhoneNum = hasAuthPhoneNum
-        this.setData({
-            hasAuthPhoneNum: app.hasPhoneNum || hasAuthPhoneNum
-        })
-    },
+
     tapMin: co.wrap(function* () {
         if (this.data.num > 1) {
             this.setData({
@@ -79,9 +72,6 @@ Page({
     toConfirm: co.wrap(function* (e) {
         console.log('证件照打印时form发生了submit事件，携带数据为：', e.detail.formId, `print${this.data.mode}`)
 
-        // if (!this.hasAuthPhoneNum && !app.hasPhoneNum) {
-        //     return
-        // }
 
         let hideConfirmPrintBox = Boolean(wx.getStorageSync("hideConfirmPrintBox"))
         if (hideConfirmPrintBox) {
@@ -93,36 +83,11 @@ Page({
         }
     }),
 
-    getPhoneNumber: co.wrap(function* (e) {
-        yield app.getPhoneNum(e)
-        wx.setStorageSync("hasAuthPhoneNum", true)
-        this.hasAuthPhoneNum = true
-        this.setData({
-            hasAuthPhoneNum: true
-        })
-        this.toConfirm(e)
-    }),
     print: co.wrap(function* () {
         this.longToast.toast({
             type: "loading",
             duration: 0
         })
-        // let images = [{
-        //     url: this.data.imageURL,
-        //     pre_convert_url: this.data.url,
-        //     thumb_url: this.data.preview_url,
-        //     number: this.data.num,
-        //     rotate: false,
-        //     media_type: this.data.mode,
-        //     // height: data.height,
-        //     // width: data.width
-        // }]
-        // console.log('证件照生成参数', images)
-        // let params = {
-        //     openid: app.openId,
-        //     urls: images,
-        //     media_type: this.data.mode
-        // }
         // 提交制作信息
         try {
             var param = [{

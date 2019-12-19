@@ -1,0 +1,7 @@
+<nav-bar title="取消说明"></nav-bar>
+<view class="container">
+  <image src="https://cdn-h.gongfudou.com/LearningBox/common/cancel_print_intro_1.jpg" mode="widthFix" />
+  <image src="https://cdn-h.gongfudou.com/LearningBox/common/cancel_print_intro_2.jpg" mode="widthFix" />
+  <image src="https://cdn-h.gongfudou.com/LearningBox/common/cancel_print_intro_3.jpg" mode="widthFix" />
+  <image src="https://cdn-h.gongfudou.com/LearningBox/common/cancel_print_intro_4.jpg" mode="widthFix" />
+</view>

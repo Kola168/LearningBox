@@ -113,6 +113,12 @@ page {
     line-height: 100rpx;
     font-size: 36rpx;
 }
+button:not([size='mini']) {
+    width: 100%;
+    padding: 0;
+    border-radius: 0;
+    font-weight: 400;
+}
 
 .bottom form {
     width: 100%;

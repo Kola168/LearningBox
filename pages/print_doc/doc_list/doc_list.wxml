@@ -32,26 +32,14 @@
 	</view>
 </view>
 
-<view class="bottom-tip-medium">
-	<view class="bottom-tip-medium-text">目前只支持doc、docx、ppt、pptx、pdf、xls、xlsx 7种格式</view>
-</view>
-<view class="bottom {{isFullScreen ? 'is-full-screen' : ''}}">
-	<view class="bottom-left" bindtap="chooseDocFile">
-		<text>继续选择</text>
+<view class="bottom-box">
+	<view class="bottom-tip-medium">
+		<view class="bottom-tip-medium-text">目前只支持doc、docx、ppt、pptx、pdf、xls、xlsx 7种格式</view>
 	</view>
-	<view class="bottom-right">
-		<form report-submit="true" bindsubmit="confirm">
-			<button
-				class="{{allCount > 0 ? '':'button-gray'}}"
-				open-type="{{hasAuthPhoneNum ? '' : 'getPhoneNumber'}}"
-				bindgetphonenumber="{{ hasAuthPhoneNum ? '' : 'getPhoneNumber'}}"
-				formType="submit"
-			>
-				确认
-			</button>
-		</form>
-	</view>
+	<botttom-button class="bottom" extra-class="{{allCount > 0 ? '':'button-gray'}}" text-left="继续选择" bindlefttap="chooseDocFile" text-right="确认" bindrighttap="confirm" get-phone="{{true}}"></botttom-button>
+
 </view>
+
 
 <!-- 文件选择 -->
 <check-doc fileType="doc" id="checkComponent" docNum="{{5 - files.length}}" bindbaidutap="baiduPrint" bindchoosedDoc="choosedDoc"></check-doc>
@@ -61,4 +49,3 @@
 
 <import src="../../../lib/toast/wetoast.wxml" />
 <template is="wetoast" data="{{...__wetoast__}}" />
-
