@@ -55,35 +55,38 @@ Page({
 	},
 
 	onLoad: co.wrap(function* (options) {
-		console.log(options)
-		this.longToast = new app.weToast()
-		this.page = 1
-		this.pageEnd = false
-		this.firstShare()
-		this.firstUploadBaidu()
-		this.setData({
-			file_name: options.file_name,
-			role: options.role,
-			time: options.time ? options.time : ''
-		})
-		this.sn = options.sn
-		this.role = options.role
-		this.users_count = options.users_count
-		// this.share_user_id = options.userId
-		this.way = 5
-		this.share = options.share
-		if (this.share) {
+		try {
+			console.log(options)
+			this.longToast = new app.weToast()
+			this.page = 1
+			this.pageEnd = false
+			this.firstShare()
+			this.firstUploadBaidu()
 			this.setData({
-				backHome: true
+				file_name: options.file_name,
+				role: options.role,
+				time: options.time ? options.time : ''
 			})
+			this.sn = options.sn
+			this.role = options.role
+			this.users_count = options.users_count
+			this.shareUserSn = options.userSn ? options.userSn : ''
+			this.share = options.share ? options.share : ''
+			if (this.share) {
+				this.setData({
+					backHome: true
+				})
+			}
+			let userSn = wx.getStorageSync('userSn')
+			if (userSn) {
+				this.joinAndGetList()
+			}
+			event.on('Authorize', this, function (data) {
+				this.joinAndGetList()
+			})
+		} catch (e) {
+			console.log(e)
 		}
-		let userSn = wx.getStorageSync('user_sn')
-		if (userSn) {
-			this.joinAndGetList()
-		}
-		event.on('Authorize', this, function (data) {
-			this.joinAndGetList()
-		})
 	}),
 
 	okEvent: function (e) {
@@ -119,15 +122,13 @@ Page({
 
 	joinAndGetList: co.wrap(function* () {
 		if (this.share == 'true' && this.users_count < 200) {
-			//判断用户是否为这个文件夹创建者 TODO:
-			if (this.user_id1 == this.share_user_id) {
+			if (this.userSn == this.shareUserSn) {
 				this.role = 'creator'
 				this.setData({
 					role: 'creator'
 				})
 				yield this.getDocumentList()
 			} else {
-				console.log("34r53462")
 				this.role = 'user'
 				this.setData({
 					role: 'user'
@@ -147,11 +148,11 @@ Page({
 	}),
 
 	onShow: co.wrap(function* (options) {
-		let authToken = wx.getStorageSync('authToken')
-		console.log('应用参数传参', this.share_user_id, this.way)
-		if (!authToken) {
+		let userSn = wx.getStorageSync('userSn')
+		console.log('应用参数传参', userSn, this.shareUserSn)
+		if (!userSn) {
 			console.log('执行到文件夹授权===========')
-			let url = this.share_user_id ? `/pages/authorize/index?url=${url}&share_user_id=${this.share_user_id}&way=${this.way}` : `/pages/authorize/index`
+			let url = this.shareUserSn ? `/pages/authorize/index?url=${url}&share_user_sn=${this.shareUserSn}` : `/pages/authorize/index`
 			wx.navigateTo({
 				url: url,
 			})
@@ -204,60 +205,57 @@ Page({
 		})
 	},
 
-	loopFileOpenId: co.wrap(function* () {
-		let loopCount = 0
-		let _this = this
-		if (app.openId) {
-			try {
-				const resp = yield api.enterFile(app.openId, this.sn)
-				console.log('加入文件夹', resp)
-				if (resp.code == 10017) { //文件夹被删除
-					this.longToast.toast()
-					throw (resp)
-				} else if (resp.code == 0) { //首次加入文件夹
-					this.longToast.toast()
-					var that = this
-					that.getDocumentList()
-					setTimeout(function () {
-						wx.showToast({
-							title: '成功加入此文件夹',
-							icon: 'none',
-							mask: true,
-							duration: 2000
-						})
-					}, 300)
-				} else if (resp.code == 10018) { //重复加入文件夹
-					console.log("1111")
-					this.longToast.toast()
-					this.getDocumentList()
-				} else {
-					this.longToast.toast()
-					throw (resp)
-				}
-			} catch (e) {
-				this.longToast.toast()
-				util.showError(e)
-			}
-		} else {
-			setTimeout(function () {
-				loopCount++
-				if (loopCount <= 100) {
-					console.log('openId not found loop getting...')
-					_this.loopFileOpenId()
-				} else {
-					console.log('loop too long, stop')
-				}
-			}, 2000)
-		}
-	}),
-
 	//加入文件夹
 	enterFile: co.wrap(function* () {
 		this.longToast.toast({
 			type: 'loading',
 			duration: 0
 		})
-		this.loopFileOpenId()
+		try {
+			const resp = yield gql.joinFolder({
+				sn:this.sn
+			})
+			console.log(this.sn, resp)
+			console.log('加入文件夹', resp)
+			this.longToast.toast()
+			var that = this
+			that.getDocumentList()
+			setTimeout(function () {
+				wx.showToast({
+					title: '成功加入此文件夹',
+					icon: 'none',
+					mask: true,
+					duration: 2000
+				})
+			}, 300)
+
+			// if (resp.code == 10017) { //文件夹被删除
+			// 	this.longToast.toast()
+			// 	throw (resp)
+			// } else if (resp.code == 0) { //首次加入文件夹
+			// this.longToast.toast()
+			// var that = this
+			// that.getDocumentList()
+			// setTimeout(function () {
+			// 	wx.showToast({
+			// 		title: '成功加入此文件夹',
+			// 		icon: 'none',
+			// 		mask: true,
+			// 		duration: 2000
+			// 	})
+			// }, 300)
+			// } else if (resp.code == 10018) { //重复加入文件夹
+			// 	console.log("1111")
+			// 	this.longToast.toast()
+			// 	this.getDocumentList()
+			// } else {
+			// 	this.longToast.toast()
+			// 	throw (resp)
+			// }
+		} catch (e) {
+			this.longToast.hide()
+			util.showError(e)
+		}
 	}),
 
 	//存储文件

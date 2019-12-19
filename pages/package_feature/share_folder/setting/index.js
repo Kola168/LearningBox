@@ -292,10 +292,6 @@ Page({
 					type: types.mediaType,
 					state: resp.createOrder.state
 			})
-      // const resp = yield api.printInvoice(app.openId, '_docA4', files)
-      // if (resp.code != 0) {
-      //   throw (resp)
-      // }
       this.longToast.hide()
     } catch (e) {
       console.log(e)
