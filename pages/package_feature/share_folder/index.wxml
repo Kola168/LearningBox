@@ -32,8 +32,10 @@
             </view>
             <view class="file-right">
                 <view class="file-right-more" id="{{index}}" bindtap="toMore">更多</view>
-                <button class="file-right-share" id="{{index}}" hover-class="none" bindtap="showShare" wx:if="{{!firstShare}}">分享</button>
-                <button class="file-right-share" id="{{index}}" hover-class="none" open-type="share" wx:if="{{firstShare}}">分享</button>
+                <button class="file-right-share" id="{{index}}" hover-class="none" bindtap="showShare"
+                    wx:if="{{!firstShare}}">分享</button>
+                <button class="file-right-share" id="{{index}}" hover-class="none" open-type="share"
+                    wx:if="{{firstShare}}">分享</button>
             </view>
         </view>
     </view>
@@ -74,8 +76,10 @@
         <view class="confirm-content">{{showConfirmModal.intro}}</view>
         <view class="confirm-link" bindtap="toUrl">{{showConfirmModal.link}}</view>
         <view class="protocol-choose">
-            <image src="../images/protocol_nochoose.png" mode="widthFix" class="choose-image" catchtap="checkProtocol" wx:if="{{!checked}}"></image>
-            <image src="../images/protocol_choose.png" mode="widthFix" class="choose-image" catchtap="checkProtocol" wx:if="{{checked}}"></image>
+            <image src="../images/protocol_nochoose.png" mode="widthFix" class="choose-image" catchtap="checkProtocol"
+                wx:if="{{!checked}}"></image>
+            <image src="../images/protocol_choose.png" mode="widthFix" class="choose-image" catchtap="checkProtocol"
+                wx:if="{{checked}}"></image>
             <view class="confirm-choose">{{showConfirmModal.choose}}</view>
         </view>
         <button class="confirm-noprotocol" catchtap="cancelProtocol" wx:if="{{!checked}}">确认</button>
@@ -90,13 +94,14 @@
             <text wx:if="{{changeFileModal}}">修改文件夹名称</text>
         </view>
         <view class="section-input">
-            <input class="input" bindblur="endInput" bindinput="endInput" bindconfirm="endInput" maxlength="15" placeholder="请输入文件夹名称" />
+            <input class="input" bindblur="endInput" bindinput="endInput" bindconfirm="endInput" maxlength="15"
+                placeholder="请输入文件夹名称" />
         </view>
         <view class="content">{{content}}</view>
         <view class="button-confirm" catchtap="confirmNewFile" wx:if="{{showNewFileModal}}">下一步</view>
         <view class="button-rename" wx:if="{{changeFileModal}}">
-          <view class="button-cancel" bindtap="cancelFile">取消</view>
-          <view class="button-confirm-change" bindtap="changeFoldersName">确认</view>
+            <view class="button-cancel" bindtap="cancelFile">取消</view>
+            <view class="button-confirm-change" bindtap="changeFoldersName">确认</view>
         </view>
     </view>
 </view>
