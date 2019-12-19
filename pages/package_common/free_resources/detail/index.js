@@ -178,8 +178,8 @@ Page({
         }
       }
       let res = yield graphql.createResourceOrder(params)
-      if (resp.createResourceOrder.state === 'finished') {
-        console.log(res)
+      if (res.createResourceOrder.state === 'finished') {
+        wxNav.redirectTo(`/pages/finish/index`)
       }
       this.weToast.hide()
     } catch (error) {
