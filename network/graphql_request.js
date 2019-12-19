@@ -2,6 +2,7 @@ var app = getApp()
 var gqwxappGraphql = require('./wxgql')
 var GraphQL = gqwxappGraphql.GraphQL
 import storage from '../utils/storage.js'
+import { co } from '../utils/common_import.js';
 // 初始化对象
 let gql = GraphQL({
   url: `${app.apiServer}/graphql`,
@@ -1099,10 +1100,10 @@ const graphqlApi = {
     return gql.query({
       query: `query($isOwner: Boolean!,$name:String) {
         folders(isOwner:$isOwner,name:$name){
-          joinedUsersCount
           name
-          roleType
           sn
+          created_at:createdDate
+          ${isOwner?'users_count:joinedUsersCount':'nickname:ownedUserNickname'}
         }
       }`,
       variables: {
@@ -1110,7 +1111,200 @@ const graphqlApi = {
         name
       }
     })
-  }
+  },
+
+  /**
+   * 创建新文件夹
+   *
+   * @param {*} input
+   * @returns
+   */
+  createFolder: (input) => {
+    return gql.mutate({
+      mutation: `mutation ($input: CreateFolderInput!){
+        createFolder(input:$input){
+          folder{
+            joinedUsersCount
+            name
+            sn
+          }
+          state
+        }
+      }`,
+      variables: {
+        input
+      }
+    })
+  },
+  /**
+   * 共享文件夹协议
+   *
+   * @returns
+   */
+  checkProtocol: () => {
+    return gql.query({
+      query: `query {
+        currentUser{
+          folderAgreement
+        }
+      }`
+    })
+  },
+  /**
+   * 同意共享文件夹协议
+   *
+   * @param {*} input
+   * @returns
+   */
+  signFolderAgreement: (input) => {
+    return gql.mutate({
+      mutation: `mutation ($input: SignFolderAgreementInput!){
+        signFolderAgreement (input:$input){
+          state
+        }
+      }`,
+      variables: {
+        input
+      }
+    })
+  },
+
+  /**
+   * 修改文件夹名称
+   *
+   * @param {*} input
+   * @returns
+   */
+  updateFolder: (input) => {
+    return gql.mutate({
+      mutation: `mutation ($input: UpdateFolderInput!){
+        updateFolder (input:$input){
+          state
+        }
+      }`,
+      variables: {
+        input
+      }
+    })
+  },
+  /**
+   * 删除文件夹
+   *
+   * @param {*} input
+   * @returns
+   */
+  deleteFolder: (input) => {
+    return gql.mutate({
+      mutation: `mutation ($input: DeleteFolderInput!){
+        deleteFolder (input:$input){
+          state
+        }
+      }`,
+      variables: {
+        input
+      }
+    })
+  },
+  /**
+   * 获取文件夹文件列表
+   *
+   * @param {*} sn 
+   * @returns
+   */
+  getDocuments: (sn,page) => {
+    return gql.query({
+      query: `query($sn: String!,$page: Int!) {
+        documents(sn:$sn,page:$page){
+          file_type:fileType
+          name
+          sn
+          url
+          created_at:createdDate
+        }
+      }`,
+      variables: {
+       sn:sn,
+       page:page
+      }
+    })
+  },
+
+  /**
+   * 存储文件到文件夹
+   *
+   * @param {*} input
+   * @input {
+   *    sn
+   *    documents{
+   *      name
+   *      url
+   *      fileType   
+   *     } 
+   *  }        
+   * @returns
+   */
+  createDocument:(input) => {
+    return gql.mutate({
+      mutation: `mutation($input: CreateDocumentInput!) {
+        createDocument(input:$input){
+          state
+        }
+      }`,
+      variables: {
+          input
+      }
+    })
+  },
+
+  /**
+   * 删除文件
+   *
+   * @param {*} input
+   * input{
+   * }
+   * @returns
+   */
+  deleteDocument:(input) => {
+    return gql.mutate({
+      mutation: `mutation($input: DeleteDocumentInput!) {
+        deleteDocument(input:$input){
+          state
+        }
+      }`,
+      variables: {
+          input
+      }
+    })
+  },
+
+  /**
+   * 百度token校验
+   *
+   * @returns
+   */
+  checkBaiduAuth: () => {
+    return gql.query({
+      query: `query{
+        token{
+          baiduTokenName
+        }
+      }`
+    })
+  },
+  uploadBaidu:(input) => {
+    return gql.mutate({
+      mutation: `mutation($input: UploadDocumentToBaiduInput!) {
+        uploadDocumentToBaidu(input:$input){
+          state
+        }
+      }`,
+      variables: {
+          input
+      }
+    })
+  },
+
+
 }
 
 export default graphqlApi

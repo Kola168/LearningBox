@@ -111,7 +111,7 @@ let uploadDocs = co.wrap(function*(array, callIndexBack) {
  * @param { String } fileSn 文件sn
  *
  */
-let uploadFiles = co.wrap(function*(array, callIndexBack, callProgressBack, isFile, fileSn) {
+let uploadFiles = co.wrap(function*(array, callIndexBack, callProgressBack, isFile, fileSn,isFolder=false) {
   //已手动结束上传
   if (app.cancelUpload) {
     return
@@ -122,6 +122,9 @@ let uploadFiles = co.wrap(function*(array, callIndexBack, callProgressBack, isFi
     if (dataSn) {
       data = Object.assign(data, dataSn)
     }
+    if(isFolder){
+      data.const=true
+      }
     // 获取上传权限
     let authInfo = yield getUploadAuth(data)
     let uploadTask = wx.uploadFile({

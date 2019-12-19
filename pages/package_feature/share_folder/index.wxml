@@ -1,3 +1,4 @@
+<!-- 自定义导航栏32px -->
 <nav-bar background="#fff" title="共享文件夹"></nav-bar>
 <view class="top-tip">不可上传或传播违法内容，一经发现依法处理</view>
 <view class="title">
@@ -20,7 +21,7 @@
     <view wx:if="{{fileList.length!=0}}">
         <view wx:for="{{fileList}}" wx:key="{{index}}" id="{{index}}" class="file-list">
             <view class="file-left" bindtap="toDocuments" id="{{index}}">
-                <image src="../../images/file_icon.png" mode="widthFix" class="file-icon"></image>
+                <image src="../images/file_icon.png" mode="widthFix" class="file-icon"></image>
                 <view>
                     <view>{{item.name}}</view>
                     <view class="file-left-bottom">
@@ -41,7 +42,7 @@
 
 <view wx:if="{{tabId==1}}" style="padding-bottom:100rpx;margin-top:150rpx;">
     <view class="intro-center" wx:if="{{shareFileList.length==0}}">
-        <image src="../../images/share_folder_bg.png" mode="widthFix" class="intro-bg-share"></image>
+        <image src="../images/share_folder_bg.png" mode="widthFix" class="intro-bg-share"></image>
         <view class="intro-text">暂时没有好友分享的文件夹</view>
         <view class="intro-text-share">快去告诉好友这个很棒的功能，让ta将文件</view>
         <view class="intro-text-share">夹分享给您，一起阅读美好的时光</view>
@@ -49,7 +50,7 @@
     <view wx:if="{{shareFileList.length!=0}}">
         <view wx:for="{{shareFileList}}" wx:key="{{index}}" id="{{index}}" class="file-list" bindtap="toDocuments">
             <view class="file-left">
-                <image src="../../images/file_icon.png" mode="widthFix" class="file-icon"></image>
+                <image src="../images/file_icon.png" mode="widthFix" class="file-icon"></image>
                 <view>
                     <view>{{item.name}}</view>
                     <view class="file-left-bottom">
@@ -73,8 +74,8 @@
         <view class="confirm-content">{{showConfirmModal.intro}}</view>
         <view class="confirm-link" bindtap="toUrl">{{showConfirmModal.link}}</view>
         <view class="protocol-choose">
-            <image src="../../images/protocol_nochoose.png" mode="widthFix" class="choose-image" catchtap="checkProtocol" wx:if="{{!checked}}"></image>
-            <image src="../../images/protocol_choose.png" mode="widthFix" class="choose-image" catchtap="checkProtocol" wx:if="{{checked}}"></image>
+            <image src="../images/protocol_nochoose.png" mode="widthFix" class="choose-image" catchtap="checkProtocol" wx:if="{{!checked}}"></image>
+            <image src="../images/protocol_choose.png" mode="widthFix" class="choose-image" catchtap="checkProtocol" wx:if="{{checked}}"></image>
             <view class="confirm-choose">{{showConfirmModal.choose}}</view>
         </view>
         <button class="confirm-noprotocol" catchtap="cancelProtocol" wx:if="{{!checked}}">确认</button>
