@@ -1,21 +1,21 @@
 "use strict"
 const app = getApp()
 import api from '../../../network/restful_request.js'
-import graphql from '../../../network/graphql_request.js'
+import gql from '../../../network/graphql_request.js'
+import upload from '../../../utils/upload.js'
 const regeneratorRuntime = require('../../../lib/co/runtime')
 
 import {
 	co,
 	util,
-	common_util
+	common_util,
+	_
 } from '../../../utils/common_import'
 const imginit = require('../../../utils/imginit')
 var imgInit = imginit.imgInit
 
 
 const event = require('../../../lib/event/event')
-const request = util.promisify(wx.request)
-
 const getFileInfo = util.promisify(wx.getFileInfo)
 const getImageInfo = util.promisify(wx.getImageInfo)
 const showModal = util.promisify(wx.showModal)
@@ -51,6 +51,7 @@ Page({
 		exitSaveModal: null, //转存百度云提示
 		iosModal: false,
 		text: '文件存储数量已用完，升级会员后存储数量不限'
+
 	},
 
 	onLoad: co.wrap(function* (options) {
@@ -68,7 +69,7 @@ Page({
 		this.sn = options.sn
 		this.role = options.role
 		this.users_count = options.users_count
-		this.share_user_id = options.userId
+		// this.share_user_id = options.userId
 		this.way = 5
 		this.share = options.share
 		if (this.share) {
@@ -91,16 +92,35 @@ Page({
 			ballScroll: e.detail.ballScroll
 		})
 	},
+	//选择图片
+	showImgCheck: function () {
+		let maxFileCount = this.data.maxFileCount;
+		let totalCount = this.data.totalCount;
+		let every = 9
+		// if (this.number == 0) {
+		// 	return this.setData({
+		// 		iosModal: true,
+		// 	})
+		// }
+		// if (this.number < 9) {
+		// 	every = this.number
+		// }
+		// console.log(this.number)
+		let restCount = Math.min(every, Math.max((maxFileCount - totalCount), 0))
+		let count = restCount > 9 ? 9 : restCount
+		if (restCount <= 0) {
+			return
+		}
+		this.setData({
+			chooseCount: count
+		})
+		this.selectComponent("#checkComponent").showPop()
+	},
 
 	joinAndGetList: co.wrap(function* () {
 		if (this.share == 'true' && this.users_count < 200) {
-			this.user_id1 = wx.getStorageSync('userId')
-			console.log("this.user_id1====", this.user_id1)
-			if (!this.user_id1 || this.user_id1 == undefined) {
-				yield this.getUserId()
-			}
+			//判断用户是否为这个文件夹创建者 TODO:
 			if (this.user_id1 == this.share_user_id) {
-				console.log("1234444")
 				this.role = 'creator'
 				this.setData({
 					role: 'creator'
@@ -127,9 +147,15 @@ Page({
 	}),
 
 	onShow: co.wrap(function* (options) {
+<<<<<<< HEAD
 		let userSn = wx.getStorageSync('user_sn')
 		console.log('应用参数传参', this.share_user_id, this.way)
 		if (!userSn) {
+=======
+		let authToken = wx.getStorageSync('authToken')
+		console.log('应用参数传参', this.share_user_id, this.way)
+		if (!authToken) {
+>>>>>>> develop-lis
 			console.log('执行到文件夹授权===========')
 			let url = this.share_user_id ? `/pages/authorize/index?url=${url}&share_user_id=${this.share_user_id}&way=${this.way}` : `/pages/authorize/index`
 			wx.navigateTo({
@@ -143,28 +169,6 @@ Page({
 			url: `/pages/error_book/pages/share_folder/index?tabId=1`,
 		})
 	},
-
-	getUserId: co.wrap(function* () {
-		try {
-			const resp = yield request({
-				url: app.apiServer + `/ec/v2/users/user_id`,
-				method: 'GET',
-				dataType: 'json',
-				data: {
-					openid: app.openId
-				}
-			})
-			if (resp.data.code != 0) {
-				throw (resp.data)
-			}
-			console.log('获取user_id', resp.data)
-			this.user_id1 = resp.data.user_id
-			wx.setStorageSync('userId', this.user_id)
-		} catch (e) {
-			console.log(e)
-			// util.showErr(e)
-		}
-	}),
 
 	showShare: function (e) {
 		this.setData({
@@ -238,7 +242,7 @@ Page({
 				}
 			} catch (e) {
 				this.longToast.toast()
-				util.showErr(e)
+				util.showError(e)
 			}
 		} else {
 			setTimeout(function () {
@@ -264,24 +268,17 @@ Page({
 
 	//存储文件
 	uploadDocuments: co.wrap(function* (files = []) {
+		console.log('存储文件', files)
 		this.longToast.toast({
 			type: 'loading',
 			duration: 0
 		})
 		let params = {
-			folderSn: this.sn,
-			files
+			sn: this.sn,
+			documents: files
 		}
 		try {
-			const resp = yield graphql.createDocument(params)
-			// if (resp.code == 80000) {
-			// 	this.longToast.toast()
-			// 	return this.setData({
-			// 		iosModal: true,
-			// 	})
-			// } else if (resp.code != 0) {
-			// 	throw (resp)
-			// }
+			const resp = yield gql.createDocument(params)
 			this.page = 1
 			yield this.getDocumentList()
 			console.log('存储文件成功', resp)
@@ -313,22 +310,19 @@ Page({
 		}
 		console.log(app.openId, this.sn, this.role, this.page)
 		try {
-			const resp = yield graphql.getShareList(this.sn, this.role, this.page)
-			// const resp = yield api.getDocumentsList(app.openId, this.sn, this.role, this.page)
-			// if (resp.code != 0) {
-			// 	throw (resp)
-			// }
+			const resp = yield gql.getDocuments(this.sn, this.page)
+
 			console.log('获取文件列表成功', resp)
 			this.longToast.toast()
-			this.number = resp.documents.number //非会员每日限制次数
+			// this.number = resp.documents.number //非会员每日限制次数
 
 			if (resp.documents.length == 0) {
 				return
 			}
 
 			var apiList = []
-			if (Array.isArray(resp.documents.documents)) {
-				apiList = resp.documents.documents
+			if (Array.isArray(resp.documents)) {
+				apiList = resp.documents
 			}
 			if (apiList.length < PAGE_COUNT) {
 				this.pageEnd = true
@@ -346,8 +340,7 @@ Page({
 			}
 		} catch (e) {
 			this.longToast.toast()
-			util.showGraphqlErr(e)
-			util.showErr(e)
+			util.showError(e)
 		}
 	}),
 
@@ -374,6 +367,7 @@ Page({
 	},
 
 	manageDocument: function () {
+		console.log(common_util)
 		wx.navigateTo({
 			url: `manage?file_name=${this.data.file_name}&sn=${this.sn}&documentList=${common_util.encodeLongParams(this.data.documentList)}`,
 		})
@@ -475,7 +469,7 @@ Page({
 			}, 1000)
 		} catch (e) {
 			this.longToast.toast()
-			util.showErr(e)
+			util.showError(e)
 		}
 	}),
 
@@ -555,7 +549,7 @@ Page({
 					}, 2000)
 				} catch (e) {
 					this.longToast.toast()
-					util.showErr(e)
+					util.showError(e)
 				}
 			} else {
 				wx.navigateTo({
@@ -563,7 +557,7 @@ Page({
 				})
 			}
 		} catch (error) {
-			util.showErr(error)
+			util.showError(error)
 		}
 	}),
 
@@ -588,8 +582,8 @@ Page({
 	}),
 
 	onShareAppMessage: function (e) {
-		let userId = wx.getStorageSync("userId")
-		console.log("aaaaaaaa----", userId)
+		// let userId = wx.getStorageSync("userId")
+		// console.log("aaaaaaaa----", userId)
 		return {
 			title: `这些资料很不错哦，点击加入${this.data.file_name}`,
 			path: `/pages/error_book/pages/share_folder/content?sn=${this.sn}&file_name=${this.data.file_name}&share=true&users_count=${this.users_count}&userId=${userId}`,
@@ -603,15 +597,15 @@ Page({
 				SDKVersion
 			} = wx.getSystemInfoSync()
 			let every = 5
-			if (this.number == 0) {
-				return this.setData({
-					iosModal: true,
-				})
-			}
-			if (this.number < 5) {
-				every = this.number
-			}
-			console.log(this.number)
+			// if (this.number == 0) {
+			// 	return this.setData({
+			// 		iosModal: true,
+			// 	})
+			// }
+			// if (this.number < 5) {
+			// 	every = this.number
+			// }
+			// console.log(this.number)
 			const count = Math.min(Math.max(this.data.maxFileCount - this.data.totalCount, 0), every)
 			if (count <= 0) {
 				return wx.showModal({
@@ -633,7 +627,7 @@ Page({
 					},
 					fail: () => {
 						console.log('选取文件失败')
-						util.showErr({
+						util.showError({
 							message: '文件获取失败，请重试~'
 						})
 					},
@@ -689,44 +683,71 @@ Page({
 		})
 		this.uploadDocuments(filesList)
 	}),
-	// 选择图片TODO:
-	chooseImgs: co.wrap(function* () {
+	baiduImage: co.wrap(function* (e) {
+		console.log(e)
+		this.path = e.detail[0].url
 		try {
+			const imgInfo = yield getImageInfo({
+				src: this.path
+			})
 			this.setData({
-				upKey: 'pic'
+				imgInfo: imgInfo,
+				localImgPath: this.path
 			})
-			let _this = this;
-			let maxFileCount = this.data.maxFileCount;
-			let totalCount = this.data.totalCount;
-			let every = 9
-			if (this.number == 0) {
-				return this.setData({
-					iosModal: true,
-				})
-			}
-			if (this.number < 9) {
-				every = this.number
-			}
-			console.log(this.number)
-			const limit = Math.min(every, Math.max((maxFileCount - totalCount), 0))
-			const imgs = yield chooseImgWay(limit); //选择上传文件方式
-			const newImages = yield this.checkImgSize(imgs) //检测文件格式
-			yield this.initProgressStatus(newImages) //初始化进度条
-			const imageList = yield this.syncLoadFiles(newImages, imgs) //并行上传
-			console.log(imageList, '====imageList====')
-			imageList && imageList.forEach(img => {
-				_this.setData({
-					[`fileList[${_this.data.fileList.length}]`]: {
-						key: 'image',
-						files: img
-					}
-				})
+			console.log("imgInfo", imgInfo)
+		} catch (err) {
+			util.showError({
+				title: '照片加载失败',
+				content: '请重新选择重试'
 			})
-			this.uploadDocuments(imageList)
+		}
+	}),
+	// 选择图片TODO:
+	chooseImgs: co.wrap(function* (e) {
+		try {
+			// 	this.setData({
+			// 		upKey: 'pic'
+			// 	})
+			// let _this = this;
+			// let maxFileCount = this.data.maxFileCount;
+			// let totalCount = this.data.totalCount;
+			// let every = 9
+			// if (this.number == 0) {
+			// 	return this.setData({
+			// 		iosModal: true,
+			// 	})
+			// }
+			// if (this.number < 9) {
+			// 	every = this.number
+			// }
+			// 	console.log(this.number)
+			// 	const limit = Math.min(every, Math.max((maxFileCount - totalCount), 0))
+			// 	const imgs = yield chooseImgWay(limit); //选择上传文件方式
+
+			let imgs = e.detail.tempFiles
+			console.log('234567890-=-0987654323456789', imgs)
+			this.uploadImage(imgs)
 		} catch (err) {
 			console.log(err)
 		}
 
+	}),
+	uploadImage: co.wrap(function* (imgs) {
+		let newImages = yield this.checkImgSize(imgs) //检测文件格式
+		yield this.initProgressStatus(newImages) //初始化进度条
+		const imageList = yield this.syncLoadFiles(newImages, imgs) //并行上传
+		console.log(imageList, '====imageList====')
+		let _this = this
+		imageList && imageList.forEach(img => {
+			_this.setData({
+				[`fileList[${_this.data.fileList.length}]`]: {
+					fileType: 'image',
+					url: img,
+					name: '图片'
+				}
+			})
+		})
+		this.uploadDocuments(imageList)
 	}),
 	// 检验图片尺寸
 	checkImgSize: function (images) {
@@ -788,12 +809,11 @@ Page({
 			}
 		})
 	},
-	upLoadFiles: function (paths, getProgress, uploadKey, isFile = false, baseVersion = '1.4.0') {
+	upLoadFiles: function (paths, getProgress, uploadKey, isFile = false, isFolder = true) {
 		try {
-			const checkBaseVersion = app.checkBaseVersion(baseVersion) // 检查版本兼容
 			const newPaths = !isFile && typeof paths === 'object' ? paths.path : paths; //区分选择文件上传和普通上传的格式区分
 			return new Promise((resolve, reject) => {
-				app.newUploadPhotos(checkBaseVersion, [newPaths], (index, url) => {
+				upload.uploadFiles([newPaths], (index, url) => {
 					console.log('===url====', url)
 					if (index !== '' && url !== '') { //上传完成
 						resolve({
@@ -804,7 +824,7 @@ Page({
 					} else { // 上传异常
 						resolve(false)
 					}
-				}, getProgress, isFile, uploadKey)
+				}, getProgress, isFile, uploadKey, isFolder)
 			})
 		} catch (err) {
 			console.log(err)
@@ -958,7 +978,7 @@ Page({
 		if (util.isHuaweiCloud(url)) {
 			let imaPath = yield imgInit(url, 'vertical')
 			return {
-				url:imaPath.imgNetPath,
+				url: imaPath.imgNetPath,
 				origin_url: origin_url,
 				width: imaPath.imageInfo.width,
 				height: imaPath.imageInfo.height
@@ -967,21 +987,14 @@ Page({
 		// 兼容阿里云
 		let baseVersion = '1.9.90'; //基础版本号
 		let imageInfo = null;
-		if (app.checkBaseVersion(baseVersion)) {
-			imageInfo = yield getImageInfo({
-				src: url
-			})
+		imageInfo = yield getImageInfo({
+			src: url
+		})
 
-			if (['left', 'right'].indexOf(imageInfo.orientation) > -1) {
-				imageInfo.orientation = true
-			} else {
-				imageInfo.orientation = false
-			}
-
+		if (['left', 'right'].indexOf(imageInfo.orientation) > -1) {
+			imageInfo.orientation = true
 		} else {
-			imageInfo = yield app.getImageOrientation(url)
-			imageInfo.width = Number(imageInfo.width)
-			imageInfo.height = Number(imageInfo.height)
+			imageInfo.orientation = false
 		}
 
 		let rotateLimit = '?x-oss-process=image/auto-orient,1/rotate,90';
@@ -1051,7 +1064,7 @@ Page({
 			url: url
 		}, key, currentData)
 		let routerUrl = null;
-		console.log(printData,'==printData===')
+		console.log(printData, '==printData===')
 		switch (key) {
 			case 'image':
 				routerUrl = `./photo_preview/preview?image=${encodeURIComponent(JSON.stringify(printData))}`

@@ -72,11 +72,9 @@ Component({
             this.triggerEvent('cancel')
         },
         verifyVersion: function () {
-            if (app.checkBaseVersion(MINVERSION)) {
                 this.setData({
                     canUseProgressBar: true
                 })
-            }
         }
     }
 })
