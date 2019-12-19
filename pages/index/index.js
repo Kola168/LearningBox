@@ -1,18 +1,14 @@
 const app = getApp()
-import wxNav from '../../utils/nav.js'
+import {regeneratorRuntime,co,wxNav,util,storage } from '../../utils/common_import'
+
 import Logger from '../../utils/logger.js'
 const logger = new Logger.getLogger('pages/index/index')
-import co from '../../lib/co/co'
-import regeneratorRuntime from '../../lib/co/runtime'
-const util = require('../../utils/util')
 // page mixins
 require('../../utils/mixin.js')
 import index from "../../mixins/index.js"
 import init from "../../mixins/init.js"
-import storage from '../../utils/storage.js'
 import gql from '../../network/graphql_request.js'
 import api from '../../network/restful_request.js'
-import router from '../../utils/nav'
 const checkSession = util.promisify(wx.checkSession)
 
 Page({
@@ -117,7 +113,7 @@ Page({
         wx.setStorageSync("phoneNum", resp.currentUser.phone)
       }
       if (!this.data.selectedKid || !this.data.selectedKid.stageRoot) {
-        router.navigateTo('/pages/index/grade')
+        wxNav.navigateTo('/pages/index/grade')
       } else {
         this.setData({
           homeType: this.data.selectedKid.stageRoot.rootName
@@ -199,7 +195,7 @@ Page({
         defalt:
           url = ''
     }
-    router.navigateTo(url)
+    wxNav.navigateTo(url)
   },
   // TODO:以下两个为测试函数，待删除
   changeSubject: function () {
@@ -207,8 +203,24 @@ Page({
       homeType: this.data.homeType == 'subject' ? 'beforSchool' : 'subject'
     })
   },
+
+  // 跳转小功能
+  toFunction(e){
+    let functionId = e.currentTarget.id,
+    url = ''
+    switch (functionId) {
+      case 'cognitionCard':
+        url = '/pages/package_feature/cognition_card/index/index'
+        break;
+      case 'recordVoice':
+        url = '/pages/package_preschool/record_voice/index/index'
+        break;
+    }
+    wxNav.navigateTo(url)
+  },
+
   // toId: function () {
-  //   router.navigateTo('/pages/print_id/index')
+  //   wxNav.navigateTo('/pages/print_id/index')
   // }
 
   // 处理scene

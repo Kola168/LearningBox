@@ -60,7 +60,8 @@
         "free_resources/content/index",
         "free_resources/detail/index",
         "records/index/index",
-        "records/detail/index"
+        "records/detail/index",
+        "records/cancel_intro/index"
       ]
     },
     {
