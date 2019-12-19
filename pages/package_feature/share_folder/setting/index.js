@@ -222,13 +222,6 @@ Page({
 
   //确认按钮提交
   confcheck(e) {
-<<<<<<< HEAD
-    // if(!this.hasAuthPhoneNum&&!app.hasPhoneNum){
-    //   return
-    // }
-=======
-
->>>>>>> origin/develop
     if (parseInt(this.data.startPage) > parseInt(this.data.endPage) || parseInt(this.data.startPage) <= 0) {
       this.setData({
         startPrintPage: 1,
