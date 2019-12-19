@@ -1,4 +1,4 @@
-import { regeneratorRuntime, co, util, wxNav } from '../../../utils/common_import'
+import { regeneratorRuntime, co, util, wxNav, storage } from '../../../utils/common_import'
 const app = getApp()
 const downloadFile = util.promisify(wx.downloadFile)
 const saveImageToPhotosAlbum = util.promisify(wx.saveImageToPhotosAlbum)
@@ -8,10 +8,12 @@ const getSetting = util.promisify(wx.getSetting)
 Page({
   data: {
     savable: true,
-    shareQrcode:''
+    shareQrcode: ''
   },
   onLoad(query) {
     this.weToast = new app.weToast()
+    this.deviceSn = query.deviceSn
+    // this.userSn = storage.get('userSn')
     this.setData({
       shareQrcode: JSON.parse(decodeURIComponent(query.shareQrcode))
     })
@@ -61,4 +63,13 @@ Page({
       })
     }
   }),
+  onShareAppMessage: function(res) {
+    console.log(`/pages/index/index?deviceSn=${this.deviceSn}`)
+    if (res.from === 'button' || res[0].from === 'button') {
+      return {
+        title: '好友分享给您一台打印设备，快快点击绑定吧',
+        path: `/pages/index/index?deviceSn=${this.deviceSn}`
+      }
+    }
+  },
 })

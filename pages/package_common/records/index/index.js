@@ -57,7 +57,6 @@ Page({
       }
       this.weToast.hide()
     } catch (error) {
-      console.log(error)
       this.weToast.hide()
       util.showError(error)
     }
@@ -106,11 +105,40 @@ Page({
   }),
   // 删除打印记录
   deleteRecord(e) {
+    let state = e.currentTarget.dataset.state,
+      content = ''
+    if (state === 'finished') {
+      content = '删除后将无法查阅此订单，是否确认删除？'
+      this.modalType = 'delete'
+    } else {
+      content = '未完成状态的订单暂时无法删除，如需取消打印，可点击下方按钮了解'
+      this.modalType = 'cancelPrint'
+    }
     this.setData({
       ['modalObj.isShow']: true,
-      ['modalObj.content']: '未完成状态的订单暂时无法删除，如需取消打印，可点击下方按钮了解'
+      ['modalObj.content']: content
     })
   },
+
+  // 拒绝或同意
+  verifyOrder: co.wrap(function*(e) {
+    let type = e.currentTarget.id,
+      sn = e.currentTarget.dataset.sn
+    try {
+      yield graphql.verifyOrder(sn, type)
+      this.page = 1
+      this.setData({
+        showRemind: false,
+        loadReady: false,
+        orders: []
+      })
+      this.getPrinterRecords()
+      this.weToast.hide()
+    } catch (error) {
+      this.weToast.hide()
+      util.showError(error)
+    }
+  }),
   // 跳转详情
   toDetail(e) {
     if (app.preventMoreTap(e)) return
@@ -120,6 +148,15 @@ Page({
       wxNav.navigateTo(`../detail/index`, {
         sn: sn
       })
+    }
+  },
+  // 确认弹窗
+  confirmModal() {
+    let modalType = this.modalType
+    if (modalType === 'delete') {
+      console.log('接口暂未提供')
+    } else if(modalType === 'cancelPrint'){
+      wxNav.navigateTo('../cancel_intro/index')
     }
   },
   onReachBottom() {

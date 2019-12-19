@@ -88,22 +88,6 @@ Page({
             type: "loading",
             duration: 0
         })
-        // let images = [{
-        //     url: this.data.imageURL,
-        //     pre_convert_url: this.data.url,
-        //     thumb_url: this.data.preview_url,
-        //     number: this.data.num,
-        //     rotate: false,
-        //     media_type: this.data.mode,
-        //     // height: data.height,
-        //     // width: data.width
-        // }]
-        // console.log('证件照生成参数', images)
-        // let params = {
-        //     openid: app.openId,
-        //     urls: images,
-        //     media_type: this.data.mode
-        // }
         // 提交制作信息
         try {
             var param = [{

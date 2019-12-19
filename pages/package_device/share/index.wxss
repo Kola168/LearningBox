@@ -8,8 +8,23 @@
   width: 100%;
 }
 
+.share-wx,
 .qrcode {
   position: relative;
+}
+
+.share-wx-btn {
+  background: #FFA200;
+  color: #333;
+  height: 72rpx;
+  line-height: 72rpx;
+  border-radius: 36rpx;
+  padding: 0 50rpx;
+  position: absolute;
+  font-size: 30rpx;
+  left: 50%;
+  top: 108rpx;
+  transform: translateX(-50%);
 }
 
 .qrcode-box {

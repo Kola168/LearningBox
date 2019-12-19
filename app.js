@@ -53,18 +53,13 @@ App({
   // apiServer: 'http://jran.nat300.top',
   // apiWbviewServer: 'http://jhx.nat300.top',
 
-  //张伟服务器
-  // apiServer: 'http://bboo.natapp1.cc',
-  // apiWbviewServer: 'http://bboo.natapp1.cc/',
-
+  //江然本地服务
+  // apiServer: 'http://jran.nat300.top',
   // apiWbviewServer: 'http://jhx.nat300.top',
-  
-  // 张伟本地服务
-  // apiServer: 'http://bboo.natapp1.cc',
 
   // 许成本地服务
   // apiServer: 'http://xucheng.nat100.top',
-	
+
 	authAppKey: 'iMToH51lZ0VrhbkTxO4t5J5m6gCZQJ6c',
   openId: '',
   authToken: '',

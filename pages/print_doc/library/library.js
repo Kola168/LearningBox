@@ -43,7 +43,7 @@ Page({
     this.setData({
       isAndroid: systemInfo.system.indexOf('iOS') > -1 ? false : true
     })
-    var userSn = storage.get('user_sn')
+    var userSn = storage.get('userSn')
 
     if (userSn) {
       yield this.getTypeList()
@@ -54,7 +54,7 @@ Page({
   }),
 
   onShow: co.wrap(function* () {
-    let userSn = storage.get('user_sn')
+    let userSn = storage.get('userSn')
     logger.info('应用二维码参数传参', this.share_user_id, this.way)
     if (!userSn) {
       let url = this.share_user_id ? `/pages/authorize/index` : `/pages/authorize/index`

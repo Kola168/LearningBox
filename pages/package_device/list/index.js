@@ -54,7 +54,8 @@ Page({
       return
     }
     wxNav.navigateTo(`../share/index`, {
-      shareQrcode: encodeURIComponent(JSON.stringify(this.data.activeDevice.shareQrcode))
+      shareQrcode: encodeURIComponent(JSON.stringify(this.data.activeDevice.shareQrcode)),
+      deviceSn: e.currentTarget.dataset.sn
     })
   },
 

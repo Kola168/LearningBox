@@ -65,7 +65,7 @@ Page({
 			title: this.title
 		})
 		this.longToast = new app.weToast()
-		let userSn = storage.get('user_sn')
+		let userSn = storage.get('userSn')
 		if (userSn) {
 			yield this.getRecordSource()
 			yield this.getConsumables()
@@ -207,7 +207,7 @@ Page({
 	}),
 
   authCheck: co.wrap(function *(){
-    var userSn = storage.get('user_sn')
+    var userSn = storage.get('userSn')
 		if (!userSn) {
 			let url = `/pages/authorize/index`
 			router.navigateTo(url)

@@ -367,6 +367,23 @@ function removeKeysToNewObj(obj, keys) {
   })
   return newObj
 }
+// 判断是否是华为云
+function isHuaweiCloud (url) {
+  return url.indexOf('https://cdn-h') > -1
+}
+/**
+ * @methods  处理文件名
+ * @param {Array} files 文件列表
+ */
+function resetFiles(file = '') {
+  const reg = /([^\/\\]+)\.+([a-z]+)$/i;
+  const newfile = reg.exec(file);
+  let newFiles = {
+    name: newfile[1],
+    suffix: newfile[2]
+  }
+  return newFiles;
+}
 
 module.exports = {
   promisify: promisify,
@@ -388,4 +405,6 @@ module.exports = {
   deleteItem: deleteItem,
   getStringByte:getStringByte,
   removeKeysToNewObj: removeKeysToNewObj,
+  isHuaweiCloud: isHuaweiCloud,
+  resetFiles: resetFiles,
 }

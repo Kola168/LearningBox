@@ -1,7 +1,10 @@
 <nav-bar title="分享二维码"></nav-bar>
 <view class="container">
   <image src="https://cdn-h.gongfudou.com/LearningBox/device/device_share_intro_1.png" mode="widthFix" />
-  <image src="https://cdn-h.gongfudou.com/LearningBox/device/device_share_intro_2.png" mode="widthFix" />
+  <view class="share-wx">
+    <image src="https://cdn-h.gongfudou.com/LearningBox/device/device_share_intro_2.png" mode="widthFix" />
+    <button class="share-wx-btn" open-type="share">分享给微信好友</button>
+  </view>
   <view class="qrcode">
     <image src="https://cdn-h.gongfudou.com/LearningBox/device/device_share_intro_3.png" mode="widthFix" />
     <view class="qrcode-box">

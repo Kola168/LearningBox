@@ -24,7 +24,8 @@ let gql = GraphQL({
       }
     }
   },
-  //全局错误拦截
+	
+	//全局错误拦截
   errorHandler: function(res) {
     console.log('graphql全局错误拦截', res)
       //如果auth
@@ -1462,7 +1463,7 @@ const graphqlApi = {
       }
     })
 	},
-	
+
 	/**
      * 创建新文件夹
      *
@@ -1518,7 +1519,7 @@ const graphqlApi = {
         }
       })
     },
-  
+
     /**
      * 修改文件夹名称
      *
@@ -1558,7 +1559,7 @@ const graphqlApi = {
     /**
      * 获取文件夹文件列表
      *
-     * @param {*} sn 
+     * @param {*} sn
      * @returns
      */
     getDocuments: (sn,page) => {
@@ -1578,7 +1579,7 @@ const graphqlApi = {
         }
       })
     },
-  
+
     /**
      * 存储文件到文件夹
      *
@@ -1588,9 +1589,9 @@ const graphqlApi = {
      *    documents{
      *      name
      *      url
-     *      fileType   
-     *     } 
-     *  }        
+     *      fileType
+     *     }
+     *  }
      * @returns
      */
     createDocument:(input) => {
@@ -1605,7 +1606,7 @@ const graphqlApi = {
         }
       })
     },
-  
+
     /**
      * 删除文件
      *
@@ -1626,7 +1627,7 @@ const graphqlApi = {
         }
       })
     },
-  
+
     /**
      * 百度token校验
      *
@@ -1641,6 +1642,13 @@ const graphqlApi = {
         }`
       })
     },
+
+    /**
+     * 上传到百度文件
+     *
+     * @param {*} input
+     * @returns
+     */
     uploadBaidu:(input) => {
       return gql.mutate({
         mutation: `mutation($input: UploadDocumentToBaiduInput!) {
@@ -1653,6 +1661,69 @@ const graphqlApi = {
         }
       })
     },
+    /**
+     * 获取被分享者列表
+     *
+     * @param {*} sn
+     * @param {*} page
+     * @returns
+     */
+    userFolderRelations: (sn) => {
+      return gql.query({
+        query: `query($sn: String!) {
+          userFolderRelations(sn:$sn){
+            id
+            avatar:userAvatar
+            nickname:userName
+          }
+        }`,
+        variables: {
+          sn:sn
+      }
+      })
+    },
+
+    /**
+     * 删除分享的好友
+     *
+     * @param {*} input
+     * @returns
+     */
+    deleteUserFolderRelations: (input) => {
+      return gql.mutate({
+        mutation: `mutation($input:DeleteUserFolderRelationsInput!) {
+          deleteUserFolderRelations(input:$input){
+           state
+          }
+        }`,
+        variables: {
+          input:input
+      }
+      })
+		},
+		    /**
+     * 审核打印
+     * @param { String } orderSn 订单sn
+     * @param { String } action 审核类型：pass/reject
+     */
+    verifyOrder:(orderSn,action) => {
+      return gql.mutate({
+        mutation: `mutation($input: VerifyOrderInput!) {
+          verifyOrder(input:$input){
+            order{
+              state
+            }
+          }
+        }`,
+        variables: {
+          input: {
+            orderSn:orderSn,
+            action:action
+          }
+        }
+      })
+    },
+  
 }
 
 export default graphqlApi

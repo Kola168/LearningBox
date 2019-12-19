@@ -85,7 +85,7 @@ Page({
 		this.setData({
 			title: options.title
 		})
-		var userSn = storage.get('user_sn')
+		var userSn = storage.get('userSn')
 		if (userSn) {
 			yield this.updateDetail()
 		}
@@ -128,7 +128,7 @@ Page({
 		this.setData({
 			hasAuthPhoneNum: app.hasPhoneNum || hasAuthPhoneNum
 		})
-		let userSn = storage.get('user_sn')
+		let userSn = storage.get('userSn')
 		if (!userSn) {
 			let url = this.share_user_id ? `/pages/authorize/index?url=${url}&share_user_id=${this.share_user_id}&way=${this.way}` : `/pages/authorize/index`
 			return router.navigateTo(url, {
@@ -342,7 +342,7 @@ Page({
   }),
   
 	collect: co.wrap(function* () {
-		var userSn = storage.get('user_sn')
+		var userSn = storage.get('userSn')
 		if (!userSn) {
 			var url = this.share_user_id ? `/pages/authorize/index?url=${url}&share_user_id=${this.share_user_id}&way=${this.way}` : `/pages/authorize/index`
 	
@@ -382,7 +382,7 @@ Page({
   }),
   
 	toConfirm: co.wrap(function* (e) {
-		var userSn = storage.get('user_sn')
+		var userSn = storage.get('userSn')
 		if (!userSn) {
 			var url = this.share_user_id ? `/pages/authorize/index?url=${url}&share_user_id=${this.share_user_id}&way=${this.way}` : `/pages/authorize/index`
 	
@@ -405,7 +405,7 @@ Page({
   },
   
 	toPay: co.wrap(function* () {
-		var userSn = storage.get('user_sn')
+		var userSn = storage.get('userSn')
 		// 判断授权
 		if (!userSn) {
 			var url = this.share_user_id ? `/pages/authorize/index?url=${url}&share_user_id=${this.share_user_id}&way=${this.way}` : `/pages/authorize/index`
