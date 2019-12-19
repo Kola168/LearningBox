@@ -31,11 +31,8 @@ Page({
     }, 300)
     this.getDeviceList()
   }),
-
-  onShow: co.wrap(function*() {
-
-  }),
   showDeviceList() {
+    if (this.data.devices.length === 1) return
     this.setData({
       showDeviceList: !this.data.showDeviceList
     })
@@ -70,19 +67,34 @@ Page({
     }
   }),
   // 切换打印机
-  changeDevice(e){
+  changeDevice(e) {
     let index = e.currentTarget.dataset.index
+    this.page = 1
     this.setData({
-      showDeviceList:false,
-      activeDevice:this.data.devices[index]
+      showDeviceList: false,
+      showRemind: false,
+      orders: [],
+      activeDevice: this.data.devices[index]
     })
+    this.getPrinterRecords()
   },
   // 获取打印记录
   getPrinterRecords: co.wrap(function*() {
     try {
-      let res = yield graphql.getPrinterRecords(this.data.activeDevice.sn, this.page++)
+      let res = yield graphql.getPrinterRecords(this.data.activeDevice.sn, this.page++),
+        currentOrders = res.printOrders,
+        orders = this.data.orders,
+        showRemind = false
+      if (currentOrders.length === 0) {
+        this.weToast.hide()
+        return
+      }
+      if (currentOrders.length < 20) {
+        showRemind = true
+      }
       this.setData({
-        orders: res.printOrders
+        orders: orders.concat(currentOrders),
+        showRemind
       })
       this.weToast.hide()
     } catch (error) {
@@ -99,14 +111,17 @@ Page({
   },
   // 跳转详情
   toDetail(e) {
-    console.log(e)
     if (app.preventMoreTap(e)) return
-    let userSn = e.currentTarget.dataset.userSn
-    if (this.data.usersn == userSn) {
+    let userSn = e.currentTarget.dataset.usersn
+    if (this.data.userSn == userSn) {
       let sn = e.currentTarget.dataset.sn
       wxNav.navigateTo(`../detail/index`, {
         sn: sn
       })
     }
+  },
+  onReachBottom() {
+    if (this.data.showRemind) return
+    this.getRecord()
   }
 })

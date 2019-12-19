@@ -8,7 +8,7 @@
 }
 
 .container {
-  padding-bottom: 200rpx;
+  padding-bottom: 100rpx;
 }
 
 .modal-bg {
@@ -216,10 +216,8 @@
 }
 
 .no-more-tip {
-  position: fixed;
-  left: 50%;
-  bottom: 60rpx;
-  transform: translateX(-50%);
+  text-align: center;
+  width: 48%;
   color: #999;
   font-size: 24rpx;
   border-radius: 8rpx;
@@ -227,4 +225,5 @@
   line-height: 50rpx;
   padding: 0 10rpx;
   background: #f7f7f7;
+  margin: 50rpx auto 0;
 }

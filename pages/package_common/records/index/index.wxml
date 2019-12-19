@@ -86,6 +86,9 @@
             </view>
             <image src="../../images/arrow_right.png" wx:if="{{item.creator.sn==userSn}}" mode="widthFix" />
           </view>
+          <view class="right-delete" catchtap="deleteRecord" wx:if="{{(item.state==='printing'||item.state==='finished')&&item.creator.sn==userSn}}">
+            删除
+          </view>
         </view>
       </view>
     </view>
@@ -269,7 +272,7 @@
       </view>
     </view> -->
   </view>
-  <view class="no-more-tip">仅展示近三个月的打印记录</view>
+  <view class="no-more-tip" wx:if="{{showRemind}}">仅展示近三个月的打印记录</view>
 </view>
 <!-- loading -->
 <import src="/lib/toast/wetoast.wxml" />
