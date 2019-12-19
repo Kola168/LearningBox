@@ -185,14 +185,11 @@ Page({
       const resp = yield commonRequest.createOrder('invoice', this.data.files)
       logger.info('提交打印成功=====', resp)
       this.longToast.hide()
-      router.redirectTo('', {
+      router.redirectTo('/pages/finish/index', {
         type: 'invoice',
         media_type: 'invoice',
         state: resp.createOrder.state
       })
-      // wx.redirectTo({
-      //   url: `/pages/finish/index?type=invoice&media_type=invoice&state=${resp.order.state}`
-      // })
     } catch (e) {
       this.longToast.hide()
       util.showError(e)
