@@ -112,6 +112,14 @@ const api = {
   uploadBdFileToCdn:(sn)=>request.get(`baidu/${sn}`,{}, {
     baseURL: `${app.apiServer}/api/v1/`
   }),
+
+  /**
+   * 获取分享打印机二维码信息
+   * @param { String } id 二维码解析id
+   */
+  getShareDeviceInfo:(id)=>request.get(`short_urls/${id}`,{}, {
+    baseURL: `${app.apiServer}/api/v1/`
+  }),
 }
 
 export default api
