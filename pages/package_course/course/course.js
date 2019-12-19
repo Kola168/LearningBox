@@ -144,7 +144,7 @@ Page({
     if (isLock) {
       let tipText = ''
       if (shareable) {
-        tipText = `邀请${this.data.course.promotion_num}人助力`
+        tipText = `邀请${this.data.course.promotionNum}人助力`
       } else {
         tipText = this.data.isAndroid ? '购买课程' : '加入学习'
       }
