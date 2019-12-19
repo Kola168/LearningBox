@@ -251,6 +251,7 @@ Page({
       case "share":
         url = `../share/index`
         params.shareQrcode = encodeURIComponent(JSON.stringify(this.data.device.shareQrcode))
+        params.deviceSn = this.deviceSn
         break;
       case "reNetwork":
         url = `../network/index/index`
