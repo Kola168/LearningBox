@@ -92,6 +92,8 @@ Page({
       })
       console.log(resp)
     } catch (e) {
+			console.log('哈哈哈哈====')
+			console.log(e)
       util.showError(e)
     }
   }),
@@ -150,8 +152,8 @@ Page({
           app_version: app.version
         },
         decr_type: 'login'
-      }
-      const resp = yield api.wechatDecryption(params)
+			}
+			const resp = yield api.wechatDecryption(params)
       if (resp.code != 0) {
         throw (resp)
       }

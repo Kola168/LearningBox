@@ -537,9 +537,9 @@ const graphqlApi = {
   },
 
   // 发起收藏
-  collectCourse: (input) => {
+  collect: (input) => {
     return gql.mutate({
-      mutation: `mutation collectCourse($input: ResourceCollectInput!){
+      mutation: `mutation collect($input: ResourceCollectInput!){
         collect(input:$input){
           state
         }
@@ -863,7 +863,7 @@ const graphqlApi = {
             sn
           }
           contents{
-            title
+            name
             icon
             sn
             pageCount
@@ -885,9 +885,10 @@ const graphqlApi = {
       query: `query getRecordList($sn: String!){
         category(sn: $sn){
           contents{
-            title
+            name
             icon
             sn
+            printerOrdersCount  
             pageCount
           }
         }
@@ -905,11 +906,15 @@ const graphqlApi = {
     return gql.query({
       query: `query getRecordSource($sn: String!){
         content(sn: $sn){
-          title
+          name
           icon
           sn
-          contentImage
+          contentImages{
+            nameUrl
+          }
+          audioContentImage
           audio
+          contentCollected
           userAudio{
             audioUrl
             qrCodeUrl
@@ -922,14 +927,6 @@ const graphqlApi = {
       }
     })
   },
-  // createAudio: () => {
-  //   return gql.mutate({
-  //     mutation: `mutation createAudio($input: CreateAudioInput!) {
-
-  //     }`
-  //   })
-  // },
-
 
   /**
    *获取省列表
@@ -1014,7 +1011,26 @@ const graphqlApi = {
 	},
 
   /**
-   * 获取banner图
+   * 获取耗材
+   */
+  getConsumables: (type, sn, period) => {
+    return gql.query({
+      query: `query ($type: ConsumableTypeEnum!, $sn: String!, $period: String!){
+        consumables(type:$type, sn: $sn, period: $period){
+          appid
+          url
+          imageUrl
+          name
+        }
+      }`,
+      variables: {
+        type,
+        sn,
+        period
+      }
+    })
+   },
+   /*
    *
    * @param {*} type course/home
    * @returns
@@ -1034,7 +1050,49 @@ const graphqlApi = {
     })
   },
 
-
+  /**
+   * 上传录音音频
+   */
+  createAudio: (pms) => {
+    return gql.mutate({
+      mutation: `mutation createAudio($input: CreateAudioInput!) {
+        createAudio(input: $input){
+          qrCodeUrl
+        }
+      }`,
+      variables: {
+        input: pms
+      }
+    })
+  },
+  
+  /**
+   * 获取用户录制信息
+   */
+  getRecordInfo: (sn, userId) => {
+    return gql.query({
+      query: `query getRecordInfo($sn: String!, $userId: Int!){
+        userContentAudio(sn: $sn, userId: $userId){
+          audioUrl
+        }
+        content(sn: $sn){
+          name
+          icon
+          sn
+          contentImages{
+            nameUrl
+          }
+          audioContentImage
+          audio
+          contentCollected
+        }
+      }`,
+      variables: {
+        sn,
+        userId
+      }
+    })
+  },
   /**
    * 获取文件夹列表
    *

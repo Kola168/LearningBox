@@ -189,7 +189,7 @@ Page({
           sn: this.sn,
           type: "course"
         })
-        var isFree = resp.paymentCheck && resp.paymentCheck.isFree
+        var isFree = resp.paymentCheck && resp.paymentCheck.free
         if (!isFree) {
           yield showModal({
             title: '重要提示',
@@ -279,11 +279,11 @@ Page({
       })
       try {
         var isCollected = this.data.isCollected
-        yield graphql.collectCourse({
-            type: 'course',
-            sn: this.sn,
-            action: isCollected ? 'destroy' : 'create'
-          })
+        yield graphql.collect({
+          type: 'course',
+          sn: this.sn,
+          action: isCollected ? 'destroy' : 'create'
+        })
         
         this.longToast.hide()
         let tipText = isCollected ? '取消收藏成功' : '收藏成功'

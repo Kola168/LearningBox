@@ -4,12 +4,13 @@
 	<view class="banner-recommend sys-flex" wx:if="{{showToast}}">
 		<image class="" src="../../images/record_voice_record_desc.png" bind:tap="receivedInform" />
 	</view>
-	<image class="recorder-bg" src="https://cdn-h.gongfudou.com/epbox/picture/category_e42cf96c50534c57a8f9d102e86d237a.jpg" mode="aspectFill" />
+	<image class="recorder-bg" src="{{content.icon}}" mode="aspectFill" />
 	<view class="play-view-main sys-flex">
-		<image class="source-icon {{isPlaying ? 'source-playing' : ''}}" src="https://cdn-h.gongfudou.com/epbox/picture/category_e42cf96c50534c57a8f9d102e86d237a.jpg" mode="aspectFill" />
+		<!-- <image class="source-icon {{isPlaying ? 'source-playing' : ''}}" src="{{content.icon}}" mode="aspectFill" /> -->
+		<image class="source-icon" src="{{content.icon}}" mode="aspectFill" />
 		<view class="source-info">
-			<view class="source-name f-18">拉大锯</view>
-			<view class="user-name f-12">暂无朗读者</view>
+			<view class="source-name f-18">{{content.name}}</view>
+			<view class="user-name f-12">{{userAudio && kidInfo.name ? kidInfo.name : '暂无朗读者'}}</view>
 		</view>
 		<view class="duration-main sys-flex">
 			<view class="player-time">{{curryTime || '00:00'}}</view>
@@ -30,14 +31,14 @@
 				<view class="recording-status f-14 btn-recording">{{isRecording ? '正在录制中…' : ''}}</view>
 			</view>
 			<view class="btn-main btn-user f-12 sys-flex">
-				<image class="btn" wx:if="{{!recordSource}}" src="../../images/record_voice_btn_record_disabled.png" />
+				<image class="btn" wx:if="{{!userAudio}}" src="../../images/record_voice_btn_record_disabled.png" />
 				<image
 				 class="btn"
 				 wx:else
 				 bind:tap="startPlayRecord"
 				 src="{{players.record.isPlaying && !players.record.isPause ? '../../images/record_voice_btn_playing.png' : '../../images/record_voice_btn_play_stop.png'}}"
 				/>
-				<view class="{{!recordSource ? 'btn-disabled' : '' }}">宝宝录音</view>
+				<view class="{{!userAudio ? 'btn-disabled' : '' }}">宝宝录音</view>
 			</view>
 		</view>
 	</view>

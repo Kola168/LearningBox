@@ -43,7 +43,8 @@
     "pages/course/index",
     "components/bottom-button/test",
     "pages/index/grade",
-    "pages/account/index"
+		"pages/account/index",
+		"pages/finish/index"
   ],
   "subPackages": [{
       "root": "pages/package_common",
@@ -188,7 +189,7 @@
         "selectedIconPath": "images/home/icon_tab_home_selected.png"
       },
       {
-        "pagePath": "pages/index/index",
+        "pagePath": "pages/course/index",
         "text": "学习",
         "iconPath": "images/home/icon_tab_study_unselected.png",
         "selectedIconPath": "images/home/icon_tab_study_selected.png"
