@@ -169,7 +169,9 @@ Page({
       })
       yield this.getUserInfo()
       yield this.getBanners()
-      this.handleScene(this.scene)
+      if(this.scene) {
+        this.handleScene(this.scene)
+      }
       this.longToast.hide()
     } catch (e) {
       yield app.login()
