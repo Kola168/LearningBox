@@ -92,6 +92,8 @@ Page({
       })
       console.log(resp)
     } catch (e) {
+			console.log('哈哈哈哈====')
+			console.log(e)
       util.showError(e)
     }
   }),

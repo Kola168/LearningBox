@@ -21,17 +21,17 @@ Page({
 
 	onLoad: function (options) {
 		this.longToast = new app.weToast()
-		console.log(options)
+		// console.log(options)
 		this.equipInfo = JSON.parse(decodeURIComponent(options.equipInfo))
 		this.wifiSSID = JSON.parse(decodeURIComponent(options.wifiSSID))
 		this.setData({
 			wifiSSID: this.wifiSSID
 		})
-		console.log(this.equipInfo)
+		// console.log(this.equipInfo)
 	},
 
 	inputprintNum: function (e) {
-		console.log(e)
+		// console.log(e)
 		this.setData({
 			passWord: e.detail.value
 		})
@@ -233,7 +233,7 @@ Page({
 					that.checkEquipment.time = 0
 				}
 				that.checkEquipment.time++
-				if (that.checkEquipment.time >= 10) {
+				if (that.checkEquipment.time >= 20) {
 					this.longToast.toast()
 					yield showModal({
 						title: '提示',
