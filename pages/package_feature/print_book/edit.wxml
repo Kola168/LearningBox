@@ -27,7 +27,7 @@
       <image src="../resource_images/photo_book_add.png" mode="aspectFill" class="template-img"></image>
     </view>
   </scroll-view>
-  <bottom-button text-right="确认" bindrighttap="confBut"></bottom-button>
+  <bottom-button text-right="确认" bindrighttap="confBut" get-phone="{{true}}"></bottom-button>
 </view>
 
 <import src="/lib/toast/wetoast.wxml" />

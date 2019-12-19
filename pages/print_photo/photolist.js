@@ -28,7 +28,7 @@ Page({
       size: {
         width: 1300,
         height: 1950,
-        shrinksize: '/resize,m_fill,h_300,w_200/quality,Q_85/format,jpg',
+        shrinksize: '/resize,m_fill,h_300,w_200,limit_0/quality,Q_85/format,jpg',
       }
     },
     pic_in5: {
@@ -36,7 +36,7 @@ Page({
       size: {
         width: 1092,
         height: 1560,
-        shrinksize: '/resize,m_fill,h_285,w_200/quality,Q_85/format,jpg',
+        shrinksize: '/resize,m_fill,h_285,w_200,limit_0/quality,Q_85/format,jpg',
       }
     },
     pic_in7: {
@@ -44,7 +44,7 @@ Page({
       size: {
         width: 1560,
         height: 2184,
-        shrinksize: '/resize,m_fill,h_280,w_200/quality,Q_85/format,jpg',
+        shrinksize: '/resize,m_fill,h_280,w_200,limit_0/quality,Q_85/format,jpg',
       }
     },
     pic_a4: {
@@ -52,7 +52,7 @@ Page({
       size: {
         width: 2520,
         height: 3564,
-        shrinksize: '/resize,m_fill,h_282,w_200/quality,Q_85/format,jpg',
+        shrinksize: '/resize,m_fill,h_282,w_200,limit_0/quality,Q_85/format,jpg',
       }
     },
     lomo: {
@@ -60,7 +60,7 @@ Page({
       size: {
         width: 874,
         height: 1240,
-        shrinksize: '/resize,m_fill,h_310,w_219/quality,Q_85/format,jpg',
+        shrinksize: '/resize,m_fill,h_310,w_219,limit_0/quality,Q_85/format,jpg',
       }
     }
   },
