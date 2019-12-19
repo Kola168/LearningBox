@@ -90,14 +90,11 @@
 
 		<view class="right">
 			<view class="right-first">适配耗材
-				<consumables
+				<!-- <consumables
 				 class="modify"
 				 bind:myevent="onMyEvent"
 				 supply_types="{{supply_types}}"
-				 consumables-icon="consumables-icon"
-				 medium_recommend="{{mediumRecommend}}"
-				 find="library"
-				/>
+				/> -->
 			</view>
 
 			<!-- 付款逻辑重构 -->

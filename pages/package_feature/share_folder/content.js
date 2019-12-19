@@ -147,15 +147,9 @@ Page({
 	}),
 
 	onShow: co.wrap(function* (options) {
-<<<<<<< HEAD
-		let userSn = wx.getStorageSync('user_sn')
-		console.log('应用参数传参', this.share_user_id, this.way)
-		if (!userSn) {
-=======
 		let authToken = wx.getStorageSync('authToken')
 		console.log('应用参数传参', this.share_user_id, this.way)
 		if (!authToken) {
->>>>>>> develop-lis
 			console.log('执行到文件夹授权===========')
 			let url = this.share_user_id ? `/pages/authorize/index?url=${url}&share_user_id=${this.share_user_id}&way=${this.way}` : `/pages/authorize/index`
 			wx.navigateTo({
