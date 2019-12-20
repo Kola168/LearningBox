@@ -346,7 +346,8 @@ Page({
         printUrl: this.compoundUrl
       }]
       let resp = yield commonRequest.createOrder('literacy_card', imgs)
-      wxNav.redirectTo(`../../../../finish/index`, {
+      this.weToast.hide()
+      wxNav.redirectTo(`/pages/finish/index`, {
         media_type: 'literacy_card',
         state: resp.state,
         type: 'literacy_card'
