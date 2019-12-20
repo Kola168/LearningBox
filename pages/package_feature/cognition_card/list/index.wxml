@@ -8,7 +8,7 @@
   </view>
   <view class="list-box">
     <view class="box-container" wx:for="{{cognitionCardImgs}}" wx:key="{{index}}">
-      <image src="{{item.url}}" mode="widthFix" class="main-img" />
+      <image src="{{item.url}}?x-image-process=image/resize,w_400" mode="widthFix" class="main-img" />
       <view class="edit-text" bindtap="toEdit" data-url="{{item.editUrl}}" data-name="{{item.cardName}}" data-index="{{index}}">
         编辑
       </view>

@@ -25,7 +25,7 @@ Page({
 
   onLoad: co.wrap(function* () {
     this.activeDevice = app.activeDevice
-    let userSn = storage.get('user_sn')
+    let userSn = storage.get('userSn')
     this.userSn = userSn
     this.longToast = new app.weToast()
     yield this.getCourseIndex()
@@ -36,14 +36,14 @@ Page({
     })
 
     event.on('Authorize', this, () => {
-      this.userSn = storage.get('user_sn')
+      this.userSn = storage.get('userSn')
       this.getCourseIndex()
     })
 
   }),
 
   onShow() {
-    let userSn = storage.get('user_sn')
+    let userSn = storage.get('userSn')
     this.userSn = userSn
     if (userSn) {
       this.getLastCourseInfo()

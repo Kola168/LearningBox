@@ -45,7 +45,9 @@
     "pages/index/grade",
 		"pages/account/index",
 		"pages/finish/index",
-		"pages/mall/index"
+		"pages/mall/index",
+		"pages/webview/index",
+		"pages/webview/member"
   ],
   "subPackages": [{
       "root": "pages/package_common",
@@ -58,7 +60,8 @@
         "free_resources/content/index",
         "free_resources/detail/index",
         "records/index/index",
-        "records/detail/index"
+        "records/detail/index",
+        "records/cancel_intro/index"
       ]
     },
     {

@@ -115,7 +115,7 @@ Component({
     let navBarInfo = (app.navBarInfo && app.navBarInfo.navBarHeight > 0) ? app.navBarInfo : app.getNavBarInfo()
     this.setData(navBarInfo)
     let pages = getCurrentPages(),
-      tabBars = ['pages/index/index'],
+      tabBars = ['pages/index/index', 'pages/account/index', 'pages/mall/index', 'pages/course/index'],
       len = pages.length,
       currentPageRoute = pages[len - 1].route,
       showNavCapsuleBack = pages.length > 1,

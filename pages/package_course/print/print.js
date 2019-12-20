@@ -115,7 +115,7 @@ Page({
       this.longToast.hide()
       router.redirectTo('/pages/finish/index', {
         type: 'course',
-        media_type: '',
+        media_type: 'course',
         state: resp.createResourceOrder.state
       })
     } catch (error) {

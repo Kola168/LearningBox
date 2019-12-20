@@ -68,7 +68,7 @@ Page({
 
   confirm: co.wrap(function* (e) {
 
-    logger.info('发票打印时form发生了submit事件，携带数据为：', e.detail.formId, 'print_invoice')
+    logger.info('发票打印时form发生了submit事件，携带数据为：', e, 'print_invoice')
 
     if (this.data.count == 0) {
       yield showModal({
@@ -99,9 +99,8 @@ Page({
       let currentData = _(this.data.newInvoice).clone()
       currentData.forEach(item => {
         printOneInvoice.push({
-          originalUrl: item.convert_url,
-          printUrl: item.convert_url,
-          originalUrl: 1,
+          originalUrl: item.convert_url.url,
+          printUrl: item.convert_url.url,
           grayscale: false
         })
       })
@@ -110,8 +109,7 @@ Page({
       const resp = yield commonRequest.createOrder('invoice', printOneInvoice)
       logger.info('提交打印成功', resp)
       this.longToast.hide()
-      router.redirectTo('/finish/index', {
-        type: 'invoice',
+      router.redirectTo('/pages/finish/index', {
         media_type: 'invoice',
         state: resp.createOrder.state
       })

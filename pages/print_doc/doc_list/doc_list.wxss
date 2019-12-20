@@ -184,14 +184,6 @@ Page {
   width: 100%;
 }
 
-.bottom button {
-  width: 100%;
-  padding: 0;
-  line-height: 100rpx;
-  background: #FFDC5E;
-  color: #454545;
-}
-
 .button-gray {
   background: #f5f5f5 !important;
   border-top: 1px solid #f5f5f5 !important;

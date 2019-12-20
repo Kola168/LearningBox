@@ -27,7 +27,7 @@
 				<view>原声</view>
 			</view>
 			<view class="btn-voice sys-flex">
-				<image class="btn" bind:tap="recordVoice" src="{{isRecording ? '../../images/record_voice_btn_record_stop.png' : '../../images/record_voice_btn_recorder.png'}}" />
+				<image class="btn" bind:tap="recordVoice" src="{{userContentAudio && !userContentAudio.isOwner ? '../../images/record_voice_disabled.png' : (isRecording ? '../../images/record_voice_btn_record_stop.png' : '../../images/record_voice_btn_recorder.png')}}" />
 				<view class="recording-status f-14 btn-recording">{{isRecording ? '正在录制中…' : ''}}</view>
 			</view>
 			<view class="btn-main btn-user f-12 sys-flex">

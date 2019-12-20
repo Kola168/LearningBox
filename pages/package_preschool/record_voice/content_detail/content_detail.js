@@ -65,7 +65,7 @@ Page({
 			title: this.title
 		})
 		this.longToast = new app.weToast()
-		let userSn = storage.get('user_sn')
+		let userSn = storage.get('userSn')
 		if (userSn) {
 			yield this.getRecordSource()
 			yield this.getConsumables()
@@ -174,11 +174,7 @@ Page({
 		})
 		try {
 			var collection = this.data.collection
-			yield graphql.collect({
-				type: 'content',
-				sn: this.sn,
-				action: collection ? 'destroy' : 'create'
-			})
+			yield graphql.collect(this.sn, 'content', collection ? 'destroy' : 'create')
 
 			this.longToast.hide()
 			let tipText = collection ? '取消收藏成功' : '收藏成功'
@@ -207,7 +203,7 @@ Page({
 	}),
 
   authCheck: co.wrap(function *(){
-    var userSn = storage.get('user_sn')
+    var userSn = storage.get('userSn')
 		if (!userSn) {
 			let url = `/pages/authorize/index`
 			router.navigateTo(url)
@@ -245,7 +241,7 @@ Page({
       var resp = yield graphql.createResourceOrder(params)
 
 			router.redirectTo('/pages/finish/index', {
-				media_type: this.data.media_type,
+				media_type: "kid_record",
 				state: resp.createResourceOrder.state
 			})
 

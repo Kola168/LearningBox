@@ -29,11 +29,11 @@
   <block wx:if="{{homeType!=='学科'}}">
     <view class="home-title">智能学习工具</view>
     <view class="tool-wrap">
-      <view class="tool-item">
+      <view class="tool-item" bindtap="toFunction" id="cognitionCard">
         <image src="/images/home/icon_shizika.png" mode="widthFix"></image>
         <view>识字卡</view>
       </view>
-      <view class="tool-item">
+      <view class="tool-item" bindtap="toFunction" id="recordVoice">
         <image src="/images/home/icon_voice.png" mode="widthFix"></image>
         <view>童音录制</view>
       </view>
@@ -110,7 +110,7 @@
   <block wx:if="{{homeType=='学科'}}">
     <view class="home-title">智能学习工具</view>
     <view class="tool-wrap">
-      <view class="tool-item">
+      <view class="tool-item" bindtap="toFunction" id="freeResources">
         <image src="/images/home/icon_free_database.png" mode="widthFix">
           <image src="/images/home/icon_subject_free.png" mode="widthFix" class="subject-free"></image>
         </image>

@@ -17,7 +17,7 @@
         </view>
       </view>
       <view class="item-right">
-        <view class="right-btn" wx:if="{{activeDevice.isAdmin}}" bindtap="toShare">分享</view>
+        <view class="right-btn" wx:if="{{activeDevice.isAdmin}}" bindtap="toShare" data-sn="{{activeDevice.sn}}">分享</view>
         <view class="right-arrow">
           <image src="../images/arrow_right.png" />
         </view>

@@ -32,7 +32,7 @@
 		 circular="{{circular}}"
 		 wx:if="{{detail.preview_urls.length>0}}"
 		>
-			<block wx:for="{{detail.preview_urls}}" wx:key="{{index}}">
+			<block wx:for="{{detail.preview_urls}}" wx:key="preview_urls">
 				<swiper-item style="overflow-y:scroll;overflow-x:hidden;">
 					<image style="width:100%" mode="widthFix" src="{{item}}">
 						<image src='https://cdn-h.gongfudou.com/LearningBox/main/doc_shuiyin_new.png' class='watermark' />

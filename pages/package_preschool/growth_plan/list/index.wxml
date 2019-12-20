@@ -16,7 +16,7 @@
                     <view class="btn-default" bindtap="toSubscribe">去订阅</view>
                 </view>
             </block>
-            <view class="item-cont" wx:for="{{lists}}" wx:key="{{index}}" id="{{index}}">
+            <view class="item-cont" wx:for="{{lists}}" wx:key="index" id="{{index}}">
                 <view class="item-left">
                     <image class="item-img" src="{{item.image}}"></image>
                 </view>
@@ -44,7 +44,7 @@
     <!-- 已订阅 结束 -->
     <!-- 未订阅 开始 -->
         <view class="item-cont-block" wx:if="{{tabToContent==1}}">
-            <view class="item-cont" wx:for="{{lists}}" wx:key="{{index}}" id="{{item.id}}">
+            <view class="item-cont" wx:for="{{lists}}" wx:key="index" id="{{item.id}}">
                 <view class="item-left">
                     <image class="item-img" src="{{item.image}}"></image>
                 </view>

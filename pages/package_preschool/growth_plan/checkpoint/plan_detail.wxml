@@ -1,7 +1,7 @@
 <!--pages/package_preschool/growth_plan/checkpoint/plan_detail.wxml-->
 <nav-bar title="计划详情"></nav-bar>
 <swiper class="detail-images" indicator-dots="{{indicatorDots}}" autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">
-    <block wx:for="{{imgUrls}}" wx:key="{{index}}" id="{{index}}">
+    <block wx:for="{{imgUrls}}" wx:key="index" id="{{index}}">
         <swiper-item class="detail-item">
             <image src="{{currentImage}}" class="slide-image" />
         </swiper-item>

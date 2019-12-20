@@ -2,7 +2,7 @@
 <view
  class="play-list"
  wx:for="{{type}}"
- wx:key="{{index}}"
+ wx:key="*this"
  id="{{index}}"
  wx:if="{{index!=1}}"
  class='type'
@@ -16,7 +16,7 @@
 		 wx:for="{{item.content}}"
 		 wx:for-item="data"
 		 wx:for-index="i"
-		 wx:key="{{i}}"
+		 wx:key="*this"
 		 id="{{i}}"
 		 data-type="{{index}}"
 		>

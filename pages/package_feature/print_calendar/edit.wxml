@@ -27,7 +27,7 @@
   </scroll-view>
   <scroll-view class="template-list-box template-limit-height" scroll-x>
     <view wx:for="{{templateList[templateTypeIndex].templates}}" wx:key="templates" class="template-item-box {{index==templateIndex?'template-item-selected':''}}" data-index="{{index}}" bindtap="{{templateIndex==index?'':'checkTemplate'}}">
-      <image src="{{item.preview_url}}" mode="widthFix" class="template-preview-img {{type=='wood' && direction=='vertical'?'template-vertical-img':''}}"></image>
+      <image src="{{item.previewImage}}" mode="widthFix" class="template-preview-img {{type=='wood' && direction=='vertical'?'template-vertical-img':''}}"></image>
     </view>
   </scroll-view>
   <bottom-button text-right="开始打印" bindrighttap="confBut"  get-phone="{{true}}"></bottom-button>

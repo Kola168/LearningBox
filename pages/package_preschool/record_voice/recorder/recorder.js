@@ -48,7 +48,7 @@ Page({
       this.setData({
         showToast
       })
-      var userSn = storage.get('user_sn')
+      var userSn = storage.get('userSn')
       if (userSn) { // 授权完成执行
         this.getPageInfo(showToast)
       }
@@ -62,7 +62,7 @@ Page({
   }),
 
   onShow: function () {
-    var userSn = storage.get('user_sn')
+    var userSn = storage.get('userSn')
     if (!userSn) {
       return wxNav.navigateTo('/pages/authorize/index')
     }

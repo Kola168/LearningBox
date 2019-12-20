@@ -9,7 +9,7 @@
 	 scroll-into-view="{{'_'+tabId}}"
 	>
 		<text wx:for="{{typeList}}"
-					wx:key="{{index}}"
+					wx:key="name"
 					id="{{'_'+index}}"
 					class="tab-item {{tabId == index ? 'activeType' : ''}}"
 					bindtap="changeTab">{{item.name}}<text
@@ -21,7 +21,7 @@
 	</view>
 </view>
 
-<block wx:for="{{playList}}" wx:key="{{index}}">
+<block wx:for="{{playList}}" wx:key="icon_url">
 	<!-- 不带缩略图的文档 -->
 	<block wx:if="{{typeList[1].show_type == 'vertical'}}">
 		<view class='item' bindtap='playPreview' id="{{index}}">
@@ -34,7 +34,7 @@
 				<view class='print'>
 					<view>
 						<image src='/images/doc_print_icon.png' class='print_icon' mode='widthFix' />
-						<text class='print_num'>{{item. print_count}}</text>
+						<text class='print_num'>{{item.print_count}}</text>
 					</view>
 
 					<view style="margin-left:20rpx">
@@ -75,7 +75,7 @@
 </block>
 <view class="type-modal" wx:if="{{showTypeModal}}" bindtap="closeTypeModal">
 	<view catchtap="back">
-		<view wx:for="{{typeList}}" wx:key="{{index}}" id="{{'_'+index}}">
+		<view wx:for="{{typeList}}" wx:key="name" id="{{'_'+index}}">
 			<text id="{{'_'+index}}" class="tab-item {{tabId == index ? 'activeType' : ''}}"
                 catchtap="changeTab">{{item.name}}<text class="active-border"></text>
 			</text>

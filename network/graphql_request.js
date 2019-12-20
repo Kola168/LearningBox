@@ -24,7 +24,8 @@ let gql = GraphQL({
       }
     }
   },
-  //全局错误拦截
+
+	//全局错误拦截
   errorHandler: function(res) {
     console.log('graphql全局错误拦截', res)
       //如果auth
@@ -557,8 +558,12 @@ const graphqlApi = {
     })
   },
 
-  // 发起收藏
-  collect: (input) => {
+  /**
+   * @param { String } sn 资源sn
+   * @param { String } type 收藏类型 course/content
+   * @param { String } action 操作类型 create/destroy
+   */
+  collect: (sn,type,action) => {
     return gql.mutate({
       mutation: `mutation collect($input: ResourceCollectInput!){
         collect(input:$input){
@@ -566,7 +571,11 @@ const graphqlApi = {
         }
       }`,
       variables: {
-        input: input
+        input: {
+          sn: sn,
+          type: type,
+          action: action
+        }
       }
     })
   },
@@ -1278,6 +1287,7 @@ const graphqlApi = {
           name
           createdAt
           designs {
+            name
             failedReason
             copies
             previewUrl
@@ -1462,7 +1472,7 @@ const graphqlApi = {
       }
     })
 	},
-	
+
 	/**
      * 创建新文件夹
      *
@@ -1518,7 +1528,7 @@ const graphqlApi = {
         }
       })
     },
-  
+
     /**
      * 修改文件夹名称
      *
@@ -1558,7 +1568,7 @@ const graphqlApi = {
     /**
      * 获取文件夹文件列表
      *
-     * @param {*} sn 
+     * @param {*} sn
      * @returns
      */
     getDocuments: (sn,page) => {
@@ -1578,7 +1588,7 @@ const graphqlApi = {
         }
       })
     },
-  
+
     /**
      * 存储文件到文件夹
      *
@@ -1588,9 +1598,9 @@ const graphqlApi = {
      *    documents{
      *      name
      *      url
-     *      fileType   
-     *     } 
-     *  }        
+     *      fileType
+     *     }
+     *  }
      * @returns
      */
     createDocument:(input) => {
@@ -1605,7 +1615,7 @@ const graphqlApi = {
         }
       })
     },
-  
+
     /**
      * 删除文件
      *
@@ -1626,7 +1636,7 @@ const graphqlApi = {
         }
       })
     },
-  
+
     /**
      * 百度token校验
      *
@@ -1699,6 +1709,28 @@ const graphqlApi = {
           input:input
       }
       })
+		},
+		    /**
+     * 审核打印
+     * @param { String } orderSn 订单sn
+     * @param { String } action 审核类型：pass/reject
+     */
+    verifyOrder:(orderSn,action) => {
+      return gql.mutate({
+        mutation: `mutation($input: VerifyOrderInput!) {
+          verifyOrder(input:$input){
+            order{
+              state
+            }
+          }
+        }`,
+        variables: {
+          input: {
+            orderSn:orderSn,
+            action:action
+          }
+        }
+      })
     },
     /**
      * 加入文件夹
@@ -1718,8 +1750,8 @@ const graphqlApi = {
       }
       })
     },
-  
-  
+
+
 }
 
 export default graphqlApi

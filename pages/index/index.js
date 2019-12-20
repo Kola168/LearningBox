@@ -1,18 +1,14 @@
 const app = getApp()
-import wxNav from '../../utils/nav.js'
+import { regeneratorRuntime, co, wxNav, util, storage } from '../../utils/common_import'
+
 import Logger from '../../utils/logger.js'
 const logger = new Logger.getLogger('pages/index/index')
-import co from '../../lib/co/co'
-import regeneratorRuntime from '../../lib/co/runtime'
-const util = require('../../utils/util')
-// page mixins
+  // page mixins
 require('../../utils/mixin.js')
 import index from "../../mixins/index.js"
 import init from "../../mixins/init.js"
-import storage from '../../utils/storage.js'
 import gql from '../../network/graphql_request.js'
 import api from '../../network/restful_request.js'
-import router from '../../utils/nav'
 const checkSession = util.promisify(wx.checkSession)
 
 Page({
@@ -46,16 +42,22 @@ Page({
   },
 
   //事件处理函数
-  bindViewTap: function () {
+  bindViewTap: function() {
     wxNav.navigateTo('/pages/logs/logs')
   },
-  onLoad: co.wrap(function* (query) {
+  onLoad: co.wrap(function*(query) {
     this.longToast = new app.weToast()
+    let userSn = storage.get('userSn')
     if (query.scene) {
       this.scene = query.scene
       let userSn = storage.get('userSn')
       if (userSn) {
         this.handleScene(query.scene)
+      }
+    } else if (query.deviceSn) {
+      this.deviceSn = query.deviceSn
+      if (userSn) {
+        this.bindShareDevice(query.deviceSn)
       }
     }
     try {
@@ -65,10 +67,10 @@ Page({
     }
 
   }),
-  onShow: co.wrap(function* () {
+  onShow: co.wrap(function*() {
     yield this.getUnion() //授权
   }),
-  getUnion: co.wrap(function* () {
+  getUnion: co.wrap(function*() {
     try {
       let authToken = storage.get('authToken')
       if (authToken) {
@@ -90,7 +92,7 @@ Page({
       })
     }
   }),
-  checkSession: co.wrap(function* () {
+  checkSession: co.wrap(function*() {
     try {
       yield checkSession()
       return true
@@ -98,7 +100,7 @@ Page({
       return false
     }
   }),
-  getBanners: co.wrap(function* () {
+  getBanners: co.wrap(function*() {
     try {
       let resp = yield gql.getBanners('home')
       this.setData({
@@ -109,7 +111,7 @@ Page({
       util.showError(e)
     }
   }),
-  getUserInfo: co.wrap(function* () {
+  getUserInfo: co.wrap(function*() {
     try {
       let resp = yield gql.getUser()
       this.setData({
@@ -124,7 +126,7 @@ Page({
         wx.setStorageSync("phoneNum", resp.currentUser.phone)
       }
       if (!this.data.selectedKid || !this.data.selectedKid.stageRoot) {
-        router.navigateTo('/pages/index/grade')
+        wxNav.navigateTo('/pages/index/grade')
       } else {
         this.setData({
           homeType: this.data.selectedKid.stageRoot.rootName
@@ -140,7 +142,7 @@ Page({
       util.showError(e)
     }
   }),
-  userInfoHandler: co.wrap(function* (e) {
+  userInfoHandler: co.wrap(function*(e) {
     logger.info('********** userInfoHandler', e)
     if (!e.detail.userInfo || !e.detail.encryptedData) {
       return
@@ -185,7 +187,14 @@ Page({
       })
       yield this.getUserInfo()
       yield this.getBanners()
-      this.handleScene(this.scene)
+      if (this.scene) {
+        this.handleScene(this.scene)
+      }
+      // 通过分享打印机
+      if(this.deviceSn){
+        this.bindShareDevice(this.deviceSn)
+      }
+
       this.longToast.hide()
     } catch (e) {
       yield app.login()
@@ -196,7 +205,7 @@ Page({
       util.showError(e)
     }
   }),
-  toNomalPrint: function (e) {
+  toNomalPrint: function(e) {
     let url
     switch (e.currentTarget.id) {
       case 'photo':
@@ -211,8 +220,31 @@ Page({
         defalt:
           url = ''
     }
-    router.navigateTo(url)
+    wxNav.navigateTo(url)
   },
+
+  // 跳转小功能
+  toFunction(e) {
+    let functionId = e.currentTarget.id,
+      url = ''
+    switch (functionId) {
+      case 'cognitionCard':
+        url = '/pages/package_feature/cognition_card/index/index'
+        break;
+      case 'recordVoice':
+        url = '/pages/package_preschool/record_voice/index/index'
+        break;
+      case 'freeResources':
+        url = '/pages/package_common/free_resources/index/index'
+        break;
+    }
+    wxNav.navigateTo(url)
+  },
+
+  // toId: function () {
+  //   wxNav.navigateTo('/pages/print_id/index')
+  // }
+
   // 处理scene
   handleScene(scene) {
     let sceneArr = scene.split('_'),
@@ -235,7 +267,21 @@ Page({
       if (info.code != 0) {
         throw (info)
       }
-      let res = yield gql.bindShareDevice(info.res.device_sn)
+      this.bindShareDevice(info.res.device_sn)
+      yield gql.bindShareDevice()
+    } catch (error) {
+      this.longToast.hide()
+      util.showError(error)
+    }
+  }),
+
+  // 绑定分享打印机
+  bindShareDevice: co.wrap(function*(deviceSn) {
+    this.longToast.toast({
+      type: 'loading'
+    })
+    try {
+      let res = yield gql.bindShareDevice(deviceSn)
       if (res.bindSharer.device) {
         this.longToast.hide()
         wx.showToast({

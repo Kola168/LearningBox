@@ -4,7 +4,7 @@ import { regeneratorRuntime, co, util, wxNav } from '../../../utils/common_impor
 import graphql from '../../../network/graphql_request'
 Page({
   data: {
-    devices: [],
+    devices: null,
     activeDevice: null,
     isFullScreen: false
   },
@@ -54,7 +54,8 @@ Page({
       return
     }
     wxNav.navigateTo(`../share/index`, {
-      shareQrcode: encodeURIComponent(JSON.stringify(this.data.activeDevice.shareQrcode))
+      shareQrcode: encodeURIComponent(JSON.stringify(this.data.activeDevice.shareQrcode)),
+      deviceSn: e.currentTarget.dataset.sn
     })
   },
 

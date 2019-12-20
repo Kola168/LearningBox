@@ -5,7 +5,7 @@
         <image src="/images/consumables_top_bg.png" mode="widthFix" class='consumables-top-bg'></image>
         <image src="/images/print_photo_delete.png" mode="widthFix" class='consumables-close' catchtap='hideModal'></image>
         <view class="{{supply_types.length > 1 ? 'content1' : 'content2'}}">
-            <view wx:for="{{supply_types}}" wx:key="{{index}}" class='type' id="{{index}}" bindtap="order">
+            <view wx:for="{{supply_types}}" wx:key="imageUrl" class='type' id="{{index}}" bindtap="order">
                 <view class='border'>
                     <image src="{{item.imageUrl}}" class='consumables_image' mode='aspectFill'></image>
                 </view>
