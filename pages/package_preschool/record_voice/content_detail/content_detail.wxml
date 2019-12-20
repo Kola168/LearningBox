@@ -8,9 +8,9 @@
 		 bindchange="tabSlide"
 		 circular="{{circular}}"
 		>
-			<block wx:for="{{content.contentImages}}" wx:key="nameUrl">
+			<block wx:for="{{content.audioContentImage}}" wx:key="*this">
 				<swiper-item style="overflow-y:scroll;overflow-x:hidden;">
-					<image style="width:100%" mode="widthFix" src="{{item.nameUrl}}">
+					<image style="width:100%" mode="widthFix" src="{{item}}">
 						<!-- <image src='https://cdn.gongfudou.com/miniapp/ec/shuiyin_new.png' class='watermark' /> -->
 					</image>
 				</swiper-item>
