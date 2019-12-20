@@ -3,7 +3,7 @@
     <block wx:if="{{!showIndex}}">
         <view class="wrap">
             <view class="image-main">
-                <view class="image-item" wx:for="{{images}}" wx:key="{{index}}" id="{{index}}">
+                <view class="image-item" wx:for="{{images}}" wx:key="index" id="{{index}}">
                     <!-- 初次打印删除按钮 -->
                     <image class="delete" src="../../images/print_photo_delete.png" mode="widthFix" bindtap="deleteImg" id="{{index}}"></image>
                     <view class="mainImage" style="height:{{height}}px">
