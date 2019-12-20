@@ -44,7 +44,8 @@ Page({
         sources: content.contentImages,
         pageCount: content.pageCount,
         endPage: content.pageCount,
-        title: content.title
+        title: content.title,
+        isCollect: false
       })
       this.featureKey = content.featureKey
       this.weToast.hide()
@@ -161,6 +162,7 @@ Page({
       })
     }
   },
+  // 确认打印
   userConfirm: co.wrap(function*() {
     this.weToast.toast({
       type: 'loading'
@@ -182,6 +184,28 @@ Page({
         wxNav.redirectTo(`/pages/finish/index`)
       }
       this.weToast.hide()
+    } catch (error) {
+      this.weToast.hide()
+      util.showError(error)
+    }
+  }),
+  // 收藏
+  collect: co.wrap(function*(e) {
+    if(app.preventMoreTap(e)) return
+    this.weToast.toast({
+      type: 'loading'
+    })
+    try {
+      let action = this.data.isCollect ? 'destroy' : 'create'
+      yield graphql.collect(this.sn, 'content', action)
+      let tipText = action ? '取消收藏成功' : '收藏成功'
+      wx.showToast({
+        icon: 'none',
+        title: tipText
+      })
+      this.setData({
+        isCollect: !this.data.isCollect
+      })
     } catch (error) {
       this.weToast.hide()
       util.showError(error)
