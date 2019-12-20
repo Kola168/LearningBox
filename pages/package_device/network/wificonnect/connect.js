@@ -108,71 +108,6 @@ Page({
 		console.log('执行到这里===========111111===')
 		let that = this
 		this.networkManage()
-		// try {
-		// 	if (!this.networkManage()) { 
-		// 		console.log('执行到这里===========222222===')
-		// 		// wx.offNetworkStatusChange()
-		// 		console.log('执行到这里===========333333===')
-
-		// 		if (!that.checkNet.time) {
-		// 			that.checkNet.time = 0
-		// 		}
-		// 		that.checkNet.time++
-		// 		if (that.checkNet.time >= 10) {
-		// 			this.longToast.toast()
-		// 			wx.showModal({
-		// 				title: '提示',
-		// 				content: '请检查网络状态',
-		// 			})
-		// 			return
-		// 		}
-		// 		setTimeout(function () {
-		// 			that.checkNet()
-		// 		}, 3500)
-		// 	} else {
-
-		// 	}
-		// } catch (e) {
-		// 	return wxNav.navigateTo('/pages/package_device/network/tips/step1')
-		// }
-
-
-
-		// try {
-		// 	let netWorkType = yield getNetworkType()
-		// 	if (netWorkType.networkType != 'none') {  //物理状态不一定有网
-		// 		console.log('netWorkType.networkType====', netWorkType.networkType)
-		// 		let platform = app.sysInfo.platform.toLowerCase()
-		// 		if(platform == 'android'){
-		// 			setTimeout(function () {
-		// 				that.bindCode()
-		// 			}, 25000)
-		// 		}else{
-		// 			setTimeout(function () {
-		// 				that.bindCode()
-		// 			}, 6000)
-		// 		}
-
-		// 	} else {
-		// 		if (!that.checkNet.time) {
-		// 			that.checkNet.time = 0
-		// 		}
-		// 		that.checkNet.time++
-		// 		if (that.checkNet.time >= 10) {
-		// 			this.longToast.toast()
-		// 			wx.showModal({
-		// 				title: '提示',
-		// 				content: '请检查网络状态',
-		// 			})
-		// 			return
-		// 		}
-		// 		setTimeout(function () {
-		// 			that.checkNet()
-		// 		}, 1500)
-		// 	}
-		// } catch (e) {
-		// 	return wxNav.navigateTo('/pages/package_device/network/tips/step1')
-		// }
 	}),
 
 	//上报code信息
@@ -197,7 +132,7 @@ Page({
 			let sn = res.bindDevice.device.sn
 			this.checkEquipment(sn)
 		} catch (e) {
-			console.log('e==bindCode===', e)
+			console.log('e==bindCode======================', e)
 			//如果是没有网络或者超时的情况下重试一次
 			if (e.errMsg === "request:fail timeout" || e.errMsg === "request:fail") {
 				if (!that.bindCode.time) {
@@ -224,10 +159,10 @@ Page({
 	checkEquipment: co.wrap(function* (sn) {
 		try {
 			let res = yield graphql.getDeviceDetail(sn)
-			console.log('获取打印机详细信息', res)
-			console.log('获取打印机状态', res.device.onlineState)
+			console.log('获取打印机详细信息', res.currentUser.devices[0])
+			console.log('获取打印机状态', res.currentUser.devices[0].onlineState)
 
-			if (res.device.onlineState != 'online') {
+			if (res.currentUser.devices[0].onlineState != 'online') {
 				let that = this
 				if (!that.checkEquipment.time) {
 					that.checkEquipment.time = 0

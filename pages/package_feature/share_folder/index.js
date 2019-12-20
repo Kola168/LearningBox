@@ -435,8 +435,7 @@ Page({
 
   onShareAppMessage: function (e) {
     console.log(e)
-    let userId = wx.getStorageSync("userId")
-    console.log("aaaaaaaa----", userId)
+    let userId = wx.getStorageSync("userSn")
     if (e.target.id != '') {
       this.setData({
         share_file_name: this.data.fileList[e.target.id].name,
@@ -446,8 +445,8 @@ Page({
     }
     return {
       title: `这些资料很不错哦，点击加入${this.data.share_file_name}`,
-      path: `/pages/error_book/pages/share_folder/content?sn=${this.data.share_sn}&file_name=${this.data.share_file_name}&share=true&users_count=${this.data.share_users_count}&userId=${userId}`,
-      imageUrl: `../../images/folder_share_img.jpg`
+      path: `/pages/package_feature/share_folder/content?sn=${this.data.share_sn}&file_name=${this.data.share_file_name}&share=true&users_count=${this.data.share_users_count}&userSn=${userId}`,
+      imageUrl: `../images/folder_share_img.jpg`
     }
   },
 

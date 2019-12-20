@@ -61,7 +61,6 @@ Page({
         realRotate: 0,
         convertImg: null,
         print_count: 1, //打印份数
-        hasAuthPhoneNum:false,
         confirmModal: {
             isShow: false,
             title: '请参照下图正确放置照片纸',
@@ -78,13 +77,7 @@ Page({
         yield this.initArea()  // 初始化编辑区域
         yield this.initDesign()
     }),
-    onShow:function(){
-        let hasAuthPhoneNum = Boolean(wx.getStorageSync('hasAuthPhoneNum'))
-        this.hasAuthPhoneNum = hasAuthPhoneNum
-        this.setData({
-            hasAuthPhoneNum: app.hasPhoneNum || hasAuthPhoneNum
-        })
-    },
+
     // 初始化整体模板布局
     initArea: co.wrap(function* () {
         const res = yield getSystemInfo()
@@ -287,9 +280,6 @@ Page({
     // 合成图片
     editConvert: co.wrap(function* (e) {
 
-        if(!this.hasAuthPhoneNum&&!app.hasPhoneNum){
-            return
-        }
 
         this.longToast.toast({
             type: 'loading',
@@ -389,15 +379,7 @@ Page({
             })
         }
     }),
-    getPhoneNumber:co.wrap(function*(e){
-        yield app.getPhoneNum(e)
-        wx.setStorageSync("hasAuthPhoneNum",true)
-        this.hasAuthPhoneNum = true
-        this.setData({
-            hasAuthPhoneNum:true
-        })
-        this.editConvert(e)
-    }),
+
 
     // 开始打印
     print: co.wrap(function*(e) {

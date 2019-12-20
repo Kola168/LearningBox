@@ -354,6 +354,14 @@ button:not([size='mini']) {
   border-radius: 0 0 25rpx 25rpx;
   margin-top: 40rpx;
 }
+.button-confirm:not([size='mini']) {
+  padding: 0;
+  width: 100%;
+  min-height: 30rpx;
+  margin-left: 0;
+  
+  }
+  
 
 .choosePhoto {
   position: fixed;
