@@ -1287,6 +1287,7 @@ const graphqlApi = {
           name
           createdAt
           designs {
+            name
             failedReason
             copies
             previewUrl

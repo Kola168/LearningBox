@@ -582,7 +582,7 @@ Page({
 		return {
 			title: `这些资料很不错哦，点击加入${this.data.file_name}`,
 			path: `/pages/error_book/pages/share_folder/content?sn=${this.sn}&file_name=${this.data.file_name}&share=true&users_count=${this.users_count}&userId=${userId}`,
-			imageUrl: `../../images/folder_share_img.jpg`
+			imageUrl: `https://cdn-h.gongfudou.com/LearningBox/feature/folder_share_img.jpg`
 		}
 	},
 	// 选择文件

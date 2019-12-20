@@ -21,7 +21,7 @@
     </view>
     <view class="device-info">
         <view class="info-main">
-            <view class="info-name">当前设备：{{activeDevice.name||activeDevice.model}}</view>
+            <view class="info-name">当前设备：{{activeDevice.name}}</view>
             <view class="info-status {{activeDevice.onlineState==='online'?'info-status-active':''}}">
                 <view class="status-flag {{activeDevice.onlineState==='online'?'online-status':''}}"></view>
                 <view>{{activeDevice.onlineState==='online'?'在线':'离线'}}</view>

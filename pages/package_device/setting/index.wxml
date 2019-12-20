@@ -26,7 +26,7 @@
         <view class="setting-item">
           <view class="item-left flex-column">
             <view class="left-label">盒子编号</view>
-            <view class="label-sub">打印机型号：{{device.model}}</view>
+            <view class="label-sub" wx:if="{{device.model}}">打印机型号：{{device.model}}</view>
           </view>
           <view class="item-right">{{device.sn}}</view>
         </view>
