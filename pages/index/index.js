@@ -227,6 +227,9 @@ Page({
       case 'recordVoice':
         url = '/pages/package_preschool/record_voice/index/index'
         break;
+      case 'freeResources':
+        url = '/pages/package_common/free_resources/index/index'
+        break;
     }
     wxNav.navigateTo(url)
   },

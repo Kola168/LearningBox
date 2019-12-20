@@ -19,7 +19,7 @@
             <text>热门搜索</text>
         </view>
 
-        <block wx:for='{{labelList}}' wx:key='index'>
+        <block wx:for='{{labelList}}' wx:key='labelList'>
             <view class='label' bindtap='searchLabel' id='{{index}}'>
                 <text>{{item}}</text>
             </view>

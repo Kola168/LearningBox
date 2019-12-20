@@ -2,6 +2,8 @@
 const app = getApp()
 import api from '../../../network/restful_request.js'
 import gql from '../../../network/graphql_request.js'
+import Logger from '../../../utils/logger.js'
+const logger = new Logger.getLogger('pages/index/index')
 import {
   co,
   util
@@ -48,7 +50,7 @@ Page({
     })
     try {
       const resp = yield gql.checkProtocol()
-      console.log(resp)
+      logger.info(resp)
       if (!resp.currentUser.folderAgreement) { //没有同意
         this.setData({
           showConfirmModal: {
@@ -154,8 +156,8 @@ Page({
   }),
 
   onReachBottom: function () {
-    console.log('分页加载')
-    console.log('this.pageEnd', this.pageEnd)
+    logger.info('分页加载')
+    logger.info('this.pageEnd', this.pageEnd)
     if (this.pageEnd) {
       return
     }
@@ -209,7 +211,7 @@ Page({
   }),
 
   toUrl: co.wrap(function* () {
-    let url = 'http://cdn.gongfudou.com/epbox/backend/shared_folder_agreement.pdf'
+    let url = 'https://cdn-h.gongfudou.com/LearningBox/feature/shared_folder_agreement.pdf'
     yield commonRequest.previewDocument(url)
   }),
 
@@ -230,7 +232,7 @@ Page({
   },
 
   endInput: function (event) {
-    console.log(event.detail.value)
+    logger.info(event.detail.value)
     this.setData({
       inputContent: event.detail.value
     })
@@ -324,7 +326,7 @@ Page({
           sn: this.sn,
           name: this.data.inputContent
         })
-        console.log('修改文件夹名称成功', resp)
+        logger.info('修改文件夹名称成功', resp)
         this.setData({
           inputContent: ''
         })
@@ -350,10 +352,10 @@ Page({
       content: '删除后该文件夹包含文件也将一并删除，是否确认',
       success(res) {
         if (res.confirm) {
-          console.log('用户点击确定')
+          logger.info('用户点击确定')
           that.confirmDeleteFile()
         } else if (res.cancel) {
-          console.log('用户点击取消')
+          logger.info('用户点击取消')
         }
       }
     })
@@ -401,7 +403,7 @@ Page({
   },
 
   toDocuments: function (e) {
-    console.log(e.currentTarget.id)
+    logger.info(e.currentTarget.id)
     if (this.data.tabId == 0) {
       let file_name = this.data.fileList[e.currentTarget.id].name
       let sn = this.data.fileList[e.currentTarget.id].sn
@@ -421,7 +423,7 @@ Page({
   },
   firstShare: function () {
     let firstTouch = wx.getStorageSync('firstTouchIndex')
-    console.log('firstTouch', firstTouch)
+    logger.info('firstTouch', firstTouch)
     if (firstTouch) {
       this.setData({
         firstShare: true
@@ -434,9 +436,8 @@ Page({
   },
 
   onShareAppMessage: function (e) {
-    console.log(e)
-    let userId = wx.getStorageSync("userId")
-    console.log("aaaaaaaa----", userId)
+    logger.info(e)
+    let userId = wx.getStorageSync("userSn")
     if (e.target.id != '') {
       this.setData({
         share_file_name: this.data.fileList[e.target.id].name,
@@ -446,8 +447,8 @@ Page({
     }
     return {
       title: `这些资料很不错哦，点击加入${this.data.share_file_name}`,
-      path: `/pages/error_book/pages/share_folder/content?sn=${this.data.share_sn}&file_name=${this.data.share_file_name}&share=true&users_count=${this.data.share_users_count}&userId=${userId}`,
-      imageUrl: `../../images/folder_share_img.jpg`
+      path: `/pages/package_feature/share_folder/content?sn=${this.data.share_sn}&file_name=${this.data.share_file_name}&share=true&users_count=${this.data.share_users_count}&userSn=${userId}`,
+      imageUrl: `https://cdn-h.gongfudou.com/LearningBox/feature/folder_share_img.jpg`
     }
   },
 

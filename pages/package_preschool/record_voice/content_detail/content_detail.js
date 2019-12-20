@@ -174,11 +174,7 @@ Page({
 		})
 		try {
 			var collection = this.data.collection
-			yield graphql.collect({
-				type: 'content',
-				sn: this.sn,
-				action: collection ? 'destroy' : 'create'
-			})
+			yield graphql.collect(this.sn, 'content', collection ? 'destroy' : 'create')
 
 			this.longToast.hide()
 			let tipText = collection ? '取消收藏成功' : '收藏成功'
@@ -245,7 +241,7 @@ Page({
       var resp = yield graphql.createResourceOrder(params)
 
 			router.redirectTo('/pages/finish/index', {
-				media_type: this.data.media_type,
+				media_type: "kid_record",
 				state: resp.createResourceOrder.state
 			})
 

@@ -4,6 +4,8 @@ const app = getApp()
 import api from '../../../../network/restful_request.js'
 import commonRequest from '../../../../utils/common_request'
 const regeneratorRuntime = require('../../../../lib/co/runtime')
+import Logger from '../../../../utils/logger.js'
+const logger = new Logger.getLogger('pages/index/index')
 import {
     co,
     util
@@ -13,6 +15,7 @@ const getSystemInfo = util.promisify(wx.getSystemInfo)
 const request = util.promisify(wx.request)
 const showModal = util.promisify(wx.showModal)
 const imginit = require('../../../../utils/imginit')
+import router from '../../../../utils/nav'
 
 Page({
     data: {
@@ -72,7 +75,7 @@ Page({
     onLoad: co.wrap(function* (query) {
         this.longToast = new app.weToast()
         this.image = JSON.parse(decodeURIComponent(query.image))
-        console.log(this.image, query)
+        logger.info(this.image, query)
         this.feature_key = query.feature_key
         this.setData({
             changeBtnWidth: parseInt(200 / app.rpxPixel), // 宽度计算
@@ -109,7 +112,7 @@ Page({
         let designAreaMaxWidth = avaWidth - 2 * margin
         let designAreaMaxHeight = avaHeight
 
-        console.log('相纸大小', this.data.area)
+        logger.info('相纸大小', this.data.area)
 
         let scale = this.data.area.width / this.data.area.height
         if (this.data.area.width <= this.data.area.height) {
@@ -138,7 +141,7 @@ Page({
             scale: areaWidth / this.data.area.width
         }
 
-        console.log('当前模板---areaPosition', areaPosition)
+        logger.info('当前模板---areaPosition', areaPosition)
 
         this.setData({
             areaPosition: areaPosition
@@ -283,8 +286,8 @@ Page({
             is_async: false, //一异步请求
             feature_key: this.feature_key, 
             editor_scale: this.editorScale,
-            // image_width: this.data.imgInfo.width,
-            // image_height: this.data.imgInfo.height,
+            image_width: this.data.imgInfo.width,
+            image_height: this.data.imgInfo.height,
             image_url: imageURL,
             rotate: rotate,
             scale: result.scale,
@@ -297,7 +300,7 @@ Page({
         try {
              const resp = yield api.convertId(params)
             this.longToast.hide()
-            console.log(resp)
+            logger.info(resp)
             if (resp.code != 0) {
                 throw (resp)
             } else {
@@ -350,25 +353,13 @@ Page({
 
     // 开始打印
     print: co.wrap(function* (e) {
-    
-        var param = [{
+        var param = {
             originalUrl: this.image.url, //  用户上传的原文件
             printUrl: this.data.convertImg.pre_convert_url || '', // 编辑后可打印的连接
             copies: this.data.print_count, // 打印份数
             grayscale: false, // 是否使用灰度打印
-        }]
-        if (!this.checkImagesIsValid(images)) return;
-
-        if (!app.openId) {
-            yield this.loopGetOpenId()
         }
-        const params = {
-            openid: app.openId,
-            urls: images,
-            media_type: this.image.media_type,
-            from: 'mini_app'
-        }
-
+        // if (!this.checkImagesIsValid(images)) return;
         this.longToast.toast({
             type: 'loading',
             duration: 0
@@ -377,12 +368,12 @@ Page({
         try {
             const resp = commonRequest.createOrder('normal_id', param)
             this.longToast.hide()
+            logger.info(resp)
             router.redirectTo('/pages/finish/index', {
-                type: this.feature_key,
+                // type: this.feature_key,
                 media_type:this.data.media_type,
-                state: resp.createOrder.state
+                // state: resp.createOrder.state
               })
-
         } catch (e) {
             this.longToast.toast()
             util.showError(e)
@@ -395,10 +386,10 @@ Page({
             setTimeout(function () {
                 loopCount++
                 if (loopCount <= 100) {
-                    console.log('openId not found loop getting...')
+                    logger.info('openId not found loop getting...')
                     _this.loopGetOpenId()
                 } else {
-                    console.log('loop too long, stop')
+                    logger.info('loop too long, stop')
                 }
             }, 2000)
         }
@@ -493,7 +484,7 @@ Page({
                 })
             }
         } catch (e) {
-            console.log(e)
+            logger.info(e)
         }
 
     },

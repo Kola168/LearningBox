@@ -142,7 +142,7 @@ Page({
   }),
 
   // 请求下载code
-  chooseDone: co.wrap(function*() {
+  chooseDone: co.wrap(function*(e) {
     if (app.preventMoreTap(e)) {
       return
     }
@@ -180,11 +180,13 @@ Page({
         wxNav.navigateTo(`/pages/print_doc/doc_list/doc_list`, {
           arrayFile: encodeURIComponent(JSON.stringify(cdnFiles)),
           type: 'baidu'
+        }, () => {
+          this.weToast.hide()
         })
       } else {
-        event.emit('chooseBaiduFileDone', cdnFiles)
         let delta = this.findLastUrlAndQueryDelta()
         wxNav.navigateBack(delta, () => {
+          event.emit('chooseBaiduFileDone', cdnFiles)
           this.weToast.hide()
         })
       }

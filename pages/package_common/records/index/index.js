@@ -108,6 +108,8 @@ Page({
     let state = e.currentTarget.dataset.state,
       content = ''
     if (state === 'finished') {
+      // 删除的索引
+      this.deleteIndex = e.currentTarget.dataset.index
       content = '删除后将无法查阅此订单，是否确认删除？'
       this.modalType = 'delete'
     } else {
@@ -155,7 +157,23 @@ Page({
     let modalType = this.modalType
     if (modalType === 'delete') {
       console.log('接口暂未提供')
-    } else if(modalType === 'cancelPrint'){
+      // let orders = this.data.orders
+      // //减少接口调用
+      // if (orders.length >= 10) { //防止数据过少触发不了底部事件
+      //   orders.splice(this.deleteIndex, 1)
+      //   this.setData({
+      //     orders
+      //   })
+      // } else {
+      //   this.page = 1
+      //   this.setData({
+      //     showRemind: false,
+      //     loadReady: false,
+      //     orders: []
+      //   })
+      //   this.getPrinterRecords()
+      // }
+    } else if (modalType === 'cancelPrint') {
       wxNav.navigateTo('../cancel_intro/index')
     }
   },

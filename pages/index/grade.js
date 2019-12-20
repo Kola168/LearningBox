@@ -4,6 +4,8 @@ import gql from '../../network/graphql_request.js'
 import wxNav from '../../utils/nav.js'
 import api from '../../network/restful_request.js'
 import router from '../../utils/nav'
+import Logger from '../../utils/logger.js'
+const logger = new Logger.getLogger('pages/index/index')
 import {
   co,
   util
@@ -44,7 +46,7 @@ Page({
       this.setData({
         stages: resp.stages
       })
-      console.log(resp, this.data.stages)
+      logger.info(resp, this.data.stages)
       this.longToast.hide()
     } catch (e) {
       util.showError(e)
@@ -52,7 +54,7 @@ Page({
     }
   }),
   chooseGrade: co.wrap(function* (e) {
-    console.log(e)
+    logger.info(e)
     this.setData({
       activeGrade: e.currentTarget.id,
     })
@@ -68,7 +70,7 @@ Page({
         stageSn: this.sn
       }
     }
-    console.log(params)
+    logger.info(params)
     // return
     try {
       const resp = yield gql.changeStage(params)

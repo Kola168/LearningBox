@@ -14,6 +14,8 @@ const MAXSIZE = 20000000;
 const imginit=require('../../../../utils/imginit')
 import commonRequest from '../../../../utils/common_request.js'
 import chooseImgWay from '../../../../utils/showActionImg';
+import Logger from '../../../../utils/logger.js'
+const logger = new Logger.getLogger('pages/index/index')
 Page({
     data: {
         percent:0,
@@ -33,7 +35,7 @@ Page({
         // setInterval(()=>{
         //     if (this.data.percent >=100)this.data.percent = 0
         //     this.data.percent = this.data.percent+ 1
-        //     console.log('xxxxxxxx',this.data.percent)
+        //     logger.info('xxxxxxxx',this.data.percent)
         //     this.setData({percent: this.data.percent})
         // },200)
     },
@@ -59,7 +61,7 @@ Page({
                 capabilityInfo: capabilityInfo
             })
         } catch(err) {
-            console.error(err)
+            logger.info(err)
         }
     }),
     // 选择文件
@@ -82,17 +84,17 @@ Page({
                     type: 'file',
                     count: count, 
                     success: (res) => {
-                        console.log('res.tempFiles',res.tempFiles)
+                        logger.info('res.tempFiles',res.tempFiles)
                        this.utilsMessageFiles(res.tempFiles);
                     },
                     fail: ()=> {
-                        console.log('选取文件失败')
+                        logger.info('选取文件失败')
                         util.showErr({
 							message:'文件获取失败，请重试~'
 						})
                     },
                     complete: ()=> {
-                        console.log('选取文件完成')
+                        logger.info('选取文件完成')
                     }
                 })
             } else {
@@ -107,7 +109,7 @@ Page({
             }
 
         } catch (e) {
-            console.log(e)
+            logger.info(e)
         }
     
     }),
@@ -137,7 +139,7 @@ Page({
                 }
              })
         })
-        console.log(filesList,'===filesList===')
+        logger.info(filesList,'===filesList===')
     }),
     // 选择图片
     chooseImgs: co.wrap(function *() {
@@ -150,7 +152,7 @@ Page({
             const newImages = yield this.checkImgSize(imgs) //检测文件格式
             yield this.initProgressStatus(newImages) //初始化进度条
             const imageList = yield this.syncLoadFiles(newImages, imgs) //并行上传
-            console.log(imageList,'====imageList====')
+            logger.info(imageList,'====imageList====')
             imageList && imageList.forEach(img=>{
                 _this.setData({
                     [`fileList[${_this.data.fileList.length}]`]: {
@@ -161,7 +163,7 @@ Page({
             })
             
        } catch(err) {
-            console.log(err)
+            logger.info(err)
        }
 
     }),
@@ -182,7 +184,7 @@ Page({
                     const codition2 = (imageInfo.width / imageInfo.height > 5) || (imageInfo.height / imageInfo.width > 5);
                     const isLastTime = (index === images.length - 1);
                     if (codition1 || codition2) { 
-                        isLastTime && console.log('进行过滤')
+                        isLastTime && logger.info('进行过滤')
                     } else {
                         newImages.push(path) 
                     }
@@ -213,7 +215,7 @@ Page({
                 },getProgress, isFile)
             })
         } catch(err) {
-            console.log(err)
+            logger.info(err)
         }
     },
     // 并行上传图片、文件 | 过滤处理
@@ -250,7 +252,7 @@ Page({
                     showCancel: false,
                     confirmColor: '#FFE27A'
                 })
-                console.error(err)
+                logger.info(err)
             }
         })
         
@@ -275,7 +277,7 @@ Page({
                 resolve(newLoadFile)
             }))
         } catch(err) {
-            console.log(err)
+            logger.info(err)
         }
     },
     // 初始化进度条状态
@@ -361,7 +363,7 @@ Page({
     // 处理文件打印参数
     settingFilesParams: co.wrap(function*(currentFile) {
         let print_capability = yield commonRequest.getPrinterCapability(currentFile.url)
-        console.log('获取打印能力成功', print_capability)
+        logger.info('获取打印能力成功', print_capability)
        
         if (print_capability) {
             try {

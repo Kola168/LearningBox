@@ -230,7 +230,7 @@ Page({
       util.showError(error)
     }
   }),
-  
+
   navTap: co.wrap(function*(e) {
     let isAuth = yield this.authCheck(),
       index = e ? e.currentTarget.id : 1
@@ -279,12 +279,8 @@ Page({
       })
       try {
         var isCollected = this.data.isCollected
-        yield graphql.collect({
-          type: 'course',
-          sn: this.sn,
-          action: isCollected ? 'destroy' : 'create'
-        })
-        
+        yield graphql.collect(this.sn, 'course', isCollected ? 'destroy' : 'create')
+
         this.longToast.hide()
         let tipText = isCollected ? '取消收藏成功' : '收藏成功'
         wx.showToast({
@@ -311,7 +307,7 @@ Page({
     })
     try {
       let resp = yield graphql.getCourseDetail(this.sn)
-   
+
       let course = resp.course,
         lastStudySn = course.lastCourseChapterSn
 

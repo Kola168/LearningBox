@@ -7,7 +7,7 @@
     <text class="text-select" bindtap="selectAll" wx:if="{{memberList.length > 0}}">{{selectText}}</text>
 </view>
 <view class="share-container" wx:if="{{memberList.length > 0}}">
-    <view class="member-list" wx:for="{{memberList}}" wx:key="{{index}}" id="{{index}}">
+    <view class="member-list" wx:for="{{memberList}}" wx:key="memberList" id="{{index}}">
         <view class="member-list">
             <view class="member-item">
                 <view class="user-info">

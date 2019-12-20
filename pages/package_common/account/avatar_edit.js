@@ -9,6 +9,8 @@ import upload from '../../../utils/upload'
 import api from '../../../network/restful_request.js'
 import router from '../../../utils/nav'
 import gql from '../../../network/graphql_request.js'
+import Logger from '../../../utils/logger.js'
+const logger = new Logger.getLogger('pages/index/index')
 
 const chooseImage = util.promisify(wx.chooseImage)
 const getImageInfo = util.promisify(wx.getImageInfo)
@@ -73,7 +75,7 @@ Page({
   onLoad: co.wrap(function* (query) {
     try {
       this.longToast = new app.weToast()
-      console.log(query.url)
+      logger.info(query.url)
       // 初始化编辑区域
       yield this.initArea()
       const imgInfo = yield getImageInfo({
@@ -85,7 +87,7 @@ Page({
       })
       yield this.initDesign()
     } catch (e) {
-      console.log(e)
+      logger.info(e)
     }
   }),
   //删除照片
@@ -124,7 +126,7 @@ Page({
     this.selectComponent("#checkComponent").showPop()
   }),
   uploadImage: co.wrap(function* (e) {
-    console.log(e)
+    logger.info(e)
     this.path = e.detail.tempFilePaths[0]
     try {
       const imgInfo = yield getImageInfo({
@@ -134,7 +136,7 @@ Page({
         imgInfo: imgInfo,
         localImgPath: this.path
       })
-      console.log("imgInfo", imgInfo)
+      logger.info("imgInfo", imgInfo)
     } catch (err) {
       util.showError({
         title: '照片加载失败',
@@ -148,7 +150,7 @@ Page({
       sizeType: ['original'],
       sourceType: ['camera']
     })
-    console.log(`chooseImage ${image.tempFilePaths[0]}`)
+    logger.info(`chooseImage ${image.tempFilePaths[0]}`)
     this.path = image.tempFilePaths[0]
     this.setData({
       showChangeBtn: false,
@@ -162,7 +164,7 @@ Page({
         imgInfo: imgInfo,
         localImgPath: this.path
       })
-      console.log("imgInfo", imgInfo)
+      logger.info("imgInfo", imgInfo)
     } catch (err) {
       console.error(err)
       wx.showModal({
@@ -183,7 +185,7 @@ Page({
       sizeType: ['original'],
       sourceType: ['album']
     })
-    console.log(`chooseImage ${image.tempFilePaths}`)
+    logger.info(`chooseImage ${image.tempFilePaths}`)
     this.path = image.tempFilePaths[0]
     this.setData({
       showChangeBtn: false,
@@ -237,7 +239,7 @@ Page({
     let designAreaMaxWidth = avaWidth - 2 * margin
     let designAreaMaxHeight = avaHeight - 2 * margin
 
-    console.log('相纸大小', this.data.area)
+    logger.info('相纸大小', this.data.area)
 
     let scale = this.data.area.width / this.data.area.height
     if (this.data.area.width <= this.data.area.height) {
@@ -276,7 +278,7 @@ Page({
     }
 
 
-    console.log('areaPosition', areaPosition)
+    logger.info('areaPosition', areaPosition)
 
     this.setData({
       areaPosition: areaPosition
@@ -336,7 +338,7 @@ Page({
       realScale: imgScale,
       realRotate: imgRotate
     })
-    console.log('initDesign', userImgPosition)
+    logger.info('initDesign', userImgPosition)
   }),
 
   onTouch: function (e) {
@@ -418,7 +420,7 @@ Page({
         })
       }
     } catch (e) {
-      console.log(e)
+      logger.info(e)
     }
 
   },
@@ -467,7 +469,7 @@ Page({
         imageURL = this.data.localImgPath
       } else {
         imageURL = yield upload.uploadFile(this.data.localImgPath)
-        console.log('3456789', imageURL)
+        logger.info('3456789', imageURL)
       }
     } catch (e) {
       console.error(e)
@@ -483,7 +485,7 @@ Page({
 
     // canvas绘图
     const result = yield this.getResult()
-    console.log("getResult", result, this.editorScale)
+    logger.info("getResult", result, this.editorScale)
 
     // 旋转修正0-360
     let rotate = result.rotate
@@ -524,7 +526,7 @@ Page({
       y: result.y + svh
     }
 
-    console.log('头像合成参数', params, app.openId)
+    logger.info('头像合成参数', params, app.openId)
 
     app.tmpIDParams = params
 

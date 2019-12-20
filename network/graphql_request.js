@@ -24,7 +24,7 @@ let gql = GraphQL({
       }
     }
   },
-	
+
 	//全局错误拦截
   errorHandler: function(res) {
     console.log('graphql全局错误拦截', res)
@@ -558,8 +558,12 @@ const graphqlApi = {
     })
   },
 
-  // 发起收藏
-  collect: (input) => {
+  /**
+   * @param { String } sn 资源sn
+   * @param { String } type 收藏类型 course/content
+   * @param { String } action 操作类型 create/destroy
+   */
+  collect: (sn,type,action) => {
     return gql.mutate({
       mutation: `mutation collect($input: ResourceCollectInput!){
         collect(input:$input){
@@ -567,7 +571,11 @@ const graphqlApi = {
         }
       }`,
       variables: {
-        input: input
+        input: {
+          sn: sn,
+          type: type,
+          action: action
+        }
       }
     })
   },
@@ -1279,6 +1287,7 @@ const graphqlApi = {
           name
           createdAt
           designs {
+            name
             failedReason
             copies
             previewUrl
@@ -1723,7 +1732,26 @@ const graphqlApi = {
         }
       })
     },
-  
+    /**
+     * 加入文件夹
+     *
+     * @param {*} input
+     * @returns
+     */
+    joinFolder: (input) => {
+      return gql.mutate({
+        mutation: `mutation($input: JoinFolderInput!) {
+          joinFolder(input:$input){
+           state
+          }
+        }`,
+        variables: {
+          input:input
+      }
+      })
+    },
+
+
 }
 
 export default graphqlApi

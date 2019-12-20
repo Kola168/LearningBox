@@ -2,6 +2,8 @@
 const app = getApp()
 import gql from '../../../network/graphql_request.js'
 import router from '../../../utils/nav'
+import Logger from '../../../utils/logger.js'
+const logger = new Logger.getLogger('pages/index/index')
 import {
   co,
   util
@@ -16,7 +18,7 @@ Page({
     this.longToast = new app.weToast()
   },
   input: function (e) {
-    console.log(e)
+    logger.info(e)
     let name = e.detail.value.trim()
 
     if (name) {
@@ -35,11 +37,11 @@ Page({
         name: this.data.name,
       }
     }
-    console.log(params)
+    logger.info(params)
     // return
     try {
       const resp = yield gql.changeStage(params)
-      console.log(resp)
+      logger.info(resp)
       this.longToast.hide()
       router.navigateBack()
     } catch (e) {

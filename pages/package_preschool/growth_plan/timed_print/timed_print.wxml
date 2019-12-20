@@ -69,7 +69,7 @@
     <view class="popup-cont">
         <text class="confirm" bindtap="confirmTime">确定</text>
         <view class="scroll-block">
-            <text bindtap="getValue" wx:for="{{times}}" wx:key="{{index}}" id="{{index}}">{{item}}:00</text>
+            <text bindtap="getValue" wx:for="{{times}}" wx:key="index" id="{{index}}">{{item}}:00</text>
         </view>
     </view>
 </view>

@@ -1,6 +1,6 @@
 <nav-bar title="百度网盘" />
 <view class="img-box" style="{{type == 'baiduPrint' ? 'margin:0 auto;width:80%;' : ''}}">
-		<image wx:for="{{imgs[type]}}" src="{{item}}" wx:key="{{index}}" mode="widthFix" class="image" />
+		<image wx:for="{{imgs[type]}}" src="{{item}}" wx:key="*this" mode="widthFix" class="image" />
 </view>
 <view class="btn btn-yellow {{isFullScreen?'is-full-screen':''}}">
 		<button open-type="contact" bindcontact="handleContact" hover-class="none" hover-start-time="20" hover-stay-time="70">
