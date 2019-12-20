@@ -6,7 +6,7 @@
             <text>最佳拍摄姿势</text>
         </view>
         <view class='image'>
-            <image mode='widthFix' src='../../images/id/complex_example.png'></image>
+            <image mode='widthFix' src='https://cdn-h.gongfudou.com/LearningBox/main/complex_example.png'></image>
         </view>
         <view class='fs-32'>
             <view class='mg-t-60 flex-center'>

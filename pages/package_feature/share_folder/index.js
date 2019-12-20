@@ -211,7 +211,7 @@ Page({
   }),
 
   toUrl: co.wrap(function* () {
-    let url = 'http://cdn.gongfudou.com/epbox/backend/shared_folder_agreement.pdf'
+    let url = 'https://cdn-h.gongfudou.com/LearningBox/feature/shared_folder_agreement.pdf'
     yield commonRequest.previewDocument(url)
   }),
 
@@ -448,7 +448,7 @@ Page({
     return {
       title: `这些资料很不错哦，点击加入${this.data.share_file_name}`,
       path: `/pages/package_feature/share_folder/content?sn=${this.data.share_sn}&file_name=${this.data.share_file_name}&share=true&users_count=${this.data.share_users_count}&userSn=${userId}`,
-      imageUrl: `../images/folder_share_img.jpg`
+      imageUrl: `https://cdn-h.gongfudou.com/LearningBox/feature/folder_share_img.jpg`
     }
   },
 

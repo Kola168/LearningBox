@@ -193,7 +193,7 @@
 
 </block>
 <block wx:if="{{showAuth}}">
-    <image src="../../images/home/login_bg.png" mode="widthFix" class="login-bg"/>
+    <image src="https://cdn-h.gongfudou.com/LearningBox/main/login_bg.png" mode="widthFix" class="login-bg"/>
   <button open-type="getUserInfo" bindgetuserinfo="userInfoHandler" form-type='submit' hover-class="none"
     class="auth-button-bottom">
     登录了解更多
