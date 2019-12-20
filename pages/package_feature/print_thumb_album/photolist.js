@@ -361,8 +361,10 @@ Page({
           }]
           let orderSn = yield commonRequest.createOrder(that.type, imgs)
           storage.remove(that.type)
-          wxNav.redirectTo(`/pages/finish/index`, {
-            media_type: that.type
+  
+          wxNav.navigateTo(`/pages/finish/index`, {
+            media_type: that.type,
+            state:orderSn.createOrder.state
           })
           that.longToast.toast()
         }

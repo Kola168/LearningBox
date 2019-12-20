@@ -126,8 +126,10 @@ Page({
         printUrl: resp.res.url
       }]
       let orderSn = yield commonRequest.createOrder(this.type, imgs)
-      wxNav.redirectTo(`/pages/finish/index`, {
-        media_type: this.type
+
+      wxNav.navigateTo(`/pages/finish/index`, {
+        media_type: this.type,
+        state:orderSn.createOrder.state
       })
       this.longToast.toast()
     } catch (e) {

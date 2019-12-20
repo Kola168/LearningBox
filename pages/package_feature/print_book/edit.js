@@ -105,10 +105,19 @@ Page({
 
 
   showEdit: function(index) {
-    this.setData({
-      photoPath: this.data.imgList[index].imgNetPath,
-      imageInfo: this.data.imgList[index].imageInfo,
-    })
+    console.log(this.data.imgList[index])
+    if(this.data.imgList[index]){
+      this.setData({
+        photoPath: this.data.imgList[index].imgNetPath,
+        imageInfo: this.data.imgList[index].imageInfo,
+      })
+    }else{
+      this.selectComponent("#mymulti").setData({
+        imgArr:[]
+      })
+    }
+
+
   },
 
   addImg: function() {
@@ -312,8 +321,9 @@ Page({
 
       let orderSn = yield commonRequest.createOrder(this.type, imgs)
       storage.remove(this.type)
-      wxNav.redirectTo(`/pages/finish/index`, {
-        media_type: this.type
+      wxNav.navigateTo(`/pages/finish/index`, {
+        media_type: this.type,
+        state:orderSn.createOrder.state
       })
       this.longToast.toast()
       Loger(orderSn)
