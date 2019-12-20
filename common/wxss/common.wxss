@@ -31,8 +31,6 @@
 /* flex */
 .sys-flex {
     display: flex;
-    display: -webkit-flex;
-    display: -ms-flexbox;
 }
 
 /* flex direction */

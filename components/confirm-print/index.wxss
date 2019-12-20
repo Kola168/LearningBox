@@ -55,7 +55,7 @@
 }
 
 .print-modal-box__tip switch {
-  transform: scale(0.7)
+  transform: translateX(18rpx) scale(0.7);
 }
 
 .print-modal-button {

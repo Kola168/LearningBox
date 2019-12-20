@@ -209,6 +209,13 @@
   position: fixed;
   right: 0;
 }
+.bottom-share:not([size='mini']) {
+  width: 300rpx;
+  margin-left: auto;
+  margin-right: auto;
+  padding:0
+}
+  
 
 .bottom-delete {
   width: 50%;
