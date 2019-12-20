@@ -3,7 +3,7 @@
 	<view class='choose'>
 		<text class='title'>色彩选择</text>
 		<view class='color'>
-			<view class="kind" wx:for="{{colorList}}" wx:key="{{item.color}}">
+			<view class="kind" wx:for="{{colorList}}" wx:key="color">
 					<text class='type'>黑白</text>
 					<image
 					src="{{item.checked ? '/images/radio_on.png' : '/images/radio_off.png'}}"
