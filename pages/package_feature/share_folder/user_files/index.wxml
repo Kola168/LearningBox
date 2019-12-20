@@ -5,7 +5,7 @@
   <button bind:tap="chooseImgs">上传图片</button>
   <button bind:tap="chooseFiles">上传文件</button>
   <view class="list-item" hover-class="none" hover-stop-propagation="false">
-    <view class="list-item" wx:for="{{fileList}}" wx:key="index" hover-class="none" hover-stop-propagation="false" bindtap="toPrint" data-index="{{index}}">
+    <view class="list-item" wx:for="{{fileList}}" wx:key="fileList" hover-class="none" hover-stop-propagation="false" bindtap="toPrint" data-index="{{index}}">
       {{item.key}}
     </view>
   </view>

@@ -19,7 +19,7 @@
         <view class="intro-text">学习资源共享好友 快速打印</view>
     </view>
     <view wx:if="{{fileList.length!=0}}">
-        <view wx:for="{{fileList}}" wx:key="{{index}}" id="{{index}}" class="file-list">
+        <view wx:for="{{fileList}}" wx:key="fileList" id="{{index}}" class="file-list">
             <view class="file-left" bindtap="toDocuments" id="{{index}}">
                 <image src="../images/file_icon.png" mode="widthFix" class="file-icon"></image>
                 <view>
@@ -50,7 +50,7 @@
         <view class="intro-text-share">夹分享给您，一起阅读美好的时光</view>
     </view>
     <view wx:if="{{shareFileList.length!=0}}">
-        <view wx:for="{{shareFileList}}" wx:key="{{index}}" id="{{index}}" class="file-list" bindtap="toDocuments">
+        <view wx:for="{{shareFileList}}" wx:key="shareFileList" id="{{index}}" class="file-list" bindtap="toDocuments">
             <view class="file-left">
                 <image src="../images/file_icon.png" mode="widthFix" class="file-icon"></image>
                 <view>

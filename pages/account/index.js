@@ -47,15 +47,23 @@ Page({
     }
   }),
 
-  toDeviceList(){
-    wxNav.navigateTo('/pages/package_device/list/index')
-  },
-
-  toSetInfo: function() {
-    wxNav.navigateTo('/pages/package_common/account/personal_info')
-  },
-
-  addDevice: function() {
-    wxNav.navigateTo('/pages/package_device/network/index/index')
+  toNext(e){
+    let pageKey = e.currentTarget.id,
+    url = ''
+    switch(pageKey){
+      case 'records':
+        url = '/pages/package_common/records/index/index'
+        break;
+      case 'deviceList':
+        url = '/pages/package_device/list/index'
+        break;
+      case 'addDevice':
+        url = '/pages/package_device/network/index/index'
+        break;
+      case 'setInfo':
+        url = '/pages/package_common/account/personal_info'
+        break;
+    }
+    wxNav.navigateTo(url,{})
   }
 })
