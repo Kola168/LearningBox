@@ -4,6 +4,8 @@ const app = getApp()
 import api from '../../../network/restful_request.js'
 const regeneratorRuntime = require('../../../lib/co/runtime')
 import gql from '../../../network/graphql_request.js'
+import Logger from '../../../utils/logger.js'
+const logger = new Logger.getLogger('pages/index/index')
 
 import {
   co,
@@ -27,7 +29,7 @@ Page({
 
   onLoad: co.wrap(function* (options) {
     this.longToast = new app.weToast()
-    console.log(options)
+    logger.info(options)
     this.setData({
       file_name: options.file_name
     })
@@ -57,24 +59,24 @@ Page({
   }),
 
   choose: co.wrap(function* (e) {
-    console.log('e.currentTarget.id======', e.currentTarget.id)
+    logger.info('e.currentTarget.id======', e.currentTarget.id)
     if (!this.data.memberList[parseInt(e.currentTarget.id)].choose) { //选中
       this.data.memberIds.push(this.data.memberList[parseInt(e.currentTarget.id)].id)
     } else {
       this.deleteOneId(this.data.memberIds, this.data.memberList[parseInt(e.currentTarget.id)].user_id)
     }
     this.data.memberList[parseInt(e.currentTarget.id)].choose = !this.data.memberList[parseInt(e.currentTarget.id)].choose
-    console.log('this.data.memberList=====', this.data.memberList)
+    logger.info('this.data.memberList=====', this.data.memberList)
     this.setData({
       memberList: this.data.memberList
     })
     if (this.data.memberIds.length == this.data.memberList.length) {
-      console.log("11111")
+      logger.info("11111")
       this.setData({
         selectText: '取消'
       })
     } else {
-      console.log("2222")
+      logger.info("2222")
       this.setData({
         selectText: '全选'
       })
@@ -82,7 +84,7 @@ Page({
   }),
 
   deleteOneId: function (array, item) {
-    console.log('这里333333333333')
+    logger.info('这里333333333333')
     Array.prototype.indexOf = function (val) {
       for (var i = 0; i < this.length; i++) {
         if (this[i] == val) return i;
@@ -115,7 +117,7 @@ Page({
 
   //删除成员
   stopShare: co.wrap(function* () {
-    console.log('this.data.memberIds===', this.data.memberIds)
+    logger.info('this.data.memberIds===', this.data.memberIds)
     this.longToast.toast({
       type: 'loading',
       duration: 0
@@ -147,13 +149,13 @@ Page({
       // if (resp.code != 0) {
       //   throw (resp)
       // }
-      console.log('获取被分享成员列表成功', resp)
+      logger.info('获取被分享成员列表成功', resp)
 
       this.setData({
         memberList: resp.userFolderRelations,
       })
       if (this.data.selectText == '取消') {
-        console.log("zzzzzz")
+        logger.info("zzzzzz")
         this.data.memberIds = []
         for (var i = 0; i < this.data.memberList.length; i++) {
           this.data.memberList[i].choose = true,

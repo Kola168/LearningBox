@@ -69,7 +69,7 @@ Page({
 				name: '共享文件夹',
 				icon: '/images/share_folder.png',
 				key: 'shareFolder',
-				url: '/pages/print_doc/duplicate/index',
+        url: '/pages/package_feature/share_folder/index',
 			},
 			{
 				name: '电子发票',

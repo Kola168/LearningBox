@@ -8,6 +8,8 @@ const _ = require('../../../../lib/underscore/we-underscore')
 const showModal = util.promisify(wx.showModal)
 import commonRequest from '../../../../utils/common_request'
 import api from '../../../../network/restful_request.js'
+import Logger from '../../../../utils/logger.js'
+const logger = new Logger.getLogger('pages/index/index')
 
 Page({
 
@@ -83,7 +85,7 @@ Page({
       yield this.setStatus();
 
     } catch (e) {
-      console.log(e)
+      logger.info(e)
     }
 
   }),
@@ -160,7 +162,7 @@ Page({
   },
 
   startpagejudge: function(e) {
-    console.log('起始页===', parseInt(e.detail.value), typeof(e.detail.value))
+    logger.info('起始页===', parseInt(e.detail.value), typeof(e.detail.value))
     if (parseInt(e.detail.value) > parseInt(this.data.endPrintPage) || parseInt(e.detail.value) <= 0) {
       this.setData({
         startPrintPage: 1,
@@ -174,7 +176,7 @@ Page({
       })
       return
     } else {
-      console.log('打印起始页===', e.detail.value)
+      logger.info('打印起始页===', e.detail.value)
       this.data.startPrintPage = e.detail.value
     }
   },
@@ -186,7 +188,7 @@ Page({
     let endMaxPage = Math.ceil(this.data.endMaxPage / this.data.zoomType),
       tempValue = parseInt(e.detail.value)
     if (tempValue < parseInt(this.data.startPrintPage) || tempValue > endMaxPage) {
-      console.log('结束页===', parseInt(e.detail.value), typeof(e.detail.value))
+      logger.info('结束页===', parseInt(e.detail.value), typeof(e.detail.value))
       this.setData({
         endPrintPage: this.data.endMaxPage,
         endPage: this.data.endMaxPage
@@ -199,7 +201,7 @@ Page({
       })
       return
     } else {
-      console.log('打印完成页===', e.detail.value)
+      logger.info('打印完成页===', e.detail.value)
       this.data.endPrintPage = e.detail.value
     }
   },
@@ -213,7 +215,7 @@ Page({
 
   //选择单双面打印模式
   duplexCheck(e) {
-    console.log(e)
+    logger.info(e)
     let duplexcheck = e.currentTarget.dataset.style == 0 ? false : true
     this.setData({
       duplexcheck: duplexcheck
@@ -294,7 +296,7 @@ Page({
 			})
       this.longToast.hide()
     } catch (e) {
-      console.log(e)
+      logger.info(e)
       this.longToast.hide()
       util.showError(e)
     }
