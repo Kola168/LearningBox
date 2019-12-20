@@ -86,7 +86,7 @@
             </view>
             <image src="../../images/arrow_right.png" wx:if="{{item.creator.sn==userSn}}" mode="widthFix" />
           </view>
-          <view class="right-delete" catchtap="deleteRecord" data-state="{{item.state}}" wx:if="{{(item.state==='printing'||item.state==='finished')&&item.creator.sn==userSn}}">
+          <view class="right-delete" catchtap="deleteRecord" data-state="{{item.state}}" data-index="{{index}}" wx:if="{{(item.state==='printing'||item.state==='finished')&&item.creator.sn==userSn}}">
             删除
           </view>
         </view>
