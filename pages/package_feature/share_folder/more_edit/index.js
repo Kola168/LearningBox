@@ -370,9 +370,9 @@ Page({
             this.longToast.hide()
             logger.info(resp)
             router.redirectTo('/pages/finish/index', {
-                // type: this.feature_key,
+                type:shareFile,
                 media_type:this.data.media_type,
-                // state: resp.createOrder.state
+                state: resp.createOrder.state
               })
         } catch (e) {
             this.longToast.toast()

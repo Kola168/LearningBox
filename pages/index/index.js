@@ -33,7 +33,7 @@ Page({
     selectedKid: null,
     stageRoot: null,
     deviceModal: {
-      isShow: true,
+      isShow: false,
       hasCancel: false,
       content: '绑定设备后学习更方便!',
       confirmText: '立即绑定',
