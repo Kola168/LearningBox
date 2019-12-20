@@ -4,7 +4,7 @@
   <image src="../../images/cognition_tip_3.png" class="tip-img" mode="widthFix" />
   <view hover-class="none" bindtouchstart="onTouch" bindtouchmove="onTouchMove" bindtouchend="onTouchEnd" bindtouchcancel="onTouchEnd" class="editor-area" style="width:{{areaPosition.width}}px;height:{{areaPosition.height}}px;" hidden="{{!loadReady}}">
     <image src="../../images/transparent.png" class="editor-back" />
-    <image class="area" src="{{area.image}}"></image>
+    <image class="area" src="{{area.image}}?x-image-process=image/resize,w_400"></image>
     <view class="area-border {{showAreaBorder?'show-border':''}}" style="width:{{area.areaWidth*areaPosition.scale-4}}px;height:{{area.areaHeight*areaPosition.scale-4}}px;left:{{area.areaX*areaPosition.scale}}px;top:{{area.areaY*areaPosition.scale}}px;">
       <image src="/images/add_circle.png" class="add-btn absolute" bindtap="showImgChooseWay" hidden="{{localImgPath}}"></image>
       <image src="/images/doc_close_dark.png" class="delete-btn absolute" hidden="{{showAreaBorder||!localImgPath}}" bindtap="deleteImg"></image>

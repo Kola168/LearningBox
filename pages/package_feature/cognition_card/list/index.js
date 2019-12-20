@@ -121,7 +121,9 @@ Page({
       let resp = yield commonRequest.createOrder('literacy_card', reImgs)
       this.weToast.hide()
       if(resp.createOrder.state) {
-        wxNav.redirectTo(`/pages/index/index`)
+        wxNav.redirectTo(`/pages/finish/index`,{
+
+        })
       }
       // wxNav.redirectTo(`../../../../finish/index`, {
       //   media_type: 'literacy_card',
