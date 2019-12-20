@@ -2,7 +2,7 @@
 <!--pages/print_id/sort.wxml-->
 <view class="title">智能证件照</view>
 <view class="zhineng" bindtap="toZhineng">
-    <image src="https://cdn.gongfudou.com/miniapp/ec/icon_zhineng.png" mode="widthFix"></image>
+    <image src="https://cdn-h.gongfudou.com/LearningBox/main/icon_zhineng.png" mode="widthFix"></image>
     <view>
         <view class="title">智能证件照</view>
         <view>不用去照相馆，在家即可拍出好看的证件照</view>

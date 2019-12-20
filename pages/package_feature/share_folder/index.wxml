@@ -14,7 +14,7 @@
 
 <view wx:if="{{tabId==0}}" style="padding-bottom:100rpx;margin-top:150rpx;">
     <view class="intro-center" wx:if="{{fileList.length==0}}">
-        <image src="https://cdn.gongfudou.com/miniapp/ec/create_folder_bg.png" mode="widthFix" class="intro-bg"></image>
+        <image src="https://cdn-h.gongfudou.com/LearningBox/feature/create_folder_bg.png" mode="widthFix" class="intro-bg"></image>
         <view class="intro-text">重要资料同步云端 随身而行</view>
         <view class="intro-text">学习资源共享好友 快速打印</view>
     </view>
@@ -44,7 +44,7 @@
 
 <view wx:if="{{tabId==1}}" style="padding-bottom:100rpx;margin-top:150rpx;">
     <view class="intro-center" wx:if="{{shareFileList.length==0}}">
-        <image src="../images/share_folder_bg.png" mode="widthFix" class="intro-bg-share"></image>
+        <image src="https://cdn-h.gongfudou.com/LearningBox/feature/share_folder_bg.png" mode="widthFix" class="intro-bg-share"></image>
         <view class="intro-text">暂时没有好友分享的文件夹</view>
         <view class="intro-text-share">快去告诉好友这个很棒的功能，让ta将文件</view>
         <view class="intro-text-share">夹分享给您，一起阅读美好的时光</view>
