@@ -206,8 +206,7 @@ Page({
       type: 'loading'
     })
     try {
-      let res = yield graphql.unbindDevice(this.deviceSn)
-      console.log(res, 'ddddd')
+      yield graphql.unbindDevice(this.deviceSn)
       this.weToast.hide()
       event.emit('deviceChange')
       wxNav.navigateBack()

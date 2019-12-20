@@ -4,7 +4,7 @@ import { regeneratorRuntime, co, util, wxNav } from '../../../utils/common_impor
 import graphql from '../../../network/graphql_request'
 Page({
   data: {
-    devices: [],
+    devices: null,
     activeDevice: null,
     isFullScreen: false
   },
