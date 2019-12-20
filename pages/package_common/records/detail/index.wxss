@@ -40,6 +40,7 @@
 
 .left-count {
   font-size: 20rpx;
+  margin-top: 10rpx;
 }
 
 .main-right {

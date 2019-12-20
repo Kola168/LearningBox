@@ -43,6 +43,7 @@
     formatState:formatState
   }
 </wxs>
+<wxs module="fileType" src="../../../../utils/common.wxs"></wxs>
 <nav-bar title="记录详情"></nav-bar>
 <view class="order-title flex">
   <view>{{order.name}}</view>
@@ -51,7 +52,8 @@
 <view class="order-detail">
   <view class="detail-item flex" wx:for="{{order.designs}}" wx:key="index">
     <view class="item-img flex">
-      <image src="{{item.previewUrl}}" mode="widthFix" />
+      <image wx:if="{{fileType.getFileType(item.name)!='error'}}" src="../../images/print_{{fileType.getFileType(item.name)}}.png" mode="widthFix"/>
+      <image wx:else src="{{item.printUrl}}" mode="widthFix" />
     </view>
     <view class="item-main flex">
       <view class="main-left flex">

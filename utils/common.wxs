@@ -10,25 +10,19 @@ var getFileType = function getFileType(name) {
       case 'xltx':
       case 'xltm':
           return 'excel'
-          break
       case 'doc':
       case 'docx':
           return 'doc'
-          break;
       case 'ppt':
       case 'pptx':
           return 'ppt'
-          break;
       case 'pdf':
           return 'pdf'
-          break;
       case 'png':
           return 'png'
-          break;
       case 'jpg':
       case 'jpeg':
           return 'jpg'
-          break;
       default:
           return 'error'
   }
