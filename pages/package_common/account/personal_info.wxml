@@ -1,5 +1,5 @@
 <!--pages/package_common/account/personal_info.wxml-->
-<nav-bar background="#fff" title="我的"></nav-bar>
+<nav-bar background="#fff" title="个人信息"></nav-bar>
 <view class="item" bindtap="changeAvatar">
     <view class="left">编辑头像</view>
     <view class="right">

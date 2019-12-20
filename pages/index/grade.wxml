@@ -1,5 +1,5 @@
 <!--pages/index/grade.wxml-->
-<nav-bar background="#fff" title="我的"></nav-bar>
+<nav-bar background="#fff" title="修改年级"></nav-bar>
 <image src="/images/home/choose_grade.png" mode="widthFix" class="choose-grade" />
 <block wx:for="{{stages[0].children}}" wx:key="beforeSchool">
     <view class="title">{{item.name}}</view>
