@@ -372,6 +372,7 @@ Component({
                 Loger(imgDetail,editArea)
                 //初始化图片与编辑区域
                 let sv = util._getSuiteValues(imgDetail.imageInfo.width, imgDetail.imageInfo.height, editArea.areaWidth, editArea.areaHeight)
+                Loger(sv)
                 this.data.imgArr[this.choosedImgIndex] = {}
                 let messageScale=1
                 if(img.clipMode){
@@ -532,11 +533,14 @@ Component({
                 showBorder:true
             })
             try {
+              Loger(e)
                 this.data.globalData[this.moveIndex].lastMoveX = 0
                 this.data.globalData[this.moveIndex].lastMoveY = 0
                 this.data.globalData[this.moveIndex].scale = this.data.imgArr[this.moveIndex].scale
                 this.data.globalData[this.moveIndex].rotate = this.data.imgArr[this.moveIndex].rotate
                 this.data.globalData[this.moveIndex].twoPoint = false
+                this.data.globalData[this.moveIndex].moveX=this.data.imgArr[this.moveIndex].left
+                this.data.globalData[this.moveIndex].moveY=this.data.imgArr[this.moveIndex].top
                 if (e.touches.length == 2) {
                     // 双指操作
                     this.data.globalData[this.moveIndex].twoPoint = true
@@ -562,6 +566,7 @@ Component({
             if (!this.data.imgArr[this.moveIndex]) {
                 return
             }
+            Loger(e)
             // 显示编辑区域边框
             try {
                 if (this.data.globalData[this.moveIndex].twoPoint === true) {
@@ -592,6 +597,7 @@ Component({
                     // 移动
 
                     this.data.globalData[this.moveIndex].moveX = this.data.imgArr[this.moveIndex].left + e.touches[0].pageX - this.data.globalData[this.moveIndex].touchX - this.data.globalData[this.moveIndex].lastMoveX
+
                     this.data.globalData[this.moveIndex].moveY = this.data.imgArr[this.moveIndex].top + e.touches[0].pageY - this.data.globalData[this.moveIndex].touchY - this.data.globalData[this.moveIndex].lastMoveY
 
                     this.data.globalData[this.moveIndex].lastMoveX = e.touches[0].pageX - this.data.globalData[this.moveIndex].touchX

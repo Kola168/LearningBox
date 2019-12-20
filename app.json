@@ -43,13 +43,15 @@
     "pages/course/index",
     "components/bottom-button/test",
     "pages/index/grade",
-		"pages/account/index",
-		"pages/finish/index",
-		"pages/mall/index",
-		"pages/webview/index",
-		"pages/webview/member"
+    "pages/account/index",
+    "pages/finish/index",
+    "pages/mall/index",
+    "pages/webview/index",
+    "pages/webview/member",
+    "pages/finish/sourcefinish"
   ],
-  "subPackages": [{
+  "subPackages": [
+    {
       "root": "pages/package_common",
       "pages": [
         "search/index",
@@ -179,7 +181,7 @@
   },
   "usingComponents": {
     "nav-bar": "components/nav-bar/index",
-    "botttom-button":"components/bottom-button/index"
+    "botttom-button": "components/bottom-button/index"
   },
   "style": "v2",
   "sitemapLocation": "sitemap.json",
@@ -189,7 +191,8 @@
     "backgroundColor": "#fff",
     "borderStyle": "black",
     "position": "bottom",
-    "list": [{
+    "list": [
+      {
         "pagePath": "pages/index/index",
         "text": "首页",
         "iconPath": "images/home/icon_tab_home_unselected.png",

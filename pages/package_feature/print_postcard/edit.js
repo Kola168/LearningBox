@@ -23,7 +23,7 @@ Page({
     paperSize: {
       width: 1181,
       height: 1748,
-      minLeftHeight: 510,
+      minLeftHeight: 610,
       sider: 46,
     }, //传入组件的纸张信息
     templateIndex: 0, //选择的模板index
@@ -57,7 +57,7 @@ Page({
       paperSize: {
         width: Number(templateInfo.width),
         height: Number(templateInfo.height),
-        minLeftHeight: 510,
+        minLeftHeight: 610,
         sider: 46,
       },
       templateInfo: {
@@ -126,8 +126,10 @@ Page({
         printUrl: resp.res.url
       }]
       let orderSn = yield commonRequest.createOrder(this.type, imgs)
-      wxNav.redirectTo(`/pages/finish/index`, {
-        media_type: this.type
+
+      wxNav.navigateTo(`/pages/finish/index`, {
+        media_type: this.type,
+        state:orderSn.createOrder.state
       })
       this.longToast.toast()
     } catch (e) {
