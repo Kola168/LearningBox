@@ -3,12 +3,16 @@ const app = getApp()
 import gql from '../../../network/graphql_request.js'
 import api from '../../../network/restful_request.js'
 import router from '../../../utils/nav'
+import Logger from '../../../utils/logger.js'
+const logger = new Logger.getLogger('pages/index/index')
 const getImageInfo = util.promisify(wx.getImageInfo)
 import {
   co,
   util
 } from '../../../utils/common_import.js'
 import regeneratorRuntime from '../../../lib/co/runtime'
+const downloadFile = util.promisify(wx.downloadFile)
+
 Page({
   data: {
     birthday: '未填写',
@@ -98,8 +102,8 @@ Page({
   }),
   locationChange: co.wrap(function* (e) {
     try {
-      // console.log('修改的列为', e.detail.column, '，值为', e.detail.value);
-      console.log(this.provinceZipCode)
+      // logger.info('修改的列为', e.detail.column, '，值为', e.detail.value);
+      logger.info(this.provinceZipCode)
       let column = e.detail.column
       let index = e.detail.value
       if (column == 0) {
@@ -113,11 +117,11 @@ Page({
         yield this.getCity()
       }
     } catch (e) {
-      console.log(e)
+      logger.info(e)
     }
   }),
   bindMultiPickerChange: co.wrap(function* (e) {
-    // console.log('picker发送选择改变，携带值为', e.detail)
+    // logger.info('picker发送选择改变，携带值为', e.detail)
     this.setData({
       locationIndex: e.detail.value
     })
@@ -128,7 +132,7 @@ Page({
         districtZipCode: this.data.location[2][this.data.locationIndex[2]].zipCode
       }
     }
-    // console.log(params)
+    // logger.info(params)
     // return
     yield this.complete(params)
 
@@ -148,9 +152,28 @@ Page({
         birthday: e.detail.value
       }
     }
-    // console.log(params)
+    // logger.info(params)
     // return
     yield this.complete(params)
+  }),
+  baiduprint: co.wrap(function* (e) {
+    this.path = e.detail[0].url
+    try {
+      const imgInfo = yield getImageInfo({
+        src: this.path
+      })
+      let u = yield downloadFile({
+        url: this.path
+      })
+      router.navigateTo('/pages/package_common/account/avatar_edit', {
+        url: u.tempFilePath
+      })
+    } catch (err) {
+      util.showError({
+        title: '照片加载失败',
+        content: '请重新选择重试'
+      })
+    }
   }),
   uploadImage: co.wrap(function* (e) {
     if (!e.detail.tempFilePaths[0]) {
@@ -166,7 +189,7 @@ Page({
   }),
   changeGedner: co.wrap(function* (e) {
     let gender = e.currentTarget.id
-    console.log(e, e.currentTarget.id)
+    logger.info(e, e.currentTarget.id)
     if (gender == this.data.kidInfo.gender) {
       return
     }
@@ -183,7 +206,7 @@ Page({
     })
     try {
       const resp = yield gql.changeStage(params)
-      console.log(resp)
+      logger.info(resp)
       // throw(resp)
       this.setData({
         kidInfo: resp.updateKid.kid
@@ -201,5 +224,5 @@ Page({
       grade: grade,
       sn: sn
     })
-  }
+  },
 })

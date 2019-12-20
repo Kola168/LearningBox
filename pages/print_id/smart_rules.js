@@ -11,6 +11,8 @@ import upload from '../../utils/upload'
 import api from '../../network/restful_request.js'
 import getLoopsEvent from '../../utils/worker'
 import router from '../../utils/nav'
+import Logger from '../../utils/logger.js'
+const logger = new Logger.getLogger('pages/index/index')
 
 Page({
     data: {
@@ -50,7 +52,7 @@ Page({
             url: this.imageURL,
             spec_id: this.data.spec.spec_id
         }
-        console.log('合成参数', params)
+        logger.info('合成参数', params)
         try {
             getLoopsEvent({
                 feature_key: 'cert_id',
