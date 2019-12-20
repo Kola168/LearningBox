@@ -8,6 +8,8 @@ const _ = require('../../lib/underscore/we-underscore')
 const imginit=require('../../utils/imginit')
 import api from '../../network/restful_request.js'
 import router from '../../utils/nav'
+import Logger from '../../utils/logger.js'
+const logger = new Logger.getLogger('pages/index/index')
 
 
 const showModal = util.promisify(wx.showModal)
@@ -42,7 +44,7 @@ Page({
     this.query = JSON.parse(options.confirm)
     this.info = JSON.parse(options.info)
   
-    console.log('预览页参数', this.info, this.query)
+    logger.info('预览页参数', this.info, this.query)
     this.setData({
       singleImg: this.query.wm_url,
       // price_count: this.query.price,
@@ -157,7 +159,7 @@ Page({
           })
         }
         brand = resp.data.res
-        console.log('brand-----', resp.data.res)
+        logger.info('brand-----', resp.data.res)
       } else {
         this.longToast.hide()
         // 其他错误
@@ -195,13 +197,13 @@ Page({
         signType: brand.signType,
         paySign: brand.paySign
       })
-      console.log('支付信息=========', payment)
+      logger.info('支付信息=========', payment)
 
       return wx.redirectTo({
         url: `../finish/index?type=${this.data.type}&id=${this.query.sn}`
       })
     } catch (e) {
-      console.log(e)
+      logger.info(e)
     }
   }),
 

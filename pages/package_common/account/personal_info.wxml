@@ -67,6 +67,6 @@
     </view>
 </view>
 <!-- 选择照片模块 -->
-<take-photo-pop id="checkComponent" bindchooseImg="uploadImage" imgNum="{{9}}"></take-photo-pop>
+<take-photo-pop id="checkComponent" bindchooseImg="uploadImage" imgNum="{{1}}" bindbaidutap="baiduprint"></take-photo-pop>
 <import src="/lib/toast/wetoast.wxml" />
 <template is="wetoast" data="{{...__wetoast__}}" />

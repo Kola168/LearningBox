@@ -7,13 +7,15 @@ const util = require('../../utils/util')
 import upload from '../../utils/upload'
 import api from '../../network/restful_request.js'
 import router from '../../utils/nav'
+import Logger from '../../utils/logger.js'
+const logger = new Logger.getLogger('pages/index/index')
 
 const downloadFile = util.promisify(wx.downloadFile)
 const getImageInfo = util.promisify(wx.getImageInfo)
 const getSystemInfo = util.promisify(wx.getSystemInfo)
 const showModal = util.promisify(wx.showModal)
 const chooseMessageFile = util.promisify(wx.chooseMessageFile)
-let Loger = (app.apiServer != 'https://epbox.gongfudou.com' || app.deBug) ? console.log : function () {}
+let Loger = (app.apiServer != 'https://epbox.gongfudou.com' || app.deBug) ? logger.info : function () {}
 Page({
     data: {
         // 本地照片地址
@@ -85,7 +87,7 @@ Page({
             // 初始化编辑区域
             yield this.initArea()
         } catch (e) {
-            console.log(e)
+            logger.info(e)
         }
     }),
     //删除照片
@@ -231,7 +233,7 @@ Page({
         this.selectComponent("#checkComponent").showPop()
     }),
     uploadImage: co.wrap(function* (e) {
-        console.log(e)
+        logger.info(e)
         this.path = e.detail.tempFilePaths[0]
         try {
             const imgInfo = yield getImageInfo({
@@ -241,7 +243,7 @@ Page({
                 imgInfo: imgInfo,
                 localImgPath: this.path
             })
-            console.log("imgInfo", imgInfo)
+            logger.info("imgInfo", imgInfo)
         } catch (err) {
             util.showError({
                 title: '照片加载失败',
@@ -294,7 +296,7 @@ Page({
         let designAreaMaxWidth = avaWidth - 2 * margin
         let designAreaMaxHeight = avaHeight - 2 * margin
 
-        console.log('相纸大小', this.data.area)
+        logger.info('相纸大小', this.data.area)
 
         let scale = this.data.area.width / this.data.area.height
         if (this.data.area.width <= this.data.area.height) {
@@ -323,7 +325,7 @@ Page({
             scale: areaWidth / this.data.area.width
         }
 
-        console.log('areaPosition', areaPosition)
+        logger.info('areaPosition', areaPosition)
 
         this.setData({
             areaPosition: areaPosition
@@ -338,7 +340,7 @@ Page({
         }
 
         if (e != undefined) {
-            console.log(e.detail)
+            logger.info(e.detail)
 
             // 获取图片信息bug，这里通过load重新获取长宽信息
             if (this.data.imgInfo.width != e.detail.width) {
@@ -402,7 +404,7 @@ Page({
             realScale: imgScale,
             realRotate: imgRotate
         })
-        console.log('initDesign', userImgPosition)
+        logger.info('initDesign', userImgPosition)
     }),
 
     onTouch: function (e) {
@@ -484,7 +486,7 @@ Page({
                 })
             }
         } catch (e) {
-            console.log(e)
+            logger.info(e)
         }
 
     },
@@ -527,7 +529,7 @@ Page({
         let imageURL
         try {
             imageURL = yield upload.uploadFile(this.data.localImgPath)
-            console.log('3456789', imageURL)
+            logger.info('3456789', imageURL)
         } catch (e) {
             console.error(e)
             this.longToast.hide()
@@ -542,7 +544,7 @@ Page({
 
         // canvas绘图
         const result = yield this.getResult()
-        console.log("getResult", result, this.editorScale)
+        logger.info("getResult", result, this.editorScale)
 
         // 旋转修正0-360
         let rotate = result.rotate
@@ -583,7 +585,7 @@ Page({
             y: result.y + svh
         }
 
-        console.log('证件照合成参数', params, app.openId)
+        logger.info('证件照合成参数', params, app.openId)
 
         app.tmpIDParams = params
 
