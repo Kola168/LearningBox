@@ -31,6 +31,10 @@
   align-items: center;
 }
 
+.item-main>view {
+  width: 50%;
+}
+
 .main-left {
   flex-direction: column;
   justify-content: center;
@@ -40,10 +44,12 @@
 
 .left-count {
   font-size: 20rpx;
+  margin-top: 10rpx;
 }
 
 .main-right {
   font-size: 24rpx;
+  text-align: right;
 }
 
 .status-warning {
