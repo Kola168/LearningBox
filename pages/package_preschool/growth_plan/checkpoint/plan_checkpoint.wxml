@@ -1,7 +1,7 @@
 <!--pages/package_preschool/growth_plan/checkpoint/plan_checkpoint.wxml-->
 <nav-bar title="计划关卡"></nav-bar>
 <view class="checkpoint-bg">
-    <view class="{{index % 2 == 0 ? 'checkpoint-step-1' : 'checkpoint-step-2'}}" bindtap="toPrintDetail" wx:for="{{checkpoints}}" wx:key="{{index}}" id="{{index}}">
+    <view class="{{index % 2 == 0 ? 'checkpoint-step-1' : 'checkpoint-step-2'}}" bindtap="toPrintDetail" wx:for="{{checkpoints}}" wx:key="index" id="{{index}}">
         <image class="checkpoint-img-bg" src="{{checkpointBg}}"></image>
         <view class="checkpoint-cont">
             <image src="{{item.image}}"></image>
