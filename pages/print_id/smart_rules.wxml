@@ -23,8 +23,10 @@
             </view>
         </view>
     </view>
-
+    <view class='bottom flex-center' bindtap="changeImage">
+            <text class='fs-32'>选择照片</text>
+        </view>
 </view>
-<take-photo-pop id="checkComponent" bindchooseImg="takePhoto" bindbaidutap="baiduprint" imgNum="{{1}}"></take-photo-pop>
+<take-photo-pop id="checkComponent" bindchooseImg="uploadImage" bindbaidutap="baiduprint" imgNum="{{1}}"></take-photo-pop>
 <import src="../../lib/toast/wetoast.wxml" />
 <template is="wetoast" data="{{...__wetoast__}}" />

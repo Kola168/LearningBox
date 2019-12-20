@@ -35,7 +35,14 @@ Page({
     showAuth: false, //登录
     homeType: '学前',
     selectedKid: null,
-    stageRoot: null
+    stageRoot: null,
+    deviceModal: {
+      isShow: true,
+      hasCancel: false,
+      content: '绑定设备后学习更方便!',
+      confirmText: '立即绑定',
+      image: '/images/home/device_tip.png'
+    }
   },
 
   //事件处理函数
@@ -47,7 +54,7 @@ Page({
     if (query.scene) {
       this.scene = query.scene
       let userSn = storage.get('userSn')
-      if(userSn){
+      if (userSn) {
         this.handleScene(query.scene)
       }
     }
@@ -121,6 +128,11 @@ Page({
       } else {
         this.setData({
           homeType: this.data.selectedKid.stageRoot.rootName
+        })
+      }
+      if (!resp.currentUser.selectedDevice) {
+        this.setData({
+          'deviceModal.isShow': true
         })
       }
 
@@ -201,21 +213,11 @@ Page({
     }
     router.navigateTo(url)
   },
-  // TODO:以下两个为测试函数，待删除
-  changeSubject: function () {
-    this.setData({
-      homeType: this.data.homeType == 'subject' ? 'beforSchool' : 'subject'
-    })
-  },
-  // toId: function () {
-  //   router.navigateTo('/pages/print_id/index')
-  // }
-
   // 处理scene
-  handleScene(scene){
+  handleScene(scene) {
     let sceneArr = scene.split('_'),
-    sceneKey = sceneArr[0],
-    sceneVal = sceneArr[1]
+      sceneKey = sceneArr[0],
+      sceneVal = sceneArr[1]
     switch (sceneKey) {
       case 'device':
         this.handleShareQrcode(sceneVal)
@@ -224,7 +226,7 @@ Page({
   },
 
   // 处理分享打印机二维码
-  handleShareQrcode: co.wrap(function*(val) {
+  handleShareQrcode: co.wrap(function* (val) {
     this.longToast.toast({
       type: 'loading'
     })
@@ -234,7 +236,7 @@ Page({
         throw (info)
       }
       let res = yield gql.bindShareDevice(info.res.device_sn)
-      if(res.bindSharer.device){
+      if (res.bindSharer.device) {
         this.longToast.hide()
         wx.showToast({
           title: '绑定成功',
@@ -246,5 +248,8 @@ Page({
       this.longToast.hide()
       util.showError(error)
     }
-  })
+  }),
+  toBindDevice: function () {
+    router.navigateTo('/pages/package_device/network/index/index')
+  }
 })
