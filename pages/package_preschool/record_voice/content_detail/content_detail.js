@@ -245,7 +245,7 @@ Page({
       var resp = yield graphql.createResourceOrder(params)
 
 			router.redirectTo('/pages/finish/index', {
-				media_type: this.data.media_type,
+				media_type: "kid_record",
 				state: resp.createResourceOrder.state
 			})
 

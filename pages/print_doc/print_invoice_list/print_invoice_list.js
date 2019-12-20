@@ -110,7 +110,6 @@ Page({
       logger.info('提交打印成功', resp)
       this.longToast.hide()
       router.redirectTo('/pages/finish/index', {
-        type: 'invoice',
         media_type: 'invoice',
         state: resp.createOrder.state
       })

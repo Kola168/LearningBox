@@ -147,8 +147,7 @@ Page({
         const resp = yield commonRequest.createOrder('reprography', param)
         this.longToast.toast()
         router.redirectTo('/pages/finish/index', {
-          type: 'id_card',
-          media_type: 'invoice',
+          media_type: 'reprography',
           state: resp.createOrder.state
         })
 
