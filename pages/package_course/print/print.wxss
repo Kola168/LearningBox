@@ -90,7 +90,6 @@
 
 .bar-print {
   width: 36%;
-  line-height: 70rpx;
   font-size: 36rpx;
   color: #333;
   text-align: center;
