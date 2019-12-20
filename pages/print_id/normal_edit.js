@@ -8,12 +8,12 @@ import upload from '../../utils/upload'
 import api from '../../network/restful_request.js'
 import router from '../../utils/nav'
 
-const chooseImage = util.promisify(wx.chooseImage)
+const downloadFile = util.promisify(wx.downloadFile)
 const getImageInfo = util.promisify(wx.getImageInfo)
 const getSystemInfo = util.promisify(wx.getSystemInfo)
 const showModal = util.promisify(wx.showModal)
 const chooseMessageFile = util.promisify(wx.chooseMessageFile)
-let Loger = (app.apiServer != 'https://epbox.gongfudou.com' || app.deBug) ? console.log : function() {}
+let Loger = (app.apiServer != 'https://epbox.gongfudou.com' || app.deBug) ? console.log : function () {}
 Page({
     data: {
         // 本地照片地址
@@ -255,11 +255,13 @@ Page({
             const imgInfo = yield getImageInfo({
                 src: this.path
             })
+            let u = yield downloadFile({
+                url: this.path
+            })
             this.setData({
                 imgInfo: imgInfo,
-                localImgPath: this.path
+                localImgPath: u.tempFilePath
             })
-            console.log("imgInfo", imgInfo)
         } catch (err) {
             util.showError({
                 title: '照片加载失败',
@@ -524,12 +526,8 @@ Page({
         })
         let imageURL
         try {
-            if (this.data.source == 'computer') {
-                imageURL = this.data.localImgPath
-            } else {
-                imageURL = yield upload.uploadFile(this.data.localImgPath)
-                console.log('3456789', imageURL)
-            }
+            imageURL = yield upload.uploadFile(this.data.localImgPath)
+            console.log('3456789', imageURL)
         } catch (e) {
             console.error(e)
             this.longToast.hide()

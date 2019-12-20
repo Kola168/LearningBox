@@ -4,6 +4,8 @@ const app = getApp()
 import api from '../../../network/restful_request.js'
 import gql from '../../../network/graphql_request.js'
 const regeneratorRuntime = require('../../../lib/co/runtime')
+import Logger from '../../../utils/logger.js'
+const logger = new Logger.getLogger('pages/index/index')
 import {
     co,
     util
@@ -20,7 +22,7 @@ Page({
         exitSaveModal: null
     },
     onLoad: function (options) {
-        console.log(options)
+        logger.info(options)
         this.longToast = new app.weToast()
         this.page = 1
         this.pageEnd = false
@@ -35,7 +37,7 @@ Page({
 
     //删除文件
     deleteDocument: co.wrap(function* () {
-        console.log('this.data.memberIds===', this.data.memberIds)
+        logger.info('this.data.memberIds===', this.data.memberIds)
         if (this.data.memberIds.length == 0) {
             return
         }
@@ -90,7 +92,7 @@ Page({
                 documentList: this.data.documentList.concat(resp.documents),
             })
             if (this.data.selectText == '取消') {
-                console.log("zzzzzz")
+                logger.info("zzzzzz")
                 this.data.memberIds = []
                 for (var i = 0; i < this.data.documentList.length; i++) {
                     this.data.documentList[i].choose = true,
@@ -100,19 +102,19 @@ Page({
                     documentList: this.data.documentList
                 })
             }
-            console.log("22222", this.data.documentList)
+            logger.info("22222", this.data.documentList)
             this.page++
 
         } catch (e) {
-            console.log(e)
+            logger.info(e)
             this.longToast.toast()
             util.showError(e)
         }
     }),
 
     onReachBottom: function () {
-        console.log('分页加载')
-        console.log('this.pageEnd', this.pageEnd)
+        logger.info('分页加载')
+        logger.info('this.pageEnd', this.pageEnd)
         if (this.pageEnd) {
             return
         }
@@ -161,7 +163,7 @@ Page({
         }
         try {
             let resp = yield gql.checkBaiduAuth()
-            console.log(resp)
+            logger.info(resp)
             if (resp.token.baiduTokenName != null) {
                 let params={
                     sn:this.sn,
@@ -174,7 +176,7 @@ Page({
                 try {
                     const resp = yield gql.uploadBaidu(params)
                     this.longToast.toast()
-                    console.log('上传百度云', resp)
+                    logger.info('上传百度云', resp)
                     wx.showToast({
                         title: '百度云的存储路径是：我的硬件数据/小白智慧打印',
                         icon: 'none',
@@ -210,9 +212,9 @@ Page({
             }
         } else {
             for (var i = 0; i < this.data.documentList.length; i++) {
-                console.log("qqqq", i, this.data.documentList.length)
+                logger.info("qqqq", i, this.data.documentList.length)
                 this.data.documentList[i].choose = false
-                console.log("aaa", this.data.documentList[i])
+                logger.info("aaa", this.data.documentList[i])
                 this.deleteOneId(this.data.memberIds, this.data.documentList[i].sn)
             }
         }
@@ -222,24 +224,24 @@ Page({
     }),
 
     choose: co.wrap(function* (e) {
-        console.log('e.currentTarget.id======', e.currentTarget.id)
+        logger.info('e.currentTarget.id======', e.currentTarget.id)
         if (!this.data.documentList[parseInt(e.currentTarget.id)].choose) { //选中
             this.data.memberIds.push(this.data.documentList[parseInt(e.currentTarget.id)].sn)
         } else {
             this.deleteOneId(this.data.memberIds, this.data.documentList[parseInt(e.currentTarget.id)].sn)
         }
         this.data.documentList[parseInt(e.currentTarget.id)].choose = !this.data.documentList[parseInt(e.currentTarget.id)].choose
-        console.log('this.data.documentList=====', this.data.documentList)
+        logger.info('this.data.documentList=====', this.data.documentList)
         this.setData({
             documentList: this.data.documentList
         })
         if (this.data.memberIds.length == this.data.documentList.length) {
-            console.log("11111")
+            logger.info("11111")
             this.setData({
                 selectText: '取消'
             })
         } else {
-            console.log("2222")
+            logger.info("2222")
             this.setData({
                 selectText: '全选'
             })
@@ -248,7 +250,7 @@ Page({
 
 
     deleteOneId: function (array, item) {
-        console.log('这里333333333333')
+        logger.info('这里333333333333')
         Array.prototype.indexOf = function (val) {
             for (var i = 0; i < this.length; i++) {
                 if (this[i] == val) return i;
