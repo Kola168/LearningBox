@@ -12,8 +12,8 @@
       <image src="/images/doc_preview_turn_right.png" bindtap="pageTurn" id="right" mode="widthFix" />
     </view>
     <view class="bottom-bar">
-      <view class="bar-btn">
-        <image src="/images/doc_collect_gray.png" />
+      <view class="bar-btn" bindtap="collect">
+        <image src="/images/doc_collect_{{isCollect?'orange':'gray'}}.png" />
         <view>收藏</view>
       </view>
       <view class="bar-btn">
