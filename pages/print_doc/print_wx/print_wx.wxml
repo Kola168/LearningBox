@@ -25,7 +25,7 @@
 	<image
 	 wx:for="{{imgList}}"
 	 src="{{item}}"
-	 wx:key="{{index}}"
+	 wx:key="*this"
 	 style="width:100%;vertical-align:top"
 	 mode="widthFix"
 	/>

@@ -8,7 +8,7 @@
 		 class="tab-item"
 		 wx:for="{{tabList}}"
 		 data-index="{{index}}"
-		 wx:key="*this"
+		 wx:key="title"
 		 bindtap="switchTab"
 		>
 			<view class="tab-title f-16 {{index === active_index ? 'active-title' : ''}}">{{item.title}}</view>

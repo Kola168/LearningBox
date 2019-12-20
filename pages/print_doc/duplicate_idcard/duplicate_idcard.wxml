@@ -13,7 +13,7 @@
 <!-- 图片列表 -->
 <view
  wx:for="{{typeInfo}}"
- wx:key="{{index}}"
+ wx:key="key"
  class="block"
  style="{{foo.height(item)}}"
 >
