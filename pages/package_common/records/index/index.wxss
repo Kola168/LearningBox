@@ -167,6 +167,7 @@
   line-height: 44rpx;
   padding: 0 20rpx;
   font-size: 24rpx;
+  border-radius: 22rpx;
 }
 
 .audit-reject {

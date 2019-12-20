@@ -75,7 +75,7 @@
           <view class="left-count">打印数量：{{item.copies}}份</view>
           <view class="left-data">{{item.createdAt}}</view>
         </view>
-        <view class="main-right main-right-row flex" wx:if="{{item.isAdmin&&item.state==='init'}}">
+        <view class="main-right main-right-row flex" wx:if="{{activeDevice.isAdmin&&item.state==='init'}}">
           <view class="audit-reject" catchtap="verifyOrder" id="reject" data-sn="{{item.sn}}">拒绝</view>
           <view class="audit-allow" catchtap="verifyOrder" id="pass" data-sn="{{item.sn}}">同意</view>
         </view>
