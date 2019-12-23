@@ -120,7 +120,8 @@
         "share_folder/index",
         "share_folder/share_manage",
         "share_folder/content",
-        "share_folder/manage"
+        "share_folder/manage",
+        "kousuan/index"
       ]
     },
     {
