@@ -1,0 +1,65 @@
+@import '../common/memory_write_list.wxss';
+@import '../common/intro.wxss';
+.flex {
+  display: flex;
+}
+
+.align-center {
+  align-items: center;
+}
+
+.intro {
+  background: #FFF5F3;
+}
+
+.container {
+  padding-top: 80rpx;
+  padding-bottom: 120rpx;
+}
+
+.selector {
+  width: 100%;
+  height: 80rpx;
+  background: #fff;
+  position: fixed;
+  left: 0;
+  top: 0;
+  border-bottom: 2rpx solid #E3E3E3;
+}
+
+.left-options,
+.right-options {
+  width: 50%;
+  justify-content: center;
+  color: #666;
+  font-size: 26rpx;
+}
+
+.left-options>view,
+.right-options>view {
+  max-width: calc(100% - 60rpx);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.selector>view image {
+  width: 17rpx;
+  height: 12rpx;
+  margin-left: 16rpx;
+}
+
+.item-main {
+  font-size: 30rpx;
+  color: #333;
+  padding: 0 30rpx 30rpx 30rpx;
+}
+
+.item-main>view {
+  margin-top: 30rpx;
+}
+
+.item-main>view text:first-child {
+  display: inline-block;
+  margin-right: 20rpx;
+}

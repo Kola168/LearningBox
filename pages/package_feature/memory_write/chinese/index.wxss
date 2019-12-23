@@ -1,0 +1,170 @@
+@import '../common/memory_write_list.wxss';
+@import '../common/intro.wxss';
+.flex {
+  display: flex;
+}
+
+.align-center {
+  align-items: center;
+}
+
+.intro {
+  background: #F8FFF8;
+}
+
+.container {
+  padding-top: 146rpx;
+  padding-bottom: 120rpx;
+}
+
+.filter-box {
+  background: #fff;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+}
+
+.selector {
+  font-size: 26rpx;
+  color: #666;
+  justify-content: space-between;
+  padding: 0 24rpx;
+  height: 60rpx;
+}
+
+.options image {
+  width: 17rpx;
+  height: 12rpx;
+  margin-left: 16rpx;
+}
+
+.tips {
+  width: 40rpx;
+  height: 40rpx;
+}
+
+.nav {
+  width: 100%;
+  height: 86rpx;
+  font-size: 32rpx;
+  color: #999;
+  justify-content: space-around;
+}
+
+.nav-item {
+  width: 33.33%;
+  flex-grow: 1;
+  text-align: center;
+  height: 100%;
+  line-height: 86rpx;
+}
+
+.nav-item-active {
+  position: relative;
+  color: #333;
+}
+
+.nav-item-active::after {
+  position: absolute;
+  content: '';
+  left: 50%;
+  bottom: 2rpx;
+  height: 6rpx;
+  background: #FFE27A;
+  width: 40rpx;
+  transform: translateX(-50%);
+}
+
+.select-list {
+  top: 60rpx;
+}
+
+.content-box {
+  border-radius: 12rpx;
+  background: #fff;
+}
+
+.item-main {
+  flex-wrap: wrap;
+  color: #333;
+  font-size: 30rpx;
+  padding-top: 30rpx;
+}
+
+.item-main>view {
+  width: 20%;
+  text-align: center;
+  margin-bottom: 30rpx;
+}
+
+.box-item {
+  padding: 40rpx 30rpx;
+}
+
+.box-item:not(:last-child) {
+  border-bottom: 1px solid #CECECE;
+}
+
+.box-item-title {
+  font-size: 30rpx;
+  font-weight: bold;
+  color: #454545;
+  margin-bottom: 10rpx;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.box-item-count {
+  font-size: 24rpx;
+  color: #666;
+}
+
+.cover {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  left: 0;
+  top: 0;
+  background: rgba(0, 0, 0, .6)
+}
+
+.modal {
+  position: absolute;
+  width: calc(100% - 132rpx);
+  left: 66rpx;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #fff;
+  border-radius: 20rpx;
+}
+
+.modal-btn,
+.modal-title {
+  font-size: 36rpx;
+  font-weight: bold;
+  text-align: center;
+}
+
+.modal-title {
+  margin: 60rpx 0 40rpx;
+}
+
+.modal-main {
+  padding: 0 52rpx 56rpx;
+  font-size: 28rpx;
+  color: #333;
+}
+
+.modal-main>view:not(:last-child) {
+  margin-bottom: 30rpx;
+}
+
+.modal-btn {
+  background: #FFE27A;
+  height: 88rpx;
+  line-height: 88rpx;
+  border-bottom-left-radius: 20rpx;
+  border-bottom-right-radius: 20rpx;
+}
