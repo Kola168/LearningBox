@@ -14,7 +14,7 @@
 <view class="bottom-box">
   <scroll-view class="template-list-box" scroll-x>
     <view wx:for="{{templateList}}" wx:key="templateList" data-index="{{index}}" class="template-item {{index==selectedIndex?'img-selected':''}}" bindtap="tapTemplate">
-      <image src="{{item.previewImage||foo.addProcess(templateList[selectedIndex].imageUrl,'/resize,m_fill,w_100,limit_0/quality,Q_85/format,jpg')}}" mode="widthFix" class="template-img"></image>
+      <image src="{{item.previewImage||foo.addProcess(templateList[index].imageUrl,'/resize,m_fill,w_100,limit_0/quality,Q_85/format,jpg')}}" mode="widthFix" class="template-img"></image>
     </view>
   </scroll-view>
   <bottom-button text-right="确认" bindrighttap="confBut"  get-phone="{{true}}"></bottom-button>
