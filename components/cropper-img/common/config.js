@@ -6,3 +6,8 @@ export const cropperTypes = { //裁剪模式
   rect: 'rectangle',
   quadRect: 'quadrectangle'
 }
+
+export const canvasIds = {
+  rectangle: 'moveCanvas_rectangle',
+  quadrectangle: 'moveCanvas_quadrectangle'
+}
