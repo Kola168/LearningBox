@@ -255,6 +255,9 @@ Page({
       case "reNetwork":
         url = `../network/index/index`
         break;
+      case "deviceMaintain":
+        url = `../maintain/index/index`
+        break;
     }
     wxNav.navigateTo(url, params)
   },
@@ -267,7 +270,7 @@ Page({
     try {
       let res = yield graphql.clearJobs(this.deviceSn)
       this.weToast.hide()
-      if(res.cancelJob.state){
+      if (res.cancelJob.state) {
         wx.showToast({
           title: '已清空',
           icon: 'none'
