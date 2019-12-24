@@ -1,6 +1,7 @@
 <!--pages/package_feature/print_balloon/edit.wxml-->
 <nav-bar title="照片编辑"></nav-bar>
 <confirm-print bindconfirm="makeOrder" modal="{{confirmModal}}" />
+<wxs src="../common.wxs" module="foo" />
 
 <view class="top-tips">
   <image src="../resource_images/icon_smile.png" mode="widthFix" class="top-tip-icon"></image>
@@ -13,7 +14,7 @@
 <view class="bottom-box">
   <scroll-view class="template-list-box" scroll-x>
     <view wx:for="{{templateList}}" wx:key="templateList" data-index="{{index}}" class="template-item {{index==selectedIndex?'img-selected':''}}" bindtap="tapTemplate">
-      <image src="{{item.previewImage}}" mode="widthFix" class="template-img"></image>
+      <image src="{{item.previewImage||foo.addProcess(templateList[index].imageUrl,'/resize,m_fill,w_100,limit_0/quality,Q_85/format,jpg')}}" mode="widthFix" class="template-img"></image>
     </view>
   </scroll-view>
   <bottom-button text-right="确认" bindrighttap="confBut"  get-phone="{{true}}"></bottom-button>

@@ -89,7 +89,7 @@ const graphqlApi = {
   },
 
   bindDevice: (deviceInfo) => {
-    return gql.mutate({
+    return gql.mutateCustomize({
       mutation: `mutation bindDevice($input: BindDeviceInput!){
         bindDevice(input:$input){
           device {

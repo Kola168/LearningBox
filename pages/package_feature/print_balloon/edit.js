@@ -76,6 +76,14 @@ Page({
   },
 
   confBut:function(){
+    if(this.selectComponent("#mymulti").data.imgArr.length==0){
+      return wx.showModal({
+        title: '提示',
+        content: '至少上传一张照片哦',
+        showCancel: false,
+        confirmColor: '#FFE27A'
+      })
+    }
     this.setData({
       confirmModal: {
         isShow: true,
@@ -111,8 +119,9 @@ Page({
         originalUrl:param.image_url
       }]
       let orderSn = yield commonRequest.createOrder(this.type, imgs)
-      wxNav.redirectTo(`/pages/finish/index`, {
-        media_type: this.type
+      wxNav.navigateTo(`/pages/finish/index`, {
+        media_type: this.type,
+        state:orderSn.createOrder.state
       })
       this.longToast.toast()
     } catch (e) {

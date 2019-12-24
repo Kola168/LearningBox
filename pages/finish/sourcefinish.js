@@ -1,11 +1,10 @@
-// pages/finish/index.js
+// pages/finish/sourcefinish.js
 "use strict"
 
 const app = getApp()
 const regeneratorRuntime = require('../../lib/co/runtime')
 const co = require('../../lib/co/co')
 const util = require('../../utils/util')
-const feature_route=require('../../utils/feature_index')
 
 const chooseImage = util.promisify(wx.chooseImage)
 const showModal = util.promisify(wx.showModal)
@@ -115,7 +114,7 @@ Page({
 	},
 
 	continuePrint: function () {
-		wxNav.navigateTo(feature_route.feature_route[this.media_type])
+		wxNav.navigateBack(getCurrentPages().length>3?getCurrentPages().length:4-2)
 	},
 
 	onShareAppMessage: function () {
