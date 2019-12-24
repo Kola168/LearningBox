@@ -1,0 +1,163 @@
+page {
+  width: 100%;
+  margin-top: 30rpx;
+  padding: 0 24rpx 120rpx;
+  box-sizing: border-box;
+}
+
+.top {
+  display: flex;
+  align-items: center;
+  margin-bottom: 30rpx;
+  margin-top: 20rpx;
+}
+
+.top-grade>view {
+  display: flex;
+  align-items: center;
+}
+
+.top-grade text {
+  color: #999;
+}
+
+.top-image {
+  width: 16rpx;
+  height: 16rpx;
+  margin-left: 10rpx;
+}
+
+.top-grade {
+  justify-content: space-between;
+}
+
+.first {
+  justify-content: space-between;
+  margin-right: 16rpx;
+}
+
+.left {
+  display: flex;
+  align-items: center;
+}
+
+.right {
+  display: flex;
+  align-items: center;
+}
+
+.border {
+  width: 6rpx;
+  height: 28rpx;
+  background: #ffc35b;
+  margin: 0 8rpx 0 0;
+}
+
+.error_icon {
+  width: 34rpx;
+  margin-right: 20rpx;
+}
+
+.title {
+  font-size: 30rpx;
+  color: #454545;
+}
+
+.img {
+  width: 100%;
+  margin-bottom: 12rpx;
+  vertical-align: top;
+}
+
+.con {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 0 16rpx 0;
+}
+
+.content {
+  border: 2rpx solid #ededed;
+  border-radius: 164rpx;
+  font-size: 30rpx;
+  color: #333;
+  text-align: center;
+  padding: 14rpx 40rpx;
+  margin: 0 20rpx 20rpx 0;
+}
+
+.active-tab {
+  background: #FFE27A;
+  border: none;
+}
+
+.btn {
+  width: 100%;
+  height: 100rpx;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  background: #FFE27A;
+}
+
+.btn-left,
+.btn-right {
+  width: 50%;
+  height: 100%;
+  display: inline-block;
+  border-top: 2rpx solid #CECECE;
+  box-sizing: border-box;
+}
+
+.btn button {
+  width: 100%;
+  height: 100%;
+  font-family: PingFangSC-Regular;
+  font-size: 36rpx;
+  color: #333333;
+  letter-spacing: 0;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-left {
+  background: #FFFFFF;
+  color: #666666;
+  box-sizing: border-box;
+}
+
+.btn image {
+  width: 44rpx;
+  height: 44rpx;
+  margin-right: 10rpx;
+}
+
+.search-answer {
+  width: 100%;
+  font-family: PingFangSC-Medium;
+  font-size: 28rpx;
+  color: #FFC35B;
+  letter-spacing: 0.6rpx;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  font-weight: bold;
+}
+
+.search-answer image {
+  width: 36rpx;
+  height: 36rpx;
+  margin-right: 10rpx;
+}
+.ios-tip-modal {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.50);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

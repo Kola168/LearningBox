@@ -1750,6 +1750,23 @@ const graphqlApi = {
       }
       })
     },
+    getGrade: () => {
+      return gql.query({
+        query: `query {
+          currentUser {
+            sn
+            selectedKid{
+              sn
+              stage{
+                name
+                rootName
+                sn
+              }
+           }
+          }
+        }`
+      })
+    }
 
 
 }

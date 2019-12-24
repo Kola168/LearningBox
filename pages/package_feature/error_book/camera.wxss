@@ -1,0 +1,75 @@
+/* pages/error_book/camera.wxss */
+page {
+    width: 100%;
+    height: 100%;
+}
+
+.camera {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.cover-title {
+    color: #fff;
+    font-size: 36rpx;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 9999;
+}
+
+.cover-title cover-view {
+    width: 100%;
+    text-align: center;
+}
+
+.cover-view {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.cover {
+    position: absolute;
+    left: 10%;
+    bottom: 128rpx;
+    height: 200rpx;
+    width: 80%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.button-camera {
+    width: 120rpx;
+    height: 120rpx;
+}
+
+.small-icon {
+    width: 80rpx;
+    height: 80rpx;
+}
+
+.line {
+    width: calc(100% / 3);
+    height: calc(100% / 3);
+    border: 1rpx solid #fff;
+    box-sizing: border-box;
+    background: none;
+}
+
+.camera-tip {
+    width: 280rpx;
+    height: 560rpx;
+}

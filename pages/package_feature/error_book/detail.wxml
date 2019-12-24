@@ -1,0 +1,116 @@
+<view class='top'>
+  <view class='top1'>
+    <view class="top_icon" bindtap='choose'>
+      <image src='../images/error-choose.png' class="error_icon" mode="widthFix"></image>
+      <text>筛选</text>
+    </view>
+    <!-- 删除操作 -->
+    <view class="top_icon" bindtap='confirmDelete'>
+      <image src='../images/error-delete.png' class="error_icon" mode="widthFix"></image>
+      <text>删除</text>
+    </view>
+    <!-- <view class="top_icon" bindtap='toClose' wx:if="{{isDelete}}">
+      <image src='../images/error-close.png' class="error_icon" mode="widthFix"></image>
+      <text>取消</text>
+    </view> -->
+    <!-- 打印操作 -->
+    <!-- <view wx:if="{{firstPrint}}" class="print-choose">
+      <view class="top_icon" bindtap='toSetting' >
+        <image src='../images/error-setting.png' class="error_icon" mode="widthFix"></image>
+        <text>打印项设置</text>
+      </view>
+      <view class="top_icon" bindtap='toClose'>
+        <image src='../images/error-close.png' class="error_icon" mode="widthFix"></image>
+        <text>取消</text>
+      </view>
+    </view> -->
+
+  </view>
+</view>
+
+<view class='content'>
+  <view wx:for="{{array}}" wx:key="{{index}}" id='{{index}}'>
+    <view class="border2" wx:if="{{item.content.length!=0}}"></view>
+    <view class="date" wx:if="{{item.content.length!=0}}">
+      <text class="date1">{{item.created_at}}</text>
+      <text>{{item.content.length}}题</text>
+    </view>
+    <view wx:for="{{item.content}}" wx:for-item="data" wx:for-index="i" wx:key="{{i}}" id="{{i}}" data-type="{{index}}">
+      <view class='des'>
+        <view wx:if="{{isDelete||firstPrint}}" class='left-icon'>
+          <block wx-if="{{!data.checked}}">
+            <image src='../images/error-noselected.png' class="error_icon1" mode="widthFix" bindtap="chooseOne"
+              id="{{i}}" data-type="{{index}}"></image>
+          </block>
+          <block wx-if="{{data.checked}}">
+            <image src='../images/error-selected.png' class="error_icon1" mode="widthFix" bindtap="chooseOne"
+              id="{{i}}" data-type="{{index}}"></image>
+          </block>
+        </view>
+        <view style='display:flex'>
+          <text class='describe'>复习{{data.print_count}}次</text>
+          <text class='describe'>{{data.level}}</text>
+          <text class='describe' wx:if="{{data.reason!=null}}">{{data.reason}}</text>
+        </view>
+      </view>
+      <view wx:for="{{data.urls}}" wx:for-item="d" wx:for-index="j" wx:key="{{j}}" id="{{i}}" data-type="{{index}}"
+        bindtap='toTopic'>
+        <image src='{{d}}' class='img' mode='widthFix'>
+          <view class="anwser" wx:if="{{j==0&&data.answer_urls.length>0&&data.answer_urls!=null}}">有解析</view>
+        </image>
+      </view>
+    </view>
+  </view>
+</view>
+
+
+<view class="all" wx:if="{{!firstPrint&&!isDelete&&array.length!=0}}">已加载全部</view>
+
+<view class="all center nothing" wx:if="{{array.length==0&&!noEntry}}">
+  <image mode="widthFix" src="../images/error_nothing.png"></image>
+  您还没有录入错题哦~
+  <button bindtap="toCamera">去拍照录题</button>
+</view>
+
+<view class="all center" wx:if="{{array.length==0&&noEntry}}">没有符合条件的错题~</view>
+
+<!-- <view class="all center" wx:if="{{isDelete&&array.length==0}}">没有可删除的错题</view> -->
+
+<!-- <view class="all num" wx:if="{{firstPrint}}">已选{{middlearr.length}}题/单页{{num}}题/打印{{printNum}}张</view>
+<view class="all" wx:if="{{isDelete&&!noEntry&&array.length!=0}}">已选{{middlearr.length}}题</view> -->
+
+
+
+<view class="btn">
+  <view>
+    <view class="top_icon" wx:if="{{firstPrint||isDelete}}">
+      <image src='../images/error-selected.png' class="error_icon" mode="widthFix" bindtap='chooseAll'
+        wx:if="{{allChoose}}"></image>
+      <image src='../images/error-noselected.png' class="error_icon" mode="widthFix" bindtap='chooseAll'
+        wx:if="{{!allChoose}}"></image>
+      <text>全选</text>
+    </view>
+    <view>已选{{middlearr.length}}题</view>
+  </view>
+
+  <button hover-class="none" bindtap='quickPrint'>打印并复习</button>
+
+  <!-- <form report-submit="{{true}}" bindsubmit="quickPrint">
+    <button hover-class="none" wx:if="{{firstPrint}}" form-type='submit'>立即打印</button>
+  </form> -->
+  <!-- <button hover-class="none" wx:if="{{isDelete}}" bindtap='confirmDelete'>确认删除</button> -->
+</view>
+
+<!-- 打印提示 -->
+<view class="modal-wrap" wx:if="{{showConfirmModal}}" catchtap="cancelPrint">
+  <view class="confirm-modal">
+    <view>{{showConfirmModal.mediaType}}</view>
+    <image src="{{showConfirmModal.src}}" mode="widthFix"></image>
+    <view>
+      <button class="print" catchtap="print">开始打印</button>
+    </view>
+  </view>
+</view>
+
+<import src="../../../lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />

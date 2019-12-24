@@ -43,13 +43,14 @@
     "pages/course/index",
     "components/bottom-button/test",
     "pages/index/grade",
-		"pages/account/index",
-		"pages/finish/index",
-		"pages/mall/index",
-		"pages/webview/index",
-		"pages/webview/member"
+    "pages/account/index",
+    "pages/finish/index",
+    "pages/mall/index",
+    "pages/webview/index",
+    "pages/webview/member"
   ],
-  "subPackages": [{
+  "subPackages": [
+    {
       "root": "pages/package_common",
       "pages": [
         "search/index",
@@ -118,7 +119,13 @@
         "share_folder/index",
         "share_folder/share_manage",
         "share_folder/content",
-        "share_folder/manage"
+        "share_folder/manage",
+        "error_book/index",
+        "error_book/intro",
+        "error_book/use_page",
+        "error_book/camera",
+        "error_book/edit_pic",
+        "error_book/choose"
       ]
     },
     {
@@ -179,7 +186,7 @@
   },
   "usingComponents": {
     "nav-bar": "components/nav-bar/index",
-    "botttom-button":"components/bottom-button/index"
+    "botttom-button": "components/bottom-button/index"
   },
   "style": "v2",
   "sitemapLocation": "sitemap.json",
@@ -189,7 +196,8 @@
     "backgroundColor": "#fff",
     "borderStyle": "black",
     "position": "bottom",
-    "list": [{
+    "list": [
+      {
         "pagePath": "pages/index/index",
         "text": "首页",
         "iconPath": "images/home/icon_tab_home_unselected.png",
