@@ -1,0 +1,132 @@
+<nav-bar background="#fff" title="搜素" searchObj="{{searchObj}}"/>
+<view class="learn-main" >
+  <view class="head-main">
+    <swiper class="swiper-main">
+        <swiper-item>
+            <image src="" />
+        </swiper-item>
+    </swiper>
+  </view>
+  <view class="nav-content">
+    <view class="nav-title">精准学情</view>
+    <view class="nav-m-content">
+      <image class="desc-icon" src="../../images/theme_banner.png">
+        <view class="desc-content">小白老师为你整理了错题本，并量身定做了学习报告</view>
+      </image>
+    </view>
+    <!-- 错题本 -->
+    <view class="learn-error-entry">
+      <view class="main-title">
+        <view class="top-text">错题本</view>
+      </view>
+      <view class="box-entry">
+        <view class="left-entry">
+          <view class="entry-title">小白超级错题本</view>
+          <view class="sub-main">
+            <view class="sub-text">共错误99道题</view>
+            <view class="sub-label">智能错题本</view>
+            <image class="entry-icon" src="../../images/super_err_book_icon.png"/>
+          </view>
+        </view>
+        <view class="right-entry">
+          <view class="entry-title">其他错题本</view>
+          <view class="sub-main">
+            <view class="sub-text">共错误99道题</view>
+            <view class="sub-label">拍照整理</view>
+            <image class="entry-icon"  src="../../images/err_book_icon.png"/>
+          </view>
+        </view>
+      </view>
+    </view>
+    <!-- 学习报告 -->
+    <view class="learn-report-entry">
+      <view class="main-title">
+        <view class="top-text">学习报告</view>
+      </view>
+      <view class="box-entry">
+        <image class="left-entry" src="../../images/eaxm_report.png">
+          <view class="entry-title">试卷测评报告</view>
+          <view class="sub-main">
+            <view class="sub-text">共39份试卷报告</view>
+          </view>
+        </image>
+        <image class="right-entry" src="../../images/stage_report.png">
+          <view class="entry-title">阶段报告</view>
+          <view class="sub-main">
+            <view class="sub-text">暂无数据</view>
+          </view>
+        </image>
+      </view>
+    </view>
+  </view>
+  <view class="nav-content sync-classroom">
+    <view class="nav-title">同步课堂</view>
+    <view class="nav-m-content">
+      <image class="desc-icon" src="../../images/theme_banner.png">
+        <view class="desc-content">已学习10个章节，超越45%的同学</view>
+      </image>
+    </view>
+    <view class="switch-bar">
+      <view class="switch-item">
+        <view class="switch-text active">同步练习</view>
+        <view class="switch-line active-line"></view>
+      </view>
+      <view class="switch-item">
+        <view class="switch-text">同步视频</view>
+        <view class="switch-line"></view>
+      </view>
+    </view>
+    <view class="subject-list">
+      <image class="subject-item" src="../../images/chinese_icon.png">
+        <view class="last-learn-title">济南的冬天</view>
+        <view class="learn-num">2020位同学正在学</view>
+      </image>
+      <image class="subject-item" src="../../images/math_icon.png">
+        <view class="last-learn-title">济南的冬天</view>
+        <view class="learn-num">2020位同学正在学</view>
+      </image>
+      <image class="subject-item" src="../../images/english_icon.png">
+        <view class="last-learn-title">济南的冬天</view>
+        <view class="learn-num">2020位同学正在学</view>
+      </image>
+      <image class="subject-item" src="../../images/more_subject_icon.png">
+        <view class="last-learn-title">济南的冬天</view>
+        <view class="learn-num">2020位同学正在学</view>
+      </image>
+    </view>
+  </view>
+  <!-- 考试与测评 -->
+  <view class="nav-content">
+    <view class="nav-title">同步课堂</view>
+    <view class="nav-m-content">
+      <image class="desc-icon" src="../../images/theme_banner.png">
+        <view class="desc-content">小白老师共有23197套试卷，你完成了230套，超越90%的同学</view>
+      </image>
+    </view>
+    <view class="scroll-list">
+      <view class="tab-list">
+        <view class="tab-item">
+          <view class="tab-text active">期初考试</view>
+          <view class="tab-line active-line"></view>
+        </view>
+        <view class="tab-item">
+          <view class="tab-text">测试</view>
+          <view class="tab-line"></view>
+        </view>
+      </view>
+      <view class="content">
+        <view class="exam-item">
+          <image src="" />
+          <view class="center-main">
+            <view class="title">【全国百强校首发】安徽省蚌埠市第二中学2019…【全国百强校首发】安徽省蚌埠市第二中学2019…</view>
+            <view class="desc">共1页 99人已学习</view>
+          </view>
+          <view class="btn-print">打印学习</view>
+        </view>
+      </view>
+      <image class="btn-more" src="../../images/btn_more.png" mode="widthFix" bind:tap="toMore"/>
+    </view>
+  </view>
+</view>
+<import src="../../../../lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />
