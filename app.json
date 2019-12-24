@@ -149,7 +149,8 @@
     {
       "root": "pages/package_subject",
       "pages": [
-        "learn/index/index"
+        "sync_learn/index/index",
+        "sync_learn/learn_content/index"
       ]
     },
     {
