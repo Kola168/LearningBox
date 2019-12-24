@@ -47,7 +47,8 @@
     "pages/finish/index",
     "pages/mall/index",
     "pages/webview/index",
-    "pages/webview/member"
+    "pages/webview/member",
+    "pages/finish/sourcefinish"
   ],
   "subPackages": [
     {

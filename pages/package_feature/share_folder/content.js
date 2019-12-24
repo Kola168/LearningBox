@@ -286,7 +286,7 @@ Page({
 					iosModal: true,
 				})
 			}
-			util.showGraphqlErr(e)
+			util.showError(e)
 		}
 	}),
 
@@ -679,7 +679,7 @@ Page({
 		this.uploadDocuments(filesList)
 	}),
 	baiduImage: co.wrap(function* (e) {
-		logger.info(e)
+		logger.info('选择百度图片',e)
 		let paths = e.detail
 		let urls = []
 		let that = this
@@ -707,27 +707,8 @@ Page({
 	// 选择图片
 	chooseImgs: co.wrap(function* (e) {
 		try {
-			// 	this.setData({
-			// 		upKey: 'pic'
-			// 	})
-			// let _this = this;
-			// let maxFileCount = this.data.maxFileCount;
-			// let totalCount = this.data.totalCount;
-			// let every = 9
-			// if (this.number == 0) {
-			// 	return this.setData({
-			// 		iosModal: true,
-			// 	})
-			// }
-			// if (this.number < 9) {
-			// 	every = this.number
-			// }
-			// 	logger.info(this.number)
-			// 	const limit = Math.min(every, Math.max((maxFileCount - totalCount), 0))
-			// 	const imgs = yield chooseImgWay(limit); //选择上传文件方式
-
 			let imgs = e.detail.tempFiles
-			logger.info('234567890-=-0987654323456789', imgs)
+			logger.info('准备上传图片', imgs)
 			this.uploadImage(imgs)
 		} catch (err) {
 			logger.info(err)
@@ -738,7 +719,7 @@ Page({
 		let newImages = yield this.checkImgSize(imgs) //检测文件格式
 		yield this.initProgressStatus(newImages) //初始化进度条
 		const imageList = yield this.syncLoadFiles(newImages, imgs) //并行上传
-		logger.info(imageList, '====imageList====')
+		logger.info( '====imageList====',imageList)
 		let _this = this
 		imageList && imageList.forEach(img => {
 			_this.setData({

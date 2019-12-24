@@ -89,15 +89,7 @@ Page({
         }
     }),
     baiduprint: co.wrap(function* (e) {
-        this.path = e.detail[0].url
-        try {
-            yield this.uploadImage()
-            yield this.confirm()
-        } catch (err) {
-            util.showError({
-                title: '照片加载失败',
-                content: '请重新选择重试'
-            })
-        }
+        this.imageURL = e.detail[0].url
+        yield this.confirm()
     }),
 })

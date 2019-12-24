@@ -1,5 +1,4 @@
-
-<!-- pages/finish/index.wxml -->
+<!--pages/finish/sourcefinish.wxml-->
 <nav-bar background="#fff" title="提交成功"></nav-bar>
 
 <view class='top-tip'>
