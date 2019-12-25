@@ -115,7 +115,7 @@ Page({
 	},
 
 	continuePrint: function () {
-		wxNav.navigateTo(feature_route.feature_route[this.media_type])
+		wxNav.backPage(feature_route.feature_route[this.media_type])
 	},
 
 	onShareAppMessage: function () {

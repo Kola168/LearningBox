@@ -74,7 +74,7 @@ Page({
   },
 
   choosemedia:function(e){
-    wxNav.redirectTo('/pages/print_photo/photolist', {
+    wxNav.navigateTo('/pages/print_photo/photolist', {
       mediaType:e.currentTarget.dataset.type,
       showMode:JSON.stringify(e.currentTarget.dataset.mode)
     })

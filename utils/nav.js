@@ -6,6 +6,7 @@
  * wxNav.switchTab(url [, cb])
  * wxNav.navigateBack([, delta [, cb]])
  */
+const _ = require('../lib/underscore/we-underscore')
 
 function relative2AbsolutePath(nextUrl) {
   let pages = getCurrentPages(),
@@ -16,7 +17,8 @@ function relative2AbsolutePath(nextUrl) {
     let curUrlArr = curUrl.split('/')
     return curUrlArr.splice(0, curUrlArr.length - 1 - isRelativePathLen).join('/') + '/' + nextUrlArr[nextUrlArr.length - 1]
   } else {
-    return nextUrl
+
+    return _.without(nextUrl.split('/'),'').join('/')
   }
 }
 
@@ -133,6 +135,39 @@ const navigateTo = (url, query = {}, cb = emptyFn) => {
     });
   }
 }
+const backPage=(url, query = {}, cb = emptyFn)=>{
+  let pages = getCurrentPages()
+  url = relative2AbsolutePath(url)
+  console.log(url)
+  let len = pages.length
+  console.log(len)
+  let delta=0
+  for (let i = 0; i < len; i++) {
+    console.log(pages[i].route)
+    if (pages[i].route === url) {
+      console.log(i)
+      delta= len - i - 1
+      break
+    }
+  }
+  console.log(delta)
+  if (delta>0) { //已存在页面栈
+    navigateBack(delta, cb)
+  } else if (pages.length >= MAX_PAGES_LENGTH) { //超过10层
+    redirectTo(url, query, cb)
+  } else { //正常跳转
+    wx.navigateTo({
+      url: joinUrlAndQuery(url, query),
+      success: function success() {
+        cb(true)
+      },
+      fail: function fail() {
+        cb(false)
+      }
+    })
+  }
+}
+
 const redirectTo = (url, query = {}, cb = emptyFn) => {
   url = relative2AbsolutePath(url)
   wx.redirectTo({
@@ -203,5 +238,6 @@ module.exports = {
   redirectTo: redirectTo,
   reLaunch: reLaunch,
   switchTab: switchTab,
-  navigateBack: navigateBack
+  navigateBack: navigateBack,
+  backPage:backPage
 }
