@@ -2,6 +2,8 @@
 
 const app = getApp()
 const regeneratorRuntime = require('../../../../lib/co/runtime')
+import Logger from '../../../../utils/logger.js'
+const logger = new Logger.getLogger('pages/index/index')
 import {
     co,
     util
@@ -35,7 +37,7 @@ Page({
             this.feature_key= media_size[this.data.media_type].key
         }catch(e)
     {
-       console.log(e) 
+       logger.info(e) 
     }
        
     }),
@@ -50,7 +52,7 @@ Page({
                 height: height
             })
         } catch (e) {
-            console.log(e)
+            logger.info(e)
         }
     },
     /**
@@ -109,7 +111,7 @@ Page({
                 })
             },
             fail: (res) => {
-                console.log(res.errMsg)
+                logger.info(res.errMsg)
             }
         })
     },

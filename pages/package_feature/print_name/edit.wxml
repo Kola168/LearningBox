@@ -1,5 +1,7 @@
 <!--pages/package_feature/print_name/edit.wxml-->
 <nav-bar title="制作姓名贴"></nav-bar>
+<wxs src="../common.wxs" module="foo" />
+
 <view class="top-tips">
   <image src="../resource_images/icon_smile.png" mode="widthFix" class="top-tip-icon"></image>
   <text>可输入文字或打印后手写文字</text>
@@ -23,7 +25,7 @@
   </scroll-view>
   <scroll-view class="template-list-box template-limit-height" scroll-x>
     <view wx:for="{{templateList[templateTypeIndex].templates}}" wx:key="templates" class="template-item-box {{index==templateIndex?'template-item-selected':''}}" data-index="{{index}}" bindtap="{{templateIndex==index?'':'checkTemplate'}}">
-      <image src="{{item.previewImage}}" mode="widthFix" class="template-preview-img {{type=='wood' && direction=='vertical'?'template-vertical-img':''}}"></image>
+      <image src="{{item.previewImage||foo.addProcess(templateList[templateTypeIndex].templates[index].imageUrl,'/resize,m_fill,w_100,limit_0/quality,Q_85/format,jpg')}}" mode="widthFix" class="template-preview-img {{type=='wood' && direction=='vertical'?'template-vertical-img':''}}"></image>
     </view>
   </scroll-view>
   <bottom-button class="button-conf" text-right="打印预览" bindrighttap="getParamsData"></bottom-button>

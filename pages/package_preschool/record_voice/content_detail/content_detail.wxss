@@ -19,8 +19,8 @@ page {
 }
 
 .wrap-fun {
-  height: calc(100% - 330rpx);
-  padding-bottom: 130rpx;
+  height: calc(100% - 340rpx);
+  margin-bottom: 130rpx;
   position: relative;
 }
 
@@ -67,12 +67,10 @@ page {
 
 .turn {
   display: flex;
-  position: fixed;
   align-items: center;
-  left: 0;
-  bottom: 100rpx;
   padding: 40rpx 0;
   width: 100%;
+  height: 160rpx;
   box-sizing: border-box;
   background-color: #fff;
 }
@@ -615,9 +613,6 @@ page {
 }
 
 .bottom-main {
-  position: fixed;
-  left: 0;
-  bottom: 0;
   display: flex;
   align-items: center;
   padding-left: 58rpx;
@@ -641,6 +636,10 @@ page {
 .bottom-main image {
   width: 36rpx;
   height: 36rpx;
+}
+
+.action-box {
+  width: 100%;
 }
 
 .btn-main {
@@ -683,9 +682,6 @@ page {
 }
 
 .user-info {
-  position: absolute;
-  bottom: 170rpx;
-  left: 0;
   padding-right: 22rpx;
   width: 100%;
   height: 54rpx;
@@ -695,4 +691,11 @@ page {
   color: #FFF;
   font-size: 24rpx;
   background-color: rgba(0, 0, 0, 0.4);
+}
+
+.wrap-main {
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  left: 0;
 }

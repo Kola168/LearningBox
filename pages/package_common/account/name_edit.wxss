@@ -16,8 +16,7 @@ input {
 
 .button {
     background: #FFDC5E;
-    border-radius: 50rpx;
-    width: 80%;
+    width: 100%;
     font-family: PingFangSC-Regular;
     font-size: 36rpx;
     color: #333333;
@@ -26,6 +25,6 @@ input {
     height:98rpx;
     line-height:98rpx;
     position: fixed;
-    left:10%;
-    bottom:260rpx;
+    left:0;
+    bottom:0;
 }

@@ -7,6 +7,8 @@ const util = require('../../utils/util')
 import api from '../../network/restful_request.js'
 const showModal = util.promisify(wx.showModal)
 import router from '../../utils/nav'
+import Logger from '../../utils/logger.js'
+const logger = new Logger.getLogger('pages/index/index')
 
 
 Page({
@@ -31,7 +33,7 @@ Page({
         })
     },
     clickInput: function (e) {
-        console.log(e)
+        logger.info(e)
         this.setData({
             placehoder: ''
         })
@@ -44,7 +46,7 @@ Page({
     },
     searchLabel: function (e) {
         let index = e.currentTarget.id
-        console.log(index, this.data.labelList[index])
+        logger.info(index, this.data.labelList[index])
         this.setData({
             inputValue: this.data.labelList[index]
         })

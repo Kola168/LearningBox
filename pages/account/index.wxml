@@ -1,6 +1,6 @@
 <!--pages/account/index.wxml-->
 <nav-bar background="#fff" title="个人中心"></nav-bar>
-<view class="user-info" bindtap="toSetInfo">
+<view class="user-info" bindtap="toNext" id="setInfo">
     <view>
         <image src="{{kidInfo.avatar?kidInfo.avatar:'/images/account_avatar_big.png'}}" mode="widthFix" class="avatar">
         </image>
@@ -15,13 +15,13 @@
     <image src="../../images/tip_add_kid_info.png" mode="widthFix" class="after-tip" wx:else></image>
 </view>
 <image src="/images/account_member_center.png" mode="widthFix" class="member" />
-<view class="has-device" wx:if="{{activeDevice}}" bindtap="toDeviceList">
+<view class="has-device" wx:if="{{activeDevice}}" bindtap="toNext" id="deviceList">
     <view class="device-img">
         <image src="/images/{{activeDevice.model==='3115'?'L3115':'EP400'}}.png" mode="widthFix" />
     </view>
     <view class="device-info">
         <view class="info-main">
-            <view class="info-name">当前设备：{{activeDevice.name||activeDevice.model}}</view>
+            <view class="info-name">当前设备：{{activeDevice.name}}</view>
             <view class="info-status {{activeDevice.onlineState==='online'?'info-status-active':''}}">
                 <view class="status-flag {{activeDevice.onlineState==='online'?'online-status':''}}"></view>
                 <view>{{activeDevice.onlineState==='online'?'在线':'离线'}}</view>
@@ -30,14 +30,14 @@
         <image class="info-arrow" src="/images/doc_item_arrow.png" />
     </view>
 </view>
-<view class="no-device" wx:else bindtap="addDevice">
+<view class="no-device" wx:else bindtap="toNext" id="addDevice">
     <image src="/images/account_add_device.png" mode="widthFix" />
     <view>请先添加设备</view>
 </view>
 <view class="content-wrap">
     <view class="title">记录与收藏</view>
     <view class="content">
-        <view class="content-item">
+        <view class="content-item" bindtap="toNext" id="records">
             <image src="/images/account_print_record.png" mode="widthFix" />
             <view>打印记录</view>
         </view>

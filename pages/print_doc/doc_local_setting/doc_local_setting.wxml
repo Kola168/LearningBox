@@ -29,7 +29,7 @@
 		<view class="item-label">打印范围（共{{ totalPage }}页）</view>
 		<view class="range-main">
 			<view class="range-options">
-        <view wx:for="{{rangeList}}" wx:key="{{item._id}}" class="options-item {{extract === item._id ? 'options-item-active' : ''}}" id="{{item._id}}" bindtap="chooseRangeType">
+        <view wx:for="{{rangeList}}" wx:key="_id" class="options-item {{extract === item._id ? 'options-item-active' : ''}}" id="{{item._id}}" bindtap="chooseRangeType">
 					{{item.name}}
 				</view>
 			</view>
@@ -103,7 +103,7 @@
 		 class="content-item"
 		 wx:for="{{[1, 2 , 4, 8]}}"
 		 bindtap="chooseZoomType"
-		 wx:key="{{item}}"
+		 wx:key="*this"
 		 id="{{item}}"
 		>
 			<view class="item-img {{zoomType==item?'item-check-active':''}}">

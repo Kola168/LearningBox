@@ -64,12 +64,15 @@ Page({
     try {
       yield graphql.updateDeviceSetting(this.deviceSn, {
         [setKey]: setVal
-      }, setKey)
+      }, setKey).then(function(res) {
+				console.log('更新系统设置=====',res)
+			})
       this.setData({
         [`device.${setKey}`]: setVal
       })
       this.weToast.hide()
     } catch (error) {
+			console.log(error)
       this.weToast.hide()
       util.showError(error)
     }
@@ -206,8 +209,7 @@ Page({
       type: 'loading'
     })
     try {
-      let res = yield graphql.unbindDevice(this.deviceSn)
-      console.log(res, 'ddddd')
+      yield graphql.unbindDevice(this.deviceSn)
       this.weToast.hide()
       event.emit('deviceChange')
       wxNav.navigateBack()

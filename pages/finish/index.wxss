@@ -1,313 +1,251 @@
 /* pages/finish/index.wxss */
 
 page {
-	width: 100%;
-	height: 100%;
-	/* display: flex;
-	justify-content: center;
-	align-items: center; */
+    width: 100%;
+    height: 100%;
+		display:flex;
+		flex-direction:column;
+		align-items:center;
+		padding-bottom: 70rpx 0 180rpx;
 }
 
 .top-tip {
-	width: 100%;
-	height: 50rpx;
-	font-size: 24rpx;
-	text-align: center;
-	line-height: 50rpx;
-	background: #7F7F7F;
-	color: #fff;
-	position: relative;
+    width: 100%;
+    height: 50rpx;
+    font-size: 24rpx;
+    text-align: center;
+    line-height: 50rpx;
+    background: #7F7F7F;
+    color: #fff;
+    position: relative;
 }
 
 .top-right {
-	height: 22rpx;
-	width: 14rpx;
-	position: absolute;
-	right: 25rpx;
-	top: 14rpx;
+    height: 22rpx;
+    width: 14rpx;
+    position: absolute;
+    right: 25rpx;
+    top: 14rpx;
 }
-
-.wrap {
-	width: 100%;
-	height: 100%;
-	text-align: center;
-	overflow-y: scroll;
-	box-sizing: border-box;
-	padding: 70rpx 0 180rpx;
-}
-
-
-/* .top {
-background: #fff;
-box-sizing: border-box;
-padding-bottom: 40rpx;
-} */
 
 .image {
-	/* width: 110rpx; */
-	width: 300rpx;
-	margin-bottom: 30rpx;
-	/* margin-bottom: 20rpx; */
+    width: 214rpx;
+    margin-bottom: 45rpx;
+    margin-top:82rpx;
+}
+
+.tips-box{
+	display:flex;
+	align-items:center;
 }
 
 .question {
-	border-bottom: 2rpx solid #999;
-	font-size: 24rpx;
-	color: #666;
+    border-bottom: 2rpx solid #999;
+    font-size: 24rpx;
+    color: #666;
 }
 
 .contact {
-width: 710rpx;
+  width: 710rpx;
 }
 
 .describe {
-	font-size: 24rpx;
-	color: #666;
-	display: flex;
-	flex-direction: column;
-	align-items: flex-start;
-	margin: 10rpx 0 0 38rpx;
+    font-size: 24rpx;
+    color: #666;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin: 10rpx 0 0 38rpx;
 }
 
 .arrow-bottom-gray {
-	width: 22rpx;
-	height: 14rpx;
-	margin-left: 10rpx;
+    width: 22rpx;
+    height: 14rpx;
+    margin-left: 10rpx;
+		transition:0.2s;
+}
+
+.trans-rotate{
+	transform:rotate(-180deg);
 }
 
 .button {
-	width: 100%;
-	/* padding: 0 60rpx; */
-	padding: 0 40rpx;
-	box-sizing: border-box;
-	/* margin-top: 30rpx; */
-	margin-top: 60rpx;
-	display: flex;
-	justify-content: space-between;
-	font-size: 36rpx;
+    width: 100%;
+    padding: 0 40rpx;
+    box-sizing: border-box;
+    margin-top: 60rpx;
+    display: flex;
+    justify-content: space-between;
+    font-size: 36rpx;
 }
 
-.button>button {
-	/* width: 256rpx;
-	height: 64rpx;
-	line-height: 64rpx;
-	border-radius: 44rpx;
-	font-size: 30rpx; */
-	width: 45%;
-	height: 80rpx;
-	line-height: 80rpx;
-	border-radius: 44rpx;
+.button>view {
+    width: 45%;
+    height: 80rpx;
+    line-height: 80rpx;
+    border-radius: 44rpx;
+		text-align:center;
 }
 
 .button-left {
-	border: 2rpx solid #CECECE;
-	color: #999;
+    border: 2rpx solid #CECECE;
+    color: #999;
 }
 
 .button-right {
-	background: #FFE27A;
-	color: #000;
+    background: #FFE27A;
+    color: #000;
 }
 
 .wait-view {
-	width: 80%;
-	margin: 0 auto;
-	font-size: 32rpx;
-	color: #454545;
-	margin-bottom: 20rpx;
+    font-size: 32rpx;
+    color: #454545;
+    margin-bottom: 20rpx;
 }
 
 .back-image {
-	position: relative;
-	margin-top: 120rpx;
-	width: 85%;
+    position: relative;
+    margin-top: 120rpx;
+    width: 85%;
 }
 
 .connect-tip {
-	box-shadow: 4rpx 0 16rpx 0 rgba(204, 204, 204, 0.5);
-	position: fixed;
-	bottom: 0;
-	left: 0;
-	width: 100%;
-	height: 120rpx;
-	box-sizing: border-box;
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	padding: 0 30rpx;
-	background: #fff;
-	font-size: 28rpx;
-	color: #333;
+    box-shadow: 4rpx 0 16rpx 0 rgba(204, 204, 204, 0.5);
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 120rpx;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 30rpx;
+    background: #fff;
+    font-size: 28rpx;
+    color: #333;
 }
 
 .connect-tip image {
-	width: 90rpx;
-	height: 90rpx;
-	margin-right: 30rpx;
+    width: 90rpx;
+    height: 90rpx;
+    margin-right: 30rpx;
 }
 
 .connect-tip view view {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	text-align: left;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: left;
 }
 
 .connect-tip view {
-	display: flex;
+    display: flex;
 }
 
 .connect-tip button {
-	color: #fff;
-	background: #3aa60f;
-	font-size: 28rpx;
-	line-height: 50rpx;
-	padding: 0 30rpx;
-	border-radius: 8rpx;
+    color: #fff;
+    background: #3aa60f;
+    font-size: 28rpx;
+    line-height: 50rpx;
+    padding: 0 30rpx;
+    border-radius: 8rpx;
 }
 
-
-/* .bottom {
-margin-bottom: 46rpx;
-}
-
-.bottom-image {
-width: 100%;
-vertical-align: top;
-margin-bottom: 30rpx;
-}
-
-.content {
-display: flex;
-flex-wrap: wrap;
-justify-content: space-between;
-padding: 0 32rpx;
-}
-
-.type {
-width: 334rpx;
-height: 402rpx;
-border-radius: 12rpx;
-text-align: center;
-background: #fff;
-margin-bottom: 18rpx;
-}
-
-.border {
-width: 334rpx;
-height: 326rpx;
-}
-
-.consumables_image {
-width: 334rpx;
-height: 326rpx;
-border-radius: 12rpx 12rpx 0 0;
-}
-
-.text {
-height: 76rpx;
-line-height: 76rpx;
-font-size: 28rpx;
-} */
 
 .guanzhu {
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
 }
 
 .guanzhu button {
-	width: 100%;
-	height: 100%;
-	/* background: #000; */
+    width: 100%;
+    height: 100%;
+    /* background: #000; */
 }
 
 .share-coupon {
-	display: block;
-	margin: 30rpx auto;
-	width: 700rpx;
+    display: block;
+    margin: 30rpx auto;
+    width: 700rpx;
 }
 
 
 /* 耗材推荐 start */
 
 .title {
-	width: 100%;
-	height: 80rpx;
-	background: #f0f0f0;
-	font-size: 28rpx;
-	color: #454545;
-	line-height: 80rpx;
-	margin: 36rpx 0 30rpx;
+    width: 100%;
+    height: 80rpx;
+    background: #f0f0f0;
+    font-size: 28rpx;
+    color: #454545;
+    line-height: 80rpx;
+    margin: 36rpx 0 30rpx;
+		text-align:center;
 }
 
 .content1 {
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: space-around;
-	font-size: 28rpx;
-	box-sizing: border-box;
-	padding: 0 20rpx 50rpx 20rpx;
-	width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    font-size: 28rpx;
+    box-sizing: border-box;
+    padding: 0 20rpx 50rpx 20rpx;
+    width: 100%;
 }
 
 .type {
-	width: 334rpx;
-	height: 402rpx;
-	border-radius: 12rpx;
-	text-align: center;
-	background: #fff;
-	margin-bottom: 18rpx;
-	border: 2rpx solid #ececec;
+    width: 334rpx;
+    height: 402rpx;
+    border-radius: 12rpx;
+    text-align: center;
+    background: #fff;
+    margin-bottom: 18rpx;
+    border: 2rpx solid #ececec;
 }
 
 .border {
-	width: 334rpx;
-	height: 326rpx;
+    width: 334rpx;
+    height: 326rpx;
 }
 
 .consumables_image {
-	width: 334rpx;
-	height: 326rpx;
-	border-radius: 12rpx 12rpx 0 0;
+    width: 334rpx;
+    height: 326rpx;
+    border-radius: 12rpx 12rpx 0 0;
 }
 
 .text {
-	height: 76rpx;
-	line-height: 76rpx;
+    height: 76rpx;
+    line-height: 76rpx;
 }
 
 
 /* 耗材推荐 end */
 .advertisement-modal {
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	background: rgba(0, 0, 0, 0.5);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
 }
 
 .advertisement {
-	position: fixed;
-	bottom: 0;
-	left: 0;
-	width: 100%;
-	height: 100rpx;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100rpx;
 }
 
 .close {
-	position: absolute;
-	top: 10rpx;
-	right: 10rpx;
-	width: 60rpx;
-	height: 60rpx;
-}
-
-.back{
-	color:#333;
-	font-size: 36rpx;
-	margin-top:120rpx;
+    position: absolute;
+    top: 10rpx;
+    right: 10rpx;
+    width: 60rpx;
+    height: 60rpx;
 }

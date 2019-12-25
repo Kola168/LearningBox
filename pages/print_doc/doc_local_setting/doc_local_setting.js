@@ -295,8 +295,8 @@ Page({
       const resp = yield commonRequest.createOrder('doc_a4', [tempObj])
       this.longToast.hide()
       router.redirectTo('/pages/finish/index', {
-        type: 'doc',
-        state: resp.order.state
+        media_type: 'doc_a4',
+        state: resp.createOrder.state
       })
 
     } catch (e) {

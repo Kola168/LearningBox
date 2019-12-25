@@ -4,7 +4,7 @@
 	 class="issue-item"
 	 bindtap="toIssueDetail"
 	 wx:for="{{categoryList}}"
-	 wx:key="index"
+	 wx:key="sn"
 	 data-sn="{{item.sn}}"
 	>
 		<image class="" src="{{item.courseIntroductionImage}}" mode="widthFix" />

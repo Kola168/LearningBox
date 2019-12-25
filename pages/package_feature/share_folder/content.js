@@ -4,6 +4,9 @@ import api from '../../../network/restful_request.js'
 import gql from '../../../network/graphql_request.js'
 import upload from '../../../utils/upload.js'
 const regeneratorRuntime = require('../../../lib/co/runtime')
+const downloadFile = util.promisify(wx.downloadFile)
+import Logger from '../../../utils/logger.js'
+const logger = new Logger.getLogger('pages/index/index')
 
 import {
 	co,
@@ -56,7 +59,7 @@ Page({
 
 	onLoad: co.wrap(function* (options) {
 		try {
-			console.log(options)
+			logger.info(options)
 			this.longToast = new app.weToast()
 			this.page = 1
 			this.pageEnd = false
@@ -85,12 +88,12 @@ Page({
 				this.joinAndGetList()
 			})
 		} catch (e) {
-			console.log(e)
+			logger.info(e)
 		}
 	}),
 
 	okEvent: function (e) {
-		console.log(e)
+		logger.info(e)
 		this.setData({
 			ballScroll: e.detail.ballScroll
 		})
@@ -108,7 +111,7 @@ Page({
 		// if (this.number < 9) {
 		// 	every = this.number
 		// }
-		// console.log(this.number)
+		// logger.info(this.number)
 		let restCount = Math.min(every, Math.max((maxFileCount - totalCount), 0))
 		let count = restCount > 9 ? 9 : restCount
 		if (restCount <= 0) {
@@ -149,9 +152,9 @@ Page({
 
 	onShow: co.wrap(function* (options) {
 		let userSn = wx.getStorageSync('userSn')
-		console.log('应用参数传参', userSn, this.shareUserSn)
+		logger.info('应用参数传参', userSn, this.shareUserSn)
 		if (!userSn) {
-			console.log('执行到文件夹授权===========')
+			logger.info('执行到文件夹授权===========')
 			let url = this.shareUserSn ? `/pages/authorize/index?url=${url}&share_user_sn=${this.shareUserSn}` : `/pages/authorize/index`
 			wx.navigateTo({
 				url: url,
@@ -175,7 +178,7 @@ Page({
 
 	firstShare: function () {
 		let firstTouch = wx.getStorageSync('firstTouch')
-		console.log('firstTouch', firstTouch)
+		logger.info('firstTouch', firstTouch)
 		if (firstTouch) {
 			this.setData({
 				firstShare: true
@@ -213,10 +216,10 @@ Page({
 		})
 		try {
 			const resp = yield gql.joinFolder({
-				sn:this.sn
+				sn: this.sn
 			})
-			console.log(this.sn, resp)
-			console.log('加入文件夹', resp)
+			logger.info(this.sn, resp)
+			logger.info('加入文件夹', resp)
 			this.longToast.toast()
 			var that = this
 			that.getDocumentList()
@@ -245,7 +248,7 @@ Page({
 			// 	})
 			// }, 300)
 			// } else if (resp.code == 10018) { //重复加入文件夹
-			// 	console.log("1111")
+			// 	logger.info("1111")
 			// 	this.longToast.toast()
 			// 	this.getDocumentList()
 			// } else {
@@ -260,7 +263,7 @@ Page({
 
 	//存储文件
 	uploadDocuments: co.wrap(function* (files = []) {
-		console.log('存储文件', files)
+		logger.info('存储文件', files)
 		this.longToast.toast({
 			type: 'loading',
 			duration: 0
@@ -273,17 +276,17 @@ Page({
 			const resp = yield gql.createDocument(params)
 			this.page = 1
 			yield this.getDocumentList()
-			console.log('存储文件成功', resp)
+			logger.info('存储文件成功', resp)
 			this.longToast.toast()
 		} catch (e) {
 			this.longToast.toast()
-			console.log(e)
+			logger.info(e)
 			if (e.errors[0].extensions.code == 80000) {
 				return this.setData({
 					iosModal: true,
 				})
 			}
-			util.showGraphqlErr(e)
+			util.showError(e)
 		}
 	}),
 
@@ -300,11 +303,11 @@ Page({
 				documentList: []
 			})
 		}
-		console.log(app.openId, this.sn, this.role, this.page)
+		logger.info(app.openId, this.sn, this.role, this.page)
 		try {
 			const resp = yield gql.getDocuments(this.sn, this.page)
 
-			console.log('获取文件列表成功', resp)
+			logger.info('获取文件列表成功', resp)
 			this.longToast.toast()
 			// this.number = resp.documents.number //非会员每日限制次数
 
@@ -323,7 +326,7 @@ Page({
 			this.setData({
 				documentList: this.data.documentList.concat(apiList),
 			})
-			console.log("22222", this.data.documentList)
+			logger.info("22222", this.data.documentList)
 			for (var i = 0; i < this.data.documentList.length; i++) {
 				this.data.documentList[i].file_type = this.data.documentList[i].file_type.toLowerCase()
 				this.setData({
@@ -337,8 +340,8 @@ Page({
 	}),
 
 	onReachBottom: function () {
-		console.log("00000000000", this.page)
-		console.log('this.pageEnd', this.pageEnd)
+		logger.info("00000000000", this.page)
+		logger.info('this.pageEnd', this.pageEnd)
 		if (this.pageEnd)
 			return
 		this.page++
@@ -359,7 +362,7 @@ Page({
 	},
 
 	manageDocument: function () {
-		console.log(common_util)
+		logger.info(common_util)
 		wx.navigateTo({
 			url: `manage?file_name=${this.data.file_name}&sn=${this.sn}&documentList=${common_util.encodeLongParams(this.data.documentList)}`,
 		})
@@ -377,9 +380,9 @@ Page({
 			}
 		} else {
 			for (var i = 0; i < this.data.documentList.length; i++) {
-				console.log("qqqq", i, this.data.documentList.length)
+				logger.info("qqqq", i, this.data.documentList.length)
 				this.data.documentList[i].choose = false
-				console.log("aaa", this.data.documentList[i])
+				logger.info("aaa", this.data.documentList[i])
 				this.deleteOneId(this.data.memberIds, this.data.documentList[i].sn)
 			}
 		}
@@ -389,14 +392,14 @@ Page({
 	}),
 
 	choose: co.wrap(function* (e) {
-		console.log('e.currentTarget.id======', e.currentTarget.id)
+		logger.info('e.currentTarget.id======', e.currentTarget.id)
 		if (!this.data.documentList[parseInt(e.currentTarget.id)].choose) { //选中
 			this.data.memberIds.push(this.data.documentList[parseInt(e.currentTarget.id)].sn)
 		} else {
 			this.deleteOneId(this.data.memberIds, this.data.documentList[parseInt(e.currentTarget.id)].sn)
 		}
 		this.data.documentList[parseInt(e.currentTarget.id)].choose = !this.data.documentList[parseInt(e.currentTarget.id)].choose
-		console.log('this.data.documentList=====', this.data.documentList)
+		logger.info('this.data.documentList=====', this.data.documentList)
 		this.setData({
 			documentList: this.data.documentList
 		})
@@ -404,7 +407,7 @@ Page({
 
 
 	deleteOneId: function (array, item) {
-		console.log('这里333333333333')
+		logger.info('这里333333333333')
 		Array.prototype.indexOf = function (val) {
 			for (var i = 0; i < this.length; i++) {
 				if (this[i] == val) return i;
@@ -441,7 +444,7 @@ Page({
 				throw (resp)
 			}
 			this.longToast.toast()
-			console.log('退出分享成功', resp.data)
+			logger.info('退出分享成功', resp.data)
 			wx.showToast({
 				title: '退出成功',
 				icon: 'none',
@@ -451,12 +454,12 @@ Page({
 			var that = this
 			setTimeout(function () {
 				if (that.data.role == 'user') {
-					console.log("22222");
+					logger.info("22222");
 					wx.redirectTo({
 						url: `/pages/error_book/pages/share_folder/index?tabId=1`,
 					})
 				} else {
-					console.log("11111");
+					logger.info("11111");
 				}
 			}, 1000)
 		} catch (e) {
@@ -508,7 +511,7 @@ Page({
 		}
 		try {
 			let resp = yield api.checkBaiduAuth(app.openId)
-			console.log(resp)
+			logger.info(resp)
 			if (resp.code == 0) {
 				this.longToast.toast({
 					type: 'loading',
@@ -520,7 +523,7 @@ Page({
 						throw (resp)
 					}
 					this.longToast.toast()
-					console.log('上传百度云', resp.data)
+					logger.info('上传百度云', resp.data)
 					wx.showToast({
 						title: '百度云的存储路径是：我的硬件数据/小白智慧打印',
 						icon: 'none',
@@ -563,7 +566,7 @@ Page({
 		if (this.data.documentList[e.currentTarget.id].file_type == 'image') {
 			let arr = []
 			arr.push(this.data.documentList[e.currentTarget.id].url)
-			console.log("arr====", arr)
+			logger.info("arr====", arr)
 			wx.previewImage({
 				current: '',
 				urls: arr
@@ -575,11 +578,11 @@ Page({
 
 	onShareAppMessage: function (e) {
 		// let userId = wx.getStorageSync("userId")
-		// console.log("aaaaaaaa----", userId)
+		// logger.info("aaaaaaaa----", userId)
 		return {
 			title: `这些资料很不错哦，点击加入${this.data.file_name}`,
 			path: `/pages/error_book/pages/share_folder/content?sn=${this.sn}&file_name=${this.data.file_name}&share=true&users_count=${this.users_count}&userId=${userId}`,
-			imageUrl: `../../images/folder_share_img.jpg`
+			imageUrl: `https://cdn-h.gongfudou.com/LearningBox/feature/folder_share_img.jpg`
 		}
 	},
 	// 选择文件
@@ -597,7 +600,7 @@ Page({
 			// if (this.number < 5) {
 			// 	every = this.number
 			// }
-			// console.log(this.number)
+			// logger.info(this.number)
 			const count = Math.min(Math.max(this.data.maxFileCount - this.data.totalCount, 0), every)
 			if (count <= 0) {
 				return wx.showModal({
@@ -614,17 +617,17 @@ Page({
 					type: 'file',
 					count: count,
 					success: (res) => {
-						console.log('res.tempFiles', res.tempFiles)
+						logger.info('res.tempFiles', res.tempFiles)
 						this.utilsMessageFiles(res.tempFiles);
 					},
 					fail: () => {
-						console.log('选取文件失败')
+						logger.info('选取文件失败')
 						util.showError({
 							message: '文件获取失败，请重试~'
 						})
 					},
 					complete: () => {
-						console.log('选取文件完成')
+						logger.info('选取文件完成')
 					}
 				})
 			} else {
@@ -639,7 +642,7 @@ Page({
 			}
 
 		} catch (e) {
-			console.log(e)
+			logger.info(e)
 		}
 
 	}),
@@ -676,51 +679,39 @@ Page({
 		this.uploadDocuments(filesList)
 	}),
 	baiduImage: co.wrap(function* (e) {
-		console.log(e)
-		this.path = e.detail[0].url
-		try {
-			const imgInfo = yield getImageInfo({
-				src: this.path
-			})
-			this.setData({
-				imgInfo: imgInfo,
-				localImgPath: this.path
-			})
-			console.log("imgInfo", imgInfo)
-		} catch (err) {
-			util.showError({
-				title: '照片加载失败',
-				content: '请重新选择重试'
-			})
-		}
+		logger.info('选择百度图片',e)
+		let paths = e.detail
+		let urls = []
+		let that = this
+		paths.forEach(co.wrap(function* (data, index) {
+			try {
+				let u = yield downloadFile({
+					url: data.url
+				})
+				urls.push({
+					path: u.tempFilePath
+				})
+				if (index == paths.length - 1) {
+					e = {
+						detail: {
+							tempFiles: urls
+						}
+					}
+					that.chooseImgs(e)
+				}
+			} catch (e) {}
+
+		}))
+
 	}),
-	// 选择图片TODO:
+	// 选择图片
 	chooseImgs: co.wrap(function* (e) {
 		try {
-			// 	this.setData({
-			// 		upKey: 'pic'
-			// 	})
-			// let _this = this;
-			// let maxFileCount = this.data.maxFileCount;
-			// let totalCount = this.data.totalCount;
-			// let every = 9
-			// if (this.number == 0) {
-			// 	return this.setData({
-			// 		iosModal: true,
-			// 	})
-			// }
-			// if (this.number < 9) {
-			// 	every = this.number
-			// }
-			// 	console.log(this.number)
-			// 	const limit = Math.min(every, Math.max((maxFileCount - totalCount), 0))
-			// 	const imgs = yield chooseImgWay(limit); //选择上传文件方式
-
 			let imgs = e.detail.tempFiles
-			console.log('234567890-=-0987654323456789', imgs)
+			logger.info('准备上传图片', imgs)
 			this.uploadImage(imgs)
 		} catch (err) {
-			console.log(err)
+			logger.info(err)
 		}
 
 	}),
@@ -728,7 +719,7 @@ Page({
 		let newImages = yield this.checkImgSize(imgs) //检测文件格式
 		yield this.initProgressStatus(newImages) //初始化进度条
 		const imageList = yield this.syncLoadFiles(newImages, imgs) //并行上传
-		console.log(imageList, '====imageList====')
+		logger.info( '====imageList====',imageList)
 		let _this = this
 		imageList && imageList.forEach(img => {
 			_this.setData({
@@ -760,7 +751,7 @@ Page({
 					const codition2 = (imageInfo.width / imageInfo.height > 5) || (imageInfo.height / imageInfo.width > 5);
 					const isLastTime = (index === images.length - 1);
 					if (codition1 || codition2) {
-						isLastTime && console.log('进行过滤')
+						isLastTime && logger.info('进行过滤')
 					} else {
 						newImages.push(path)
 					}
@@ -806,7 +797,7 @@ Page({
 			const newPaths = !isFile && typeof paths === 'object' ? paths.path : paths; //区分选择文件上传和普通上传的格式区分
 			return new Promise((resolve, reject) => {
 				upload.uploadFiles([newPaths], (index, url) => {
-					console.log('===url====', url)
+					logger.info('===url====', url)
 					if (index !== '' && url !== '') { //上传完成
 						resolve({
 							url: url
@@ -819,7 +810,7 @@ Page({
 				}, getProgress, isFile, uploadKey, isFolder)
 			})
 		} catch (err) {
-			console.log(err)
+			logger.info(err)
 		}
 	},
 	// 并行上传图片、文件 | 过滤处理
@@ -878,18 +869,18 @@ Page({
 
 					const name = currentFile.name.substr(0, currentFile.name.lastIndexOf('.'))
 					const types = currentFile.name.substr(currentFile.name.lastIndexOf('.') + 1, currentFile.name.length).toLowerCase()
-					console.log(name, 'name', type, 'type')
+					logger.info(name, 'name', type, 'type')
 					newLoadFile = {
 						...newLoadFile,
 						name: name,
 						fileType: types
 					}
 				}
-				console.log(newLoadFile, 'newLoadFile')
+				logger.info(newLoadFile, 'newLoadFile')
 				resolve(newLoadFile)
 			}))
 		} catch (err) {
-			console.log(err)
+			logger.info(err)
 		}
 	},
 	// 处理不同数据格式
@@ -909,7 +900,7 @@ Page({
 				resolve(newLoadFile)
 			}))
 		} catch (err) {
-			console.log(err)
+			logger.info(err)
 		}
 	},
 	// 初始化进度条状态
@@ -1056,7 +1047,7 @@ Page({
 			url: url
 		}, key, currentData)
 		let routerUrl = null;
-		console.log(printData, '==printData===')
+		logger.info(printData, '==printData===')
 		switch (key) {
 			case 'image':
 				router.navigateTo('/pages/package_feature/share_folder/photo_preview/preview', {

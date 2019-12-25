@@ -31,7 +31,14 @@ Page({
     showAuth: false, //登录
     homeType: '学前',
     selectedKid: null,
-    stageRoot: null
+    stageRoot: null,
+    deviceModal: {
+      isShow: false,
+      hasCancel: false,
+      content: '绑定设备后学习更方便!',
+      confirmText: '立即绑定',
+      image: '/images/home/device_tip.png'
+    }
   },
 
   //事件处理函数
@@ -43,6 +50,7 @@ Page({
     let userSn = storage.get('userSn')
     if (query.scene) {
       this.scene = query.scene
+      let userSn = storage.get('userSn')
       if (userSn) {
         this.handleScene(query.scene)
       }
@@ -122,6 +130,11 @@ Page({
       } else {
         this.setData({
           homeType: this.data.selectedKid.stageRoot.rootName
+        })
+      }
+      if (!resp.currentUser.selectedDevice) {
+        this.setData({
+          'deviceModal.isShow': true
         })
       }
 
@@ -209,12 +222,6 @@ Page({
     }
     wxNav.navigateTo(url)
   },
-  // TODO:以下两个为测试函数，待删除
-  changeSubject: function() {
-    this.setData({
-      homeType: this.data.homeType == 'subject' ? 'beforSchool' : 'subject'
-    })
-  },
 
   // 跳转小功能
   toFunction(e) {
@@ -226,6 +233,9 @@ Page({
         break;
       case 'recordVoice':
         url = '/pages/package_preschool/record_voice/index/index'
+        break;
+      case 'freeResources':
+        url = '/pages/package_common/free_resources/index/index'
         break;
     }
     wxNav.navigateTo(url)
@@ -248,7 +258,7 @@ Page({
   },
 
   // 处理分享打印机二维码
-  handleShareQrcode: co.wrap(function*(val) {
+  handleShareQrcode: co.wrap(function* (val) {
     this.longToast.toast({
       type: 'loading'
     })
@@ -284,5 +294,8 @@ Page({
       this.longToast.hide()
       util.showError(error)
     }
-  })
+  }),
+  toBindDevice: function () {
+    wxNav.navigateTo('/pages/package_device/network/index/index')
+  }
 })

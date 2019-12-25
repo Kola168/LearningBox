@@ -8,7 +8,7 @@
   </view>
   <view class="list-box">
     <view class="box-container" wx:for="{{templates}}" wx:key="index" id="{{item.sn}}" bindtap="toEdit">
-      <image src="{{item.previewImage}}" bindload="drawGuideView" id="{{index}}" mode="widthFix" />
+      <image src="{{item.previewImage}}?x-image-process=image/resize,w_400" bindload="drawGuideView" id="{{index}}" mode="widthFix" />
     </view>
   </view>
 </view>

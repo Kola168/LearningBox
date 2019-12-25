@@ -1,5 +1,52 @@
 
+<!-- pages/finish/index.wxml -->
+<nav-bar background="#fff" title="提交成功"></nav-bar>
 
-
-<button class="back" bindtap="backToHome">返回首页</button>
-<view class="back">点击返回按钮回首页</view>
+<view class='top-tip'>
+  点击此处回复“服务”，关注公众号可及时获取打印状态
+  <form report-submit="{{true}}" class="guanzhu">
+    <button form-type='submit' hover-class="none" open-type="contact" send-message-img="" show-message-card></button>
+  </form>
+  <image src='/images/arrow-right-gray.png' class='top-right'></image>
+</view>
+<block wx:if="{{state!='verifying'}}">
+  <image class="image" mode="widthFix" src="/images/finish_print_finish.png"></image>
+  <view class="wait-view">任务已发送，使用其他功能或继续打印</view>
+</block>
+<block wx:else>
+  <image class="image" mode="widthFix" src="/images/finish_print_wait.png"></image>
+  <view class="wait-view">任务已提交，快通知管理员审核</view>
+  <view class="tips-box">
+    <text class='question' bindtap='toDetail'>什么是管理员审核？</text>
+    <image src='/images/doc_arrow_bottom_gray_6.png' class="arrow-bottom-gray {{describe?'trans-rotate':''}}"></image>
+  </view>
+  <view class='describe' wx:if="{{describe}}">
+    <view>为了更好保障打印机的使用安全，使用者打印时需联系该打印机</view>
+    <view>的管理员审核，通过才可以正常打印。</view>
+    <view>如何联系管理员？</view>
+    <view>可以联系分享给您这台打印机的微信好友，或咨询打印机二维码</view>
+    <view>的人员。</view>
+  </view>
+</block>
+<view class="button">
+  <view class="button-left" bindtap="backToHome">
+    {{printType==='course'?'返回课程首页':'返回首页'}}
+  </view>
+  <view class="button-right" bindtap="continuePrint">
+    <text wx:if="{{printType==='course'}}">继续学习</text>
+    <text wx:else>{{printType==='photo_answer'?'继续搜题':'继续打印'}}</text>
+  </view>
+</view>
+<block wx:if="{{supply_types.length>0}}">
+  <view class='title'>—— 适用耗材推荐 ——</view>
+  <view class='content1'>
+    <view wx:for="{{supply_types}}" wx:key="supply_types" class='type' id="{{index}}" bindtap="order">
+      <view class='border'>
+        <image src="{{item.image.url}}" class='consumables_image' mode='aspectFill'></image>
+      </view>
+      <view class='text'>{{item.name}}</view>
+    </view>
+  </view>
+</block>
+<import src="../../lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />

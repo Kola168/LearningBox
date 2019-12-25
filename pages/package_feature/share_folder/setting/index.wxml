@@ -75,7 +75,7 @@
 <view class="zoom_view" hidden="{{extract!=='all'}}">
     <view class="view_title">缩放打印</view>
     <view class="view_content">
-        <view class="content_item" wx:for="{{[1, 2 , 4, 8]}}" bindtap="chooseZoomType" wx:key="{{item}}" id="{{item}}">
+        <view class="content_item" wx:for="{{[1, 2 , 4, 8]}}" bindtap="chooseZoomType" wx:key="item" id="{{item}}">
             <view class="item_img {{zoomType==item?'item_check_active':''}}">
                 <image src="../../images/zoom_{{item}}.png" mode="widthFix" />
                 <image src="../../images/error_finish.png" hidden="{{zoomType!=item}}" class="item_check" mode="widthFix" />

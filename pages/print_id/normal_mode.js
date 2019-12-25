@@ -6,6 +6,8 @@ const util = require('../../utils/util')
 
 import commonRequest from '../../utils/common_request'
 import router from '../../utils/nav'
+import Logger from '../../utils/logger.js'
+const logger = new Logger.getLogger('pages/index/index')
 
 Page({
     data: {
@@ -32,7 +34,7 @@ Page({
     onLoad: co.wrap(function* (query) {
         try {
             this.idPrint = JSON.parse(query.idPrint)
-            console.log('证件照确认打印页参数', this.idPrint)
+            logger.info('证件照确认打印页参数', this.idPrint)
             this.longToast = new app.weToast()
             // 本地照片
             this.setData({
@@ -49,7 +51,7 @@ Page({
                 })
             }
         } catch (e) {
-            console.log(e)
+            logger.info(e)
         }
     }),
 
@@ -70,7 +72,7 @@ Page({
         }
     }),
     toConfirm: co.wrap(function* (e) {
-        console.log('证件照打印时form发生了submit事件，携带数据为：', e.detail.formId, `print${this.data.mode}`)
+        logger.info('证件照打印时form发生了submit事件，携带数据为：', e.detail.formId, `print${this.data.mode}`)
 
 
         let hideConfirmPrintBox = Boolean(wx.getStorageSync("hideConfirmPrintBox"))
@@ -97,7 +99,7 @@ Page({
                 grayscale: false, // 是否使用灰度打印
             }]
             const resp = commonRequest.createOrder('normal_id', param)
-            console.log(resp)
+            logger.info(resp)
             router.redirectTo('/pages/finish/index', {
               type: 'normal_id',
               media_type: 'invoice',

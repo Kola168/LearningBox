@@ -6,7 +6,7 @@
             <text>最佳拍摄姿势</text>
         </view>
         <view class='image'>
-            <image mode='widthFix' src='../../images/id/complex_example.png'></image>
+            <image mode='widthFix' src='https://cdn-h.gongfudou.com/LearningBox/main/complex_example.png'></image>
         </view>
         <view class='fs-32'>
             <view class='mg-t-60 flex-center'>
@@ -23,8 +23,10 @@
             </view>
         </view>
     </view>
-
+    <view class='bottom flex-center' bindtap="changeImage">
+            <text class='fs-32'>选择照片</text>
+        </view>
 </view>
-<take-photo-pop id="checkComponent" bindchooseImg="takePhoto" bindbaidutap="baiduprint" imgNum="{{1}}"></take-photo-pop>
+<take-photo-pop id="checkComponent" bindchooseImg="uploadImage" bindbaidutap="baiduprint" imgNum="{{1}}"></take-photo-pop>
 <import src="../../lib/toast/wetoast.wxml" />
 <template is="wetoast" data="{{...__wetoast__}}" />

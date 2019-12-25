@@ -14,22 +14,40 @@ import {
   util,
   wxNav
 } from '../../utils/common_import.js'
-
-const getUserInfo = util.promisify(wx.getUserInfo)
+import storage from '../../utils/storage'
+const event = require('../../lib/event/event')
 
 Page({
   data: {
     kidInfo: null,
     activeDevice: null
   },
-  onLoad: function(options) {
+  onLoad: function (options) {
     this.longToast = new app.weToast()
+    event.on('Authorize', this, () => {
+      this.userSn = storage.get('userSn')
+      this.getUserInfo()
+    })
+
   },
-  onShow: co.wrap(function*() {
-    yield this.getUserInfo()
+  onShow: co.wrap(function* () {
+    let userSn = storage.get('userSn')
+    this.userSn = userSn
+    let isAuth = yield this.authCheck()
+    if (isAuth) {
+      yield this.getUserInfo()
+    }
+  }),
+  authCheck: co.wrap(function* () {
+    if (!this.userSn) {
+      wxNav.navigateTo('/pages/authorize/index')
+      return false
+    } else {
+      return true
+    }
   }),
 
-  getUserInfo: co.wrap(function*() {
+  getUserInfo: co.wrap(function* () {
     this.longToast.toast({
       type: "loading",
       duration: 0
@@ -47,15 +65,26 @@ Page({
     }
   }),
 
-  toDeviceList(){
-    wxNav.navigateTo('/pages/package_device/list/index')
+  toNext(e) {
+    let pageKey = e.currentTarget.id,
+      url = ''
+    switch (pageKey) {
+      case 'records':
+        url = '/pages/package_common/records/index/index'
+        break;
+      case 'deviceList':
+        url = '/pages/package_device/list/index'
+        break;
+      case 'addDevice':
+        url = '/pages/package_device/network/index/index'
+        break;
+      case 'setInfo':
+        url = '/pages/package_common/account/personal_info'
+        break;
+    }
+    wxNav.navigateTo(url, {})
   },
-
-  toSetInfo: function() {
-    wxNav.navigateTo('/pages/package_common/account/personal_info')
-  },
-
-  addDevice: function() {
-    wxNav.navigateTo('/pages/package_device/network/index/index')
+  onUnload() {
+    event.remove('Authorize', this)
   }
 })

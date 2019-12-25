@@ -4,6 +4,8 @@ const app = getApp()
 import api from '../../../../network/restful_request.js'
 import commonRequest from '../../../../utils/common_request'
 const regeneratorRuntime = require('../../../../lib/co/runtime')
+import Logger from '../../../../utils/logger.js'
+const logger = new Logger.getLogger('pages/index/index')
 import {
     co,
     util
@@ -73,7 +75,7 @@ Page({
     onLoad: co.wrap(function* (query) {
         this.longToast = new app.weToast()
         this.image = JSON.parse(decodeURIComponent(query.image))
-        console.log(this.image, query)
+        logger.info(this.image, query)
         this.feature_key = query.feature_key
         this.setData({
             changeBtnWidth: parseInt(200 / app.rpxPixel), // 宽度计算
@@ -110,7 +112,7 @@ Page({
         let designAreaMaxWidth = avaWidth - 2 * margin
         let designAreaMaxHeight = avaHeight
 
-        console.log('相纸大小', this.data.area)
+        logger.info('相纸大小', this.data.area)
 
         let scale = this.data.area.width / this.data.area.height
         if (this.data.area.width <= this.data.area.height) {
@@ -139,7 +141,7 @@ Page({
             scale: areaWidth / this.data.area.width
         }
 
-        console.log('当前模板---areaPosition', areaPosition)
+        logger.info('当前模板---areaPosition', areaPosition)
 
         this.setData({
             areaPosition: areaPosition
@@ -298,7 +300,7 @@ Page({
         try {
              const resp = yield api.convertId(params)
             this.longToast.hide()
-            console.log(resp)
+            logger.info(resp)
             if (resp.code != 0) {
                 throw (resp)
             } else {
@@ -366,11 +368,11 @@ Page({
         try {
             const resp = commonRequest.createOrder('normal_id', param)
             this.longToast.hide()
-            console.log(resp)
+            logger.info(resp)
             router.redirectTo('/pages/finish/index', {
-                // type: this.feature_key,
+                type:shareFile,
                 media_type:this.data.media_type,
-                // state: resp.createOrder.state
+                state: resp.createOrder.state
               })
         } catch (e) {
             this.longToast.toast()
@@ -384,10 +386,10 @@ Page({
             setTimeout(function () {
                 loopCount++
                 if (loopCount <= 100) {
-                    console.log('openId not found loop getting...')
+                    logger.info('openId not found loop getting...')
                     _this.loopGetOpenId()
                 } else {
-                    console.log('loop too long, stop')
+                    logger.info('loop too long, stop')
                 }
             }, 2000)
         }
@@ -482,7 +484,7 @@ Page({
                 })
             }
         } catch (e) {
-            console.log(e)
+            logger.info(e)
         }
 
     },

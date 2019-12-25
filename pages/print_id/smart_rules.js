@@ -11,6 +11,8 @@ import upload from '../../utils/upload'
 import api from '../../network/restful_request.js'
 import getLoopsEvent from '../../utils/worker'
 import router from '../../utils/nav'
+import Logger from '../../utils/logger.js'
+const logger = new Logger.getLogger('pages/index/index')
 
 Page({
     data: {
@@ -50,7 +52,7 @@ Page({
             url: this.imageURL,
             spec_id: this.data.spec.spec_id
         }
-        console.log('合成参数', params)
+        logger.info('合成参数', params)
         try {
             getLoopsEvent({
                 feature_key: 'cert_id',
@@ -87,15 +89,7 @@ Page({
         }
     }),
     baiduprint: co.wrap(function* (e) {
-        this.path = e.detail[0].url
-        try {
-            yield this.uploadImage()
-            yield this.confirm()
-        } catch (err) {
-            util.showError({
-                title: '照片加载失败',
-                content: '请重新选择重试'
-            })
-        }
+        this.imageURL = e.detail[0].url
+        yield this.confirm()
     }),
 })

@@ -5,7 +5,7 @@
 	<view
 	 class="doc-item"
 	 wx:for="{{files}}"
-	 wx:key="index"
+	 wx:key="filename"
 	 id="{{index}}"
 	>
 		<view class="item-sub">

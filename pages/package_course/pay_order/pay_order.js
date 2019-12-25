@@ -72,7 +72,7 @@ Page({
         type: "course",
       }
       var payment =  yield graphql.getPaymentCheck(params)
-      var isFree = payment.paymentCheck && payment.paymentCheck.free
+      var isFree = payment.currentUser.paymentCheck && payment.currentUser.paymentCheck.free
 
       if (isFree) {
         yield graphql.createResource(params)

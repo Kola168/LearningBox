@@ -240,7 +240,7 @@ Page({
 			const resp = yield commonRequest.createOrder('doc_a4', urls)
 			router.navigateTo('/pages/finish/index',
 				{
-					type: types.mediaType,
+					media_type: 'doc_a4',
 					state: resp.createOrder.state
 			})
     } catch (e) {
