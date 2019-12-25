@@ -29,26 +29,18 @@ const createOrder = function(featureKey, fileAttributes) {
 
 /**
  * 获取打印机能力
- * @param { Object } params required
+ * @param { String } featureKey required
+ * @returns {
+    borderless 是否无边距
+    grayscale 是否支持灰度
+    color 是否是彩色打印机
+    highQuality 是否支持高质量
+    duplex 是否支持双面打印
+ * }
  */
 
-const getPrinterCapacity = co.wrap(function*(params = {}) {
-  // let authToken = storage.get('authToken')
-  // let resp = yield request({
-  //   url: UPLOAD_AUTH_URL,
-  //   header: {
-  //     'AUTHORIZATION': `Token token=${authToken}`
-  //   },
-  //   method: 'GET',
-  //   dataType: 'json',
-  //   data: params
-  // })
-  // let authInfo = resp.data.res
-  // if (resp.data.code != 0) {
-  //   throw (authInfo)
-  // }
-  let res = { "code": 0, "print_capability": { "color_modes": ["Color", "Mono"], "page_count": 29, "media_sizes": [{ "media_size": 0, "media_name": "A4文件", "duplex": true }, { "media_size": 3, "media_name": "A5文件", "duplex": false }] } }
-  return res.print_capability
+const getPrinterCapacity = co.wrap(function*(featureKey) {
+  return graphql.getPrinterCapability(featureKey)
 })
 
 

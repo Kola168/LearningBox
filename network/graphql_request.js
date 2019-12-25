@@ -1751,6 +1751,29 @@ const graphqlApi = {
       })
     },
 
+    /**
+     * 获取打印机能力
+     * @param { String } featureKey
+     */
+    getPrinterCapability: (featureKey) => {
+      return gql.query({
+        query: `query($featureKey: String!) {
+          currentUser{
+            selectedDevice {
+              capability(featureKey:$featureKey) {
+                borderless
+                color
+                highQuality
+                duplex
+              }
+            }
+          }
+        }`,
+        variables: {
+          featureKey:featureKey
+        }
+      })
+    },
 
 }
 
