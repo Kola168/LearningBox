@@ -3,47 +3,12 @@
 <gio-marketing />
 <block wx:if="{{!showIntro}}">
     <view class="padding">
-    <view class="app-bottom-tip" wx:if="{{from_temp}}" bindtap="backToHome">返回首页</view>
-    <view class="play-title">
-        <view class="play-title-content">
-            <!-- <view class="title-modal"></view> -->
-            <text>科目错题本</text>
-        </view>
-        <view class="play-title-after" bindtap="chooseSubject">
-            <text style="margin-right:10rpx">{{activeGrade?activeGrade:'学段选择'}}</text>
-            <image mode="widthFix" src="/images/arrow-right-gray.png"></image>
-        </view>
-    </view>
     <view style="margin-bottom:280rpx;">
         <view class="item-3" bindtap='toList' id="{{index}}" wx:for="{{allSubjects[activePeriodIndex]}}"
-            wx:key="{{index}}">
+            wx:key="allSubjects[activePeriodIndex]">
             <image src="../images/error_book_{{item.id}}.png" class='url-3' mode="aspectFill"></image>
-            <view class='title title-3'>{{item.name}}/{{subjectList[item.name].length}}</view>
-        </view>
-    </view>
-    <!-- 学科选择模块 -->
-    <view class="subject-modal" wx:if="{{showGrade}}" bindtap="hideModal">
-        <view class="subject-content">
-            <image mode="widthFix" src="/images/subject_modal.png"></image>
-            <view class="play-title" wx:for="{{gradeList}}" wx:key="{{index}}"
-                style="{{index==gradeList.length-1?'border-bottom-left-radius: 12rpx;border-bottom-right-radius: 12rpx;':''}}">
-                <!-- 学段 -->
-                <view catchtap="changeGrade" id="{{index}}">
-                    <view class="play-title-content">
-                        <text>{{item.title}}</text>
-                    </view>
-                    <view class="play-title-after">
-                        <image mode="widthFix" src="/images/arrow-bottom-gray.png"></image>
-                    </view>
-                </view>
-                <!-- 年级 -->
-                <!-- <view class="subject" wx:if="{{index==openGrade}}">
-                    <view wx:for="{{gradeList[index].grades}}" wx:for-item="data" wx:for-index="i" wx:key="{{i}}">
-                        <text style="{{activeGrade==data?'background:#ffe27a;':''}}" catchtap="changeSubjet"
-                            id="{{i}}">{{data}}</text>
-                    </view>
-                </view> -->
-            </view>
+            <view class='title title-3'>{{item.name}}</view>
+            <view class="count">共错{{subjectList[item.name].length||0}}题</view>
         </view>
     </view>
     <image class="use-book" mode="widthFix" src="../images/use_book.png" bindtap="toUsePage"></image>

@@ -4,7 +4,7 @@
   <view class='title'>录题时间</view>
 </view>
 <view class='con'>
-  <view wx:for="{{time}}" wx:key="{{index}}" id='{{index}}'>
+  <view wx:for="{{time}}" wx:key="time" id='{{index}}'>
     <view wx:if="{{(!isDate&&item.content=='自定义')||item.content!='自定义'}}" class="content {{timeId==index?'active-tab':''}}" bindtap='chooseTime' id='{{index}}'>{{item.content}}</view>
   </view>
   <view class='date' wx:if="{{isDate}}">
@@ -27,7 +27,7 @@
   <view class='title'>复习次数</view>
 </view>
 <view class='con'>
-  <view wx:for="{{num}}" wx:key="{{index}}" id='{{index}}'>
+  <view wx:for="{{num}}" wx:key="num" id='{{index}}'>
     <view class="content {{numId==index?'active-tab':''}}" bindtap='chooseNum' id='{{index}}'>{{item.content}}
       <text wx:if="{{index!=0&&index!=4}}" id='{{index}}'>次</text>
     </view>
@@ -39,7 +39,7 @@
   <view class='title'>掌握程度</view>
 </view>
 <view class='con'>
-  <view wx:for="{{level}}" wx:key="{{index}}" id='{{index}}'>
+  <view wx:for="{{level}}" wx:key="level" id='{{index}}'>
     <view class="content {{levelId==index?'active-tab':''}}" bindtap='chooseLevel' id='{{index}}'>{{item.content}}</view>
   </view>
 </view>
@@ -48,7 +48,7 @@
     <view class='title'>解析</view>
   </view>
   <view class='con'>
-    <view wx:for="{{anwser}}" wx:key="{{index}}" id='{{index}}'>
+    <view wx:for="{{anwser}}" wx:key="answer" id='{{index}}'>
       <view class="content {{anwserId==index?'active-tab':''}}" bindtap='chooseAnwser' id='{{index}}'>{{item.content}}
       </view>
     </view>
