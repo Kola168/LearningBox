@@ -5,15 +5,8 @@ Component({
   },
 
   data: {
-    selectedGrade:  {
-      name: '一年级',
-      _id: 1
-    },
-    selectedExam: {
-      name: '人教版',
-      _id: 100
-    }, 
-
+    selectedGrade: null,
+    selectedExam: null, 
     formList: [
       {
         name: '教材',
@@ -63,7 +56,8 @@ Component({
   },
 
   methods: {
-    chooseForms: function({currentTarget: {dataset: {index}}}) {
+    chooseForms: function(e) {
+      var index = e.currentTarget ? e.currentTarget.dataset.index : e.index
       var newFroms = this.data.formList.map((form, idx)=> {
         form.isUnfold = (idx === index ? !form.isUnfold : false)
         return form
@@ -71,6 +65,20 @@ Component({
       this.setData({
         formList: newFroms
       })
+    },
+    
+    chooseInput: function({currentTarget: {dataset: {index, itemidx}}}) {
+      this.setData({
+        [`formList[${index}].selected`]: this.data.formList[index].content[itemidx],
+      })
+      this.chooseForms({index})
+    },
+    submit: function() {
+      var formInput = []
+      this.data.formList.forEach(form=> {
+        formInput.push(form.selected)
+      })
+      console.log(formInput, '===formInput==')
     }
   }
 })

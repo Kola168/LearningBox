@@ -90,7 +90,25 @@
   <image class="notice-card" src="../../images/nav_figure_card.png">
     <view class="nav-text">课本同步练习，不遗漏任何知识点</view>
   </image>
-  <view class="form-main">
+  <!-- <view class="form-main">
     <form-textbook/>
+  </view> -->
+  <view class="current-input-value" bind:tap="touchText">
+    <view class="version">人教版</view>
+    <view class="grade">七年级</view>
+    <view class="arrow-icon"></view>
+  </view>
+  <view class="choose-box {{showSelectedText ? 'choose-box-show' : ''}}" catch:tap="touchText">
+    <view class="select-bar" wx:if="{{showSelectedText}}">
+      <view class="left-select-content">
+        <view class="select-item {{index == selectedBookIndex ? 'select-active' : ''}}" wx:for="{{textbookVersion}}" data-index="{{index}}" wx:key="_id" catchtap="chooseTextbook">{{item.name}}</view>
+      </view>
+      <view class="right-select-content">
+        <view class="content-item" wx:for="{{gradeList}}" data-index="{{index}}" wx:key="_id" catchtap="chooseGrade">{{item.name}}</view>
+      </view>
+    </view>
+  </view>
+  <view class="chapter-main">
+    <chapter/>
   </view>
 </view>

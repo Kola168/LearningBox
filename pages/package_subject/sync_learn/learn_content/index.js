@@ -5,7 +5,23 @@ Page({
    * 页面的初始数据
    */
   data: {
-
+    showSelectedText: false, //是否显示教材
+    selectedBookIndex: -1, //教材版本选中下标
+    textbookVersion: [
+      {
+        name: '浙教版',
+        _id: 1
+      },
+      {
+        name: '人教版',
+        _id: 2
+      },
+      {
+        name: '苏教版',
+        _id: 3
+      }
+    ],
+    gradeList: [] //年级列表
   },
 
   /**
@@ -15,6 +31,37 @@ Page({
 
   },
 
+
+  touchText: function() {
+    this.setData({
+      showSelectedText: !this.data.showSelectedText
+    })
+  },
+
+  chooseTextbook: function(e) {
+    var index = e.currentTarget.dataset.index
+    this.setData({
+      selectedBookIndex: index,
+      gradeList: [
+        {
+          name: '必修一',
+          _id: 100
+        },
+        {
+          name: '必修二',
+          _id: 101
+        },
+        {
+          name: '必修三',
+          _id: 102
+        },
+        {
+          name: '必修四',
+          _id: 103
+        },
+      ]
+    })
+  },
   /**
    * 生命周期函数--监听页面初次渲染完成
    */

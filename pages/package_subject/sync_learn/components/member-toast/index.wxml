@@ -1,0 +1,12 @@
+  <!-- 会员开通弹窗 -->
+  <view class="member-toast" wx:if="{{showMemberToast}}" bind:tap="hideToast">
+    <view class="toast-main">
+      <view class="title">开通学科会员，专项同步练习</view>
+      <view class="open-desc">难度划分更贴心，在家也能做练习</view>
+      <image class="member-banner" mode="widthFix" src="../../../images/toast_main_icon.png"></image>
+      <view class="btn-sure" catchtap="toMember">
+        <image src="../../../images/diamond.png"/>
+        <view class="content">开通会员可免费使用</view>
+      </view>
+    </view>
+  </view>
