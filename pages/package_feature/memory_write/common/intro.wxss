@@ -1,0 +1,23 @@
+.intro{
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  z-index: 100;
+}
+.intro image{
+  width: 100%;
+}
+.intro .next{
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background: #FFE27A;
+  font-size: 36rpx;
+  color: #333;
+  text-align: center;
+  height: 100rpx;
+  line-height: 100rpx;
+}

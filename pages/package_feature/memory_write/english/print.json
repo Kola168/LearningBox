@@ -1,0 +1,8 @@
+{
+  "enablePullDownRefresh": false,
+  "disableScroll": true,
+  "navigationBarTitleText":"英语默写",
+  "usingComponents": {
+    "confirm-print": "../../../../../components/confirm-print"
+  }
+}
