@@ -1,0 +1,5 @@
+{
+  "usingComponents": {
+    "cropper-img": "../../../components/cropper-img/cropper-img"
+  }
+}

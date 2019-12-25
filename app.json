@@ -47,8 +47,7 @@
     "pages/finish/index",
     "pages/mall/index",
     "pages/webview/index",
-    "pages/webview/member",
-    "pages/finish/sourcefinish"
+    "pages/webview/member"
   ],
   "subPackages": [
     {
@@ -124,7 +123,12 @@
         "memory_write/chinese/index",
         "memory_write/chinese/print",
         "memory_write/english/index",
-        "memory_write/english/print"
+        "memory_write/english/print",
+        "error_book/index",
+        "error_book/intro",
+        "error_book/use_page",
+        "error_book/camera",
+        "error_book/edit_pic"
       ]
     },
     {

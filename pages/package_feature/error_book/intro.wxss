@@ -1,0 +1,108 @@
+/* pages/error_book/pages/error_book/intro.wxss */
+
+page {
+    width: 100%;
+    height: 100%;
+}
+
+.intro {
+    width: 100%;
+}
+
+.bottom {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100rpx;
+    background: #ffe27a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.bottom button {
+    font-size: 32rpx;
+    color: #333;
+}
+
+.bottom text {
+    font-size: 34rpx;
+    color: #333333;
+}
+
+.get-user {
+    position: absolute;
+    top: 0;
+    height: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.scope-popwindow {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: white;
+    width: 80%;
+}
+
+.scope-title {
+    color: #333;
+    font-size: 40rpx;
+    padding: 20rpx 0;
+    text-align: center;
+}
+
+.scope-divider {
+    background: #ccc;
+    width: 100%;
+    height: 2rpx;
+}
+
+.scope-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40rpx 0;
+}
+
+.scope-image {
+    width: 70rpx;
+}
+
+.scope-dot {
+    width: 10rpx;
+    height: 10rpx;
+    background: #666;
+    border-radius: 100rpx;
+}
+
+.scope-notify {
+    color: #333;
+    font-size: 32rpx;
+    padding-top: 22rpx;
+    text-align: center;
+}
+
+.scope-info {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.scope-info-content {
+    color: #666;
+    font-size: 24rpx;
+    padding-top: 10rpx;
+    padding-left: 10rpx;
+    text-align: center;
+}
+
+.scope-button {
+  color: #2086ee;
+}
