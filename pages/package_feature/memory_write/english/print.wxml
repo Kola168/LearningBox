@@ -1,10 +1,18 @@
-<wxs src="../../../../commonwxs/common.wxs" module="foo" />
+<!--
+ * @Author: your name
+ * @Date: 2019-12-25 10:47:37
+ * @LastEditTime: 2019-12-25 11:22:58
+ * @LastEditors: your name
+ * @Description: In User Settings Edit
+ * @FilePath: /LearningBox/pages/package_feature/memory_write/english/print.wxml
+ -->
+<!-- <wxs src="../../../../commonwxs/common.wxs" module="foo" /> -->
 <nav-bar title="英语默写"></nav-bar>
 <view class="img-wrap">
   <swiper current="{{currentImgIndex}}" bindchange="tabSlide" circular="{{false}}" class="swiper-wrap">
-    <swiper-item class='img-box' wx:for="{{images}}" wx:key="{{index}}">
+    <!-- <swiper-item class='img-box' wx:for="{{images}}" wx:key="{{index}}">
       <image src="{{foo.addProcess(item,'/resize,w_750')}}" mode="widthFix"></image>
-    </swiper-item>
+    </swiper-item> -->
   </swiper>
   <view class="img-ctrl flex align-center">
     <image class="img-prew" src="/images/preview-turn-left.png" bindtap="turnImg" data-turn='prev' />
