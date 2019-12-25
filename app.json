@@ -47,8 +47,7 @@
     "pages/finish/index",
     "pages/mall/index",
     "pages/webview/index",
-    "pages/webview/member",
-    "pages/finish/sourcefinish"
+    "pages/webview/member"
   ],
   "subPackages": [
     {
@@ -63,7 +62,9 @@
         "free_resources/detail/index",
         "records/index/index",
         "records/detail/index",
-        "records/cancel_intro/index"
+        "records/cancel_intro/index",
+        "feedback/index",
+        "my_collection/index"
       ]
     },
     {
@@ -120,7 +121,17 @@
         "share_folder/index",
         "share_folder/share_manage",
         "share_folder/content",
-        "share_folder/manage"
+        "share_folder/manage",
+        "memory_write/chinese/index",
+        "memory_write/chinese/print",
+        "memory_write/english/index",
+        "memory_write/english/print",
+        "error_book/index",
+        "error_book/intro",
+        "error_book/use_page",
+        "error_book/camera",
+        "error_book/edit_pic",
+        "kousuan/index"
       ]
     },
     {

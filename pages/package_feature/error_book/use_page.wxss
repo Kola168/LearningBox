@@ -1,0 +1,41 @@
+/* pages/error_book/pages/error_book/use_page.wxss */
+page {
+    width: 100%;
+    height: 100%;
+    background: #fff7e1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    padding:40rpx 30rpx 80rpx;
+    box-sizing: border-box;
+}
+
+.title {
+    text-align: center;
+    color: #333;
+    font-size: 54rpx;
+}
+
+.content-wrap {
+    width:100%;
+    /* height:50%; */
+    border: 5rpx solid #333;
+    padding:30rpx;
+    border-radius:20rpx;
+    box-sizing: border-box;
+    text-align: center;
+    background: #ffe596;
+}
+
+.content-wrap image{
+   width:50%; 
+   margin-bottom:30rpx;
+}
+
+.video {
+    width: 100%;
+    height: 360rpx;
+  }
+
+

@@ -1,0 +1,57 @@
+<!--
+ * @Author: your name
+ * @Date: 2019-12-25 10:47:37
+ * @LastEditTime: 2019-12-25 11:22:46
+ * @LastEditors: your name
+ * @Description: In User Settings Edit
+ * @FilePath: /LearningBox/pages/package_feature/memory_write/chinese/print.wxml
+ -->
+
+<!-- <wxs src="../../../../commonwxs/common.wxs" module="foo" /> -->
+<nav-bar title="语文默写"></nav-bar>
+<view class="img-wrap">
+  <swiper current="{{currentImgIndex}}" bindchange="tabSlide" circular="{{false}}" class="swiper-wrap">
+    <!-- <swiper-item class='img-box' wx:for="{{images}}" wx:key="{{index}}">
+      <image src="{{foo.addProcess(item,'/resize,w_750')}}" mode="widthFix"></image>
+    </swiper-item> -->
+  </swiper>
+  <view class="img-ctrl flex align-center">
+    <image class="img-prew" src="/images/doc_preview_turn_left.png" bindtap="turnImg" data-turn='prev' />
+    <view class="img-index">{{currentImgIndex+1}}/{{images.length}}</view>
+    <image class="img-next" src="/images/doc_preview_turn_right.png" bindtap="turnImg" data-turn="next" />
+  </view>
+</view>
+<view class="handle-print flex">
+  <view class="print-count flex">
+    <view>打印份数</view>
+    <view class="count-handle flex align-center">
+      <image src="../../images/minus_{{printCount===1?'g':'y'}}.png" id="decrease" bindtap="handlePrintCount" mode="widthFix" />
+      <view>{{printCount}}</view>
+      <image src="../../images/plus_{{printCount>=30?'g':'y'}}.png" id="increase" bindtap="handlePrintCount" mode="widthFix" />
+    </view>
+  </view>
+  <view class="print-bar">
+    <view wx:if="{{savable}}" bindtap="saveImg">
+      <image src="../../resource_images/save_img.png"></image>
+      <view>保存</view>
+    </view>
+    <view wx:if="{{!savable}}">
+      <button open-type="openSetting" bindopensetting="allowSave">
+        <image src="../../resource_images/save_img.png"></image>
+        <view>保存</view>
+      </button>
+    </view>
+    <view class="confirm-print">
+      <form report-submit="true" bindsubmit="showConfirmMdal">
+        <button open-type="{{hasAuthPhoneNum?'':'getPhoneNumber'}}" bindgetphonenumber="{{hasAuthPhoneNum?'':'getPhoneNumber'}}" formType="submit">
+          确认打印
+        </button>
+      </form>
+    </view>
+  </view>
+</view>
+<confirm-print bindconfirm="print" modal="{{confirmModal}}"></confirm-print>
+
+<!-- loading -->
+<import src="/lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />

@@ -1,0 +1,92 @@
+<view class='top first'>
+    <view class='left'>
+        <view class='border'></view>
+        <view class='title'>题目</view>
+    </view>
+    <view class='right' bindtap="addMore" wx:if="{{urls.length<2}}">
+        <image src='../../images/error-add.png' class="error_icon" mode="widthFix"></image>
+        <view class='title'>补充题目</view>
+    </view>
+</view>
+<view class='con'>
+    <block wx:for="{{urls}}" wx:key="{{index}}">
+        <image src="{{item}}" class='img' mode='widthFix' id="{{index}}"></image>
+    </block>
+</view>
+<block wx:if="{{!reEdit}}">
+    <view class='top top-grade' bindtap="showGrades" wx:if="{{type=='photoAnswer'}}">
+        <view>
+            <view class='border'></view>
+            <view class='title'>年级</view>
+        </view>
+        <view>
+            <text>{{activeGrade?activeGrade:'请选择年级'}}</text>
+            <image src="/images/arrow-right-gray.png" class='top-image' mode='widthFix'></image>
+        </view>
+    </view>
+    <view class="search-answer" wx:if="{{!reEdit&&answer_urls.length==0}}">
+        <image src="../images/error_book_search_orange.png" class='top-image' mode='widthFix'
+            bindtap="searchBeforAdd"></image>
+        <text bindtap="searchBeforAdd">原图不清晰？试试搜索原题解析</text>
+    </view>
+    <view class='top'>
+        <view class='border'></view>
+        <view class='title'>错题科目</view>
+    </view>
+    <view class='con'>
+        <view wx:for="{{subjects}}" wx:key="{{index}}" id='{{index}}'>
+            <view class="content {{subjectId==index?'active-tab':''}}" bindtap='chooseSubject' id='{{index}}'>
+                {{item}}
+            </view>
+        </view>
+    </view>
+</block>
+
+<view class='top'>
+    <view class='border'></view>
+    <view class='title'>错题掌握程度</view>
+</view>
+<view class='con'>
+    <view wx:for="{{level}}" wx:key="{{index}}" id='{{index}}'>
+        <view class="content {{levelId==index?'active-tab':''}}" bindtap='chooseLevel' id='{{index}}'>
+            {{item}}
+        </view>
+    </view>
+</view>
+<view class='top'>
+    <view class='border'></view>
+    <view class='title'>错题原因</view>
+</view>
+<view class='con'>
+    <view wx:for="{{reason}}" wx:key="{{index}}" id='{{index}}'>
+        <view class="content {{reasonId==index?'active-tab':''}}" bindtap='chooseReason' id='{{index}}'>
+            {{item}}
+        </view>
+    </view>
+</view>
+<form class='btn' report-submit="{{true}}" bindsubmit="save" data-type="error_book_entry" wx:if="{{!reEdit}}">
+    <button hover-class="none" form-type='submit'>保存</button>
+</form>
+<view class="btn" wx:if="{{reEdit}}">
+    <form class='btn-left' report-submit="{{true}}" bindsubmit="save" data-type="error_book_entry">
+        <button hover-class="none" form-type='submit'>
+            <image src='../images/error_book_save_update.png' mode="widthFix"></image>
+            <text>保存</text>
+        </button>
+    </form>
+    <form class='btn-right' report-submit="{{true}}"
+        bindsubmit="{{answer_urls.length>0&&answer_urls!=null?'watch':'search'}}" data-type="error_book_entry">
+        <button hover-class="none" form-type='submit'>
+            <image src='../images/error_book_watch_anwser.png' mode="widthFix"></image>
+            <text>{{answer_urls.length>0&&answer_urls!=null?'查看解析':'搜答案'}}</text>
+        </button>
+    </form>
+
+</view>
+
+<grade active-grade="{{activeGrade}}" open-grade="{{openGrade}}" show-grade="{{showGrade}}" bindhidegrade="hideGrades"
+    bindchangesubject="changeSubject"></grade>
+<ios-tip ios-tip-modal="ios-tip-modal" showModal="{{iosModal}}" text="{{text}}"></ios-tip>
+
+<import src="../../../lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />

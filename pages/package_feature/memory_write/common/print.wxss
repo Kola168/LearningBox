@@ -1,0 +1,95 @@
+.swiper-wrap {
+  height: 89.5%;
+}
+
+.img-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.img-box image {
+  width: 64%;
+  box-shadow: 0 2px 8px 0 rgba(204,204,204,0.50);
+}
+
+.img-ctrl {
+  height: 10.5%;
+  justify-content: center;
+}
+
+.img-ctrl image {
+  width: 50rpx;
+  height: 50rpx;
+}
+
+.img-index {
+  margin: 0 10rpx;
+  width: 80rpx;
+  text-align: center;
+  font-size: 24rpx;
+  color: #999;
+}
+
+.handle-print {
+  flex-direction: column;
+}
+
+.print-count {
+  justify-content: space-between;
+  align-items: center;
+  padding: 24rpx;
+  color: #333;
+  font-size: 32rpx;
+}
+
+.count-handle>view {
+  color: #666;
+  margin: 0 16rpx;
+}
+
+.count-handle image {
+  width: 28rpx;
+}
+
+.print-bar {
+  display: flex;
+  width: 100%;
+  height: 100rpx;
+  border-top: 2rpx solid #ccc;
+  color: #666;
+}
+
+.print-bar>view {
+  width: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36rpx;
+}
+
+.print-bar>view button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36rpx;
+  height: 100rpx;
+  color: #666;
+}
+
+.print-bar>view image {
+  width: 44rpx;
+  height: 44rpx;
+  margin-right: 8rpx;
+}
+
+.confirm-print {
+  background: #ffe27a;
+}
+
+.confirm-print form,
+.confirm-print button {
+  color: #333;
+  width: 100%;
+}

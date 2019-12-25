@@ -1,0 +1,15 @@
+<!-- pages/error_book/submit_success.wxml -->
+<view class="content">
+    <icon type="success" size="100" />
+    <view class="success">{{type=="error_book_search"?'更新成功':'录题成功'}}</view>
+</view>
+<view class="bottom">
+
+    <view class="left" bindtap="camera">
+        <image mode="widthFix" src="../images/error_book_success_camera.png" />
+        {{type=="photoAnswer"||type=="error_book_search"?'继续搜题':'继续录题'}}</view>
+    <view class="right" bindtap="toSetting">
+        <image mode="widthFix" src="../images/error_book_success_print_yellow.png" />
+        打印复习
+    </view>
+</view>

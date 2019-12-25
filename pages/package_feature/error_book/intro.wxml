@@ -1,0 +1,7 @@
+<!--pages/error_book/pages/error_book/intro.wxml-->
+<view class="app-bottom-tip" wx:if="{{from_temp}}" bindtap="backToHome">返回首页</view>
+<image class="intro" mode="widthFix" src="https://cdn.gongfudou.com/miniapp/ec/error_book_intro1.png"></image>
+
+<view class="bottom" bindtap="toNextPage">
+    <text>开始使用</text>
+</view>

@@ -13,7 +13,7 @@
 <block wx:for="{{stages[1].children}}" wx:key="subject">
     <view class="title">{{item.name}}</view>
     <view class="wrap">
-        <view class="title {{index>2?'top':''}} {{activeGrade==data.name?'active-grade':''}}"
+        <view class="title {{i>2?'top':''}} {{activeGrade==data.name?'active-grade':''}}"
             wx:for="{{stages[1].children[index].children}}" wx:for-item="data" wx:for-index="i" wx:key="stages[1].children.name" id="{{data.name}}" bindtap="chooseGrade" data-sn="{{data.sn}}">{{data.name}}</view>
     </view>
 </block>

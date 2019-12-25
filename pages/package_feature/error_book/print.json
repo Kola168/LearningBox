@@ -1,0 +1,10 @@
+{
+  "disableScroll": true,
+  "enablePullDownRefresh": false,
+  "navigationBarTitleText": "错题本",
+  "usingComponents": {
+    "confirm-reinforce-modal": "../../../../components/confirm-reinforce-modal/index",
+    "progress-modal": "../../../../components/progress-modal/index",
+    "confirm-print": "../../../../components/confirm-print"
+  }
+}

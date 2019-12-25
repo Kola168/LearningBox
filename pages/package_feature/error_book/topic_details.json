@@ -1,0 +1,6 @@
+{
+  "usingComponents": {
+    "grade": "../../../components/grade/index",
+    "ios-tip":"../../../../components/ios_tip/index"
+  }
+}
