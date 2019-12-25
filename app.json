@@ -146,12 +146,16 @@
         "growth_plan/timed_print/timed_print",
         "growth_plan/print_setting/print_setting",
         "growth_plan/checkpoint/plan_checkpoint",
-        "growth_plan/checkpoint/plan_detail"
+        "growth_plan/checkpoint/plan_detail",
+        "exercise_day/index/index"
       ]
     },
     {
       "root": "pages/package_subject",
-      "pages": []
+      "pages": [
+        "sync_learn/index/index",
+        "sync_learn/learn_content/index"
+      ]
     },
     {
       "root": "pages/package_device",

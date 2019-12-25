@@ -1,0 +1,13 @@
+<view class="form-main">
+  <view class="form-item" wx:for="{{formList}}" wx:key="*this">
+    <view class="label-name">{{item.name}}</view>
+    <view class="form-input" bind:tap="chooseForms" data-index="{{index}}">
+      <view class="form-value">{{item.selected.name}}</view>
+      <view class="arrow"></view>
+    </view>
+     <view class="select-content" wx:if="{{item.isUnfold}}">
+      <view class="select-item" wx:for="{{item.content}}" wx:for-item="contentItem" wx:key="_id">{{contentItem.name}}</view>
+    </view>
+  </view>
+  <view class="btn-submit">选择完毕</view>
+</view>
