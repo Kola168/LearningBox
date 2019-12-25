@@ -8,7 +8,7 @@ import {
     util,
     wxNav
   } from '../../../utils/common_import'
-import commonRequest from '../../../utils/common_request.js'
+import gql from '../../../network/graphql_request'
 import Logger from '../../../utils/logger.js'
 const logger = new Logger.getLogger('pages/feedback/index')
 
@@ -35,7 +35,7 @@ Page({
             },
             {
                 type:'新增内容',
-                as_type:'add'
+                as_type:'search'
             },
             {
                 type:'其他',
@@ -113,11 +113,16 @@ Page({
         })
         try {
             var params = {
+                feedType:this.as_type,
 				phone: this.data.telphone,
-                content: this.data.content,
-                as_type:this.as_type
+                content: this.data.content
 			}
-            const resp = yield commonRequest.createFeedback(params)
+            const resp = yield gql.createFeedback(params)
+            this.setData({
+                feedType: resp.feedType,
+                phone: resp.phone,
+                content: resp.content
+            })
             if (resp.data.code != 0) {
                 throw (resp.data)
             }
@@ -129,7 +134,7 @@ Page({
                 duration: 3000
             })
             setTimeout(() => {
-                wx.navigateBack()
+                wxNav.navigateBack()
             }, 3000);
 
         } catch (e) {
