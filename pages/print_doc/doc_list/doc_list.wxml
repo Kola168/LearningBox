@@ -11,7 +11,7 @@
 		<view class="item-sub">
 			<view class="sub-title">{{item.filename}}</view>
 			<view class="sub-option">
-				<text>{{!item.grayscale ? "彩色" : "黑白"}}</text>
+				<text>{{item.colorCheck ? "彩色" : "黑白"}}</text>
 				<text>{{item.duplex ? '双面' : '单面'}}</text>
 				<text>{{item.copies}}份</text>
 			</view>

@@ -60,13 +60,13 @@
 	<view class="setting-item" wx:if="{{isColorPrinter}}">
 		<view class="item-label">色彩选择</view>
 		<view class="item-main">
-			<view class="color-check-box" data-style="Mono" bindtap="colorCheck">
+			<view class="color-check-box" data-style="0" bindtap="colorCheck">
 				<text class="color-type">黑白</text>
-				<image src="{{colorCheck != 'Color' ? '/images/radio_on.png' : '/images/radio_off.png'}}" mode="widthFix" class="color-check" />
+				<image src="{{!colorCheck ? '/images/radio_on.png' : '/images/radio_off.png'}}" mode="widthFix" class="color-check" />
 			</view>
-			<view class="color-check-box" data-style="Color" bindtap="colorCheck">
+			<view class="color-check-box" data-style="1" bindtap="colorCheck">
 				<text class="color-type">彩色</text>
-				<image src="{{colorCheck == 'Color' ? '/images/radio_on.png' : '/images/radio_off.png'}}" mode="widthFix" class="color-check" />
+				<image src="{{colorCheck ? '/images/radio_on.png' : '/images/radio_off.png'}}" mode="widthFix" class="color-check" />
 			</view>
 		</view>
 	</view>

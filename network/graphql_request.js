@@ -1766,7 +1766,49 @@ const graphqlApi = {
           }
         }`
       })
-    }
+    },
+    /**
+     * 获取打印机能力
+     * @param { String } featureKey
+     */
+    getPrinterCapability: (featureKey) => {
+      return gql.query({
+        query: `query($featureKey: String!) {
+          currentUser{
+            selectedDevice {
+              capability(featureKey:$featureKey) {
+                borderless
+                color
+                highQuality
+                duplex
+              }
+            }
+          }
+        }`,
+        variables: {
+          featureKey:featureKey
+        }
+      })
+    },
+
+    /**
+     * 文件预览
+     * @param { String } fileUrl
+     */
+    getFilePreview: (fileUrl) => {
+      return gql.query({
+        query: `query($fileUrl: String!) {
+          filePreview{
+            convertedUrl
+            landscape
+            pages
+          }
+        }`,
+        variables: {
+          fileUrl:fileUrl
+        }
+      })
+    },
 
 
 }
