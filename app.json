@@ -151,7 +151,10 @@
     },
     {
       "root": "pages/package_subject",
-      "pages": []
+      "pages": [
+        "evaluate_exam/index/index",
+        "evaluate_exam/testpaper/index"
+      ]
     },
     {
       "root": "pages/package_device",

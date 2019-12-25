@@ -1,10 +1,10 @@
 
-<wxs src="../../../../commonwxs/common.wxs" module="foo" />
+<!-- <wxs src="/utils/common.wxs" module="foo" /> -->
 <nav-bar title="语文默写"></nav-bar>
 <view class="img-wrap">
   <swiper current="{{currentImgIndex}}" bindchange="tabSlide" circular="{{false}}" class="swiper-wrap">
     <swiper-item class='img-box' wx:for="{{images}}" wx:key="{{index}}">
-      <image src="{{foo.addProcess(item,'/resize,w_750')}}" mode="widthFix"></image>
+      <image src="{{item}}?x-image-process=image/resize,w_400" mode="widthFix"></image>
     </swiper-item>
   </swiper>
   <view class="img-ctrl flex align-center">
