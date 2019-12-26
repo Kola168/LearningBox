@@ -1,0 +1,5 @@
+<nav-bar title="默写"></nav-bar>
+<view class="container">
+  <view class="write-item" bindtap="toNext" id="chinese">语文</view>
+  <view class="write-item" bindtap="toNext" id="english">英语</view>
+</view>
