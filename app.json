@@ -47,7 +47,7 @@
     "pages/finish/index",
     "pages/mall/index",
     "pages/webview/index",
-    "pages/webview/member"
+		"pages/webview/member"
   ],
   "subPackages": [
     {
@@ -136,7 +136,9 @@
     },
     {
       "root": "pages/package_member",
-      "pages": []
+      "pages": [
+				"pay/index"
+			]
     },
     {
       "root": "pages/package_other",
@@ -183,7 +185,19 @@
         "network/tips/step2",
         "network/tips/step3",
         "network/wificonnect/list",
-        "network/wificonnect/connect"
+				"network/wificonnect/connect",
+				"ble/common/connect_success",
+				"ble/common/no_bluetooth",
+				"ble/common/bluetooth_intro",
+				"ble/common/no_device",
+				"ble/common/no_wifi",
+				"ble/device/index",
+				"ble/device/device",
+				"ble/device/device_connect",
+				"ble/network/configure",
+				"ble/network/wifi_list",
+				"ble/printer/index",
+				"ble/common/serach_serial"
       ]
     }
   ],

@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2019-12-12 19:34:39
- * @LastEditTime: 2019-12-17 09:46:12
+ * @LastEditTime: 2019-12-25 16:32:47
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /LearningBox/pages/account/index.js
@@ -83,8 +83,19 @@ Page({
         break;
     }
     wxNav.navigateTo(url, {})
-  },
-  onUnload() {
+	},
+	
+	onlineGuest: co.wrap(function*() {
+    let isAuth = yield this.checkIsScope()
+    if (isAuth) {
+      let url = 'https://gfd178.udesk.cn/im_client/?web_plugin_id=63138'
+      wx.navigateTo({
+        url: `/pages/webview/index?url=${encodeURIComponent(url)}`
+      })
+    }
+  }),
+	
+	onUnload() {
     event.remove('Authorize', this)
   }
 })
