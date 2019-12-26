@@ -1782,6 +1782,22 @@ const graphqlApi = {
         }
       })
     },
+    /**
+   * 意见反馈
+   */
+  createFeedback: (params) => {
+    return gql.mutate({
+      mutation: `mutation createFeedback($input: CreateFeedbackInput!){
+        createFeedback(input:$input){
+          state
+        }
+      }`,
+      variables: {
+        input: params
+      }
+    })
+  },
+
 
 }
 
