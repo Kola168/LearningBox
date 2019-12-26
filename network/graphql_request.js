@@ -1732,7 +1732,6 @@ const graphqlApi = {
         }`
       })
     },
-
     /**
      * 获取打印机能力
      * @param { String } featureKey
@@ -1753,6 +1752,25 @@ const graphqlApi = {
         }`,
         variables: {
           featureKey:featureKey
+        }
+      })
+    },
+
+    /**
+     * 文件预览
+     * @param { String } fileUrl
+     */
+    getFilePreview: (fileUrl) => {
+      return gql.query({
+        query: `query($fileUrl: String!) {
+          filePreview{
+            convertedUrl
+            landscape
+            pages
+          }
+        }`,
+        variables: {
+          fileUrl:fileUrl
         }
       })
     },
