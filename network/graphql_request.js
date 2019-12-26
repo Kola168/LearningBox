@@ -125,10 +125,7 @@ const graphqlApi = {
             name,
             selected,
             sn,
-            isAdmin,
-            model,
-            onlineState,
-            shareQrcode
+            model
           },
           selectedDevice{
             name,
@@ -153,6 +150,10 @@ const graphqlApi = {
       query: `query ($sn: String!){
         currentUser{
           devices(sn:$sn){
+            ...on IotDevice {
+              connectThrough
+              updateInfo
+            }
             name,
             selected,
             sn,

@@ -18,6 +18,10 @@
   justify-content: center;
 }
 
+.filters-item view {
+  max-width: 70%;
+}
+
 .filters-active {
   height: 50px;
   display: flex;
