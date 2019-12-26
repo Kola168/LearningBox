@@ -37,10 +37,6 @@ App({
   // apiServer: 'http://jran.nat300.top',
   // apiWbviewServer: 'http://jran.nat300.top/',
 
-  //测试接口袁晓飞
-  // apiServer: 'https://schaffer.utools.club',
-  // apiWbviewServer: 'https://schaffer.utools.club',
-
   // 测试接口季慧新
   // apiServer: 'http://jhx.nat300.top',
   // apiWbviewServer: 'http://jhx.nat300.top',
@@ -48,14 +44,6 @@ App({
   // 测试接口张伟
   // apiServer: 'http://bboo.natapp1.cc',
   // apiWbviewServer: 'http://bboo.natapp1.cc/',
-
-  //江然本地服务
-  // apiServer: 'http://jran.nat300.top',
-  // apiWbviewServer: 'http://jhx.nat300.top',
-
-  //江然本地服务
-  // apiServer: 'http://jran.nat300.top',
-  // apiWbviewServer: 'http://jhx.nat300.top',
 
   // 许成本地服务
   // apiServer: 'http://xucheng.nat100.top',

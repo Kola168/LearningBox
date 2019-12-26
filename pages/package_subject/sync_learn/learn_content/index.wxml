@@ -1,0 +1,96 @@
+<nav-bar background="#fff" title="同步练习"/>
+<view class="content-main">
+  <scroll-view scroll-x="true">
+    <view class="tab-item">
+      <view class="tab-name active">测试一</view>
+      <view class="tab-line active-line"></view>
+    </view>
+    <view class="tab-item">
+      <view class="tab-name">测试一</view>
+      <view class="tab-line"></view>
+    </view>
+    <view class="tab-item">
+      <view class="tab-name">测试一</view>
+      <view class="tab-line"></view>
+    </view>
+    <view class="tab-item">
+      <view class="tab-name">测试一</view>
+      <view class="tab-line"></view>
+    </view>
+    <view class="tab-item">
+      <view class="tab-name">测试一</view>
+      <view class="tab-line"></view>
+    </view>
+    <view class="tab-item">
+      <view class="tab-name">测试一</view>
+      <view class="tab-line"></view>
+    </view>
+    <view class="tab-item">
+      <view class="tab-name">测试一</view>
+      <view class="tab-line"></view>
+    </view>
+    <view class="tab-item">
+      <view class="tab-name">测试一</view>
+      <view class="tab-line"></view>
+    </view>
+    <view class="tab-item">
+      <view class="tab-name">测试一</view>
+      <view class="tab-line"></view>
+    </view>
+    <view class="tab-item">
+      <view class="tab-name">测试一</view>
+      <view class="tab-line"></view>
+    </view>
+    <view class="tab-item">
+      <view class="tab-name">测试一</view>
+      <view class="tab-line"></view>
+    </view>
+    <view class="tab-item">
+      <view class="tab-name">测试一</view>
+      <view class="tab-line"></view>
+    </view>
+    <view class="tab-item">
+      <view class="tab-name">测试一</view>
+      <view class="tab-line"></view>
+    </view>
+    <view class="tab-item">
+      <view class="tab-name">测试一</view>
+      <view class="tab-line"></view>
+    </view>
+    <view class="tab-item">
+      <view class="tab-name">测试一</view>
+      <view class="tab-line"></view>
+    </view>
+    <view class="tab-item">
+      <view class="tab-name">测试一</view>
+      <view class="tab-line"></view>
+    </view>
+    <view class="tab-item">
+      <view class="tab-name">测试一</view>
+      <view class="tab-line"></view>
+    </view>
+    <view class="tab-item">
+      <view class="tab-name">测试一</view>
+      <view class="tab-line"></view>
+    </view>
+    <view class="tab-item">
+      <view class="tab-name">测试一</view>
+      <view class="tab-line"></view>
+    </view>
+    <view class="tab-item">
+      <view class="tab-name">测试一</view>
+      <view class="tab-line"></view>
+    </view>
+    <view class="tab-item">
+      <view class="tab-name">测试一</view>
+      <view class="tab-line"></view>
+    </view>
+  </scroll-view>
+
+  <image class="notice-card" src="../../images/nav_figure_card.png">
+    <view class="nav-text">课本同步练习，不遗漏任何知识点</view>
+  </image>
+  <view class="form-main">
+    <form-textbook/>
+  </view>
+</view>

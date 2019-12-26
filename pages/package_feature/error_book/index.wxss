@@ -1,0 +1,327 @@
+/* pages/error_book/index.wxss */
+image{
+    display:inline-block;
+}
+page {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+}
+.padding{
+    padding: 0 30rpx;
+}
+
+.play-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 32rpx;
+    color: #454545;
+    margin-bottom: 20rpx;
+}
+
+.subject-modal {
+    z-index: 1000;
+}
+
+.subject-modal .play-title {
+    margin-bottom: 0;
+}
+
+.play-title-content {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.play-title-after {
+    color: #a5a5a5;
+    font-size: 28rpx;
+    display: flex;
+    align-items: center;
+}
+
+.play-title-after image {
+    width: 18rpx;
+    height: 18rpx;
+    /* margin-left:10rpx; */
+}
+
+.title-modal {
+    background: #ffc35b;
+    width: 3px;
+    height: 14px;
+    margin-right: 8rpx;
+}
+
+.subject-modal {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.50);
+    padding: 0 60rpx;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+.subject-content {
+    width: 100%;
+}
+
+.subject-content>image {
+    display: block;
+    width: 100%;
+}
+
+.subject-content>view {
+    width: 100%;
+    color: #666;
+    background: #fff;
+}
+
+.subject-content .play-title {
+    flex-direction: column;
+}
+
+.subject-content .play-title>view {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-left: 40rpx;
+    padding-right: 40rpx;
+    padding-bottom: 20rpx;
+    box-sizing: border-box;
+}
+
+.subject-content .play-title {
+    font-size: 14px;
+    padding: 20rpx 0;
+    box-sizing: border-box;
+}
+
+.subject-content .play-title-after image {
+    width: 26rpx;
+    height: 26rpx;
+    background: #fff;
+}
+
+.subject {
+    width: 100%;
+    background: #f6f6f6;
+    padding: 28rpx 0 0 !important;
+    margin-bottom: 0 !important;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.subject view {
+    width: 28%;
+    margin: 0 auto 38rpx;
+    text-align: center;
+}
+
+.subject text {
+    display: flex;
+    padding: 4rpx 10rpx;
+    background: #eeeeee;
+    border-radius: 30rpx;
+    justify-content: center;
+}
+
+.item-3 {
+    width: calc(100% / 3);
+    display: inline-block;
+    text-align: center;
+    margin: 34rpx 0 15rpx;
+}
+
+.url-3 {
+    width: 100rpx;
+    height: 100rpx;
+}
+
+.title-3 {
+    font-size: 28rpx;
+    width: 200rpx;
+    margin: 0;
+    margin: 0 auto;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: #666666;
+}
+
+.camera {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.camera image {
+    width: 240rpx;
+    height: 240rpx;
+}
+
+.tip-modal {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6)
+}
+
+.home-modal-tip {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-tip-title {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;    
+}
+
+.modal-tip-title image {
+    width: 47%;
+    margin-right:3%;
+}
+
+.use-book{
+    position: fixed;
+    bottom:300rpx;
+    right:30rpx;
+    width:100rpx;
+}
+
+.consumables-icon {
+  width: 100rpx;
+  height: 104rpx;
+  position: fixed;
+  bottom: 160rpx;
+  right: 30rpx;
+  z-index: 10000;
+}
+
+/* 错题介绍 */
+.intro {
+    width: 100%;
+}
+
+.bottom {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100rpx;
+    background: #ffe27a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.bottom button {
+    font-size: 32rpx;
+    color: #333;
+}
+
+.bottom:not([size='mini']) {
+    min-height: 40px;
+    width: 240rpx;
+    margin-left: auto;
+    margin-right: auto;
+    
+    }
+    
+
+.bottom text {
+    font-size: 34rpx;
+    color: #333333;
+}
+
+.get-user {
+    position: absolute;
+    top: 0;
+    height: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.scope-popwindow {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: white;
+    width: 80%;
+}
+
+.scope-title {
+    color: #333;
+    font-size: 40rpx;
+    padding: 20rpx 0;
+    text-align: center;
+}
+
+.scope-divider {
+    background: #ccc;
+    width: 100%;
+    height: 2rpx;
+}
+
+.scope-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40rpx 0;
+}
+
+.scope-image {
+    width: 70rpx;
+}
+
+.scope-dot {
+    width: 10rpx;
+    height: 10rpx;
+    background: #666;
+    border-radius: 100rpx;
+}
+
+.scope-notify {
+    color: #333;
+    font-size: 32rpx;
+    padding-top: 22rpx;
+    text-align: center;
+}
+
+.scope-info {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.scope-info-content {
+    color: #666;
+    font-size: 24rpx;
+    padding-top: 10rpx;
+    padding-left: 10rpx;
+    text-align: center;
+}
+
+.scope-button {
+  color: #2086ee;
+}

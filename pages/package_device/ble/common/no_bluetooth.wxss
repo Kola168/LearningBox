@@ -1,0 +1,45 @@
+/* pages/searchEquipmentBlueTeethNone/searchEquipmentBlueTeethNone.wxss */
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.equipment-desc {
+    font-size: 32rpx;
+    color: #666666;
+    text-align: center;
+    margin: 40rpx 0 0 0;
+}
+
+.search-equipment {
+    width: 90%;
+    padding: 10rpx 0;
+    background-color: #ffe27a;
+    font-size: 32rpx;
+    color: #333333;
+    margin-top: 160rpx;
+    border-radius: 1000rpx;
+}
+
+.ble {
+    width: 40%;
+    margin-top: 160rpx;
+}
+
+.cont-title-alert {
+    color: #FF583D;
+    margin-top: 20rpx;
+}
+
+.bluetooth-intro {
+    position: absolute;
+    width: 100%;
+    left: 0;
+    bottom: 34rpx;
+    text-align: center;
+    color: #ffa200;
+    font-size: 28rpx;
+}

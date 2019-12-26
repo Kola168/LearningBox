@@ -1,0 +1,11 @@
+<!--pages/error_book/pages/error_book/use_page.wxml-->
+<nav-bar background="#fff" title="使用指南"></nav-bar>
+<view class="title">
+    <view>如何正确使用错题本</view>
+    <view>帮助孩子快速整理错题</view>
+    <view>随时随地复习？</view>
+</view>
+<view class="content-wrap">
+    <image mode="widthFix" src="../images/error_book_use_title.png"></image>
+    <video src="https://cdn.gongfudou.com/miniapp/ec/video/error_book2.mp4" autoplay='true' class='video'></video>
+</view>

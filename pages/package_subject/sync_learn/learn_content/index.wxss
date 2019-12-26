@@ -1,0 +1,64 @@
+/* pages/package_subject/sync_learn/learn_content/index.wxss */
+
+.content-main {
+  width: 100%;
+  overflow: hidden;
+}
+
+.content-main scroll-view {
+  white-space: nowrap;
+  padding-left: 36rpx;
+}
+
+.content-main .tab-item {
+  display: inline-block;
+  min-width: 100rpx;
+  margin-right: 70rpx;
+  width: fit-content;
+  text-align: center;
+}
+
+.content-main .tab-name {
+  color: #666;
+  font-size: 32rpx;
+}
+
+.content-main .tab-line {
+  margin: 20rpx auto 0;
+  width: 28rpx;
+  height: 4rpx;
+  border-radius: 2rpx;
+}
+
+.content-main .active {
+  color: #FFA200;
+}
+
+.active-line {
+  background-color: #FFA200;
+}
+
+.notice-card {
+  margin: 40rpx 24rpx 0 24rpx;
+  position: relative;
+  width: calc( 100% - 48rpx );
+  height: 134rpx;
+}
+
+.notice-card .nav-text {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 70%;
+  height: 100%;
+  line-height: 124rpx;
+  color: #FFA200;
+  font-size: 24rpx;
+  padding-left: 27%;
+}
+
+
+.form-main {
+  padding: 60rpx;
+  min-height: 400rpx;
+}

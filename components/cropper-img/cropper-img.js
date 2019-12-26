@@ -8,7 +8,8 @@ import cropperEntry from './common/cropperEntry'
 import { getLogger } from '../../utils/logger'
 const logger = new getLogger('components/cropper-img/cropper-img')
 import {
-  cropperTypes
+  cropperTypes,
+  canvasIds
 } from './common/config'
 
 var componentsData = {
@@ -16,6 +17,7 @@ var componentsData = {
     ...props
   },
   data: {
+    canvasIds: canvasIds,
     cropperMovableItems: [], // 多点坐标信息
     cropperData: {
       hidden: true,
@@ -117,6 +119,7 @@ var componentsData = {
           },
           cropCallback: callback, //设置裁剪完成回调
         })
+        console.log(cropperData,'cropperData')
         _this.setData({
           cropperData
         }, () => {
@@ -238,7 +241,7 @@ var componentsData = {
           height: height
         })
       // 移动区域
-      _this.moveCtx = wx.createCanvasContext("moveCanvas", _this)
+      _this.moveCtx = wx.createCanvasContext(`moveCanvas_${this.data.cropperData.mode}`, _this)
 
       _this.setData(updateData, () => {
         _this.drawShape(cropperData.cropCallback) // 开始绘制边框和移动点

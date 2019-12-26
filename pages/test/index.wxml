@@ -1,11 +1,8 @@
-<!--
- * @Author: your name
- * @Date: 2019-12-04 09:54:39
- * @LastEditTime: 2019-12-04 10:00:41
- * @LastEditors: Please set LastEditors
- * @Description: In User Settings Edit
- * @FilePath: /LearningBox/pages/test/index.wxml
- -->
-<navigator target="miniProgram" open-type="exit">
+<!-- <navigator target="miniProgram" open-type="exit">
 	<button class="exit">打开绑定的小程序</button>
-	</navigator>
+	</navigator> -->
+
+
+
+
+	<image src="https://micro.obs.cn-east-2.myhuaweicloud.com/LearningBox/feature/folder_share_img.jpg" mode="widthFix" class="equip-img" bindtap="tobox"></image>

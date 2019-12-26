@@ -1,0 +1,83 @@
+page {
+  margin-top: 30rpx;
+}
+
+.top {
+  display: flex;
+  align-items: center;
+  margin-bottom: 30rpx;
+}
+
+.border {
+  width: 6rpx;
+  height: 28rpx;
+  background: #ffc35b;
+  margin: 0 8rpx 0 26rpx;
+}
+
+.title {
+  font-size: 30rpx;
+  color: #454545;
+}
+
+.con {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 0 20rpx 24rpx;
+}
+
+.content {
+  border: 2rpx solid #ededed;
+  border-radius: 164rpx;
+  font-size: 30rpx;
+  color: #333;
+  text-align: center;
+  padding: 14rpx 40rpx;
+  margin: 0 20rpx 20rpx 0;
+}
+
+.active-tab {
+  background: #FFE27A;
+}
+
+.img {
+  width: 240rpx;
+  margin-right: 20rpx;
+  vertical-align: top;
+  position: relative;
+    border: 2rpx solid #fff;
+}
+
+.text {
+  font-size: 22rpx;
+  text-align: center;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 40rpx;
+  line-height: 40rpx;
+  background: #E4E4E4;
+  color: #333;
+}
+
+.border1 {
+  border: 2rpx solid #FFE27A;
+}
+
+.bg {
+  background: #FFE27A;
+}
+
+.btn {
+  width: 100%;
+  height: 100rpx;
+  background: #ffe27a;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+}
+
+.btn button {
+  height: 100rpx;
+  line-height: 100rpx;
+}
