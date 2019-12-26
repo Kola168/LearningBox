@@ -1,7 +1,7 @@
 const app = getApp()
 const event = require('../../../lib/event/event')
 import { regeneratorRuntime, co, util, wxNav } from '../../../utils/common_import'
-import graphql from '../../../network/graphql_request'
+import graphql from '../../../network/graphql/device'
 Page({
   data: {
     device: {

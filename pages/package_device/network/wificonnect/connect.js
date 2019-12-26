@@ -10,7 +10,7 @@ const showModal = util.promisify(wx.showModal)
 const getNetworkType = util.promisify(wx.getNetworkType)
 
 import wxNav from '../../../../utils/nav.js'
-import graphql from '../../../../network/graphql_request'
+import graphql from '../../../../network/graphql/device'
 
 Page({
 
