@@ -326,22 +326,6 @@ const graphqlApi = {
   },
 
   /**
-   * 创建订单
-   * @param { Object } orderParams 订单参数
-   */
-  createOrder: (orderParams) => {
-    return gql.mutate({
-      mutation: `mutation ($input: CreateOrderInput!){
-        createOrder(input:$input){
-          state
-        }
-      }`,
-      variables: {
-        input: orderParams
-      }
-    })
-  },
-  /**
    * 课程列表
    * *@param { CategoryEnum } type 请求类型
    */
@@ -1732,30 +1716,7 @@ const graphqlApi = {
         }`
       })
     },
-    /**
-     * 获取打印机能力
-     * @param { String } featureKey
-     */
-    getPrinterCapability: (featureKey) => {
-      return gql.query({
-        query: `query($featureKey: String!) {
-          currentUser{
-            selectedDevice {
-              capability(featureKey:$featureKey) {
-                borderless
-                color
-                highQuality
-                duplex
-              }
-            }
-          }
-        }`,
-        variables: {
-          featureKey:featureKey
-        }
-      })
-    },
-    
+
     /**
      * 获取错题列表
      *
