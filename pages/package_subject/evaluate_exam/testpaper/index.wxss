@@ -1,25 +1,40 @@
 /* 版本选择 */
 
-.editions {
+.filters {
   position: relative;
+  width: 100%;
+  display: flex;
   z-index: 1000;
+  border-bottom: 20rpx solid #f7f7f7;
 }
 
-.edition-active {
+.filters-item {
   height: 50px;
+  width: 50%;
   display: flex;
   align-items: center;
   font-size: 26rpx;
   color: #666;
-  padding: 0 24rpx;
+  justify-content: center;
 }
 
-.edition-active image {
+.filters-active {
+  height: 50px;
+  display: flex;
+  width: 100%;
+  align-items: center;
+  font-size: 26rpx;
+  color: #FFA200;
+  padding-left: 24rpx;
+}
+
+.filters-active image,
+.filters-item image {
   width: 18rpx;
   margin-left: 16rpx;
 }
 
-.edition-cover {
+.filters-cover {
   position: fixed;
   left: 0;
   top: 0;
@@ -29,19 +44,27 @@
   z-index: 1000;
 }
 
-.edition-list {
+
+
+.filters-list {
   position: absolute;
   left: 0;
   padding: 0 24rpx;
   width: calc(100% - 48rpx);
   z-index: 600;
   background: #fff;
+  max-height: 500rpx;
+  overflow: scroll;
 }
 
 .list-box {
   font-size: 30rpx;
   color: #333;
   margin: 30rpx 0;
+}
+
+.filters-active-color {
+  color: #FFA200;
 }
 
 
@@ -53,8 +76,8 @@
   font-size: 32rpx;
   color: #666666;
   white-space: nowrap;
-  padding-left: 30rpx;
-  border-top: 20rpx solid #f7f7f7;
+  width: calc(100% - 60rpx);
+  margin: 0 30rpx;
 }
 
 .tab-box {
