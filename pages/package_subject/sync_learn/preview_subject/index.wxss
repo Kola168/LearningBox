@@ -1,0 +1,66 @@
+/* pages/package_subject/sync_learn/preview_subject/index.wxss */
+
+.preview-main {
+  width: 100%;
+}
+
+.preview-main .swpier-box {
+  height: 70vh;
+  overflow: hidden;
+  margin: 40rpx 56rpx 30rpx;
+}
+
+.preview-main swiper-item {
+  width: 100%;
+  height: 70vh;
+}
+
+.img-item {
+  margin:10rpx auto;
+  width: 98%;
+  min-height: 68vh;
+  box-shadow: 0 0 10px rgba(204,204,204,0.30);
+}
+
+.precent {
+  margin: 30rpx 0 0 24rpx;
+  color: #666666;
+  font-size: 28rpx;
+}
+
+.btn-bottom {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  z-index: 10;
+  display: flex;
+  width: 100%;
+  height: 98rpx;
+  font-size: 36rpx;
+  border-top: 2rpx solid #E7E7E7;
+  background-color: #fff;
+}
+
+.btn-bottom .print-answer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  height: 98rpx;
+  color: #666666;
+}
+
+.btn-bottom image {
+  width: 40rpx;
+  height: 40rpx;
+  margin-right: 20rpx;
+}
+
+.btn-bottom .confirm-print {
+  flex: 1;
+  height: 98rpx;
+  line-height: 98rpx;
+  text-align: center; 
+  color: #333333;
+  background-color: #FFDC5E;
+}

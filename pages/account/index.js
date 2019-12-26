@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2019-12-12 19:34:39
- * @LastEditTime: 2019-12-17 09:46:12
+ * @LastEditTime: 2019-12-25 16:32:47
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /LearningBox/pages/account/index.js
@@ -14,22 +14,40 @@ import {
   util,
   wxNav
 } from '../../utils/common_import.js'
-
-const getUserInfo = util.promisify(wx.getUserInfo)
+import storage from '../../utils/storage'
+const event = require('../../lib/event/event')
 
 Page({
   data: {
     kidInfo: null,
     activeDevice: null
   },
-  onLoad: function(options) {
+  onLoad: function (options) {
     this.longToast = new app.weToast()
+    event.on('Authorize', this, () => {
+      this.userSn = storage.get('userSn')
+      this.getUserInfo()
+    })
+
   },
-  onShow: co.wrap(function*() {
-    yield this.getUserInfo()
+  onShow: co.wrap(function* () {
+    let userSn = storage.get('userSn')
+    this.userSn = userSn
+    let isAuth = yield this.authCheck()
+    if (isAuth) {
+      yield this.getUserInfo()
+    }
+  }),
+  authCheck: co.wrap(function* () {
+    if (!this.userSn) {
+      wxNav.navigateTo('/pages/authorize/index')
+      return false
+    } else {
+      return true
+    }
   }),
 
-  getUserInfo: co.wrap(function*() {
+  getUserInfo: co.wrap(function* () {
     this.longToast.toast({
       type: "loading",
       duration: 0
@@ -47,10 +65,10 @@ Page({
     }
   }),
 
-  toNext(e){
+  toNext(e) {
     let pageKey = e.currentTarget.id,
-    url = ''
-    switch(pageKey){
+      url = ''
+    switch (pageKey) {
       case 'records':
         url = '/pages/package_common/records/index/index'
         break;
@@ -64,6 +82,20 @@ Page({
         url = '/pages/package_common/account/personal_info'
         break;
     }
-    wxNav.navigateTo(url,{})
+    wxNav.navigateTo(url, {})
+	},
+	
+	onlineGuest: co.wrap(function*() {
+    let isAuth = yield this.checkIsScope()
+    if (isAuth) {
+      let url = 'https://gfd178.udesk.cn/im_client/?web_plugin_id=63138'
+      wx.navigateTo({
+        url: `/pages/webview/index?url=${encodeURIComponent(url)}`
+      })
+    }
+  }),
+	
+	onUnload() {
+    event.remove('Authorize', this)
   }
 })

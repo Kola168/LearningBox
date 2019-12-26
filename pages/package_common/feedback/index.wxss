@@ -1,0 +1,138 @@
+page {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.top-types {
+    font-size: 16px;
+    color: #333333;
+    padding: 30rpx 24rpx;
+}
+
+.type-list {
+    display: flex;
+    flex-wrap: wrap;
+    font-size: 28rpx;
+    color: #666666;
+    padding-left: 24rpx;
+}
+
+.type-item {
+    border: 2rpx solid #CECECE;
+    border-radius: 16px;
+    padding: 12rpx 28rpx;
+    margin: 0 20rpx 20rpx 0;
+}
+
+.choose-type {
+    background-color: #FFE27A;
+    color: #000;
+    border: 2rpx solid #FFE27A;
+}
+
+.recommend {
+    font-size: 32rpx;
+    padding: 20rpx 0 20rpx 24rpx;
+    color: #666666;
+}
+
+.content {
+    display: flex;
+    justify-content: center;
+    position: relative;
+}
+
+.content-input {
+    background-color: #f9f9f9;
+    border: 1rpx solid #eeeded;
+    width: 702rpx;
+    height: 280rpx;
+    font-size: 28rpx;
+    box-sizing: border-box;
+    position: relative;
+    padding: 20rpx 24rpx;
+    border-radius: 8rpx;
+}
+
+.word {
+    position: absolute;
+    right: 50rpx;
+    bottom: 16rpx;
+    font-size: 28rpx;
+    color: #a3a3a3;
+}
+
+.contact {
+    font-size: 32rpx;
+    padding: 40rpx 0 20rpx 24rpx;
+    color: #333;
+}
+
+.tel {
+    display: flex;
+    justify-content: center;
+}
+
+.tel-input {
+    background-color: #f9f9f9;
+    border: 1rpx solid #eeeded;
+    width: 702rpx;
+    height: 80rpx;
+    font-size: 28rpx;
+    box-sizing: border-box;
+    padding-left: 24rpx;
+    border-radius: 8rpx;
+}
+
+.submit {
+    width: 702rpx;
+    background-color: #FFE27A;
+    color: #000;
+    border-radius: 49rpx;
+    margin: 64rpx 0 60rpx 24rpx;
+}
+
+.bottom {
+    width: 100%;
+    font-size: 28rpx;
+    color: #666;
+    text-align: center;
+    padding-bottom: 70rpx;
+}
+
+.bottom-item {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 30rpx;
+}
+
+.bottom-item view {
+    /* width: 50%; */
+    text-align: right;
+}
+
+.bottom-item .content {
+    display: flex;
+    justify-content: flex-start;
+    color: #FFC35B;
+}
+
+.btn {
+    background: #FFE27A;
+    width: 60rpx;
+    height: 35rpx;
+    display: flex;
+    margin-left: 10rpx;
+    border-radius: 5rpx;
+}
+
+view button {
+    width: 60rpx;
+    height: 35rpx;
+    line-height: 6rpx;
+    color: #000;
+    font-size: 20rpx;
+}

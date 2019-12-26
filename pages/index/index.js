@@ -296,6 +296,6 @@ Page({
     }
   }),
   toBindDevice: function () {
-    router.navigateTo('/pages/package_device/network/index/index')
+    wxNav.navigateTo('/pages/package_device/network/index/index')
   }
 })

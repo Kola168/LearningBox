@@ -1,0 +1,8 @@
+{
+  "disableScroll": false,
+  "enablePullDownRefresh": false,
+  "navigationBarTitleText": "小白智慧打印",
+  "usingComponents": {
+    "consumables": "../../../components/consumables/index"
+  }
+}

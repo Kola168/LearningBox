@@ -64,12 +64,15 @@ Page({
     try {
       yield graphql.updateDeviceSetting(this.deviceSn, {
         [setKey]: setVal
-      }, setKey)
+      }, setKey).then(function(res) {
+				console.log('更新系统设置=====',res)
+			})
       this.setData({
         [`device.${setKey}`]: setVal
       })
       this.weToast.hide()
     } catch (error) {
+			console.log(error)
       this.weToast.hide()
       util.showError(error)
     }

@@ -1,11 +1,3 @@
-/*
- * @Author: your name
- * @Date: 2019-12-10 09:11:17
- * @LastEditTime: 2019-12-10 18:14:34
- * @LastEditors: Please set LastEditors
- * @Description: In User Settings Edit
- * @FilePath: /LearningBox/pages/package_device/network/index/index.js
- */
 // pages/network/index.js
 import wxNav from '../../../../utils/nav.js'
 var app =getApp()
@@ -23,7 +15,11 @@ Page({
     wxNav.navigateTo('/pages/package_device/network/tips/step1')
   },
 
-  onShareAppMessage: function() {
+	toL3115:function(){
+		wxNav.navigateTo('/pages/package_device/ble/printer/index')
+	},
+	
+	onShareAppMessage: function() {
 
   }
 })

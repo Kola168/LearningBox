@@ -16,7 +16,7 @@ Page({
     documentPrintNum: 1,
     startPrintPage: 1,
     endPrintPage: 1,
-    colorCheck: 'Color', //默认彩色
+    colorCheck: true, //默认彩色
     duplexCheck: false,
     previewUrl: '',
     endMaxPage: 1, //最大页数
@@ -27,7 +27,7 @@ Page({
     optionsMedium: 'A5打印纸',
     fileIndex: 0,
     isExcel: true,
-    colorModes: 2,
+    color: false,
     isColorPrinter: true,
     isDuplex: true,
     startPage: 1,
@@ -61,16 +61,19 @@ Page({
       let tempData = {
         fileTitle: util.resetFiles(query.name),
         fileIndex: query.fileIndex,
-        colorModes: query.colorModes,
-        media_sizes: query.media_sizes,
+        color: query.color,
+        grayscale: query.grayscale,
+        duplex: query.duplex,
+        colorCheck: query.color,
         duplexCheck: query.duplexCheck,
         previewUrl: query.url,
         endMaxPage: query.page_count,
         totalPage: query.page_count,
       }
       if (query.isSetting) {
-        tempData.startPrintPage = query.startPage
         tempData.colorCheck = query.colorCheck
+        tempData.startPrintPage = query.startPage
+        tempData.color = query.color
         tempData.endPrintPage = query.endPage
         tempData.startPage = query.startPage
         tempData.endPage = query.endPage
@@ -116,7 +119,7 @@ Page({
    */
   setStatus: co.wrap(function*() {
       //设置是否支持多面打印
-    if (this.query.media_sizes[0].duplex) {
+    if (this.query.duplex) {
       this.setData({
         isDuplex: true
       })
@@ -125,15 +128,15 @@ Page({
         isDuplex: false
       })
     }
-
     //黑白彩色模式
-    if (this.data.colorModes.length == 1) {
+    if (this.query.color && this.query.grayscale) {
+
       this.setData({
-        isColorPrinter: false
+        isColorPrinter: true
       })
     } else {
       this.setData({
-        isColorPrinter: true
+        isColorPrinter: false
       })
     }
   }),
@@ -176,7 +179,7 @@ Page({
    * @param {Object} e 
    */
   inputStartPage: function(e) {
-    this.data.startPage = e.detail.value
+    this.data.startPage = Number(e.detail.value)
   },
 
   /**
@@ -197,7 +200,7 @@ Page({
       })
       
     } else {
-      this.data.startPrintPage = e.detail.value
+      this.data.startPrintPage = Number(e.detail.value)
     }
   },
 
@@ -206,7 +209,7 @@ Page({
    * @param {Object} e 
    */
   inputEndPage(e) {
-    this.data.endPage = e.detail.value
+    this.data.endPage = Number(e.detail.value)
   },
 
   /**
@@ -229,7 +232,7 @@ Page({
       })
       
     } else {
-      this.data.endPrintPage = e.detail.value
+      this.data.endPrintPage = Number(e.detail.value)
     }
   },
 
@@ -238,8 +241,9 @@ Page({
    * @param {Object} e 
    */
   colorCheck(e) {
+    console.log(e.currentTarget.dataset.style,'=xxx===')
     this.setData({
-      colorCheck: e.currentTarget.dataset.style
+      colorCheck: Boolean(Number(e.currentTarget.dataset.style))
     })
   },
 
@@ -288,10 +292,9 @@ Page({
     }
 
     let postData = {
-      grayscale: this.data.colorCheck == 'Color' ? false : true,
+      colorCheck: this.data.colorCheck,
       duplex: this.data.duplexCheck,
       copies: this.data.documentPrintNum,
-      // medium: this.data.medium,
       fileIndex: this.data.fileIndex,
       singlePageLayoutsCount: this.data.singlePageLayoutsCount,
       skipGs: this.data.checkOpen,

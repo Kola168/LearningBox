@@ -54,7 +54,7 @@ const graphqlApi = {
   },
 
   bindDevice: (deviceInfo) => {
-    return gql.mutate({
+    return gql.mutateCustomize({
       mutation: `mutation bindDevice($input: BindDeviceInput!){
         bindDevice(input:$input){
           device {
@@ -1715,7 +1715,23 @@ const graphqlApi = {
       }
       })
     },
-
+    getGrade: () => {
+      return gql.query({
+        query: `query {
+          currentUser {
+            sn
+            selectedKid{
+              sn
+              stage{
+                name
+                rootName
+                sn
+              }
+           }
+          }
+        }`
+      })
+    },
     /**
      * 获取打印机能力
      * @param { String } featureKey
@@ -1739,6 +1755,49 @@ const graphqlApi = {
         }
       })
     },
+    
+    /**
+     * 获取错题列表
+     *
+     */
+    getMistakes:()=>{
+
+    },
+
+    /**
+     * 文件预览
+     * @param { String } fileUrl
+     */
+    getFilePreview: (fileUrl) => {
+      return gql.query({
+        query: `query($fileUrl: String!) {
+          filePreview{
+            convertedUrl
+            landscape
+            pages
+          }
+        }`,
+        variables: {
+          fileUrl:fileUrl
+        }
+      })
+    },
+    /**
+   * 意见反馈
+   */
+  createFeedback: (params) => {
+    return gql.mutate({
+      mutation: `mutation createFeedback($input: CreateFeedbackInput!){
+        createFeedback(input:$input){
+          state
+        }
+      }`,
+      variables: {
+        input: params
+      }
+    })
+  },
+
 
 }
 

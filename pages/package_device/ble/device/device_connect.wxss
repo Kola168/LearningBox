@@ -1,0 +1,57 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.step {
+    width: 50%;
+}
+
+.icon-success {
+    width: 120rpx;
+    margin: 40rpx 0 28rpx;
+}
+
+.desc {
+    font-size: 34rpx;
+    color: #666666;
+}
+
+.search-equipment {
+    width: 90%;
+    padding: 10rpx 0;
+    background-color: #ffe27a;
+    font-size: 32rpx;
+    color: #333333;
+    margin-top: 100rpx;
+    border-radius: 1000rpx;
+}
+
+.bind-equipment {
+    width: 90%;
+    padding: 10rpx 0;
+    background-color: #ffffff;
+    font-size: 32rpx;
+    color: #929292;
+    margin-top: 40rpx;
+    border-radius: 1000rpx;
+    border: 2rpx solid #8d8d8d;
+}
+
+.device-img {
+    width: 50%;
+    margin: 38rpx 0 28rpx;
+}
+
+.equip-tip {
+    font-size: 30rpx;
+    color: #666666;
+    line-height: 50rpx;
+}
+
+.equipment-name {
+    font-size: 30rpx;
+    color: #666666;
+}

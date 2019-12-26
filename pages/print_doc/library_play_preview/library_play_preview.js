@@ -673,7 +673,7 @@ Page({
 
 	//输入打印起始页
 	inputStartPage: function (e) {
-		this.data.startPrintPage = e.detail.value
+		this.data.startPrintPage = Number(e.detail.value)
 	},
 
 	startPageJudge: function (e) {
@@ -691,13 +691,13 @@ Page({
 			
 		} else {
       logger.info('==打印起始页===', e.detail.value)
-			this.data.startPrintPage = e.detail.value
+			this.data.startPrintPage = Number(e.detail.value)
 		}
 	},
 
 	//输入打印结束页
 	inputEndPage(e) {
-		this.data.endPrintPage = e.detail.value
+		this.data.endPrintPage = Number(e.detail.value)
 	},
 
 	endPageJudge(e) {
@@ -713,7 +713,7 @@ Page({
 			})
 			return
 		} else {
-			this.data.endPrintPage = e.detail.value
+			this.data.endPrintPage = Number(e.detail.value)
 		}
 	},
 
