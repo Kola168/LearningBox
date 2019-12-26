@@ -1,21 +1,12 @@
 <!--
  * @Author: your name
  * @Date: 2019-12-25 10:47:37
- * @LastEditTime: 2019-12-25 11:22:46
- * @LastEditors: your name
+ * @LastEditTime: 2019-12-26 11:49:03
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /LearningBox/pages/package_feature/memory_write/chinese/print.wxml
  -->
 
-<<<<<<< HEAD
-<!-- <wxs src="../../../../commonwxs/common.wxs" module="foo" /> -->
-<nav-bar title="语文默写"></nav-bar>
-<view class="img-wrap">
-  <swiper current="{{currentImgIndex}}" bindchange="tabSlide" circular="{{false}}" class="swiper-wrap">
-    <!-- <swiper-item class='img-box' wx:for="{{images}}" wx:key="{{index}}">
-      <image src="{{foo.addProcess(item,'/resize,w_750')}}" mode="widthFix"></image>
-    </swiper-item> -->
-=======
 <!-- <wxs src="/utils/common.wxs" module="foo" /> -->
 <nav-bar title="语文默写"></nav-bar>
 <view class="img-wrap">
@@ -23,7 +14,6 @@
     <swiper-item class='img-box' wx:for="{{images}}" wx:key="{{index}}">
       <image src="{{item}}?x-image-process=image/resize,w_400" mode="widthFix"></image>
     </swiper-item>
->>>>>>> develop-zhaoyf
   </swiper>
   <view class="img-ctrl flex align-center">
     <image class="img-prew" src="/images/doc_preview_turn_left.png" bindtap="turnImg" data-turn='prev' />
