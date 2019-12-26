@@ -163,7 +163,9 @@
       "root": "pages/package_subject",
       "pages": [
         "sync_learn/index/index",
-        "sync_learn/learn_content/index"
+        "sync_learn/learn_content/index",
+        "evaluate_exam/index/index",
+        "evaluate_exam/testpaper/index"
       ]
     },
     {

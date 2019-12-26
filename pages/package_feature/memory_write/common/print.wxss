@@ -85,7 +85,7 @@
 }
 
 .confirm-print {
-  background: #ffe27a;
+  background: ##FFDC5E;
 }
 
 .confirm-print form,

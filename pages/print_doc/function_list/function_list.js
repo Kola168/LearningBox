@@ -35,14 +35,12 @@ Page({
         this.weToast.hide()
         util.showError(error)
       }
-    } else {
+    } else if (type === 'longPress') {
       wxNav.navigateTo('/pages/print_doc/start/start')
+    } else if (type === 'other') {
+      wxNav.navigateTo('/pages/print_doc/otherIndex/otherIndex')
     }
   }),
-
-  otherPrint() {
-    wxNav.navigateTo('/pages/print_doc/otherIndex/otherIndex')
-  },
 
   onShareAppMessage: function() {
     return app.share

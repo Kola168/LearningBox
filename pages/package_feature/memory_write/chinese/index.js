@@ -61,23 +61,23 @@ Page({
   }),
   navTap(e) {
     let type = e.currentTarget.id
-    this.page = 1
-    this.pageEnd = false
     this.setData({
-      allCheck: false,
       currentType: type,
-      isEmpty: false,
-      writeList: []
     })
-    this.getWriteList()
+    this.resetData()
   },
   selectorItemCheck(e) {
     let index = e.currentTarget.id
+    this.setData({
+      currentGrade: this.data.grades[index]
+    })
+    this.resetData()
+  },
+  resetData(){
     this.page = 1
     this.pageEnd = false
     this.setData({
       allCheck: false,
-      currentGrade: this.data.grades[index],
       isEmpty: false,
       writeList: []
     })

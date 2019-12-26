@@ -1,13 +1,13 @@
 <nav-bar background="#fff" title="文档打印" />
 <view class="doc-container">
-	<!-- <view class="item-print local-top" bindtap="toNext" id="longPress">
-		<image class="item-print-icon" mode="widthFix" src="/images/doc_doc_more_long.png" />
+	<view class="item-print local-top" bindtap="toNext" id="longPress">
+		<image class="item-print-icon" mode="widthFix" src="/images/doc_more_long.png" />
 		<view class="item-print-text">
 			<text class="title">长按文档打印</text>
 			<text class="content text-top">最便捷的微信文档打印方式</text>
 		</view>
 		<image class="item-arrow" src="/images/doc_item_arrow.png" mode="widthFix" />
-	</view> -->
+	</view>
 	<view class="item-print local-top" bindtap="toNext" id="baiduPrint">
 		<image class="item-print-icon" mode="widthFix" src="/images/doc_more_baidu.png" />
 		<view class="item-print-text">
@@ -16,7 +16,7 @@
 		</view>
 		<image class="item-arrow" src="/images/doc_item_arrow.png" mode="widthFix" />
 	</view>
-	<view class="item-print local-top" bindtap="otherPrint">
+	<view class="item-print local-top" bindtap="toNext" id="other">
 		<image class="item-print-icon" mode="widthFix" src="/images/doc_more_other_app.png" />
 		<view class="item-print-text">
 			<text class="title">其它APP内的文档打印</text>
