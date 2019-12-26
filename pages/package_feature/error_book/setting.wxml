@@ -3,7 +3,7 @@
   <view class='title'>打印顺序</view>
 </view>
 <view class='con'>
-  <view wx:for="{{order}}" wx:key="{{index}}" id='{{index}}'>
+  <view wx:for="{{order}}" wx:key="order" id='{{index}}'>
     <view class="content {{orderId==index?'active-tab':''}}" bindtap='chooseOrder' id='{{index}}'>{{item}}</view>
   </view>
 </view>
@@ -13,7 +13,7 @@
   <view class='title'>打印模板</view>
 </view>
 <view class='con'>
-  <view wx:for="{{template}}" wx:key="{{index}}" id='{{index}}' bindtap='chooseTemplate'>
+  <view wx:for="{{template}}" wx:key="template" id='{{index}}' bindtap='chooseTemplate'>
     <image class="img {{templateId==index?'border1':''}}" mode='widthFix' src='{{item.url.url}}'>
       <view class="text {{templateId==index?'bg':''}}">{{item.category=='single'?'1页1题':'1页2题'}}</view>
       <view></view>

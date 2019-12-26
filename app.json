@@ -131,7 +131,8 @@
         "error_book/use_page",
         "error_book/camera",
         "error_book/edit_pic",
-        "kousuan/index"
+        "kousuan/index",
+        "error_book/topic_details"
       ]
     },
     {

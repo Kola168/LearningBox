@@ -20,6 +20,7 @@ Page({
         showConfirmModal: null,
         //选择题目数
         middlearr: [],
+        array:[],
         num: 1,
         order: "ASC",
         template_id: '',
@@ -51,45 +52,46 @@ Page({
         })
         console.log("课程", this.data.course)
         let params = {
-            'openid': app.openId,
             'course': this.data.course,
             'answer':this.data.answer
         }
         console.log("params", params)
         try {
-            const resp = yield request({
-                url: app.apiServer + `/ec/v2/mistakes?openid=${app.openId}`,
-                method: 'GET',
-                dataType: 'json',
-                data: params
-            })
-            if (resp.data.code != 0) {
-                throw (resp.data)
-            }
-            console.log('错题本列表====', resp.data)
+            const resp=yield gql.getMistakes()
+            // const resp = yield request({
+            //     url: app.apiServer + `/ec/v2/mistakes?openid=${app.openId}`,
+            //     method: 'GET',
+            //     dataType: 'json',
+            //     data: params
+            // })
+            // if (resp.data.code != 0) {
+            //     throw (resp.data)
+            // }
+
+            // console.log('错题本列表====', resp.data)
                 // if (resp.data.mistakes.length == 0) {
                 //   this.setData({
                 //     noEntry: true
                 //   })
                 // }
-            this.setData({
-                array: resp.data.mistakes,
-                middlearr: [],
-            })
+            // this.setData({
+            //     array: resp.data.mistakes,
+            //     middlearr: [],
+            // })
 
-            var con = []
-            for (let i = 0; i < this.data.array.length; i++) {
-                for (let j = 0; j < this.data.array[i].content.length; j++) {
-                    con.push(this.data.array[i].content[j])
-                    this.data.array[i].content[j].checked = false
-                    this.setData({
-                        // middlearr: con,
-                        array: this.data.array,
-                        allNum: con.length
-                    })
-                }
-            }
-            console.log('-----------', this.data.array)
+            // var con = []
+            // for (let i = 0; i < this.data.array.length; i++) {
+            //     for (let j = 0; j < this.data.array[i].content.length; j++) {
+            //         con.push(this.data.array[i].content[j])
+            //         this.data.array[i].content[j].checked = false
+            //         this.setData({
+            //             // middlearr: con,
+            //             array: this.data.array,
+            //             allNum: con.length
+            //         })
+            //     }
+            // }
+            // console.log('-----------', this.data.array)
             this.longToast.hide()
         } catch (e) {
             this.longToast.hide()
@@ -99,6 +101,7 @@ Page({
 
     //筛选
     choose: function() {
+        router.navigateTo('/pages/package_feature/error_')
         wx.navigateTo({
             url: `choose?course=${this.data.course}`,
         })

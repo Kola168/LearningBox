@@ -24,6 +24,9 @@ Page({
         }
         this.longToast = new app.weToast()
         this.options = options
+        // error_book:错题本首次上传图片
+        // topic_details:错题详情页补充图片
+        // photoAnswer:拍搜
         this.from = options.from
     }),
     getAuth: co.wrap(function* () {
@@ -73,7 +76,8 @@ Page({
                     quality: 'high',
                     success: function (res) {
                         router.redirectTo('pages/package_feature/error_book/edit_pic', {
-                            url: res.tempImagePath
+                            url: res.tempImagePath,
+                            from: this.from
                         })
                     }
                 })
@@ -85,7 +89,8 @@ Page({
                 })
                 console.log('相册', res)
                 router.redirectTo('pages/package_feature/error_book/edit_pic', {
-                    url: res.tempImagePath
+                    url: res.tempImagePath,
+                    from: this.from
                 })
             }
         } catch (e) {

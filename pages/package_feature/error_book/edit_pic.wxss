@@ -7,7 +7,7 @@ page {
 }
 
 .top {
-    background: #7F7F7F;
+    background: #2F2F2F;
     width: 100%;
     height: 77%;
     color: #fff;
@@ -18,20 +18,22 @@ page {
 }
 
 .top-tip {
+    font-family: PingFangSC-Regular;
     position: relative;
     z-index: 1000;
     display: flex;
     align-items: center;
     justify-content: center;
     color: #fff;
-    font-size: 32rpx;
+    font-size: 28rpx;
     height: 50px;
+    letter-spacing: -1.08px;
 }
 
 .icon_edit {
-    height: 44rpx;
-    width: 44rpx;
-    margin-right: 10rpx;
+    height: 50rpx;
+    width: 50rpx;
+    margin-right: 18rpx;
 }
 
 .top_text {

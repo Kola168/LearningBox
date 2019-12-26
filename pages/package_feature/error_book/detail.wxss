@@ -152,6 +152,7 @@ page {
   height: 100rpx;
   line-height: 100rpx;
   background: #ffe27a;
+  padding:0
 }
 
 .modal-wrap {
