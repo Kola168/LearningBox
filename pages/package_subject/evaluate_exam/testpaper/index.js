@@ -36,8 +36,6 @@ Page({
   },
   onLoad: co.wrap(function*(query) {
     this.weToast = new app.weToast()
-      // this.page = 1
-      // this.isEnd = false
     this.subjectId = Number(query.id)
     this.setData({
       topBarHeight: app.navBarInfo.topBarHeight + 50
@@ -45,7 +43,6 @@ Page({
     yield this.getSubjectAreas()
     yield this.getSubjectPaperTypes()
     this.resetGetPapers()
-      // yield this.getSubjectPapers()
   }),
 
   // 显示版本或年级选择

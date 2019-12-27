@@ -91,6 +91,9 @@ const graphqlApi = {
         xuekewang {
           paperLists(subjectId:$subjectId,paperType:$paperType,areaId:$areaId,pageIndex:$pageIndex,pageSize:$pageSize){
             paperId
+            isPrint
+            isReport
+            printCount
             title
           }
         }

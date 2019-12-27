@@ -36,14 +36,15 @@
     <view class="papers-list">
       <view class="list-item" wx:for="{{paperList}}" wx:key="paperId" bindtap="toDetail" data-id="{{item.paperId}}">
         <view class="item-img">
-          <image src="../../images/pdf.png" mode="widthFix" />
+          <image src="../../images/pdf.png" class="img-main" mode="widthFix" />
+          <image src="../../images/printed_tag" class="img-print-tag" mode="widthFix" />
         </view>
         <view class="item-text">
           <view class="text-title text-overflow-points">{{item.title}}</view>
           <view class="text-count">
             <image class="count-logo" src="/images/doc_print_icon.png" mode="widthFix" />
-            <view>1493位同学已学习</view>
-            <image src="../../images/has_report.png" class="count-report" mode="widthFix" />
+            <view>{{item.printCount}}位同学已学习</view>
+            <image src="../../images/has_report.png" wx:if="{{item.isReport}}" class="count-report" mode="widthFix" />
           </view>
         </view>
       </view>
