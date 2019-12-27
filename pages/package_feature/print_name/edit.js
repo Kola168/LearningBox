@@ -57,7 +57,7 @@ Page({
       templateIndex:index
     })
     this.inputVal=Array(this.data.templateList[this.data.templateTypeIndex].attrsInfo.length).fill('')
-    if(this.data.templateList[this.data.templateTypeIndex].templates[this.data.templateIndex].uploadable){
+    if(!this.data.templateList[this.data.templateTypeIndex].templates[this.data.templateIndex].uploadable){
       return
     }
     this.setComponentData()
@@ -65,19 +65,20 @@ Page({
 
   setComponentData:function(){
     let templateItem=this.data.templateList[this.data.templateTypeIndex].templates[this.data.templateIndex].positionInfo
+    console.log(templateItem)
     this.setData({
       templateInfo:{
         modeSrc:this.data.templateList[this.data.templateTypeIndex].templates[this.data.templateIndex].imageUrl,
         modeSize:{
-          x:templateItem.areaX,
-          y:templateItem.areaY,
-          areaWidth:templateItem.areaWidth,
-          areaHeight:templateItem.areaHeight
+          x:Number(templateItem.areaX),
+          y:Number(templateItem.areaY),
+          areaWidth:Number(templateItem.areaWidth),
+          areaHeight:Number(templateItem.areaHeight)
         }
       },
       paperSize:{
-        width:templateItem.width,
-        height:templateItem.height,
+        width:Number(templateItem.width),
+        height:Number(templateItem.height),
         minLeftHeight:516,
         sider:150,
       }
@@ -99,6 +100,7 @@ Page({
       let templateItem=this.data.templateList[this.data.templateTypeIndex].templates[this.data.templateIndex]
       if(templateItem.uploadable){
         if(_.isEmpty(this.selectComponent("#mymulti").data.imgArr)){
+          this.longToast.toast()
           return wx.showModal({
             title: '提示',
             content: '请上传头像',

@@ -121,7 +121,8 @@
         "share_folder/share_manage",
         "share_folder/content",
         "share_folder/manage",
-        "kousuan/index"
+        "kousuan/index",
+        "kousuan/learningplan"
       ]
     },
     {

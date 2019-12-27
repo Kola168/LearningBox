@@ -244,7 +244,7 @@ Page({
     this.setData({
       imgList: this.data.imgList
     })
-    let choosedIndex = this.data.selectedIndex > index ? this.data.selectedIndex - 1 : (index == 0 ? 0 : this.data.selectedIndex)
+    let choosedIndex = this.data.selectedIndex >= index ? this.data.selectedIndex - 1 : (index == 0 ? 0 : this.data.selectedIndex)
     this.setData({
       selectedIndex: choosedIndex
     })
