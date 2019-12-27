@@ -1,6 +1,6 @@
-<nav-bar title="语文默写"></nav-bar>
+<nav-bar title="生子抄写"></nav-bar>
 <view class="intro" wx:if="{{showIntro}}">
-  <image src="https://cdn-h.gongfudou.com/LearningBox/feature/memory_write_chinese.png" mode="widthFix" />
+  <image src="https://cdn-h.gongfudou.com/LearningBox/feature/momory_write_szcx.png" mode="widthFix" />
   <view class="next" bindtap="startWrite">开始使用</view>
 </view>
 <view class="container" hidden="{{!loadReady||showIntro}}">
@@ -10,7 +10,13 @@
         <view class="{{showSelector?'option-on':''}}">{{currentGrade.name}}</view>
         <image src="../../images/arrow_bottom_trangle_{{showSelector?'on':'off'}}.png" />
       </view>
+      <!-- <image src="../../images/question.png" class="tips" bindtap="ctrlTip" /> -->
     </view>
+    <!-- <view class="nav flex align-center">
+      <view class="nav-item {{currentType===item.key?'nav-item-active':''}}" wx:for="{{types}}" wx:key="{{index}}" id="{{item.key}}" bindtap="navTap">
+        {{item.value}}
+      </view>
+    </view> -->
   </view>
   <view class="select-list" bindtap="ctrlSelector" hidden="{{!showSelector}}">
     <view class="list-box">
@@ -20,7 +26,7 @@
     </view>
   </view>
   <block wx:if="{{!isEmpty}}">
-    <view class="content" hidden="{{writeList.length===0}}">
+    <!-- <view class="content" hidden="{{currentType!==types[0].key || writeList.length===0}}">
       <view class="all-check" bindtap="allCheck">{{allCheck?'取消':'全选'}}</view>
       <view class="content-item" wx:for="{{writeList}}" wx:key="{{index}}" id="{{index}}" bindtap="checkUnit">
         <view class="item-title flex align-center">
@@ -37,10 +43,38 @@
         </view>
       </view>
       <view class="print {{checkCount===0?'unable':''}}" bindtap="toPrint">我要打印</view>
+    </view> -->
+    <view class="content" hidden="{{writeList.length===0}}">
+      <view class="content-box">
+        <view class="box-item" wx:for="{{writeList}}" wx:key="{{index}}" id="{{item.sn}}" bindtap="toPrint">
+          <view class="box-item-title">{{item.title}}</view>
+          <view class="box-item-count">打印次数{{item.print_count}}</view>
+        </view>
+      </view>
     </view>
+    <!-- <view class="content" hidden="{{currentType!==types[2].key}}">
+      <view class="content-box">
+        <view class="box-item" wx:for="{{writeList}}" wx:key="{{index}}" id="{{item.sn}}" bindtap="toPrint">
+          <view class="box-item-title">{{item.title}}</view>
+          <view class="box-item-count">打印次数{{item.print_count}}</view>
+        </view>
+      </view>
+    </view> -->
   </block>
   <view wx:else class="content-empty">暂无内容</view>
+  <!-- 弹窗 -->
+  <!-- <view class="cover" bindtap="ctrlTip" wx:if="{{showTip}}">
+    <view class="modal">
+      <view class="modal-title">名词说明</view>
+      <view class="modal-main">
+        <view>音默字：通过拼英的提示来默写汉字</view>
+        <view>生字抄写：每课的生字通过字帖的形式进行抄写</view>
+      </view>
+      <view class="modal-btn">我知道了</view>
+    </view>
+  </view> -->
 </view>
+
 <!-- loading -->
 <import src="/lib/toast/wetoast.wxml" />
 <template is="wetoast" data="{{...__wetoast__}}" />
