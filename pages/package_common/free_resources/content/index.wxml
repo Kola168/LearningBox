@@ -5,30 +5,6 @@
       <view wx:for="{{contentTypes}}" class="tab-item {{tabId==='tab_'+index?'tab-item-active':''}}" bindtap="changeType" wx:key="sn" data-sn="{{item.sn}}" id="{{'tab_'+index}}">
         {{item.name}}
       </view>
-      <!-- <view class="tab-item {{tabId==='tab_1'?'tab-item-active':''}}" bindtap="changeType" id="tab_1">
-        基础版
-      </view>
-      <view class="tab-item {{tabId==='tab_2'?'tab-item-active':''}}" bindtap="changeType" id="tab_2">
-        进阶版
-      </view>
-      <view class="tab-item {{tabId==='tab_3'?'tab-item-active':''}}" bindtap="changeType" id="tab_3">
-        全部
-      </view>
-      <view class="tab-item {{tabId==='tab_4'?'tab-item-active':''}}" bindtap="changeType" id="tab_4">
-        基础版
-      </view>
-      <view class="tab-item {{tabId==='tab_5'?'tab-item-active':''}}" bindtap="changeType" id="tab_5">
-        进阶版
-      </view>
-      <view class="tab-item {{tabId==='tab_6'?'tab-item-active':''}}" bindtap="changeType" id="tab_6">
-        全部
-      </view>
-      <view class="tab-item {{tabId==='tab_7'?'tab-item-active':''}}" bindtap="changeType" id="tab_7">
-        基础版
-      </view>
-      <view class="tab-item {{tabId==='tab_8'?'tab-item-active':''}}" bindtap="changeType" id="tab_8">
-        进阶版
-      </view> -->
     </view>
   </scroll-view>
   <view class="tab-content">

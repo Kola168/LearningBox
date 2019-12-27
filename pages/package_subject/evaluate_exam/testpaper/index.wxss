@@ -1,0 +1,140 @@
+/* 版本选择 */
+
+.editions {
+  position: relative;
+  z-index: 1000;
+}
+
+.edition-active {
+  height: 50px;
+  display: flex;
+  align-items: center;
+  font-size: 26rpx;
+  color: #666;
+  padding: 0 24rpx;
+}
+
+.edition-active image {
+  width: 18rpx;
+  margin-left: 16rpx;
+}
+
+.edition-cover {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  min-height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 1000;
+}
+
+.edition-list {
+  position: absolute;
+  left: 0;
+  padding: 0 24rpx;
+  width: calc(100% - 48rpx);
+  z-index: 600;
+  background: #fff;
+}
+
+.list-box {
+  font-size: 30rpx;
+  color: #333;
+  margin: 30rpx 0;
+}
+
+
+/* tab切换 */
+
+.papers-tab {
+  height: 90rpx;
+  line-height: 90rpx;
+  font-size: 32rpx;
+  color: #666666;
+  white-space: nowrap;
+  padding-left: 30rpx;
+  border-top: 20rpx solid #f7f7f7;
+}
+
+.tab-box {
+  display: flex;
+  flex-wrap: nowrap;
+  height: 90rpx;
+  line-height: 90rpx;
+}
+
+.tab-item {
+  display: inline-block;
+  margin-right: 30rpx;
+}
+
+.tab-item-active {
+  color: #FFA200;
+  font-size: 34rpx;
+  position: relative;
+}
+
+.tab-item-active::after {
+  content: '';
+  position: absolute;
+  left: calc(50% - 14rpx);
+  bottom: 0;
+  width: 28rpx;
+  height: 4rpx;
+  background: #FFA200;
+  border-radius: 2rpx;
+}
+
+
+/* 试卷列表 */
+
+.item-img,
+.item-text,
+.text-count,
+.list-item {
+  display: flex;
+}
+
+.list-item {
+  padding: 38rpx 0;
+}
+
+.list-item:not(:last-child) {
+  border-bottom: 2rpx solid #E7E7E7;
+}
+
+.item-img {
+  align-items: center;
+  width: 64rpx;
+  margin: 0 24rpx 0 30rpx;
+}
+
+.item-img image {
+  width: 100%;
+}
+
+.item-text {
+  width: calc(100% - 118rpx);
+  justify-content: space-between;
+  flex-direction: column;
+  color: #333;
+  font-size: 32rpx;
+}
+
+.text-count {
+  align-items: center;
+  color: #666;
+  font-size: 24rpx;
+  margin-top: 10rpx;
+}
+
+.count-logo {
+  width: 26rpx;
+  margin-right: 10rpx;
+}
+
+.count-report {
+  width: 140rpx;
+  margin-left: 32rpx;
+}

@@ -1,0 +1,26 @@
+<view class="chapter-main">
+  <view class="chapter-box" wx:for="{{chapters}}" wx:key="sn">
+    <view class="chapter-box-title" bind:tap="lookChapter" data-index="{{index}}">
+      <image class="box-icon" src="../../../images/btn_shrink.png"></image>
+      <view class="box-name">{{item.chapter_name}}</view>
+    </view>
+    <block wx:if="{{item.isUnfold}}">
+      <view class="chapter-children-box" wx:for="{{item.content}}" wx:key="_id" wx:for-item="contentItem" wx:for-index="contetIndex">
+        <view class="chapter-nav-head-title">{{contetIndex + 1}} . {{contentItem.title}}</view>
+        <view class="chapter-nav-content"  wx:for="{{contentItem.periodList}}" wx:key="_id" wx:for-item="periodItem" wx:for-index="periodIndex">
+          <view class="chapter-nav-content-title">
+            <view class="content-left-name">{{contetIndex + 1}}.{{periodIndex+1}}{{periodItem.name}}</view>
+            <image class="pre-learn-tag" src="../../../images/last_learn_tag.png" wx:if="{{periodItem.is_pre_learn}}"></image>
+            <image class="arrow-icon" mode="widthFix" src="../../../images/arrow.png" wx:if="{{!periodItem.content}}"></image>
+          </view>
+          <block wx:if="{{periodItem.content}}">
+            <view class="chapter-nav-child-content" wx:for="{{periodItem.content}}" wx:key="_id" wx:for-item="currentItem" wx:for-index="currentIndex">
+              <view class="child-content-title">{{contetIndex + 1}}.{{periodIndex+1}}.{{currentIndex+1}} {{currentItem.name}}</view>
+              <image class="arrow-icon" mode="widthFix" src="../../../images/arrow.png"></image>
+            </view>
+          </block>
+        </view>
+      </view>
+    </block>
+  </view>
+</view>

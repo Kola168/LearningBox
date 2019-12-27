@@ -1,0 +1,63 @@
+/* pages/package_subject/sync_learn/components/member-toast/index.wxss */
+
+
+.member-toast {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, .6);
+}
+
+.member-toast .toast-main {
+  position: relative;
+  width: 620rpx;
+  height: 560rpx;
+  background: #FFFFFF;
+  border-radius: 20rpx;
+  text-align: center;
+}
+
+.toast-main .title {
+  padding: 44rpx 0 14rpx 0;
+  text-align: center;
+  font-weight: 500;
+  color: #333333;
+  font-size: 36rpx;
+}
+
+
+.toast-main .open-desc {
+  padding-bottom: 24rpx;
+  text-align: center;
+  color: #666666;
+  font-size: 28rpx;
+}
+
+.member-banner {
+  margin: auto;
+  width: 484rpx;
+}
+
+.btn-sure {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 88rpx;
+  border-radius: 0 0 20rpx 20rpx;  
+  background: #FFDC5E;
+}
+
+.btn-sure image {
+  width:40rpx;
+  height: 36rpx;
+}

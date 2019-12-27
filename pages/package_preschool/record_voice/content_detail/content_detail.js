@@ -311,8 +311,8 @@ Page({
       }
 			this.longToast.hide()
 			this.setData({
-				isColorPrinter: resp.print_capability.color_modes.length == 2 ? true : false,
-				isDuplex: resp.print_capability.media_sizes[0].duplex ? true : false
+				isColorPrinter: resp.color,
+				isDuplex: resp.duplex
 			})
 		} catch (e) {
 			this.longToast.hide()

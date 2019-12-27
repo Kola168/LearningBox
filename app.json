@@ -47,7 +47,7 @@
     "pages/finish/index",
     "pages/mall/index",
     "pages/webview/index",
-    "pages/webview/member"
+		"pages/webview/member"
   ],
   "subPackages": [
     {
@@ -63,6 +63,8 @@
         "records/index/index",
         "records/detail/index",
         "records/cancel_intro/index",
+        "feedback/index",
+        "my_collection/index",
         "common_content/index",
         "common_content/list"
       ]
@@ -122,6 +124,10 @@
         "share_folder/share_manage",
         "share_folder/content",
         "share_folder/manage",
+        "memory_write/chinese/index",
+        "memory_write/chinese/print",
+        "memory_write/english/index",
+        "memory_write/english/print",
         "error_book/index",
         "error_book/intro",
         "error_book/use_page",
@@ -133,12 +139,16 @@
         "error_book/submit_success",
         "error_book/photo_anwser_intro",
         "error_book/answer_result",
-        "error_book/answer_print"
+        "error_book/answer_print",
+        "kousuan/index"
       ]
     },
     {
       "root": "pages/package_member",
-      "pages": []
+      "pages": [
+				"pay/index",
+				"group/index"
+			]
     },
     {
       "root": "pages/package_other",
@@ -155,12 +165,18 @@
         "growth_plan/timed_print/timed_print",
         "growth_plan/print_setting/print_setting",
         "growth_plan/checkpoint/plan_checkpoint",
-        "growth_plan/checkpoint/plan_detail"
+        "growth_plan/checkpoint/plan_detail",
+        "exercise_day/index/index"
       ]
     },
     {
       "root": "pages/package_subject",
-      "pages": []
+      "pages": [
+        "sync_learn/index/index",
+        "sync_learn/learn_content/index",
+        "evaluate_exam/index/index",
+        "evaluate_exam/testpaper/index"
+      ]
     },
     {
       "root": "pages/package_device",
@@ -181,7 +197,19 @@
         "network/tips/step2",
         "network/tips/step3",
         "network/wificonnect/list",
-        "network/wificonnect/connect"
+				"network/wificonnect/connect",
+				"ble/common/connect_success",
+				"ble/common/no_bluetooth",
+				"ble/common/bluetooth_intro",
+				"ble/common/no_device",
+				"ble/common/no_wifi",
+				"ble/device/index",
+				"ble/device/device",
+				"ble/device/device_connect",
+				"ble/network/configure",
+				"ble/network/wifi_list",
+				"ble/printer/index",
+				"ble/common/serach_serial"
       ]
     }
   ],

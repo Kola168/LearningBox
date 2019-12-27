@@ -1,0 +1,68 @@
+/* pages/package_common/my_collection/index.wxss */
+.picture{
+    width:60rpx;
+    height:72rpx;
+}
+.no-order{
+    margin-top:280rpx;
+}
+.no-order {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #666;
+    font-size: 32rpx;
+    padding-bottom: 100rpx;
+    box-sizing: border-box;
+}
+.no-order image {
+    width: 228rpx;
+    height: 188rpx;
+    margin-bottom: 30rpx;
+}
+.item-type {
+    color: #999;
+    font-size: 24rpx;
+}
+.back-home {
+    font-size: 36rpx;
+    color: #999;
+    border: 2rpx solid rgb(231, 230, 230);
+    border-radius: 50rpx;
+    padding: 14rpx 85rpx;
+    margin-top: 60rpx;
+}
+.item-content{
+    width:calc(100%-30rpx);
+    padding:30rpx 30rpx;
+    display: flex;
+    justify-content: space-around;
+    border-bottom: 1px solid #E7E7E7;
+}
+.collection-img{
+    width:60rpx;
+    margin-right:20rpx;
+}
+.content{
+    display: flex;
+    justify-content: space-around;
+    width: calc(100% - 60rpx);
+}
+.arrow-right image{
+    width:14rpx;
+    height:14rpx;
+}
+.content .title{
+    width:95%;
+    font-size:28rpx;
+    color:#333;
+}
+.content .arrow-right{
+    width:5%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}

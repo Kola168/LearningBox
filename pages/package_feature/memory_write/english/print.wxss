@@ -1,0 +1,54 @@
+@import '../common/print.wxss';
+page {
+  height: 100%;
+}
+
+.flex {
+  display: flex;
+}
+
+.align-center {
+  align-items: center;
+}
+
+.img-wrap {
+  height: 66%;
+}
+
+.handle-print {
+  height: 34%;
+  justify-content: space-between;
+}
+
+.templates-wrap {
+  height: 55%;
+  display: flex;
+  align-items: center;
+  padding: 0 24rpx;
+  overflow: scroll;
+}
+
+.templates {
+  height: 90%;
+}
+
+.template-box {
+  height: 100%;
+  margin-right: 40rpx;
+}
+
+.template-box image {
+  width: 150rpx;
+  filter: grayscale(100%);
+  transform: scale(1);
+  transition: transform .3s;
+}
+
+.template-box-active image{
+  filter: grayscale(0);
+  transform: scale(1.02);
+}
+
+.print-count {
+  justify-content: space-between;
+}

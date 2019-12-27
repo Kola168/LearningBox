@@ -1,22 +1,10 @@
 <nav-bar background="#fff" title="文档打印" />
-<image src='https://cdn.gongfudou.com/miniapp/ec/longpress1.gif' mode='widthFix' class='open-longpress' />
-<image
- src='/images/doc_image_text.png'
- class='image-text'
- mode='widthFix'
- bindtap='toLongPress'
-/>
-<view class='btn'>
-	<button
-	 open-type="contact"
-	 bindcontact="handleContact"
-	 hover-class="none"
-	 hover-start-time="20"
-	 hover-stay-time="70"
-	>回复“1” 开启长按打印功能
-	</button>
+<view class="container">
+		<image src='https://cdn.gongfudou.com/miniapp/ec/longpress1.gif' mode='widthFix' class='open-longpress' />
+		<view class="image-text">
+				<image src='/images/doc_image_text.png' mode='widthFix' bindtap='toLongPress' />
+		</view>
+		<view class='btn'>
+				<button open-type="contact" bindcontact="handleContact" hover-class="none">开启长按打印功能</button>
+		</view>
 </view>
-
-<import src="../../../lib/toast/wetoast.wxml" />
-<template is="wetoast" data="{{...__wetoast__}}" />
-

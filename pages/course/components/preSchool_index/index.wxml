@@ -1,0 +1,124 @@
+<wxs module="filter">
+var formatCount = function(count){
+  if(count>=10000){
+    return Math.floor(count/10000)+'w+'
+  } else {
+    return count
+  }
+}
+
+var formatPrice = function(price){
+  return price.toFixed(2)
+}
+module.exports = {
+  formatCount:formatCount,
+  formatPrice:formatPrice
+}
+</wxs>
+<nav-bar background="#fff" title="学习" />
+<view class="swiper-main">
+  <swiper class="swiper"  bindchange="changeDots" autoplay="{{autoplay}}" interval="{{interval}}" circular>
+    <swiper-item wx:for="{{banners}}" wx:key="url" class="swpier-i" id="{{index}}" bindtap="swiperClick">
+      <image src="{{item.url}}" class="slide-img" mode="widthFix" />
+    </swiper-item>
+  </swiper>
+  <view class="dots-main">
+    <view class="dot-item {{activeIndex == index ? 'dot-item-active' : ''}}" wx:for="{{banners}}" wx:key="url"></view>
+  </view>
+</view>
+<view class="container">
+  <view class="fast-nav">
+    <view class="nav-item" bindtap="toSelectProjectList">
+      <image src="/images/course_icon_select.png" />
+      <view>精选专题</view>
+    </view>
+    <view class="nav-item" bindtap="toCourseCenter">
+      <image src="/images/course_icon_center.png" />
+      <view>课程中心</view>
+    </view>
+    <view class="nav-item" bindtap="toMyCourse">
+      <image src="/images/course_icon_my.png" />
+      <view>我的课程</view>
+    </view>
+  </view>
+  <view class="user" wx:if="{{userSn}}">
+    <view class="user-info">
+      <view class="user-avatar">
+        <open-data type="userAvatarUrl"></open-data>
+      </view>
+      <open-data type="userNickName" class="user-name"></open-data>
+    </view>
+    <view class="last-course">
+      <block wx:if="{{userLastCourse}}">
+        <view class="course-name">{{userLastCourse.name}}</view>
+        <view class="course-progress">
+          <progress percent="{{userLastCourse.finished/userLastCourse.total * 100}}" color="#4FB526" border-radius="3" stroke-width="6" />
+          <view class="progress-text">
+            {{userLastCourse.finished}}/{{userLastCourse.total}}
+          </view>
+        </view>
+      </block>
+      <block wx:else>
+        <view class="no-last-course">您还没有{{isAndroid ? '购买' : '学习'}}课程哦</view>
+      </block>
+    </view>
+    <view class="user-btns">
+      <view class="btn-go" wx:if="{{userLastCourse}}" id="{{userLastCourse.sn}}" data-index="1" bindtap="toCourseDetail">
+        继续学习
+      </view>
+    </view>
+  </view>
+  <view class="recommend" wx:if="{{selectCategories.length}}">
+    <view class="recommend-top">
+      <view class="top-label">
+        <view>精选专题</view>
+      </view>
+      <view class="top-more" bindtap="toSelectProjectList">
+        <view>更多</view>
+        <image src="/images/doc_item_arrow.png" />
+      </view>
+    </view>
+    <scroll-view class="select-project" scroll-x>
+      <view class="project-item" bindtap="toSelectProject" wx:for="{{selectCategories}}" wx:key="sn" id="{{item.sn}}">
+        <image src="{{item.courseIntroductionImage}}" mode="widthFix" />
+        <view>{{item.name}}</view>
+      </view>
+    </scroll-view>
+  </view>
+  <view class="recommend">
+    <view class="recommend-top">
+      <view class="top-label">
+        <view>为你推荐</view>
+      </view>
+      <view class="top-more" bindtap="toCourseCenter">
+        <view>更多</view>
+        <image src="/images/doc_item_arrow.png" />
+      </view>
+    </view>
+    <view class="recommend-item" wx:for="{{recommendCourse}}" wx:key="sn" id="{{item.sn}}" bindtap="toCourseDetail">
+      <view class="course-cover">
+        <image src="{{item.recommendationImageUrl}}" mode="widthFix" />
+      </view>
+      <view class="recommend-bottom">
+        <view class="bottom-text {{isAndroid ? '' : 'desc-ios' }}">
+           <view class="recommend-desc">{{item.desc}}</view>
+            <view class="member-count">
+              {{filter.formatCount(item.studyUsers)}}人已学习 共{{item.totalLessons}}课时
+            </view>
+        </view>
+        <view class="bottom-price" wx:if="{{isAndroid && userSn}}">
+          <block wx:if="{{item.payed}}">
+            <view class="buy-btn-ed">已购买</view>
+          </block>
+          <block wx:else>
+            <view class="original-price">
+              ¥{{filter.formatPrice(item.priceYuan)}}
+            </view>
+          </block>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
+<import src="../../../../lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />

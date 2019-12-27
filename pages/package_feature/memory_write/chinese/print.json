@@ -1,0 +1,7 @@
+{
+  "enablePullDownRefresh": false,
+  "disableScroll": true,
+  "usingComponents": {
+    "confirm-print": "../../../../../components/confirm-print"
+  }
+}

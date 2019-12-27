@@ -1,41 +1,4 @@
-var app = getApp()
-var gqwxappGraphql = require('./wxgql')
-var GraphQL = gqwxappGraphql.GraphQL
-import storage from '../utils/storage.js'
-import {
-  co
-} from '../utils/common_import.js';
-// 初始化对象
-let gql = GraphQL({
-  url: `${app.apiServer}/graphql`,
-  header: function () {
-    if (app.authToken) {
-      return {
-        "AUTHORIZATION": `Token token=${app.authToken}`
-      }
-    } else {
-      try {
-        var authToken = storage.get('authToken')
-        if (authToken) {
-          return {
-            "AUTHORIZATION": `Token token=${authToken}`
-          }
-        }
-      } catch (e) {
-        console.log(e)
-      }
-    }
-  },
-
-  //全局错误拦截
-  errorHandler: function (res) {
-    console.log('graphql全局错误拦截', res)
-    //如果auth
-    if (1) {
-
-    }
-  }
-}, true);
+import gql from './graphql_config'
 
 const graphqlApi = {
   /**
@@ -1761,7 +1724,92 @@ const graphqlApi = {
     return gql.query({
       query: `query() {
   
+        }`,
+        variables: {
+          input:input
+      }
+      })
+    },
+    getGrade: () => {
+      return gql.query({
+        query: `query {
+          currentUser {
+            sn
+            selectedKid{
+              sn
+              stage{
+                name
+                rootName
+                sn
+              }
+           }
+          }
         }`
+      })
+    },
+    /**
+     * 获取打印机能力
+     * @param { String } featureKey
+     */
+    getPrinterCapability: (featureKey) => {
+      return gql.query({
+        query: `query($featureKey: String!) {
+          currentUser{
+            selectedDevice {
+              capability(featureKey:$featureKey) {
+                borderless
+                color
+                highQuality
+                duplex
+              }
+            }
+          }
+        }`,
+        variables: {
+          featureKey:featureKey
+        }
+      })
+    },
+    
+    /**
+     * 获取错题列表
+     *
+     */
+    getMistakes:()=>{
+
+    },
+
+    /**
+     * 文件预览
+     * @param { String } fileUrl
+     */
+    getFilePreview: (fileUrl) => {
+      return gql.query({
+        query: `query($fileUrl: String!) {
+          filePreview{
+            convertedUrl
+            landscape
+            pages
+          }
+        }`,
+        variables: {
+          fileUrl:fileUrl
+        }
+      })
+    },
+    /**
+   * 意见反馈
+   */
+  createFeedback: (params) => {
+    return gql.mutate({
+      mutation: `mutation createFeedback($input: CreateFeedbackInput!){
+        createFeedback(input:$input){
+          state
+        }
+      }`,
+      variables: {
+        input: params
+      }
     })
   },
 
