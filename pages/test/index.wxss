@@ -1,3 +1,11 @@
 .exit{
 	margin-top:200rpx;
 }
+
+
+.equip-img {
+width: 300rpx;
+border-radius: 40rpx;
+margin-top:300rpx;
+margin-left:50rpx
+}

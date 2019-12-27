@@ -29,7 +29,14 @@ const createOrder = function(featureKey, fileAttributes) {
 
 /**
  * 获取打印机能力
- * @param { Object } params required
+ * @param { String } featureKey required
+ * @returns {
+    borderless 是否无边距
+    grayscale 是否支持灰度
+    color 是否是彩色打印机
+    highQuality 是否支持高质量
+    duplex 是否支持双面打印
+ * }
  */
 
 // const getPrinterCapacity = co.wrap(function*(params = {}) {

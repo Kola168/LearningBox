@@ -1,0 +1,11 @@
+<view class="container">
+    <tetx class="title">请选择要连接的WIFI</tetx>
+
+    <view class="wifi-list" wx:for="{{ssids}}" wx:key="{{index}}" id="{{index}}" bindtap="connectWifi">
+        <view class="wifi-item">
+            <text>{{item}}</text>
+        </view>
+    </view>
+</view>
+<import src="../../../lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />

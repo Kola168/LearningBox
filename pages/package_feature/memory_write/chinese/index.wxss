@@ -71,7 +71,7 @@
   left: 50%;
   bottom: 2rpx;
   height: 6rpx;
-  background: #FFE27A;
+  background: #FFDC5E;
   width: 40rpx;
   transform: translateX(-50%);
 }

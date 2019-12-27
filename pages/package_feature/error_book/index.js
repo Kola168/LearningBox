@@ -8,7 +8,9 @@ const util = require('../../../utils/util')
 const event = require('../../../lib/event/event')
 import router from '../../../utils/nav'
 import gql from '../../../network/graphql_request.js'
-import {storage} from '../../../utils/common_import'
+import {
+    storage
+} from '../../../utils/common_import'
 const request = util.promisify(wx.request)
 const getSetting = util.promisify(wx.getSetting)
 const authorize = util.promisify(wx.authorize)
@@ -16,103 +18,40 @@ import commonRequest from '../../../utils/common_request.js'
 
 Page({
     data: {
-        activeGrade: '', //当前活跃年级
-        openGrade: 0, //当前打开活跃学段下标
-        activePeriodIndex: 0, //实际学段下标
-        showGrade: false,
         // 0 未授权 1，授权失败， 2 已授权
         allowCamera: 0, //相机授权
-        gradeList: [{
-            "title": "小学",
-            "grades": ["一年级(上)", "一年级(下)", "二年级(上)", "二年级(下)", "三年级(上)", "三年级(下)", "四年级(上)", "四年级(下)", "五年级(上)", "五年级(下)", "六年级(上)", "六年级(下)"]
-        }, {
-            "title": "初中",
-            "grades": ["初一(上)", "初一(下)", "初二(上)", "初二(下)", "初三(上)", "初三(下)"]
-        }, {
-            "title": "高中",
-            "grades": ["高一(上)", "高一(下)", "高二(上)", "高二(下)", "高三(上)", "高三(下)"]
-        }],
-        allSubjects: [
-            [{
-                    name: '语文',
-                    id: 'yuwen'
-                },
-                {
-                    name: '数学',
-                    id: 'shuxue'
-                },
-                {
-                    name: '英语',
-                    id: 'yingyu'
-                },
-                {
-                    name: '综合',
-                    id: 'zonghe'
-                },
-            ],
-            [{
-                    name: '语文',
-                    id: 'yuwen'
-                },
-                {
-                    name: '数学',
-                    id: 'shuxue'
-                }, {
-                    name: '英语',
-                    id: 'yingyu'
-                },
-                {
-                    name: '物理',
-                    id: 'wuli'
-                }, {
-                    name: '化学',
-                    id: 'huaxue'
-                }, {
-                    name: '生物',
-                    id: 'shengwu'
-                }, {
-                    name: '政治',
-                    id: 'zhengzhi'
-                }, {
-                    name: '历史',
-                    id: 'lishi'
-                }, {
-                    name: '地理',
-                    id: 'dili'
-                }
-            ],
-            [{
-                    name: '语文',
-                    id: 'yuwen'
-                },
-                {
-                    name: '数学',
-                    id: 'shuxue'
-                }, {
-                    name: '英语',
-                    id: 'yingyu'
-                },
-                {
-                    name: '物理',
-                    id: 'wuli'
-                }, {
-                    name: '化学',
-                    id: 'huaxue'
-                }, {
-                    name: '生物',
-                    id: 'shengwu'
-                }, {
-                    name: '政治',
-                    id: 'zhengzhi'
-                }, {
-                    name: '历史',
-                    id: 'lishi'
-                }, {
-                    name: '地理',
-                    id: 'dili'
-                }
-            ],
-        ], //依次为小学初中高中
+        activePeriodIndex:0,
+        allSubjects: [[{
+                name: '语文',
+                id: 'yuwen'
+            },
+            {
+                name: '数学',
+                id: 'shuxue'
+            }, {
+                name: '英语',
+                id: 'yingyu'
+            },
+            {
+                name: '物理',
+                id: 'wuli'
+            }, {
+                name: '化学',
+                id: 'huaxue'
+            }, {
+                name: '生物',
+                id: 'shengwu'
+            }, {
+                name: '政治',
+                id: 'zhengzhi'
+            }, {
+                name: '历史',
+                id: 'lishi'
+            }, {
+                name: '地理',
+                id: 'dili'
+            }
+        ]], //依次为小学初中高中
         subjectList: [],
         showTipModal: false,
         from_temp: false,
@@ -130,7 +69,6 @@ Page({
             })
             this.getAuth()
         })
-        console.log('学段', this.data.gradeList)
         let errorBook = wx.getStorageSync('errorBook')
         console.log('错题本', errorBook)
 
@@ -264,7 +202,6 @@ Page({
                 dataType: 'json',
                 data: {
                     'openid': app.openId,
-                    'grade': this.data.gradeList[this.data.openGrade].title
                 }
             })
             if (resp.data.code != 0) {
@@ -275,75 +212,6 @@ Page({
                 subjectList: resp.data.mistakes
             })
             this.longToast.toast()
-        } catch (e) {
-            this.longToast.toast()
-            util.showErr(e)
-        }
-    }),
-    chooseSubject: function (e) {
-        // this.setData({
-        //     showGrade: true
-        // })
-        router.navigateTo('/pages/index/grade')
-    },
-    hideModal: function () {
-        this.setData({
-            showGrade: false
-        })
-    },
-    // 打开学段下拉框
-    changeGrade: function (e) {
-        let index = e.currentTarget.id
-        if (this.data.openGrade == index) {
-            this.setData({
-                openGrade: -1,
-                // openGradeId: -1
-            })
-        } else {
-            this.setData({
-                openGrade: index,
-                // openGradeId: this.data.gradeList[index].id
-            })
-        }
-        console.log('年纪下标', this.data.openGrade)
-    },
-    // 选择年级
-    changeSubjet: co.wrap(function* (e) {
-        let index = e.currentTarget.id
-        let term = this.data.gradeList[this.data.openGrade].grades
-        this.setData({
-            activeIndex: index,
-            activeGrade: term[index],
-            activePeriodIndex: this.data.openGrade
-        })
-        this.longToast.toast({
-            type: 'loading'
-        })
-        try {
-            const resp = yield request({
-                url: app.apiServer + `/ec/v2/users/user`,
-                method: 'PUT',
-                dataType: 'json',
-                data: {
-                    'openid': app.openId,
-                    'grade': this.data.activeGrade,
-                    'period': this.data.gradeList[this.data.openGrade].title
-                }
-            })
-            if (resp.data.code != 0) {
-                throw (resp.data)
-            }
-            console.log('选择修改学科====', resp.data)
-
-            let that = this
-            setTimeout(() => {
-                that.setData({
-                    showGrade: false
-                })
-            }, 500)
-            wx.setStorageSync('error_book_period', this.data.gradeList[this.data.openGrade].title)
-            yield this.getSubjects()
-            // this.longToast.toast()
         } catch (e) {
             this.longToast.toast()
             util.showErr(e)

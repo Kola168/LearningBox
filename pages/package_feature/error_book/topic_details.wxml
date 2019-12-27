@@ -1,15 +1,16 @@
+<nav-bar background="#fff" title="错题本"></nav-bar>
 <view class='top first'>
     <view class='left'>
         <view class='border'></view>
         <view class='title'>题目</view>
     </view>
     <view class='right' bindtap="addMore" wx:if="{{urls.length<2}}">
-        <image src='../../images/error-add.png' class="error_icon" mode="widthFix"></image>
+        <image src='../images/error_add.png' class="error_icon" mode="widthFix"></image>
         <view class='title'>补充题目</view>
     </view>
 </view>
 <view class='con'>
-    <block wx:for="{{urls}}" wx:key="{{index}}">
+    <block wx:for="{{urls}}" wx:key="urls">
         <image src="{{item}}" class='img' mode='widthFix' id="{{index}}"></image>
     </block>
 </view>
@@ -33,9 +34,9 @@
         <view class='border'></view>
         <view class='title'>错题科目</view>
     </view>
-    <view class='con'>
-        <view wx:for="{{subjects}}" wx:key="{{index}}" id='{{index}}'>
-            <view class="content {{subjectId==index?'active-tab':''}}" bindtap='chooseSubject' id='{{index}}'>
+    <view class='con' style="justify-content:space-between">
+        <view wx:for="{{subjects}}" wx:key="subjects" id='{{index}}'>
+            <view class="content {{subjectId==index?'active-tab':''}}" id='{{index}}'>
                 {{item}}
             </view>
         </view>
@@ -47,7 +48,7 @@
     <view class='title'>错题掌握程度</view>
 </view>
 <view class='con'>
-    <view wx:for="{{level}}" wx:key="{{index}}" id='{{index}}'>
+    <view wx:for="{{level}}" wx:key="level" id='{{index}}'>
         <view class="content {{levelId==index?'active-tab':''}}" bindtap='chooseLevel' id='{{index}}'>
             {{item}}
         </view>
@@ -58,7 +59,7 @@
     <view class='title'>错题原因</view>
 </view>
 <view class='con'>
-    <view wx:for="{{reason}}" wx:key="{{index}}" id='{{index}}'>
+    <view wx:for="{{reason}}" wx:key="reason" id='{{index}}'>
         <view class="content {{reasonId==index?'active-tab':''}}" bindtap='chooseReason' id='{{index}}'>
             {{item}}
         </view>

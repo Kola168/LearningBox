@@ -144,7 +144,7 @@
             </view>
           </view>
         </view>
-        <view class="setting-item">
+        <view class="setting-item" bindtap="toNextPage" data-key="deviceMaintain">
           <view class="item-left">
             <view class="left-label">设备维护</view>
           </view>
@@ -175,11 +175,11 @@
 </view>
 <!-- modal -->
 <modal modal="{{modalObj}}" bindconfirm="confirmModal">
-  <view wx:if="{{modalType==='rename'}}" class="modal-rename">
+  <view wx:if="{{modalType==='rename'}}" class="modal-rename" slot="content">
     <input placeholder="1-10个字，支持中英文、数字" value="{{renameVal}}" bindinput="getRenameVal" placeholder-style="color:#999;" maxlength="20" />
     <view class="rename-tip" wx:if="{{renameVal.length===0}}">请先输入名称</view>
   </view>
-  <view wx:if="{{modalType==='noaduit'}}">
+  <view wx:if="{{modalType==='noaduit'}}" slot="content">
     <view class="noaduit-manager noaduit-item">
       <text>管理者</text>
       <text wx:if="{{printType==='ep300'}}">：通过蓝牙连接绑定打印机的用户</text>

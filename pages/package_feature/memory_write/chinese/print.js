@@ -128,11 +128,11 @@ Page({
         type: 'english_memory_write',
         state: resp.order.state,
         media_type: 'memory_write',
-        avatarUrl:userData.userInfo.avatarUrl,
+        avatarUrl:encodeURIComponent(JSON.stringify(userData.userInfo.avatarUrl)),
         nickName:userData.userInfo.nickName,
         count:resp.statistics.day_count,
         printed_count:resp.statistics.print_count,
-        user_share_qrcode:common_util.encodeLongParams(resp.qrcode)
+        user_share_qrcode:encodeURIComponent(JSON.stringify(resp.qrcode))
       })
       // wx.redirectTo({
       //   url: `/pages/finish/oral_mistake_index?type=english_memory_write&&state=${resp.order.state}&media_type=memory_write&avatarUrl=${userData.userInfo.avatarUrl}&nickName=${userData.userInfo.nickName}&count=${resp.statistics.day_count}&printed_count=${resp.statistics.print_count}&user_share_qrcode=${common_util.encodeLongParams(resp.qrcode)}`

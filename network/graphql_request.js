@@ -1,39 +1,4 @@
-var app = getApp()
-var gqwxappGraphql = require('./wxgql')
-var GraphQL = gqwxappGraphql.GraphQL
-import storage from '../utils/storage.js'
-import { co } from '../utils/common_import.js';
-// 初始化对象
-let gql = GraphQL({
-  url: `${app.apiServer}/graphql`,
-  header: function() {
-    if (app.authToken) {
-      return {
-        "AUTHORIZATION": `Token token=${app.authToken}`
-      }
-    } else {
-      try {
-        var authToken = storage.get('authToken')
-        if (authToken) {
-          return {
-            "AUTHORIZATION": `Token token=${authToken}`
-          }
-        }
-      } catch (e) {
-        console.log(e)
-      }
-    }
-  },
-
-	//全局错误拦截
-  errorHandler: function(res) {
-    console.log('graphql全局错误拦截', res)
-      //如果auth
-    if (1) {
-
-    }
-  }
-}, true);
+import gql from './graphql_config'
 
 const graphqlApi = {
   /**
@@ -1790,6 +1755,14 @@ const graphqlApi = {
         }
       })
     },
+    
+    /**
+     * 获取错题列表
+     *
+     */
+    getMistakes:()=>{
+
+    },
 
     /**
      * 注册学科网
@@ -1844,6 +1817,21 @@ const graphqlApi = {
         }
       })
     },
+    /**
+   * 意见反馈
+   */
+  createFeedback: (params) => {
+    return gql.mutate({
+      mutation: `mutation createFeedback($input: CreateFeedbackInput!){
+        createFeedback(input:$input){
+          state
+        }
+      }`,
+      variables: {
+        input: params
+      }
+    })
+  },
 
     /**
      * 获取学科教材信息
