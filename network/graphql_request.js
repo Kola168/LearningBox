@@ -1792,25 +1792,169 @@ const graphqlApi = {
     },
 
     /**
-     * 文件预览
-     * @param { String } fileUrl
+     * 注册学科网
+     *
+     * @returns
      */
-    getFilePreview: (fileUrl) => {
-      return gql.query({
-        query: `query($fileUrl: String!) {
-          filePreview{
-            convertedUrl
-            landscape
-            pages
+    register: () => {
+      return gql.mutate({
+        mutation: `mutation ($input: RegisterInput!){
+          Register{
+            state
           }
-        }`,
-        variables: {
-          fileUrl:fileUrl
-        }
+        }`
       })
     },
 
 
+    /**
+     * 获取学科网学科目录
+     */
+    getSubject: ()=> {
+      return gql.query({
+        query: `query getSubject{
+          xuekewang{
+            registered
+            subjects{
+              subjectId
+              subjectName
+              iconUrl
+            }
+          }
+        }`
+       
+      })
+    },
+
+    /**
+     * 获取学科版本
+     */
+    getTextbookVersion: (subjectId)=> {
+      return gql.query({
+        query: `query getTextbookVersion($subjectId: Int!){
+          xuekewang{
+            textbookVersions(subjectId: $subjectId){
+              name
+              versionId
+            }
+          }
+        }`,
+        variables: {
+          subjectId
+        }
+      })
+    },
+
+    /**
+     * 获取学科教材信息
+     */
+    getTeachBook: (pms) => {
+      return gql.query({
+        query: `query getTeachBook($subjectId: Int!,$versionId: Int!){
+          xuekewang{
+            textbooks(subjectId: $subjectId,versionId: $versionId){
+              name
+              textbookId
+              volume
+            }
+          }
+        }`,
+        variables: {
+          ...pms
+        }
+      })
+    },
+
+    /**
+     * 获取选中教材
+     */
+    getSelectedTextbook: (subjectId) => {
+      return gql.query({
+        query: `query getSelectedTextbook($subjectId: Int!){
+          xuekewang{
+            selectedTextbook(subjectId: $subjectId){
+                name
+                textbookId
+                volume
+            }
+          }
+        }`,
+        variables: {
+          subjectId
+        }
+      })
+    },
+
+    /**
+     * 获取选择的学科教材版本
+     */
+    getSelectedTextbookVersion: (subjectId) => {
+      return gql.query({
+        query: `query getSelectedTextbookVersion($subjectId: Int!){
+          xuekewang{
+            selectedTextbookVersion(subjectId: $subjectId){
+                versionId
+            }
+          }
+        }`,
+        variables: {
+          subjectId
+        }
+      })
+    },
+    /**
+     * 获取章节
+     * @param {subjectId} 科目id
+     * @param {versionId} 版本id
+     * @param {textbookId} 教材id
+     */
+    getChapter: (pms) => {
+      return gql.query({
+        query: `query getChapter($subjectId: Int!, $versionId: Int!, $textbookId: Int!){
+          xuekewang{
+            rootNodes(subjectId: $subjectId, versionId: $versionId, textbookId: $textbookId){
+              name
+              id
+            }
+          }
+        }`,
+        variables: {
+          ...pms
+        }
+      })
+    },
+    /**
+     * 获取章节详情
+     * @param {subjectId} 科目id
+     * @param {textbookId} 教材id
+     * @param {parentId} 章节id
+     */
+    getChapterDetail: (pms) => {
+      return gql.query({
+        query: `query getChapterDetail($subjectId: Int!, $textbookId: Int!, $parentId: Int){
+          xuekewang{
+            childrenNodes(subjectId: $subjectId, textbookId: $textbookId, parentId: $parentId){
+              name
+              id
+              children {
+                name
+                id
+                children{
+                  name
+                  id
+                }
+              }
+            }
+          }
+        }`,
+        variables: {
+          ...pms
+        }
+      })
+    }
+
+
+  
 }
 
 export default graphqlApi

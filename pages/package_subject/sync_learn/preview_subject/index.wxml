@@ -1,14 +1,14 @@
 <nav-bar background="#fff" title="同步练习"/>
 <view class="preview-main">
-  <swiper class="swpier-box">
-      <swiper-item class="" item-id="">
-        <image class="img-item" mode="aspectFit"></image>
+  <swiper class="swpier-box" bindchange="changeImg">
+      <swiper-item class="" item-id=""  wx:for="{{imgList}}" wx:key="*this">
+        <image class="img-item" src="{{item}}" mode="widthFix"></image>
       </swiper-item>
   </swiper>
-  <view class="precent">1/2</view>
+  <view class="precent">{{currentIndex}}/{{imgList.length}}</view>
   <view class="btn-bottom">
     <view class="print-answer">
-      <image class="check-on"></image>
+      <image class="check-on" src="../../images/check_on.png"></image>
       <view class="title">打印答案</view>
     </view>
     <botttom-button text-right="确认打印" bindrighttap="confirm" get-phone="{{true}}"/>
