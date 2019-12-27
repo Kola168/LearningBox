@@ -138,7 +138,8 @@
     {
       "root": "pages/package_member",
       "pages": [
-				"pay/index"
+				"pay/index",
+				"group/index"
 			]
     },
     {
