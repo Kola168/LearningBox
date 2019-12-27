@@ -1,0 +1,24 @@
+page {
+    height: 100%;
+    background: #FFFBEF;
+}
+
+image {
+    width: 100%;
+    height: auto;
+}
+
+button {
+    background: #FFE27A!important;
+    font-size: 32rpx;
+    color: #333;
+    height: 80rpx;
+    line-height: 80rpx;
+    width: 70%!important;
+    position: fixed;
+    bottom: 100rpx;
+    left: 15%;
+    border-radius: 40rpx!important;
+    padding: 0;
+
+}

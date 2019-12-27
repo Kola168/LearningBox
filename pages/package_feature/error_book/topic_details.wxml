@@ -15,16 +15,6 @@
     </block>
 </view>
 <block wx:if="{{!reEdit}}">
-    <view class='top top-grade' bindtap="showGrades" wx:if="{{type=='photoAnswer'}}">
-        <view>
-            <view class='border'></view>
-            <view class='title'>年级</view>
-        </view>
-        <view>
-            <text>{{activeGrade?activeGrade:'请选择年级'}}</text>
-            <image src="/images/arrow-right-gray.png" class='top-image' mode='widthFix'></image>
-        </view>
-    </view>
     <view class="search-answer" wx:if="{{!reEdit&&answer_urls.length==0}}">
         <image src="../images/error_book_search_orange.png" class='top-image' mode='widthFix'
             bindtap="searchBeforAdd"></image>

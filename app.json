@@ -62,7 +62,9 @@
         "free_resources/detail/index",
         "records/index/index",
         "records/detail/index",
-        "records/cancel_intro/index"
+        "records/cancel_intro/index",
+        "common_content/index",
+        "common_content/list"
       ]
     },
     {
@@ -125,7 +127,13 @@
         "error_book/use_page",
         "error_book/camera",
         "error_book/edit_pic",
-        "error_book/topic_details"
+        "error_book/topic_details",
+        "error_book/print",
+        "error_book/setting",
+        "error_book/submit_success",
+        "error_book/photo_anwser_intro",
+        "error_book/answer_result",
+        "error_book/answer_print"
       ]
     },
     {
