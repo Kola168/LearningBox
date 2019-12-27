@@ -105,6 +105,7 @@ const graphqlApi = {
             selected,
             sn,
             model,
+            autoPressPrint,
             isAdmin,
             auditFree,
             marginFree,
@@ -198,6 +199,27 @@ const graphqlApi = {
         input: {
           deviceSn: deviceSn
         }
+      }
+    })
+  },
+
+  /**
+   * 获取长按打印设置
+   * @param { String } sn required 设备编号
+   */
+  getLongPressSetting: (sn) => {
+    return gql.query({
+      query: `query ($sn: String!){
+        currentUser{
+          devices(sn:$sn){
+            autoPressPrint
+            pressPrintColor
+            pressPrintDuplex
+          }
+        }
+      }`,
+      variables: {
+        sn: sn
       }
     })
   },
