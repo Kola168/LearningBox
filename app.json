@@ -167,7 +167,8 @@
         "sync_learn/index/index",
         "sync_learn/learn_content/index",
         "evaluate_exam/index/index",
-        "evaluate_exam/testpaper/index"
+        "evaluate_exam/testpaper/index",
+        "correct/index"
       ]
     },
     {
