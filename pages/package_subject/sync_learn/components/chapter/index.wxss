@@ -33,6 +33,14 @@
   margin-left: 66rpx;
   color: #151515;
   font-size: 30rpx;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.chapter-min-box {
+  padding-top: 20rpx;
+  padding-bottom: 20rpx;
 }
 
 .chapter-nav-content {
@@ -59,34 +67,45 @@
 }
 
 .chapter-nav-content-title .arrow-icon {
-  width: 20rpx;
+  width: 15rpx;
+  height: 15rpx;
+  border-right: 5rpx solid #CECECe;
+  border-top: 5rpx solid #CECECe;
+  transform: rotate(45deg);
   margin-right: 22rpx;
 }
 
 .chapter-nav-child-content {
-  margin-left: 60rpx;
-  margin: 40rpx 0 40rpx 60rpx;
+  padding: 40rpx 0 40rpx 60rpx;
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
 .chapter-nav-child-content:first-child {
-  margin-top: 40rpx;
+  padding-top: 40rpx;
 }
 
 .chapter-nav-child-content:last-child {
-  margin-bottom: 0;
+  padding-bottom: 0;
 }
 
 .chapter-nav-child-content .arrow-icon {
-  width: 20rpx;
+  width: 15rpx;
+  height: 15rpx;
+  border-right: 5rpx solid #CECECe;
+  border-top: 5rpx solid #CECECe;
+  transform: rotate(45deg);
   margin-right: 22rpx;
 }
 
 .content-main {
   width: 100%;
   overflow: hidden;
+}
+
+.box-name {
+  font-weight: 500;
 }
 
 .hidden {
