@@ -64,7 +64,9 @@
         "records/detail/index",
         "records/cancel_intro/index",
         "feedback/index",
-        "my_collection/index"
+        "my_collection/index",
+        "common_content/index",
+        "common_content/list"
       ]
     },
     {
@@ -133,8 +135,14 @@
         "error_book/use_page",
         "error_book/camera",
         "error_book/edit_pic",
-        "kousuan/index",
-        "error_book/topic_details"
+        "error_book/topic_details",
+        "error_book/print",
+        "error_book/setting",
+        "error_book/submit_success",
+        "error_book/photo_anwser_intro",
+        "error_book/answer_result",
+        "error_book/answer_print",
+        "kousuan/index"
       ]
     },
     {

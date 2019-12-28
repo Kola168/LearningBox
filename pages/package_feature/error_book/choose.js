@@ -7,8 +7,8 @@ const co = require('../../../lib/co/co')
 const util = require('../../../utils/util')
 import router from '../../../utils/nav'
 import gql from '../../../network/graphql_request.js'
-
-const request = util.promisify(wx.request)
+import Logger from '../../../utils/logger.js'
+const logger = new Logger.getLogger('pages/index/index')
 
 Page({
     data: {
@@ -93,26 +93,26 @@ Page({
     },
     onLoad: function (options) {
         this.longToast = new app.weToast()
-        console.log(options.course)
+        logger.info(options.course)
         this.setData({
             course: options.course
         })
     },
     bindDateChange1: function (e) {
-        console.log(e)
+        logger.info(e)
         this.setData({
             date1: e.detail.value
         })
     },
     bindDateChange2: function (e) {
-        console.log(e)
+        logger.info(e)
         this.setData({
             date2: e.detail.value
         })
     },
     chooseTime: function (e) {
         let id = e.currentTarget.id
-        console.log("11111", id)
+        logger.info("11111", id)
         this.setData({
             timeId: id
         })
@@ -163,14 +163,14 @@ Page({
         }
         //时间
         if (this.data.time[this.data.timeId].content != "全部") {
-            console.log("11111")
+            logger.info("11111")
 
             if (this.data.time[this.data.timeId].content == "一周内") {
                 let a = new Date()
                 a.getTime()
                 let b = a - 1000 * 60 * 60 * 24 * 7
                 let c = new Date(b)
-                console.log(c)
+                logger.info(c)
                 params.start_at = c
             }
             if (this.data.time[this.data.timeId].content == "一月内") {
@@ -178,21 +178,21 @@ Page({
                 a.getTime()
                 let b = a - 1000 * 60 * 60 * 24 * 30
                 let c = new Date(b)
-                console.log(c)
+                logger.info(c)
                 params.start_at = c
             }
             if (this.data.time[this.data.timeId].content != "一月内" && this.data.time[this.data.timeId].content != "一周内") {
                 let a = this.data.date1
                 let b = this.data.date2
-                console.log("99999", a, b)
+                logger.info("99999", a, b)
                 let c = new Date(a)
                 let d = new Date(b)
                 let e = c.getTime()
                 let f = d.getTime()
-                console.log(c, d, e, f)
+                logger.info(c, d, e, f)
                 let g = f + 24 * 60 * 60 * 1000
                 let h = new Date(g)
-                console.log("11", g, h)
+                logger.info("11", g, h)
                 if (a == "开始时间") {
                     return util.showErr({
                         message: '请输入开始时间'
@@ -234,30 +234,31 @@ Page({
         if (this.data.anwser[this.data.anwserId].content== "无") {
             params.answer = 'no_answer'
         }
-        console.log("params345678900000", params)
+        logger.info("params345678900000", params)
         this.longToast.toast({
             type: 'loading'
         })
 
         try {
-            const resp = yield request({
-                url: app.apiServer + `/ec/v2/mistakes?openid=${app.openId}`,
-                method: 'GET',
-                dataType: 'json',
-                data: params
-            })
-            if (resp.data.code != 0) {
-                throw (resp.data)
-            }
-            console.log('筛选列表====', resp.data)
-            this.setData({
-                array: resp.data.mistakes
-            })
+            const resp = yield gql.getMistakes()
+            // const resp = yield request({
+            //     url: app.apiServer + `/ec/v2/mistakes?openid=${app.openId}`,
+            //     method: 'GET',
+            //     dataType: 'json',
+            //     data: params
+            // })
+            // if (resp.data.code != 0) {
+            //     throw (resp.data)
+            // }
+            // logger.info('筛选列表====', resp.data)
+            // this.setData({
+            //     array: resp.data.mistakes
+            // })
             // var con = []
             // for (let i = 0; i < this.data.array.length; i++) {
             //   for (let j = 0; j < this.data.array[i].content.length; j++) {
             //     con.push(this.data.array[i].content[j])
-            //     console.log("con", con)
+            //     logger.info("con", con)
             //     // this.data.array[i].content[j].checked = true
             //     this.setData({
             //       middlearr: con,
@@ -272,7 +273,7 @@ Page({
             this.longToast.hide()
         } catch (e) {
             this.longToast.hide()
-            util.showErr(e)
+            util.showError(e)
         }
 
         var pages = getCurrentPages()
@@ -283,6 +284,6 @@ Page({
             noEntry: true
             // "middlearr": this.data.middlearr
         })
-        wx.navigateBack()
+        router.navigateBack()
     })
 })

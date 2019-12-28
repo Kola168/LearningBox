@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "打印题目",
+  "enablePullDownRefresh": false,
+  "usingComponents": {
+    "confirm-print": "../../../../components/confirm-print"
+  }
+}
