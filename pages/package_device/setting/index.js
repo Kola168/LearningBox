@@ -9,7 +9,7 @@ Page({
     },
     settingType: "base",
     modalType: "",
-    printType: "ep300",
+    printType: "ep320",
     renameVal: "",
     // 电脑打印
     computerPrintFlag: false,

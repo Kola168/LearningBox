@@ -1,3 +1,4 @@
+<nav-bar title="小白智慧打印"></nav-bar>
 <view class="container">
     <tetx class="title">请选择要连接的WIFI</tetx>
 
@@ -7,5 +8,5 @@
         </view>
     </view>
 </view>
-<import src="../../../lib/toast/wetoast.wxml" />
+<import src="../../../../lib/toast/wetoast.wxml" />
 <template is="wetoast" data="{{...__wetoast__}}" />

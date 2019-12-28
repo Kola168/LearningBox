@@ -1,9 +1,9 @@
 const app = getApp()
-const regeneratorRuntime = require('../../../lib/co/runtime')
-const co = require('../../../lib/co/co')
-const util = require('../../../utils/util')
-const CryptoJS = require("../../../lib/crypto-js/crypto-js")
-const event = require('../../../lib/event/event')
+const regeneratorRuntime = require('../../../../lib/co/runtime')
+const co = require('../../../../lib/co/co')
+const util = require('../../../../utils/util')
+const CryptoJS = require("../../../../lib/crypto-js/crypto-js")
+const event = require('../../../../lib/event/event')
 const closeBLEConnection = util.promisify(wx.closeBLEConnection)
 
 
@@ -27,8 +27,9 @@ Page({
     },
 
     onLoad: co.wrap(function*(query) {
-        this.longToast = new app.WeToast()
-        let _this = this
+			this.longToast = new app.weToast()
+
+			let _this = this
 
         event.on('Authorize', this, function(data) {
 
@@ -69,6 +70,11 @@ Page({
     },
 
     startSerch: co.wrap(function*() {
+			this.longToast.toast({
+				type: "loading",
+				title: '正在搜索'
+			})
+			console.log('执行到这里====')
         let devices = yield this.searchDevice()
         console.log('蓝牙搜索EP320返回的设备列表=======', devices)
 
@@ -80,22 +86,16 @@ Page({
         console.log('要传递的EP320设备列表=========', clearDevices)
         if (devices != undefined && clearDevices.length == 0) {
             wx.navigateTo({
-                url: `/pages/ble/common/no_device?source=${this.data.source}`,
+                url: `/pages/package_device/ble/common/no_device?source=${this.data.source}`,
             })
         } else if (devices != undefined && clearDevices.length > 0) {
             wx.navigateTo({
-                url: `/pages/ble/device/device?devices=${encodeURIComponent(JSON.stringify(clearDevices))}&source=${this.data.source}`,
+                url: `/pages/package_device/ble/device/device?devices=${encodeURIComponent(JSON.stringify(clearDevices))}&source=${this.data.source}`,
             })
         }
     }),
 
     searchDevice: co.wrap(function*() {
-        this.longToast.toast({
-            img: '/images/loading.gif',
-            title: '搜索中',
-            duration: 0
-        })
-
         try {
             // 先尝试关闭适配器
             yield closeBluetoothAdapter()
@@ -110,30 +110,32 @@ Page({
             this.longToast.toast()
             console.log('开启蓝牙适配器异常', e)
             wx.navigateTo({
-                url: '/pages/ble/common/no_bluetooth?source=${this.data.source}'
+                url: '/pages/package_device/ble/common/no_bluetooth?source=${this.data.source}'
             })
             return
-        }
+				}
+				
         // 启动蓝牙发现
         yield startBluetoothDevicesDiscovery({
             services: [scanWifiServiceUUID, setNetworkServiceUUID, debugServiceUUID],
             allowDuplicatesKey: false
         })
         yield util.sleep(3000)
-
         const devices = yield getBluetoothDevices()
         yield stopBluetoothDevicesDiscovery()
         this.longToast.toast()
         return devices.devices
     }),
-    onUnload: function() {
+	
+		onUnload: function() {
         event.remove('Authorize', this)
         event.remove('Ble', this)
         this.deviceId = ''
     },
-    connectPower: function() {
-        wx.navigateTo({
-            url: `/pages/video/index`
-        })
+	 
+		connectPower: function() {
+        // wx.navigateTo({
+        //     url: `/pages/video/index`
+        // })
     }
 })

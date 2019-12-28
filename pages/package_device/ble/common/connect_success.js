@@ -1,9 +1,9 @@
 // pages/device/index.js
 
 const app = getApp()
-const regeneratorRuntime = require('../../../lib/co/runtime')
-const co = require('../../../lib/co/co')
-const util = require('../../../utils/util')
+const regeneratorRuntime = require('../../../../lib/co/runtime')
+const co = require('../../../../lib/co/co')
+const util = require('../../../../utils/util')
 
 const request = util.promisify(wx.request)
 const showModal = util.promisify(wx.showModal)
@@ -71,11 +71,17 @@ Page({
         if (res.from === 'button' || res[0].from === 'button') {
             console.log(res.target)
         }
-        return {
+        // return {
+        //     title: '好友分享给您一台打印设备，快快点击绑定吧',
+        //     path: `/pages/index/index?deviceId=${this.box_id}&printer_type=${this.data.printer_type}&user_id=${this.user_id}`,
+        //     imageUrl: '/images/share_image.jpg'
+				// }
+				 return {
             title: '好友分享给您一台打印设备，快快点击绑定吧',
-            path: `/pages/index/index?deviceId=${this.box_id}&printer_type=${this.data.printer_type}&user_id=${this.user_id}`,
+						path: `/pages/index/index?deviceSn=${this.box_id}`,
             imageUrl: '/images/share_image.jpg'
-        }
+				}
+			
     },
 
 

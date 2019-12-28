@@ -385,6 +385,23 @@ function resetFiles(file = '') {
   return newFiles;
 }
 
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms))
+}
+
+function buf2hex(buffer) {
+  return Array.prototype.map.call(new Uint8Array(buffer), x => ('00' + x.toString(16)).slice(-2)).join('')
+}
+
+function buf2string(buffer) {
+  var arr = Array.prototype.map.call(new Uint8Array(buffer), x => x)
+  var str = ''
+  for (var i = 0; i < arr.length; i++) {
+    str += String.fromCharCode(arr[i])
+  }
+  return str
+}
+
 module.exports = {
   promisify: promisify,
   _getRotateDirection: _getRotateDirection,
@@ -406,5 +423,8 @@ module.exports = {
   getStringByte:getStringByte,
   removeKeysToNewObj: removeKeysToNewObj,
   isHuaweiCloud: isHuaweiCloud,
-  resetFiles: resetFiles,
+	resetFiles: resetFiles,
+	sleep:sleep,
+	buf2hex: buf2hex,
+  buf2string: buf2string,
 }

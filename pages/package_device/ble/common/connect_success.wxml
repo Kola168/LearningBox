@@ -1,4 +1,5 @@
-<!--pages/ble/common/connect_success.wxml-->
+<nav-bar title="小白智慧打印"></nav-bar>
+
 <view class='container'>
     <view class="top-content">
         <image src='https://cdn.gongfudou.com/miniapp/ec/ble/ble_finish.png' mode="widthFix" class="icon-success"></image>
@@ -19,7 +20,7 @@
         <view>2、小白盒的指示灯如果持续为黄色，表示打印机和小白盒未连接成功，请检查打印机是否已完成充墨操作，或检查打印机和小白盒是否正确连接，并通电正常</view>
     </view>
 
-    <view class='box-tip' wx:if="{{deviceName=='EP300'}}">
+    <view class='box-tip' wx:if="{{deviceName=='EP320'}}">
         <view>提示：</view>
         <view>1、初次配网完成后，小白盒会自行检测固件版本<view class="line"></view></view>
         <view>并升级。如发现指示灯呈现红->黄->绿交替闪烁<view class="line"></view></view>

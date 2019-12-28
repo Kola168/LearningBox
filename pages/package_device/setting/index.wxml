@@ -182,7 +182,7 @@
   <view wx:if="{{modalType==='noaduit'}}" slot="content">
     <view class="noaduit-manager noaduit-item">
       <text>管理者</text>
-      <text wx:if="{{printType==='ep300'}}">：通过蓝牙连接绑定打印机的用户</text>
+      <text wx:if="{{printType==='ep320'}}">：通过蓝牙连接绑定打印机的用户</text>
       <text wx:if="{{printType==='ep400'}}">：通过小白学习盒子绑定流程而绑定设备的用户</text>
     </view>
     <view class="noaduit-user noaduit-item">
