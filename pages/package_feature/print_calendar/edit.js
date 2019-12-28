@@ -238,13 +238,21 @@ Page({
               printUrl:value
             })
           })
-          let orderSn = yield commonRequest.createOrder(that.data.type, imgs)
+          try{
 
-          wxNav.navigateTo(`/pages/finish/index`, {
-            media_type: that.data.type,
-            state:orderSn.createOrder.state
-          })
-          that.longToast.toast()
+
+            let orderSn = yield commonRequest.createOrder(that.data.type, imgs)
+
+            wxNav.navigateTo(`/pages/finish/index`, {
+              media_type: that.data.type,
+              state:orderSn.createOrder.state
+            })
+            that.longToast.toast()
+          }catch(e){
+            that.longToast.toast()
+            Loger(e)
+            util.showError(e)
+          }
         }
       }), ()=>{
         that.longToast.toast()

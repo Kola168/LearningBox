@@ -142,7 +142,8 @@
         "error_book/photo_anwser_intro",
         "error_book/answer_result",
         "error_book/answer_print",
-        "kousuan/index"
+				"kousuan/index",
+				"kousuan/learningplan"
       ]
     },
     {
