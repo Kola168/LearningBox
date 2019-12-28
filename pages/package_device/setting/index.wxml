@@ -66,12 +66,12 @@
         </view>
       </view>
       <view class="setting-box">
-        <view class="setting-item">
+        <view class="setting-item" wx:if="{{device.connectThrough}}">
           <view class="item-left">
             <view class="left-label">切换为电脑打印</view>
           </view>
-          <view class="item-right" bindtap="showModal" id="computerPrint">
-            <image src="/images/switch_{{computerPrintFlag?'on':'off'}}.png" class="right-switch" />
+          <view class="item-right" bindtap="updateSetting" data-key="connectThrough" data-val="{{!device.connectThrough}}">
+            <image src="/images/switch_{{device.connectThrough?'on':'off'}}.png" class="right-switch" />
           </view>
         </view>
         <view class="setting-item">
@@ -144,7 +144,7 @@
             </view>
           </view>
         </view>
-        <view class="setting-item" bindtap="toNextPage" data-key="deviceMaintain">
+        <view class="setting-item" wx:if="{{device.updateInfo}}" bindtap="toNextPage" data-key="deviceMaintain">
           <view class="item-left">
             <view class="left-label">设备维护</view>
           </view>
