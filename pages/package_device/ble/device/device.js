@@ -8,7 +8,7 @@ const event = require('../../../../lib/event/event')
 
 
 import wxNav from '../../../../utils/nav.js'
-import graphql from '../../../../network/graphql_request'
+import graphql from '../../../../network/graphql/device'
 
 const getSystemInfo = util.promisify(wx.getSystemInfo)
 const showModal = util.promisify(wx.showModal)
@@ -324,16 +324,16 @@ Page({
 			let res = yield graphql.bindDevice(deviceUploadInfo)
 			console.log('22222222')
 			console.log('上报盒子信息返回的======', res)
-			// let sn = res.bindDevice.device.sn
-			// wx.setStorageSync('box_id', sn)
-			// this.setData({
-			// 	state: res.bindDevice.device.onlineState == 'online' ? 'online' : 'offline'
-			// })
-			// console.log('this.stat.state======', this.data.state)
-			// this.longToast.toast()
-			// wx.redirectTo({
-			// 	url: `/pages/package_device/ble/device/device_connect?deviceInfo=${encodeURIComponent(JSON.stringify(deviceInfo))}&state=${_this.data.state}`
-			// })
+			let sn = res.bindDevice.device.sn
+			wx.setStorageSync('box_id', sn)
+			this.setData({
+				state: res.bindDevice.device.onlineState == 'online' ? 'online' : 'offline'
+			})
+			console.log('this.stat.state======', this.data.state)
+			this.longToast.toast()
+			wx.redirectTo({
+				url: `/pages/package_device/ble/device/device_connect?deviceInfo=${encodeURIComponent(JSON.stringify(deviceInfo))}&state=${_this.data.state}`
+			})
 
 		} catch (e) {
 			console.log('bindCode错误===', e)

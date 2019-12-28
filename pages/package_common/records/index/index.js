@@ -2,6 +2,8 @@
 const app = getApp()
 import { regeneratorRuntime, co, wxNav, util, storage } from '../../../../utils/common_import'
 import graphql from '../../../../network/graphql_request'
+import deviceGraphql from '../../../../network/graphql/device'
+
 
 Page({
   data: {
@@ -42,7 +44,7 @@ Page({
       type: 'loading'
     })
     try {
-      let res = yield graphql.getDeviceList(),
+      let res = yield deviceGraphql.getDeviceList(),
         devices = res.currentUser.devices,
         activeDevice = res.currentUser.selectedDevice,
         userSn = res.currentUser.sn
