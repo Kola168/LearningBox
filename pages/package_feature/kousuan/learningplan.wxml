@@ -1,0 +1,24 @@
+<!--pages/package_feature/kousuan/learningplan.wxml-->
+<nav-bar title="练习计划"></nav-bar>
+
+<view class="top-tap">
+  <view class="top-tap-style {{planTypeCheck=='executing'?'type-checked':''}}" data-type="executing" bindtap="checkPlanType">
+    执行中
+    <view wx:if="{{planTypeCheck=='executing'}}" class="type-checked-line"></view>
+  </view>
+  <view class="top-tap-style {{planTypeCheck=='finished'?'type-checked':''}}" data-type="finished" bindtap="checkPlanType">
+    已结束
+    <view wx:if="{{planTypeCheck=='finished'}}" class="type-checked-line"></view>
+  </view>
+</view>
+
+<view wx:if="{{planTypeCheck=='executing'}}" class="list-box">
+  <view class="list-item">
+    <view class="list-msg-box">
+
+    </view>
+    <view class="list-time-box">
+
+    </view>
+  </view>
+</view>

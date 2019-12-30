@@ -1,0 +1,5 @@
+{
+  "enablePullDownRefresh": false,
+  "navigationBarTitleText":"语文默写",
+  "onReachBottomDistance": 120
+}

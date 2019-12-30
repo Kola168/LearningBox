@@ -14,7 +14,7 @@
 .content-main .tab-item {
   display: inline-block;
   min-width: 100rpx;
-  margin-right: 70rpx;
+  margin-right: 50rpx;
   width: fit-content;
   text-align: center;
 }
@@ -84,8 +84,12 @@
   height: 100rpx;
   font-size: 26rpx;
   background-color: #fff;
+}
+
+.current-active {
   color: #FFA200;
 }
+
 
 .current-input-value  .version {
   margin-right: 20rpx;
@@ -96,11 +100,17 @@
 }
 
 .current-input-value .arrow-icon {
+  margin-top: 10rpx;
   width: 0px;
   height: 0px;
   border-width: 12rpx;
   border-style: solid;
   border-color: #999999 transparent transparent transparent;
+}
+
+.current-input-value .arrow-active {
+  margin-top: -10rpx;
+  border-color: transparent  transparent #FFA200 transparent;
 }
 
 .select-bar {
@@ -141,6 +151,7 @@
 }
 
 .right-select-content {
+  padding: 0 20rpx;
   flex: 1;
   display: flex;
   flex-wrap: wrap;
@@ -149,9 +160,19 @@
 }
 
 .right-select-content .content-item {
-  width: 33%;
+  margin-left: 15px;
+  width: fit-content;
   line-height: 80rpx;
   height: 80rpx;
   text-align: center;
   color: #666666;
+}
+
+.right-select-content .active-text {
+  color: #FFA200;
+}
+
+
+.chapter-main {
+  padding-left: 24rpx;
 }

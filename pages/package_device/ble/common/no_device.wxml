@@ -1,3 +1,4 @@
+<nav-bar title="小白智慧打印"></nav-bar>
 <view class='container'>
     <view class="title">抱歉，暂未搜索到相关设备</view>
     <image src='https://cdn.gongfudou.com/miniapp/ec/ble/ble_no_device.png' class='no-device-img' mode="widthFix"></image>
@@ -11,7 +12,7 @@
         <view>4、部分安卓手机开启手机GPS功能后再次尝试
         </view>
     </view>
-    <button class='search-equipment' bindtap='startSerch'>重新尝试搜索</button>
+    <view class='search-equipment' bindtap='startSerch'>重新尝试搜索</view>
 </view>
 
 <import src="../../../lib/toast/wetoast.wxml" />

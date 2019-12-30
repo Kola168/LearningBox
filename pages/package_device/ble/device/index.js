@@ -1,10 +1,18 @@
+/*
+ * @Author: your name
+ * @Date: 2019-12-26 11:44:22
+ * @LastEditTime: 2019-12-28 09:46:59
+ * @LastEditors: your name
+ * @Description: In User Settings Edit
+ * @FilePath: /LearningBox/pages/package_device/ble/device/index.js
+ */
 // pages/device/index.js
 const app = getApp()
-const regeneratorRuntime = require('../../../lib/co/runtime')
-const co = require('../../../lib/co/co')
-const util = require('../../../utils/util')
-const CryptoJS = require("../../../lib/crypto-js/crypto-js")
-const event = require('../../../lib/event/event')
+const regeneratorRuntime = require('../../../../lib/co/runtime')
+const co = require('../../../../lib/co/co')
+const util = require('../../../../utils/util')
+const CryptoJS = require("../../../../lib/crypto-js/crypto-js")
+const event = require('../../../../lib/event/event')
 
 
 const getSystemInfo = util.promisify(wx.getSystemInfo)

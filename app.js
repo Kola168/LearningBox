@@ -15,7 +15,7 @@ const login = util.promisify(wx.login)
 const request = util.promisify(wx.request)
 
 App({
-  weToast,
+  weToast:weToast,
   version: '0.0.1',
   //线上地址
   // apiServer: 'https://epbox.gongfudou.com',

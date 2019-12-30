@@ -1,1 +1,4 @@
+
+<nav-bar title="添加新设备"></nav-bar>
+
 <image src="https://cdn.gongfudou.com/miniapp/ec/bluetooth_intro_{{item}}.png" wx:for="{{imgs}}" mode="widthFix" style="width:100%" />

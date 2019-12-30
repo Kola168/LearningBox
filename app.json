@@ -124,6 +124,8 @@
         "share_folder/share_manage",
         "share_folder/content",
         "share_folder/manage",
+        "memory_write/index/index",
+        "memory_write/szcx/index",
         "memory_write/chinese/index",
         "memory_write/chinese/print",
         "memory_write/english/index",
@@ -140,7 +142,8 @@
         "error_book/photo_anwser_intro",
         "error_book/answer_result",
         "error_book/answer_print",
-        "kousuan/index"
+				"kousuan/index",
+				"kousuan/learningplan"
       ]
     },
     {
@@ -175,7 +178,8 @@
         "sync_learn/index/index",
         "sync_learn/learn_content/index",
         "evaluate_exam/index/index",
-        "evaluate_exam/testpaper/index"
+        "evaluate_exam/testpaper/index",
+        "correct/index"
       ]
     },
     {

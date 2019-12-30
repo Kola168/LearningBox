@@ -87,7 +87,7 @@ Page({
 
   getStorageImages: function() {
     try {
-      let galleryImages = storage.get(`${this.mediaType}_${this.data.type}`)
+      let galleryImages = storage.get(this.mediaType)
       Loger(galleryImages)
       if (galleryImages) {
         this.setData({
@@ -105,7 +105,7 @@ Page({
   setStorage: function() {
     //图片存储至本地
     try {
-      storage.put(`${this.mediaType}_${this.data.type}`, {
+      storage.put(this.mediaType, {
         imgArr: this.data.imgArr
       })
     } catch (e) {
@@ -211,7 +211,7 @@ Page({
       confirmColor: '#FFE27A'
     })
     if(conf.confirm){
-      this.data.imgArr[this.data.direction].imgs[index]={}
+      this.data.imgArr[this.data.direction].imgs[index]={url:''}
       this.setData({
         imgArr:this.data.imgArr
       })
@@ -235,7 +235,11 @@ Page({
   },
 
   toPreview: co.wrap(function*() {
+    this.longToast.toast({
+      type: "loading",
+    })
     if(_.without(_.pluck(this.data.imgArr[this.data.direction].imgs,'url'),'').length==0){
+      this.longToast.toast()
       return wx.showModal({
         title: '提示',
         content: '至少上传一张照片哦',
@@ -249,17 +253,19 @@ Page({
         step_method:'two',
         before_rotate:(this.data.type=='two'&&this.data.direction=='vertical'||this.data.type=='four'&&this.data.direction=='horizontal')?true:false,
         feature_key:this.mediaType,
-        urls:_.without(_.pluck(this.data.imgArr[this.data.direction].imgs,'url'),'')
+        urls:_.pluck(this.data.imgArr[this.data.direction].imgs,'url')
       }
       const resp = yield api.processes(params)
-      storage.remove(`${this.mediaType}_${this.data.type}`)
+      storage.remove(this.mediaType)
       wxNav.navigateTo('/pages/package_feature/print_sticker/preview',{
         type:this.mediaType,
         sn:resp.res.sn,
         imgSrc:encodeURIComponent(JSON.stringify(resp.res.url))
       })
+      this.longToast.toast()
       Loger(resp)
     }catch(e){
+      this.longToast.toast()
       Loger(e)
     }
   }),

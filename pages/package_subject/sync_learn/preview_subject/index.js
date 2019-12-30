@@ -8,10 +8,12 @@ import {
 } from '../../../../utils/common_import'
 Page({
 
-  /**
-   * 页面的初始数据
-   */
   data: {
+    currentIndex: 1,
+    imgList: [
+      'https://cdn-h.gongfudou.com/LearningBox/main/doc_confirm_print_a4_new.png',
+      'https://cdn-h.gongfudou.com/LearningBox/main/doc_confirm_print_a4_new.png'
+    ],
     confirmModal: {
 			isShow: false,
 			title: '请正确放置A4打印纸',
@@ -20,11 +22,16 @@ Page({
   },
 
   onLoad: function (options) {
-
+    var sn = options.sn
+    this.longToast = new app.weToast()
+    console.log(sn, '===sn===')
   },
 
-  onShow: function () {
-
+  changeImg: function({detail: {current}}) {
+    this.setData({
+      currentIndex: current + 1
+    })
+    console.log(current,'current')
   },
 
   	/**
@@ -44,14 +51,6 @@ Page({
   print: co.wrap(function*(){
 
   }),
-
-  onHide: function () {
-
-  },
-
-  onReachBottom: function () {
-
-  },
 
   onShareAppMessage: function () {
 

@@ -15,7 +15,7 @@ Page({
   },
 
   onLoad: function (options) {
-
+    this.longToast = new app.weToast()
   },
 
   

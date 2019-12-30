@@ -1,4 +1,7 @@
 // pages/package_subject/sync_learn/index/index.js
+import {
+  wxNav
+} from '../../../../utils/common_import'
 Page({
 
   /**
@@ -26,6 +29,10 @@ Page({
 
   toUse: function({currentTarget: {dataset: {key}}}) {
     console.log(key, 'xxxxx')
+    wxNav.navigateTo('/pages/package_subject/sync_learn/learn_content/index', {
+      key
+    })
+
   },
 
   onHide: function () {

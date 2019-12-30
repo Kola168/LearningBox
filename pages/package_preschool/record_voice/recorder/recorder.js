@@ -28,6 +28,7 @@ Page({
     showToast: false, //通知弹窗
     showTips: false,
     userContentAudio: null, //用户录制者信息
+    isRecording:true,
   },
 
   onLoad: co.wrap(function *(options) {
