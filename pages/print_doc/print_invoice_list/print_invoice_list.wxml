@@ -39,7 +39,7 @@
 	</view>
 </view>
 
-<botttom-button class="bottom" text-left="继续选择" bindlefttap="choose" text-right="确认打印" bindrighttap="confirm" get-phone="{{true}}"></botttom-button>
+<bottom-button class="bottom" text-left="继续选择" bindlefttap="choose" text-right="确认打印" bindrighttap="confirm" get-phone="{{true}}"></bottom-button>
 
 <import src="../../../lib/toast/wetoast.wxml" />
 <template is="wetoast" data="{{...__wetoast__}}" />

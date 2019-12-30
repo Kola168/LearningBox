@@ -11,7 +11,7 @@
       <image class="check-on" src="../../images/check_on.png"></image>
       <view class="title">打印答案</view>
     </view>
-    <botttom-button text-right="确认打印" bindrighttap="confirm" get-phone="{{true}}"/>
+    <bottom-button text-right="确认打印" bindrighttap="confirm" get-phone="{{true}}"/>
     <!-- <view class="confirm-print">确认打印</view> -->
   </view>
 </view>

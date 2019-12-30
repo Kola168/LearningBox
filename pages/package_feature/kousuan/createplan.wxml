@@ -1,5 +1,6 @@
 <!--pages/package_feature/kousuan/createplan.wxml-->
 <nav-bar title="练习计划"></nav-bar>
+
 <view class="configure-box" bindtap="hidePointsScroll">
   <view class="textbook-box {{pick_type=='grade'?'configure-checked':''}}" data-type="grade" bindtap="showPicker">
     <view>
@@ -60,12 +61,12 @@
       <view class="check-contain-box">
         <view class="check-name-box">每天</view>
         <view class="check-content-box" data-type="remindTime" catchtap="checkPoints">
-          <text class="check-value-box">{{tipTime}}</text>
+          <text class="check-value-box">{{hours[checkedHourIndex]}}:{{minutes[checkedMinutesIndex]}}</text>
           <text class="iconfont icon-down"></text>
           <view class="scroll-position-box" wx:if="{{pointType=='remindTime'}}" catchtap="preventTap">
-            <picker-view class="picker-view-box" indicator-class="picker-choosed" value="{{value}}" bindchange="bindChange">
+            <picker-view class="picker-view-box" indicator-class="picker-choosed" value="{{[checkedHourIndex,checkedMinutesIndex]}}" bindchange="bindChange">
               <picker-view-column>
-                <view wx:for="{{huors}}" class="picker-item" wx:key="hours">{{item}}</view>
+                <view wx:for="{{hours}}" class="picker-item" wx:key="hours">{{item}}</view>
               </picker-view-column>
               <picker-view-column>
                 <view wx:for="{{minutes}}" class="picker-item" wx:key="minutes">{{item}}</view>

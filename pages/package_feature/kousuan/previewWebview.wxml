@@ -1,0 +1,2 @@
+<!--pages/package_feature/kousuan/previewWebview.wxml-->
+<web-view bindmessage="getMessage" src="https://schaffer.utools.club/html_to_pdf/kousuan?sn=6455332511441577687232&page=0"/>

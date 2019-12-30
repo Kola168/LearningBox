@@ -114,15 +114,17 @@ Page({
     pointIndex:0, //知识点类型index
     pointType:'',  //联系想与知识点选择样式
     pointPickList:[],
-    tipTime:'20:00',
 
-    huors:_.range(24),  //时间的小时
-    minutes:_.range(60) //时间的分钟
+    hours:_.map(_.range(24),function(num){return num>=10?num:('0'+num)}),  //时间的小时
+    minutes:_.map(_.range(60),function(num){return num>=10?num:('0'+num)}), //时间的分钟
+    checkedHourIndex:20,
+    checkedMinutesIndex:0,
   },
 
   onLoad: function (options) {
 
   },
+
   showPicker:function(e){
     let that=this
     let type=e.currentTarget.dataset.type
@@ -239,5 +241,14 @@ Page({
 
   preventTap:function(){
     return false
-  }
+  },
+
+  bindChange:function(e){
+    let indexArr=e.detail.value
+    this.setData({
+      checkedHourIndex:indexArr[0],
+      checkedMinutesIndex:indexArr[1]
+    })
+  },
+
 })
