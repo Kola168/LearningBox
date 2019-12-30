@@ -31,7 +31,7 @@ Page({
             this.userSn = storage.get('userSn')
             this.getFamilyUser()
             if (this.options.groupSn) {
-                yield this.joinOrExitGroup(this.options.groupSn, 'join')
+              this.joinOrExitGroup(this.options.groupSn, 'join')
             }
         })
     }),
