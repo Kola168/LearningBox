@@ -54,6 +54,7 @@ Page({
     })
     try {
       let resp = yield gql.getUser()
+      console.log(resp)
       this.setData({
         kidInfo: resp.currentUser.selectedKid,
         activeDevice: resp.currentUser.selectedDevice

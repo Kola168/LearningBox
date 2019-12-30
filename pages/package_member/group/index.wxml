@@ -1,0 +1,40 @@
+<nav-bar background="#fff" title="我的家庭"></nav-bar>
+<view class="top-wrap">
+    <image class="top-image" src="../images/family_top_{{state=='normal'?'invoter':'invitee'}}.png" mode="widthFix">
+    </image>
+    <view class="user-info">
+        <image class="user-avatar" src="{{kidInfo.avatar}}" mode="widthFix"></image>
+        <view>
+            <view>{{kidInfo.name}}</view>
+            <view class="grade">年级：{{kidInfo.stage.rootName}} {{kidInfo.stage.name}}</view>
+        </view>
+    </view>
+</view>
+<view class="member-title">
+    <view class="sign"></view>
+    <view>当前家庭成员</view>
+    <view>点击加号可以继续邀请成员哦</view>
+</view>
+
+<view class="member-wrap">
+    <view class="member-item" wx:for="{{users}}" wx:key="users">
+        <image class="user-avatar member-avatar" src="{{item.avatar}}" mode="widthFix">
+        </image>
+        <view class="member-name">{{item.name}}</view>
+        <image class="member-avatar-tip" src="../images/family_main.png" mode="widthFix"
+            wx:if="{{item.userIsCreator==true}}"></image>
+        <image class="member-avatar-delete" src="../images/family_icon_delete.png" mode="widthFix"
+            wx:if="{{!item.userIsCreator}}"></image>
+    </view>
+    <view class="member-item" wx:for="{{users}}" wx:key="users">
+        <button open-type="share" hover-class="none">
+            <image class="user-avatar member-avatar" src="../images/family_invote.png" mode="widthFix">
+            </image>
+            <view class="member-name">邀请成员</view>
+        </button>
+    </view>
+    </view>
+    <view class="tip-bottom">最多只能邀请5个家庭成员哦，为了您的家庭权益请不要将链接分享到不熟悉的微信群中</view>
+
+    <import src="../../../lib/toast/wetoast.wxml" />
+    <template is="wetoast" data="{{...__wetoast__}}" />

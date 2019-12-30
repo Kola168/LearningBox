@@ -224,7 +224,6 @@
     "nav-bar": "components/nav-bar/index",
     "botttom-button": "components/bottom-button/index"
   },
-  "style": "v2",
   "sitemapLocation": "sitemap.json",
   "tabBar": {
     "color": "#BFBFBF",

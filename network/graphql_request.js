@@ -1860,6 +1860,46 @@ const graphqlApi = {
       }
     })
   },
+  getFamilyUser: () => {
+    return gql.query({
+      query: `query{
+        currentUser{
+          currentGroup{
+            currentUserIsCreator
+            sn
+            kid{
+              avatar
+              name
+              sn
+              stage{
+                name
+              rootName
+              sn 
+              }
+            }
+            users{
+              avatar
+              name
+              sn
+              userIsCreator
+            }
+          }
+        }
+      }`
+    })
+  },
+  joinOrExitGroup: (input) => {
+    return gql.mutate({
+      mutation: `mutation($input: JoinOrExitGroupInput!) {
+        joinOrExitGroup(input:$input){
+          state
+        }
+        }`,
+      variables: {
+        input: input
+      }
+    })
+  },
 }
 
 export default graphqlApi
