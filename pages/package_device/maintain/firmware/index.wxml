@@ -10,8 +10,12 @@
     <view>3、请勿触碰打印机按键</view>
   </view>
   <view class="update-btn" bindtap="checkUpdate">检查并更新打印机固件</view>
-  <view class="update-time">打印机于2019-06-31 17：36  升级成功</view>
+  <view class="update-time" wx:if="{{updateInfo&&updateInfo!='null'}}">打印机于{{updateInfo}} 升级成功</view>
 </view>
 <!-- modal -->
-<modal modal="{{modalObj}}" bindcomfirm="updateConfirm">
+<modal modal="{{modalObj}}" bindconfirm="updateConfirm">
 </modal>
+
+<!-- loading -->
+<import src="/lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />
