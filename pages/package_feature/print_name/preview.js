@@ -137,7 +137,8 @@ Page({
     try {
       let imgs = [{
         originalUrl: this.url,
-        printUrl: this.url
+        printUrl: this.url,
+        copies:this.data.count
       }]
       let orderSn = yield commonRequest.createOrder(this.type, imgs)
 

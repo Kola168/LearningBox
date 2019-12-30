@@ -5,15 +5,106 @@ const graphqlApi = {
   /**
    * 注册学科网
    *
-   * @returns
    */
   register: () => {
     return gql.mutate({
       mutation: `mutation ($input: RegisterInput!){
-        Register{
+        Register(input:$input){
           state
         }
+      }`,
+      variables: {
+        input: {
+
+        }
+      }
+    })
+  },
+
+  /**
+   * 获取学科
+   *
+   */
+  getSubjects: () => {
+    return gql.query({
+      query: `query {
+        xuekewang {
+          registered
+          subjects {
+            iconUrl
+            subjectId
+            subjectName
+            totalNumber
+          }
+        }
       }`
+    })
+  },
+
+  /**
+   * 获取学科教材地区
+   *
+   */
+  getSubjectAreas: () => {
+    return gql.query({
+      query: `query {
+        xuekewang {
+          areas{
+            areaId
+            areaName
+          }
+        }
+      }`
+    })
+  },
+
+  /**
+   * 获取试卷类型
+   * @param { Number } subjectId
+   */
+  getSubjectPaperTypes: (subjectId) => {
+    return gql.query({
+      query: `query ($subjectId: Int!){
+        xuekewang {
+          paperTypes(subjectId:$subjectId){
+            id
+            name
+          }
+        }
+      }`,
+      variables: {
+        subjectId: subjectId
+      }
+    })
+  },
+
+  /**
+   * 获取试卷列表
+   * @param { Number } subjectId 学科id
+   * @param { Number } paperType 试卷类型
+   * @param { Number } areaId 地区id
+   * @param { Number } pageIndex 分页
+   */
+  getSubjectPapers: (subjectId, paperType, areaId, pageIndex) => {
+    return gql.query({
+      query: `query ($subjectId: Int!,$paperType: Int!,$areaId: Int!,$pageIndex: Int!,$pageSize: Int!){
+        xuekewang {
+          paperLists(subjectId:$subjectId,paperType:$paperType,areaId:$areaId,pageIndex:$pageIndex,pageSize:$pageSize){
+            paperId
+            isPrint
+            isReport
+            printCount
+            title
+          }
+        }
+      }`,
+      variables: {
+        subjectId: subjectId,
+        paperType: paperType,
+        areaId: areaId,
+        pageSize: 20,
+        pageIndex: pageIndex
+      }
     })
   },
 
@@ -81,6 +172,7 @@ const graphqlApi = {
 
   /**
    * 获取选中教材
+   * @param {subjectSn} 学科sn
    */
   getSelectedTextbook: (subjectSn) => {
     return gql.query({
@@ -102,6 +194,7 @@ const graphqlApi = {
 
   /**
    * 获取选择的学科教材版本
+   * @param {subjectSn} 学科sn
    */
   getSelectedTextbookVersion: (subjectSn) => {
     return gql.query({
@@ -189,7 +282,7 @@ const graphqlApi = {
   /**
    * 获取练习列表
    * @param {diff} 难度id
-   * @param {sn} 章节的sn
+   * @param {nodeSn} 章节的sn
    */
   getExercises: (diff, nodeSn)=>{
     return gql.query({

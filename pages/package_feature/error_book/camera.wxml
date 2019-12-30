@@ -5,8 +5,8 @@
         <cover-view wx:for="{{[1, 2, 3, 4, 5, 6, 7, 8, 9]}}" wx:key="index" class="line"></cover-view>
     </cover-view>
     <cover-view scroll-top="cover-view" class="cover-title" bindtap="hideTipModal" wx:if="{{showTipModal}}">
-        <!-- <cover-view>请横屏拍摄，题目与参考线平行</cover-view> -->
-        <cover-image class="camera-tip" src="../images/error_book_camera_tip.png" />
+        <cover-view>题目与参考线平行，效果更佳</cover-view>
+        <!-- <cover-image class="camera-tip" src="../images/error_book_camera_tip.png" /> -->
     </cover-view>
 
     <cover-view class="cover">

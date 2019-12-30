@@ -692,6 +692,7 @@ Component({
             let scale=scaleData||that.data.areaSize.scale
             Loger(imgArr)
             _.each(imgArr, function(value, index, kist) {
+              if(value){
                 const result = {
                     x: Number(value.left),
                     y: Number(value.top),
@@ -731,6 +732,10 @@ Component({
                 }
                 Loger(params)
                 pointArr.push(params)
+              }else{
+                pointArr.push('')
+              }
+
             })
             return pointArr
           }catch(e){

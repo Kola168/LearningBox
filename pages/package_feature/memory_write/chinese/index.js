@@ -10,8 +10,7 @@ Page({
     grades: [],
     types: [],
     currentGrade: null,
-    currentType: null,
-    showTip: false,
+    // currentType: null,
     checkCount: 0,
     allCheck: false,
     loadReady: false,
@@ -41,9 +40,6 @@ Page({
     }
   }),
   startWrite: co.wrap(function*() {
-    // let unionId = wx.getStorageSync('unionId')
-    // console.log('应用二维码参数传参', this.share_user_id, this.way)
-    // if (unionId) {
     storage.put('hasViewCnWrite', true)
     this.setData({
       showIntro: false
@@ -52,20 +48,7 @@ Page({
     if (filterInfo.hasFilter) {
       this.getWriteList()
     }
-    // } else {
-    //   let url = this.share_user_id ? `/pages/authorize/index?share_user_id=${this.share_user_id}&way=${this.way}` : `/pages/authorize/index`
-    //   wx.navigateTo({
-    //     url: url,
-    //   })
-    // }
   }),
-  navTap(e) {
-    let type = e.currentTarget.id
-    this.setData({
-      currentType: type,
-    })
-    this.resetData()
-  },
   selectorItemCheck(e) {
     let index = e.currentTarget.id
     this.setData({
@@ -73,7 +56,7 @@ Page({
     })
     this.resetData()
   },
-  resetData(){
+  resetData() {
     this.page = 1
     this.pageEnd = false
     this.setData({
@@ -114,11 +97,7 @@ Page({
       showSelector: !this.data.showSelector
     })
   },
-  ctrlTip() {
-    this.setData({
-      showTip: !this.data.showTip
-    })
-  },
+
   toPrint(e) {
     let sns = [],
       type = ''
@@ -149,18 +128,14 @@ Page({
   },
   getFilters: co.wrap(function*() {
     this.weToast.toast({
-      type:'loading'
+      type: 'loading'
     })
     try {
       let grades = yield this.getGrades(),
-        types = yield this.getTypes(),
-        currentGrade = grades[0],
-        currentType = types[0].key
+        currentGrade = grades[0]
       this.setData({
-        currentType,
         currentGrade,
-        grades,
-        types
+        grades
       })
       this.weToast.hide()
       return {
@@ -187,26 +162,22 @@ Page({
   }),
   getWriteList: co.wrap(function*() {
     this.weToast.toast({
-      type:'loading'
+      type: 'loading'
     })
     try {
       let stageSn = this.data.currentGrade.sn,
-        outer = this.data.currentType,
         page = this.page++;
-      let resp = yield api.getWriteList('cn', stageSn, outer, page)
+      let resp = yield api.getWriteList('cn', stageSn, page)
       if (resp.code !== 0) {
         throw (resp)
       }
-      let writeType = this.data.currentType,
-        currentWriteList = this.data.writeList,
+      let currentWriteList = this.data.writeList,
         tempData = resp.res,
         isEmpty = page === 1 && tempData.length === 0
       this.pageEnd = tempData.length < this.pageSize ? true : false
-      if (writeType === 'ymz') {
-        let checkFlag = this.data.allCheck ? true : false
-        for (let i = 0; i < tempData.length; i++) {
-          tempData[i].isCheck = checkFlag
-        }
+      let checkFlag = this.data.allCheck ? true : false
+      for (let i = 0; i < tempData.length; i++) {
+        tempData[i].isCheck = checkFlag
       }
       this.setData({
         writeList: currentWriteList.concat(tempData),

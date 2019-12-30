@@ -1,7 +1,7 @@
 const app = getApp()
-const regeneratorRuntime = require('../../../lib/co/runtime')
-const co = require('../../../lib/co/co')
-const util = require('../../../utils/util')
+const regeneratorRuntime = require('../../../../lib/co/runtime')
+const co = require('../../../../lib/co/co')
+const util = require('../../../../utils/util')
 
 const request = util.promisify(wx.request)
 const showModal = util.promisify(wx.showModal)
@@ -28,7 +28,7 @@ Page({
 
     onLoad: co.wrap(function*(query) {
         let _this = this
-        this.longToast = new app.WeToast()
+        this.longToast = new app.weToast()
         this.queryDeviceInfo = query.deviceInfo
         let deviceInfo = JSON.parse(decodeURIComponent(query.deviceInfo))
 
@@ -81,7 +81,7 @@ Page({
                         // 未检搜索到wifi
                         console.log('未检搜索到wifi')
                         wx.navigateTo({
-                            url: `/pages/ble/common/no_wifi?deviceInfo=${_this.queryDeviceInfo}`
+                            url: `/pages/package_device/ble/common/no_wifi?deviceInfo=${_this.queryDeviceInfo}`
                         })
                     } else {
                         console.log('tmpSSIDs========', tmpSSIDs)
@@ -123,11 +123,11 @@ Page({
     }),
 
     scanWifi: co.wrap(function*() {
-        this.longToast.toast({
-            img: '/images/loading.gif',
-            title: 'wifi搜索中',
-            duration: 0
-        })
+			this.longToast.toast({
+				type: "loading",
+				title: 'wifi搜索中'
+			})
+	
         console.log('特征值notify...')
         tmpSSIDs = []
         try {
@@ -179,7 +179,7 @@ Page({
     connectWifi: co.wrap(function*(e) {
         console.log('e.currentTarget.id', e.currentTarget.id)
         wx.redirectTo({
-            url: `/pages/ble/network/configure?ssid=${this.data.ssids[parseInt(e.currentTarget.id)]}&&deviceInfo=${encodeURIComponent(JSON.stringify(this.data.deviceInfo))}`
+            url: `/pages/package_device/ble/network/configure?ssid=${this.data.ssids[parseInt(e.currentTarget.id)]}&&deviceInfo=${encodeURIComponent(JSON.stringify(this.data.deviceInfo))}`
         })
     }),
 })

@@ -250,15 +250,6 @@ page {
     color: #333;
 }
 
-.bottom:not([size='mini']) {
-    min-height: 40px;
-    width: 240rpx;
-    margin-left: auto;
-    margin-right: auto;
-
-}
-
-
 .bottom text {
     font-size: 34rpx;
     color: #333333;

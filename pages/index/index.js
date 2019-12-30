@@ -8,6 +8,7 @@ require('../../utils/mixin.js')
 import index from "../../mixins/index.js"
 import init from "../../mixins/init.js"
 import gql from '../../network/graphql_request.js'
+import gqlDevice from '../../network/graphql/device'
 import api from '../../network/restful_request.js'
 const checkSession = util.promisify(wx.checkSession)
 
@@ -268,7 +269,7 @@ Page({
         throw (info)
       }
       this.bindShareDevice(info.res.device_sn)
-      yield gql.bindShareDevice()
+      // yield gql.bindShareDevice()
     } catch (error) {
       this.longToast.hide()
       util.showError(error)
@@ -281,7 +282,7 @@ Page({
       type: 'loading'
     })
     try {
-      let res = yield gql.bindShareDevice(deviceSn)
+      let res = yield gqlDevice.bindShareDevice(deviceSn)
       if (res.bindSharer.device) {
         this.longToast.hide()
         wx.showToast({

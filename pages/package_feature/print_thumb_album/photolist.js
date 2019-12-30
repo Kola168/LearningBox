@@ -296,15 +296,15 @@ Page({
 
   deleteImg:co.wrap(function*(e){
     let that=this
-    let index=e.currentTarget.dataset.index
+    let deleteIndex=e.currentTarget.dataset.index
+    console.log(e)
     wx.showModal({
       title: '提示',
       content: '确认删除此照片？',
       confirmColor: '#FFE27A',
       success:function(res){
-        let imgIndex=`images[${index}]`
         that.setData({
-          [imgIndex]:{}
+          [`images[${deleteIndex}]`]:{}
         })
       }
     })
@@ -359,14 +359,20 @@ Page({
             originalUrl: resp.data.url,
             printUrl: resp.data.url
           }]
-          let orderSn = yield commonRequest.createOrder(that.type, imgs)
-          storage.remove(that.type)
-  
-          wxNav.navigateTo(`/pages/finish/index`, {
-            media_type: that.type,
-            state:orderSn.createOrder.state
-          })
-          that.longToast.toast()
+          try{
+            let orderSn = yield commonRequest.createOrder(that.type, imgs)
+            storage.remove(that.type)
+
+            wxNav.navigateTo(`/pages/finish/index`, {
+              media_type: that.type,
+              state:orderSn.createOrder.state
+            })
+            that.longToast.toast()
+          }catch(e){
+            that.longToast.toast()
+            Loger(e)
+            util.showError(e)
+          }
         }
       }), ()=>{
         that.longToast.hide()

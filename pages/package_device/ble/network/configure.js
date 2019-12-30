@@ -1,9 +1,9 @@
 // pages/device/index.js
 const app = getApp()
-const regeneratorRuntime = require('../../../lib/co/runtime')
-const co = require('../../../lib/co/co')
-const util = require('../../../utils/util')
-const CryptoJS = require("../../../lib/crypto-js/crypto-js")
+const regeneratorRuntime = require('../../../../lib/co/runtime')
+const co = require('../../../../lib/co/co')
+const util = require('../../../../utils/util')
+const CryptoJS = require("../../../../lib/crypto-js/crypto-js")
 
 const getSystemInfo = util.promisify(wx.getSystemInfo)
 const showModal = util.promisify(wx.showModal)
@@ -52,16 +52,16 @@ Page({
     initUI: co.wrap(function*(deviceInfo) {
         let deviceName = deviceInfo.device.localName.split('-')[0]
         this.setData({
-            deviceTitle: deviceName == 'EP200' ? '请设置小白盒WIFI' : '请设置打印机WIFI',
-            deviceImage: deviceName == 'EP200' ? 'https://cdn.gongfudou.com/miniapp/ec/ble/ble_box_light_red.png' : 'https://cdn.gongfudou.com/miniapp/ec/ble/l3115_new_red.png',
-            deviceDesc: deviceName == 'EP200' ? '请检查小白盒指示灯是否为红色闪烁状态' : '请检查上图指示灯是否为红色闪烁状态'
+            deviceTitle: deviceName == 'EP320' ? '请设置小白盒WIFI' : '请设置打印机WIFI',
+            deviceImage: deviceName == 'EP320' ? 'https://cdn.gongfudou.com/miniapp/ec/ble/ble_box_light_red.png' : 'https://cdn.gongfudou.com/miniapp/ec/ble/l3115_new_red.png',
+            deviceDesc: deviceName == 'EP320' ? '请检查小白盒指示灯是否为红色闪烁状态' : '请检查上图指示灯是否为红色闪烁状态'
         })
     }),
 
     onLoad: co.wrap(function*(query) {
         let _this = this
 
-        this.longToast = new app.WeToast()
+        this.longToast = new app.weToast()
         this.deviceInfo = query.deviceInfo
         let deviceInfo = JSON.parse(decodeURIComponent(query.deviceInfo))
 
@@ -137,7 +137,7 @@ Page({
                         //     })
                         // }, 3000)
                     wx.redirectTo({
-                        url: `/pages/ble/common/connect_success?deviceInfo=${_this.deviceInfo}`
+                        url: `/pages/package_device/ble/common/connect_success?deviceInfo=${_this.deviceInfo}`
                     })
 
                 } else {
@@ -182,21 +182,12 @@ Page({
     }),
 
     setNetwork: co.wrap(function*(e) {
-        //校验wifi密码
-        // if (this.data.psk.trim() == '') {
-        //     wx.showModal({
-        //         title: '提示',
-        //         content: '请输入WIFI密码',
-        //         showCancel: false
-        //     })
-        //     return
-        // }
         console.log('this.data.ssid,this.data.psk===', this.data.ssid, this.data.psk)
-        this.longToast.toast({
-            img: '/images/loading.gif',
-            title: '配网中...',
-            duration: 0
-        })
+				this.longToast.toast({
+					type: "loading",
+					title: '配网中'
+				})
+		
         let wordArray = CryptoJS.enc.Utf8.parse(`${this.data.ssid}||${this.data.psk}`)
         let ssidPsk = CryptoJS.enc.Base64.stringify(wordArray)
         let dataStr = `${ssidPsk}#end`
@@ -257,7 +248,7 @@ Page({
 
     changeNetwork: co.wrap(function*() {
         wx.redirectTo({
-            url: `/pages/ble/network/wifi_list?deviceInfo=${this.deviceInfo}`
+            url: `/pages/package_device/ble/network/wifi_list?deviceInfo=${this.deviceInfo}`
         })
     })
 })
