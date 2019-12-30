@@ -45,7 +45,7 @@ page {
 .all-check {
   color: #FFA200;
   font-size: 30rpx;
-  padding: 0 0 20rpx 30rpx;
+  padding-bottom: 20rpx;
 }
 
 .content-item {

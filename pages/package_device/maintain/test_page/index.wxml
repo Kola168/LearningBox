@@ -6,5 +6,8 @@
   <image src="https://cdn-h.gongfudou.com/LearningBox/device/maintain_testpage_3.png" mode="widthFix" />
 </view>
 <!-- modal -->
-<modal modal="{{modalObj}}">
+<modal modal="{{modalObj}}" bindconfirm="confirmModal">
 </modal>
+<!-- loading -->
+<import src="/lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />
