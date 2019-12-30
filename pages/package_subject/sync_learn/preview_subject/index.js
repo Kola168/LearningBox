@@ -6,6 +6,7 @@ import {
   util,
   wxNav
 } from '../../../../utils/common_import'
+import graphql from '../../../../network/graphql/subject'
 Page({
 
   data: {

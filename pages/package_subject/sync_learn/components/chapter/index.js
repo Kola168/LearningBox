@@ -4,9 +4,10 @@ const app = getApp()
 import {
   regeneratorRuntime,
   co,
-  util
+  util,
+  wxNav
 } from '../../../../../utils/common_import'
-import graphql from '../../../../../network/graphql_request'
+import graphql from '../../../../../network/graphql/subject'
 import busFactory from '../../busFactory'
 Component({
   properties: {
@@ -35,22 +36,17 @@ Component({
         [`chapters[${index}]isUnfold`]: !this.data.chapters[index].isUnfold
       })
       if (this.data.chapters[index].isUnfold) {
-        this.getChapterContentDetails(this.data.chapters[index].id)
+        this.getChapterContentDetails(this.data.chapters[index].sn)
       }
     },
-    getChapterContentDetails: co.wrap(function*(chapterId){
+
+    getChapterContentDetails: co.wrap(function*(sn){
       this.longToast.toast({
         title: '请稍后...',
         type: 'loading'
       })
       try {
-        var textbookId = busFactory.getIds('textbookId')
-        var subjectId = busFactory.getIds('subjectId')
-        var resp = yield graphql.getChapterDetail({
-          subjectId,
-          textbookId,
-          parentId: chapterId
-        })
+        var resp = yield graphql.getChapterDetail(sn)
         if (!resp.xuekewang.childrenNodes.length) {
           this.longToast.hide()
           return util.showError({
@@ -61,11 +57,18 @@ Component({
           [`chapters[${this.nodeIndex}].children`]: resp.xuekewang.childrenNodes
         })
         this.longToast.hide()
-        console.log(this.data.chapters, '==chapters==')
       } catch(err) {
         this.longToast.hide()
         util.showError(err)
       }
+    }),
+    /**
+     * 跳转练习页
+     */
+    toExeDetail: co.wrap(function* ({currentTarget: {dataset: {sn}}}){
+      wxNav.navigateTo('/pages/package_subject/sync_learn/learn_detail/index', {
+        sn: sn
+      })
     })
   }
 })

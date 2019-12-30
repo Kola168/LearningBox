@@ -1,7 +1,7 @@
 <nav-bar background="#fff" title="同步练习"/>
 <view class="content-main">
   <scroll-view scroll-x="true"  scroll-with-animation scroll-into-view="to_{{currentTabIndex}}">
-    <view class="tab-item"  id="to_{{index}}" wx:for="{{subjectList}}" wx:key="subjectId"  bindtap="chooseSubject" data-index="{{index}}">
+    <view class="tab-item"  id="to_{{index}}" wx:for="{{subjectList}}" wx:key="sn"  bindtap="chooseSubject" data-index="{{index}}">
       <view class="tab-name {{currentTabIndex == index ? 'active' : ''}}">{{item.subjectName}}</view>
       <view class="tab-line {{currentTabIndex == index ? 'active-line' : ''}}"></view>
     </view>
@@ -33,7 +33,7 @@
   </view>
   <!-- 默认教材选择器 -->
   <view class="form-main" wx:if="{{!selectedTextbookVersion || !selectedTextbook}}">
-    <form-textbook subjectId="{{subjectId}}" bindchooseTextbook="chooseComponentTextbook" wx:if="{{subjectId && loadSuccess}}"/>
+    <form-textbook subjectSn="{{subjectSn}}" bindchooseTextbook="chooseComponentTextbook" wx:if="{{subjectSn && loadSuccess}}"/>
   </view>
 </view>
 

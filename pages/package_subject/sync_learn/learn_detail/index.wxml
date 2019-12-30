@@ -8,30 +8,14 @@
     </image>
   </view>
   <view class="tab-main">
-    <view class="tab-item">
-      <view class="tab-name">语文</view>
-      <view class="tab-line tab-active"></view>
-    </view>
-    <view class="tab-item">
-      <view class="tab-name">语文</view>
-      <view class="tab-line"></view>
-    </view>
-    <view class="tab-item">
-      <view class="tab-name">语文</view>
-      <view class="tab-line"></view>
-    </view>
-     <view class="tab-item">
-      <view class="tab-name">语文</view>
-      <view class="tab-line"></view>
-    </view>
-     <view class="tab-item">
-      <view class="tab-name">语文</view>
-      <view class="tab-line"></view>
+    <view class="tab-item" wx:for="{{diffList}}" wx:key="id" data-index="{{index}}" bind:tap="chooseDiff">
+      <view class="tab-name">{{item.name}}</view>
+      <view class="tab-line {{currentIndex == index ? 'tab-active' : ''}}"></view>
     </view>
   </view>
   <view class="subject-main">
     <view class="subject-item">
-      <image class="nav-cicon">
+      <image class="nav-cicon" >
         <view class="printed-holder">已打印</view>
       </image>
       <view class="sub-content">

@@ -166,6 +166,8 @@
       "pages": [
         "sync_learn/index/index",
         "sync_learn/learn_content/index",
+        "sync_learn/learn_detail/index",
+        "sync_learn/preview_subject/index",
         "evaluate_exam/index/index",
         "evaluate_exam/testpaper/index"
       ]
