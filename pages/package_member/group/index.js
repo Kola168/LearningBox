@@ -29,7 +29,7 @@ Page({
         }
         event.on('Authorize', this, () => {
             this.userSn = storage.get('userSn')
-            yield this.getFamilyUser()
+            this.getFamilyUser()
             if (this.options.groupSn) {
                 yield this.joinOrExitGroup(this.options.groupSn, 'join')
             }
