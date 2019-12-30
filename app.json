@@ -144,8 +144,6 @@
         "error_book/answer_print",
 				"kousuan/index",
 				"kousuan/learningplan",
-        "kousuan/index",
-        "kousuan/learningplan",
         "kousuan/createplan"
       ]
     },
