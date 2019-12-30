@@ -75,7 +75,7 @@ Page({
     let that=this
     this.setData({
       showAnimate:false,
-      showBgAnimate:true,
+      showBgAnimate:false,
     })
     setTimeout(function(){
       that.setData({
