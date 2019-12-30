@@ -1,35 +1,35 @@
 <nav-bar title="{{navBarTitle}}"></nav-bar>
-<view class="container">
-  <view class="longpress-open" wx:if="{{showSetting}}">
+<view class="container" wx:if="{{loadReady}}">
+  <view class="longpress-open" wx:if="{{longpressSetting.autoPressPrint||hasSetting}}">
     <view class="open-switch">
-      <view class="">开启默认设置</view>
-      <image src="/images/switch_{{switchFlag?'on':'off'}}.png" mode='widthFix' bindtap="handleLongpressSwitch" />
+      <view class="">{{longpressSetting.autoPressPrint?'关闭':'开启'}}长按打印</view>
+      <image src="/images/switch_{{longpressSetting.autoPressPrint?'on':'off'}}.png" mode='widthFix' bindtap="handleLongpressSwitch" />
     </view>
-    <view class="setting-default" wx:if="{{switchFlag}}">
+    <view class="setting-default" wx:if="{{longpressSetting.autoPressPrint}}">
       <view class="default-title">文档打印默认选项</view>
       <view class="default-item border-bottom">
         <view class="item-label">色彩选择</view>
         <view class="item-check">
-          <view class="radio-item">
+          <view class="radio-item" bindtap="updateLongpressSetting" data-key="pressPrintColor" data-val="0">
             <view>黑白</view>
-            <image src="/images/radio_on.png" />
+            <image src="/images/radio_{{longpressSetting.pressPrintColor?'off':'on'}}.png" />
           </view>
-          <view class="radio-item">
+          <view class="radio-item" bindtap="updateLongpressSetting" data-key="pressPrintColor" data-val="1">
             <view>全彩</view>
-            <image src="/images/radio_off.png" />
+            <image src="/images/radio_{{longpressSetting.pressPrintColor?'on':'off'}}.png" />
           </view>
         </view>
       </view>
       <view class="default-item">
         <view class="item-label">双面打印</view>
         <view class="item-check">
-          <view class="radio-item">
+          <view class="radio-item" bindtap="updateLongpressSetting" data-key="pressPrintDuplex" data-val="0">
             <view>单面</view>
-            <image src="/images/radio_on.png" />
+            <image src="/images/radio_{{longpressSetting.pressPrintDuplex?'off':'on'}}.png" />
           </view>
-          <view class="radio-item">
+          <view class="radio-item" bindtap="updateLongpressSetting" data-key="pressPrintDuplex" data-val="1">
             <view>双面</view>
-            <image src="/images/radio_off.png" />
+            <image src="/images/radio_{{longpressSetting.pressPrintDuplex?'on':'off'}}.png" />
           </view>
         </view>
       </view>
@@ -42,7 +42,7 @@
       <view class="text-triangle"></view>
       <view class="text-sub">可点击下方按钮开启功能</view>
     </view>
-    <view class='notopen-btn' bindtap="toSettingLongpress">开启长按打印功能</view>
+    <view class='notopen-btn' bindtap="openSettingLongpress" id="open">开启长按打印功能</view>
   </view>
   <view class="tips">
     <view class="function-tip">

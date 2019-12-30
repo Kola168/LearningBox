@@ -1,0 +1,80 @@
+<nav-bar title="批改"></nav-bar>
+<view class="container" style="background:{{isSubjectMember?'#F7F7F7':'#fff'}};height:{{areaHeight}}px;">
+  <view class="is-subject-member" wx:if="{{isSubjectMember}}">
+    <view class="paper-header flex align-center">
+      <view class="header-title">2019年南师大附中数学期末考试</view>
+      <view class="header-serial flex align-center {{showSerial?'header-serial-unfold':''}}" bindtap="unfoldSerial">
+        <view>第07/16题</view>
+        <image src="../images/arrow_{{showSerial?'top':'bottom'}}.png" mode="widthFix" />
+      </view>
+    </view>
+    <view class="paper-content">
+      <view class="content-serial flex align-center" wx:if="{{showSerial}}">
+        <view class="serial-item" wx:for="{{[1,2,3,4,5,6,7,8,9,10,11]}}">{{index}}</view>
+      </view>
+      <view >dsfasdfdsafa</view>
+      <view >dsfasdfdsafa</view>
+      <view >dsfasdfdsafa</view>
+      <view >dsfasdfdsafa</view>
+      <view >dsfasdfdsafa</view>
+      <view >dsfasdfdsafa</view>
+      <view >dsfasdfdsafa</view>
+      <view >dsfasdfdsafa</view>
+      <view >dsfasdfdsafa</view>
+      <view >dsfasdfdsafa</view>
+      <view >dsfasdfdsafa</view>
+      <view >dsfasdfdsafa</view>
+      <view >dsfasdfdsafa</view>
+      <view >dsfasdfdsafa</view>
+      <view >dsfasdfdsafa</view>
+      <view >dsfasdfdsafa</view>
+      <view >dsfasdfdsafa</view>
+      <view >dsfasdfdsafa</view>
+      <view >dsfasdfdsafa</view>
+      <view >dsfasdfdsafa</view>
+      <view >dsfasdfdsafa</view>
+      <view >dsfasdfdsafa</view>
+      <view >dsfasdfdsafa</view>
+      <view >dsfasdfdsafa</view>
+    </view>
+    <view class="paper-handle">
+      <view class="handle-choose">
+        <view class="choose-title flex align-center">
+          <image src="../images/dog_teacher.png" mode="widthFix" />
+          <view wx:if="{{false}}">做对了吗？</view>
+          <view>请选择题目的正确程度</view>
+        </view>
+        <view class="choose-content normal-content flex align-center" wx:if="{{false}}">
+          <view class="content-item normal-right">错误</view>
+          <view class="content-item">正确</view>
+        </view>
+        <view class="choose-content multiply-content-detachable flex align-center">
+          <view class="content-item">第一题</view>
+          <view class="content-item">第一题</view>
+          <view class="content-item">第一题</view>
+          <view class="content-item">第一题</view>
+          <view class="content-item">第一题</view>
+          <view class="content-item">第一题</view>
+          <view class="content-item">第一题</view>
+          <view class="content-item">第一题</view>
+          <view class="content-item">无错题</view>
+        </view>
+        <view class="choose-content multiply-content-undetachable flex align-center" wx:if="{{false}}">
+          <view class="content-item">0%</view>
+          <view class="content-item">25%</view>
+          <view class="content-item">50%</view>
+          <view class="content-item">75%</view>
+          <view class="content-item">100%</view>
+        </view>
+        <view class="error-tip">本题将自动加入错题本</view>
+        <view class="error-tip" wx:if="{{false}}">正确程度未达100%，本题自动加入错题本</view>
+      </view>
+      <view class="handle-next">下一题</view>
+    </view>
+  </view>
+  <view class="not-subject-member flex align-center" wx:else>
+    <image src="../images/temp_1.png" mode="widthFix" />
+    <view class="member-text">开通学科会员，解锁线上批改试卷功能</view>
+    <view class="to-know">立即了解</view>
+  </view>
+</view>

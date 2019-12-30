@@ -1,5 +1,5 @@
 import { util, co, regeneratorRuntime, wxNav } from "../../../utils/common_import"
-import graphql from "../../../network/graphql_request"
+import graphql from "../../../network/graphql/device"
 
 const app = getApp()
 Page({

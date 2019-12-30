@@ -2,7 +2,7 @@
 <!-- <image mode="widthFix">
     </image> -->
 <swiper class="swiper-box" duration="500" current="{{num}}" bindchange="tab_slide" circular="{{circular}}" style="width:100%;height:{{areaHeight}}rpx">
-    <block wx:for="{{convert_urls}}" wx:key="{{index}}">
+    <block wx:for="{{convert_urls}}" wx:key="convert_urls">
         <swiper-item>
             <view class="top" style="width:{{areaWidth}}rpx;height:{{areaHeight-10}}rpx">
                 <image style="width:{{width}}rpx" mode="widthFix" src="{{item}}" catchtap=""></image>
@@ -23,7 +23,7 @@
     </view>
 </view>
 <scroll-view class="templetes" scroll-x>
-    <view class="templetes-item" wx:for="{{template}}" wx:key="{{index}}" id="{{index}}" bindtap="changeTemp">
+    <view class="templetes-item" wx:for="{{template}}" wx:key="template" id="{{index}}" bindtap="changeTemp">
         <image mode="widthFix" src="{{item.url.url}}">
             <view class="temp-border {{template_id==item.id?'yellow':''}}">
                 <view>{{item.name}}</view>

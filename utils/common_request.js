@@ -1,7 +1,7 @@
 import { regeneratorRuntime, co } from './common_import'
 import getLoopsEvent from './worker'
-import graphql from '../network/graphql_request'
-
+import graphql from '../network/graphql_config'
+import api from '../network/restful_request'
 /**
  * 创建订单
  * @param { String } featureKey required 对应功能的key
@@ -21,39 +21,29 @@ import graphql from '../network/graphql_request'
  * }
  */
 const createOrder = function(featureKey, fileAttributes) {
-  return graphql.createOrder({
-    featureKey,
-    fileAttributes
+  return graphql.mutate({
+    mutation: `mutation ($input: CreateOrderInput!){
+      createOrder(input:$input){
+        state
+      }
+    }`,
+    variables: {
+      input: {
+        featureKey: featureKey,
+        fileAttributes: fileAttributes
+      }
+    }
   })
 }
 
-/**
- * 获取打印机能力
- * @param { String } featureKey required
- * @returns {
-    borderless 是否无边距
-    grayscale 是否支持灰度
-    color 是否是彩色打印机
-    highQuality 是否支持高质量
-    duplex 是否支持双面打印
- * }
- */
-
-const getPrinterCapacity = co.wrap(function*(featureKey) {
-  return graphql.getPrinterCapability(featureKey)
-})
-
-
 const previewDocument = co.wrap(function*(data, callback) {
   getLoopsEvent(data, (result) => {
-    console.log(result, '==result==')
     if (result.status == 'finished') {
       var converted_url = result.data.converted_url
       wx.downloadFile({
         url: converted_url,
         success: (res) => {
           callback()
-
           wx.openDocument({
             filePath: res.tempFilePath
           })
@@ -61,6 +51,52 @@ const previewDocument = co.wrap(function*(data, callback) {
       })
     }
   })
+})
+
+/**
+ * 获取打印机能力
+ * @param { String } featureKey required
+ * @returns {
+  borderless 是否无边距
+  grayscale 是否支持灰度
+  color 是否是彩色打印机
+  highQuality 是否支持高质量
+  duplex 是否支持双面打印
+* }
+*/
+
+const getPrinterCapacity = co.wrap(function*(featureKey, fileUrl) {
+  let capacity = yield graphql.query({
+    query: `query($featureKey: String!) {
+      currentUser{
+        selectedDevice {
+          capability(featureKey:$featureKey) {
+            borderless
+            color
+            highQuality
+            duplex
+          }
+        }
+      }
+    }`,
+    variables: {
+      featureKey: featureKey
+    }
+  })
+  capacity = capacity.currentUser && capacity.currentUser.selectedDevice.capability
+  capacity.grayscale = true
+  if (fileUrl) {
+    let fileObj = yield api.synthesisWorker({
+      feature_key: featureKey,
+      url: fileUrl,
+      is_async: false
+    })
+
+    capacity = Object.assign({
+      pageCount: fileObj.res.pages
+    }, capacity)
+  }
+  return capacity
 })
 
 

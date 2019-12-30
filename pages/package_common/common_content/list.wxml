@@ -1,0 +1,5 @@
+<!--pages/package_common/common_content/list.wxml-->
+<nav-bar background="#fff" title="在家上早教"></nav-bar>
+
+<import src="../../../lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />

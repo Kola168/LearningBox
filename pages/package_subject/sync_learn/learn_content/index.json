@@ -1,5 +1,6 @@
 {
   "usingComponents": {
-    "form-textbook": "../components/form-textbook/index"
+    "form-textbook": "../components/form-textbook/index",
+    "chapter": "../components/chapter/index"
   }
 }

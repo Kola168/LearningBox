@@ -1,69 +1,56 @@
 <nav-bar title="测评与考试"></nav-bar>
 <view class="container">
-  <view class="editions">
-    <view class="edition-active" bindtap="showEditions">
-      <view>江苏省</view>
-      <image src="../../images/angle_bottom.png" mode="widthFix" />
-    </view>
-    <view class="edition-cover" wx:if="{{showEditions}}" bindtap="showEditions" style="top:{{topBarHeight}}px;">
-      <view class="edition-list">
-        <view class="list-box">北京</view>
-        <view class="list-box">北京</view>
-        <view class="list-box">北京</view>
-        <view class="list-box">北京</view>
-        <view class="list-box">北京</view>
-        <view class="list-box">北京</view>
+  <view class="filters">
+    <block wx:if="{{showFilter}}">
+      <view class="filters-active">
+        <view>{{activeFilter.name}}</view>
+        <image src="../../images/arrow_top.png" mode="widthFix" />
+      </view>
+    </block>
+    <block wx:else>
+      <view class="filters-item" bindtap="showFilter" id="area">
+        <view class="text-overflow-points">{{activeArea.name}}</view>
+        <image src="../../images/arrow_bottom.png" mode="widthFix" />
+      </view>
+      <view class="filters-item" bindtap="showFilter" id="grade">
+        <view class="text-overflow-points">{{activeGrade.name}}</view>
+        <image src="../../images/arrow_bottom.png" mode="widthFix" />
+      </view>
+    </block>
+    <view class="filters-cover" wx:if="{{showFilter}}" bindtap="showFilter" style="top:{{topBarHeight}}px;">
+      <view class="filters-list">
+        <view wx:for="{{areas}}" wx:key="id" class="list-box {{activeFilter.id==item.id?'filters-active-color':''}}" bindtap="changeFilter" data-index="{{index}}">
+          {{item.name}}
+        </view>
       </view>
     </view>
   </view>
   <view class="papers">
     <scroll-view scroll-x="{{true}}" class="papers-tab" scroll-with-animation scroll-into-view="{{tabId}}">
       <view class="tab-box">
-        <view wx:for="{{papersTypes}}" class="tab-item {{tabId==='tab_'+index?'tab-item-active':''}}" bindtap="changeType" wx:key="sn" data-sn="{{item.sn}}" id="{{'tab_'+index}}">
+        <view wx:for="{{paperTypes}}" class="tab-item {{tabId==='tab_'+index?'tab-item-active':''}}" bindtap="changeType" wx:key="id" data-id="{{item.id}}" id="{{'tab_'+index}}">
           {{item.name}}
         </view>
       </view>
     </scroll-view>
     <view class="papers-list">
-      <view class="list-item">
+      <view class="list-item" wx:for="{{paperList}}" wx:key="paperId" bindtap="toDetail" data-id="{{item.paperId}}">
         <view class="item-img">
-          <image src="../../images/pdf_icon.png" mode="widthFix" />
+          <image src="../../images/pdf.png" class="img-main" mode="widthFix" />
+          <image src="../../images/printed_tag" class="img-print-tag" mode="widthFix" />
         </view>
         <view class="item-text">
-          <view class="text-title text-overflow-points">2019年上学期南师大附中第一次月考</view>
+          <view class="text-title text-overflow-points">{{item.title}}</view>
           <view class="text-count">
             <image class="count-logo" src="/images/doc_print_icon.png" mode="widthFix" />
-            <view>1493位同学已学习</view>
-            <image src="../../images/has_report.png" class="count-report" mode="widthFix" />
-          </view>
-        </view>
-      </view>
-      <view class="list-item">
-        <view class="item-img">
-          <image src="../../images/pdf_icon.png" mode="widthFix" />
-        </view>
-        <view class="item-text">
-          <view class="text-title text-overflow-points">2019年上学期南师大附中第一次月考</view>
-          <view class="text-count">
-            <image class="count-logo" src="/images/doc_print_icon.png" mode="widthFix" />
-            <view>1493位同学已学习</view>
-            <image src="../../images/has_report.png" class="count-report" mode="widthFix" />
-          </view>
-        </view>
-      </view>
-      <view class="list-item">
-        <view class="item-img">
-          <image src="../../images/pdf_icon.png" mode="widthFix" />
-        </view>
-        <view class="item-text">
-          <view class="text-title text-overflow-points">2019年上学期南师大附中第一次月考</view>
-          <view class="text-count">
-            <image class="count-logo" src="/images/doc_print_icon.png" mode="widthFix" />
-            <view>1493位同学已学习</view>
-            <image src="../../images/has_report.png" class="count-report" mode="widthFix" />
+            <view>{{item.printCount}}位同学已学习</view>
+            <image src="../../images/has_report.png" wx:if="{{item.isReport}}" class="count-report" mode="widthFix" />
           </view>
         </view>
       </view>
     </view>
   </view>
 </view>
+<!-- loading -->
+<import src="/lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />

@@ -1,4 +1,4 @@
-<!--pages/connectSuccess/connectSuccess.wxml-->
+<nav-bar title="小白智慧打印"></nav-bar>
 <view class='container'>
     <image src='https://cdn.gongfudou.com/miniapp/ec/ble/step2.png' class='step' mode="widthFix"></image>
 
@@ -6,6 +6,6 @@
     <view class="desc">设备连接成功</view>
     <image src='{{deviceImage}}' class='device-img' mode="widthFix"></image>
     <view class='equipment-name'>设备名称：{{deviceName}}</view>
-    <button class='search-equipment' bindtap='startWifi'>开始配置网络</button>
-    <button class='bind-equipment' bindtap='finish' wx:if="{{showBindButton}}">设备已联网 直接绑定</button>
+    <view class='search-equipment' bindtap='startWifi'>开始配置网络</view>
+    <view class='bind-equipment' bindtap='finish' wx:if="{{showBindButton}}">设备已联网 直接绑定</view>
 </view>

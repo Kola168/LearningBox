@@ -8,30 +8,19 @@ const util = require('../../../utils/util')
 const event = require('../../../lib/event/event')
 import router from '../../../utils/nav'
 import gql from '../../../network/graphql_request.js'
-import {storage} from '../../../utils/common_import'
-const request = util.promisify(wx.request)
+import Logger from '../../../utils/logger.js'
+const logger = new Logger.getLogger('pages/index/index')
+import {
+    storage
+} from '../../../utils/common_import'
 const getSetting = util.promisify(wx.getSetting)
 const authorize = util.promisify(wx.authorize)
-import commonRequest from '../../../utils/common_request.js'
 
 Page({
     data: {
-        activeGrade: '', //当前活跃年级
-        openGrade: 0, //当前打开活跃学段下标
-        activePeriodIndex: 0, //实际学段下标
-        showGrade: false,
         // 0 未授权 1，授权失败， 2 已授权
         allowCamera: 0, //相机授权
-        gradeList: [{
-            "title": "小学",
-            "grades": ["一年级(上)", "一年级(下)", "二年级(上)", "二年级(下)", "三年级(上)", "三年级(下)", "四年级(上)", "四年级(下)", "五年级(上)", "五年级(下)", "六年级(上)", "六年级(下)"]
-        }, {
-            "title": "初中",
-            "grades": ["初一(上)", "初一(下)", "初二(上)", "初二(下)", "初三(上)", "初三(下)"]
-        }, {
-            "title": "高中",
-            "grades": ["高一(上)", "高一(下)", "高二(上)", "高二(下)", "高三(上)", "高三(下)"]
-        }],
+        activePeriodIndex: 0,
         allSubjects: [
             [{
                     name: '语文',
@@ -40,23 +29,6 @@ Page({
                 {
                     name: '数学',
                     id: 'shuxue'
-                },
-                {
-                    name: '英语',
-                    id: 'yingyu'
-                },
-                {
-                    name: '综合',
-                    id: 'zonghe'
-                },
-            ],
-            [{
-                    name: '语文',
-                    id: 'yuwen'
-                },
-                {
-                    name: '数学',
-                    id: 'shuxue'
                 }, {
                     name: '英语',
                     id: 'yingyu'
@@ -80,38 +52,7 @@ Page({
                     name: '地理',
                     id: 'dili'
                 }
-            ],
-            [{
-                    name: '语文',
-                    id: 'yuwen'
-                },
-                {
-                    name: '数学',
-                    id: 'shuxue'
-                }, {
-                    name: '英语',
-                    id: 'yingyu'
-                },
-                {
-                    name: '物理',
-                    id: 'wuli'
-                }, {
-                    name: '化学',
-                    id: 'huaxue'
-                }, {
-                    name: '生物',
-                    id: 'shengwu'
-                }, {
-                    name: '政治',
-                    id: 'zhengzhi'
-                }, {
-                    name: '历史',
-                    id: 'lishi'
-                }, {
-                    name: '地理',
-                    id: 'dili'
-                }
-            ],
+            ]
         ], //依次为小学初中高中
         subjectList: [],
         showTipModal: false,
@@ -121,7 +62,6 @@ Page({
         from_temp: false
     },
     onShow: co.wrap(function* () {
-        yield this.getGrade()
     }),
     onLoad: co.wrap(function* (options) {
         event.on('Authorize', this, function (data) {
@@ -130,9 +70,8 @@ Page({
             })
             this.getAuth()
         })
-        console.log('学段', this.data.gradeList)
         let errorBook = wx.getStorageSync('errorBook')
-        console.log('错题本', errorBook)
+        logger.info('错题本', errorBook)
 
         if (!errorBook) {
             this.setData({
@@ -161,44 +100,34 @@ Page({
         // let that = this
         // getSupplyBefore.then(function (res) {
         //     const supply_types = res.supply_types
-        //     console.log(supply_types)
+        //     logger.info(supply_types)
         //     that.setData({
         //         supply_types: supply_types
         //     })
         // })
         //分享进来的逻辑
-        this.way = 1
+        // this.way = 1
         if (options.scene) {
             let fromScene = decodeURIComponent(options.scene)
-            console.log("4567890错题本", fromScene)
+            logger.info("4567890错题本", fromScene)
             let scene = fromScene.split('_')
             this.from = scene[0]
             if (this.from == 'application') {
                 this.share_user_id = scene[1]
-                this.way = 5
-                console.log('错题本应用二维码参数', this.share_user_id, this.way)
+                // this.way = 5
+                logger.info('错题本应用二维码参数', this.share_user_id, this.way)
                 this.setData({
                     from_temp: true
                 })
             }
         }
     }),
-    backToHome: function () {
-        try {
-            wx.switchTab({
-                url: '../../../index/index'
-            })
-        } catch (e) {
-            console.log(e)
-        }
-
-    },
     toCamera: co.wrap(function* () {
         if (this.data.allowCamera != 2) {
             return
         }
         router.navigateTo('/pages/package_feature/error_book/camera?', {
-            from: `error_book`
+            type: `error_book`
         })
     }),
     getAuth: co.wrap(function* () {
@@ -219,9 +148,9 @@ Page({
             this.setData({
                 allowCamera: this.allowCamera
             })
-            console.log(' 0 未授权 1，授权失败， 2 已授权', this.allowCamera)
+            logger.info(' 0 未授权 1，授权失败， 2 已授权', this.allowCamera)
         } catch (e) {
-            console.log('获取授权/授权失败', e)
+            logger.info('获取授权/授权失败', e)
             this.allowCamera = 1
             this.setData({
                 allowCamera: this.allowCamera
@@ -229,7 +158,7 @@ Page({
         }
     }),
     authBack: function (e) {
-        console.log(e)
+        logger.info(e)
         if (!e.detail.authSetting['scope.camera']) {
             return
         }
@@ -240,120 +169,37 @@ Page({
             from: `error_book`
         })
     },
-    // 获取年级信息
-    getGrade: co.wrap(function* () {
-        this.longToast.toast({
-            type: 'loading'
-        })
-        try {
-            let resp = yield gql.getGrade()
-            this.setData({
-                activeGrade: resp.currentUser.selectedKid.stage.name
-            })
-            this.longToast.hide()
-        } catch (error) {
-            this.longToast.hide()
-        }
-    }),
     //获取当前学段的学科和错题数
     getSubjects: co.wrap(function* () {
         try {
-            const resp = yield request({
-                url: app.apiServer + `/ec/v2/mistakes?${app.openId}`,
-                method: 'GET',
-                dataType: 'json',
-                data: {
-                    'openid': app.openId,
-                    'grade': this.data.gradeList[this.data.openGrade].title
-                }
-            })
-            if (resp.data.code != 0) {
-                throw (resp.data)
-            }
-            console.log('错题科目列表====', resp.data)
-            this.setData({
-                subjectList: resp.data.mistakes
-            })
-            this.longToast.toast()
+            const resp = yield gql.getSubjects()
+            // const resp = yield request({
+            //     url: app.apiServer + `/ec/v2/mistakes?${app.openId}`,
+            //     method: 'GET',
+            //     dataType: 'json',
+            //     data: {
+            //         'openid': app.openId,
+            //     }
+            // })
+            // if (resp.data.code != 0) {
+            //     throw (resp.data)
+            // }
+            logger.info('错题科目列表====', resp)
+            // this.setData({
+            //     subjectList: resp.data.mistakes
+            // })
+            this.longToast.hide()
         } catch (e) {
-            this.longToast.toast()
-            util.showErr(e)
-        }
-    }),
-    chooseSubject: function (e) {
-        // this.setData({
-        //     showGrade: true
-        // })
-        router.navigateTo('/pages/index/grade')
-    },
-    hideModal: function () {
-        this.setData({
-            showGrade: false
-        })
-    },
-    // 打开学段下拉框
-    changeGrade: function (e) {
-        let index = e.currentTarget.id
-        if (this.data.openGrade == index) {
-            this.setData({
-                openGrade: -1,
-                // openGradeId: -1
-            })
-        } else {
-            this.setData({
-                openGrade: index,
-                // openGradeId: this.data.gradeList[index].id
-            })
-        }
-        console.log('年纪下标', this.data.openGrade)
-    },
-    // 选择年级
-    changeSubjet: co.wrap(function* (e) {
-        let index = e.currentTarget.id
-        let term = this.data.gradeList[this.data.openGrade].grades
-        this.setData({
-            activeIndex: index,
-            activeGrade: term[index],
-            activePeriodIndex: this.data.openGrade
-        })
-        this.longToast.toast({
-            type: 'loading'
-        })
-        try {
-            const resp = yield request({
-                url: app.apiServer + `/ec/v2/users/user`,
-                method: 'PUT',
-                dataType: 'json',
-                data: {
-                    'openid': app.openId,
-                    'grade': this.data.activeGrade,
-                    'period': this.data.gradeList[this.data.openGrade].title
-                }
-            })
-            if (resp.data.code != 0) {
-                throw (resp.data)
-            }
-            console.log('选择修改学科====', resp.data)
-
-            let that = this
-            setTimeout(() => {
-                that.setData({
-                    showGrade: false
-                })
-            }, 500)
-            wx.setStorageSync('error_book_period', this.data.gradeList[this.data.openGrade].title)
-            yield this.getSubjects()
-            // this.longToast.toast()
-        } catch (e) {
-            this.longToast.toast()
-            util.showErr(e)
+            this.longToast.hide()
+            util.showError(e)
         }
     }),
     toList: function (e) {
         let index = e.currentTarget.id
         let item = this.data.allSubjects[this.data.activePeriodIndex]
-        wx.navigateTo({
-            url: `detail?grade=${this.data.activeGrade}&course=${item[index].name}`
+        router.navigateTo('/pages/package_feature/error_book/detail', {
+            grade: this.data.activeGrade,
+            course: item[index].name
         })
     },
     hideTipModal: function () {
@@ -370,14 +216,9 @@ Page({
     toUsePage: function () {
         router.navigateTo('/pages/package_feature/error_book/use_page')
     },
-    backToHome: function () {
-        wx.switchTab({
-            url: '../../../index/index'
-        })
-    },
     toNextPage: function () {
-        let userSn = storage.get('userSn')
-        if (!userSn) {
+        let authToken = storage.get('authToken')
+        if (!authToken) {
             let url = this.share_user_id ? `/pages/authorize/index?url=${url}&share_user_id=${this.share_user_id}&way=${this.way}` : `/pages/authorize/index`
             if (this.share_user_id) {
                 router.navigateTo('/pages/authorize/index', {

@@ -46,6 +46,8 @@
   border-right: 4rpx solid #cecece;
   border-bottom: 4rpx solid #cecece;
   transform: rotate(45deg);
+  transition: 0.3s;
+  transform-origin:50% 50%;
 }
 
 .select-content {
@@ -72,9 +74,18 @@
   box-sizing: border-box;
 }
 
+.form-main .arrow-unfold {
+  transform: rotate(-135deg);
+  border-color: #FFA200;
+}
+
 
 .btn-submit {
-  width: 80%;
+  margin: 100rpx auto 0;
+  width: 90%;
   height: 98rpx;
+  line-height: 98rpx;
+  text-align: center;
   background-color: #FFDC5E;
+  border-radius: 49rpx;
 }

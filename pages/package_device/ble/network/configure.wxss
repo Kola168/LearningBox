@@ -44,13 +44,16 @@
 }
 
 .search-equipment {
-    width: 90%;
-    padding: 10rpx 0;
+		width: 90%;
+		height:90rpx;
+		line-height: 90rpx;
     background-color: #ffe27a;
     font-size: 32rpx;
     color: #333333;
     margin-top: 176rpx;
-    border-radius: 1000rpx;
+		border-radius: 1000rpx;
+		text-align: center;
+
 }
 
 .change-network {

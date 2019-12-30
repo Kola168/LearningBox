@@ -1,6 +1,6 @@
 <nav-bar title="英语默写"></nav-bar>
 <view class="intro" wx:if="{{showIntro}}">
-  <image src="https://cdn-h.gongfudou.com/LearningBox/feature/english_intro.png" mode="widthFix" />
+  <image src="https://cdn-h.gongfudou.com/LearningBox/feature/momory_write_english.png" mode="widthFix" />
   <view class="next" bindtap="startWrite">开始使用</view>
 </view>
 <view class="container" hidden="{{!loadReady||showIntro}}">

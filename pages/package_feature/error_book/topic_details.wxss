@@ -137,7 +137,7 @@ page {
   width: 100%;
   font-family: PingFangSC-Medium;
   font-size: 28rpx;
-  color: #FFC35B;
+  color: #FFA200;
   letter-spacing: 0.6rpx;
   display: flex;
   justify-content: flex-end;

@@ -2,12 +2,12 @@
   <view class="form-item" wx:for="{{formList}}" wx:key="*this">
     <view class="label-name">{{item.name}}</view>
     <view class="form-input" bind:tap="chooseForms" data-index="{{index}}">
-      <view class="form-value">{{item.selected.name}}</view>
-      <view class="arrow"></view>
+      <view class="form-value">{{index ? item.selected.volume : item.selected.name}}</view>
+      <view class="arrow {{item.isUnfold ? 'arrow-unfold' : ''}}"></view>
     </view>
      <view class="select-content" wx:if="{{item.isUnfold}}">
-      <view class="select-item" wx:for="{{item.content}}" wx:for-item="contentItem" wx:key="_id">{{contentItem.name}}</view>
+      <view class="select-item" wx:for="{{item.content}}" wx:for-item="contentItem" wx:for-index="contentIndex" bind:tap="chooseInput" data-index="{{index}}" data-itemIdx="{{contentIndex}}">{{index ? contentItem.volume : contentItem.name}}</view>
     </view>
   </view>
-  <view class="btn-submit">选择完毕</view>
+  <view class="btn-submit" bind:tap="submit">选择完毕</view>
 </view>

@@ -1,7 +1,7 @@
 const app = getApp()
-const regeneratorRuntime = require('../../../lib/co/runtime')
-const co = require('../../../lib/co/co')
-const util = require('../../../utils/util')
+const regeneratorRuntime = require('../../../../lib/co/runtime')
+const co = require('../../../../lib/co/co')
+const util = require('../../../../utils/util')
 
 const request = util.promisify(wx.request)
 const showModal = util.promisify(wx.showModal)
@@ -24,7 +24,7 @@ Page({
         this.setData({
             showBindButton: query.state == 'online' ? true : false,
             deviceName: deviceInfoDetail.device.localName,
-            deviceImage: deviceInfoDetail.device.localName.split('-')[0] == 'EP200' ? 'https://cdn.gongfudou.com/miniapp/ec/ble/ble_box_light_red.png' : 'https://cdn.gongfudou.com/miniapp/ec/ble/l3115_new_red.png',
+            deviceImage: deviceInfoDetail.device.localName.split('-')[0] == 'EP320' ? 'https://cdn.gongfudou.com/miniapp/ec/ble/ble_box_light_red.png' : 'https://cdn.gongfudou.com/miniapp/ec/ble/l3115_new_red.png',
             deviceId: deviceInfoDetail.device.deviceId
         })
 
@@ -37,13 +37,13 @@ Page({
     }),
     startWifi: co.wrap(function*() {
         wx.navigateTo({
-            url: `/pages/ble/network/wifi_list?deviceInfo=${this.deviceInfo}`
+            url: `/pages/package_device/ble/network/wifi_list?deviceInfo=${this.deviceInfo}`
         })
     }),
 
     finish: co.wrap(function*() {
         wx.navigateTo({
-            url: `/pages/ble/common/connect_success?deviceId=${this.data.deviceId}&deviceName=${this.data.deviceName}`
+            url: `/pages/package_device/ble/common/connect_success?deviceId=${this.data.deviceId}&deviceName=${this.data.deviceName}`
         })
     }),
 })

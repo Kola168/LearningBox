@@ -1,9 +1,9 @@
-// pages/device/index.js
 
+// pages/device/index.js
 const app = getApp()
-const regeneratorRuntime = require('../../../lib/co/runtime')
-const co = require('../../../lib/co/co')
-const util = require('../../../utils/util')
+const regeneratorRuntime = require('../../../../lib/co/runtime')
+const co = require('../../../../lib/co/co')
+const util = require('../../../../utils/util')
 
 const request = util.promisify(wx.request)
 const showModal = util.promisify(wx.showModal)

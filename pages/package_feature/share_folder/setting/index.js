@@ -158,7 +158,7 @@ Page({
 
   //输入打印起始页
   inputstartpage(e) {
-    this.data.startPage = e.detail.value
+    this.data.startPage = Number(e.detail.value)
   },
 
   startpagejudge: function (e) {
@@ -177,12 +177,12 @@ Page({
       return
     } else {
       logger.info('打印起始页===', e.detail.value)
-      this.data.startPrintPage = e.detail.value
+      this.data.startPrintPage = Number(e.detail.value)
     }
   },
   //输入打印结束页
   inputendpage(e) {
-    this.data.endPage = e.detail.value
+    this.data.endPage = Number(e.detail.value)
   },
   endpagejudge(e) {
     let endMaxPage = Math.ceil(this.data.endMaxPage / this.data.zoomType),
@@ -202,7 +202,7 @@ Page({
       return
     } else {
       logger.info('打印完成页===', e.detail.value)
-      this.data.endPrintPage = e.detail.value
+      this.data.endPrintPage = Number(e.detail.value)
     }
   },
 

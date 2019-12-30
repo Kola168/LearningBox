@@ -64,7 +64,9 @@
         "records/detail/index",
         "records/cancel_intro/index",
         "feedback/index",
-        "my_collection/index"
+        "my_collection/index",
+        "common_content/index",
+        "common_content/list"
       ]
     },
     {
@@ -122,6 +124,8 @@
         "share_folder/share_manage",
         "share_folder/content",
         "share_folder/manage",
+        "memory_write/index/index",
+        "memory_write/szcx/index",
         "memory_write/chinese/index",
         "memory_write/chinese/print",
         "memory_write/english/index",
@@ -131,13 +135,22 @@
         "error_book/use_page",
         "error_book/camera",
         "error_book/edit_pic",
-        "kousuan/index"
+        "error_book/topic_details",
+        "error_book/print",
+        "error_book/setting",
+        "error_book/submit_success",
+        "error_book/photo_anwser_intro",
+        "error_book/answer_result",
+        "error_book/answer_print",
+				"kousuan/index",
+				"kousuan/learningplan"
       ]
     },
     {
       "root": "pages/package_member",
       "pages": [
-				"pay/index"
+				"pay/index",
+				"group/index"
 			]
     },
     {
@@ -165,7 +178,8 @@
         "sync_learn/index/index",
         "sync_learn/learn_content/index",
         "evaluate_exam/index/index",
-        "evaluate_exam/testpaper/index"
+        "evaluate_exam/testpaper/index",
+        "correct/index"
       ]
     },
     {

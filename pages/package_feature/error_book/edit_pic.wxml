@@ -2,39 +2,15 @@
 <nav-bar background="#fff" title="拍摄"></nav-bar>
 <view class="top-tip">
         <image src='../images/error_book_edit_tip.png' class='icon_edit' mode='widthFix'></image>
-        <text>请旋转题目至正确方向，并调整方框裁剪</text>
+        <text>调整方框，裁减题目</text>
     </view>
     <cropper-img croppers="{{croppers}}" id="cropper"></cropper-img>
-    <view class="cover" wx:if="{{cropperData.from!='pic2doc'}}">
+    <view class="cover">
 			<image class="small-icon" src="../images/crop_rotate.png" bindtap="rotateImage" />
 			<image src="../images/error_finish.png" class="button-camera" id="camera"
-				bindtap="{{cropperChangableData.canCrop?'cropImage':''}}" />
+				bindtap="cropImage" />
 			<view wx:if="{{cropperData.from==='photoAnswer'}}" bindtap="rePhoto">重拍</view>
 			<image wx:else class="small-icon" src="../images/error_book_cancel_gray.png" bindtap="cancel" />
 	</view>
-    <!-- <view class='footer'>
-        <view class='choose'>
-            <view class="effect-tip">
-                <text class='title'>打印效果</text>
-                <image class="print-effect-pic" src="/images/pic2doc_tip_icon.png" bindtap="showExamModal" />
-            </view>
-            <view class='color'>
-                <view class='kind' wx:for="{{selectColors}}" wx:key="*this">
-                    <text class='type'>{{item.name}}</text>
-                    <image src="{{ item.selected ? '/images/radio_on.png' : '/images/radio_off.png'}}" class='selected' mode='widthFix' data-index="{{index}}" bindtap='chooseColor'></image>
-                </view>
-            </view>
-        </view>
-        <view class="btn {{isFullScreen?'is-full-screen':''}}">
-            <view class="btn-delete" bindtap="deleteCurrentImage">
-                <view>删除</view>
-            </view>
-            <form report-submit="true" bindsubmit="cropImage">
-                <button formType="submit" hover-class="none">
-                    {{currentCount != currentIndex && !isSingle ? '编辑下一张' + '('+(currentIndex)+ '/' + (currentCount || 0) + ')' : '完成'+(isSingle ? '' :  '(' + currentIndex+'/'+ currentCount +')' )}}
-                </button>
-            </form>
-        </view>
-    </view> -->
     <import src="../../../lib/toast/wetoast.wxml" />
     <template is="wetoast" data="{{...__wetoast__}}" />

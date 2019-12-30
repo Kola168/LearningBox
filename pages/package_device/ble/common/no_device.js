@@ -1,11 +1,19 @@
+/*
+ * @Author: your name
+ * @Date: 2019-12-26 11:44:22
+ * @LastEditTime: 2019-12-27 14:41:24
+ * @LastEditors: your name
+ * @Description: In User Settings Edit
+ * @FilePath: /LearningBox/pages/package_device/ble/common/no_device.js
+ */
 // pages/device/index.js
 
 // pages/device/index.js
 const app = getApp()
-const regeneratorRuntime = require('../../../lib/co/runtime')
-const co = require('../../../lib/co/co')
-const util = require('../../../utils/util')
-const CryptoJS = require("../../../lib/crypto-js/crypto-js")
+const regeneratorRuntime = require('../../../../lib/co/runtime')
+const co = require('../../../../lib/co/co')
+const util = require('../../../../utils/util')
+const CryptoJS = require("../../../../lib/crypto-js/crypto-js")
 
 const getSystemInfo = util.promisify(wx.getSystemInfo)
 const showModal = util.promisify(wx.showModal)

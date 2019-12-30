@@ -1,8 +1,9 @@
+<nav-bar title="小白智慧打印"></nav-bar>
 <view class='container'>
     <view class="title">请确认小白盒与打印机已通电正常</view>
     <view class='equipment-desc'>可参照下图检查连接是否正确</view>
     <image src='/images/ble_example_3106.png' class='xbh-example' mode="widthFix"></image>
-    <button class='search-equipment' bindtap='startSerch'>开始搜索</button>
+    <view class='search-equipment' bindtap='startSerch'>开始搜索</view>
 </view>
 
 <import src="../../../lib/toast/wetoast.wxml" />
