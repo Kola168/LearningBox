@@ -1,0 +1,12 @@
+
+<nav-bar title="小白智慧打印"></nav-bar>
+<view class='container'>
+    <view class='cont-title-alert'>蓝牙未开启</view>
+    <view class='equipment-desc'>请前往手机设置中开启蓝牙功能</view>
+    <image src='https://cdn.gongfudou.com/miniapp/ec/ble/ble.png' class='ble' mode="widthFix"></image>
+    <view class='search-equipment' bindtap='retry'>已开启蓝牙 重新尝试</view>
+    <view class="bluetooth-intro" wx:if="{{isIphone}}" bindtap="toBluetoothIntro">iPhone开启蓝牙的正确姿势！</view>
+</view>
+
+<import src="../../../lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />

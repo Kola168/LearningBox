@@ -1,0 +1,16 @@
+<!--pages/package_feature/error_book/edit_pic.wxml-->
+<nav-bar background="#fff" title="拍摄"></nav-bar>
+<view class="top-tip">
+        <image src='../images/error_book_edit_tip.png' class='icon_edit' mode='widthFix'></image>
+        <text>调整方框，裁减题目</text>
+    </view>
+    <cropper-img croppers="{{croppers}}" id="cropper"></cropper-img>
+    <view class="cover">
+			<image class="small-icon" src="../images/crop_rotate.png" bindtap="rotateImage" />
+			<image src="../images/error_finish.png" class="button-camera" id="camera"
+				bindtap="cropImage" />
+			<view wx:if="{{cropperData.from==='photoAnswer'}}" bindtap="rePhoto">重拍</view>
+			<image wx:else class="small-icon" src="../images/error_book_cancel_gray.png" bindtap="cancel" />
+	</view>
+    <import src="../../../lib/toast/wetoast.wxml" />
+    <template is="wetoast" data="{{...__wetoast__}}" />

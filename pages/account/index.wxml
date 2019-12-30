@@ -58,11 +58,11 @@
             <image src="/images/account_use_info.png" mode="widthFix" />
             <view>使用说明</view>
         </view>
-        <view class="content-item">
+        <view class="content-item" bindtap="feedback">
             <image src="/images/account_feedback.png" mode="widthFix" />
             <view>意见反馈</view>
         </view>
-        <view class="content-item">
+        <view class="content-item" bindtap="onlineGuest">
             <image src="/images/account_service.png" mode="widthFix" />
             <view>在线客服</view>
         </view>

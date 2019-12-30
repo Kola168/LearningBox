@@ -1,7 +1,7 @@
 const app = getApp()
 const event = require('../../../lib/event/event')
 import { regeneratorRuntime, co, util, wxNav } from '../../../utils/common_import'
-import graphql from '../../../network/graphql_request'
+import graphql from '../../../network/graphql/device'
 Page({
   data: {
     device: {
@@ -9,10 +9,8 @@ Page({
     },
     settingType: "base",
     modalType: "",
-    printType: "ep300",
+    printType: "ep320",
     renameVal: "",
-    // 电脑打印
-    computerPrintFlag: false,
     modalObj: {
       isShow: false,
       title: '',
@@ -37,8 +35,12 @@ Page({
     try {
       let res = yield graphql.getDeviceDetail(this.deviceSn)
       this.weToast.hide()
+      let device = res.currentUser.devices[0]
+      if (device.connectThrough) {
+        device.connectThrough = device.connectThrough === 'pc' ? true : false
+      }
       this.setData({
-        device: res.currentUser.devices[0]
+        device
       })
     } catch (error) {
       this.weToast.hide()
@@ -122,8 +124,8 @@ Page({
           modalObj.slotContent = true
           extraData.renameVal = ''
           break;
-        case "computerPrint":
-          let switchFlag = this.data.computerPrintFlag
+        case "connectThrough":
+          let switchFlag = this.data.device.connectThrough
             // 重新显示提示框
           this.reSwitchComputerPrint = false
           if (switchFlag) {
@@ -133,7 +135,7 @@ Page({
             } else {
               modalObj.title = "电脑打印状态已关闭"
               modalObj.content = "小程序已恢复打印状态"
-              extraData.computerPrintFlag = !switchFlag
+                // extraData.computerPrintFlag = !switchFlag
             }
           } else {
             modalObj.title = "电脑端打印请提前检查驱动是否安装完成"
@@ -159,17 +161,19 @@ Page({
   confirmModal() {
     let modalType = this.modalType
     switch (modalType) {
-      case "computerPrint":
+      case "connectThrough":
         if (this.reSwitchComputerPrint) {
           this.setData({
             computerPrintFlag: !this.data.computerPrintFlag
           })
           this.showModal({
             currentTarget: {
-              id: "computerPrint"
-            },
-            hasComputerStatus: true
+              id: "connectThrough"
+            }
           })
+        } else {
+          let type = this.data.device.connectThrough ? 'box' : 'pc'
+          this.updateDeviceSetting('connectThrough', type)
         }
         break;
       case "rename":
@@ -229,16 +233,15 @@ Page({
     wxNav.navigateTo(`../offline/index`)
   },
 
-  // 长按打印
+  // 跳转
   toNextPage(e) {
     let pageKey = e.currentTarget.dataset.key,
       url = '',
-      params = {
-
-      }
+      params = {}
     switch (pageKey) {
       case "longpress":
         url = `../longpress/index`
+        params.sn = this.deviceSn
         break;
       case "offlineSolve":
         url = `../offline/index`
@@ -255,6 +258,9 @@ Page({
       case "reNetwork":
         url = `../network/index/index`
         break;
+      case "deviceMaintain":
+        url = `../maintain/index/index`
+        break;
     }
     wxNav.navigateTo(url, params)
   },
@@ -267,7 +273,7 @@ Page({
     try {
       let res = yield graphql.clearJobs(this.deviceSn)
       this.weToast.hide()
-      if(res.cancelJob.state){
+      if (res.cancelJob.state) {
         wx.showToast({
           title: '已清空',
           icon: 'none'

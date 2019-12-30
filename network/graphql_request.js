@@ -1,39 +1,4 @@
-var app = getApp()
-var gqwxappGraphql = require('./wxgql')
-var GraphQL = gqwxappGraphql.GraphQL
-import storage from '../utils/storage.js'
-import { co } from '../utils/common_import.js';
-// 初始化对象
-let gql = GraphQL({
-  url: `${app.apiServer}/graphql`,
-  header: function() {
-    if (app.authToken) {
-      return {
-        "AUTHORIZATION": `Token token=${app.authToken}`
-      }
-    } else {
-      try {
-        var authToken = storage.get('authToken')
-        if (authToken) {
-          return {
-            "AUTHORIZATION": `Token token=${authToken}`
-          }
-        }
-      } catch (e) {
-        console.log(e)
-      }
-    }
-  },
-
-	//全局错误拦截
-  errorHandler: function(res) {
-    console.log('graphql全局错误拦截', res)
-      //如果auth
-    if (1) {
-
-    }
-  }
-}, true);
+import gql from './graphql_config'
 
 const graphqlApi = {
   /**
@@ -84,168 +49,6 @@ const graphqlApi = {
       variables: {
         keyword: keyword,
         keys: keys
-      }
-    })
-  },
-
-  bindDevice: (deviceInfo) => {
-    return gql.mutate({
-      mutation: `mutation bindDevice($input: BindDeviceInput!){
-        bindDevice(input:$input){
-          device {
-						onlineState
-						sn
-					}
-        }
-      }`,
-      variables: {
-        input: deviceInfo
-      }
-    })
-  },
-
-  /**
-   * 更新打印机设置
-   * @param { String } sn required 设备编号
-   * @param { Object } deviceSetting required 设置信息
-   */
-  updateDeviceSetting: (sn, deviceSetting, requestKey) => {
-    return gql.mutate({
-      mutation: `mutation ($input: UpdateDeviceSettingInput!){
-        updateDeviceSetting(input:$input){
-          device{
-            ${requestKey}
-          }
-        }
-      }`,
-      variables: {
-        input: {
-          sn: sn,
-          attributes: deviceSetting
-        }
-      }
-    })
-  },
-
-  /**
-   * 解绑打印机
-   * @param { String } sn required 设备编号
-   */
-  unbindDevice: (sn) => {
-    return gql.mutate({
-      mutation: `mutation ($input: UnbindDeviceInput!){
-        unbindDevice(input:$input){
-          user{
-            currentToken
-          }
-        }
-      }`,
-      variables: {
-        input: {
-          sn: sn
-        }
-      }
-    })
-  },
-
-  /**
-   * 获取打印机列表
-   */
-  getDeviceList: () => {
-    return gql.query({
-      query: `query {
-        currentUser {
-          sn,
-          devices{
-            name,
-            selected,
-            sn,
-            isAdmin,
-            model,
-            onlineState,
-            shareQrcode
-          },
-          selectedDevice{
-            name,
-            selected,
-            sn,
-            isAdmin,
-            model,
-            onlineState,
-            shareQrcode
-          }
-        }
-      }`
-    })
-  },
-
-  /**
-   * 获取打印机详情
-   * @param { String } sn required 设备编号
-   */
-  getDeviceDetail: (sn) => {
-    return gql.query({
-      query: `query ($sn: String!){
-        currentUser{
-          devices(sn:$sn){
-            name,
-            selected,
-            sn,
-            model,
-            isAdmin,
-            auditFree,
-            marginFree,
-            onlineState,
-            quality,
-            printOrder,
-            shareQrcode
-          }
-        }
-      }`,
-      variables: {
-        sn: sn
-      }
-    })
-  },
-
-  /**
-   * 获取打印机分享用户
-   * @param { String } sn required 设备编号
-   */
-  getDeviceShareUsers: (sn) => {
-    return gql.query({
-      query: `query ($sn: String!){
-        currentUser{
-          devices(sn: $sn){
-            sharers{
-              avatar,
-              name,
-              sn
-            }
-          }
-				}
-      }`,
-      variables: {
-        sn: sn
-      }
-    })
-  },
-
-  /**
-   * 打印机停止分享用户
-   * @param { String } sn required 设备编号
-   * @param { Array } userSns 停止分享用户的sn
-   */
-  stopShareDeviceUsers: (sn, userSns) => {
-    return gql.query({
-      query: `query ($sn: String!,$userSns: [String!]){
-        unbindUsers(sn: $sn,userSns: $userSns){
-          sn
-				}
-      }`,
-      variables: {
-        sn: sn,
-        userSns: userSns
       }
     })
   },
@@ -360,22 +163,6 @@ const graphqlApi = {
     })
   },
 
-  /**
-   * 创建订单
-   * @param { Object } orderParams 订单参数
-   */
-  createOrder: (orderParams) => {
-    return gql.mutate({
-      mutation: `mutation ($input: CreateOrderInput!){
-        createOrder(input:$input){
-          state
-        }
-      }`,
-      variables: {
-        input: orderParams
-      }
-    })
-  },
   /**
    * 课程列表
    * *@param { CategoryEnum } type 请求类型
@@ -563,7 +350,7 @@ const graphqlApi = {
    * @param { String } type 收藏类型 course/content
    * @param { String } action 操作类型 create/destroy
    */
-  collect: (sn,type,action) => {
+  collect: (sn, type, action) => {
     return gql.mutate({
       mutation: `mutation collect($input: ResourceCollectInput!){
         collect(input:$input){
@@ -1300,9 +1087,9 @@ const graphqlApi = {
         sn: sn
       }
     })
-	},
+  },
   //查询模板列表
-  searchTemplate:(type)=>{
+  searchTemplate: (type) => {
     return gql.query({
       query: `query($key: String!) {
         feature(key: $key) {
@@ -1335,7 +1122,7 @@ const graphqlApi = {
   },
 
   //查询主模板下详细信息
-  searchTemplateType:(sn)=>{
+  searchTemplateType: (sn) => {
     return gql.query({
       query: `query($sn: String!) {
         category(sn: $sn) {
@@ -1365,7 +1152,7 @@ const graphqlApi = {
   },
 
   //查询姓名贴模板
-  searchNameTemplate:(type)=>{
+  searchNameTemplate: (type) => {
     return gql.query({
       query: `query($key: String!) {
         feature(key: $key) {
@@ -1401,7 +1188,7 @@ const graphqlApi = {
   },
 
   //查询台历模板信息
-  searchCalendarTemplate:(type)=>{
+  searchCalendarTemplate: (type) => {
     return gql.query({
       query: `query($key: String!) {
         feature(key: $key) {
@@ -1437,7 +1224,7 @@ const graphqlApi = {
    * 绑定分享设备
    * @param { String } deviceSn 设备sn
    */
-  bindShareDevice:(deviceSn) => {
+  bindShareDevice: (deviceSn) => {
     return gql.mutate({
       mutation: `mutation ($input: BindSharerInput!) {
         bindSharer(input: $input){
@@ -1458,7 +1245,7 @@ const graphqlApi = {
    * 清空打印队列
    * @param { String } deviceSn 设备sn
    */
-  clearJobs:(deviceSn) => {
+  clearJobs: (deviceSn) => {
     return gql.mutate({
       mutation: `mutation ($input: CancelJobInput!) {
         cancelJob(input: $input){
@@ -1471,17 +1258,17 @@ const graphqlApi = {
         }
       }
     })
-	},
+  },
 
-	/**
-     * 创建新文件夹
-     *
-     * @param {*} input
-     * @returns
-     */
-    createFolder: (input) => {
-      return gql.mutate({
-        mutation: `mutation ($input: CreateFolderInput!){
+  /**
+   * 创建新文件夹
+   *
+   * @param {*} input
+   * @returns
+   */
+  createFolder: (input) => {
+    return gql.mutate({
+      mutation: `mutation ($input: CreateFolderInput!){
           createFolder(input:$input){
             folder{
               joinedUsersCount
@@ -1491,89 +1278,89 @@ const graphqlApi = {
             state
           }
         }`,
-        variables: {
-          input
-        }
-      })
-    },
-    /**
-     * 共享文件夹协议
-     *
-     * @returns
-     */
-    checkProtocol: () => {
-      return gql.query({
-        query: `query {
+      variables: {
+        input
+      }
+    })
+  },
+  /**
+   * 共享文件夹协议
+   *
+   * @returns
+   */
+  checkProtocol: () => {
+    return gql.query({
+      query: `query {
           currentUser{
             folderAgreement
           }
         }`
-      })
-    },
-    /**
-     * 同意共享文件夹协议
-     *
-     * @param {*} input
-     * @returns
-     */
-    signFolderAgreement: (input) => {
-      return gql.mutate({
-        mutation: `mutation ($input: SignFolderAgreementInput!){
+    })
+  },
+  /**
+   * 同意共享文件夹协议
+   *
+   * @param {*} input
+   * @returns
+   */
+  signFolderAgreement: (input) => {
+    return gql.mutate({
+      mutation: `mutation ($input: SignFolderAgreementInput!){
           signFolderAgreement (input:$input){
             state
           }
         }`,
-        variables: {
-          input
-        }
-      })
-    },
+      variables: {
+        input
+      }
+    })
+  },
 
-    /**
-     * 修改文件夹名称
-     *
-     * @param {*} input
-     * @returns
-     */
-    updateFolder: (input) => {
-      return gql.mutate({
-        mutation: `mutation ($input: UpdateFolderInput!){
+  /**
+   * 修改文件夹名称
+   *
+   * @param {*} input
+   * @returns
+   */
+  updateFolder: (input) => {
+    return gql.mutate({
+      mutation: `mutation ($input: UpdateFolderInput!){
           updateFolder (input:$input){
             state
           }
         }`,
-        variables: {
-          input
-        }
-      })
-    },
-    /**
-     * 删除文件夹
-     *
-     * @param {*} input
-     * @returns
-     */
-    deleteFolder: (input) => {
-      return gql.mutate({
-        mutation: `mutation ($input: DeleteFolderInput!){
+      variables: {
+        input
+      }
+    })
+  },
+  /**
+   * 删除文件夹
+   *
+   * @param {*} input
+   * @returns
+   */
+  deleteFolder: (input) => {
+    return gql.mutate({
+      mutation: `mutation ($input: DeleteFolderInput!){
           deleteFolder (input:$input){
             state
           }
         }`,
-        variables: {
-          input
-        }
-      })
-    },
-    /**
-     * 获取文件夹文件列表
-     *
-     * @param {*} sn
-     * @returns
-     */
-    getDocuments: (sn,page) => {
-      return gql.query({
-        query: `query($sn: String!,$page: Int!) {
+      variables: {
+        input
+      }
+    })
+  },
+  /**
+   * 获取文件夹文件列表
+   *
+   * @param {*} sn
+   * @returns
+   */
+  getDocuments: (sn, page) => {
+    return gql.query({
+      query: `query($sn: String!,$page: Int!) {
           documents(sn:$sn,page:$page){
             file_type:fileType
             name
@@ -1582,176 +1369,439 @@ const graphqlApi = {
             created_at:createdDate
           }
         }`,
-        variables: {
-         sn:sn,
-         page:page
-        }
-      })
-    },
+      variables: {
+        sn: sn,
+        page: page
+      }
+    })
+  },
 
-    /**
-     * 存储文件到文件夹
-     *
-     * @param {*} input
-     * @input {
-     *    sn
-     *    documents{
-     *      name
-     *      url
-     *      fileType
-     *     }
-     *  }
-     * @returns
-     */
-    createDocument:(input) => {
-      return gql.mutate({
-        mutation: `mutation($input: CreateDocumentInput!) {
+  /**
+   * 存储文件到文件夹
+   *
+   * @param {*} input
+   * @input {
+   *    sn
+   *    documents{
+   *      name
+   *      url
+   *      fileType
+   *     }
+   *  }
+   * @returns
+   */
+  createDocument: (input) => {
+    return gql.mutate({
+      mutation: `mutation($input: CreateDocumentInput!) {
           createDocument(input:$input){
             state
           }
         }`,
-        variables: {
-            input
-        }
-      })
-    },
+      variables: {
+        input
+      }
+    })
+  },
 
-    /**
-     * 删除文件
-     *
-     * @param {*} input
-     * input{
-     * }
-     * @returns
-     */
-    deleteDocument:(input) => {
-      return gql.mutate({
-        mutation: `mutation($input: DeleteDocumentInput!) {
+  /**
+   * 删除文件
+   *
+   * @param {*} input
+   * input{
+   * }
+   * @returns
+   */
+  deleteDocument: (input) => {
+    return gql.mutate({
+      mutation: `mutation($input: DeleteDocumentInput!) {
           deleteDocument(input:$input){
             state
           }
         }`,
-        variables: {
-            input
-        }
-      })
-    },
+      variables: {
+        input
+      }
+    })
+  },
 
-    /**
-     * 百度token校验
-     *
-     * @returns
-     */
-    checkBaiduAuth: () => {
-      return gql.query({
-        query: `query{
+  /**
+   * 百度token校验
+   *
+   * @returns
+   */
+  checkBaiduAuth: () => {
+    return gql.query({
+      query: `query{
           token{
             baiduTokenName
           }
         }`
-      })
-    },
+    })
+  },
 
-    /**
-     * 上传到百度文件
-     *
-     * @param {*} input
-     * @returns
-     */
-    uploadBaidu:(input) => {
-      return gql.mutate({
-        mutation: `mutation($input: UploadDocumentToBaiduInput!) {
+  /**
+   * 上传到百度文件
+   *
+   * @param {*} input
+   * @returns
+   */
+  uploadBaidu: (input) => {
+    return gql.mutate({
+      mutation: `mutation($input: UploadDocumentToBaiduInput!) {
           uploadDocumentToBaidu(input:$input){
             state
           }
         }`,
-        variables: {
-            input
-        }
-      })
-    },
-    /**
-     * 获取被分享者列表
-     *
-     * @param {*} sn
-     * @param {*} page
-     * @returns
-     */
-    userFolderRelations: (sn) => {
-      return gql.query({
-        query: `query($sn: String!) {
+      variables: {
+        input
+      }
+    })
+  },
+  /**
+   * 获取被分享者列表
+   *
+   * @param {*} sn
+   * @param {*} page
+   * @returns
+   */
+  userFolderRelations: (sn) => {
+    return gql.query({
+      query: `query($sn: String!) {
           userFolderRelations(sn:$sn){
             id
             avatar:userAvatar
             nickname:userName
           }
         }`,
-        variables: {
-          sn:sn
+      variables: {
+        sn: sn
       }
-      })
-    },
+    })
+  },
 
-    /**
-     * 删除分享的好友
-     *
-     * @param {*} input
-     * @returns
-     */
-    deleteUserFolderRelations: (input) => {
-      return gql.mutate({
-        mutation: `mutation($input:DeleteUserFolderRelationsInput!) {
+  /**
+   * 删除分享的好友
+   *
+   * @param {*} input
+   * @returns
+   */
+  deleteUserFolderRelations: (input) => {
+    return gql.mutate({
+      mutation: `mutation($input:DeleteUserFolderRelationsInput!) {
           deleteUserFolderRelations(input:$input){
            state
           }
         }`,
-        variables: {
-          input:input
+      variables: {
+        input: input
       }
-      })
-		},
-		    /**
-     * 审核打印
-     * @param { String } orderSn 订单sn
-     * @param { String } action 审核类型：pass/reject
-     */
-    verifyOrder:(orderSn,action) => {
-      return gql.mutate({
-        mutation: `mutation($input: VerifyOrderInput!) {
+    })
+  },
+  /**
+   * 审核打印
+   * @param { String } orderSn 订单sn
+   * @param { String } action 审核类型：pass/reject
+   */
+  verifyOrder: (orderSn, action) => {
+    return gql.mutate({
+      mutation: `mutation($input: VerifyOrderInput!) {
           verifyOrder(input:$input){
             order{
               state
             }
           }
         }`,
-        variables: {
-          input: {
-            orderSn:orderSn,
-            action:action
-          }
+      variables: {
+        input: {
+          orderSn: orderSn,
+          action: action
         }
-      })
-    },
-    /**
-     * 加入文件夹
-     *
-     * @param {*} input
-     * @returns
-     */
-    joinFolder: (input) => {
-      return gql.mutate({
-        mutation: `mutation($input: JoinFolderInput!) {
+      }
+    })
+  },
+  /**
+   * 加入文件夹
+   *
+   * @param {*} input
+   * @returns
+   */
+  joinFolder: (input) => {
+    return gql.mutate({
+      mutation: `mutation($input: JoinFolderInput!) {
           joinFolder(input:$input){
            state
           }
+        }`,
+      variables: {
+        input: input
+      }
+    })
+  },
+  /**
+   * 获取错题科目列表
+   *
+   * @returns
+   */
+  getSubjects: () => {
+    return gql.query({
+      query: `query() {
+  
         }`,
         variables: {
           input:input
       }
       })
     },
+    getGrade: () => {
+      return gql.query({
+        query: `query {
+          currentUser {
+            sn
+            selectedKid{
+              sn
+              stage{
+                name
+                rootName
+                sn
+              }
+           }
+          }
+        }`
+      })
+    },
+
+    /**
+     * 获取错题列表
+     *
+     */
+    getMistakes:()=>{
+
+    },
+
+    /**
+     * 注册学科网
+     *
+     * @returns
+     */
+    register: () => {
+      return gql.mutate({
+        mutation: `mutation ($input: RegisterInput!){
+          Register{
+            state
+          }
+        }`
+      })
+    },
 
 
+    /**
+     * 获取学科网学科目录
+     */
+    getSubject: ()=> {
+      return gql.query({
+        query: `query getSubject{
+          xuekewang{
+            registered
+            subjects{
+              subjectId
+              subjectName
+              iconUrl
+            }
+          }
+        }`
+       
+      })
+    },
+
+    /**
+     * 获取学科版本
+     */
+    getTextbookVersion: (subjectId)=> {
+      return gql.query({
+        query: `query getTextbookVersion($subjectId: Int!){
+          xuekewang{
+            textbookVersions(subjectId: $subjectId){
+              name
+              versionId
+            }
+          }
+        }`,
+        variables: {
+          subjectId
+        }
+      })
+    },
+    /**
+   * 意见反馈
+   */
+  createFeedback: (params) => {
+    return gql.mutate({
+      mutation: `mutation createFeedback($input: CreateFeedbackInput!){
+        createFeedback(input:$input){
+          state
+        }
+      }`,
+      variables: {
+        input: params
+      }
+    })
+  },
+
+    /**
+     * 获取学科教材信息
+     */
+    getTeachBook: (pms) => {
+      return gql.query({
+        query: `query getTeachBook($subjectId: Int!,$versionId: Int!){
+          xuekewang{
+            textbooks(subjectId: $subjectId,versionId: $versionId){
+              name
+              textbookId
+              volume
+            }
+          }
+        }`,
+        variables: {
+          ...pms
+        }
+      })
+    },
+
+    /**
+     * 获取选中教材
+     */
+    getSelectedTextbook: (subjectId) => {
+      return gql.query({
+        query: `query getSelectedTextbook($subjectId: Int!){
+          xuekewang{
+            selectedTextbook(subjectId: $subjectId){
+                name
+                textbookId
+                volume
+            }
+          }
+        }`,
+        variables: {
+          subjectId
+        }
+      })
+    },
+
+    /**
+     * 获取选择的学科教材版本
+     */
+    getSelectedTextbookVersion: (subjectId) => {
+      return gql.query({
+        query: `query getSelectedTextbookVersion($subjectId: Int!){
+          xuekewang{
+            selectedTextbookVersion(subjectId: $subjectId){
+                versionId
+            }
+          }
+        }`,
+        variables: {
+          subjectId
+        }
+      })
+    },
+    /**
+     * 获取章节
+     * @param {subjectId} 科目id
+     * @param {versionId} 版本id
+     * @param {textbookId} 教材id
+     */
+    getChapter: (pms) => {
+      return gql.query({
+        query: `query getChapter($subjectId: Int!, $versionId: Int!, $textbookId: Int!){
+          xuekewang{
+            rootNodes(subjectId: $subjectId, versionId: $versionId, textbookId: $textbookId){
+              name
+              id
+            }
+          }
+        }`,
+        variables: {
+          ...pms
+        }
+      })
+    },
+    /**
+     * 获取章节详情
+     * @param {subjectId} 科目id
+     * @param {textbookId} 教材id
+     * @param {parentId} 章节id
+     */
+    getChapterDetail: (pms) => {
+      return gql.query({
+        query: `query getChapterDetail($subjectId: Int!, $textbookId: Int!, $parentId: Int){
+          xuekewang{
+            childrenNodes(subjectId: $subjectId, textbookId: $textbookId, parentId: $parentId){
+              name
+              id
+              children {
+                name
+                id
+                children{
+                  name
+                  id
+                }
+              }
+            }
+          }
+        }`,
+        variables: {
+          ...pms
+        }
+      })
+    },
+  
+  /**
+   * 获取错题列表
+   *
+   */
+  getMistakes: () => {
+    return gql.query({
+      query: `query() {
+          // userFolderRelations(sn:$sn){
+          //   id
+          //   avatar:userAvatar
+          //   nickname:userName
+          // }
+        }`,
+      variables: {
+
+      }
+    })
+  },
+  /**
+   * 保存错题
+   *
+   */
+  saveMistakes: () => {
+    return gql.mutate({
+      mutation: `mutation() {
+          
+        }`,
+      variables: {
+        input: input
+      }
+    })
+  },
+  /**
+   * 拍照搜题
+   *
+   * @returns
+   */
+  getPhotoAnswer: () => {
+    return gql.mutate({
+      mutation: `mutation() {
+          
+        }`,
+      variables: {
+        input: input
+      }
+    })
+  },
 }
 
 export default graphqlApi

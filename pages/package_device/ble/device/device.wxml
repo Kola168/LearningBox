@@ -1,0 +1,23 @@
+<nav-bar title="小白智慧打印"></nav-bar>
+
+<view class="container">
+    <tetx class="title">请选择要连接的设备</tetx>
+    <view class="serach-device-serial" bindtap="serachDeviceSerial">
+        <!-- <image mode="widthFix" src="/images/what.png"></image> -->
+        <text>如何查看设备型号？</text>
+    </view>
+    <view class="notify">
+        <text>搜索到附近的设备</text>
+    </view>
+    <view class="device-list" wx:for="{{devices}}" wx:key="index" id="{{index}}">
+        <view class="device-item">
+            <text>{{item.localName}}</text>
+            <view class="device-item-right">
+                <text class="manage" id="{{index}}" bindtap="initBLE">连接</text>
+            </view>
+        </view>
+    </view>
+</view>
+
+<import src="/lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />

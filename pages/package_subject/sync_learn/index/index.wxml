@@ -1,0 +1,14 @@
+<nav-bar background="#fff" title="同步课堂"/>
+<view class="learn-main">
+  <image class="banner" src="https://cdn-h.gongfudou.com/LearningBox/subject/sync_banner.png"></image>
+  <view class="entry">
+    <view class="entry-item" wx:for="{{entryList}}" wx:key="key">
+      <image class="nav-icon" src="{{item.icon}}"></image>
+      <view class="content">
+        <view class="title">{{item.title}}</view>
+        <view class="desc">{{item.desc}}</view>
+      </view>
+      <view class="btn" bind:tap="toUse" data-key="{{item.key}}">使用</view>
+    </view>
+  </view>
+</view>

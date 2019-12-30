@@ -65,9 +65,11 @@ Page({
 			duplex: false, //单双面面
 			copies: 1, // 份数
 		}
-		var resp = yield commonRequest.getPrinterCapacity() //获取打印能力数据
-		// this.initPms.grayscale = resp && resp.color_modes[0] || 'Color'
-		this.initPms.grayscale = false
+		var resp = yield commonRequest.getPrinterCapacity('doc_a4') //获取打印能力数据
+		
+		this.initPms.duplex = resp.duplex
+		this.initPms.grayscale = resp.grayscale
+		this.initPms.color = resp.color
 	}),
 
 	formatFiles: function (docList) {
@@ -77,6 +79,8 @@ Page({
 					originalUrl: doc.url,
 					filename: doc.filename,
 					grayscale: this.initPms.grayscale,
+					colorCheck: currentFile.color ? true : false,
+					color: this.initPms.color,
 					duplex: this.initPms.duplex,
 					copies: 1, //份数
 					isSetting: false,
@@ -128,7 +132,9 @@ Page({
 					originalUrl: url,
 					printUrl: url,
           filename: name,
-          grayscale: _this.initPms.grayscale,
+					grayscale: _this.initPms.grayscale,
+					colorCheck:  _this.initPms.color ? true : false,
+					color: _this.initPms.color,
           duplex: _this.initPms.duplex,
           copies: 1,
           isSetting: false,
@@ -235,8 +241,8 @@ Page({
 				title: '正在提交',
 				duration: 0
 			})
-			var types = this.data.types
-			var urls = this.data.files.map(file => util.removeKeysToNewObj(file, ['isSetting']))
+			var urls = this.data.files.map(file => util.removeKeysToNewObj(file, ['isSetting', 'colorCheck']))
+			console.log(urls,'==urls==')
 			const resp = yield commonRequest.createOrder('doc_a4', urls)
 			router.navigateTo('/pages/finish/index',
 				{
@@ -296,17 +302,18 @@ Page({
 			}
 
 			var currentFile = this.data.files[e.currentTarget.id]
-			var print_capability = yield commonRequest.getPrinterCapacity(currentFile.url) //获取打印能力
+			var print_capability = yield commonRequest.getPrinterCapacity('doc_a4', currentFile.originalUrl) //获取打印能力
 			if (!print_capability) {
 				return
 			}
 			var postData = {
-				page_count: print_capability.page_count,
+				page_count: print_capability.pageCount,
 				name: currentFile.filename,
 				fileIndex: e.currentTarget.id,
-				colorModes: print_capability.color_modes,
-				media_sizes: print_capability.media_sizes,
-				colorCheck: currentFile.grayscale ? 'Mono' : 'Color',
+				color: print_capability.color,
+				grayscale: print_capability.grayscale,
+				duplex: print_capability.duplex,
+				colorCheck: print_capability.color ? true : false,
 				duplexCheck: currentFile.duplex,
 				isSetting: currentFile.isSetting,
 				url: currentFile.originalUrl,
@@ -314,6 +321,7 @@ Page({
 			}
 			if (currentFile.isSetting) {
 				postData.startPage = currentFile.startPage
+				postData.colorCheck = currentFile.colorCheck
 				postData.endPage = currentFile.endPage
 				postData.copies = currentFile.copies
 				postData.singlePageLayoutsCount = currentFile.singlePageLayoutsCount
@@ -340,7 +348,9 @@ Page({
 		tempFiles[postData.fileIndex].skipGs = postData.skipGs
 		tempFiles[postData.fileIndex].extract = postData.extract
 		tempFiles[postData.fileIndex].endPage = postData.endPage
-		tempFiles[postData.fileIndex].grayscale = postData.grayscale
+		tempFiles[postData.fileIndex].grayscale = !postData.colorCheck
+		tempFiles[postData.fileIndex].color = postData.colorCheck
+		tempFiles[postData.fileIndex].colorCheck = postData.colorCheck
 		tempFiles[postData.fileIndex].duplex = postData.duplex
 		tempFiles[postData.fileIndex].singlePageLayoutsCount = postData.singlePageLayoutsCount
 		tempFiles[postData.fileIndex].isSetting = true

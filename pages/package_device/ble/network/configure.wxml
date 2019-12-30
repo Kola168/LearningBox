@@ -1,0 +1,32 @@
+<nav-bar title="小白智慧打印"></nav-bar>
+<view class='container'>
+
+    <image src="https://cdn.gongfudou.com/miniapp/ec/ble/step3.png" class="step" mode="widthFix"></image>
+    <view class="title">{{deviceTitle}}</view>
+    <image src="{{deviceImage}}" class="device-image" mode="widthFix"></image>
+
+    <view class="desc">点击确认按钮后</view>
+    <view class="desc1">{{deviceDesc}}</view>
+
+    <view class="input-block">
+        <view class='input-row'>
+            <image src='../../images/ble_wifi.png' class='xbh-img' mode="widthFix"></image>
+            <view class="ssid-top">
+                <view class="ssid">{{ssid}}</view>
+                <view class='change-network' bindtap='changeNetwork'>更换</view>
+            </view>
+        </view>
+        <view class='input-row'>
+            <image src='../../images/ble_password.png' class='xbh-img' mode="widthFix"></image>
+            <input class="password input-row-top" placeholder="请输入密码" value="{{password}}" bindblur="endInput" bindinput="inputValue" bindconfirm="endInput" placeholder-style="color:#ccc;font-size:17px;" />
+        </view>
+    </view>
+    <view class='input-tip-5g'>
+        <image src='../../images/ble_small_tip.png' class='xbh-image' mode="widthFix"></image>
+        <text class="xbh-tip">不支持单频5G的WiFi网络</text>
+    </view>
+    <view class='search-equipment' bindtap='setNetwork'>确认</view>
+</view>
+
+<import src="../../../../lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />

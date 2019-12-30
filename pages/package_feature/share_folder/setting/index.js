@@ -1,9 +1,9 @@
 const app = getApp()
 const regeneratorRuntime = require('../../../../lib/co/runtime')
 import {
-    co,
-    util
-  } from '../../../../utils/common_import'
+  co,
+  util
+} from '../../../../utils/common_import'
 const _ = require('../../../../lib/underscore/we-underscore')
 const showModal = util.promisify(wx.showModal)
 import commonRequest from '../../../../utils/common_request'
@@ -41,21 +41,21 @@ Page({
     extract: 'all',
     fileTitle: null,
     confirmModal: {
-        isShow: false,
-        title: '请正确放置A4打印纸',
-        image: 'https://cdn.gongfudou.com/miniapp/ec/confirm_print_a4_new.png'
+      isShow: false,
+      title: '请正确放置A4打印纸',
+      image: 'https://cdn.gongfudou.com/miniapp/ec/confirm_print_a4_new.png'
     }
   },
 
-  onLoad: co.wrap(function*(options) {
+  onLoad: co.wrap(function* (options) {
     this.longToast = new app.weToast()
     try {
       const MAX_PAGE = 150;
       const arrayFile = this.data.arrayFile = JSON.parse(decodeURIComponent(options.files))
       let print_capability = yield commonRequest.getPrinterCapacity(arrayFile.url)
       if (!print_capability) {
-				return
-			}
+        return
+      }
       const page_count = print_capability.page_count;
       this.setData({
         isExcel: this.isExcelFiles(arrayFile.name),
@@ -96,7 +96,7 @@ Page({
     return reg.test(name);
 
   },
-  setStatus: co.wrap(function*() {
+  setStatus: co.wrap(function* () {
     //设置是否支持多面打印
     if (this.data.media_sizes[0].duplex) {
       this.setData({
@@ -121,7 +121,7 @@ Page({
   }),
 
   //减少份数
-  cutPrintNum: function() {
+  cutPrintNum: function () {
     if (this.data.documentPrintNum <= 1) {
       return wx.showModal({
         content: '最少要1份才可以打印哦~',
@@ -158,11 +158,11 @@ Page({
 
   //输入打印起始页
   inputstartpage(e) {
-    this.data.startPage = e.detail.value
+    this.data.startPage = Number(e.detail.value)
   },
 
-  startpagejudge: function(e) {
-    logger.info('起始页===', parseInt(e.detail.value), typeof(e.detail.value))
+  startpagejudge: function (e) {
+    logger.info('起始页===', parseInt(e.detail.value), typeof (e.detail.value))
     if (parseInt(e.detail.value) > parseInt(this.data.endPrintPage) || parseInt(e.detail.value) <= 0) {
       this.setData({
         startPrintPage: 1,
@@ -177,18 +177,18 @@ Page({
       return
     } else {
       logger.info('打印起始页===', e.detail.value)
-      this.data.startPrintPage = e.detail.value
+      this.data.startPrintPage = Number(e.detail.value)
     }
   },
   //输入打印结束页
   inputendpage(e) {
-    this.data.endPage = e.detail.value
+    this.data.endPage = Number(e.detail.value)
   },
   endpagejudge(e) {
     let endMaxPage = Math.ceil(this.data.endMaxPage / this.data.zoomType),
       tempValue = parseInt(e.detail.value)
     if (tempValue < parseInt(this.data.startPrintPage) || tempValue > endMaxPage) {
-      logger.info('结束页===', parseInt(e.detail.value), typeof(e.detail.value))
+      logger.info('结束页===', parseInt(e.detail.value), typeof (e.detail.value))
       this.setData({
         endPrintPage: this.data.endMaxPage,
         endPage: this.data.endMaxPage
@@ -202,7 +202,7 @@ Page({
       return
     } else {
       logger.info('打印完成页===', e.detail.value)
-      this.data.endPrintPage = e.detail.value
+      this.data.endPrintPage = Number(e.detail.value)
     }
   },
 
@@ -252,17 +252,17 @@ Page({
     }
 
     let hideConfirmPrintBox = Boolean(wx.getStorageSync("hideConfirmPrintBox"))
-    if(hideConfirmPrintBox){
-        this.print()
+    if (hideConfirmPrintBox) {
+      this.print()
     } else {
-        this.setData({
-            ['confirmModal.isShow']: true
-        })
+      this.setData({
+        ['confirmModal.isShow']: true
+      })
     }
   },
 
 
-  print: co.wrap(function*() {
+  print: co.wrap(function* () {
     try {
       let extract = this.data.extract
       let tempObj = {
@@ -283,17 +283,16 @@ Page({
         tempObj.end_page = 0
       }
       let files = [tempObj];
-  
+
       this.longToast.toast({
-          type: 'loading',
-          duration: 0
-        })
+        type: 'loading',
+        duration: 0
+      })
       const resp = yield commonRequest.createOrder('doc_a4', files)
-			router.navigateTo('/pages/finish/index',
-				{
-					type: types.mediaType,
-					state: resp.createOrder.state
-			})
+      router.navigateTo('/pages/finish/index', {
+        type: shareFile,
+        state: resp.createOrder.state
+      })
       this.longToast.hide()
     } catch (e) {
       logger.info(e)
@@ -319,7 +318,7 @@ Page({
       extract = this.data.extract
     commonRequest.previewDocument(url, display, skip_gs, extract)
   },
-  operaRepair: function() {
+  operaRepair: function () {
     this.setData({
       checkOpen: !this.data.checkOpen,
       showConfirm: this.data.checkOpen ? false : true,
@@ -331,7 +330,7 @@ Page({
       showConfirm: false,
     })
   },
-  openRepair: co.wrap(function*() {
+  openRepair: co.wrap(function* () {
     this.setData({
       showConfirm: false
     })

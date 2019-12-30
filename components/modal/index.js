@@ -20,6 +20,9 @@
 
 
 Component({
+  options: {
+    multipleSlots: true
+  },
   properties: {
     modal: {
       type: Object,

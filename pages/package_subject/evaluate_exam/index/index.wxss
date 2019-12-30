@@ -1,0 +1,54 @@
+.container {
+  padding: 30rpx 24rpx;
+}
+
+.tip-img {
+  width: 100%;
+  position: relative;
+  margin-bottom: 48rpx;
+}
+
+.tip-img image {
+  width: 100%;
+}
+
+.tip-img view {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+  z-index: 50;
+  color: #FFA200;
+  font-size: 24rpx;
+}
+.subject-item,
+.subjects {
+  display: flex;
+}
+
+.subjects {
+  flex-wrap: wrap;
+}
+
+.subject-item {
+  width: 33.33%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 100rpx;
+}
+
+.subject-item image {
+  width: 60%;
+}
+
+.item-name {
+  color: #333;
+  font-size: 30rpx;
+  margin: 6rpx 0;
+}
+
+.item-count {
+  color: #999;
+  font-size: 24rpx;
+}

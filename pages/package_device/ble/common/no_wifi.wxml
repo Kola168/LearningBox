@@ -1,0 +1,10 @@
+<nav-bar title="小白智慧打印"></nav-bar>
+<view class='container'>
+    <view class='cont-title-alert'>抱歉，没有搜索到周围的WIFI</view>
+    <view class='equipment-desc'>点击下方按钮重试</view>
+    <image src='https://cdn.gongfudou.com/miniapp/ec/ble/ble_no_wifi.png' class='ble' mode="widthFix"></image>
+    <view class='search-equipment' bindtap='retry'>重新尝试搜索</view>
+</view>
+
+<import src="../../../lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />

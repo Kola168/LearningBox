@@ -1,0 +1,15 @@
+<nav-bar title="小白智慧打印"></nav-bar>
+
+<view class='container'>
+    <image src="https://cdn.gongfudou.com/miniapp/ec/ble/step1.png" class="step" mode="widthFix"></image>
+    <view class="title">请确认电源线连接正确,并已通电</view>
+
+    <image src='https://cdn.gongfudou.com/miniapp/ec/ble/ble_printer_introduction3.png' class='box-image' mode="widthFix"></image>
+    <view class='search-equipment' bindtap='startSerch'>开始搜索</view>
+
+    <view class="connect-power">
+        <text bindtap="connectPower">如何正确连接电源?</text></view>
+</view>
+
+<import src="../../../../lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />

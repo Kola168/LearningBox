@@ -1,0 +1,27 @@
+<!--pages/package_common/my_collection/index.wxml-->
+<nav-bar title="我的收藏"></nav-bar>
+<view class="list" style="margin:0">
+    <view class="item" wx:if="{{collectList.length>0}}" wx:for="{{collectList}}" wx:key="index" id="{{index}}" bindtap="toPreview">
+        <view class="item-content">
+            <view class="collection-img"><image mode="widthFix" src="{{item.icon_url}}" class="picture"></image></view>
+            <view class="content">
+                <view class="title">
+                    <view>{{item.title}}</view>
+                    <view class="item-type">{{item.category_name}}</view>
+                </view>
+                <view class="arrow-right"><image src="./../images/arrow_right.png" mode="widthFix" /></view>
+            </view>
+        </view>
+    </view>
+    <view class="no-order" wx:if="{{collectList.length==0}}">
+        <image mode="widthFix" src="https://cdn-h.gongfudou.com/LearningBox/common/my_collection_none.png" class=""></image>
+        <view>还没有内容哦</view>
+        <view class="back-home" bindtap="backToHome">去逛逛</view>
+    </view>
+</view>
+
+<!--
+<import src="../../lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />
+-->
+

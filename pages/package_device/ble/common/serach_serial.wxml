@@ -1,0 +1,6 @@
+<nav-bar title="小白智慧打印"></nav-bar>
+
+<!--pages/ble/common/serach_serial.wxml-->
+<image src="https://cdn.gongfudou.com/miniapp/ec/ble/search_serial1.png" mode="widthFix" class="show-img"></image>
+<image src="https://cdn.gongfudou.com/miniapp/ec/ble/search_serial2.png" mode="widthFix" class="show-img " style="margin-top:20rpx"></image>
+<image src="https://cdn.gongfudou.com/miniapp/ec/ble/search_serial3.png" mode="widthFix" class="show-img"></image>

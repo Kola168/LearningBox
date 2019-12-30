@@ -123,6 +123,8 @@ Page({
       if(resp.createOrder.state) {
         wxNav.redirectTo(`/pages/finish/index`,{
 
+        },()=>{
+          storage.remove('literacy_card')
         })
       }
       // wxNav.redirectTo(`../../../../finish/index`, {

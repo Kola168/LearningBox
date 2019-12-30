@@ -1,0 +1,72 @@
+<nav-bar title="小白智慧打印"></nav-bar>
+
+<view class='container'>
+    <view class="top-content">
+        <image src='https://cdn.gongfudou.com/miniapp/ec/ble/ble_finish.png' mode="widthFix" class="icon-success"></image>
+        <view class="setting-success">网络配置成功！</view>
+        <view class="bind-success">您已成功绑定一台打印机</view>
+        <image src='{{deviceImage}}' mode="widthFix" class='box'></image>
+
+        <view class="two-button">
+            <view class="share-to-friends"> <button class="button-text" open-type="share" bindtap="share" hover-class="none">分享给好友</button></view>
+            <view class='start' bindtap='start'>返回首页
+            </view>
+        </view>
+    </view>
+
+    <view class='box-tip' wx:if="{{deviceName=='EP200'}}">
+        <view>提示：</view>
+        <view>1、小白盒的指示灯红色，表示网络未连接成功，请重新进行配网流程</view>
+        <view>2、小白盒的指示灯如果持续为黄色，表示打印机和小白盒未连接成功，请检查打印机是否已完成充墨操作，或检查打印机和小白盒是否正确连接，并通电正常</view>
+    </view>
+
+    <view class='box-tip' wx:if="{{deviceName=='EP320'}}">
+        <view>提示：</view>
+        <view>1、初次配网完成后，小白盒会自行检测固件版本<view class="line"></view></view>
+        <view>并升级。如发现指示灯呈现红->黄->绿交替闪烁<view class="line"></view></view>
+        <view>的情况，请勿担心。等待片刻，小白盒绿灯常量<view class="line"></view></view>
+        <view style="width:38%">后即可正常使用。<view class="line"></view></view>
+        <view>2、若上图的指示灯红色，表示网络未连接成功，请重新进行配网流程</view>
+        <view>3、上图指示灯如果持续为黄色，表示打印机未连接成功，请检查打印机是否已完成充墨操作，或检查打印机和小白盒是否正确连接，并通电正常</view>
+    </view>
+
+    <view class="tip">
+        <view class="short-line"></view>
+        <text>快速尝鲜</text>
+        <view class="short-line"></view>
+    </view>
+
+    <view class="medium">
+        <view class="medium-item">
+            <image src="https://cdn.gongfudou.com/miniapp/ec/ble/ble_finish_photo_print.png" mode="widthFix" class="medium-image"></image>
+            <view class="desc">
+                <text class="title">照片打印</text>
+                <text class="content">多种尺寸照片打印</text>
+            </view>
+        </view>
+        <view class="experience" bindtap="experiencePhoto">去体验</view>
+    </view>
+    <view class="medium">
+        <view class="medium-item">
+            <image src="https://cdn.gongfudou.com/miniapp/ec/ble/ble_finish_file_print.png" mode="widthFix" class="medium-image"></image>
+            <view class="desc">
+                <text class="title">文档打印</text>
+                <text class="content">微信文档打印</text>
+            </view>
+        </view>
+        <view class="experience" bindtap="experienceFile">去体验</view>
+    </view>
+    <view class="medium bottom-height">
+        <view class="medium-item">
+            <image src="https://cdn.gongfudou.com/miniapp/ec/ble/ble_finish_wx_article_print.png" mode="widthFix" class="medium-image"></image>
+            <view class="desc">
+                <text class="title">微信文章</text>
+                <text class="content">微信公众号的文章打印</text>
+            </view>
+        </view>
+        <view class="experience" bindtap="experienceArticle">去体验</view>
+    </view>
+</view>
+
+<import src="../../../lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />

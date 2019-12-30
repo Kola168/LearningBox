@@ -10,7 +10,7 @@ const showModal = util.promisify(wx.showModal)
 const getNetworkType = util.promisify(wx.getNetworkType)
 
 import wxNav from '../../../../utils/nav.js'
-import graphql from '../../../../network/graphql_request'
+import graphql from '../../../../network/graphql/device'
 
 Page({
 
@@ -57,7 +57,7 @@ Page({
 			})
 			console.log('设置密码=====', resp)
 			if (resp.data.code == 0) {
-				this.checkNet()  //设置成功后检查网络的物理状态
+				this.networkManage()  //设置成功后检查网络的物理状态
 			} else {
 				yield showModal({
 					title: '提示',
@@ -77,79 +77,62 @@ Page({
 		}
 	}),
 
-	//检查网络状态
-	networkManage: co.wrap(function* () {
-		var that = this;
-		//监听网络状态
-		wx.onNetworkStatusChange(function (res) {
-			console.log('执行到这里===========55555===', res)
-			if (!res.isConnected) {
-				console.log('网络似乎不太顺畅');
-				return false
-			} else {
-				//在网络通的情况下，并且5秒还是有网
-				wx.getNetworkType({
-					success (res) {
-						const networkType = res.networkType
-						if (networkType != 'none') {
-							setTimeout(function () {
-								wx.offNetworkStatusChange()
-								that.bindCode()
-							}, 5000)
-						}
-					}
-				})
-			}
-		})
-	}),
+		//检查网络状态
+		networkManage: co.wrap(function* () {
+			var that = this;
+			//监听网络状态
+			wx.onNetworkStatusChange(function (res) {
+				console.log('执行到这里===========55555===', res)
+				if (!res.isConnected) {
+					console.log('网络似乎不太顺畅');
+					return false
+				} else {
+					//在网络通的情况下，并且1500毫秒还是有网
+					wx.offNetworkStatusChange()
+					that.bindCode()
+				}
+			})
+		}),
 
-	//检查物理网络状态
-	checkNet: co.wrap(function* () {
-		console.log('执行到这里===========111111===')
-		let that = this
-		this.networkManage()
-	}),
-
-	//上报code信息
+		//上报code信息
 	bindCode: co.wrap(function* () {
+		let deviceInfo = {
+			serviceSn: this.equipInfo.DeviceID,
+			bindCode: this.equipInfo.BindCode,
+			serviceType: 'gcp',
+		}
 		try {
-			let deviceInfo = {
-				serviceSn: this.equipInfo.DeviceID,
-				bindCode: this.equipInfo.BindCode,
-				serviceType: 'gcp',
-			}
-			console.log('deviceInfo=====', deviceInfo)
 			let res = yield graphql.bindDevice(deviceInfo)
-			// yield graphql.bindDevice(deviceInfo).then(function(res){
-			// console.log('res====1======', res)
-
-			// }).catch(ex => {
-			// 	console.log('ex: ', ex);
-
-			// })
-
-			console.log('res====1======', res)
+			console.log('上报盒子信息返回的======', res)
 			let sn = res.bindDevice.device.sn
 			this.checkEquipment(sn)
 		} catch (e) {
-			console.log('e==bindCode======================', e)
-			//如果是没有网络或者超时的情况下重试一次
-			if (e.errMsg === "request:fail timeout" || e.errMsg === "request:fail") {
+			console.log('bindCode错误===',e)
+			if(e === 'customize-timeout'){  //自定义3秒超时,30次
 				if (!that.bindCode.time) {
 					that.bindCode.time = 0
 				}
 				that.bindCode.time++
-				if (that.bindCode.time >= 2) {
+				if (that.bindCode.time >= 30) {
 					this.longToast.toast()
 					wx.showModal({
 						title: '提示',
-						content: '请检查网络状态',
+						content: '配网超时',
 					})
 					this.longToast.toast()
-					return wxNav.navigateTo('/pages/package_device/network/tips/step1')
+					setTimeout(function(){
+						return wxNav.navigateTo('/pages/package_device/network/tips/step1')
+					},1000)
+				}else{
+					console.log('that.bindCode.time====',that.bindCode.time)
+					that.bindCode()
 				}
-			} else {
-				this.longToast.toast()
+			}else if(e.errMsg === "request:fail timeout" || e.errMsg === "request:fail"){
+				wx.showModal({
+					title: '提示',
+					content: '配网中断',
+				})
+			}else{//其它未知错误
 				return wxNav.navigateTo('/pages/package_device/network/tips/step1')
 			}
 		}
@@ -168,7 +151,7 @@ Page({
 					that.checkEquipment.time = 0
 				}
 				that.checkEquipment.time++
-				if (that.checkEquipment.time >= 20) {
+				if (that.checkEquipment.time >= 30) {
 					this.longToast.toast()
 					yield showModal({
 						title: '提示',
@@ -180,7 +163,7 @@ Page({
 				}
 				setTimeout(function () {
 					that.checkEquipment(sn)
-				}, 2000)
+				}, 3000)
 			} else {
 				this.longToast.toast()
 				wx.showToast({

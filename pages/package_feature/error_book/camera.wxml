@@ -1,0 +1,21 @@
+<!-- pages/error_book/camera.wxml -->
+<nav-bar background="#fff" title="拍摄"></nav-bar>
+<camera device-position="back" flash="off" binderror="error" class="camera">
+    <cover-view scroll-top="cover-view" class="cover-view">
+        <cover-view wx:for="{{[1, 2, 3, 4, 5, 6, 7, 8, 9]}}" wx:key="index" class="line"></cover-view>
+    </cover-view>
+    <cover-view scroll-top="cover-view" class="cover-title" bindtap="hideTipModal" wx:if="{{showTipModal}}">
+        <cover-view>题目与参考线平行，效果更佳</cover-view>
+        <!-- <cover-image class="camera-tip" src="../images/error_book_camera_tip.png" /> -->
+    </cover-view>
+
+    <cover-view class="cover">
+        <cover-image class="small-icon" src="../images/error_book_photos.png" bindtap="takePhoto" id="album" />
+        <!-- <button> -->
+        <cover-image src="../images/error_book_camera_2.png" class="button-camera" id="camera" bindtap="takePhoto" />
+        <!-- </button> -->
+        <cover-image class="small-icon" src="../images/error_book_cancel_gray.png" bindtap="cancel" />
+    </cover-view>
+</camera>
+<import src="../../../lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />

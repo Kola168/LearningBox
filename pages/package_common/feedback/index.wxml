@@ -1,0 +1,37 @@
+<nav-bar title="意见反馈"></nav-bar>
+<view class="top-types">您遇到的问题类型：</view>
+<view  class="type-list">
+    <view wx:for="{{questionTypes}}" wx:key="index">
+        <view class="type-item wx:if='{{tabId==index?'choose-type':''}}'" bindtap="chooseType" data-id="{{index}}">{{item.type}}</view>
+    </view>
+</view>
+<view class='recommend'>您的建议或问题：</view>
+<view class="content">
+    <textarea placeholder="您的反馈将帮助我们快速成长，至少10个字哦~" class='content-input' maxlength='200' bindblur='contentinput' bindinput="contentinput" />
+    <view class='word'>200字</view>
+</view>
+
+<view class='contact'>您的联系方式：</view>
+<view class="tel">
+    <input placeholder="请输入您的电话号码" type="number" class='tel-input' bindblur='number' maxlength='15' bindinput="number" />
+</view>
+<button class='submit' bindtap='submit'>提交</button>
+
+<view class="bottom">
+    <view class="bottom-item">
+        <view>客服热线：</view>
+        <view class="content" bindtap="call">400-001-9178</view>
+    </view>
+    <view class="bottom-item">
+        <view>客服微信：</view>
+        <view class="content">gfdxiaobai</view>
+        <view class='btn'>
+            <button hover-class='none' bindtap='copyText'>复制</button>
+        </view>
+    </view>
+    <view>（工作时间：周一至周六9:00-18:00）</view>
+</view>
+<!--
+<import src="../../lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />
+-->

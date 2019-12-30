@@ -1,0 +1,46 @@
+<nav-bar title="语文默写"></nav-bar>
+<view class="intro" wx:if="{{showIntro}}">
+  <image src="https://cdn-h.gongfudou.com/LearningBox/feature/memory_write_chinese.png" mode="widthFix" />
+  <view class="next" bindtap="startWrite">开始使用</view>
+</view>
+<view class="container" hidden="{{!loadReady||showIntro}}">
+  <view class="filter-box">
+    <view class="selector flex align-center">
+      <view class="options flex align-center" bindtap="ctrlSelector">
+        <view class="{{showSelector?'option-on':''}}">{{currentGrade.name}}</view>
+        <image src="../../images/arrow_bottom_trangle_{{showSelector?'on':'off'}}.png" />
+      </view>
+    </view>
+  </view>
+  <view class="select-list" bindtap="ctrlSelector" hidden="{{!showSelector}}">
+    <view class="list-box">
+      <view class="list-item {{currentGrade.sn===item.sn?'option-on':''}}" wx:for="{{grades}}" wx:key="{{index}}" bindtap="selectorItemCheck" id="{{index}}">
+        {{item.name}}
+      </view>
+    </view>
+  </view>
+  <block wx:if="{{!isEmpty}}">
+    <view class="content" hidden="{{writeList.length===0}}">
+      <view class="all-check" bindtap="allCheck">{{allCheck?'取消':'全选'}}</view>
+      <view class="content-item" wx:for="{{writeList}}" wx:key="{{index}}" id="{{index}}" bindtap="checkUnit">
+        <view class="item-title flex align-center">
+          <view class="title-l flex align-center">
+            <image src="../../images/check_{{item.isCheck?'yes':'no'}}.png" />
+            <view>{{item.title}}</view>
+          </view>
+          <view class="title-r">打印次数{{item.print_count}}</view>
+        </view>
+        <view class="item-main flex align-center">
+          <view wx:for="{{item.items}}" wx:for-item="childItem" wx:for-index="childIndex" wx:key="{{childIndex}}">
+            {{childItem.chinese_character}}
+          </view>
+        </view>
+      </view>
+      <view class="print {{checkCount===0?'unable':''}}" bindtap="toPrint">我要打印</view>
+    </view>
+  </block>
+  <view wx:else class="content-empty">暂无内容</view>
+</view>
+<!-- loading -->
+<import src="/lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />

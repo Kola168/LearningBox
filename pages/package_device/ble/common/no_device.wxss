@@ -1,0 +1,44 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.title {
+    color: #333333;
+    font-size: 36rpx;
+    margin-top: 30rpx;
+}
+
+.equipment-desc {
+    font-size: 30rpx;
+    color: #666666;
+    text-align: center;
+    margin: 40rpx 0 112rpx;
+}
+
+.search-equipment {
+		width: 90%;
+		height:90rpx;
+		line-height: 90rpx;
+    background-color: #ffe27a;
+    font-size: 32rpx;
+    color: #333333;
+    margin-top: 160rpx;
+		border-radius: 1000rpx;
+		text-align: center;
+}
+
+.no-device-img {
+    width: 228rpx;
+    margin: 104rpx 0 160rpx;
+}
+
+.equip-tip {
+    font-size: 32rpx;
+    color: #666666;
+    line-height: 50rpx;
+    width: 90%;
+    margin-left: 5%;
+}
