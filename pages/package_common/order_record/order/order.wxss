@@ -1,4 +1,4 @@
-@import '/common/style/common.wxss';
+@import '/common/wxss/common.wxss';
 
 .order-main {
   padding: 0 24rpx;

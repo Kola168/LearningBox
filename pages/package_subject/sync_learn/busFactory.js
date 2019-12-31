@@ -65,9 +65,7 @@ var busFactory = function () {
     if (!chapterList) {
       chapterList = {}
     }
-    console.log('===进入：chapterList 第一步', chapterList, '==textbookSn==', textbookSn)
     if (!chapterList[subjectSn]) {
-      console.log('===进入：chapterList 进入request', textbookSn)
       chapterList[subjectSn] = yield graphql.getChapter(textbookSn)
     }
     return chapterList[subjectSn]
@@ -127,13 +125,11 @@ var busFactory = function () {
         }
 
       }
-
       // 筛选教材索引
       if (selectTextbookData) {
         var selectedTextbook = selectTextbookData[subjectSn] && selectTextbookData[subjectSn].xuekewang.selectedTextbook
         var textbooks = textbookData.xuekewang.textbooks
 
-        console.log(textbooks,'==textbooks==', selectedTextbook)
         for(var j = 0; j<textbooks.length;j++) {
           if (selectedTextbook && textbooks[j].sn == selectedTextbook.sn) {
             selectedTeachIndex = j
@@ -160,6 +156,11 @@ var busFactory = function () {
     //移除教材
   var removeTextbookData = function() {
     textbookData = null
+  }
+
+  // 移除指定选中的教材
+  var removeCurrentSelectedTextbookData = function (subjectSn) {
+    selectTextbookData[subjectSn] = null
   }
 
   //移除指定科目的选中数据 
@@ -193,8 +194,6 @@ var busFactory = function () {
     requestIds = null
   }
 
-
-
   return {
     getTextbookVersionData,
     getTextbookData,
@@ -213,12 +212,17 @@ var busFactory = function () {
     removeSelectedAllData,
     removeCurrentChapterList,
     removeDestoryData,
+    removeCurrentSelectedTextbookData,
   }
 
 }
-
 
 export default (function() {
   var bus = busFactory()
   return bus
 })()
+
+
+
+
+

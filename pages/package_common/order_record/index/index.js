@@ -1,7 +1,6 @@
 // pages/account/feedback.js
 "use strict"
 
-const app = getApp()
 import graphql from '../../../../utils/graphql_request'
 const app = getApp()
 import {
@@ -59,7 +58,7 @@ Page({
   backToHome: function () {
     wxNav.switchTab('/pages/index/index')
   },
-  
+
   onShareAppMessage: function () {
     return app.share
   }

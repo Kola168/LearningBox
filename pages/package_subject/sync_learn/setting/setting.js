@@ -3,6 +3,7 @@ import {
   regeneratorRuntime,
   co,
   util,
+  storage,
   wxNav
 } from '../../../../utils/common_import'
 const _ = require('../../../../lib/underscore/we-underscore')
@@ -51,7 +52,12 @@ Page({
         name: '仅打印偶数页',
         _id: 'even'
     }],
-    isFullScreen: false
+    isFullScreen: false,
+    confirmModal: {
+			isShow: false,
+			title: '请正确放置A4打印纸',
+			image: 'https://cdn-h.gongfudou.com/LearningBox/main/doc_confirm_print_a4_new.png'
+		}
   },
 
   onLoad: co.wrap(function*(options) {
@@ -263,39 +269,8 @@ Page({
       })
       
     }
-
-    let postData = {
-      colorCheck: this.data.colorCheck,
-      duplex: this.data.duplexCheck,
-      copies: this.data.documentPrintNum,
-      singlePageLayoutsCount: this.data.singlePageLayoutsCount,
-      skipGs: this.data.checkOpen,
-      extract: this.data.extract,
-      startPage: this.data.startPage,
-      endPage: this.data.endPage
-    }
-
-    try {
-      var resp = yield graphql.createXuekewangOrder({
-        attributes: [{
-            resourceType: 'XuekewangExercise',
-            id: this.data.sn,
-            isAnwer: this.data.isPrintAnswer,
-            copies: this.data.documentPrintNum,
-            // skipGs: this.data.checkOpen,
-            grayscale: !this.data.colorCheck,
-            color: this.data.colorCheck,
-            startPage: 1,
-            // extract: this.data.extract,
-            endPage: this.data.endPage,
-            // singlePageLayoutsCount: this.data.singlePageLayoutsCount,
-            duplex: this.data.duplexCheck,
-          }],
-          featureKey: 'xuekewang_exercise'
-      })
-    } catch(err) {
-      util.showError(err)
-    }
+    console.log('confCheck')
+    this.confirm()
   }),
 
   /**
@@ -376,5 +351,47 @@ Page({
       totalPage: endPage
     })
   },
+
+  confirm: co.wrap(function*() {
+    let hideConfirmPrintBox = Boolean(storage.get("hideConfirmPrintBox"))
+    console.log('走到了confirm')
+    if (hideConfirmPrintBox) {
+      this.print()
+    } else {
+      this.setData({
+        ['confirmModal.isShow']: true
+      })
+    }
+  }),
+
+  print: co.wrap(function*() {
+    try {
+      var resp = yield graphql.createXuekewangOrder({
+        attributes: {
+            resourceType: 'XuekewangExercise',
+            sn: this.data.sn,
+            isAnswer: this.data.isPrintAnswer,
+            copies: this.data.documentPrintNum,
+            grayscale: !this.data.colorCheck,
+            color: this.data.colorCheck,
+            startPage: 1,
+            endPage: this.data.endPage,
+            duplex: this.data.duplexCheck,
+            // skipGs: this.data.checkOpen,
+            // extract: this.data.extract,
+            // singlePageLayoutsCount: this.data.singlePageLayoutsCount,
+          },
+          featureKey: 'xuekewang_exercise'
+      })
+
+      wxNav.navigateTo('/pages/finish/index',
+      {
+        media_type: 'XuekewangExercise',
+        state: resp.createXuekewangOrder.state
+      })
+    } catch(err) {
+      util.showError(err)
+    }
+  })
 
 })

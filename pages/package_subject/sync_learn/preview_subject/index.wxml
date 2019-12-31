@@ -15,6 +15,5 @@
   </view>
 </view>
 
-<confirm-print bindconfirm="print" modal="{{confirmModal}}"/>
 <import src="../../../../lib/toast/wetoast.wxml" />
 <template is="wetoast" data="{{...__wetoast__}}" />

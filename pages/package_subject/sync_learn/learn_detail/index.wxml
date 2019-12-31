@@ -4,7 +4,7 @@
     <view class="title">{{nodeDetails.name}}</view>
     <view class="learn-name">{{nodeDetails.root.name}}</view>
     <image src="../../images/nav_figure_card.png" mode="widthFix">
-      <view class="nav-tip">小白老师已为你准备了5种不同难度的练习，已有99位同学打印了本章练习</view>
+      <view class="nav-tip">小白老师已为你准备了{{diffList.length || '--'}}种不同难度的练习，已有{{nodeDetails.printCount}}位同学打印了本章练习</view>
     </image>
   </view>
   <view class="tab-main">

@@ -351,6 +351,7 @@ const graphqlApi = {
           node(sn: $sn) {
             id
             sn
+            printCount
             name
             root {
               id
@@ -384,6 +385,25 @@ const graphqlApi = {
       }
     })
   },
+
+  /**
+   * 首页学科
+   */
+  getLastLearn: ()=> {
+    return gql.query({
+      query: `query Subject{
+        xuekewang {
+          subjects{
+            sn
+            currentUserNum
+            lastNode{
+              name
+            }
+          }
+        }
+      }`
+    })
+  }
 
 }
 

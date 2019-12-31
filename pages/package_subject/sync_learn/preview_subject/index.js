@@ -19,11 +19,7 @@ Page({
       'https://cdn-h.gongfudou.com/LearningBox/main/doc_confirm_print_a4_new.png',
       'https://cdn-h.gongfudou.com/LearningBox/main/doc_confirm_print_a4_new.png'
     ],
-    confirmModal: {
-			isShow: false,
-			title: '请正确放置A4打印纸',
-			image: 'https://cdn-h.gongfudou.com/LearningBox/main/doc_confirm_print_a4_new.png'
-		}
+    
   },
 
   onLoad: function (options) {
@@ -63,17 +59,8 @@ Page({
 	 * @methods 确认
 	 */
 	confirm: co.wrap(function*(e) {
-
-    let hideConfirmPrintBox = Boolean(storage.get("hideConfirmPrintBox"))
-    console.log(hideConfirmPrintBox, '==hideConfirmPrintBox==')
+    this.print()
     
-    if (hideConfirmPrintBox) {
-      this.print()
-    } else {
-      this.setData({
-        ['confirmModal.isShow']: true
-      })
-    }
   }),
   
   checkAnswer: function(){
@@ -89,7 +76,6 @@ Page({
         return
       }
 
-      console.log(printCapability,'==printCapability==')
       var postData = {
         name: this.data.exercise.exerciseName,
         color: printCapability.color,
@@ -102,7 +88,6 @@ Page({
         skipGs: true,
         sn: this.sn,
       }
-      console.log(postData,'==postData')
       wxNav.navigateTo('/pages/package_subject/sync_learn/setting/setting',
       {
         postData: encodeURIComponent(JSON.stringify(postData)),

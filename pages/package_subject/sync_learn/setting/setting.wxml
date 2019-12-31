@@ -28,11 +28,11 @@
 	<view class="setting-range-item">
 		<view class="item-label">打印范围（共{{ totalPage }}页）</view>
 		<view class="range-main">
-			<view class="range-options">
+			<!-- <view class="range-options">
 				<view wx:for="{{rangeList}}" wx:key="_id" class="options-item {{extract === item._id ? 'options-item-active' : ''}}" id="{{item._id}}" bindtap="chooseRangeType">
 					{{item.name}}
 				</view>
-			</view>
+			</view> -->
 			<view class="active-option" hidden="{{extract!=='all'}}">
 				<input
 				 id="1"
@@ -53,8 +53,8 @@
 				/>
 				<text class="page-text">页</text>
 			</view>
-			<view class="active-option all-text" hidden="{{extract!=='odd'}}">打印1、3、5等奇数页</view>
-			<view class="active-option all-text" hidden="{{extract!=='even'}}">打印2、4、6等偶数页</view>
+			<!-- <view class="active-option all-text" hidden="{{extract!=='odd'}}">打印1、3、5等奇数页</view> -->
+			<!-- <view class="active-option all-text" hidden="{{extract!=='even'}}">打印2、4、6等偶数页</view> -->
 		</view>
 	</view>
 	<view class="setting-item" wx:if="{{isColorPrinter}}">
@@ -134,7 +134,7 @@
 		</view>
 	</view>
 </view>
-
+<confirm-print bindconfirm="print" modal="{{confirmModal}}"/>
 
 <import src="../../../../lib/toast/wetoast.wxml" />
 <template is="wetoast" data="{{...__wetoast__}}" />

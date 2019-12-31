@@ -9,7 +9,6 @@ import {
 } from '../../../../utils/common_import'
 const request = util.promisify(wx.request)
 import graphql from '../../../../network/graphql/subject'
-import router from '../../../../utils/nav'
 import Logger from '../../../../utils/logger.js'
 import busFactory from '../busFactory'
 Page({
@@ -52,17 +51,45 @@ Page({
   }),
 
 
-  touchText: function() {
+  touchShowText: function() {
     this.setData({
       showSelectedText: !this.data.showSelectedText
     })
+    this.setSelectedTab()
   },
+
+  /**
+   * 赋值默认选中的选择器值
+   */
+  setSelectedTab: co.wrap(function*() {
+    if (this.data.showSelectedText || this.touchTexkbook) {
+      return 
+    }
+    // 未进行教材选择， 重新拉取初始服务端数据 进行匹配
+    if (!this.touchTexkbook) { 
+      yield this.getSelectedTextbookVersion() //获取当前科目下选中教材版本
+      yield this.getTextbookVersion() //获取当前学科所有教材版本
+      yield this.getTeachBook() //获取学科下所有教材
+      yield this.getSelectedTextbook() //获取当前科目下选中教材
+      yield this.mappingConditions() //同步匹配默认筛选项
+    }
+   
+    // 判断条件为  选择器关闭时 没有选择教材 选择项默认还原为初始值
+    this.setData({
+      selectedTextbookVersion: this.copySelectedTexkbookVersion || this.data.selectedTextbookVersion
+    })
+    this.touchTexkbook = null //状态释放
+  }),
 
   /**
    * 选择教材版本
    */
   chooseTextbooVersion: co.wrap(function *(e) {
     var index = e.currentTarget.dataset.index
+
+    if (!this.copySelectedTexkbookVersion) {
+      this.copySelectedTexkbookVersion = this.data.selectedTextbookVersion
+    }
     this.setData({
       selectedBookVersionIndex: index,
       selectedTextbookVersion: this.data.textbookVersion[index],
@@ -70,7 +97,8 @@ Page({
     })
     this.versionSn = this.data.textbookVersion[index].sn
     busFactory.sendRequestIds('versionSn', this.versionSn)
-    busFactory.removeTextbookData()
+    busFactory.removeTextbookData() //移除当前科目下教材缓存列表
+    busFactory.removeCurrentSelectedTextbookData(this.subjectSn) //移除当前默认选中的教材数据
     yield this.getTeachBook()
   }),
 
@@ -90,8 +118,11 @@ Page({
         selectedTextbook: this.data.teachBook[index],
         showSelectedText: false,
       })
+      this.touchTexkbook = true //用户选择了教材
       this.textbookSn = this.data.teachBook[index].sn
+      busFactory.getComponentsChapterDataFn([]) //清空章节列表
       busFactory.sendRequestIds('textbookSn', this.textbookSn) //设置教材id缓存
+      busFactory.removeSelectedCurrentData(this.subjectSn) //移除当前默认选中的教材数据和教材版本
       busFactory.removeCurrentChapterList(this.subjectSn) //更新了教材 移除默认缓存章节数据
       if (this.textbookSn) {
         yield busFactory.sendGetChapter(this.subjectSn, this.textbookSn) // 发送章节数据请求
@@ -113,6 +144,7 @@ Page({
     })
     this.subjectSn = subjectSn
     this.textbookSn = null 
+    this.copySelectedTexkbookVersion = null //切换学科时清空拷贝的默认选中项
     busFactory.sendRequestIds('subjectSn', subjectSn) //同步学科id 缓存
     this.updateConditionData() //学科下所有数据节点更新
   },
@@ -130,15 +162,12 @@ Page({
       })
       busFactory.removeSelectedCurrentData(this.subjectSn) //移除上一次选择的值
       yield this.getSelectedTextbookVersion() //获取更新后的教材版本
-      console.log('执行完==getSelectedTextbookVersion')
       yield this.getSelectedTextbook() //获取更新后的教材
-      console.log('执行完==getSelectedTextbook')
     } catch(err) {
       this.longToast.hide()
     } finally {
       this.longToast.hide()
     }
-
 
   }),
 
@@ -268,14 +297,14 @@ Page({
    * 匹配当前学科下默认选中索引集合 教材版本 & 教材 两个数据的index
    */
   mappingConditions: co.wrap(function*(){
-   var mappingChooseIndex = yield busFactory.mappingChooseIndex(this.subjectSn)
-  this.setData({
-    loadSuccess: true,
-    ...mappingChooseIndex
-  })
+    var mappingChooseIndex = yield busFactory.mappingChooseIndex(this.subjectSn)
+    this.setData({
+      loadSuccess: true,
+      ...mappingChooseIndex
+    })
 
   }),
-  
+
   onHide: function () {
     busFactory.removeAllData()
   },
