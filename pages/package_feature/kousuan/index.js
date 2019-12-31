@@ -40,6 +40,7 @@ Page({
       this.getPointsList()
       this.longToast.toast()
     }catch(e){
+      this.longToast.toast()
       console.log(e)
       util.showError(e)
     }
@@ -57,6 +58,7 @@ Page({
       this.longToast.toast()
     }catch(e){
       console.log(e)
+      this.longToast.toast()
       util.showError(e)
     }
   }),

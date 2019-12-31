@@ -71,6 +71,20 @@ const graphqlApi = {
       }
     })
   },
+
+  //口算打印接口
+  createKousunOrder:(input)=>{
+    return gql.mutate({
+      mutation: `mutation ($input: CreateResourceOrderInput!){
+        createResourceOrder(input:$input){
+          state
+        }
+      }`,
+      variables: {
+        input: input
+      }
+    })
+  }
 }
 
 export default graphqlApi

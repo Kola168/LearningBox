@@ -16,6 +16,14 @@
     <image src="{{nowTap>=totalTapNum?'../resource_images/icon_add_gray.png':'../resource_images/name_plus.png'}}" mode="widthFix" class="points-icon-style" data-index="{{index}}" bindtap="increaseNum"></image>
   </view>
 </view>
-<bottom-button text-right="生成并打印练习" bindrighttap="confBut" get-phone="{{true}}" class="bottom-but"></bottom-button>
+<view class="bottom-box {{butHigh?'bottom-heigher':''}}">
+  <view class="bottom-but-style bottom-left-botton {{butHigh?'bottom-left-heigher':''}}" bindtap="selectAnswer">
+    <view class="bottom-check {{printAnswer?'bottom-checked':''}}"></view>打印答案
+  </view>
+  <view class="bottom-but-style bottom-right-botton">
+    生成并打印练习
+    <bottom-button text-right="生成并打印练习" bindrighttap="confBut" get-phone="{{true}}" class="bottom-but"></bottom-button>
+  </view>
+</view>
 <import src="/lib/toast/wetoast.wxml" />
 <template is="wetoast" data="{{...__wetoast__}}" />
