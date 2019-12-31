@@ -4,13 +4,13 @@
   <view class="configure-box">
     <view class="grade-box {{pick_type=='grade'?'configure-checked':''}}" data-type="grade" bindtap="showPicker">
       <view class="grade-check">
-        {{gradeVal}}
+        {{textBookList[gradeIndex].name}}
       </view>
       <text class="iconfont icon-show-more {{pick_type=='grade'?'icon-checked':''}}"></text>
     </view>
-    <view class="textbook-box {{pick_type=='textbook'?'configure-checked':''}}" data-type="textbook" bindtap="showPicker">
+    <view wx:if="{{textBookList[gradeIndex].kousuanCategories[textbookIndex].name}}" class="textbook-box {{pick_type=='textbook'?'configure-checked':''}}" data-type="textbook" bindtap="showPicker">
       <view class="textbook-check">
-        {{textbookVal}}
+        {{textBookList[gradeIndex].kousuanCategories[textbookIndex].name}}
       </view>
       <text class="iconfont icon-show-more {{pick_type=='textbook'?'icon-checked':''}}"></text>
     </view>
@@ -25,16 +25,16 @@
 <view class="rest-box">
   <view wx:if="{{pick_type}}" class="picker-box-bg {{showBgAnimate?'pick-box-animate':''}}" bindtap="hidePicker">
     <view class="picker-box {{showAnimate?'pick-animate':''}}">
-      <view wx:for="{{pickList}}" wx:key="pick_type" class="picker-item {{item==(pick_type=='grade'?gradeVal:textbookVal)?'picker-checked':''}}" data-val="{{item}}" catchtap="checkPicker">
+      <view wx:for="{{pickList}}" wx:key="pickList" class="picker-item {{index==(pick_type=='grade'?gradeIndex:textbookIndex)?'picker-checked':''}}" data-index="{{index}}" catchtap="checkPicker">
         {{item}}
       </view>
     </view>
     <view class="gray-bg"></view>
   </view>
   <view class="calculation-box">
-    <view wx:for="{{calculationList}}" wx:key="calculationList" class="calculation-item">
+    <view wx:for="{{calculationList}}" wx:key="calculationList" class="calculation-item" data-index="{{index}}" bindtap="checkType">
       <view class="calculation-left-box">
-        <image src="{{item.url}}" mode="widthFix" class="calculation-img"></image>
+        <image src="{{item.image}}" mode="widthFix" class="calculation-img"></image>
         <text class="calculation-name">{{item.name}}</text>
       </view>
       <text class="iconfont icon-next"></text>
@@ -42,3 +42,5 @@
     <image src="../resource_images/kousuan_bottom_ad.png" mode="widthFix" class="bottom-ad"></image>
   </view>
 </view>
+<import src="/lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />

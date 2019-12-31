@@ -6,38 +6,60 @@ const _ = require('../../../lib/underscore/we-underscore')
 const util = require('../../../utils/util')
 
 import wxNav from '../../../utils/nav.js'
+import api from '../../../network/restful_request'
+import graphql from '../../../network/graphql/feature'
 
 Page({
 
   data: {
-    totalData:[],
-    grade:['一年级','二年级','三年级','四年级','五年级','六年级'],
-    textbook:['人教版教材','其他教'],
-    gradeVal:'一年级',
-    textbookVal:'人教版教材',
+    textBookList:[],
+    gradeIndex:0,
+    textbookIndex:0,
     pick_type:null,
     pickList:null,
     showAnimate:false,
     showBgAnimate:false,
 
-    calculationList:[{
-      url:'../resource_images/icon_smile.png',
-      name:'纯口算'
-    },{
-      url:'../resource_images/icon_smile.png',
-      name:'单位换算'
-    },{
-      url:'../resource_images/icon_smile.png',
-      name:'竖式计算'
-    },{
-      url:'../resource_images/icon_smile.png',
-      name:'脱式计算'
-    }],
+    calculationList:[],
   },
 
   onLoad: function (options) {
-
+    this.longToast = new app.weToast()
+    this.getstageList()
   },
+
+  getstageList:co.wrap(function*(){
+    try{
+      this.longToast.toast({
+        type:'loading'
+      })
+      let resp=yield graphql.getGradeList()
+      this.setData({
+        textBookList:resp.userStages
+      })
+      this.getPointsList()
+      this.longToast.toast()
+    }catch(e){
+      console.log(e)
+      util.showError(e)
+    }
+  }),
+
+  getPointsList:co.wrap(function*(){
+    try{
+      this.longToast.toast({
+        type:'loading'
+      })
+      let resp=yield graphql.getKousuanType(this.data.textBookList[this.data.gradeIndex].kousuanCategories[this.data.textbookIndex].sn)
+      this.setData({
+        calculationList:resp.category.children
+      })
+      this.longToast.toast()
+    }catch(e){
+      console.log(e)
+      util.showError(e)
+    }
+  }),
 
   showPicker:function(e){
     let that=this
@@ -60,14 +82,16 @@ Page({
             showBgAnimate:true,
           })
         },50)
-
+      }
+      if(e.currentTarget.dataset.type=='grade'){
+        this.data.pickList=_.pluck(this.data.textBookList,'name')
+      }else if(e.currentTarget.dataset.type=='textbook'){
+        this.data.pickList=_.pluck(this.data.textBookList[this.data.gradeIndex].kousuanCategories,'name')
       }
       this.setData({
         pick_type:e.currentTarget.dataset.type,
-        pickList:this.data[e.currentTarget.dataset.type],
+        pickList:this.data.pickList,
       })
-
-
     }
   },
 
@@ -82,12 +106,34 @@ Page({
         pick_type:null
       })
     },100)
+    this.getPointsList()
   },
 
   checkPicker:function(e){
-    let pickVal=`${this.data.pick_type=='grade'?'gradeVal':'textbookVal'}`
-    this.setData({
-      [pickVal]:e.currentTarget.dataset.val
+    let index=e.currentTarget.dataset.index
+    if(this.data.pick_type=='grade'){
+      if(index==this.data.gradeIndex){
+        return this.hidePicker()
+      }
+      this.setData({
+        gradeIndex:index,
+        textbookIndex:0,
+      })
+    }else if(this.data.pick_type=='textbook'){
+      if(index==this.data.textbookIndex){
+        return this.hidePicker()
+      }
+      this.setData({
+        textbookIndex:index,
+      })
+    }
+  },
+
+  checkType:function(e){
+    let index=e.currentTarget.dataset.index
+    wxNav.navigateTo('/pages/package_feature/kousuan/pointslist',{
+      sn:this.data.calculationList[index].sn,
+      title:this.data.calculationList[index].name
     })
   },
 

@@ -146,7 +146,8 @@
         "kousuan/learningplan",
         "kousuan/createplan",
         "kousuan/pointslist",
-        "kousuan/previewWebview"
+        "kousuan/previewWebview",
+        "evaluation/index"
       ]
     },
     {
