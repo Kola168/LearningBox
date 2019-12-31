@@ -16,57 +16,15 @@ import {
 } from '../../utils/common_import.js'
 import storage from '../../utils/storage'
 const event = require('../../lib/event/event')
+import {
+  features
+} from 'config'
 
 Page({
   data: {
     kidInfo: null,
     activeDevice: null,
-    features: [{
-      title: '记录与收藏',
-      features: [{
-        name: '打印记录',
-        image: '/images/account_print_record.png',
-        url: '/pages/package_common/records/index/index',
-      }, {
-        name: '购买记录',
-        image: '/images/account_order.png',
-        url: '',
-      }, {
-        name: '我的收藏',
-        image: '/images/account_cllection.png',
-        url: '',
-      }, ]
-    }, {
-      title: '帮助与反馈',
-      features: [{
-        name: '使用说明',
-        image: '/images/account_use_info.png',
-        url: '',
-      }, {
-        name: '意见反馈',
-        image: '/images/account_feedback.png',
-        url: '',
-      }, {
-        name: '在线客服',
-        image: '/images/account_service.png',
-        url: '',
-      }, ]
-    }, {
-      title: '更多服务',
-      features: [{
-        name: '账号管理',
-        image: '/images/account_manage.png',
-        url: '',
-      }, {
-        name: '纸质化学习方法',
-        image: '/images/account_paper.png',
-        url: '',
-      }, {
-        name: '我的家庭',
-        image: '/images/account_family.png',
-        url: '/pages/package_member/group/index',
-      }, ]
-    }]
+    features
   },
   onLoad: function (options) {
     this.longToast = new app.weToast()
@@ -111,7 +69,7 @@ Page({
       util.showError(e)
     }
   }),
-  toFeature(e){
+  toFeature(e) {
     wxNav.navigateTo(e.currentTarget.id)
   },
   toNext(e) {
