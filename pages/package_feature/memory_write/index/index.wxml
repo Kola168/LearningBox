@@ -2,7 +2,7 @@
 <view class="container" wx:if="{{loadReady}}">
   <view class="write-item" wx:for="{{category}}" wx:key="sn" bindtap="toNext" id="{{item.sn}}" data-type="{{item.writeType}}">
     <view class="item-left">
-      <image src="/images/doc_document_wps.png" mode="widthFix" />
+      <image src="{{item.image}}" mode="widthFix" />
       <view>{{item.name}}</view>
     </view>
     <image src="/images/doc_item_arrow.png" mode="widthFix" />

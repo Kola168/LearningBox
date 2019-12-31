@@ -32,7 +32,7 @@
         </view>
         <view class="item-main flex align-center">
           <view wx:for="{{item.questions}}" wx:for-item="childItem" wx:for-index="childIndex" wx:key="childIndex">
-            {{childItem.title}}
+            {{childItem.answer}}
           </view>
         </view>
       </view>

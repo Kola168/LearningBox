@@ -97,9 +97,6 @@ Page({
     }
   },
   showConfirmMdal() {
-    if (!this.hasAuthPhoneNum && !app.hasPhoneNum) {
-      return
-    }
     let hideConfirmPrintBox = Boolean(storage.get("hideConfirmPrintBox"))
     if (hideConfirmPrintBox) {
       this.print()
@@ -110,7 +107,7 @@ Page({
     }
   },
   print: co.wrap(function* () {
-    this.weToase.toast({
+    this.weToast.toast({
       type: 'loading'
     })
     try {

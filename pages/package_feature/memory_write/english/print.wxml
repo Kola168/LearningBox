@@ -40,7 +40,7 @@
         </button>
       </view>
       <view class="confirm-print">
-        <botttom-button bindlefttap="showImgCheck" class="confirm-print-btn" text-right="确认打印" bindrighttap="showConfirmMdal" get-phone="{{true}}"></botttom-button>
+        <botttom-button class="confirm-print-btn" text-right="确认打印" bindrighttap="showConfirmMdal" get-phone="{{true}}"></botttom-button>
       </view>
     </view>
   </view>
