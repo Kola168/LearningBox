@@ -138,5 +138,38 @@ page {
 }
 
 button {
-    line-height:inherit;
+    line-height: inherit;
+}
+
+.exit {
+    background: #FFDC5E;
+    border-radius: 49rpx;
+    font-family: PingFangSC-Regular;
+    font-size: 36rpx;
+    color: #333333;
+    letter-spacing: 0;
+    text-align: center;
+    height: 98rpx;
+    line-height: 98rpx;
+    width: 80%;
+    position: absolute;
+    left: 10%;
+    bottom: 220rpx;
+}
+
+.join-tip-title {
+    font-family: PingFangSC-Medium;
+    font-size: 36rpx;
+    color: #333333;
+    letter-spacing: -0.86rpx;
+    margin: 146rpx auto 40rpx;
+    text-align: center;
+}
+
+.join-tip-content {
+    font-family: PingFangSC-Regular;
+    font-size: 28rpx;
+    color: #666;
+    letter-spacing: -0.68rpx;
+    margin-bottom: 18rpx;
 }

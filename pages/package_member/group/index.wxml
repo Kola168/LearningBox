@@ -1,6 +1,6 @@
 <nav-bar background="#fff" title="我的家庭"></nav-bar>
 <view class="top-wrap">
-    <image class="top-image" src="../images/family_top_{{state=='normal'?'invoter':'invitee'}}.png" mode="widthFix">
+    <image class="top-image" src="../images/family_top_{{!shareGroupSn?'invoter':'invitee'}}.png" mode="widthFix">
     </image>
     <view class="user-info">
         <image class="user-avatar" src="{{kidInfo.avatar}}" mode="widthFix"></image>
@@ -10,31 +10,47 @@
         </view>
     </view>
 </view>
-<view class="member-title">
-    <view class="sign"></view>
-    <view>当前家庭成员</view>
-    <view>点击加号可以继续邀请成员哦</view>
-</view>
-
-<view class="member-wrap">
-    <view class="member-item" wx:for="{{users}}" wx:key="users">
-        <image class="user-avatar member-avatar" src="{{item.avatar}}" mode="widthFix">
-        </image>
-        <view class="member-name">{{item.name}}</view>
-        <image class="member-avatar-tip" src="../images/family_main.png" mode="widthFix"
-            wx:if="{{item.userIsCreator==true}}"></image>
-        <image class="member-avatar-delete" src="../images/family_icon_delete.png" mode="widthFix"
-            wx:if="{{!item.userIsCreator}}"></image>
+<block wx:if="{{!shareGroupSn||currentUserIsCreator}}">
+    <!-- <block wx:if="{{!shareGroupSn}}"> -->
+    <view class="member-title">
+        <view class="sign"></view>
+        <view>当前家庭成员</view>
+        <view>点击加号可以继续邀请成员哦</view>
     </view>
-    <view class="member-item" wx:for="{{users}}" wx:key="users">
-        <button open-type="share" hover-class="none">
-            <image class="user-avatar member-avatar" src="../images/family_invote.png" mode="widthFix">
+
+    <view class="member-wrap">
+        <view class="member-item" wx:for="{{users}}" wx:key="users">
+            <image class="user-avatar member-avatar" src="{{item.avatar}}" mode="widthFix">
             </image>
-            <view class="member-name">邀请成员</view>
-        </button>
+            <view class="member-name">{{item.name}}</view>
+            <image class="member-avatar-tip" src="../images/family_main.png" mode="widthFix"
+                wx:if="{{item.userIsCreator==true}}"></image>
+            <image class="member-avatar-delete" src="../images/family_icon_delete.png" mode="widthFix"
+                wx:if="{{!item.userIsCreator&&currentUserIsCreator}}" bindtap="kickOutGroupUser" id="{{item.sn}}">
+            </image>
+        </view>
+        <view class="member-item" wx:if="{{currentUserIsCreator&&5>users.length}}">
+            <button open-type="share" hover-class="none">
+                <image class="user-avatar member-avatar" src="../images/family_invote.png" mode="widthFix">
+                </image>
+                <view class="member-name">邀请成员</view>
+            </button>
+        </view>
     </view>
+    <view class="exit" bindtap="exitGroup" wx:if="{{!currentUserIsCreator}}">退出该家庭</view>
+    <view class="tip-bottom" wx:if="{{currentUserIsCreator==true}}">最多只能邀请5个家庭成员哦，为了您的家庭权益请不要将链接分享到不熟悉的微信群中</view>
+</block>
+<block wx:else>
+    <view class="join-tip-title">
+        加入家庭后享受的权益
     </view>
-    <view class="tip-bottom">最多只能邀请5个家庭成员哦，为了您的家庭权益请不要将链接分享到不熟悉的微信群中</view>
+    <view class="join-tip-content">1.加入我们的家庭后，和家人一起陪伴孩子的成长</view>
+    <view class="join-tip-content">2.加入我们的家庭后，可与家人一起享受相同的会员权益</view>
+    <view class="join-tip-content">3.可查看孩子的学习速度，监督孩子的学习计划</view>
+    <view class="exit" bindtap="joinGroup">加入此家庭</view>
+</block>
 
-    <import src="../../../lib/toast/wetoast.wxml" />
-    <template is="wetoast" data="{{...__wetoast__}}" />
+<import src="../../../lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />
+<modal modal="{{modalObj}}" bindcomfirm="updateConfirm">
+</modal>

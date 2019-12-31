@@ -1802,6 +1802,11 @@ const graphqlApi = {
       }
     })
   },
+  /**
+   * 
+   *获取家庭信息
+   * @returns
+   */
   getFamilyUser: () => {
     return gql.query({
       query: `query{
@@ -1830,10 +1835,34 @@ const graphqlApi = {
       }`
     })
   },
+  /**
+   * 加入/退出家庭组
+   *
+   * @param {*} input
+   * @returns
+   */
   joinOrExitGroup: (input) => {
     return gql.mutate({
       mutation: `mutation($input: JoinOrExitGroupInput!) {
         joinOrExitGroup(input:$input){
+          state
+        }
+        }`,
+      variables: {
+        input: input
+      }
+    })
+  },
+  /**
+   * 踢出家庭成员
+   *
+   * @param {*} input
+   * @returns
+   */
+  kickOutGroupUser: (input) => {
+    return gql.mutate({
+      mutation: `mutation($input: KickOutGroupUserInput!) {
+        kickOutGroupUser(input:$input){
           state
         }
         }`,
