@@ -1,9 +1,9 @@
-  <!-- 会员开通弹窗 -->
-  <view class="member-toast" wx:if="{{showMemberToast}}" bind:tap="hideToast">
-    <toast-modal modal="{{modal}}">
-      <view class="btn-sure" catchtap="toMember" slot="bottom">
-        <image src="../../../images/diamond.png"/>
-        <view class="content">开通会员可免费使用</view>
-      </view>
-    </toast-modal>
-  </view>
+<!-- 会员开通弹窗 -->
+<view class="member-toast" wx:if="{{showMemberToast}}" bind:tap="hideToast">
+  <toast-modal modal="{{modal}}">
+    <view class="btn-sure" catchtap="toMember" slot="bottom">
+      <image src="../../../images/diamond.png" />
+      <view class="content">开通会员可免费使用</view>
+    </view>
+  </toast-modal>
+</view>

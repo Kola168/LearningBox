@@ -5,8 +5,10 @@
       <view class="form-value">{{index ? item.selected.volume : item.selected.name}}</view>
       <view class="arrow {{item.isUnfold ? 'arrow-unfold' : ''}}"></view>
     </view>
-     <view class="select-content" wx:if="{{item.isUnfold}}">
-      <view class="select-item" wx:for="{{item.content}}" wx:for-item="contentItem" wx:for-index="contentIndex" bind:tap="chooseInput" data-index="{{index}}" data-itemIdx="{{contentIndex}}">{{index ? contentItem.volume : contentItem.name}}</view>
+    <view class="select-content" wx:if="{{item.isUnfold}}">
+      <view class="select-item" wx:for="{{item.content}}" wx:for-item="contentItem" wx:for-index="contentIndex" bind:tap="chooseInput" data-index="{{index}}" data-itemIdx="{{contentIndex}}">
+        {{index ? contentItem.volume : contentItem.name}}
+      </view>
     </view>
   </view>
   <view class="btn-submit" bind:tap="submit">选择完毕</view>

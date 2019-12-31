@@ -38,7 +38,8 @@ Page({
   onLoad: co.wrap(function *(options) {
     this.longToast = new app.weToast()
     this.setData({
-      subjectIndex: options.index !=null ? options.index : 0
+      currentTabIndex: options.index != null ? options.index : 0,
+      subjectIndex: options.index != null ? options.index : 0
     })
     yield this.getSubjectList()
 
@@ -62,6 +63,7 @@ Page({
    * 赋值默认选中的选择器值
    */
   setSelectedTab: co.wrap(function*() {
+
     if (this.data.showSelectedText || this.touchTexkbook) {
       return 
     }
@@ -73,12 +75,7 @@ Page({
       yield this.getSelectedTextbook() //获取当前科目下选中教材
       yield this.mappingConditions() //同步匹配默认筛选项
     }
-   
-    // 判断条件为  选择器关闭时 没有选择教材 选择项默认还原为初始值
-    this.setData({
-      selectedTextbookVersion: this.copySelectedTexkbookVersion || this.data.selectedTextbookVersion
-    })
-    this.touchTexkbook = null //状态释放
+
   }),
 
   /**
@@ -86,15 +83,12 @@ Page({
    */
   chooseTextbooVersion: co.wrap(function *(e) {
     var index = e.currentTarget.dataset.index
-
-    if (!this.copySelectedTexkbookVersion) {
-      this.copySelectedTexkbookVersion = this.data.selectedTextbookVersion
-    }
     this.setData({
       selectedBookVersionIndex: index,
       selectedTextbookVersion: this.data.textbookVersion[index],
       selectedTeachIndex: -1,
     })
+    this.touchTexkbook = null //状态释放
     this.versionSn = this.data.textbookVersion[index].sn
     busFactory.sendRequestIds('versionSn', this.versionSn)
     busFactory.removeTextbookData() //移除当前科目下教材缓存列表
@@ -144,7 +138,6 @@ Page({
     })
     this.subjectSn = subjectSn
     this.textbookSn = null 
-    this.copySelectedTexkbookVersion = null //切换学科时清空拷贝的默认选中项
     busFactory.sendRequestIds('subjectSn', subjectSn) //同步学科id 缓存
     this.updateConditionData() //学科下所有数据节点更新
   },

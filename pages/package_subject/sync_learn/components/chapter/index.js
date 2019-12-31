@@ -16,9 +16,9 @@ Component({
     chapters: []
   },
 
-  attached: function() {
+  attached: function () {
     this.longToast = new app.weToast()
-    busFactory.listenChapterData((chapters)=>{
+    busFactory.listenChapterData((chapters) => {
       this.setData({
         chapters
       })
@@ -26,7 +26,7 @@ Component({
   },
 
   methods: {
-    lookChapter: function(e) {
+    lookChapter: function (e) {
       var index = this.nodeIndex = e.currentTarget.dataset.index
       this.setData({
         [`chapters[${index}]isUnfold`]: !this.data.chapters[index].isUnfold
@@ -35,9 +35,9 @@ Component({
         this.getChapterContentDetails(this.data.chapters[index].sn)
       }
     },
-    
+
     // 获取章节详情数据
-    getChapterContentDetails: co.wrap(function*(sn){
+    getChapterContentDetails: co.wrap(function* (sn) {
       this.longToast.toast({
         title: '请稍后...',
         type: 'loading'
@@ -57,7 +57,7 @@ Component({
           [`chapters[${this.nodeIndex}].children`]: resp.xuekewang.childrenNodes
         })
         this.longToast.hide()
-      } catch(err) {
+      } catch (err) {
         this.longToast.hide()
         util.showError(err)
       }
@@ -65,7 +65,13 @@ Component({
     /**
      * 跳转练习页
      */
-    toExeDetail: co.wrap(function* ({currentTarget: {dataset: {sn}}}){
+    toExeDetail: co.wrap(function* ({
+      currentTarget: {
+        dataset: {
+          sn
+        }
+      }
+    }) {
       wxNav.navigateTo('/pages/package_subject/sync_learn/learn_detail/index', {
         sn: sn
       })

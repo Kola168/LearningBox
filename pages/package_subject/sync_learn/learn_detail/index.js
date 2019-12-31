@@ -9,6 +9,7 @@ import {
 import getLoopsEvent from '../../../../utils/worker'
 import graphql from '../../../../network/graphql/subject'
 Page({
+  
   data: {
     currentIndex: 0,
     showMemberToast: false, //显示会员弹窗
@@ -18,7 +19,7 @@ Page({
     aiDiffList: [], //ai题目列表
   },
 
-  onLoad: co.wrap(function *(options) {
+  onLoad: co.wrap(function* (options) {
     this.longToast = new app.weToast()
     this.sn = options.sn
     yield this.getDifficulty()
@@ -28,12 +29,12 @@ Page({
       currentDiff: this.data.diffList[0]
     })
   }),
-  
+
   /**
    * 打开弹窗
    */
-  openAiToast: function() {
-    var memberToast =  this.selectComponent('#memberToast')
+  openAiToast: function () {
+    var memberToast = this.selectComponent('#memberToast')
     // memberToast.showToast()
     this.setData({
       showAiToast: true
@@ -43,7 +44,7 @@ Page({
   /**
    * 智能出题
    */
-  setTopic: co.wrap(function*(){
+  setTopic: co.wrap(function* () {
     this.cancelSet()
     this.longToast.toast({
       type: 'loading',
@@ -57,10 +58,10 @@ Page({
       }
     }, (resp) => {
       if (resp.status == 'finished') {
-        console.log(resp,'出题完成==')
+        console.log(resp, '出题完成==')
         this.longToast.hide()
       }
-    }, ()=>{
+    }, () => {
       this.longToast.hide()
     })
   }),
@@ -68,27 +69,32 @@ Page({
   /**
    * 取消ai出题
    */
-  cancelSet: function() {
+  cancelSet: function () {
     this.setData({
       showAiToast: false
     })
   },
 
-  chooseDiff: co.wrap(function*({currentTarget: {dataset: {index}}}){
+  chooseDiff: co.wrap(function* ({
+    currentTarget: {
+      dataset: {
+        index
+      }
+    }
+  }) {
     try {
       this.setData({
         currentIndex: index,
         currentDiff: this.data.diffList[index]
       })
       yield this.getExercises()
-    } catch(err) {
-    }
+    } catch (err) {}
   }),
 
   /**
    * 获取子章节练习详情
    */
-  getNodeDetails: co.wrap(function*(){
+  getNodeDetails: co.wrap(function* () {
     this.longToast.toast({
       type: 'loading',
       title: '请稍后...'
@@ -99,16 +105,16 @@ Page({
         nodeDetails: resp.xuekewang.node,
       })
       this.longToast.hide()
-    }catch(err) {
+    } catch (err) {
       this.longToast.hide()
       util.showError(err)
     }
   }),
-  
+
   /**
    * 获取难度系数
    */
-  getDifficulty: co.wrap(function*(){
+  getDifficulty: co.wrap(function* () {
     this.longToast.toast({
       type: 'loading',
       title: '请稍后...'
@@ -120,7 +126,7 @@ Page({
         currentDiff: resp.xuekewang.diff[this.data.currentIndex],
       })
       this.longToast.hide()
-    }catch(err) {
+    } catch (err) {
       this.longToast.hide()
       util.showError(err)
     }
@@ -129,7 +135,7 @@ Page({
   /**
    * 获取练习列表
    */
-  getExercises: co.wrap(function*(){
+  getExercises: co.wrap(function* () {
     this.longToast.toast({
       type: 'loading',
       title: '请稍后...'
@@ -140,7 +146,7 @@ Page({
         exerciseList: resp.xuekewang && resp.xuekewang.exercises
       })
       this.longToast.hide()
-    }catch(err) {
+    } catch (err) {
       this.longToast.hide()
       util.showError(err)
     }
@@ -149,17 +155,15 @@ Page({
   /**
    * 跳转练习详情
    */
-  toExerciseDetail: function({currentTarget: {dataset: {sn}}}) {
+  toExerciseDetail: function ({
+    currentTarget: {
+      dataset: {
+        sn
+      }
+    }
+  }) {
     wxNav.navigateTo('/pages/package_subject/sync_learn/preview_subject/index', {
       sn
     })
-  },
-
-  onPullDownRefresh: function () {
-
-  },
-
-  onShareAppMessage: function () {
-
   }
 })

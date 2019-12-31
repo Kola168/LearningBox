@@ -14,13 +14,16 @@ Component({
     }
   },
 
-  attached: co.wrap(function*(){
+  attached: co.wrap(function* () {
     yield busFactory.getSelectedTextbookVersionData(this.data.subjectSn) //获取当前科目下选中教材版本
     yield this.getTextbookVersion() //获取当前学科所有教材版本
     yield this.getTeachBook() //获取学科下所有教材
     yield busFactory.getSelectedTextbookData(this.data.subjectSn) //获取当前科目下选中教材
-    
-    var {selectedBookVersionIndex, selectedTeachIndex} = yield busFactory.mappingChooseIndex(this.data.subjectSn)
+
+    var {
+      selectedBookVersionIndex,
+      selectedTeachIndex
+    } = yield busFactory.mappingChooseIndex(this.data.subjectSn)
     var formList = this.data.formList
     this.setData({
       [`formList[0].selected`]: formList[0].content[selectedBookVersionIndex],
@@ -31,9 +34,8 @@ Component({
     selectedBookVersionIndex: 0,
     selectedTeachIndex: 0,
     selectedGrade: null,
-    selectedExam: null, 
-    formList: [
-      {
+    selectedExam: null,
+    formList: [{
         name: '版本',
         isUnfold: false,
         selected: {},
@@ -49,10 +51,10 @@ Component({
   },
 
   methods: {
-      /**
+    /**
      * 获取教材版本
      */
-    getTextbookVersion: co.wrap(function*(){
+    getTextbookVersion: co.wrap(function* () {
       try {
         var resp = yield busFactory.getTextbookVersionData(this.data.subjectSn)
         this.setData({
@@ -60,9 +62,9 @@ Component({
         })
         if (!this.versionSn) {
           this.versionSn = resp.xuekewang.textbookVersions[0].sn
-          busFactory.sendRequestIds('versionSn', this.versionSn)   
+          busFactory.sendRequestIds('versionSn', this.versionSn)
         }
-      } catch(err) {
+      } catch (err) {
         util.showError(err)
       }
     }),
@@ -70,21 +72,21 @@ Component({
     /**
      * 获取教材信息
      */
-    getTeachBook: co.wrap(function*(){
+    getTeachBook: co.wrap(function* () {
       try {
-        var resp =yield busFactory.getTextbookData(this.versionSn)
+        var resp = yield busFactory.getTextbookData(this.versionSn)
         this.setData({
           [`formList[1].content`]: resp.xuekewang.textbooks
         })
         // busFactory.sendRequestIds('versionId',  resp.xuekewang.textbooks)  
-      }catch(err) {
+      } catch (err) {
         util.showError(err)
       }
     }),
 
-    chooseForms: function(e) {
+    chooseForms: function (e) {
       var index = e.currentTarget ? e.currentTarget.dataset.index : e.index
-      var newFroms = this.data.formList.map((form, idx)=> {
+      var newFroms = this.data.formList.map((form, idx) => {
         form.isUnfold = (idx === index ? !form.isUnfold : false)
         return form
       })
@@ -92,19 +94,28 @@ Component({
         formList: newFroms
       })
     },
-    
-    chooseInput: function({currentTarget: {dataset: {index, itemidx}}}) {
+
+    chooseInput: function ({
+      currentTarget: {
+        dataset: {
+          index,
+          itemidx
+        }
+      }
+    }) {
       this.setData({
         [`formList[${index}].selected`]: this.data.formList[index].content[itemidx],
       })
       busFactory.removeTextbookData() //移除教材数据
       busFactory.removeSelectedCurrentData(this.data.subjectSn) //移除默认选择的教材版本和教材数据
-      this.chooseForms({index})
+      this.chooseForms({
+        index
+      })
     },
 
-    submit: co.wrap(function*(){
+    submit: co.wrap(function* () {
       var formInput = []
-      this.data.formList.forEach(form=> {
+      this.data.formList.forEach(form => {
         formInput.push(form.selected)
       })
       var subjectSn = busFactory.getIds('subjectSn')

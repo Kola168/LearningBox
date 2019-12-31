@@ -10,7 +10,9 @@ const _ = require('../../../../lib/underscore/we-underscore')
 const showModal = util.promisify(wx.showModal)
 import graphql from '../../../../network/graphql/subject'
 // import commonRequest from '../../../../utils/common_request'
-import { getLogger } from '../../../../utils/logger'
+import {
+  getLogger
+} from '../../../../utils/logger'
 const logger = new getLogger('pages/package_subject/sync_learn/setting/setting')
 import event from '../../../../lib/event/event'
 Page({
@@ -39,8 +41,7 @@ Page({
     showConfirm: false,
     checkOpen: false,
     extract: 'all',
-    rangeList: [
-      {
+    rangeList: [{
         name: '打印范围',
         _id: 'all'
       },
@@ -51,16 +52,17 @@ Page({
       {
         name: '仅打印偶数页',
         _id: 'even'
-    }],
+      }
+    ],
     isFullScreen: false,
     confirmModal: {
-			isShow: false,
-			title: '请正确放置A4打印纸',
-			image: 'https://cdn-h.gongfudou.com/LearningBox/main/doc_confirm_print_a4_new.png'
-		}
+      isShow: false,
+      title: '请正确放置A4打印纸',
+      image: 'https://cdn-h.gongfudou.com/LearningBox/main/doc_confirm_print_a4_new.png'
+    }
   },
 
-  onLoad: co.wrap(function*(options) {
+  onLoad: co.wrap(function* (options) {
     this.longToast = new app.weToast()
     try {
       let query = this.query = JSON.parse(decodeURIComponent(options.postData))
@@ -96,8 +98,8 @@ Page({
   /**
    * @methods 设置默认选项值
    */
-  setStatus: co.wrap(function*() {
-      //设置是否支持多面打印
+  setStatus: co.wrap(function* () {
+    //设置是否支持多面打印
     if (this.query.duplex) {
       this.setData({
         isDuplex: true
@@ -123,7 +125,7 @@ Page({
   /**
    * @methods 减少份数
    */
-  cutPrintNum: function() {
+  cutPrintNum: function () {
     if (this.data.documentPrintNum <= 1) {
       return
     }
@@ -136,7 +138,7 @@ Page({
   /**
    * @methods 增加份数
    */
-  addPrintNum: co.wrap(function*() {
+  addPrintNum: co.wrap(function* () {
     if (this.data.documentPrintNum < 30) {
       this.data.documentPrintNum += 1
       this.setData({
@@ -157,7 +159,7 @@ Page({
    * @methods 输入打印起始页
    * @param {Object} e 
    */
-  inputStartPage: function(e) {
+  inputStartPage: function (e) {
     this.data.startPage = Number(e.detail.value)
   },
 
@@ -165,7 +167,7 @@ Page({
    * @methods 设置起始页
    * @param {Object} e 
    */
-  startPageJudge: function(e) {
+  startPageJudge: function (e) {
     if (parseInt(e.detail.value) > parseInt(this.data.endPrintPage) || parseInt(e.detail.value) <= 0) {
       this.setData({
         startPrintPage: 1,
@@ -177,7 +179,7 @@ Page({
         confirmText: "确认",
         showCancel: false
       })
-      
+
     } else {
       this.data.startPrintPage = Number(e.detail.value)
     }
@@ -209,7 +211,7 @@ Page({
         confirmText: "确认",
         showCancel: false
       })
-      
+
     } else {
       this.data.endPrintPage = Number(e.detail.value)
     }
@@ -220,7 +222,7 @@ Page({
    * @param {Object} e 
    */
   colorCheck(e) {
-    console.log(e.currentTarget.dataset.style,'=xxx===')
+    console.log(e.currentTarget.dataset.style, '=xxx===')
     this.setData({
       colorCheck: Boolean(Number(e.currentTarget.dataset.style))
     })
@@ -241,7 +243,7 @@ Page({
   /**
    * @methods 确认按钮提交
    */
-  confCheck: co.wrap(function *() {
+  confCheck: co.wrap(function* () {
     if (parseInt(this.data.startPage) > parseInt(this.data.endPage) || parseInt(this.data.startPage) <= 0) {
       this.setData({
         startPrintPage: 1,
@@ -253,7 +255,7 @@ Page({
         confirmText: "确认",
         showCancel: false
       })
-      
+
     }
 
     if (parseInt(this.data.endPage) < parseInt(this.data.startPage) || parseInt(this.data.endPage) > parseInt(this.data.totalPage)) {
@@ -267,7 +269,7 @@ Page({
         confirmText: "确认",
         showCancel: false
       })
-      
+
     }
     console.log('confCheck')
     this.confirm()
@@ -306,7 +308,7 @@ Page({
   //   })
   // }),
 
-  operaRepair: function() {
+  operaRepair: function () {
     this.setData({
       checkOpen: !this.data.checkOpen,
       showConfirm: this.data.checkOpen ? false : true,
@@ -320,12 +322,12 @@ Page({
     })
   },
 
-  openRepair: co.wrap(function*() {
+  openRepair: co.wrap(function* () {
     this.setData({
       showConfirm: false
     })
   }),
-  
+
   /**
    * @methods 选择打印范围类型奇、偶、范围
    * @param {Object} e 
@@ -352,7 +354,7 @@ Page({
     })
   },
 
-  confirm: co.wrap(function*() {
+  confirm: co.wrap(function* () {
     let hideConfirmPrintBox = Boolean(storage.get("hideConfirmPrintBox"))
     console.log('走到了confirm')
     if (hideConfirmPrintBox) {
@@ -364,32 +366,31 @@ Page({
     }
   }),
 
-  print: co.wrap(function*() {
+  print: co.wrap(function* () {
     try {
       var resp = yield graphql.createXuekewangOrder({
         attributes: {
-            resourceType: 'XuekewangExercise',
-            sn: this.data.sn,
-            isAnswer: this.data.isPrintAnswer,
-            copies: this.data.documentPrintNum,
-            grayscale: !this.data.colorCheck,
-            color: this.data.colorCheck,
-            startPage: 1,
-            endPage: this.data.endPage,
-            duplex: this.data.duplexCheck,
-            // skipGs: this.data.checkOpen,
-            // extract: this.data.extract,
-            // singlePageLayoutsCount: this.data.singlePageLayoutsCount,
-          },
-          featureKey: 'xuekewang_exercise'
+          resourceType: 'XuekewangExercise',
+          sn: this.data.sn,
+          isAnswer: this.data.isPrintAnswer,
+          copies: this.data.documentPrintNum,
+          grayscale: !this.data.colorCheck,
+          color: this.data.colorCheck,
+          startPage: 1,
+          endPage: this.data.endPage,
+          duplex: this.data.duplexCheck,
+          // skipGs: this.data.checkOpen,
+          // extract: this.data.extract,
+          // singlePageLayoutsCount: this.data.singlePageLayoutsCount,
+        },
+        featureKey: 'xuekewang_exercise'
       })
 
-      wxNav.navigateTo('/pages/finish/index',
-      {
+      wxNav.navigateTo('/pages/finish/index', {
         media_type: 'XuekewangExercise',
         state: resp.createXuekewangOrder.state
       })
-    } catch(err) {
+    } catch (err) {
       util.showError(err)
     }
   })

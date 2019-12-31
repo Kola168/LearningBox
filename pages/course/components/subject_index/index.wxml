@@ -77,11 +77,11 @@
       </view>
     </view>
     <view class="subject-list">
-      <image class="subject-item" src="{{navIcon[index]}}" wx:for="{{subjects}}" wx:key="sn">
+      <image class="subject-item" src="{{navIcon[index]}}" wx:for="{{subjects}}" wx:key="sn" data-index="{{index}}" bind:tap="toSubject">
         <view class="last-learn-title">{{item.lastNode.name}}</view>
         <view class="learn-num">{{item.currentUserNum}}位同学正在学</view>
       </image>
-      <image class="subject-item" src="../images/more_subject_icon.png">
+      <image class="subject-item" src="../images/more_subject_icon.png" data-index="3" bind:tap="toSubject">
         <view class="last-learn-title"></view>
         <view class="learn-num">{{moreNum}}位同学正在学</view>
       </image>

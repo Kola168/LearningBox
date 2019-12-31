@@ -119,7 +119,7 @@
 	</view>
 </view> -->
 <botttom-button class="conf-box" text-right="确认设置" bindrighttap="confCheck" get-phone="{{true}}"></botttom-button>
-<view class="confirm-main" wx:if="{{showConfirm}}" catchtap="cancelRepair">
+<!-- <view class="confirm-main" wx:if="{{showConfirm}}" catchtap="cancelRepair">
 	<view class="confirm-modal">
 		<view class="confirm-title">确认使用文件修复吗？</view>
 		<view class="confirm-content">
@@ -133,7 +133,7 @@
 			<view class="btn confirm-btn" catchtap="openRepair">确认开启</view>
 		</view>
 	</view>
-</view>
+</view> -->
 <confirm-print bindconfirm="print" modal="{{confirmModal}}"/>
 
 <import src="../../../../lib/toast/wetoast.wxml" />

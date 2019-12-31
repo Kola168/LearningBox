@@ -3,23 +3,12 @@ const app = getApp()
 import {
   regeneratorRuntime,
   co,
+  wxNav,
   util
 } from '../../../../utils/common_import'
-const event = require('../../../../lib/event/event')
 import graphql from '../../../../network/graphql/subject'
-import storage from '../../../../utils/storage'
-import router from '../../../../utils/nav.js'
 Component({
-  /**
-   * 组件的属性列表
-   */
-  properties: {
 
-  },
-
-  /**
-   * 组件的初始数据
-   */
   data: {
     navIcon: [
       '../images/chinese_icon.png',
@@ -28,27 +17,29 @@ Component({
     ],
     subjects: []
   },
+
   attached() {
     this.longToast = new app.weToast()
     this.getLastLearn()
   },
 
-  /**
-   * 组件的方法列表
-   */
   methods: {
+    /**
+     * 获取最后一次学习
+     */
     getLastLearn: co.wrap(function* () {
       this.longToast.toast({
         type: 'loading',
         title: '请稍后...'
       })
+
       try {
         var resp = yield graphql.getLastLearn()
         var moreSubject = resp.xuekewang.subjects.slice(3)
         this.setData({
           subjects: resp.xuekewang.subjects.slice(0, 3),
           moreNum: moreSubject.reduce((total, subject) => {
-            return total + subject.currentUserNum
+            return total + Number(subject.currentUserNum)
           }, 0)
         })
       } catch (err) {
@@ -56,6 +47,22 @@ Component({
       } finally {
         this.longToast.hide()
       }
-    })
+    }),
+
+    /**
+     * 跳转学科详情
+     * @param {index} param0 
+     */
+    toSubject({
+      currentTarget: {
+        dataset: {
+          index
+        }
+      }
+    }) {
+      wxNav.navigateTo('/pages/package_subject/sync_learn/learn_content/index', {
+        index
+      })
+    }
   }
 })

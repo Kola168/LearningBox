@@ -15,11 +15,7 @@ Page({
   data: {
     isPrintAnswer: true,
     currentIndex: 1,
-    imgList: [
-      'https://cdn-h.gongfudou.com/LearningBox/main/doc_confirm_print_a4_new.png',
-      'https://cdn-h.gongfudou.com/LearningBox/main/doc_confirm_print_a4_new.png'
-    ],
-    
+    exercise: null,
   },
 
   onLoad: function (options) {
@@ -28,17 +24,20 @@ Page({
     this.getExercisesDetail()
   },
 
-  changeImg: function({detail: {current}}) {
+  changeImg: function ({
+    detail: {
+      current
+    }
+  }) {
     this.setData({
       currentIndex: current + 1
     })
-    console.log(current,'current')
   },
 
   /**
    * 获取练习详情
    */
-  getExercisesDetail: co.wrap(function*(){
+  getExercisesDetail: co.wrap(function* () {
     this.longToast.toast({
       type: 'loading',
       tite: '请稍后...'
@@ -49,27 +48,26 @@ Page({
         exercise: resp.xuekewang.exercise
       })
       this.longToast.hide()
-    } catch(err) {
+    } catch (err) {
       this.longToast.hide()
       util.showError(err)
     }
   }),
 
-  	/**
-	 * @methods 确认
-	 */
-	confirm: co.wrap(function*(e) {
+  /**
+   * @methods 确认
+   */
+  confirm: co.wrap(function* (e) {
     this.print()
-    
   }),
-  
-  checkAnswer: function(){
+
+  checkAnswer: function () {
     this.setData({
       isPrintAnswer: !this.data.isPrintAnswer
     })
   },
 
-  print: co.wrap(function*(){
+  print: co.wrap(function* () {
     try {
       var printCapability = yield commonRequest.getPrinterCapacity('xuekewang_exercise')
       if (!printCapability) {
@@ -88,21 +86,16 @@ Page({
         skipGs: true,
         sn: this.sn,
       }
-      wxNav.navigateTo('/pages/package_subject/sync_learn/setting/setting',
-      {
+      wxNav.navigateTo('/pages/package_subject/sync_learn/setting/setting', {
         postData: encodeURIComponent(JSON.stringify(postData)),
       })
-    } catch(err) {
+    } catch (err) {
       util.showError(err)
     }
 
   }),
 
-  onHide () {
+  onHide() {
     busFactory.removeDestoryData()
-  },
-
-  onShareAppMessage: function () {
-
   }
 })
