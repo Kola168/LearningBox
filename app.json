@@ -125,7 +125,6 @@
         "share_folder/content",
         "share_folder/manage",
         "memory_write/index/index",
-        "memory_write/szcx/index",
         "memory_write/chinese/index",
         "memory_write/chinese/print",
         "memory_write/english/index",
@@ -152,10 +151,6 @@
 				"pay/index",
 				"group/index"
 			]
-    },
-    {
-      "root": "pages/package_other",
-      "pages": []
     },
     {
       "root": "pages/package_preschool",

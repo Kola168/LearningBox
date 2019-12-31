@@ -2,7 +2,7 @@
 <view class="container" style="height:{{areaHeight}}px;">
   <view class="img-wrap">
     <swiper current="{{currentImgIndex}}" bindchange="tabSlide" circular="{{false}}" class="swiper-wrap">
-      <swiper-item class='img-box' wx:for="{{images}}" wx:key="{{index}}">
+      <swiper-item class='img-box' wx:for="{{images}}" wx:key="index">
         <image src="{{item}}?x-image-process=image/resize,w_400" mode="widthFix"></image>
       </swiper-item>
     </swiper>
@@ -15,7 +15,7 @@
   <view class="handle-print flex">
     <view class="templates-wrap">
       <view class="templates flex">
-        <view class="template-box flex align-center {{currentTemplateType==item?'template-box-active':''}}" id="{{item}}" wx:for="{{templateTypes}}" wx:key="{{index}}" bindtap="templateChoose">
+        <view class="template-box flex align-center {{currentTemplateType==item?'template-box-active':''}}" id="{{item}}" wx:for="{{templateTypes}}" wx:key="index" bindtap="templateChoose">
           <image src="https://cdn-h.gongfudou.com/LearningBox/feature/english_template_{{index+1}}.png" mode="widthFix" />
         </view>
       </view>
@@ -40,7 +40,7 @@
         </button>
       </view>
       <view class="confirm-print">
-        <botttom-button  bindlefttap="showImgCheck" class="confirm-print-btn" text-right="确认打印" bindrighttap="showConfirmMdal" get-phone="{{true}}"></botttom-button>
+        <botttom-button bindlefttap="showImgCheck" class="confirm-print-btn" text-right="确认打印" bindrighttap="showConfirmMdal" get-phone="{{true}}"></botttom-button>
       </view>
     </view>
   </view>

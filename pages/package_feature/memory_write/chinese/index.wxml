@@ -28,7 +28,7 @@
             <image src="../../images/check_{{item.isCheck?'yes':'no'}}.png" />
             <view>{{item.name}}</view>
           </view>
-          <view class="title-r">打印次数{{1}}</view>
+          <view class="title-r">打印次数{{item.printCount}}</view>
         </view>
         <view class="item-main flex align-center">
           <view wx:for="{{item.questions}}" wx:for-item="childItem" wx:for-index="childIndex" wx:key="childIndex">

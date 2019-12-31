@@ -123,15 +123,10 @@ Page({
         featureKey: 'guess_write',
         resourceOrderType: 'GuessWrite',
         resourceAttribute: {
-          // originalUrl: this.previewPdfUrl,
+          originalUrl: this.previewPdfUrl,
           copies: this.data.printCount,
-          sn: this.sns,
-          resourceType: 'GuessWrite'
+          categorySns: this.sns,
         }
-        // originalUrl: this.previewPdfUrl,
-        // categorySns: this.sns,
-        // copies: this.data.printCount,
-        // resourceOrderType: 'GuessWrite'
       }
       let resp = yield graphql.createResourceOrder(params)
       this.weToast.hide()
@@ -141,9 +136,6 @@ Page({
         media_type: 'memory_write',
         avatarUrl: encodeURIComponent(JSON.stringify(userData.userInfo.avatarUrl)),
         nickName: userData.userInfo.nickName,
-        // count: resp.statistics.day_count,
-        // printed_count: resp.statistics.print_count,
-        // user_share_qrcode: encodeURIComponent(JSON.stringify(resp.qrcode))
       })
     } catch (error) {
       this.weToast.hide()
@@ -151,18 +143,6 @@ Page({
     }
 
   }),
-  // confirmPrint(){
-  //   this.showConfirmMdal()
-  // },
-  // getPhoneNumber: co.wrap(function*(e) {
-  //   yield app.getPhoneNum(e)
-  //   storage.put("hasAuthPhoneNum", true)
-  //   this.hasAuthPhoneNum = true
-  //   this.setData({
-  //     hasAuthPhoneNum: true
-  //   })
-  //   this.showConfirmMdal()
-  // }),
   allowSave: function(e) {
     if (!e.detail.authSetting['scope.writePhotosAlbum']) {
       return

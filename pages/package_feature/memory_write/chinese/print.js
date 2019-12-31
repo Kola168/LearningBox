@@ -1,9 +1,15 @@
 "use strict"
 
 const app = getApp()
-import { regeneratorRuntime, co, util, wxNav, storage } from '../../../../utils/common_import'
-// const common_util = require('../../../../../utils/common_util')
+import {
+  regeneratorRuntime,
+  co,
+  util,
+  wxNav,
+  storage
+} from '../../../../utils/common_import'
 import api from '../../../../network/restful_request'
+import graphql from '../../../../network/graphql_request'
 const getUserInfo = util.promisify(wx.getUserInfo)
 const showModal = util.promisify(wx.showModal)
 const saveImageToPhotosAlbum = util.promisify(wx.saveImageToPhotosAlbum)
@@ -24,9 +30,14 @@ Page({
     }
   },
   onLoad(query) {
-    this.sns = JSON.parse(query.sns)
-    this.genre = query.type
-    this.type = query.type === 'html' ? 'ymz' : ''
+    this.weToast = new app.weToast()
+    this.sns = JSON.parse(decodeURIComponent(query.sns))
+    let topBarHeight = app.navBarInfo.topBarHeight,
+      safeArea = app.isFullScreen ? 30 : 0
+    this.setData({
+      areaHeight: app.sysInfo.screenHeight - topBarHeight - safeArea,
+      isFullScreen: app.isFullScreen
+    })
     this.getWritePreview()
   },
   onShow() {
@@ -36,12 +47,12 @@ Page({
       hasAuthPhoneNum: app.hasPhoneNum || hasAuthPhoneNum
     })
   },
-  tabSlide: function(e) {
+  tabSlide: function (e) {
     this.setData({
       currentImgIndex: e.detail.current
     })
   },
-  turnImg: co.wrap(function*(e) {
+  turnImg: co.wrap(function* (e) {
     let num = this.data.currentImgIndex;
     let turn = e.currentTarget.dataset.turn;
     if (turn === 'next') {
@@ -98,64 +109,39 @@ Page({
       })
     }
   },
-  print: co.wrap(function*() {
+  print: co.wrap(function* () {
     this.weToase.toast({
       type: 'loading'
     })
     try {
-      let userData = yield getUserInfo(),
-        endPage = this.data.images.length
+      let userData = yield getUserInfo()
       let params = {
-        openid: app.openId,
-        media_type: 'cn_guess_write',
-        resourceable: {
-          type: 'subject_unit',
-          sn: this.sn
-        },
-        setting: {
-          number: this.data.printCount,
-          start_page: 1,
-          end_page: endPage
-        },
-        from: 'mini_app',
+        featureKey: 'guess_write',
+        resourceOrderType: 'GuessWrite',
+        resourceAttribute: {
+          originalUrl: this.previewPdfUrl,
+          copies: this.data.printCount,
+          categorySns: this.sns,
+        }
       }
-      let resp = yield api.printMemoryWrite(params)
-      if (resp.code !== 0) {
-        throw (resp)
-      }
+      let resp = yield graphql.createResourceOrder(params)
       this.weToast.hide()
       wxNav.navigateTo('/pages/finish/sourdefinish', {
         type: 'english_memory_write',
         state: resp.order.state,
         media_type: 'memory_write',
-        avatarUrl:encodeURIComponent(JSON.stringify(userData.userInfo.avatarUrl)),
-        nickName:userData.userInfo.nickName,
-        count:resp.statistics.day_count,
-        printed_count:resp.statistics.print_count,
-        user_share_qrcode:encodeURIComponent(JSON.stringify(resp.qrcode))
+        avatarUrl: encodeURIComponent(JSON.stringify(userData.userInfo.avatarUrl)),
+        nickName: userData.userInfo.nickName,
+        // count:resp.statistics.day_count,
+        // printed_count:resp.statistics.print_count,
+        // user_share_qrcode:encodeURIComponent(JSON.stringify(resp.qrcode))
       })
-      // wx.redirectTo({
-      //   url: `/pages/finish/oral_mistake_index?type=english_memory_write&&state=${resp.order.state}&media_type=memory_write&avatarUrl=${userData.userInfo.avatarUrl}&nickName=${userData.userInfo.nickName}&count=${resp.statistics.day_count}&printed_count=${resp.statistics.print_count}&user_share_qrcode=${common_util.encodeLongParams(resp.qrcode)}`
-      // })
     } catch (error) {
-      let err = error
-      if (err.code === 60001) {
-        err.message = '文档转换失败'
-      }
       this.weToast.hide()
-      util.showError(err)
+      util.showError(error)
     }
   }),
-  getPhoneNumber: co.wrap(function*(e) {
-    yield app.getPhoneNum(e)
-    wx.setStorageSync("hasAuthPhoneNum", true)
-    this.hasAuthPhoneNum = true
-    this.setData({
-      hasAuthPhoneNum: true
-    })
-    this.showConfirmMdal()
-  }),
-  allowSave: function(e) {
+  allowSave: function (e) {
     if (!e.detail.authSetting['scope.writePhotosAlbum']) {
       return
     }
@@ -163,9 +149,9 @@ Page({
       savable: true
     })
   },
-  saveImg: co.wrap(function*() {
+  saveImg: co.wrap(function* () {
     this.weToast.toast({
-      type:'loading'
+      type: 'loading'
     })
     try {
       let images = this.data.images
@@ -202,20 +188,26 @@ Page({
       })
     }
   }),
-  getWritePreview: co.wrap(function*() {
+  getWritePreview: co.wrap(function* () {
     this.weToast.toast({
-      type:'loading'
+      type: 'loading'
     })
     try {
-      let resp = yield api.getWritePreview(app.openId, this.sns, this.genre, this.type)
+      let currentTemplateType = this.data.currentTemplateType,
+        params = {
+          feature_key: 'guess_write',
+          category_sns: this.sns,
+          language_type: 'cn'
+        }
+      let resp = yield api.synthesisWorker(params)
       if (resp.code !== 0) {
         throw (resp)
       }
       this.weToast.hide()
       this.setData({
-        images: resp.res.images
+        images: resp.res.image_urls
       })
-      this.sn = resp.res.sn
+      this.previewPdfUrl = resp.res.pdf_url
     } catch (error) {
       this.weToast.hide()
       util.showError(error)

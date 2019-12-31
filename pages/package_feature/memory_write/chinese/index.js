@@ -44,12 +44,9 @@ Page({
     this.setData({
         currentGrade
       })
-      // this.categorySn = currentGrade.guessWriteCategories[0].sn
     this.resetData()
   },
   resetData() {
-    // this.page = 1
-    // this.pageEnd = false
     this.setData({
       allCheck: false,
       isEmpty: false,
@@ -109,13 +106,8 @@ Page({
       this.weToast.hide()
     }
     wxNav.navigateTo('../chinese/print', {
-      sns: JSON.stringify(sns),
-      type: type
+      sns: encodeURIComponent(JSON.stringify(sns))
     })
-  },
-  onReachBottom() {
-    if (this.pageEnd) return
-    this.getWriteList()
   },
   getGrades: co.wrap(function*() {
     this.weToast.toast({
