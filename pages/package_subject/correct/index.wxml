@@ -1,5 +1,5 @@
 <nav-bar title="批改"></nav-bar>
-<view class="container" style="background:{{isSubjectMember?'#F7F7F7':'#fff'}};height:{{areaHeight}}px;">
+<view class="container" wx:if="{{loadReady}}" style="background:{{isSubjectMember?'#F7F7F7':'#fff'}};height:{{areaHeight}}px;">
   <view class="is-subject-member" wx:if="{{isSubjectMember}}">
     <view class="paper-header flex align-center">
       <view class="header-title">2019年南师大附中数学期末考试</view>
@@ -12,30 +12,22 @@
       <view class="content-serial flex align-center" wx:if="{{showSerial}}">
         <view class="serial-item" wx:for="{{[1,2,3,4,5,6,7,8,9,10,11]}}">{{index}}</view>
       </view>
-      <view >dsfasdfdsafa</view>
-      <view >dsfasdfdsafa</view>
-      <view >dsfasdfdsafa</view>
-      <view >dsfasdfdsafa</view>
-      <view >dsfasdfdsafa</view>
-      <view >dsfasdfdsafa</view>
-      <view >dsfasdfdsafa</view>
-      <view >dsfasdfdsafa</view>
-      <view >dsfasdfdsafa</view>
-      <view >dsfasdfdsafa</view>
-      <view >dsfasdfdsafa</view>
-      <view >dsfasdfdsafa</view>
-      <view >dsfasdfdsafa</view>
-      <view >dsfasdfdsafa</view>
-      <view >dsfasdfdsafa</view>
-      <view >dsfasdfdsafa</view>
-      <view >dsfasdfdsafa</view>
-      <view >dsfasdfdsafa</view>
-      <view >dsfasdfdsafa</view>
-      <view >dsfasdfdsafa</view>
-      <view >dsfasdfdsafa</view>
-      <view >dsfasdfdsafa</view>
-      <view >dsfasdfdsafa</view>
-      <view >dsfasdfdsafa</view>
+      <view class="content-topic">
+        <view class="topic-body">
+          <rich-text nodes="{{currentTopic.quesBody}}"></rich-text>
+          <view class="body-options">
+            <view class="option-item" wx:for="{{currentTopic.option}}" wx:key="index">
+              <view>{{item[0]}}.</view>
+              <rich-text nodes="{{item[1]}}"></rich-text>
+            </view>
+          </view>
+        </view>
+        <view class="topic-answer">
+          <view class="answer-title">答案解析：</view>
+          <view>答案：{{currentTopic.quesAnswer}}</view>
+          <rich-text nodes="{{currentTopic.quesParse}}"></rich-text>
+        </view>
+      </view>
     </view>
     <view class="paper-handle">
       <view class="handle-choose">
@@ -78,3 +70,7 @@
     <view class="to-know">立即了解</view>
   </view>
 </view>
+
+<!-- loading -->
+<import src="/lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />
