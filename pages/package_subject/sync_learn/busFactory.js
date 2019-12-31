@@ -3,8 +3,6 @@
 import {
   regeneratorRuntime,
   co,
-  util,
-  wxNav
 } from '../../../utils/common_import'
 import graphql from '../../../network/graphql/subject'
 var textbookVersionData, // 全部教材版本数据
@@ -32,9 +30,9 @@ var busFactory = function () {
 
   // 获取教材数据
   var getTextbookData = co.wrap(function *(versionSn) {
-    if (!textbookData) {
+    // if (!textbookData) {
       textbookData = yield graphql.getTeachBook(versionSn)
-    }
+    // }
     return textbookData
   })
 
@@ -60,7 +58,6 @@ var busFactory = function () {
     return selectTextbookData[subjectSn]
   })
 
-
   /**
    * 获取章节详情
    */
@@ -68,7 +65,7 @@ var busFactory = function () {
     if (!chapterList) {
       chapterList = {}
     }
-    console.log('===进入：chapterList 第一步')
+    console.log('===进入：chapterList 第一步', chapterList, '==textbookSn==', textbookSn)
     if (!chapterList[subjectSn]) {
       console.log('===进入：chapterList 进入request', textbookSn)
       chapterList[subjectSn] = yield graphql.getChapter(textbookSn)
@@ -187,9 +184,13 @@ var busFactory = function () {
     textbookData = null
     selectTextbookData = null
     selectedTextbookVersionData = null
-    getComponentsChapterData = null
     chapterList = null
-    // requestIds = null
+    
+  }
+
+  var removeDestoryData = function () {
+    getComponentsChapterData = null
+    requestIds = null
   }
 
 
@@ -211,6 +212,7 @@ var busFactory = function () {
     removeSelectedCurrentData,
     removeSelectedAllData,
     removeCurrentChapterList,
+    removeDestoryData,
   }
 
 }

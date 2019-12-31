@@ -15,7 +15,6 @@ Component({
   },
 
   attached: co.wrap(function*(){
-    console.log('attached')
     yield busFactory.getSelectedTextbookVersionData(this.data.subjectSn) //获取当前科目下选中教材版本
     yield this.getTextbookVersion() //获取当前学科所有教材版本
     yield this.getTeachBook() //获取学科下所有教材
@@ -27,7 +26,6 @@ Component({
       [`formList[0].selected`]: formList[0].content[selectedBookVersionIndex],
       [`formList[1].selected`]: formList[1].content[selectedTeachIndex]
     })
-    console.log(this.data.formList,'component==formList')
   }),
   data: {
     selectedBookVersionIndex: 0,
@@ -112,8 +110,8 @@ Component({
       var subjectSn = busFactory.getIds('subjectSn')
       var versionSn = formInput[0].sn
       var textbookSn = formInput[1].sn
+
       yield busFactory.sendGetChapter(subjectSn, textbookSn)
-      console.log('执行完==sendGetChapter')
       busFactory.sendRequestIds('versionSn', versionSn)
       busFactory.sendRequestIds('textbookSn', textbookSn)
       this.triggerEvent('chooseTextbook')

@@ -6,13 +6,16 @@ import {
   util,
   wxNav
 } from '../../../../utils/common_import'
-
+import getLoopsEvent from '../../../../utils/worker'
 import graphql from '../../../../network/graphql/subject'
 Page({
   data: {
     currentIndex: 0,
     showMemberToast: false, //显示会员弹窗
     showAiToast: false, // 显示ai出题弹窗
+    currentDiff: null,
+    diffList: [],
+    aiDiffList: [], //ai题目列表
   },
 
   onLoad: co.wrap(function *(options) {
@@ -20,6 +23,10 @@ Page({
     this.sn = options.sn
     yield this.getDifficulty()
     yield this.getNodeDetails()
+    yield this.getExercises()
+    this.setData({
+      currentDiff: this.data.diffList[0]
+    })
   }),
   
   /**
@@ -27,15 +34,35 @@ Page({
    */
   openAiToast: function() {
     var memberToast =  this.selectComponent('#memberToast')
-    memberToast.showToast()
+    // memberToast.showToast()
+    this.setData({
+      showAiToast: true
+    })
   },
 
   /**
    * 智能出题
    */
   setTopic: co.wrap(function*(){
-    console.log('出一道题')
     this.cancelSet()
+    this.longToast.toast({
+      type: 'loading',
+      title: '正在出题'
+    })
+    getLoopsEvent({
+      feature_key: 'xuekewang_exercise',
+      worker_data: {
+        diff: this.data.currentDiff.id,
+        sn: this.sn,
+      }
+    }, (resp) => {
+      if (resp.status == 'finished') {
+        console.log(resp,'出题完成==')
+        this.longToast.hide()
+      }
+    }, ()=>{
+      this.longToast.hide()
+    })
   }),
 
   /**
@@ -50,7 +77,8 @@ Page({
   chooseDiff: co.wrap(function*({currentTarget: {dataset: {index}}}){
     try {
       this.setData({
-        currentIndex: index
+        currentIndex: index,
+        currentDiff: this.data.diffList[index]
       })
       yield this.getExercises()
     } catch(err) {
@@ -67,7 +95,6 @@ Page({
     })
     try {
       var resp = yield graphql.getNodeDetails(this.sn)
-      console.log('getNodeDetails==',resp)
       this.setData({
         nodeDetails: resp.xuekewang.node,
       })
@@ -88,10 +115,9 @@ Page({
     })
     try {
       var resp = yield graphql.getDifficulty()
-      this.diffId = resp.xuekewang.diff[this.data.currentIndex].id
-
       this.setData({
         diffList: resp.xuekewang.diff,
+        currentDiff: resp.xuekewang.diff[this.data.currentIndex],
       })
       this.longToast.hide()
     }catch(err) {
@@ -104,16 +130,30 @@ Page({
    * 获取练习列表
    */
   getExercises: co.wrap(function*(){
+    this.longToast.toast({
+      type: 'loading',
+      title: '请稍后...'
+    })
     try {
-      var resp = yield graphql.getExercises(+this.diffId, this.sn)
-      console.log('===getExercises===', resp)
+      var resp = yield graphql.getExercises(+this.data.currentDiff.id, this.sn)
       this.setData({
-        exerciseList: resp.xuekewang.childrenNodes
+        exerciseList: resp.xuekewang && resp.xuekewang.exercises
       })
+      this.longToast.hide()
     }catch(err) {
+      this.longToast.hide()
       util.showError(err)
     }
   }),
+
+  /**
+   * 跳转练习详情
+   */
+  toExerciseDetail: function({currentTarget: {dataset: {sn}}}) {
+    wxNav.navigateTo('/pages/package_subject/sync_learn/preview_subject/index', {
+      sn
+    })
+  },
 
   onPullDownRefresh: function () {
 

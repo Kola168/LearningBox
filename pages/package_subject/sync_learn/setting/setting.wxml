@@ -1,0 +1,140 @@
+<nav-bar background="#fff" title="文档打印" />
+<view class="document-title">
+	<view class="title-text">
+		<view class="text-name">{{fileTitle}}</view>
+		<!-- <view class="text-suffix">.{{fileTitle.suffix}}</view> -->
+	</view>
+	<!-- <view class="title-preview" bindtap="preview">预览</view> -->
+</view>
+<view class="doc-setting">
+	<view class="setting-item">
+		<view class="item-label">打印份数</view>
+		<view class="item-main">
+			<image
+			 src="{{documentPrintNum == 1 ? '/images/doc_document_cut.png' : '/images/doc_minus_y.png'}}"
+			 mode="aspectFit"
+			 class="print-num"
+			 bindtap="cutPrintNum"
+			/>
+			<text class="document-print-num">{{documentPrintNum}}</text>
+			<image
+			 src="{{documentPrintNum >= 30 ? '/images/doc_document_add_gray.png' : '/images/doc_plus_y.png'}}"
+			 mode="aspectFit"
+			 class="print-num"
+			 bindtap="addPrintNum"
+			/>
+		</view>
+	</view>
+	<view class="setting-range-item">
+		<view class="item-label">打印范围（共{{ totalPage }}页）</view>
+		<view class="range-main">
+			<view class="range-options">
+				<view wx:for="{{rangeList}}" wx:key="_id" class="options-item {{extract === item._id ? 'options-item-active' : ''}}" id="{{item._id}}" bindtap="chooseRangeType">
+					{{item.name}}
+				</view>
+			</view>
+			<view class="active-option" hidden="{{extract!=='all'}}">
+				<input
+				 id="1"
+				 class="page-input"
+				 type="number"
+				 bindinput="inputStartPage"
+				 bindblur="startPageJudge"
+				 value="{{startPrintPage}}"
+				/>
+				<text class="page-text">至</text>
+				<input
+				 id="2"
+				 class="page-input"
+				 type="number"
+				 bindinput="inputEndPage"
+				 bindblur="endPageJudge"
+				 value="{{endPrintPage}}"
+				/>
+				<text class="page-text">页</text>
+			</view>
+			<view class="active-option all-text" hidden="{{extract!=='odd'}}">打印1、3、5等奇数页</view>
+			<view class="active-option all-text" hidden="{{extract!=='even'}}">打印2、4、6等偶数页</view>
+		</view>
+	</view>
+	<view class="setting-item" wx:if="{{isColorPrinter}}">
+		<view class="item-label">色彩选择</view>
+		<view class="item-main">
+			<view class="color-check-box" data-style="0" bindtap="colorCheck">
+				<text class="color-type">黑白</text>
+				<image src="{{!colorCheck ? '/images/radio_on.png' : '/images/radio_off.png'}}" mode="widthFix" class="color-check" />
+			</view>
+			<view class="color-check-box" data-style="1" bindtap="colorCheck">
+				<text class="color-type">彩色</text>
+				<image src="{{colorCheck ? '/images/radio_on.png' : '/images/radio_off.png'}}" mode="widthFix" class="color-check" />
+			</view>
+		</view>
+	</view>
+	<view class="setting-item" wx:if="{{isDuplex}}">
+		<view class="item-label">双面打印</view>
+		<view class="item-main">
+			<view class="color-check-box" data-style="0" bindtap="duplexCheck">
+				<text class="color-type">单面</text>
+				<image src="{{duplexCheck ? '/images/radio_off.png' : '/images/radio_on.png'}}" mode="widthFix" class="color-check" />
+			</view>
+			<view class="color-check-box" data-style="1" bindtap="duplexCheck">
+				<text class="color-type">双面</text>
+				<image src="{{duplexCheck ? '/images/radio_on.png' : '/images/radio_off.png'}}" mode="widthFix" class="color-check" />
+			</view>
+		</view>
+	</view>
+	<!-- <view class="setting-item">
+		<view class="item-label">文件修复</view>
+		<view class="item-main">
+			<image
+			 class="statistic-check-image"
+			 src="{{!checkOpen ? '/images/switch_off.png' : '/images/switch_on.png'}}"
+			 mode="widthFix"
+			 bindtap="operaRepair"
+			/>
+		</view>
+	</view> -->
+</view>
+<!-- <view class="zoom-view" hidden="{{extract!=='all'}}">
+	<view class="item-label">缩放打印</view>
+	<view class="view-content">
+		<view
+		 class="content-item"
+		 wx:for="{{[1, 2 , 4, 8]}}"
+		 bindtap="chooseZoomType"
+		 wx:key="{{item}}"
+		 id="{{item}}"
+		>
+			<view class="item-img {{singlePageLayoutsCount==item?'item-check-active':''}}">
+				<image src="/images/doc_zoom_{{item}}.png" mode="widthFix" />
+				<image
+				 src="/images/doc_error_finish.png"
+				 hidden="{{singlePageLayoutsCount!=item}}"
+				 class="item-check"
+				 mode="widthFix"
+				/>
+			</view>
+			<view>1页{{item}}张</view>
+		</view>
+	</view>
+</view> -->
+<botttom-button class="conf-box" text-right="确认设置" bindrighttap="confCheck" get-phone="{{true}}"></botttom-button>
+<view class="confirm-main" wx:if="{{showConfirm}}" catchtap="cancelRepair">
+	<view class="confirm-modal">
+		<view class="confirm-title">确认使用文件修复吗？</view>
+		<view class="confirm-content">
+			<view>文件修复功能可以修复内容丢失</view>
+			<view>(如电子签章丢失）格式不正确问题</view>
+			<view>但也可能会造成正常文件乱码，如预览或</view>
+			<view>打印没有问题的文件，请勿开启此功能</view>
+		</view>
+		<view class="main-btn">
+			<view class="btn cancel-btn" bindtap="cancelRepair">取消</view>
+			<view class="btn confirm-btn" catchtap="openRepair">确认开启</view>
+		</view>
+	</view>
+</view>
+
+
+<import src="../../../../lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />

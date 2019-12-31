@@ -10,9 +10,6 @@ import {
 import graphql from '../../../../../network/graphql/subject'
 import busFactory from '../../busFactory'
 Component({
-  properties: {
-
-  },
 
   data: {
     isUnfold: false,
@@ -22,7 +19,6 @@ Component({
   attached: function() {
     this.longToast = new app.weToast()
     busFactory.listenChapterData((chapters)=>{
-      console.log(chapters,'====resp====')
       this.setData({
         chapters
       })
@@ -39,7 +35,8 @@ Component({
         this.getChapterContentDetails(this.data.chapters[index].sn)
       }
     },
-
+    
+    // 获取章节详情数据
     getChapterContentDetails: co.wrap(function*(sn){
       this.longToast.toast({
         title: '请稍后...',
@@ -49,6 +46,9 @@ Component({
         var resp = yield graphql.getChapterDetail(sn)
         if (!resp.xuekewang.childrenNodes.length) {
           this.longToast.hide()
+          this.setData({
+            [`chapters[${this.nodeIndex}]isUnfold`]: false
+          })
           return util.showError({
             message: '章节数据暂无'
           })

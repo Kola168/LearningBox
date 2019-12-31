@@ -224,6 +224,7 @@ const graphqlApi = {
             name
             id
             sn
+            selected
           }
         }
       }`,
@@ -244,14 +245,17 @@ const graphqlApi = {
             name
             id
             sn
+            selected
             children {
               name
               id
               sn
+              selected
               children{
                 name
                 id
                 sn
+                selected
               }
             }
           }
@@ -289,12 +293,18 @@ const graphqlApi = {
       query: `query getExercises($diff:Int!, $nodeSn:String!){
         xuekewang{
           exercises(diff: $diff, nodeSn: $nodeSn){
-            exerciseId
-            exerciseName
-            diff
-            stage
+            images{
+              nameUrl
+            }
+            answerImages{
+              nameUrl
+            }
             sn
+            isPrint
+            printCount
+            exerciseName
           }
+        }
       }`,
       variables: {
         diff,
@@ -309,15 +319,20 @@ const graphqlApi = {
    */
   getExercisesDetail: (sn)=>{
     return gql.query({
-      query: `query getExercisesDetail($sn:Int!){
+      query: `query getExercisesDetail($sn:String!){
         xuekewang{
           exercise(sn: $sn){
-            exerciseId
+            answerImages{
+              nameUrl
+            }
+            images{
+              nameUrl
+            }
             exerciseName
-            diff
-            stage
+            printCount
             sn
           }
+        }
       }`,
       variables: {
         sn
@@ -333,19 +348,39 @@ const graphqlApi = {
     return gql.query({
       query: `query getNodeDetails($sn:String!){
         xuekewang{
-          node(sn: $sn){
-            name
+          node(sn: $sn) {
             id
             sn
-            children {
-              name
+            name
+            root {
               id
               sn
+              name
             }
           }
+        }
       }`,
       variables: {
         sn
+      }
+    })
+  },
+
+  /**
+   * 创建学科网订单
+   * @param {Object} pms
+   * attributes  Object {resourceType: String!}
+   * featureKey: String!
+   */
+  createXuekewangOrder: (pms) => {
+    return gql.mutate({
+      mutation: `mutation ($input: CreateXuekewangOrderInput!){
+        createXuekewangOrder(input:$input){
+          state
+        }
+      }`,
+      variables: {
+        input: pms
       }
     })
   },

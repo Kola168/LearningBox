@@ -31,8 +31,9 @@
 
 .chapter-nav-head-title {
   margin-left: 66rpx;
-  color: #151515;
+  width: 65%;
   font-size: 30rpx;
+  color: #151515;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -58,10 +59,11 @@
 .chapter-nav-content-title {
   display: flex;
   align-items: center;
+  padding-right: 20rpx;
   justify-content: space-between;
 }
 
-.chapter-nav-content-title .pre-learn-tag {
+.pre-learn-tag {
   width: 116rpx;
   height: 32rpx;
 }
@@ -105,7 +107,39 @@
 }
 
 .box-name {
+  width: 70%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  word-break: break-all;
   font-weight: 500;
+}
+
+.nav-top-chapter-second-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0 20rpx 0 0;
+  box-sizing: border-box;
+}
+
+.nav-top-chapter-second-content .arrow-icon {
+  width: 15rpx;
+  height: 15rpx;
+  border-right: 5rpx solid #CECECe;
+  border-top: 5rpx solid #CECECe;
+  transform: rotate(45deg);
+  margin-right: 22rpx;
+}
+
+
+.content-left-name {
+  width: 65%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  word-break: break-all;
 }
 
 .hidden {

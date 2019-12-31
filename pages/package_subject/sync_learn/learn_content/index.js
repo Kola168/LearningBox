@@ -112,6 +112,7 @@ Page({
       currentTabIndex: index
     })
     this.subjectSn = subjectSn
+    this.textbookSn = null 
     busFactory.sendRequestIds('subjectSn', subjectSn) //同步学科id 缓存
     this.updateConditionData() //学科下所有数据节点更新
   },
@@ -180,7 +181,7 @@ Page({
       if (!resp.xuekewang.registered) {
         return 
       }
-
+      console.log('学科subjectList==',  resp.xuekewang.subjects)
       this.setData({
         subjectList: resp.xuekewang.subjects,
       })
@@ -280,14 +281,11 @@ Page({
   },
 
   onUnload: function() {
+    busFactory.removeDestoryData()
     busFactory.removeAllData()
   },
 
   onPullDownRefresh: function () {
 
   },
-
-  onShareAppMessage: function () {
-
-  }
 })

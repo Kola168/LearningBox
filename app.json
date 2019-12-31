@@ -66,7 +66,9 @@
         "feedback/index",
         "my_collection/index",
         "common_content/index",
-        "common_content/list"
+        "common_content/list",
+        "order_record/index/index",
+        "order_record/order/order"
       ]
     },
     {
@@ -179,6 +181,7 @@
         "sync_learn/learn_content/index",
         "sync_learn/learn_detail/index",
         "sync_learn/preview_subject/index",
+        "sync_learn/setting/setting",
         "evaluate_exam/index/index",
         "evaluate_exam/testpaper/index",
         "correct/index"
