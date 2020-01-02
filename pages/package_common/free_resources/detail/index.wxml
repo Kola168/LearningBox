@@ -1,4 +1,4 @@
-<nav-bar title="免费资源库"></nav-bar>
+<nav-bar title="{{title}}"></nav-bar>
 <view class="container" style="height:{{windowHeight}}px;" wx:if="{{!showPrintSetting}}">
   <swiper class="swiper" bindchange="swpierChange" current="{{current}}">
     <swiper-item class="swiper-item" wx:for="{{sources}}" wx:key="index">
