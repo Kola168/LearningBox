@@ -16,11 +16,15 @@ import {
 } from '../../utils/common_import.js'
 import storage from '../../utils/storage'
 const event = require('../../lib/event/event')
+import {
+  features
+} from 'config'
 
 Page({
   data: {
     kidInfo: null,
-    activeDevice: null
+    activeDevice: null,
+    features
   },
   onLoad: function (options) {
     this.longToast = new app.weToast()
@@ -54,6 +58,7 @@ Page({
     })
     try {
       let resp = yield gql.getUser()
+      console.log(resp)
       this.setData({
         kidInfo: resp.currentUser.selectedKid,
         activeDevice: resp.currentUser.selectedDevice
@@ -64,14 +69,13 @@ Page({
       util.showError(e)
     }
   }),
-
+  toFeature(e) {
+    wxNav.navigateTo(e.currentTarget.id)
+  },
   toNext(e) {
     let pageKey = e.currentTarget.id,
       url = ''
     switch (pageKey) {
-      case 'records':
-        url = '/pages/package_common/records/index/index'
-        break;
       case 'deviceList':
         url = '/pages/package_device/list/index'
         break;
@@ -83,9 +87,9 @@ Page({
         break;
     }
     wxNav.navigateTo(url, {})
-	},
-	
-	onlineGuest: co.wrap(function*() {
+  },
+
+  onlineGuest: co.wrap(function* () {
     let isAuth = yield this.checkIsScope()
     if (isAuth) {
       let url = 'https://gfd178.udesk.cn/im_client/?web_plugin_id=63138'
@@ -94,8 +98,8 @@ Page({
       })
     }
   }),
-	
-	onUnload() {
+
+  onUnload() {
     event.remove('Authorize', this)
   }
 })
