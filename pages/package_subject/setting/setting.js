@@ -5,16 +5,15 @@ import {
   util,
   storage,
   wxNav
-} from '../../../../utils/common_import'
-const _ = require('../../../../lib/underscore/we-underscore')
+} from '../../../utils/common_import'
+const _ = require('../../../lib/underscore/we-underscore')
 const showModal = util.promisify(wx.showModal)
-import graphql from '../../../../network/graphql/subject'
-// import commonRequest from '../../../../utils/common_request'
+import graphql from '../../../network/graphql/subject'
+import commonRequest from '../../../utils/common_request'
 import {
   getLogger
-} from '../../../../utils/logger'
-const logger = new getLogger('pages/package_subject/sync_learn/setting/setting')
-import event from '../../../../lib/event/event'
+} from '../../../utils/logger'
+const logger = new getLogger('pages/package_subject/setting/setting')
 Page({
 
   data: {
@@ -65,14 +64,20 @@ Page({
   onLoad: co.wrap(function* (options) {
     this.longToast = new app.weToast()
     try {
-      let query = this.query = JSON.parse(decodeURIComponent(options.postData))
+      var query = this.query = JSON.parse(decodeURIComponent(options.postData))
+
+      var printCapability = yield commonRequest.getPrinterCapacity(query.featureKey)
+      if (!printCapability) {
+        return
+      }
+
       let tempData = {
         fileTitle: query.name,
-        color: query.color,
-        grayscale: query.grayscale,
-        duplex: query.duplex,
-        colorCheck: query.color,
-        duplexCheck: query.duplexCheck,
+        color: printCapability.color,
+        grayscale: printCapability.grayscale,
+        duplex: printCapability.duplex,
+        colorCheck: printCapability.color,
+        duplexCheck: printCapability.duplex,
         endMaxPage: query.pageCount,
         totalPage: query.pageCount,
         sn: query.sn,
@@ -92,15 +97,15 @@ Page({
       logger.info(e)
       util.showError(e)
     }
-    yield this.setStatus()
+    yield this.setStatus(printCapability)
   }),
 
   /**
    * @methods 设置默认选项值
    */
-  setStatus: co.wrap(function* () {
+  setStatus: co.wrap(function* (printCapability) {
     //设置是否支持多面打印
-    if (this.query.duplex) {
+    if (printCapability.duplex) {
       this.setData({
         isDuplex: true
       })
@@ -110,7 +115,7 @@ Page({
       })
     }
     //黑白彩色模式
-    if (this.query.color && this.query.grayscale) {
+    if (printCapability.color && printCapability.grayscale) {
 
       this.setData({
         isColorPrinter: true
@@ -367,6 +372,10 @@ Page({
   }),
 
   print: co.wrap(function* () {
+    this.longToast.toast({
+      type: 'loading',
+      title: '请稍后...'
+    })
     try {
       var resp = yield graphql.createXuekewangOrder({
         attributes: {
@@ -383,14 +392,15 @@ Page({
           // extract: this.data.extract,
           // singlePageLayoutsCount: this.data.singlePageLayoutsCount,
         },
-        featureKey: 'xuekewang_exercise'
+        featureKey: this.query.featureKey
       })
-
+      this.longToast.hide()
       wxNav.navigateTo('/pages/finish/index', {
-        media_type: 'XuekewangExercise',
+        media_type: this.query.featureKey,
         state: resp.createXuekewangOrder.state
       })
     } catch (err) {
+      this.longToast.hide()
       util.showError(err)
     }
   })

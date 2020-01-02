@@ -13,9 +13,6 @@ import Logger from '../../../../utils/logger.js'
 import busFactory from '../busFactory'
 Page({
 
-  /**
-   * 页面的初始数据
-   */
   data: {
     showSelectedText: false, //是否显示教材
     selectedBookVersionIndex: -1, //教材版本选中下标
@@ -125,16 +122,16 @@ Page({
    * 选择学科
    * @param {*} param
    */
-  chooseSubject: function({currentTarget: {dataset: {index}}}) {
+  chooseSubject: co.wrap(function *({currentTarget: {dataset: {index}}}) {
     var subjectSn =  this.data.subjectList[index].sn
     this.setData({
       currentTabIndex: index
     })
     this.subjectSn = subjectSn
+    this.versionSn = null
     this.textbookSn = null 
-    busFactory.sendRequestIds('subjectSn', subjectSn) //同步学科id 缓存
-    this.updateConditionData() //学科下所有数据节点更新
-  },
+    yield this.updateConditionData() //学科下所有数据节点更新
+  }),
 
   /**
    * 选择教材组件内传入

@@ -69,6 +69,10 @@ var busFactory = function () {
       chapterList[subjectSn] = yield graphql.getChapter(textbookSn)
     }
     return chapterList[subjectSn]
+
+    // var chapterList = yield graphql.getChapter(textbookSn)
+    
+    // return chapterList
   })
 
   // 设置章节数据

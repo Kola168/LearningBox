@@ -40,6 +40,10 @@
   text-overflow: ellipsis;
 }
 
+.form-active {
+  color: #FFA200;
+}
+
 .form-main .arrow {
   width: 13rpx;
   height: 13rpx;
@@ -72,6 +76,10 @@
   padding: 0 22rpx;
   line-height: 80rpx;
   box-sizing: border-box;
+}
+
+.item-hover {
+  background-color: #FFF8E0;
 }
 
 .form-main .arrow-unfold {

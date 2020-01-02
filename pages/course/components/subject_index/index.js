@@ -15,7 +15,11 @@ Component({
       '../images/math_icon.png',
       '../images/english_icon.png'
     ],
-    subjects: []
+    subjects: [],
+    searchObj: {
+      isSearch: true,
+      placeText: '请输入想要搜索的内容',
+    }
   },
 
   attached() {

@@ -9,13 +9,15 @@ import {
 import getLoopsEvent from '../../../../utils/worker'
 import graphql from '../../../../network/graphql/subject'
 Page({
-  
+
   data: {
     currentIndex: 0,
     showMemberToast: false, //显示会员弹窗
     showAiToast: false, // 显示ai出题弹窗
     currentDiff: null,
     diffList: [],
+    exerciseList: [],
+    defautExercise: null, //默认练习题
     aiDiffList: [], //ai题目列表
   },
 
@@ -24,6 +26,7 @@ Page({
     this.sn = options.sn
     yield this.getDifficulty()
     yield this.getNodeDetails()
+    yield this.getDefaultExercise()
     yield this.getExercises()
     this.setData({
       currentDiff: this.data.diffList[0]
@@ -60,6 +63,7 @@ Page({
       if (resp.status == 'finished') {
         console.log(resp, '出题完成==')
         this.longToast.hide()
+        this.getExercises()
       }
     }, () => {
       this.longToast.hide()
@@ -87,7 +91,9 @@ Page({
         currentIndex: index,
         currentDiff: this.data.diffList[index]
       })
+      yield this.getDefaultExercise()
       yield this.getExercises()
+
     } catch (err) {}
   }),
 
@@ -133,7 +139,7 @@ Page({
   }),
 
   /**
-   * 获取练习列表
+   * 获取ai练习列表
    */
   getExercises: co.wrap(function* () {
     this.longToast.toast({
@@ -144,6 +150,26 @@ Page({
       var resp = yield graphql.getExercises(+this.data.currentDiff.id, this.sn)
       this.setData({
         exerciseList: resp.xuekewang && resp.xuekewang.exercises
+      })
+      this.longToast.hide()
+    } catch (err) {
+      this.longToast.hide()
+      util.showError(err)
+    }
+  }),
+
+  /**
+   * 获取默认练习题
+   */
+  getDefaultExercise: co.wrap(function* () {
+    this.longToast.toast({
+      type: 'loading',
+      title: '请稍后...'
+    })
+    try {
+      var resp = yield graphql.getDefaultExercise(+this.data.currentDiff.id, this.sn)
+      this.setData({
+        defautExercise: resp.xuekewang && resp.xuekewang.defaultExercise
       })
       this.longToast.hide()
     } catch (err) {

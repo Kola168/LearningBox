@@ -181,7 +181,7 @@
         "sync_learn/learn_content/index",
         "sync_learn/learn_detail/index",
         "sync_learn/preview_subject/index",
-        "sync_learn/setting/setting",
+        "setting/setting",
         "evaluate_exam/index/index",
         "evaluate_exam/testpaper/index",
         "correct/index"

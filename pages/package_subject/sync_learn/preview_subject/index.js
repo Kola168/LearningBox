@@ -8,7 +8,6 @@ import {
   wxNav
 } from '../../../../utils/common_import'
 import busFactory from '../busFactory'
-import commonRequest from '../../../../utils/common_request'
 import graphql from '../../../../network/graphql/subject'
 Page({
 
@@ -69,24 +68,16 @@ Page({
 
   print: co.wrap(function* () {
     try {
-      var printCapability = yield commonRequest.getPrinterCapacity('xuekewang_exercise')
-      if (!printCapability) {
-        return
-      }
+     
 
       var postData = {
         name: this.data.exercise.exerciseName,
-        color: printCapability.color,
-        grayscale: printCapability.grayscale,
-        duplex: printCapability.duplex,
-        colorCheck: printCapability.color ? true : false,
-        duplexCheck: printCapability.duplex,
         isPrintAnswer: this.data.isPrintAnswer,
         pageCount: this.data.isPrintAnswer ? this.data.exercise.answerImages.length : this.data.exercise.images.length,
-        skipGs: true,
         sn: this.sn,
+        featureKey: 'xuekewang_exercise',
       }
-      wxNav.navigateTo('/pages/package_subject/sync_learn/setting/setting', {
+      wxNav.navigateTo('/pages/package_subject/setting/setting', {
         postData: encodeURIComponent(JSON.stringify(postData)),
       })
     } catch (err) {
@@ -96,6 +87,5 @@ Page({
   }),
 
   onHide() {
-    busFactory.removeDestoryData()
   }
 })

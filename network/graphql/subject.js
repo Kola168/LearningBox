@@ -284,6 +284,37 @@ const graphqlApi = {
   },
 
   /**
+   * 获取默认练习题
+   * @param {diff} 难度id
+   * @param {nodeSn} 章节的sn
+   */
+  getDefaultExercise:  (diff, nodeSn)=>{
+    return gql.query({
+      query: `query getDefaultExercise($diff:Int!, $nodeSn:String!){
+        xuekewang{
+          defaultExercise(diff: $diff, nodeSn: $nodeSn){
+            images{
+              nameUrl
+            }
+            answerImages{
+              nameUrl
+            }
+            sn
+            isPrint
+            printCount
+            exerciseName
+          }
+        }
+      }`,
+      variables: {
+        diff,
+        nodeSn
+      }
+    })
+  },
+
+
+  /**
    * 获取练习列表
    * @param {diff} 难度id
    * @param {nodeSn} 章节的sn

@@ -14,15 +14,15 @@
     </view>
   </view>
   <view class="subject-main">
-    <view class="subject-item" wx:for="{{exerciseList}}" wx:key="sn" data-sn="{{item.sn}}" bind:tap="toExerciseDetail">
+    <view class="subject-item" wx:if="{{defautExercise}}" data-sn="{{defautExercise.sn}}" bind:tap="toExerciseDetail">
       <image class="nav-cicon" src="../../images/pdf.png">
-        <view class="printed-holder" wx:if="{{item.isPrint}}">已打印</view>
+        <view class="printed-holder" wx:if="{{defautExercise.isPrint}}">已打印</view>
       </image>
       <view class="sub-content">
-        <view class="subject-title">{{item.exerciseName}}-{{currentDiff.name}}</view>
+        <view class="subject-title">{{defautExercise.exerciseName}}-{{currentDiff.name}}</view>
         <view class="subject-info">
           <image class="print-icon" mode="widthFix" src="/images/doc_print_icon.png"></image>
-          <view class="print-num">{{item.printCount}}位同学已学习</view>
+          <view class="print-num">{{defautExercise.printCount}}位同学已学习</view>
         </view>
       </view>
       <view class="btn-print">打印练习</view>
@@ -33,7 +33,7 @@
     <image class="btn-subject" src="../../images/btn_add_learn.png" bind:tap="openAiToast"></image>
   </view>
   <view class="subject-main">
-    <view class="subject-item" wx:for="{{aiDiffList}}" wx:key="sn" data-sn="{{item.sn}}" bind:tap="toExerciseDetail">
+    <view class="subject-item" wx:for="{{exerciseList}}" wx:key="sn" data-sn="{{item.sn}}" bind:tap="toExerciseDetail">
       <image class="nav-cicon" src="../../images/pdf.png">
         <view class="printed-holder" wx:if="{{item.isPrint}}">已打印</view>
       </image>
