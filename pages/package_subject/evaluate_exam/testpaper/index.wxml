@@ -34,7 +34,7 @@
       </view>
     </scroll-view>
     <view class="papers-list">
-      <view class="list-item" wx:for="{{paperList}}" wx:key="paperId" bindtap="toDetail" data-id="{{item.paperId}}">
+      <view class="list-item" wx:for="{{paperList}}" wx:key="paperId" bindtap="toDetail" data-index="{{index}}">
         <view class="item-img">
           <image src="../../images/pdf.png" class="img-main" mode="widthFix" />
           <image src="../../images/printed_tag.png" wx:if="{{item.isPrint}}" class="img-print-tag" mode="widthFix" />

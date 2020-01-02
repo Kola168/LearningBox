@@ -30,6 +30,8 @@ const graphqlApi = {
       query: `query {
         xuekewang {
           registered
+          printPaperCount
+          percentage
           subjects {
             iconUrl
             subjectId
