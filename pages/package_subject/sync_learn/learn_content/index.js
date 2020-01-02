@@ -22,7 +22,6 @@ Page({
     selectedTeachIndex: -1, //教材选中下标
     gradeList: [], //年级列表
     currentTabIndex: 0, //当前选中的学科index
-    subjectIndex: 0,
     subjectList: [], //学科列表
     textbookVersion: [], //学科版本
     teachBook: [], //教材
@@ -37,14 +36,14 @@ Page({
    */
   onLoad: co.wrap(function *(options) {
     this.longToast = new app.weToast()
+    var index = options.index != null ? options.index : 0
     this.setData({
-      currentTabIndex: options.index != null ? options.index : 0,
-      subjectIndex: options.index != null ? options.index : 0
+      currentTabIndex: index
     })
     yield this.getSubjectList()
 
     if (this.data.subjectList.length) {
-      var subjectIndex = this.data.subjectIndex
+      var subjectIndex = this.data.currentTabIndex
       busFactory.sendRequestIds('subjectSn', this.data.subjectList[subjectIndex].sn)
       this.subjectSn = busFactory.getIds('subjectSn')
       this.updateConditionData()
@@ -63,17 +62,12 @@ Page({
    * 赋值默认选中的选择器值
    */
   setSelectedTab: co.wrap(function*() {
-
     if (this.data.showSelectedText || this.touchTexkbook) {
       return 
     }
     // 未进行教材选择， 重新拉取初始服务端数据 进行匹配
     if (!this.touchTexkbook) { 
-      yield this.getSelectedTextbookVersion() //获取当前科目下选中教材版本
-      yield this.getTextbookVersion() //获取当前学科所有教材版本
-      yield this.getTeachBook() //获取学科下所有教材
-      yield this.getSelectedTextbook() //获取当前科目下选中教材
-      yield this.mappingConditions() //同步匹配默认筛选项
+      yield this.updateSelectedData()  //更新筛选器信息
     }
 
   }),
@@ -154,8 +148,7 @@ Page({
         type: 'loading'
       })
       busFactory.removeSelectedCurrentData(this.subjectSn) //移除上一次选择的值
-      yield this.getSelectedTextbookVersion() //获取更新后的教材版本
-      yield this.getSelectedTextbook() //获取更新后的教材
+      yield this.updateSelectedData() //更新筛选器信息
     } catch(err) {
       this.longToast.hide()
     } finally {
@@ -180,11 +173,7 @@ Page({
         type: 'loading'
       })
       busFactory.getComponentsChapterDataFn([]) //清空章节列表
-      yield this.getSelectedTextbookVersion() //获取当前科目下选中教材版本
-      yield this.getTextbookVersion() //获取当前学科所有教材版本
-      yield this.getTeachBook() //获取学科下所有教材
-      yield this.getSelectedTextbook() //获取当前科目下选中教材
-      yield this.mappingConditions() //同步匹配默认筛选项
+      yield this.updateSelectedData() //更新筛选器信息
       if (this.textbookSn) {
         yield busFactory.sendGetChapter(this.subjectSn, this.textbookSn) // 初始化章节列表组件数据
       }
@@ -192,6 +181,17 @@ Page({
     } catch(err) {
       this.longToast.hide()
     }
+  }),
+
+  /**
+   * //更新筛选器信息
+   */
+  updateSelectedData: co.wrap(function*(){
+    yield this.getSelectedTextbookVersion() //获取当前科目下选中教材版本
+    yield this.getTextbookVersion() //获取当前学科所有教材版本
+    yield this.getTeachBook() //获取学科下所有教材
+    yield this.getSelectedTextbook() //获取当前科目下选中教材
+    yield this.mappingConditions() //同步匹配默认筛选项
   }),
 
   /**

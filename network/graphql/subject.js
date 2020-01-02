@@ -393,6 +393,7 @@ const graphqlApi = {
     return gql.query({
       query: `query Subject{
         xuekewang {
+          registered
           subjects{
             sn
             currentUserNum

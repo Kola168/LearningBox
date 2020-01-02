@@ -95,7 +95,7 @@ Component({
       })
     },
 
-    chooseInput: function ({
+    chooseInput: co.wrap(function *({
       currentTarget: {
         dataset: {
           index,
@@ -108,10 +108,16 @@ Component({
       })
       busFactory.removeTextbookData() //移除教材数据
       busFactory.removeSelectedCurrentData(this.data.subjectSn) //移除默认选择的教材版本和教材数据
-      this.chooseForms({
-        index
-      })
-    },
+      this.chooseForms({index})
+      if (index <= 0) {
+        this.versionSn = this.data.formList[index].selected.sn
+        yield this.getTeachBook()
+        var formList = this.data.formList
+        this.setData({
+          [`formList[1].selected`]: formList[1].content[0]
+        })
+      }
+    }),
 
     submit: co.wrap(function* () {
       var formInput = []
@@ -121,7 +127,6 @@ Component({
       var subjectSn = busFactory.getIds('subjectSn')
       var versionSn = formInput[0].sn
       var textbookSn = formInput[1].sn
-
       yield busFactory.sendGetChapter(subjectSn, textbookSn)
       busFactory.sendRequestIds('versionSn', versionSn)
       busFactory.sendRequestIds('textbookSn', textbookSn)

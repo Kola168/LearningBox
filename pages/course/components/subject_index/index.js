@@ -35,6 +35,9 @@ Component({
 
       try {
         var resp = yield graphql.getLastLearn()
+        if (!resp.xuekewang.registered) {
+          return this.registerSubject()
+        }
         var moreSubject = resp.xuekewang.subjects.slice(3)
         this.setData({
           subjects: resp.xuekewang.subjects.slice(0, 3),
@@ -46,6 +49,21 @@ Component({
         util.showError(err)
       } finally {
         this.longToast.hide()
+      }
+    }),
+
+    registerSubject: co.wrap(function*() {
+      try {
+        let res = yield graphql.register()
+        if (res.Register.state) {
+          this.getLastLearn()
+        } else {
+          throw (res)
+        }
+        this.longToast.hide()
+      } catch (error) {
+        this.longToast.hide()
+        util.showError(error)
       }
     }),
 
@@ -63,6 +81,24 @@ Component({
       wxNav.navigateTo('/pages/package_subject/sync_learn/learn_content/index', {
         index
       })
-    }
+    },
+
+    /**
+     * 跳转错题本
+     */
+    toErrorBook({
+      currentTarget: {
+        dataset: {
+          key
+        }
+      }
+    }) {
+      console.log('==跳转错题本==')
+      // wxNav.navigateTo
+    },
+
+    toMore () {
+      console.log('==查看更多==')
+    },
   }
 })

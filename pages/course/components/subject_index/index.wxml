@@ -20,7 +20,7 @@
         <view class="top-text">错题本</view>
       </view>
       <view class="box-entry">
-        <view class="left-entry">
+        <view class="left-entry" data-key="superErrorBook" bind:tap="toErrorBook">
           <view class="entry-title">小白超级错题本</view>
           <view class="sub-main">
             <view class="sub-text">共错误99道题</view>
@@ -28,7 +28,7 @@
             <image class="entry-icon" src="../images/super_err_book_icon.png"/>
           </view>
         </view>
-        <view class="right-entry">
+        <view class="right-entry" data-key="errorBook" bind:tap="toErrorBook"> 
           <view class="entry-title">其他错题本</view>
           <view class="sub-main">
             <view class="sub-text">共错误99道题</view>
