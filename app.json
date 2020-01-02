@@ -47,7 +47,7 @@
     "pages/finish/index",
     "pages/mall/index",
     "pages/webview/index",
-		"pages/webview/member"
+    "pages/webview/member"
   ],
   "subPackages": [
     {
@@ -66,7 +66,9 @@
         "feedback/index",
         "my_collection/index",
         "common_content/index",
-        "common_content/list"
+        "common_content/list",
+        "common_content/preview",
+        "common_content/setting"
       ]
     },
     {
@@ -142,16 +144,16 @@
         "error_book/photo_anwser_intro",
         "error_book/answer_result",
         "error_book/answer_print",
-				"kousuan/index",
-				"kousuan/learningplan"
+        "kousuan/index",
+        "kousuan/learningplan"
       ]
     },
     {
       "root": "pages/package_member",
       "pages": [
-				"pay/index",
-				"group/index"
-			]
+        "pay/index",
+        "group/index"
+      ]
     },
     {
       "root": "pages/package_other",
@@ -201,19 +203,19 @@
         "network/tips/step2",
         "network/tips/step3",
         "network/wificonnect/list",
-				"network/wificonnect/connect",
-				"ble/common/connect_success",
-				"ble/common/no_bluetooth",
-				"ble/common/bluetooth_intro",
-				"ble/common/no_device",
-				"ble/common/no_wifi",
-				"ble/device/index",
-				"ble/device/device",
-				"ble/device/device_connect",
-				"ble/network/configure",
-				"ble/network/wifi_list",
-				"ble/printer/index",
-				"ble/common/serach_serial"
+        "network/wificonnect/connect",
+        "ble/common/connect_success",
+        "ble/common/no_bluetooth",
+        "ble/common/bluetooth_intro",
+        "ble/common/no_device",
+        "ble/common/no_wifi",
+        "ble/device/index",
+        "ble/device/device",
+        "ble/device/device_connect",
+        "ble/network/configure",
+        "ble/network/wifi_list",
+        "ble/printer/index",
+        "ble/common/serach_serial"
       ]
     }
   ],

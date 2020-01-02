@@ -1,4 +1,4 @@
-// pages/package_common/common_content/index.js
+// pages/package_common/common_content/preview.js
 const app = getApp()
 import {
   regeneratorRuntime,
@@ -9,10 +9,15 @@ import Logger from '../../../utils/logger.js'
 const logger = new Logger.getLogger('pages/package_common/common_content/index')
 const event = require('../../../lib/event/event')
 import router from '../../../utils/nav'
-
 Page({
   data: {
-    allList: []
+    detail:{
+      preview_urls:[
+        'https://cdn-h.gongfudou.com/tmp/2019/10/25/e1acc050-0f65-11ea-a645-0bb7b7a5fdc4-out.jpg?x-image-process=image/resize,h_800/quality,Q_85/format,jpg',
+        'https://cdn-h.gongfudou.com/tmp/2019/10/25/e1acc050-0f65-11ea-a645-0bb7b7a5fdc4-out.jpg?x-image-process=image/resize,h_800/quality,Q_85/format,jpg',
+        'https://cdn-h.gongfudou.com/tmp/2019/10/25/e1acc050-0f65-11ea-a645-0bb7b7a5fdc4-out.jpg?x-image-process=image/resize,h_800/quality,Q_85/format,jpg'
+      ]
+    }
   },
   onLoad: co.wrap(function* (options) {
     this.options=options
@@ -21,7 +26,7 @@ Page({
     if (!this.userSn) {
       return router.navigateTo('/pages/authorize/index')
     }
-    yield this.getFeatureIndex()
+    // yield this.getContent()
 
     event.on('Authorize', this, () => {
       this.userSn = storage.get('userSn')
@@ -29,23 +34,6 @@ Page({
   }),
   onShow: function () {
 
-  },
-  getFeatureIndex: co.wrap(function* () {
-    this.longToast.toast({
-      type: "loading"
-    })
-    try {
-      const resp = yield gql.getFeatureIndex()
-      logger.info(resp)
-    } catch (error) {
-      util.showError(error)
-    }
-
-  }),
-  toList(e) {
-   router.navigateTo('/pages/package_common/common_content/list',{
-     featureKey:''
-   })
   },
   onShareAppMessage: function () {
 
