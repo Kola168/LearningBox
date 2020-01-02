@@ -68,7 +68,9 @@
         "common_content/index",
         "common_content/list",
         "common_content/preview",
-        "common_content/setting"
+        "common_content/setting",
+        "order_record/index/index",
+        "order_record/order/order"
       ]
     },
     {
@@ -166,7 +168,8 @@
         "growth_plan/print_setting/print_setting",
         "growth_plan/checkpoint/plan_checkpoint",
         "growth_plan/checkpoint/plan_detail",
-        "exercise_day/index/index"
+        "exercise_day/index/index",
+        "exercise_day/setting/setting"
       ]
     },
     {
@@ -174,6 +177,9 @@
       "pages": [
         "sync_learn/index/index",
         "sync_learn/learn_content/index",
+        "sync_learn/learn_detail/index",
+        "sync_learn/preview_subject/index",
+        "setting/setting",
         "evaluate_exam/index/index",
         "evaluate_exam/testpaper/index",
         "correct/index"
