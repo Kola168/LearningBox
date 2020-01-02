@@ -5,15 +5,15 @@ import {
   util,
   storage,
   wxNav
-} from '../../../utils/common_import'
-const _ = require('../../../lib/underscore/we-underscore')
+} from '../../../../utils/common_import'
+const _ = require('../../../../lib/underscore/we-underscore')
 const showModal = util.promisify(wx.showModal)
-import graphql from '../../../network/graphql/subject'
-import commonRequest from '../../../utils/common_request'
+import graphql from '../../../../network/graphql/preschool'
+import commonRequest from '../../../../utils/common_request'
 import {
   getLogger
-} from '../../../utils/logger'
-const logger = new getLogger('pages/package_subject/setting/setting')
+} from '../../../../utils/logger'
+const logger = new getLogger('pages/package_preschool/exercise_day/setting/setting')
 Page({
 
   data: {
@@ -27,7 +27,6 @@ Page({
     endMaxPage: 1, //最大页数
     totalPage: 1,
     showSelect: false,
-    // medium: 'a4',
     defaultMedium: 'A4打印纸',
     optionsMedium: 'A5打印纸',
     isExcel: true,
@@ -65,13 +64,12 @@ Page({
     this.longToast = new app.weToast()
     try {
       var query = this.query = JSON.parse(decodeURIComponent(options.postData))
-
       var printCapability = yield commonRequest.getPrinterCapacity(query.featureKey)
       if (!printCapability) {
         return
       }
 
-      let tempData = {
+      var tempData = {
         fileTitle: query.name,
         color: printCapability.color,
         grayscale: printCapability.grayscale,
@@ -82,13 +80,11 @@ Page({
         totalPage: query.pageCount,
         sn: query.sn,
         pageCount: query.pageCount,
-        isPrintAnswer: query.isPrintAnswer,
         startPrintPage: 1,
         endPrintPage: query.pageCount,
         startPage: 1,
         endPage: query.pageCount,
       }
-
       this.setData({
         ...tempData,
         isFullScreen: app.isFullScreen
@@ -373,27 +369,21 @@ Page({
       title: '请稍后...'
     })
     try {
-      var resp = yield graphql.createXuekewangOrder({
-        attributes: {
-          resourceType: 'XuekewangExercise',
-          sn: this.data.sn,
-          isAnswer: this.data.isPrintAnswer,
-          copies: this.data.documentPrintNum,
-          grayscale: !this.data.colorCheck,
-          color: this.data.colorCheck,
-          startPage: 1,
-          endPage: this.data.endPage,
-          duplex: this.data.duplexCheck,
-          // skipGs: this.data.checkOpen,
-          // extract: this.data.extract,
-          // singlePageLayoutsCount: this.data.singlePageLayoutsCount,
-        },
-        featureKey: this.query.featureKey
+      var resp = yield commonRequest.createOrder(' ', {
+        copies: this.data.documentPrintNum,
+        grayscale: !this.data.colorCheck,
+        color: this.data.colorCheck,
+        startPage: 1,
+        endPage: this.data.endPage,
+        duplex: this.data.duplexCheck,
+        // skipGs: this.data.checkOpen,
+        // extract: this.data.extract,
+        // singlePageLayoutsCount: this.data.singlePageLayoutsCount,
       })
       this.longToast.hide()
       wxNav.navigateTo('/pages/finish/index', {
-        media_type: this.query.featureKey,
-        state: resp.createXuekewangOrder.state
+        media_type: '',
+        state: resp.createOrder.state
       })
     } catch (err) {
       this.longToast.hide()

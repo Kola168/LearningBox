@@ -32,10 +32,7 @@
 <view class="no-order" wx:if="{{isEmpty}}">
 	<image mode="widthFix" src="../../images/no_order_record.png" />
 	<view>还没有任何购买记录哦</view>
-	<view
-	 class="back-home"
-	 bindtap="backToHome"
-	>去逛逛</view>
+	<view class="back-home" bindtap="backToHome">去逛逛</view>
 </view>
 <import src="../../../../lib/toast/wetoast.wxml" />
 <template is="wetoast" data="{{...__wetoast__}}" />

@@ -30,8 +30,7 @@ Page({
   getOrderInfo: co.wrap(function *(sn){
     this.longToast.toast({
       type: 'loading',
-      title: '请稍候',
-      duration: 0
+      title: '请稍候'
     })
     try {
       var resp = yield graphql.getOrderDetails(sn)
@@ -57,7 +56,9 @@ Page({
     }
   }),
 
-  // 获取授权状态
+  /**
+   * 获取授权状态
+   */
   getAuthStatus: function () {
     wx.getSetting({
       success: (res)=> {
@@ -72,7 +73,9 @@ Page({
     })
   },
 
-  // 跳转支付
+  /**
+   * 跳转支付
+   */
   toPay: co.wrap(function *(){
     wx.showLoading({
       title: '发起支付',
@@ -99,7 +102,9 @@ Page({
     }
   }),
 
-  // 查看内容详情
+  /**
+   * 查看内容详情
+   */
   contentDetail: function() {
     try {
       var item = this.data.orderDetails
@@ -143,7 +148,9 @@ Page({
 		return count(end_ts)
   },
 
-  // 授权回调
+  /**
+   * 授权回调
+   */
   authAlbum: co.wrap(function*(e) {
     if (e.detail.authSetting['scope.writePhotosAlbum'] == false) {
       return 
@@ -154,7 +161,9 @@ Page({
     this.savePhoto()
   }),
 
-  //保存图片
+  /**
+   * 保存图片
+   */
   savePhoto: co.wrap(function*(e) {
     let url = this.data.orderDetails.payableItem.icon
     let data = yield downloadFile({url})
@@ -179,7 +188,10 @@ Page({
     })
   }),
 
-  // 处理订单状态
+  /**
+   * 处理订单状态
+   * @param {*} key 
+   */
   utilsOrderStatus: function(key) {
     var statusMaps = {
       init : {

@@ -14,9 +14,8 @@
             <image class="pre-learn-tag" src="../../../images/last_learn_tag.png" wx:if="{{contentItem.selected && item.isUnfold && !contentItem.children.length}}"></image>
             <view class="arrow-icon" wx:if="{{!contentItem.children.length}}"></view>
           </view>  
-
+          
           <view class="chapter-nav-content"  wx:for="{{contentItem.children}}" wx:key="id" wx:for-item="periodItem" wx:for-index="periodIndex"  bind:tap="{{periodItem.children.length ? '' : 'toExeDetail'}}" data-sn="{{periodItem.sn}}">
-            
             <view class="chapter-nav-content-title">
               <view class="content-left-name">{{periodItem.name}}</view>
               <image class="pre-learn-tag" src="../../../images/last_learn_tag.png" wx:if="{{periodItem.selected && item.isUnfold && !periodItem.children.length}}"></image>

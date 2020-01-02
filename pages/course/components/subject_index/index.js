@@ -24,7 +24,13 @@ Component({
 
   attached() {
     this.longToast = new app.weToast()
-    this.getLastLearn()
+  },
+
+  pageLifetimes: {
+    show () {
+      this.getLastLearn()
+    }
+
   },
 
   methods: {
@@ -97,8 +103,12 @@ Component({
         }
       }
     }) {
-      console.log('==跳转错题本==')
-      // wxNav.navigateTo
+      var pathMapping = {
+        superErrorBook: '',
+        errorBook: '/pages/package_feature/error_book/index'
+      }
+      var path = pathMapping[key]
+      path && wxNav.navigateTo(path)
     },
 
     toMore () {

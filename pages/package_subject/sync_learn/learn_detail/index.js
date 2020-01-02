@@ -39,6 +39,10 @@ Page({
   openAiToast: function () {
     var memberToast = this.selectComponent('#memberToast')
     // memberToast.showToast()
+
+
+    // 判断会员标示
+
     this.setData({
       showAiToast: true
     })

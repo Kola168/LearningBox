@@ -57,6 +57,9 @@ Page({
    * @methods 确认
    */
   confirm: co.wrap(function* (e) {
+    var memberToast = this.selectComponent('#memberToast')
+    // memberToast.showToast()
+    // 开通会员
     this.print()
   }),
 
@@ -68,7 +71,7 @@ Page({
 
   print: co.wrap(function* () {
     try {
-     
+
 
       var postData = {
         name: this.data.exercise.exerciseName,
@@ -86,6 +89,5 @@ Page({
 
   }),
 
-  onHide() {
-  }
+  onHide() {}
 })

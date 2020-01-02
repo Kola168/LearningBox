@@ -1,19 +1,28 @@
-<nav-bar background="#fff" title="同步练习"/>
+<nav-bar background="#fff" title="同步练习" />
 <view class="preview-main">
-  <swiper class="swpier-box" bindchange="changeImg">
-      <swiper-item class="" item-id=""  wx:for="{{!isPrintAnswer ? exercise.images : exercise.answerImages}}" wx:key="nameUrl">
-        <image class="img-item" src="{{item.nameUrl}}" mode="widthFix"></image>
-      </swiper-item>
-  </swiper>
-  <view class="precent">{{currentIndex}}/{{!isPrintAnswer ? exercise.images.length : exercise.answerImages.length}}</view>
-  <view class="btn-bottom">
-    <view class="print-answer" bind:tap="checkAnswer">
-      <image class="check-on" src="{{isPrintAnswer ? '../../images/check_on.png' : '../../images/check_off.png'}}"></image>
-      <view class="title">打印答案</view>
-    </view>
-    <botttom-button text-right="确认打印" bindrighttap="confirm" get-phone="{{true}}"/>
-  </view>
+	<swiper class="swpier-box" bindchange="changeImg">
+		<swiper-item
+		 class=""
+		 item-id=""
+		 wx:for="{{!isPrintAnswer ? exercise.images : exercise.answerImages}}"
+		 wx:key="nameUrl"
+		>
+			<image class="img-item" src="{{item.nameUrl}}" mode="widthFix" />
+		</swiper-item>
+	</swiper>
+	<view class="precent">{{currentIndex}}/{{!isPrintAnswer ? exercise.images.length : exercise.answerImages.length}}</view>
+	<view class="btn-bottom">
+		<view class="print-answer" bind:tap="checkAnswer">
+			<image class="check-on" src="{{isPrintAnswer ? '../../images/check_on.png' : '../../images/check_off.png'}}" />
+			<view class="title">打印答案</view>
+		</view>
+		<view bind:tap="confirm" class="confirm-print">确认打印</view>
+	</view>
 </view>
+
+<!-- 会员开通弹窗 -->
+<showMemberToast id="memberToast" />
 
 <import src="../../../../lib/toast/wetoast.wxml" />
 <template is="wetoast" data="{{...__wetoast__}}" />
+
