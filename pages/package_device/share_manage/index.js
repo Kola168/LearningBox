@@ -1,4 +1,9 @@
-import { util, co, regeneratorRuntime, wxNav } from "../../../utils/common_import"
+import {
+  util,
+  co,
+  regeneratorRuntime,
+  wxNav
+} from "../../../utils/common_import"
 import graphql from "../../../network/graphql/device"
 
 const app = getApp()
@@ -7,7 +12,14 @@ Page({
     selectAllFlag: false,
     isFullScreen: false,
     loadReady: false,
-    userList: []
+    userList: [],
+    modalObj: {
+      isShow: false,
+      title: '停止分享',
+      hasCancel: true,
+      content: '停止分享后，您所选的使用者都将自行解绑设备并且无法进行任何操作',
+      confirmText: '确认解绑'
+    }
   },
   onLoad(query) {
     this.weToast = new app.weToast()
@@ -17,7 +29,7 @@ Page({
     })
     this.getShareUsers()
   },
-  getShareUsers: co.wrap(function*() {
+  getShareUsers: co.wrap(function* () {
     this.weToast.toast({
       type: 'loading'
     })
@@ -51,10 +63,10 @@ Page({
     }
     this.setData(dataObj)
   },
-  seletcUser(e) {
+  selectUser(e) {
     let index = e.currentTarget.id,
-      originFlag = this.data.userList[index].selectFlag
-    dataKey = 'userList[' + index + '].selectFlag'
+      originFlag = this.data.userList[index].selectFlag,
+      dataKey = 'userList[' + index + '].selectFlag'
     this.setData({
       [dataKey]: !originFlag
     })
@@ -69,12 +81,8 @@ Page({
       selectAllFlag
     })
   },
-  // 停止分享
-  stopShare: co.wrap(function*(e) {
+  showConfirm(e) {
     if (app.preventMoreTap(e)) return
-    this.weToast.toast({
-      type: 'loading'
-    })
     let usersSns = [],
       users = this.data.userList
     for (let i = 0; i < users.length; i++) {
@@ -82,10 +90,28 @@ Page({
         usersSns.push(users[i].sn)
       }
     }
+    if (usersSns.length === 0) {
+      wx.showToast({
+        icon: 'none',
+        title: '请先勾选使用者'
+      })
+      return
+    } else {
+      this.setData({
+        ['modalObj.isShow']: true
+      })
+      this.usersSns = usersSns
+    }
+  },
+  // 停止分享
+  stopShare: co.wrap(function* (e) {
+    this.weToast.toast({
+      type: 'loading'
+    })
     try {
-      yield graphql.stopShareDeviceUsers(this.deviceSn, usersSns)
+      yield graphql.stopShareDeviceUsers(this.deviceSn, this.usersSns)
       this.weToast.hide()
-      wxNav.navigateBack()
+      this.getShareUsers()
     } catch (error) {
       this.weToast.hide()
       util.showError(error)

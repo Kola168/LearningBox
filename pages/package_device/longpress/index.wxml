@@ -1,8 +1,8 @@
 <nav-bar title="{{navBarTitle}}"></nav-bar>
-<view class="container" wx:if="{{loadReady}}">
-  <view class="longpress-open" wx:if="{{longpressSetting.autoPressPrint||hasSetting}}">
+<view class="container">
+  <view class="longpress-open" wx:if="{{pressPrint}}">
     <view class="open-switch">
-      <view class="">{{longpressSetting.autoPressPrint?'关闭':'开启'}}长按打印</view>
+      <view class="">{{longpressSetting.autoPressPrint?'开启长按自动打印':'开启默认设置'}}</view>
       <image src="/images/switch_{{longpressSetting.autoPressPrint?'on':'off'}}.png" mode='widthFix' bindtap="handleLongpressSwitch" />
     </view>
     <view class="setting-default" wx:if="{{longpressSetting.autoPressPrint}}">
@@ -42,12 +42,12 @@
       <view class="text-triangle"></view>
       <view class="text-sub">可点击下方按钮开启功能</view>
     </view>
-    <view class='notopen-btn' bindtap="openSettingLongpress" id="open">开启长按打印功能</view>
+    <button class='notopen-btn' open-type="contact">开启长按打印功能</button>
   </view>
   <view class="tips">
     <view class="function-tip">
       <view>温馨提示</view>
-      <view wx:if="{{true}}">Excel的文件在发送给小白学习盒子后，需要进入公众号预览打印效果后再确认打印哦～</view>
+      <view wx:if="{{longpressSetting.autoPressPrint}}">Excel的文件在发送给小白学习盒子后，需要进入公众号预览打印效果后再确认打印哦～</view>
       <view wx:else>此状态下，您长按文档发送给小白后，可以进入“小白学习盒子”的公众号设置每条打印任务的分数、打印范围、色彩和单双面</view>
     </view>
     <view class="function-explain">
