@@ -88,9 +88,8 @@ Page({
   toDetail(e) {
     if (app.preventMoreTap(e)) return
     let id = e.currentTarget.dataset.id
-    wxNav.navigateTo('../../sync_learn/preview_subject/index', {
-      id: id,
-      type: 'testpaper'
+    wxNav.navigateTo('../preview/index', {
+      id: id
     })
   },
 

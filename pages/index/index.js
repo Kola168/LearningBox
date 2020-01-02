@@ -238,6 +238,9 @@ Page({
       case 'freeResources':
         url = '/pages/package_common/free_resources/index/index'
         break;
+      case 'memoryWrite':
+        url = '/pages/package_feature/memory_write/index/index'
+        break;
     }
     wxNav.navigateTo(url)
   },

@@ -6,9 +6,12 @@
   <image src="https://cdn-h.gongfudou.com/LearningBox/device/miantain_clean_3.png" mode="widthFix" />
 </view>
 <!-- modal -->
-<modal modal="{{modalObj}}" bindcomfirm="confirmClean">
-  <view class="modal-content">
+<modal modal="{{modalObj}}" bindconfirm="confirmClean">
+  <view class="modal-content" slot="content">
     <view>1、确保墨仓至少有<text>三分之一</text>的墨量，否则在大墨量清洗期间，产品可能会受损</view>
     <view>2、为了保障产品性能，大墨量清洗<text>每天仅能操作一次</text></view>
   </view>
 </modal>
+<!-- loading -->
+<import src="/lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />
