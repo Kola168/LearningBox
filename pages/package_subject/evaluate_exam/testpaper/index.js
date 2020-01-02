@@ -1,6 +1,11 @@
 "use strict"
 const app = getApp()
-import { regeneratorRuntime, co, wxNav, util } from "../../../../utils/common_import"
+import {
+  regeneratorRuntime,
+  co,
+  wxNav,
+  util
+} from "../../../../utils/common_import"
 import gqlSubject from '../../../../network/graphql/subject'
 Page({
   data: {
@@ -34,7 +39,7 @@ Page({
       name: '五年级'
     }]
   },
-  onLoad: co.wrap(function*(query) {
+  onLoad: co.wrap(function* (query) {
     this.weToast = new app.weToast()
     this.subjectId = Number(query.id)
     this.setData({
@@ -87,14 +92,20 @@ Page({
   // 跳转详情
   toDetail(e) {
     if (app.preventMoreTap(e)) return
-    let id = e.currentTarget.dataset.id
+    let index = e.currentTarget.dataset.index,
+      currentPaper = this.data.paperList[index],
+      hasReport = currentPaper.isReport,
+      name = currentPaper.title,
+      id = currentPaper.paperId
     wxNav.navigateTo('../preview/index', {
-      id: id
+      id: id,
+      hasReport: hasReport,
+      name: name
     })
   },
 
   // 获取试卷版本
-  getSubjectAreas: co.wrap(function*() {
+  getSubjectAreas: co.wrap(function* () {
     this.weToast.toast({
       type: 'loading'
     })
@@ -120,7 +131,7 @@ Page({
     }
   }),
   // 获取试卷类型
-  getSubjectPaperTypes: co.wrap(function*() {
+  getSubjectPaperTypes: co.wrap(function* () {
     this.weToast.toast({
       type: 'loading'
     })
@@ -139,7 +150,7 @@ Page({
   }),
 
   // 获取试卷
-  getSubjectPapers: co.wrap(function*() {
+  getSubjectPapers: co.wrap(function* () {
     this.weToast.toast({
       type: 'loading'
     })
