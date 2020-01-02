@@ -146,7 +146,11 @@
         "error_book/answer_result",
         "error_book/answer_print",
         "kousuan/index",
-        "kousuan/learningplan"
+        "kousuan/learningplan",
+        "kousuan/createplan",
+        "kousuan/pointslist",
+        "kousuan/previewWebview",
+        "evaluation/index"
       ]
     },
     {
@@ -155,6 +159,10 @@
         "pay/index",
         "group/index"
       ]
+    },
+    {
+      "root": "pages/package_other",
+      "pages": []
     },
     {
       "root": "pages/package_preschool",
@@ -229,7 +237,7 @@
   },
   "usingComponents": {
     "nav-bar": "components/nav-bar/index",
-    "botttom-button": "components/bottom-button/index"
+    "bottom-button": "components/bottom-button/index"
   },
   "sitemapLocation": "sitemap.json",
   "tabBar": {

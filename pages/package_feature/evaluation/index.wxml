@@ -1,0 +1,16 @@
+<!--pages/package_feature/evaluation/index.wxml-->
+<nav-bar title="宝贝测评"></nav-bar>
+<image src="../resource_images/evaluation_common_bg.png" mode="widthFix" class="common_bg">
+  <view class="cover-box">
+    <view class="text-box">
+      <text><text class="head-text">宝贝测评</text> 是一款从多方面
+测试宝宝，针对宝宝测试结果
+定制化出题训练，全面提高宝宝
+综合能力的智能应用。</text>
+    </view>
+    <image src="../resource_images/evaluation_process.png" mode="widthFix" class="process-img"></image>
+  </view>
+</image>
+<view class="bottom-button">
+  立即体验
+</view>
