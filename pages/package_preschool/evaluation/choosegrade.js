@@ -1,5 +1,14 @@
 // pages/package_feature/evaluation/choosegrade.js
+const app = getApp()
+const regeneratorRuntime = require('../../../lib/co/runtime')
+const co = require('../../../lib/co/co')
+const _ = require('../../../lib/underscore/we-underscore')
+const util = require('../../../utils/util')
+
 import wxNav from '../../../utils/nav.js'
+import api from '../../../network/restful_request'
+
+let Loger = (app.apiServer != 'https://epbox.gongfudou.com' || app.deBug) ? console.log : function() {}
 
 Page({
 

@@ -5,3 +5,7 @@ page{
   align-items:center;
   background:#4CBAFF;
 }
+
+.preview-bg{
+  width:700rpx;
+}
