@@ -513,7 +513,8 @@ const graphqlApi = {
             stageRoot{
               name
               rootName
-              sn
+							sn
+							rootKey
             }
             stage{
               name

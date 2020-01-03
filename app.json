@@ -156,7 +156,10 @@
     {
       "root": "pages/package_member",
       "pages": [
-        "pay/index",
+				"member/active",
+				"member/caculate",
+				"member/index",
+				"member/order",
         "group/index"
       ]
     },
