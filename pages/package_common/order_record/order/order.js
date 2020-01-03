@@ -10,38 +10,42 @@ import {
   wxNav
 } from '../../../../utils/common_import'
 // import wxPay from '../../../../utils/wxPay'
-// import graphql from '../../../../network/graphql/common'
+import graphql from '../../../../network/graphql/common'
 Page({
   data: {
     canSave: false,
     statusInfo: null,
     update_time: '00:00:00',
-    isPic: false
+    isEmpty: false,
   },
 
   onLoad: function(options) {
     this.longToast = new app.weToast()
-    // var order_sn = this.order_sn = options.sn || ''
-    // this.getAuthStatus()
+    var order_sn = this.order_sn = options.sn || ''
+    this.getAuthStatus()
     
-    // order_sn && this.getOrderInfo(order_sn)
+    order_sn && this.getOrderInfo(order_sn)
   },
 
+  /**
+   * 获取订单详情
+   */
   getOrderInfo: co.wrap(function *(sn){
     this.longToast.toast({
       type: 'loading',
       title: '请稍候'
     })
     try {
-      var resp = yield graphql.getOrderDetails(sn)
+      var resp = yield graphql.getPaymentOrderDetails(sn)
       this.setData({
-        orderDetails: resp.payment,
-        orderStatus: this.utilsOrderStatus(resp.payment.state)
+        orderDetails: resp.currentUser.paymentOrders,
+        isEmpty: !resp.currentUser.paymentOrders,
+        orderStatus: this.utilsOrderStatus(resp.currentUser.paymentOrders.state)
       })
-      if (resp.payment.state != 'init') {
+      if (resp.currentUser.paymentOrders.state != 'init') {
         return
       }
-      this.countDown(resp.payment.createdAt.replace(/-/g,'/'), (time)=>{
+      this.countDown(resp.currentUser.paymentOrders.createdAt.replace(/-/g,'/'), (time)=>{
         this.setData({
           update_time: time,
         })
