@@ -6,6 +6,7 @@
   width: 100%;
   position: relative;
   margin-bottom: 48rpx;
+  font-family: 'Symbol';
 }
 
 .tip-img image {

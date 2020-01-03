@@ -13,60 +13,15 @@
         <image src="{{item.iconUrl}}" mode="widthFix" />
       </view>
       <view class="item-text">
-        <view class="text-title">{{item.title}}</view>
+        <view class="text-title text-overflow-points">{{item.name}}</view>
         <view class="text-number">
           <view class="number-left">
             <image src="/images/doc_print_icon.png" />
-            <view>暂无</view>
+            <view>{{item.printerOrdersCount}}</view>
           </view>
           <view>共{{item.pageCount}}页</view>
         </view>
       </view>
     </view>
-    <!-- <view class="content-item" bindtap="toNext">
-      <view class="item-img">
-        <image src="/images/doc_email.png" mode="widthFix" />
-      </view>
-      <view class="item-text">
-        <view class="text-title">拉大锯</view>
-        <view class="text-number">
-          <view class="number-left">
-            <image src="/images/doc_print_icon.png" />
-            <view>999</view>
-          </view>
-          <view>共1页</view>
-        </view>
-      </view>
-    </view>
-    <view class="content-item" bindtap="toNext">
-      <view class="item-img">
-        <image src="/images/doc_email.png" mode="widthFix" />
-      </view>
-      <view class="item-text">
-        <view class="text-title">拉大锯</view>
-        <view class="text-number">
-          <view class="number-left">
-            <image src="/images/doc_print_icon.png" />
-            <view>999</view>
-          </view>
-          <view>共1页</view>
-        </view>
-      </view>
-    </view>
-    <view class="content-item" bindtap="toNext">
-      <view class="item-img">
-        <image src="/images/doc_email.png" mode="widthFix" />
-      </view>
-      <view class="item-text">
-        <view class="text-title">拉大锯</view>
-        <view class="text-number">
-          <view class="number-left">
-            <image src="/images/doc_print_icon.png" />
-            <view>999</view>
-          </view>
-          <view>共1页</view>
-        </view>
-      </view>
-    </view> -->
   </view>
 </view>

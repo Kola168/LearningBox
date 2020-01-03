@@ -1,12 +1,15 @@
 const app = getApp()
-import { regeneratorRuntime, co, util, wxNav } from '../../../utils/common_import'
+import {
+  regeneratorRuntime,
+  co,
+  util,
+  wxNav
+} from '../../../utils/common_import'
 import gqlDevice from '../../../network/graphql/device'
 Page({
   data: {
     navBarTitle: '长按打印设置',
-    hasSetting: false,
     longpressSetting: {},
-    loadReady: false,
     modalObj: {
       isShow: false,
       title: '重要提醒',
@@ -17,19 +20,23 @@ Page({
   onLoad(query) {
     this.weToast = new app.weToast()
     this.deviceSn = query.sn
-    this.getLongpressSetting()
+    let pressPrint = Boolean(Number(query.pressPrint))
+    this.setData({
+      pressPrint
+    })
+    if (pressPrint) {
+      this.getLongpressSetting()
+    }
   },
   // 获取长按打印设置
-  getLongpressSetting: co.wrap(function*() {
+  getLongpressSetting: co.wrap(function* () {
     this.weToast.toast({
       type: 'loading'
     })
     try {
       let res = yield gqlDevice.getLongPressSetting(this.deviceSn)
-
       this.setData({
-        longpressSetting: res.currentUser.devices[0],
-        loadReady: true
+        longpressSetting: res.currentUser.devices[0]
       })
       this.weToast.hide()
     } catch (error) {
@@ -38,7 +45,7 @@ Page({
     }
   }),
   // 开启长按打印
-  openSettingLongpress: co.wrap(function*(e) {
+  openSettingLongpress: co.wrap(function* (e) {
     let flag = e.currentTarget.id === 'open' ? 1 : 0
     this.updateLongpressSetting({
       currentTarget: {
@@ -50,7 +57,7 @@ Page({
     })
   }),
 
-  updateLongpressSetting: co.wrap(function*(e) {
+  updateLongpressSetting: co.wrap(function* (e) {
     this.weToast.toast({
       type: 'loading'
     })
@@ -62,8 +69,7 @@ Page({
       }, 'autoPressPrint,pressPrintColor,pressPrintDuplex')
       let setting = res.updateDeviceSetting.device
       this.setData({
-        longpressSetting: setting,
-        hasSetting: true
+        longpressSetting: setting
       })
       this.weToast.hide()
     } catch (error) {
@@ -71,7 +77,6 @@ Page({
       util.showError(error)
     }
   }),
-
 
   handleLongpressSwitch() {
     let switchFlag = this.data.longpressSetting.autoPressPrint

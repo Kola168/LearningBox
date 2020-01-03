@@ -70,7 +70,7 @@
           <view class="item-left">
             <view class="left-label">切换为电脑打印</view>
           </view>
-          <view class="item-right" bindtap="updateSetting" data-key="connectTo" data-val="{{device.connectThrough==='box'?'pc':'box'}}">
+          <view class="item-right" bindtap="showModal" id="connectThrough" data-key="connectThrough" data-val="{{device.connectThrough==='box'?'pc':'box'}}">
             <image src="/images/switch_on.png" wx:if="{{device.connectThrough==='pc'}}" class="right-switch" />
             <image src="/images/switch_off.png" wx:if="{{device.connectThrough==='box'}}" class="right-switch" />
           </view>

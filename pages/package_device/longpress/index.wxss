@@ -46,6 +46,7 @@
   background: #FFDC5E;
   color: #454545;
   font-size: 36rpx;
+  padding: 0;
 }
 
 

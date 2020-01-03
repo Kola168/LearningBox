@@ -8,24 +8,26 @@ import {
 import getLoopsEvent from '../../../../utils/worker'
 
 Page({
-
   data: {
     currentIndex: 1,
-    imgList: [
-      'https://cdn-h.gongfudou.com/LearningBox/main/doc_confirm_print_a4_new.png',
-      'https://cdn-h.gongfudou.com/LearningBox/main/doc_confirm_print_a4_new.png'
-    ],
-    confirmModal: {
+    hasReport: false,
+    printAnswer: false,
+    imgList: [],
+    modalObj: {
       isShow: false,
-      title: '请正确放置A4打印纸',
-      image: 'https://cdn-h.gongfudou.com/LearningBox/main/doc_confirm_print_a4_new.png'
+      slotBottom: true,
+      title: '开通学科会员 可使用海量优质试卷',
+      image: 'https://micro.obs.cn-east-2.myhuaweicloud.com/LearningBox/subject/toast_testpaper.png'
     }
   },
 
   onLoad: function (query) {
-    this.paperId = query.id
     this.weToast = new app.weToast()
-    console.log(this.paperId, '===sn===')
+    this.paperId = query.id
+    this.setData({
+      hasReport: Boolean(Number(query.hasReport)),
+      name: query.name
+    })
     this.getPaperDetail()
   },
 
@@ -37,43 +39,49 @@ Page({
     this.setData({
       currentIndex: current + 1
     })
-    console.log(current, 'current')
   },
 
-  /**
-   * @methods 确认
-   */
-  confirm: co.wrap(function* (e) {
-    if (Boolean(storage.get("hideConfirmPrintBox"))) {
-      return this.print()
-    }
-
+  checkAnswer() {
     this.setData({
-      ['confirmModal.isShow']: true
+      printAnswer: !this.data.printAnswer
     })
-  }),
-
-  print: co.wrap(function* () {
-
+  },
+  checkMember() {
+    this.setData({
+      ['modalObj.isShow']: true
+    })
+  },
+  toPrint: co.wrap(function* () {
+    let postData = {
+      featureKey: 'xuekewang_paper',
+      sn: this.paperId,
+      name: this.data.name,
+      isPrintAnswer: this.data.printAnswer,
+      pageCount: this.data.imgList.length
+    }
+    wxNav.navigateTo('../../setting/setting', {
+      postData: encodeURIComponent(JSON.stringify(postData))
+    })
   }),
   getPaperDetail: co.wrap(function* () {
     this.weToast.toast({
       type: 'loading'
     })
     try {
-      console.log(this.paperId)
       getLoopsEvent({
         feature_key: 'xuekewang_paper',
         worker_data: {
           paper_id: this.paperId
         }
       }, (res) => {
-        if (res.state === 'finished') {
-          console.log(res)
+        if (res.data.state === 'finished') {
+          this.setData({
+            imgList: res.data.images
+          })
+          this.sn = res.data.sn
           this.weToast.hide()
         }
       })
-      // this.weToast.hide()
     } catch (error) {
       this.weToast.hide()
       util.showError(error)

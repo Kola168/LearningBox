@@ -104,6 +104,7 @@ const graphqlApi = {
     return gql.query({
       query: `query ($sn: String!){
         currentUser{
+          pressPrint,
           devices(sn:$sn){
             ...on IotDevice {
               connectThrough
@@ -159,15 +160,19 @@ const graphqlApi = {
    * @param { Array } userSns 停止分享用户的sn
    */
   stopShareDeviceUsers: (sn, userSns) => {
-    return gql.query({
-      query: `query ($sn: String!,$userSns: [String!]){
-        unbindUsers(sn: $sn,userSns: $userSns){
-          sn
+    return gql.mutate({
+      mutation: `mutation ($input: UnbindUsersInput!){
+        unbindUsers(input: $input){
+          device {
+            sn
+          }
 				}
       }`,
       variables: {
-        sn: sn,
-        userSns: userSns
+        input: {
+          sn: sn,
+          userSns: userSns
+        }
       }
     })
   },
