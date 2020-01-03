@@ -20,8 +20,16 @@ const graphqlApi = {
    * 更新打印机设置
    * @param { String } sn required 设备编号
    * @param { Object } deviceSetting required 设置信息
+   * @param { String } requestKey required 响应字段
    */
   updateDeviceSetting: (sn, deviceSetting, requestKey) => {
+    if(requestKey==='connectTo'){
+      requestKey = `
+        ...on IotDevice {
+          connectThrough
+        }
+      `
+    }
     return gql.mutate({
       mutation: `mutation ($input: UpdateDeviceSettingInput!){
         updateDeviceSetting(input:$input){
@@ -96,6 +104,7 @@ const graphqlApi = {
     return gql.query({
       query: `query ($sn: String!){
         currentUser{
+          pressPrint,
           devices(sn:$sn){
             ...on IotDevice {
               connectThrough
@@ -151,15 +160,19 @@ const graphqlApi = {
    * @param { Array } userSns 停止分享用户的sn
    */
   stopShareDeviceUsers: (sn, userSns) => {
-    return gql.query({
-      query: `query ($sn: String!,$userSns: [String!]){
-        unbindUsers(sn: $sn,userSns: $userSns){
-          sn
+    return gql.mutate({
+      mutation: `mutation ($input: UnbindUsersInput!){
+        unbindUsers(input: $input){
+          device {
+            sn
+          }
 				}
       }`,
       variables: {
-        sn: sn,
-        userSns: userSns
+        input: {
+          sn: sn,
+          userSns: userSns
+        }
       }
     })
   },
@@ -223,6 +236,38 @@ const graphqlApi = {
       }
     })
   },
+
+  /**
+   * 设备维护
+   * @param { String } sn required 设备编号
+   * @param { String } maintenanceAction required 维护类型：nozzleCheck/cleanPrinter/powerInkFlush/updatePrinter
+   * @param { String } requestKey required 响应字段
+   */
+  deviceMaintain: (sn, maintenanceAction, requestKey) => {
+    if(maintenanceAction==='updatePrinter'){
+      requestKey = `
+        ...on IotDevice {
+          updateInfo
+        }
+      `
+    }
+    return gql.mutate({
+      mutation: `mutation ($input: UpdateDeviceSettingInput!){
+        updateDeviceSetting(input:$input){
+          device{
+            ${requestKey}
+          }
+        }
+      }`,
+      variables: {
+        input: {
+          sn: sn,
+          maintenanceAction: maintenanceAction
+        }
+      }
+    })
+  },
+
 }
 
 export default graphqlApi

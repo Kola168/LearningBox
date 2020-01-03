@@ -1,0 +1,26 @@
+<nav-bar background="#fff" title="{{name}}" />
+<view class="preview-main">
+  <swiper class="swpier-box" bindchange="changeImg">
+    <swiper-item class="" item-id="" wx:for="{{imgList}}" wx:key="*this">
+      <image class="img-item" src="{{item}}" mode="widthFix"></image>
+    </swiper-item>
+  </swiper>
+  <view class="precent">{{currentIndex}}/{{imgList.length}}</view>
+  <image src="../../images/look_report.png" wx:if="{{hasReport}}" class="look-report" mode="widthFix" />
+  <view class="btn-bottom">
+    <view class="print-answer" bindtap="checkAnswer">
+      <image class="check-on" src="../../images/check_{{printAnswer?'on':'off'}}.png"></image>
+      <view class="title">打印答案</view>
+    </view>
+    <view bindtap="checkMember" class="confirm-print">确认打印</view>
+  </view>
+</view>
+<!-- modal -->
+<modal modal="{{modalObj}}" bindconfirm="confirmModal">
+  <view slot="bottom" class="member-btn" catchtap="toPrint">
+    <image src="../../images/diamond.png" mode="widthFix" />
+    <view>开通会员可免费使用</view>
+  </view>
+</modal>
+<import src="/lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />

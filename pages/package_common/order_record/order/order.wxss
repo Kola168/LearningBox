@@ -1,0 +1,145 @@
+@import '/common/wxss/common.wxss';
+
+.order-main {
+  padding: 0 24rpx;
+  height: 100vh;
+  background-color: #FFF;
+}
+
+.order-main .order-status {
+  width: 100%;
+  height: 140rpx;
+}
+
+.order-main .icon-status {
+  margin-right: 12rpx;
+  width: 28rpx;
+  height: 28rpx;
+  vertical-align: top;
+}
+
+.order-info{
+  border-bottom: 1px solid #e6e6e6;
+}
+
+.order-price-info {
+  padding: 25rpx 0;
+  border-bottom: 1px solid #e6e6e6;
+}
+
+.pay-time-area {
+  padding-bottom: 25rpx;
+}
+
+
+.pay-price {
+  padding-top: 34rpx; 
+}
+
+.pay-price .price {
+  font-weight: 400;
+}
+
+.pay-status {
+  margin-top: 48rpx;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.pay-status image {
+  margin-right: 16rpx;
+  width: 30rpx;
+  height: 30rpx;
+}
+
+.over-time {
+  margin-right: 24rpx;
+  color: #FF5022;
+}
+
+.btn-pay {
+  width: 120rpx;
+  height: 60rpx;
+  line-height: 60rpx;
+  background-color: #FFE27A;
+  text-align: center;
+}
+
+.failed-hint {
+  margin: 96rpx auto 0;
+  width: 430rpx;
+  height: 42rpx;
+  line-height: 42rpx;
+  border: 1px solid #FF5022;
+  border-radius: 2rpx;
+  text-align: center;
+  color: #FF5022;
+}
+
+.btn-content {
+  margin: 108rpx auto 0;
+  width: 600rpx;
+  height: 98rpx;
+  line-height: 98rpx;
+  border-radius: 50rpx;
+  background-color: #FFE27A;
+  text-align: center;
+}
+
+.padding-b-15 {
+  padding-bottom: 30rpx;
+}
+
+.hint-color {
+  color: #FF5022;
+}
+
+.un_pay {
+  color: #FF5022;
+}
+
+.paid {
+  color: #4FB526;
+}
+
+.product-title {
+  width: 70%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-all;
+  white-space: nowrap;
+  height: 40rpx;
+  text-align: right;
+}
+
+
+/* course empty */
+
+.course-empty {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+}
+
+.course-empty image {
+  margin-bottom: 44rpx;
+  width: 232rpx;
+}
+
+.course-empty .name {
+  margin-bottom: 60rpx;
+  color: #666666;
+  font-size: 32rpx;
+}
+
+.course-empty .btn {
+  width: 280rpx;
+  height: 80rpx;
+  line-height: 80rpx;
+  text-align: center;
+  background: #FFDC5E;
+  border-radius: 44rpx;
+}

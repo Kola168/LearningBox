@@ -10,7 +10,7 @@
         <image src="{{modal.image}}" mode="widthFix" wx:if="{{modal.image}}"></image>
       </block>
     </view>
-    <block wx:if="{{modal.soltBottom}}">
+    <block wx:if="{{modal.slotBottom}}">
       <slot name="bottom"></slot>
     </block>
     <view wx:else class="confirm-modal-button">

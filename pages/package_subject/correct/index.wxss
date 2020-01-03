@@ -72,7 +72,7 @@ page {
   margin-left: 8rpx;
 }
 
-.header-serial-unfold{
+.header-serial-unfold {
   color: #FFA200;
 }
 
@@ -81,6 +81,7 @@ page {
   padding-bottom: 360rpx;
   box-sizing: border-box;
   overflow-y: scroll;
+  color: #333;
 }
 
 .content-serial {
@@ -102,8 +103,35 @@ page {
   margin-bottom: calc(12.5% - 25px);
 }
 
-.serial-item:not(:nth-of-type(9n)){
+.serial-item:not(:nth-of-type(9n)) {
   margin-right: calc(12.5% - 25px);
+}
+
+.content-topic {
+  font-size: 26rpx;
+}
+
+.topic-body {
+  padding: 0 20rpx 46rpx;
+  border-bottom: 2rpx solid #E7E7E7;
+}
+
+.body-options {
+  padding-top: 40rpx;
+}
+
+.option-item {
+  display: flex;
+}
+
+.topic-answer {
+  padding: 48rpx 20rpx 32rpx;
+}
+
+.answer-title {
+  font-size: 28rpx;
+  color: #333;
+  padding-bottom: 28rpx;
 }
 
 
@@ -179,7 +207,6 @@ page {
 
 .multiply-content-undetachable .content-item {
   padding: 0 36rpx;
-
 }
 
 .content-fault-active {

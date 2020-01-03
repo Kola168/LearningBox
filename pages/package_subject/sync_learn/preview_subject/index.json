@@ -1,5 +1,6 @@
 {
   "usingComponents": {
-    "confirm-print": "../../../../components/confirm-print"
+    "confirm-print": "../../../../components/confirm-print",
+    "showMemberToast": "../components/member-toast/index"
   }
 }

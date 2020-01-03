@@ -1,0 +1,43 @@
+var thumbIcon = '../../no_order_record.png';
+
+var fixIcon = function (url) {
+    return url ? url : thumbIcon
+}
+
+var formatTime = function (time, fmt) {
+    var date = getDate(time.replace(getRegExp('-', 'g'), '/'))
+    var o = {
+        yyyy: date.getFullYear(),
+        MM: date.getMonth() + 1,
+        dd: date.getDate(),
+        HH: date.getHours(),
+        mm: date.getMinutes(),
+        ss: date.getSeconds()
+    }
+    var coverNum = function(num){
+        return num.toString().length < 2 ? '0' + num : num
+    }
+    var keys = ['yyyy', 'MM', 'dd', 'HH', 'mm', 'ss']
+    for (var key = 0; key < keys.length; key++) {
+        if(getRegExp(o[key]).test(fmt)) {
+            fmt = fmt.replace(keys[key], coverNum(o[keys[key]]))
+        }
+    }
+    return fmt
+
+}
+
+
+var matchCateGroyName = function(typename) {
+    var types = {
+        Course: '课程',
+        MemberConfig: '会员'
+    }
+    return types[typename]
+}
+
+module.exports = {
+    fixIcon: fixIcon,
+    formatTime: formatTime,
+    matchCateGroyName: matchCateGroyName,
+}

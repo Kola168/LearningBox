@@ -513,7 +513,8 @@ const graphqlApi = {
             stageRoot{
               name
               rootName
-              sn
+							sn
+							rootKey
             }
             stage{
               name
@@ -926,8 +927,9 @@ const graphqlApi = {
           contents {
             iconUrl
             pageCount
+            printerOrdersCount
             sn
-            title
+            name
           }
         }
       }`,
@@ -949,7 +951,7 @@ const graphqlApi = {
             nameUrl
           }
           pageCount
-          title
+          name
           featureKey
         }
       }`,

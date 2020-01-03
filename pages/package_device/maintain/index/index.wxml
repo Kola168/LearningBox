@@ -42,7 +42,7 @@
       </view>
     </view>
   </view>
-  <view class="list-item" bindtap="toNextPage" id="state_notice">
+  <view class="list-item" bindtap="showModal">
     <view class="item-index">
       <view>4</view>
     </view>
@@ -57,3 +57,9 @@
     </view>
   </view>
 </view>
+<!-- modal -->
+<modal modal="{{modalObj}}" bindconfirm="confirmModal">
+  <view slot="bottom" class="modal-btn">
+    <button open-type="contact" hover-class="none">回复“小白”，关注公众号</button>
+  </view>
+</modal>

@@ -68,7 +68,10 @@
         "common_content/index",
         "common_content/list",
         "common_content/preview",
-        "common_content/setting"
+        "common_content/setting",
+        "order_record/index/index",
+        "order_record/order/order",
+        "setting/setting"
       ]
     },
     {
@@ -127,7 +130,6 @@
         "share_folder/content",
         "share_folder/manage",
         "memory_write/index/index",
-        "memory_write/szcx/index",
         "memory_write/chinese/index",
         "memory_write/chinese/print",
         "memory_write/english/index",
@@ -145,13 +147,19 @@
         "error_book/answer_result",
         "error_book/answer_print",
         "kousuan/index",
-        "kousuan/learningplan"
+        "kousuan/learningplan",
+        "kousuan/createplan",
+        "kousuan/pointslist",
+        "kousuan/previewWebview"
       ]
     },
     {
       "root": "pages/package_member",
       "pages": [
-        "pay/index",
+				"member/active",
+				"member/caculate",
+				"member/index",
+				"member/order",
         "group/index"
       ]
     },
@@ -171,7 +179,15 @@
         "growth_plan/print_setting/print_setting",
         "growth_plan/checkpoint/plan_checkpoint",
         "growth_plan/checkpoint/plan_detail",
-        "exercise_day/index/index"
+        "exercise_day/index/index",
+        "exercise_day/setting/setting",
+        "evaluation/index",
+        "evaluation/choosegrade",
+        "evaluation/secondlevel",
+        "evaluation/test",
+        "evaluation/testfinish",
+        "evaluationprint/printpreview",
+        "evaluationprint/printset"
       ]
     },
     {
@@ -179,6 +195,9 @@
       "pages": [
         "sync_learn/index/index",
         "sync_learn/learn_content/index",
+        "sync_learn/learn_detail/index",
+        "sync_learn/preview_subject/index",
+        "setting/setting",
         "evaluate_exam/index/index",
         "evaluate_exam/testpaper/index",
         "correct/index"
@@ -228,7 +247,7 @@
   },
   "usingComponents": {
     "nav-bar": "components/nav-bar/index",
-    "botttom-button": "components/bottom-button/index"
+    "bottom-button": "components/bottom-button/index"
   },
   "sitemapLocation": "sitemap.json",
   "tabBar": {

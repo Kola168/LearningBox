@@ -21,11 +21,12 @@ App({
   // apiServer: 'https://epbox.gongfudou.com',
 
   //staging
-  apiServer: 'https://lb-stg.gongfudou.com',
+	apiServer: 'https://lb-stg.gongfudou.com',
+	apiWbviewServer: 'https://lb-stg.gongfudou.com',
 
   //王析理本地地址
   // apiServer: 'http://epbox.natapp1.cc',
-  // apiWbviewServer: 'http://epbox.natapp1.cc/',
+  // apiWbviewServer: 'http://epbox.natapp1.cc',
 
   // 袁小飞接口
   // apiServer: 'http://schaffer.utools.club',
@@ -37,7 +38,7 @@ App({
   // apiServer: 'http://jhx.nat300.top',
 
   // 测试接口张伟
-  // apiServer: 'http://bboo.natapp1.cc',
+  // apiServer: 'https://bboo.utools.club',
 
   // 许成本地服务
   // apiServer: 'http://xucheng.nat100.top',

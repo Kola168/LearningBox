@@ -44,7 +44,7 @@ Page({
         sources: content.contentImages,
         pageCount: content.pageCount,
         endPage: content.pageCount,
-        title: content.title,
+        title: content.name,
         isCollect: false
       })
       this.featureKey = content.featureKey
