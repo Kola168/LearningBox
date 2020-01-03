@@ -16,6 +16,7 @@ const graphqlApi = {
             state
             updatedAt
             payable{
+              categoryName:__typename
               ...on Course{
                 icon: iconUrl
                 name
@@ -38,17 +39,17 @@ const graphqlApi = {
     return gql.query({
       query: `query getPaymentOrders($sn:String){
         currentUser{
-          paymentOrders(sn:$sn){
+          paymentOrders(sn: $sn){
             amountYuan
             createdAt
             payable{
-              typename
-              ...on Course{
+              categoryName:__typename
+              ... on Course{
                 icon: iconUrl
                 name
                 paidAmountYuan: priceYuan
               }
-              ...on MemberConfig{
+              ... on MemberConfig{
                 icon: image
                 name
                 paidAmountYuan: priceY

@@ -37,20 +37,23 @@ Page({
     })
     try {
       var resp = yield graphql.getPaymentOrderDetails(sn)
+      console.log(resp,'xxxxxxx')
       this.setData({
-        orderDetails: resp.currentUser.paymentOrders,
-        isEmpty: !resp.currentUser.paymentOrders,
-        orderStatus: this.utilsOrderStatus(resp.currentUser.paymentOrders.state)
+        orderDetails: resp.currentUser.paymentOrders[0],
+        isEmpty: !resp.currentUser.paymentOrders[0],
+        orderStatus: this.utilsOrderStatus(resp.currentUser.paymentOrders[0].state)
       })
-      if (resp.currentUser.paymentOrders.state != 'init') {
+
+      console.log(this.data.orderDetails, '==orderDetails==')
+      if (resp.currentUser.paymentOrders[0].state != 'init') {
         return
       }
-      this.countDown(resp.currentUser.paymentOrders.createdAt.replace(/-/g,'/'), (time)=>{
+      this.countDown(resp.currentUser.paymentOrders[0].createdAt.replace(/-/g,'/'), (time)=>{
         this.setData({
           update_time: time,
         })
       }, ()=>{
-        this.getOrderInfo(sn)
+        // this.getOrderInfo(sn)
       })
     } catch(err) {
       console.log(err)
@@ -111,20 +114,18 @@ Page({
    */
   contentDetail: function() {
     try {
-      var item = this.data.orderDetails
-      var categoryType = item.payableItem.desc.categoryType
-      var type = ["cnjy_paper", "cnjy_special_paper"].indexOf(categoryType) > -1 ? '_learning' : '_fun'
-
-      // 判断课程单独配置router
-      if (["course"].indexOf(categoryType) > -1) {
-        return wx.redirectTo({
-          url: `/pages/learning/course/course?sn=${item.payableItem.desc.categorySn}`
+      var orderDetails = this.data.orderDetails
+      if (orderDetails.payable.categoryName == 'aiphoto') {
+        wxNav.navigateTo('/pages/package_course/course/course', {
+          sn: orderDetails.payable.sn
         })
       }
 
-      wx.navigateTo({
-          url: `/pages/library/play_preview?title=${item.payableItem.name}&id=${item.payableItem.desc.resourceSign}&sn=${item.payableItem.desc.categorySn}&type=${type}`
-      })
+      if (orderDetails.payable.categoryName == 'Course') {
+        wxNav.navigateTo('/pages/package_course/course/course', {
+          sn: orderDetails.payable.sn
+        })
+      }
     } catch (e) {
       console.error(e)
     }

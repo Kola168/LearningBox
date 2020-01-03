@@ -31,7 +31,7 @@ Page({
       const resp = yield graphql.getPaymentOrders()
       this.setData({
         orderList: resp.currentUser.paymentOrders,
-        isEmpty: !resp.payments.length
+        isEmpty: !resp.currentUser.paymentOrders.length
       })
     } catch (err) {
       util.showError(err)
@@ -42,13 +42,14 @@ Page({
   // 跳转订单详情
   toOrder: function ({
     currentTarget: {
-      id
+      dataset: {
+        sn
+      }
     }
   }) {
     try {
-      var order = this.data.orderList[id]
       wxNav.navigateTo('../order/order', {
-        sn: order.sn
+        sn
       })
     } catch (err) {
       console.error(err)
