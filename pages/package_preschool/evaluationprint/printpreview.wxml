@@ -1,0 +1,3 @@
+<!--pages/package_preschool/evaluationprint/printpreview.wxml-->
+<nav-bar title="专题训练"></nav-bar>
+<image src="../images/" mode="widthFix" class="preview-bg"></image>

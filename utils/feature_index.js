@@ -33,6 +33,7 @@ var feature_route = {
   photo_sticker:'/pages/package_feature/print_sticker/index',
   mini_album:'/pages/package_feature/print_thumb_album/index',
   share_folder_pic_5in: '/pages/package_feature/share_folder/index',
+  kousuan:'/pages/package_feature/kousuan/index'
 }
 module.exports = {
   feature_route: feature_route,

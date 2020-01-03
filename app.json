@@ -146,8 +146,7 @@
         "kousuan/learningplan",
         "kousuan/createplan",
         "kousuan/pointslist",
-        "kousuan/previewWebview",
-        "evaluation/index"
+        "kousuan/previewWebview"
       ]
     },
     {
@@ -173,7 +172,14 @@
         "growth_plan/print_setting/print_setting",
         "growth_plan/checkpoint/plan_checkpoint",
         "growth_plan/checkpoint/plan_detail",
-        "exercise_day/index/index"
+        "exercise_day/index/index",
+        "evaluation/index",
+        "evaluation/choosegrade",
+        "evaluation/secondlevel",
+        "evaluation/test",
+        "evaluation/testfinish",
+        "evaluationprint/printpreview",
+        "evaluationprint/printset"
       ]
     },
     {

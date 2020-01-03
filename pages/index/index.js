@@ -298,5 +298,9 @@ Page({
   }),
   toBindDevice: function () {
     wxNav.navigateTo('/pages/package_device/network/index/index')
+  },
+
+  tokousuan:function(){
+    wxNav.navigateTo('/pages/package_feature/kousuan/index')
   }
 })

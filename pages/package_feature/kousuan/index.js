@@ -9,6 +9,8 @@ import wxNav from '../../../utils/nav.js'
 import api from '../../../network/restful_request'
 import graphql from '../../../network/graphql/feature'
 
+let Loger = (app.apiServer != 'https://epbox.gongfudou.com' || app.deBug) ? console.log : function() {}
+
 Page({
 
   data: {
@@ -41,7 +43,7 @@ Page({
       this.longToast.toast()
     }catch(e){
       this.longToast.toast()
-      console.log(e)
+      Loger(e)
       util.showError(e)
     }
   }),
@@ -57,7 +59,7 @@ Page({
       })
       this.longToast.toast()
     }catch(e){
-      console.log(e)
+      Loger(e)
       this.longToast.toast()
       util.showError(e)
     }

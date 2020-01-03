@@ -1,0 +1,7 @@
+/* pages/package_preschool/evaluationprint/printpreview.wxss */
+page{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  background:#4CBAFF;
+}
