@@ -47,13 +47,17 @@ const graphqlApi = {
    * 获取学科教材地区
    *
    */
-  getSubjectAreas: () => {
+  getSubjectAreasAndGrades: () => {
     return gql.query({
       query: `query {
         xuekewang {
           areas{
             areaId
             areaName
+          }
+          grades {
+            id
+            name
           }
         }
       }`
@@ -87,11 +91,11 @@ const graphqlApi = {
    * @param { Number } areaId 地区id
    * @param { Number } pageIndex 分页
    */
-  getSubjectPapers: (subjectId, paperType, areaId, pageIndex) => {
+  getSubjectPapers: (subjectId, paperType, gradeId, areaId, pageIndex) => {
     return gql.query({
-      query: `query ($subjectId: Int!,$paperType: Int!,$areaId: Int!,$pageIndex: Int!,$pageSize: Int!){
+      query: `query ($subjectId: Int!,$paperType: Int!,$areaId: Int!,$gradeId: Int!,$pageIndex: Int!,$pageSize: Int!){
         xuekewang {
-          paperLists(subjectId:$subjectId,paperType:$paperType,areaId:$areaId,pageIndex:$pageIndex,pageSize:$pageSize){
+          paperLists(subjectId:$subjectId,paperType:$paperType,areaId:$areaId,gradeId:$gradeId,pageIndex:$pageIndex,pageSize:$pageSize){
             paperId
             isPrint
             isReport
@@ -104,6 +108,7 @@ const graphqlApi = {
         subjectId: subjectId,
         paperType: paperType,
         areaId: areaId,
+        gradeId: gradeId,
         pageSize: 20,
         pageIndex: pageIndex
       }

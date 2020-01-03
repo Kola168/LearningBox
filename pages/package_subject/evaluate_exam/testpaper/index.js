@@ -16,28 +16,11 @@ Page({
     showFilter: false,
     activeFilter: {},
     activeArea: {},
-    activeGrade: {
-      sn: 1,
-      name: '七年级'
-    },
+    activeGrade: {},
+    activeFilterList: [],
     areas: [],
     paperList: [],
-    grades: [{
-      sn: 1,
-      name: '一年级'
-    }, {
-      sn: 2,
-      name: '二年级'
-    }, {
-      sn: 3,
-      name: '三年级'
-    }, {
-      sn: 4,
-      name: '四年级'
-    }, {
-      sn: 5,
-      name: '五年级'
-    }]
+    grades: []
   },
   onLoad: co.wrap(function* (query) {
     this.weToast = new app.weToast()
@@ -45,7 +28,7 @@ Page({
     this.setData({
       topBarHeight: app.navBarInfo.topBarHeight + 50
     })
-    yield this.getSubjectAreas()
+    yield this.getSubjectAreasAndGrades()
     yield this.getSubjectPaperTypes()
     this.resetGetPapers()
   }),
@@ -56,12 +39,13 @@ Page({
       dataObj = {
         showFilter: !this.data.showFilter
       }
-
     this.showFilterType = id ? id : this.showFilterType
     if (id === 'area') {
       dataObj.activeFilter = this.data.activeArea
+      dataObj.activeFilterList = this.data.areas
     } else if (id === 'grade') {
       dataObj.activeFilter = this.data.activeGrade
+      dataObj.activeFilterList = this.data.grades
     }
     this.setData(dataObj)
   },
@@ -71,7 +55,7 @@ Page({
       dataObj = {}
     if (this.showFilterType === 'area') {
       dataObj.activeArea = this.data.areas[index]
-    } else if (this.showFilterType === 'grade') {
+    } else if (this.showFilterType === 'grade') {      
       dataObj.activeGrade = this.data.grades[index]
     }
     this.setData(dataObj)
@@ -105,12 +89,12 @@ Page({
   },
 
   // 获取试卷版本
-  getSubjectAreas: co.wrap(function* () {
+  getSubjectAreasAndGrades: co.wrap(function* () {
     this.weToast.toast({
       type: 'loading'
     })
     try {
-      let res = yield gqlSubject.getSubjectAreas(this.subjectId),
+      let res = yield gqlSubject.getSubjectAreasAndGrades(this.subjectId),
         tempAreas = res.xuekewang.areas,
         areas = []
       for (let i = 0; i < tempAreas.length; i++) {
@@ -122,6 +106,8 @@ Page({
       }
       this.setData({
         areas,
+        grades: res.xuekewang.grades,
+        activeGrade: res.xuekewang.grades[0],
         activeArea: areas[0]
       })
       this.weToast.hide()
@@ -155,7 +141,7 @@ Page({
       type: 'loading'
     })
     try {
-      let res = yield gqlSubject.getSubjectPapers(this.subjectId, this.data.typeId, this.data.activeArea.id, this.page++),
+      let res = yield gqlSubject.getSubjectPapers(this.subjectId, this.data.typeId, this.data.activeGrade.id, this.data.activeArea.id, this.page++),
         paperList = res.xuekewang.paperLists
       if (paperList.length < 20) {
         this.isEnd = true
