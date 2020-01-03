@@ -1,0 +1,33 @@
+<!--pages/package_preschool/evaluation/test.wxml-->
+<nav-bar title="宝贝测评"></nav-bar>
+<image src="../images/evaluation_test-bg.png" mode="widthFix" class="test-bg">
+  <view class="test-content-box">
+    <view class="content-top-box">
+      <view class="process-box">
+        <view class="process-num-box">
+          {{(nowIndex+1)}}/{{subjectList.length}}
+        </view>
+        <view class="process-star-box">
+          <text class="iconfont icon-wujiaoxing {{(nowIndex+1)/subjectList.length>=0.33?'yellow-star':''}}"></text>
+          <text class="iconfont icon-wujiaoxing {{(nowIndex+1)/subjectList.length>=0.66?'yellow-star':''}}"></text>
+          <text class="iconfont icon-wujiaoxing {{(nowIndex+1)/subjectList.length>=1?'yellow-star':''}}"></text>
+        </view>
+      </view>
+      <view class="time-box">
+        <image wx:if="{{subjectList[nowIndex].voice}}" src="../images/evaluation_test_voice.png" mode="widthFix" class="voice-icon"></image>
+        <image src="../images/evaluation_test_clock.png" mode="widthFix" class="clock-icon">
+          <view class="remaining-box">{{remainingTime}}s</view>
+        </image>
+      </view>
+    </view>
+    <view class="content-question-box">
+      <image src="{{subjectList[nowIndex].question}}" mode="widthFix" class="question-img"></image>
+    </view>
+    <view class="content-options-box">
+      <view wx:for="{{subjectList[nowIndex].options}}" wx:key="options" data-index="{{index}}" class="content-options-item">
+        <image src="{{item}}" mode="widthFix" class="content-options-img {{selectIndex==index?'content-options-selected':''}}"></image>
+        <text class="check-item {{selectIndex==index?'check-item-selected':''}}">{{index==0?'A':(index==1?'B':(index==2?'C':(index==3?'D':'E')))}}</text>
+      </view>
+    </view>
+  </view>
+</image>
