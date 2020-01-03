@@ -47,7 +47,7 @@
     "pages/finish/index",
     "pages/mall/index",
     "pages/webview/index",
-		"pages/webview/member"
+    "pages/webview/member"
   ],
   "subPackages": [
     {
@@ -66,7 +66,11 @@
         "feedback/index",
         "my_collection/index",
         "common_content/index",
-        "common_content/list"
+        "common_content/list",
+        "common_content/preview",
+        "common_content/setting",
+        "order_record/index/index",
+        "order_record/order/order"
       ]
     },
     {
@@ -141,16 +145,24 @@
         "error_book/photo_anwser_intro",
         "error_book/answer_result",
         "error_book/answer_print",
-				"kousuan/index",
-				"kousuan/learningplan"
+        "kousuan/index",
+        "kousuan/learningplan",
+        "kousuan/createplan",
+        "kousuan/pointslist",
+        "kousuan/previewWebview",
+        "evaluation/index"
       ]
     },
     {
       "root": "pages/package_member",
       "pages": [
-				"pay/index",
-				"group/index"
-			]
+        "pay/index",
+        "group/index"
+      ]
+    },
+    {
+      "root": "pages/package_other",
+      "pages": []
     },
     {
       "root": "pages/package_preschool",
@@ -164,7 +176,8 @@
         "growth_plan/print_setting/print_setting",
         "growth_plan/checkpoint/plan_checkpoint",
         "growth_plan/checkpoint/plan_detail",
-        "exercise_day/index/index"
+        "exercise_day/index/index",
+        "exercise_day/setting/setting"
       ]
     },
     {
@@ -172,6 +185,9 @@
       "pages": [
         "sync_learn/index/index",
         "sync_learn/learn_content/index",
+        "sync_learn/learn_detail/index",
+        "sync_learn/preview_subject/index",
+        "setting/setting",
         "evaluate_exam/index/index",
         "evaluate_exam/testpaper/index",
         "correct/index"
@@ -196,19 +212,19 @@
         "network/tips/step2",
         "network/tips/step3",
         "network/wificonnect/list",
-				"network/wificonnect/connect",
-				"ble/common/connect_success",
-				"ble/common/no_bluetooth",
-				"ble/common/bluetooth_intro",
-				"ble/common/no_device",
-				"ble/common/no_wifi",
-				"ble/device/index",
-				"ble/device/device",
-				"ble/device/device_connect",
-				"ble/network/configure",
-				"ble/network/wifi_list",
-				"ble/printer/index",
-				"ble/common/serach_serial"
+        "network/wificonnect/connect",
+        "ble/common/connect_success",
+        "ble/common/no_bluetooth",
+        "ble/common/bluetooth_intro",
+        "ble/common/no_device",
+        "ble/common/no_wifi",
+        "ble/device/index",
+        "ble/device/device",
+        "ble/device/device_connect",
+        "ble/network/configure",
+        "ble/network/wifi_list",
+        "ble/printer/index",
+        "ble/common/serach_serial"
       ]
     }
   ],
@@ -221,9 +237,8 @@
   },
   "usingComponents": {
     "nav-bar": "components/nav-bar/index",
-    "botttom-button": "components/bottom-button/index"
+    "bottom-button": "components/bottom-button/index"
   },
-  "style": "v2",
   "sitemapLocation": "sitemap.json",
   "tabBar": {
     "color": "#BFBFBF",

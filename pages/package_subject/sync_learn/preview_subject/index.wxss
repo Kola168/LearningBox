@@ -17,9 +17,9 @@
 }
 
 .img-item {
-  margin:10rpx auto;
+  margin: 10rpx auto;
   width: 98%;
-  box-shadow: 0 0 10px rgba(204,204,204,0.30);
+  box-shadow: 0 0 10px rgba(204, 204, 204, 0.30);
 }
 
 .precent {
@@ -60,7 +60,7 @@
   flex: 1;
   height: 98rpx;
   line-height: 98rpx;
-  text-align: center; 
+  text-align: center;
   color: #333333;
   background-color: #FFDC5E;
 }

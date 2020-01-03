@@ -1,0 +1,29 @@
+<!--pages/package_feature/kousuan/pointslist.wxml-->
+<nav-bar title="{{title}}"></nav-bar>
+<view wx:for="{{pointsList}}" wx:key="pointsList" class="points-list-box">
+  <view class="points-cont-box">
+    <view class="points-name">
+      <view class="points-name-icon"></view>
+      <text class="points-name">{{item.name}}</text>
+    </view>
+    <image src="{{item.image}}" mode="widthFix" class="points-img"></image>
+  </view>
+  <view class="point-num-box">
+    <block wx:if="{{item.tapNum>0}}">
+      <image src="../resource_images/name_minus.png" mode="widthFix" class="points-icon-style" data-index="{{index}}" bindtap="decreaseNum"></image>
+      <text class="points-num">{{item.tapNum*item.quesionNumber}}</text>
+    </block>
+    <image src="{{nowTap>=totalTapNum?'../resource_images/icon_add_gray.png':'../resource_images/name_plus.png'}}" mode="widthFix" class="points-icon-style" data-index="{{index}}" bindtap="increaseNum"></image>
+  </view>
+</view>
+<view class="bottom-box {{butHigh?'bottom-heigher':''}}">
+  <view class="bottom-but-style bottom-left-botton {{butHigh?'bottom-left-heigher':''}}" bindtap="selectAnswer">
+    <view class="bottom-check {{printAnswer?'bottom-checked':''}}"></view>打印答案
+  </view>
+  <view class="bottom-but-style bottom-right-botton">
+    生成并打印练习
+    <bottom-button text-right="生成并打印练习" bindrighttap="confBut" get-phone="{{true}}" class="bottom-but"></bottom-button>
+  </view>
+</view>
+<import src="/lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />

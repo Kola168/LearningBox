@@ -1,6 +1,6 @@
-<nav-bar background="#fff" title="学习" />
+<!-- <nav-bar background="#fff" title="学习" /> -->
 <view class="main">
-  <preSchool-index/>
-  <!-- <subject-index/> -->
+  <!-- <preSchool-index/> -->
+  <subject-index/>
 </view>
 

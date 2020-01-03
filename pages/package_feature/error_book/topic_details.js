@@ -146,7 +146,7 @@ Page({
 
             this.longToast.hide()
         } catch (e) {
-            this.longToast.toast()
+            this.longToast.hide()
             util.showErr(e)
         }
     }),

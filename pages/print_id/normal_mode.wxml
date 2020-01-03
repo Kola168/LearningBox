@@ -14,7 +14,7 @@
     </view>
 </view>
 
-<botttom-button class="bottom" text-right="确认打印" bindrighttap="toConfirm" get-phone="{{true}}"></botttom-button>
+<bottom-button class="bottom" text-right="确认打印" bindrighttap="toConfirm" get-phone="{{true}}"></bottom-button>
 
 
 

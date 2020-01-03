@@ -30,7 +30,7 @@
 	<view class="bottom-tip-medium">
 		<view class="bottom-tip-medium-text">只支持打pdf发票</view>
 	</view>
-	<botttom-button class="bottom" left-class="{{allCount == 5 ?'button-left-class':''}}" extra-class="{{allCount == 0 ? 'button-gray' : ''}}" text-left="继续选择" bindlefttap="chooseFile" text-right="确认打印" bindrighttap="confirm" get-phone="{{true}}"></botttom-button>
+	<bottom-button class="bottom" left-class="{{allCount == 5 ?'button-left-class':''}}" extra-class="{{allCount == 0 ? 'button-gray' : ''}}" text-left="继续选择" bindlefttap="chooseFile" text-right="确认打印" bindrighttap="confirm" get-phone="{{true}}"></bottom-button>
 
 </view>
 

@@ -20,7 +20,7 @@
         <view class="top-text">错题本</view>
       </view>
       <view class="box-entry">
-        <view class="left-entry">
+        <view class="left-entry" data-key="superErrorBook" bind:tap="toErrorBook">
           <view class="entry-title">小白超级错题本</view>
           <view class="sub-main">
             <view class="sub-text">共错误99道题</view>
@@ -28,7 +28,7 @@
             <image class="entry-icon" src="../images/super_err_book_icon.png"/>
           </view>
         </view>
-        <view class="right-entry">
+        <view class="right-entry" data-key="errorBook" bind:tap="toErrorBook"> 
           <view class="entry-title">其他错题本</view>
           <view class="sub-main">
             <view class="sub-text">共错误99道题</view>
@@ -77,21 +77,13 @@
       </view>
     </view>
     <view class="subject-list">
-      <image class="subject-item" src="../images/chinese_icon.png">
-        <view class="last-learn-title">济南的冬天</view>
-        <view class="learn-num">2020位同学正在学</view>
+      <image class="subject-item" src="{{navIcon[index]}}" wx:for="{{subjects}}" wx:key="sn" data-index="{{index}}" bind:tap="toSubject">
+        <view class="last-learn-title">{{item.lastNode.name}}</view>
+        <view class="learn-num">{{item.currentUserNum}}位同学正在学</view>
       </image>
-      <image class="subject-item" src="../images/math_icon.png">
-        <view class="last-learn-title">济南的冬天</view>
-        <view class="learn-num">2020位同学正在学</view>
-      </image>
-      <image class="subject-item" src="../images/english_icon.png">
-        <view class="last-learn-title">济南的冬天</view>
-        <view class="learn-num">2020位同学正在学</view>
-      </image>
-      <image class="subject-item" src="../images/more_subject_icon.png">
-        <view class="last-learn-title">济南的冬天</view>
-        <view class="learn-num">2020位同学正在学</view>
+      <image class="subject-item" src="../images/more_subject_icon.png" data-index="3" bind:tap="toSubject">
+        <view class="last-learn-title"></view>
+        <view class="learn-num">{{moreNum}}位同学正在学</view>
       </image>
     </view>
   </view>

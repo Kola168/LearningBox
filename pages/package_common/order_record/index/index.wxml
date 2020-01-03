@@ -1,0 +1,39 @@
+<!--pages/account/order.wxml-->
+<wxs src="./index.wxs" module="utils" />
+<view class="list">
+	<view
+	 class="item"
+	 wx:for="{{orderList}}"
+	 wx:key="{{index}}"
+	 id="sn"
+	 bindtap="toOrder"
+	>
+		<view class="left-paid">
+			<image src="{{utils.fixIcon(item.payableItem.icon)}}" class="record-icon" mode="widthFix" />
+			<view>
+				<view class="content">
+					<view class="title">{{item.payableItem.name}}</view>
+				</view>
+				<view class="type" wx:if="{{item.payableItem.desc.categoryName}}">
+					<text class="cates-name">{{item.payableItem.desc.categoryName}}</text>
+					<text class="created-at">创建时间: {{utils.formatTime(item.createdAt, 'yyyy.MM.dd')}}</text>
+				</view>
+				<view class="type" wx:else>
+					<text class="created-at-no-cat">创建时间: {{utils.formatTime(item.createdAt, 'yyyy.MM.dd')}}</text>
+				</view>
+			</view>
+		</view>
+		<view>
+			<image mode="widthFix" src="../../images/arrow_right.png" class="icon-arrow" />
+		</view>
+	</view>
+</view>
+<!-- empty area -->
+<view class="no-order" wx:if="{{isEmpty}}">
+	<image mode="widthFix" src="../../images/no_order_record.png" />
+	<view>还没有任何购买记录哦</view>
+	<view class="back-home" bindtap="backToHome">去逛逛</view>
+</view>
+<import src="../../../../lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />
+

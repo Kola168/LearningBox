@@ -43,7 +43,7 @@
 		</view>
 	</view>
 
-	<botttom-button class="bottom-button" text-left="返回" bindlefttap="backPrePage" text-right="确认打印" bindrighttap="confirm" get-phone="{{true}}"></botttom-button>
+	<bottom-button class="bottom-button" text-left="返回" bindlefttap="backPrePage" text-right="确认打印" bindrighttap="confirm" get-phone="{{true}}"></bottom-button>
 
 </view>
 

@@ -21,7 +21,7 @@
       <image class="increase-number" mode="widthFix" src="{{print_count < 50 ? '../../images/plus_y.png' : '../../images/document_add_gray.png'}}" bindtap="increase" />
     </view>
   </view>
-  <botttom-button class="bottom" text-right="确认打印" bindrighttap="editConvert" get-phone="{{true}}"></botttom-button>
+  <bottom-button class="bottom" text-right="确认打印" bindrighttap="editConvert" get-phone="{{true}}"></bottom-button>
 </view>
 
 <!-- 打印确认框 -->

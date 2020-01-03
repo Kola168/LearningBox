@@ -1,7 +1,7 @@
 <nav-bar background="#fff" title="同步练习"/>
 <view class="content-main">
   <scroll-view scroll-x="true"  scroll-with-animation scroll-into-view="to_{{currentTabIndex}}">
-    <view class="tab-item"  id="to_{{index}}" wx:for="{{subjectList}}" wx:key="subjectId"  bindtap="chooseSubject" data-index="{{index}}">
+    <view class="tab-item"  id="to_{{index}}" wx:for="{{subjectList}}" wx:key="sn"  bindtap="chooseSubject" data-index="{{index}}">
       <view class="tab-name {{currentTabIndex == index ? 'active' : ''}}">{{item.subjectName}}</view>
       <view class="tab-line {{currentTabIndex == index ? 'active-line' : ''}}"></view>
     </view>
@@ -11,12 +11,12 @@
   </image>
   <!-- 教材筛选器 -->
   <block wx:if="{{selectedTextbookVersion && selectedTextbook}}">
-    <view class="current-input-value {{showSelectedText ? 'current-active' : ''}}" bind:tap="touchText">
+    <view class="current-input-value {{showSelectedText ? 'current-active' : ''}}" bind:tap="touchShowText">
       <view class="version">{{selectedTextbookVersion.name || ''}}</view>
       <view class="grade">{{selectedTextbook.volume || ''}}</view>
       <view class="arrow-icon {{showSelectedText ? 'arrow-active' : ''}}"></view>
     </view>
-    <view class="choose-box {{showSelectedText ? 'choose-box-show' : ''}}" catch:tap="touchText">
+    <view class="choose-box {{showSelectedText ? 'choose-box-show' : ''}}" catchtouchmove="true" catch:tap="touchShowText">
       <view class="select-bar" wx:if="{{showSelectedText}}">
         <view class="left-select-content">
           <view class="select-item {{textbookIndex == selectedBookVersionIndex ? 'select-active' : ''}}" wx:for="{{textbookVersion}}" wx:for-index="textbookIndex" data-index="{{textbookIndex}}" wx:key="versionId" catchtap="chooseTextbooVersion">{{item.name}}</view>
@@ -33,7 +33,7 @@
   </view>
   <!-- 默认教材选择器 -->
   <view class="form-main" wx:if="{{!selectedTextbookVersion || !selectedTextbook}}">
-    <form-textbook subjectId="{{subjectId}}" bindchooseTextbook="chooseComponentTextbook" wx:if="{{subjectId && loadSuccess}}"/>
+    <form-textbook subjectSn="{{subjectSn}}" bindchooseTextbook="chooseComponentTextbook" wx:if="{{subjectSn && loadSuccess}}"/>
   </view>
 </view>
 

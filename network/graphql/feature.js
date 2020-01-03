@@ -66,7 +66,77 @@ const graphqlApi = {
         sn: sn
       }
     })
+	},
+
+	 //获取年级以及对应教材接口
+	 getGradeList:()=>{
+    return gql.query({
+      query:`query{
+          userStages{
+          name
+          sn
+         	rootName
+          sn
+          kousuanCategories{
+            name
+            sn
+          }
+        }
+      }`
+    })
   },
+
+  //获取年级下对应的口算类型接口
+  getKousuanType:(sn)=>{
+    return gql.query({
+      query:`query($sn: String!){
+        category(sn:$sn){
+          children{
+            name
+            image
+            sn
+          }
+        }
+      }`,
+      variables: {
+        sn
+      }
+    })
+  },
+
+  //获取口算类型具体题目接口
+  getKnowledgePoints:(sn)=>{
+    return gql.query({
+      query:`query($sn: String!){
+        category(sn:$sn){
+          children{
+            name
+            image
+            sn
+            quesionNumber
+          }
+        }
+      }`,
+      variables: {
+        sn
+      }
+    })
+  },
+
+  //口算打印接口
+  createKousunOrder:(input)=>{
+    return gql.mutate({
+      mutation: `mutation ($input: CreateResourceOrderInput!){
+        createResourceOrder(input:$input){
+          state
+        }
+      }`,
+      variables: {
+        input: input
+      }
+    })
+  }
+	
 }
 
 export default graphqlApi

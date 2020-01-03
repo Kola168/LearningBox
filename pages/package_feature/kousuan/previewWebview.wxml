@@ -1,0 +1,2 @@
+<!--pages/package_feature/kousuan/previewWebview.wxml-->
+<web-view bindmessage="getMessage" src="{{webViewUrl}}"/>
