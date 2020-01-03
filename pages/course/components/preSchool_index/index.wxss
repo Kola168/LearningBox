@@ -18,7 +18,7 @@
 }
 
 swiper {
-  width: calc( 100% - 48rpx )!important;
+  width: calc( 100% - 48rpx );
   margin: 20rpx 24rpx 0;
   border-radius: 20rpx;
 }

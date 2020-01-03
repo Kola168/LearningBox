@@ -4,8 +4,8 @@
 	<view
 	 class="item"
 	 wx:for="{{orderList}}"
-	 wx:key="{{index}}"
-	 id="sn"
+	 wx:key="sn"
+	 id="{{item.sn}}"
 	 bindtap="toOrder"
 	>
 		<view class="left-paid">

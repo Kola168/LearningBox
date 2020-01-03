@@ -111,3 +111,35 @@
   height: 40rpx;
   text-align: right;
 }
+
+
+/* course empty */
+
+.course-empty {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+}
+
+.course-empty image {
+  margin-bottom: 44rpx;
+  width: 232rpx;
+}
+
+.course-empty .name {
+  margin-bottom: 60rpx;
+  color: #666666;
+  font-size: 32rpx;
+}
+
+.course-empty .btn {
+  width: 280rpx;
+  height: 80rpx;
+  line-height: 80rpx;
+  text-align: center;
+  background: #FFDC5E;
+  border-radius: 44rpx;
+}

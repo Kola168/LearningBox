@@ -1,7 +1,7 @@
 // pages/account/feedback.js
 "use strict"
 
-import graphql from '../../../../utils/graphql_request'
+// import graphql from '../../../../utils/graphql_request'
 const app = getApp()
 import {
   regeneratorRuntime,

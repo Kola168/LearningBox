@@ -68,7 +68,8 @@
         "common_content/index",
         "common_content/list",
         "order_record/index/index",
-        "order_record/order/order"
+        "order_record/order/order",
+        "setting/setting"
       ]
     },
     {

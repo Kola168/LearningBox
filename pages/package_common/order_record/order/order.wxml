@@ -1,5 +1,5 @@
 <wxs src="../index/index.wxs" module="utils" />
-<view class="order-main">
+<view class="order-main" hidden="1">
 	<view class="order-status sys-flex flex-m-axis-center flex-cross-axis-center" wx:if="{{orderStatus}}">
 		<image class="icon-status" src="{{orderStatus.icon}}" wx:if="{{orderStatus.icon}}" />
 		<view class="f-16 {{orderStatus.className}}">{{orderStatus.name}}</view>
@@ -60,5 +60,11 @@
 	</block>
 	<import src="../../../../../lib/toast/wetoast.wxml" />
 	<template is="wetoast" data="{{...__wetoast__}}" />
+</view>
+
+<view class="course-empty">
+  <image  src="../../images/no_look_icon.png" mode="widthFix"/>
+  <view class="name">抱歉，该课程暂时无法查阅</view>
+  <view class="btn" bind:tap="toRecommendCourse">更多课程推荐</view>
 </view>
 

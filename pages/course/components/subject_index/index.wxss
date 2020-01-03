@@ -10,6 +10,7 @@
 }
 
 .swiper-main, swiper-item {
+  margin: 0;
   width: 100%;
   height: 260rpx;
   border-radius: 30rpx;

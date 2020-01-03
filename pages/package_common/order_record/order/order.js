@@ -9,8 +9,8 @@ import {
   util,
   wxNav
 } from '../../../../utils/common_import'
-import wxPay from '../../../../utils/wxPay'
-import graphql from '../../../../network/graphql/common'
+// import wxPay from '../../../../utils/wxPay'
+// import graphql from '../../../../network/graphql/common'
 Page({
   data: {
     canSave: false,
@@ -21,10 +21,10 @@ Page({
 
   onLoad: function(options) {
     this.longToast = new app.weToast()
-    var order_sn = this.order_sn = options.sn || ''
-    this.getAuthStatus()
+    // var order_sn = this.order_sn = options.sn || ''
+    // this.getAuthStatus()
     
-    order_sn && this.getOrderInfo(order_sn)
+    // order_sn && this.getOrderInfo(order_sn)
   },
 
   getOrderInfo: co.wrap(function *(sn){
@@ -212,6 +212,10 @@ Page({
       }
     }
     return statusMaps[key] ? statusMaps[key] : null
+  },
+
+  toRecommendCourse: function () {
+    console.log('==跳转==')
   },
 
   onHide: function(){
