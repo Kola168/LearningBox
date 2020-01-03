@@ -85,7 +85,12 @@
 }
 
 .confirm-print {
-  background: ##FFDC5E;
+  background: #FFDC5E;
+}
+
+.confirm-print-btn {
+  height: 100%;
+  width: 100%;
 }
 
 .confirm-print form,

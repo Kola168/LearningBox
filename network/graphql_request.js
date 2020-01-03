@@ -513,7 +513,8 @@ const graphqlApi = {
             stageRoot{
               name
               rootName
-              sn
+							sn
+							rootKey
             }
             stage{
               name
@@ -1547,14 +1548,14 @@ const graphqlApi = {
       query: `query() {
   
         }`,
-        variables: {
-          input:input
+      variables: {
+        input: input
       }
-      })
-    },
-    getGrade: () => {
-      return gql.query({
-        query: `query {
+    })
+  },
+  getGrade: () => {
+    return gql.query({
+      query: `query {
           currentUser {
             sn
             selectedKid{
@@ -1567,39 +1568,39 @@ const graphqlApi = {
            }
           }
         }`
-      })
-    },
+    })
+  },
 
-    /**
-     * 获取错题列表
-     *
-     */
-    getMistakes:()=>{
+  /**
+   * 获取错题列表
+   *
+   */
+  getMistakes: () => {
 
-    },
+  },
 
-    /**
-     * 注册学科网
-     *
-     * @returns
-     */
-    register: () => {
-      return gql.mutate({
-        mutation: `mutation ($input: RegisterInput!){
+  /**
+   * 注册学科网
+   *
+   * @returns
+   */
+  register: () => {
+    return gql.mutate({
+      mutation: `mutation ($input: RegisterInput!){
           Register{
             state
           }
         }`
-      })
-    },
+    })
+  },
 
 
-    /**
-     * 获取学科网学科目录
-     */
-    getSubject: ()=> {
-      return gql.query({
-        query: `query getSubject{
+  /**
+   * 获取学科网学科目录
+   */
+  getSubject: () => {
+    return gql.query({
+      query: `query getSubject{
           xuekewang{
             registered
             subjects{
@@ -1609,16 +1610,16 @@ const graphqlApi = {
             }
           }
         }`
-       
-      })
-    },
 
-    /**
-     * 获取学科版本
-     */
-    getTextbookVersion: (subjectId)=> {
-      return gql.query({
-        query: `query getTextbookVersion($subjectId: Int!){
+    })
+  },
+
+  /**
+   * 获取学科版本
+   */
+  getTextbookVersion: (subjectId) => {
+    return gql.query({
+      query: `query getTextbookVersion($subjectId: Int!){
           xuekewang{
             textbookVersions(subjectId: $subjectId){
               name
@@ -1626,12 +1627,12 @@ const graphqlApi = {
             }
           }
         }`,
-        variables: {
-          subjectId
-        }
-      })
-    },
-    /**
+      variables: {
+        subjectId
+      }
+    })
+  },
+  /**
    * 意见反馈
    */
   createFeedback: (params) => {
@@ -1647,12 +1648,12 @@ const graphqlApi = {
     })
   },
 
-    /**
-     * 获取学科教材信息
-     */
-    getTeachBook: (pms) => {
-      return gql.query({
-        query: `query getTeachBook($subjectId: Int!,$versionId: Int!){
+  /**
+   * 获取学科教材信息
+   */
+  getTeachBook: (pms) => {
+    return gql.query({
+      query: `query getTeachBook($subjectId: Int!,$versionId: Int!){
           xuekewang{
             textbooks(subjectId: $subjectId,versionId: $versionId){
               name
@@ -1661,18 +1662,18 @@ const graphqlApi = {
             }
           }
         }`,
-        variables: {
-          ...pms
-        }
-      })
-    },
+      variables: {
+        ...pms
+      }
+    })
+  },
 
-    /**
-     * 获取选中教材
-     */
-    getSelectedTextbook: (subjectId) => {
-      return gql.query({
-        query: `query getSelectedTextbook($subjectId: Int!){
+  /**
+   * 获取选中教材
+   */
+  getSelectedTextbook: (subjectId) => {
+    return gql.query({
+      query: `query getSelectedTextbook($subjectId: Int!){
           xuekewang{
             selectedTextbook(subjectId: $subjectId){
                 name
@@ -1681,38 +1682,38 @@ const graphqlApi = {
             }
           }
         }`,
-        variables: {
-          subjectId
-        }
-      })
-    },
+      variables: {
+        subjectId
+      }
+    })
+  },
 
-    /**
-     * 获取选择的学科教材版本
-     */
-    getSelectedTextbookVersion: (subjectId) => {
-      return gql.query({
-        query: `query getSelectedTextbookVersion($subjectId: Int!){
+  /**
+   * 获取选择的学科教材版本
+   */
+  getSelectedTextbookVersion: (subjectId) => {
+    return gql.query({
+      query: `query getSelectedTextbookVersion($subjectId: Int!){
           xuekewang{
             selectedTextbookVersion(subjectId: $subjectId){
                 versionId
             }
           }
         }`,
-        variables: {
-          subjectId
-        }
-      })
-    },
-    /**
-     * 获取章节
-     * @param {subjectId} 科目id
-     * @param {versionId} 版本id
-     * @param {textbookId} 教材id
-     */
-    getChapter: (pms) => {
-      return gql.query({
-        query: `query getChapter($subjectId: Int!, $versionId: Int!, $textbookId: Int!){
+      variables: {
+        subjectId
+      }
+    })
+  },
+  /**
+   * 获取章节
+   * @param {subjectId} 科目id
+   * @param {versionId} 版本id
+   * @param {textbookId} 教材id
+   */
+  getChapter: (pms) => {
+    return gql.query({
+      query: `query getChapter($subjectId: Int!, $versionId: Int!, $textbookId: Int!){
           xuekewang{
             rootNodes(subjectId: $subjectId, versionId: $versionId, textbookId: $textbookId){
               name
@@ -1720,20 +1721,20 @@ const graphqlApi = {
             }
           }
         }`,
-        variables: {
-          ...pms
-        }
-      })
-    },
-    /**
-     * 获取章节详情
-     * @param {subjectId} 科目id
-     * @param {textbookId} 教材id
-     * @param {parentId} 章节id
-     */
-    getChapterDetail: (pms) => {
-      return gql.query({
-        query: `query getChapterDetail($subjectId: Int!, $textbookId: Int!, $parentId: Int){
+      variables: {
+        ...pms
+      }
+    })
+  },
+  /**
+   * 获取章节详情
+   * @param {subjectId} 科目id
+   * @param {textbookId} 教材id
+   * @param {parentId} 章节id
+   */
+  getChapterDetail: (pms) => {
+    return gql.query({
+      query: `query getChapterDetail($subjectId: Int!, $textbookId: Int!, $parentId: Int){
           xuekewang{
             childrenNodes(subjectId: $subjectId, textbookId: $textbookId, parentId: $parentId){
               name
@@ -1749,12 +1750,12 @@ const graphqlApi = {
             }
           }
         }`,
-        variables: {
-          ...pms
-        }
-      })
-    },
-  
+      variables: {
+        ...pms
+      }
+    })
+  },
+
   /**
    * 获取错题列表
    *
@@ -1799,6 +1800,132 @@ const graphqlApi = {
         }`,
       variables: {
         input: input
+      }
+    })
+  },
+  /**
+   * 
+   *获取家庭信息
+   * @returns
+   */
+  getFamilyUser: () => {
+    return gql.query({
+      query: `query{
+        currentUser{
+          currentGroup{
+            currentUserIsCreator
+            sn
+            kid{
+              avatar
+              name
+              sn
+              stage{
+                name
+              rootName
+              sn 
+              }
+            }
+            users{
+              avatar
+              name
+              sn
+              userIsCreator
+            }
+          }
+        }
+      }`
+    })
+  },
+  /**
+   * 加入/退出家庭组
+   *
+   * @param {*} input
+   * @returns
+   */
+  joinOrExitGroup: (input) => {
+    return gql.mutate({
+      mutation: `mutation($input: JoinOrExitGroupInput!) {
+        joinOrExitGroup(input:$input){
+          state
+        }
+        }`,
+      variables: {
+        input: input
+      }
+    })
+  },
+  /**
+   * 踢出家庭成员
+   *
+   * @param {*} input
+   * @returns
+   */
+  kickOutGroupUser: (input) => {
+    return gql.mutate({
+      mutation: `mutation($input: KickOutGroupUserInput!) {
+        kickOutGroupUser(input:$input){
+          state
+        }
+        }`,
+      variables: {
+        input: input
+      }
+    })
+  },
+  /**
+   * 获取内容首页
+   *
+   * @returns
+   */
+  getFeatureIndex: () => {
+    return gql.query({
+      query: `query() {
+          // userFolderRelations(sn:$sn){
+          //   id
+          //   avatar:userAvatar
+          //   nickname:userName
+          // }
+        }`,
+      variables: {
+
+      }
+    })
+  },
+  /**
+   * 获取内容tab
+   *
+   * @returns
+   */
+  getFeatureTab: () => {
+    return gql.query({
+      query: `query() {
+          // userFolderRelations(sn:$sn){
+          //   id
+          //   avatar:userAvatar
+          //   nickname:userName
+          // }
+        }`,
+      variables: {
+
+      }
+    })
+  },
+  /**
+   * 获取内容列表
+   *
+   * @returns
+   */
+  getFeatureList: () => {
+    return gql.query({
+      query: `query() {
+          // userFolderRelations(sn:$sn){
+          //   id
+          //   avatar:userAvatar
+          //   nickname:userName
+          // }
+        }`,
+      variables: {
+
       }
     })
   },

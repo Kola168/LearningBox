@@ -66,7 +66,11 @@
         "feedback/index",
         "my_collection/index",
         "common_content/index",
-        "common_content/list"
+        "common_content/list",
+        "common_content/preview",
+        "common_content/setting",
+        "order_record/index/index",
+        "order_record/order/order"
       ]
     },
     {
@@ -125,7 +129,6 @@
         "share_folder/content",
         "share_folder/manage",
         "memory_write/index/index",
-        "memory_write/szcx/index",
         "memory_write/chinese/index",
         "memory_write/chinese/print",
         "memory_write/english/index",
@@ -152,7 +155,10 @@
     {
       "root": "pages/package_member",
       "pages": [
-        "pay/index",
+				"member/active",
+				"member/caculate",
+				"member/index",
+				"member/order",
         "group/index"
       ]
     },
@@ -173,6 +179,7 @@
         "growth_plan/checkpoint/plan_checkpoint",
         "growth_plan/checkpoint/plan_detail",
         "exercise_day/index/index",
+        "exercise_day/setting/setting",
         "evaluation/index",
         "evaluation/choosegrade",
         "evaluation/secondlevel",
@@ -187,6 +194,9 @@
       "pages": [
         "sync_learn/index/index",
         "sync_learn/learn_content/index",
+        "sync_learn/learn_detail/index",
+        "sync_learn/preview_subject/index",
+        "setting/setting",
         "evaluate_exam/index/index",
         "evaluate_exam/testpaper/index",
         "correct/index"
@@ -238,7 +248,6 @@
     "nav-bar": "components/nav-bar/index",
     "bottom-button": "components/bottom-button/index"
   },
-  "style": "v2",
   "sitemapLocation": "sitemap.json",
   "tabBar": {
     "color": "#BFBFBF",

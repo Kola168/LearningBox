@@ -120,7 +120,9 @@ Page({
         selectedKid: resp.currentUser.selectedKid,
         stageRoot: resp.currentUser.selectedKid.stageRoot
       })
-      storage.put("userSn", resp.currentUser.sn)
+			storage.put("userSn", resp.currentUser.sn)
+			storage.put("kidStage", resp.currentUser.selectedKid.stageRoot.rootKey)
+
       if (resp.currentUser.phone) {
         app.hasPhoneNum = true
         app.globalPhoneNum = resp.currentUser.phone
@@ -130,7 +132,7 @@ Page({
         wxNav.navigateTo('/pages/index/grade')
       } else {
         this.setData({
-          homeType: this.data.selectedKid.stageRoot.rootName
+					homeType: this.data.selectedKid.stageRoot.rootName,
         })
       }
       if (!resp.currentUser.selectedDevice) {
@@ -138,7 +140,6 @@ Page({
           'deviceModal.isShow': true
         })
       }
-
     } catch (e) {
       util.showError(e)
     }
@@ -180,7 +181,9 @@ Page({
       }
       storage.put('authToken', resp.res.auth_token)
       storage.put('unionId', resp.res.unionid)
-      storage.put('refreshToken', resp.res.refresh_token)
+			storage.put('refreshToken', resp.res.refresh_token)
+			// storage.put('kidStage', resp.res.refresh_token)
+
 
       app.authToken = resp.res.auth_token
       this.setData({
@@ -237,6 +240,9 @@ Page({
         break;
       case 'freeResources':
         url = '/pages/package_common/free_resources/index/index'
+        break;
+      case 'memoryWrite':
+        url = '/pages/package_feature/memory_write/index/index'
         break;
     }
     wxNav.navigateTo(url)

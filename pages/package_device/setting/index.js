@@ -36,9 +36,6 @@ Page({
       let res = yield graphql.getDeviceDetail(this.deviceSn)
       this.weToast.hide()
       let device = res.currentUser.devices[0]
-      if (device.connectThrough) {
-        device.connectThrough = device.connectThrough === 'pc' ? true : false
-      }
       this.setData({
         device
       })
@@ -67,6 +64,9 @@ Page({
       yield graphql.updateDeviceSetting(this.deviceSn, {
         [setKey]: setVal
       }, setKey)
+      if (setKey === 'connectTo') {
+        setKey = 'connectThrough'
+      }
       this.setData({
         [`device.${setKey}`]: setVal
       })
@@ -125,7 +125,7 @@ Page({
           extraData.renameVal = ''
           break;
         case "connectThrough":
-          let switchFlag = this.data.device.connectThrough
+          let switchFlag = this.data.device.connectThrough === 'pc' ? true : false
             // 重新显示提示框
           this.reSwitchComputerPrint = false
           if (switchFlag) {
@@ -172,7 +172,7 @@ Page({
             }
           })
         } else {
-          let type = this.data.device.connectThrough ? 'box' : 'pc'
+          let type = this.data.device.connectThrough === 'box' ? 'pc' : 'box'
           this.updateDeviceSetting('connectThrough', type)
         }
         break;
@@ -260,6 +260,8 @@ Page({
         break;
       case "deviceMaintain":
         url = `../maintain/index/index`
+        params.sn = this.deviceSn
+        params.updateInfo = this.data.device.updateInfo
         break;
     }
     wxNav.navigateTo(url, params)

@@ -54,7 +54,7 @@
   font-size: 20rpx;
   text-align: left;
   padding-left: 46px;
-  box-sizing:
+  box-sizing: border-box;
 }
 
 .main-title{

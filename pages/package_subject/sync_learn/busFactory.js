@@ -3,10 +3,8 @@
 import {
   regeneratorRuntime,
   co,
-  util,
-  wxNav
 } from '../../../utils/common_import'
-import graphql from '../../../network/graphql_request'
+import graphql from '../../../network/graphql/subject'
 var textbookVersionData, // 全部教材版本数据
     textbookData, //全部教材数据
     selectedTextbookVersionData, //选中的教材版本数据
@@ -17,69 +15,64 @@ var textbookVersionData, // 全部教材版本数据
 
 
 var busFactory = function () {
+  
   // 获取subject 对应的教材版本信息
-  var getTextbookVersionData = co.wrap(function *(subjectId){
+  var getTextbookVersionData = co.wrap(function *(subjectSn){
     if (!textbookVersionData) {
       textbookVersionData = {}
     }
-    if (!textbookVersionData[subjectId]) {
-      textbookVersionData[subjectId] = yield graphql.getTextbookVersion(+subjectId)
+    if (!textbookVersionData[subjectSn]) {
+      textbookVersionData[subjectSn] = yield graphql.getTextbookVersion(subjectSn)
 
     } 
-    return textbookVersionData[subjectId]
+    return textbookVersionData[subjectSn]
   })
 
-
-
   // 获取教材数据
-  var getTextbookData = co.wrap(function *(subjectId, versionId) {
-    if (!textbookData) {
-      textbookData = yield graphql.getTeachBook({
-        subjectId: +subjectId,
-        versionId: +versionId
-      })
-    }
+  var getTextbookData = co.wrap(function *(versionSn) {
+    // if (!textbookData) {
+      textbookData = yield graphql.getTeachBook(versionSn)
+    // }
     return textbookData
   })
 
   // 获取选中的教材版本数据
-  var getSelectedTextbookVersionData = co.wrap(function *(subjectId){
+  var getSelectedTextbookVersionData = co.wrap(function *(subjectSn){
     if (!selectedTextbookVersionData) {
       selectedTextbookVersionData = {}
     }
-    if (!selectedTextbookVersionData[subjectId]) {
-      selectedTextbookVersionData[subjectId] = yield graphql.getSelectedTextbookVersion(+subjectId)
+    if (!selectedTextbookVersionData[subjectSn]) {
+      selectedTextbookVersionData[subjectSn] = yield graphql.getSelectedTextbookVersion(subjectSn)
     }
-    return selectedTextbookVersionData[subjectId]
+    return selectedTextbookVersionData[subjectSn]
   })
 
   // 获取选中的教材
-  var getSelectedTextbookData = co.wrap(function *(subjectId){
+  var getSelectedTextbookData = co.wrap(function *(subjectSn){
     if (!selectTextbookData) {
       selectTextbookData = {}
     }
-    if (!selectTextbookData[subjectId]) {
-      selectTextbookData[subjectId] = yield graphql.getSelectedTextbook(+subjectId)
+    if (!selectTextbookData[subjectSn]) {
+      selectTextbookData[subjectSn] = yield graphql.getSelectedTextbook(subjectSn)
     }
-    return selectTextbookData[subjectId]
+    return selectTextbookData[subjectSn]
   })
-
 
   /**
    * 获取章节详情
    */
-  var getChapterData = co.wrap(function*(subjectId, versionId, textbookId){
+  var getChapterData = co.wrap(function*(subjectSn, textbookSn){
     if (!chapterList) {
       chapterList = {}
     }
-    if (!chapterList[subjectId]) {
-      chapterList[subjectId] = yield graphql.getChapter({
-        subjectId: +subjectId,
-        versionId: +versionId,
-        textbookId: +textbookId
-      })
+    if (!chapterList[subjectSn]) {
+      chapterList[subjectSn] = yield graphql.getChapter(textbookSn)
     }
-    return chapterList[subjectId]
+    return chapterList[subjectSn]
+
+    // var chapterList = yield graphql.getChapter(textbookSn)
+    
+    // return chapterList
   })
 
   // 设置章节数据
@@ -88,8 +81,8 @@ var busFactory = function () {
   }
 
   // 发送获取章节event
-  var sendGetChapter = co.wrap(function *(subjectId, versionId, textbookId) {
-    var resp = yield getChapterData(subjectId, versionId, textbookId)
+  var sendGetChapter = co.wrap(function *(subjectSn, textbookSn) {
+    var resp = yield getChapterData(subjectSn, textbookSn)
     getComponentsChapterDataFn(resp.xuekewang.rootNodes)
   })
 
@@ -117,34 +110,32 @@ var busFactory = function () {
   }
 
   // 获取默认筛选索引
-  var mappingChooseIndex = co.wrap(function*(subjectId) {
+  var mappingChooseIndex = co.wrap(function*(subjectSn) {
     var selectedBookVersionIndex = 0, selectedTeachIndex = 0
     try {
       // 筛选教材版本索引
       if (selectedTextbookVersionData) {
-        var arrTextbookVersion = yield getTextbookVersionData(subjectId)
-        var selectedTextbookVersion = selectedTextbookVersionData[subjectId].xuekewang.selectedTextbookVersion
+        var arrTextbookVersion = yield getTextbookVersionData(subjectSn)
+        var selectedTextbookVersion = selectedTextbookVersionData[subjectSn].xuekewang.selectedTextbookVersion
 
         var textbookVersions = arrTextbookVersion.xuekewang.textbookVersions
 
         for(var i = 0; i<textbookVersions.length;i++) {
 
-          if (selectedTextbookVersion && textbookVersions[i].versionId == selectedTextbookVersion.versionId) {
+          if (selectedTextbookVersion && textbookVersions[i].sn == selectedTextbookVersion.sn) {
             selectedBookVersionIndex = i
             break
           }
         }
 
       }
-
       // 筛选教材索引
       if (selectTextbookData) {
-        var selectedTextbook = selectTextbookData[subjectId] && selectTextbookData[subjectId].xuekewang.selectedTextbook
+        var selectedTextbook = selectTextbookData[subjectSn] && selectTextbookData[subjectSn].xuekewang.selectedTextbook
         var textbooks = textbookData.xuekewang.textbooks
 
-        console.log(textbooks,'==textbooks==', selectedTextbook)
         for(var j = 0; j<textbooks.length;j++) {
-          if (selectedTextbook && textbooks[j].textbookId == selectedTextbook.textbookId) {
+          if (selectedTextbook && textbooks[j].sn == selectedTextbook.sn) {
             selectedTeachIndex = j
             break
           }
@@ -171,10 +162,15 @@ var busFactory = function () {
     textbookData = null
   }
 
+  // 移除指定选中的教材
+  var removeCurrentSelectedTextbookData = function (subjectSn) {
+    selectTextbookData[subjectSn] = null
+  }
+
   //移除指定科目的选中数据 
-  var removeSelectedCurrentData = function(subjectId) {
-    selectTextbookData[subjectId] = null
-    selectedTextbookVersionData[subjectId] = null
+  var removeSelectedCurrentData = function(subjectSn) {
+    selectTextbookData[subjectSn] = null
+    selectedTextbookVersionData[subjectSn] = null
   }
 
   // 移除全部选中的数据
@@ -184,8 +180,8 @@ var busFactory = function () {
   }
 
   // 移除当前章节列表
-  var removeCurrentChapterList = function (subjectId) {
-    chapterList[subjectId] = null
+  var removeCurrentChapterList = function (subjectSn) {
+    chapterList[subjectSn] = null
   }
 
   var removeAllData = function () {
@@ -193,12 +189,14 @@ var busFactory = function () {
     textbookData = null
     selectTextbookData = null
     selectedTextbookVersionData = null
-    getComponentsChapterData = null
     chapterList = null
-    requestIds = null
+    
   }
 
-
+  var removeDestoryData = function () {
+    getComponentsChapterData = null
+    requestIds = null
+  }
 
   return {
     getTextbookVersionData,
@@ -217,12 +215,18 @@ var busFactory = function () {
     removeSelectedCurrentData,
     removeSelectedAllData,
     removeCurrentChapterList,
+    removeDestoryData,
+    removeCurrentSelectedTextbookData,
   }
 
 }
-
 
 export default (function() {
   var bus = busFactory()
   return bus
 })()
+
+
+
+
+

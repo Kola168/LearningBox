@@ -1,86 +1,86 @@
-<nav-bar background="#fff" title="同步练习"/>
+<nav-bar background="#fff" title="同步练习" />
 <view class="main">
-  <view class="head-box">
-    <view class="title">1. 集合</view>
-    <view class="learn-name">【第一章】 集合与函数的概念</view>
-    <image src="../../images/nav_figure_card.png" mode="widthFix">
-      <view class="nav-tip">小白老师已为你准备了5种不同难度的练习，已有99位同学打印了本章练习</view>
-    </image>
-  </view>
-  <view class="tab-main">
-    <view class="tab-item">
-      <view class="tab-name">语文</view>
-      <view class="tab-line tab-active"></view>
-    </view>
-    <view class="tab-item">
-      <view class="tab-name">语文</view>
-      <view class="tab-line"></view>
-    </view>
-    <view class="tab-item">
-      <view class="tab-name">语文</view>
-      <view class="tab-line"></view>
-    </view>
-     <view class="tab-item">
-      <view class="tab-name">语文</view>
-      <view class="tab-line"></view>
-    </view>
-     <view class="tab-item">
-      <view class="tab-name">语文</view>
-      <view class="tab-line"></view>
-    </view>
-  </view>
-  <view class="subject-main">
-    <view class="subject-item">
-      <image class="nav-cicon">
-        <view class="printed-holder">已打印</view>
-      </image>
-      <view class="sub-content">
-        <view class="subject-title">精选练习-一般</view>
-        <view class="subject-info">
-          <image class="print-icon" mode="widthFix" src="/images/doc_print_icon.png"></image>
-          <view class="print-num">1493位同学已学习</view>
-        </view>
-      </view>
-      <view class="btn-print">打印练习</view>
-    </view>
-  </view>
-  <view class="ai-subject-content">
-    <view class="nav-title">智能组题</view>
-    <image class="btn-subject" src="../../images/btn_add_learn.png" bind:tap="openAiToast"></image>
-  </view>
-  <view class="subject-main">
-    <view class="subject-item">
-      <image class="nav-cicon"></image>
-      <view class="sub-content">
-        <view class="subject-title">精选练习-一般</view>
-        <view class="subject-info">
-          <image class="print-icon" mode="widthFix" src="/images/doc_print_icon.png"></image>
-          <view class="print-num">1493位同学已学习</view>
-        </view>
-      </view>
-      <view class="btn-print">打印练习</view>
-    </view>
-  </view>
+	<view class="head-box">
+		<view class="title">{{nodeDetails.name}}</view>
+		<view class="learn-name">{{nodeDetails.root.name}}</view>
+		<image src="../../images/nav_figure_card.png" mode="widthFix">
+			<view class="nav-tip">小白老师已为你准备了{{diffList.length || '--'}}种不同难度的练习，已有{{nodeDetails.printCount}}位同学打印了本章练习</view>
+		</image>
+	</view>
+	<view class="tab-main">
+		<view
+		 class="tab-item"
+		 wx:for="{{diffList}}"
+		 wx:key="id"
+		 data-index="{{index}}"
+		 bind:tap="chooseDiff"
+		>
+			<view class="tab-name">{{item.name}}</view>
+			<view class="tab-line {{currentIndex == index ? 'tab-active' : ''}}" />
+		</view>
+	</view>
+	<view class="subject-main">
+		<view
+		 class="subject-item"
+		 wx:if="{{defautExercise}}"
+		 data-sn="{{defautExercise.sn}}"
+		 bind:tap="toExerciseDetail"
+		>
+			<image class="nav-cicon" src="../../images/pdf.png">
+				<view class="printed-holder" wx:if="{{defautExercise.isPrint}}">已打印</view>
+			</image>
+			<view class="sub-content">
+				<view class="subject-title">{{defautExercise.exerciseName}}-{{currentDiff.name}}</view>
+				<view class="subject-info">
+					<image class="print-icon" mode="widthFix" src="/images/doc_print_icon.png" />
+					<view class="print-num">{{defautExercise.printCount}}位同学已学习</view>
+				</view>
+			</view>
+			<view class="btn-print">打印练习</view>
+		</view>
+	</view>
+	<view class="ai-subject-content">
+		<view class="nav-title">智能组题</view>
+		<image class="btn-subject" src="../../images/btn_add_learn.png" bind:tap="openAiToast" />
+	</view>
+	<view class="subject-main">
+		<view
+		 class="subject-item"
+		 wx:for="{{exerciseList}}"
+		 wx:key="sn"
+		 data-sn="{{item.sn}}"
+		 bind:tap="toExerciseDetail"
+		>
+			<image class="nav-cicon" src="../../images/pdf.png">
+				<view class="printed-holder" wx:if="{{item.isPrint}}">已打印</view>
+			</image>
+			<view class="sub-content">
+				<view class="subject-title">{{item.exerciseName}}-{{currentDiff.name}}</view>
+				<view class="subject-info">
+					<image class="print-icon" mode="widthFix" src="/images/doc_print_icon.png" />
+					<view class="print-num">{{item.printCount}}位同学已学习</view>
+				</view>
+			</view>
+			<view class="btn-print">打印练习</view>
+		</view>
+	</view>
 
-  <!-- 会员开通弹窗 -->
-<showMemberToast id="memberToast"/>
+	<!-- 会员开通弹窗 -->
+	<showMemberToast id="memberToast" />
 
-  <!-- 智能出题弹窗 -->
-  <view class="subject-toast" wx:if="{{showAiToast}}">
-    <image class="theme-nav-icon" src="../../images/dog_header.png"></image>
-    <view class="main-box">
-      <image class="head" mode="widthFix" src="../../images/notice_banner.png"></image>
-      <view class="nav-title">确认让小白老师为你出一套“一般”</view>
-      <view class="nav-title">难度的练习吗？</view>
-      <view class="btn-submit" bind:tap="setTopic">确认</view>
-      <view class="btn-cancel" bindtap="cancelSet">取消</view>
-    </view>
-  </view>
+	<!-- 智能出题弹窗 -->
+	<view class="subject-toast" wx:if="{{showAiToast}}" bind:tap="cancelSet">
+		<image class="theme-nav-icon" src="../../images/dog_header.png" />
+		<view class="main-box">
+			<image class="head" mode="widthFix" src="../../images/notice_banner.png" />
+			<view class="nav-title">确认让小白老师为你出一套“{{currentDiff.name}}”</view>
+			<view class="nav-title">难度的练习吗？</view>
+			<view class="btn-submit" catch:tap="setTopic">确认</view>
+			<view class="btn-cancel" bindtap="cancelSet">取消</view>
+		</view>
+	</view>
 </view>
 
 <import src="../../../../lib/toast/wetoast.wxml" />
 <template is="wetoast" data="{{...__wetoast__}}" />
-
-
-
 

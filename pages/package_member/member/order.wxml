@@ -1,0 +1,40 @@
+<!-- 会员订单 -->
+<nav-bar background="#fff" title="订单"></nav-bar>
+
+<view>
+<image class="member-tip" src="{{memberTipUrl}}" mode="widthFix"></image>
+<view class="info-item info-item-top">
+	<text>有效期至:</text>
+	<text>123456</text>
+</view>
+<view class="info-item">
+	<text>家庭信息:</text>
+	<view class="user-wrap">
+		 <image class="user-avatar" src="{{kidInfo.avatar}}" mode="widthFix"></image>
+		<view class="user-info"> 
+        <view>
+            <view>{{kidInfo.name}}</view>
+            <view class="grade">年级：{{kidInfo.stage.rootName}} {{kidInfo.stage.name}}</view>
+        </view>
+    </view>
+</view>
+</view>
+<view class="info-item">
+	<text>支付金额:</text>
+	<text>¥12345w6</text>
+</view>
+<view class="agree">
+	 <image class="check-agrrement" src="{{checked? '../images/membership_icon_checked.png':'../images/membership_icon_not_checked.png'}}" mode="widthFix"></image>
+	 <text class="common-text">同意会员</text>
+	 <text class="agree-text"bindtap="agree">服务协议</text>
+</view>
+<view class="open" bindtap="openeMemebership">立即开通</view>
+<view class="tip-bottom">
+	<text>温馨提示:</text>
+	<text class="tip-top">激活成功后,会员将立即绑定您当前所在家庭，退出此家庭后暂无法继续使用</text>
+</view>
+</view>
+
+<import src="../../../lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />
+
