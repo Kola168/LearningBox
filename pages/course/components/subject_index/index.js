@@ -112,7 +112,7 @@ Component({
     },
 
     toMore () {
-      console.log('==查看更多==')
+      wxNav.navigateTo('/pages/package_subject/evaluate_exam/index/index')
     },
   }
 })

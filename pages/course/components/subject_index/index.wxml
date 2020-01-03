@@ -116,7 +116,7 @@
           <view class="btn-print">打印学习</view>
         </view>
       </view>
-      <image class="btn-more" src="../images/btn_more.png" mode="widthFix" bind:tap="toMore"/>
+      <image class="btn-more" src="../images/btn_more.png" mode="widthFix" bindtap="toMore"/>
     </view>
   </view>
 </view>
