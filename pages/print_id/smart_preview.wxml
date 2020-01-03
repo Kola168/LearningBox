@@ -37,7 +37,7 @@
         </view>
         <view class="flex-center +{{idPrint?'':'forbid'}} right conf-button">
           确认打印
-          <botttom-button class="bottom-button-box" text-right="确认打印" id="paper" bindrighttap="toPrint" get-phone="{{true}}"></botttom-button>
+          <bottom-button class="bottom-button-box" text-right="确认打印" id="paper" bindrighttap="toPrint" get-phone="{{true}}"></bottom-button>
         </view>
 
     </block>

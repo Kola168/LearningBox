@@ -1,0 +1,61 @@
+<!--pages/package_common/common_content/preview.wxml-->
+<nav-bar background="#fff" title="在家上早教"></nav-bar>
+<view class="wrap-fun">
+    <swiper class="swiper-box" duration="500" current="{{num}}" bindchange="tab_slide" circular="{{circular}}"
+        wx:if="{{detail.preview_urls.length>0}}">
+        <block wx:for="{{detail.preview_urls}}" wx:key="{{index}}">
+            <swiper-item style="overflow-y:scroll;overflow-x:hidden;">
+                <image style="width:100%" mode="widthFix" src="{{item}}">
+                    <image src='https://cdn.gongfudou.com/miniapp/ec/shuiyin_new.png' class='watermark'></image>
+                </image>
+            </swiper-item>
+        </block>
+    </swiper>
+    <view wx:if="{{detail.preview_urls.length==0}}" class="study-none">
+        <image src="https://cdn.gongfudou.com/miniapp/ec/study_detail_none.png" mode="widthFix"></image>
+    </view>
+    <!--翻页-->
+    <view class="turn" wx:if="{{detail.preview_urls.length>0}}">
+        <view class="turn-content">
+            <text style="color: #999;">{{num+1}}/{{detail.preview_urls.length}}</text>
+        </view>
+        <view class="turn-image">
+            <image class="turn-image-item turn-image-left" src="/images/preview-turn-left.png" mode="widthFix"
+                data-turn="left" catchtap="turnImg"></image>
+            <image class="turn-image-item" src="/images/preview-turn-right.png" mode="widthFix" data-turn="right"
+                catchtap="turnImg"></image>
+        </view>
+    </view>
+</view>
+
+<view class="bottom">
+    <view class="left">
+        <view class="collect">
+            <view bindtap="collect">
+                <image mode="widthFix" src="../../images/collect_{{collection?'orange':'gray'}}.png"
+                    class='bottom-image'>
+                </image>
+                <text class="font-content">{{collection?'已收藏':'收藏'}}</text>
+            </view>
+        </view>
+        <view class="share">
+            <button class="share-button" open-type="{{userAuthorize?'share':''}}"
+                bindtap="{{userAuthorize?'':'linktoauthorize'}}" hover-class="none">
+                <image mode="widthFix" src="../../images/gfd-share_gray.png" class='bottom-image'></image>
+                <text class="font-content">分享</text>
+            </button>
+        </view>
+    </view>
+    <view class="right">
+        <view class="right-first">适配耗材
+            <consumables class="modify" bind:myevent="onMyEvent" supply_types="{{supply_types}}"
+                consumables-icon="consumables-icon" medium_recommend="{{mediumRecommend}}" find="library">
+            </consumables>
+
+        </view>
+
+        <button bindtap="toConfirm" class="print-button">
+            打印
+        </button>
+    </view>
+</view>

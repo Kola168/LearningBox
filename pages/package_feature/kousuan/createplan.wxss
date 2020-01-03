@@ -1,0 +1,263 @@
+/* pages/package_feature/kousuan/createplan.wxss */
+page {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+view {
+  box-sizing: border-box;
+}
+
+.configure-box {
+  width: 100%;
+  display: flex;
+  font-size: 26rpx;
+  color: #666666;
+  padding: 30rpx 0;
+  background: #fff;
+}
+
+.textbook-box {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26rpx;
+  color: #666666;
+}
+
+.rest-box {
+  width: 100%;
+  flex: 1;
+  overflow: scroll;
+  position: relative;
+}
+
+.picker-box-bg {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  overflow:hidden;
+  z-index:99;
+  top: 0;
+  left: 0;
+  transition: 0.1s;
+  opacity: 0;
+}
+
+.picker-box {
+  width: 100%;
+  max-height: 50%;
+  overflow: scroll;
+  background: #fff;
+  border-top: 1rpx solid #cecece;
+  padding: 0 24rpx;
+  color: #666;
+  margin-top: -100%;
+  transition: 0.1s;
+}
+
+.pick-animate {
+  margin-top: 0;
+}
+
+.pick-box-animate {
+  opacity: 1;
+}
+
+.picker-item {
+  padding: 24rpx 0;
+}
+
+.picker-checked {
+  color: #ff9702;
+}
+
+.gray-bg {
+  flex: 1;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.configure-checked {
+  color: #ff9702
+}
+
+.plan-box {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 30rpx 24rpx;
+  border-top: 20rpx solid #F7F7F7;
+}
+
+.plan-top-tip {
+  width: 100%;
+  font-size: 24rpx;
+  color: #FFA200;
+}
+
+.plan-draft-box {
+  width: 100%;
+  background: #FFFFFF;
+  box-shadow: 0 2px 8px 0 rgba(204, 204, 204, 0.40);
+  border-radius: 10px;
+  margin-top: 38rpx;
+  padding: 0 24rpx 50rpx;
+  display: flex;
+  flex-direction: column;
+}
+
+.check-contain-box {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 40rpx;
+}
+
+.check-name-box {
+  width: 86rpx;
+  font-size: 28rpx;
+  color: #666666;
+  margin-right: 20rpx;
+  text-align: justify;
+  text-align-last: justify;
+}
+
+.check-content-box {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 2rpx solid #E7E7E7;
+  border-radius: 12rpx;
+  position:relative;
+}
+
+.check-value-box {
+  font-size: 14px;
+  color: #333333;
+  margin: 20rpx;
+}
+
+.check-point-img {
+  width: 52rpx;
+  margin-top: 20rpx;
+  margin-left: 106rpx;
+}
+
+.check-print-tip {
+  font-size: 28rpx;
+  color: #666666;
+  margin-left:20rpx;
+}
+
+.conf-check-but{
+  width:308rpx;
+  line-height:76rpx;
+  border-radius:38rpx;
+  text-align:center;
+  background:#FFDC5E;
+  font-size: 36rpx;
+  color: #454545;
+  margin:0 auto;
+  margin-top:52rpx;
+}
+
+.scroll-position-box{
+  width:calc(100% + 4rpx);
+  position:absolute;
+  z-index:1;
+  top:72rpx;
+  left:-2rpx;
+  border: 1px solid #E7E7E7;
+  border-top:1px solid #fff;
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
+  overflow:hidden;
+}
+
+.scroll-list-box{
+  width:100%;
+  padding-top:10rpx;
+  max-height:308rpx;
+  overflow:scroll;
+  background:#fff;
+}
+
+.scroll-list{
+  width:100%;
+  height:72rpx;
+  background:#fff;
+  font-size: 28rpx;
+  color: #333333;
+  padding:16rpx 22rpx;
+}
+
+.scroll-list-checked{
+  background: #FFF8E0;
+}
+
+.picker-view-box{
+  width:100%;
+  height:360rpx;
+  background:#fff;
+}
+
+.picker-item{
+  text-align:center;
+}
+
+.picker-choosed{
+  border-top:1rpx solid #FFA200;
+  border-bottom:1rpx solid #FFA200;
+}
+
+@font-face {
+  font-family: 'iconfont';
+  src: url(data:application/font-woff2;charset=utf-8;base64,d09GMgABAAAAAAKUAA0AAAAABpQAAAJAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP0ZGVE0cGh4GVgCCShEICnBvCwwAATYCJAMSBCAFhQgHOxufBcguB2xjCX6FI2mFxos2hb8lD7vgkfE83360+2ZmRaTtIupNNEEVS5TAIUHIHFKwTvNmksnf/1rTtyGQmcjb8SFWYaEy8Yf8w8YACd86UeE6vkI1AZn/+1QXeFpn0AAu6pVAxVTJ9bX5x83XJuE773JbEywLKM+iOEwg4GguGus80O7bB0z1K/9Bd2PQ19UlcBIC716sywGfN7VydTCMWVBE1URDQZo800N5UsJT8Pn8szM5ip5Kib14a6Vg+tPPq44bEuJ4AqioWMbAaUnBspT1oFcTxa3VDX7PAphgAOklgBQU+OcJcKd0K6AHDKJgHqwAaACI1JlHm+2l8mpaeTarvZ2rfp5RdUXtYBO7vqLl3r5Bt7wYDJbl01/82wWBC8sSEIRdJ/5v7PD//qGmUvV76W09n9gO+hUQKsIf0UA9DwYAaA3Q0ISXgh4zGCgYNIgOwKRfAcyoYSD6XcVA0echBqp+jwU0/Z4L6DHkjYBe/b4IGLQpczAwZCpvVdoANoIGMW4OxaibUI3boY28Qo9Z39Br3A8Muu4vfsjaeCg4JaISkUqh4CQnuknm82ghpMDgLjfT2zC/oXuzZUC/GLhMpdtxiCL4y8ytdfcC/TpVJGY6ubaGFqyCgrcbLafoOcVz7imdc2J7ug5CNJwm4nNxay8iVQ6HjwvoP7GoZKQBW+j2eK93iLR1E3NblJm+CP/qfg+4g5DARFOT5rPaiLjpwrRW1xwz44LY9fgxyET2IEpK6kCKlfpApaR6ZgAA) format('woff2'),
+    url(data:application/font-woff;charset=utf-8;base64,d09GRgABAAAAAARwAA0AAAAABpQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABGRlRNAAAEVAAAABoAAAAcifuoW0dERUYAAAQ0AAAAHgAAAB4AKQALT1MvMgAAAaAAAABDAAAAVjzKSI1jbWFwAAAB+AAAAEYAAAFK5u/p3Gdhc3AAAAQsAAAACAAAAAj//wADZ2x5ZgAAAkwAAABoAAAAcFbLvI5oZWFkAAABMAAAADAAAAA2F4PFTWhoZWEAAAFgAAAAHQAAACQHLAOFaG10eAAAAeQAAAASAAAAEgzAAQBsb2NhAAACQAAAAAwAAAAMAA4AOG1heHAAAAGAAAAAHwAAACABEAAhbmFtZQAAArQAAAFJAAACiCnmEVVwb3N0AAAEAAAAACkAAAA7W5ZLPnjaY2BkYGAAYmfHz/rx/DZfGbhZGEDglvaBlXD6AMM5Zj8mAyCXg4EJJAoAIwoKTnjaY2BkYGBu+N/AEMPCAALMfgyMDKiABQBMwAK6AAAAeNpjYGRgYGBlEGUA0QwMTEDMBYQMDP/BfAYACvUBMgB42mNgZGFgnMDAysDA1Ml0hoGBoR9CM75mMGLkAIoysDIzYAUBaa4pDA7PYp7NZm7438AQw9zA0AAUZgTJAQDtygzSAAQAAAAAAAAABAAAAAQAAQAAwAAAeNpjYGBgZoBgGQZGBhBwAfIYwXwWBg0gzQakGRmYnsU8m/3/PwMDhJZcLpkJVQ8EjGwMcA4jE5BgYkAFjAzDHgAAwFgLlAAAAAAAAAAAAAAADgA4eNoVhzEOglAQRGf272gI0BFowUILG0KMdngDz0wpDWfwJB+XzJvJG5AgEgwHhSXsEYsSwYItfWxEE6drmzNPlxuvjzefU1fEpLlyz1+vlVepVC32HFTZ/fC8uvMVUkr5x17AHzCaEGJ42n2QPU4DMRCFn/MHJBJCIKhdUQDa/JQpEyn0CKWjSDbekGjXXnmdSDkBLRUHoOUYHIAbINFyCl6WSZMia+3o85uZ57EBnOMbCv/fJe6EFY7xKFzBETLhKvUX4Rr5XbiOFj6FG9R/hJu4VQPhFi7UGx1U7YS7m9JtywpnGAhXcIon4Sr1lXCN/CpcxxU+hBvUv4SbGONXuIVrZakM4WEwQWCcQWOKDeMCMRwskjIG1qE59GYSzExPN3oRO5s4GyjvV2KXAx5oOeeAKe09t2a+Sif+YMuB1JhuHgVLtimNLiJ0KBtfLJzV3ahzsP2e7ba02L9rgTXH7FENbNT8Pdsz0khsDK+QkjXyMrekElOPaGus8btnKdbzXgiJTrzL9IjHmjR1OvduaeLA4ufyjBx9tLmSPfeoHD5jWQh5v91OxCCKXYY/k9hxGQAAAHjaY2BigAAuMMnIgA5YwaJMjEyMzJyZyfl5uiWpxSUsKfnleQAsaQV4AAAAAAAAAf//AAIAAQAAAAwAAAAWAAAAAgABAAMABAABAAQAAAACAAAAAHjaY2BgYGQAgqtL1DlA9C3tAythNAA/3waGAAA=) format('woff'),
+    url('iconfont.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-show-more:before {
+  content: "\e65c";
+}
+
+.icon-down:before {
+  content: "\e69b";
+}
+
+.icon-down {
+  transition: 0.2s;
+  font-size: 32rpx;
+  color: #CECECE;
+  margin-right: 20rpx;
+  font-weight: 600;
+}
+
+.icon-show-more {
+  font-size: 32rpx;
+  margin-left: 16rpx;
+  transition: 0.2s;
+}
+
+.icon-checked {
+  color: #ff9702;
+  transform: rotate(-180deg);
+}

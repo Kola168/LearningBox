@@ -120,6 +120,18 @@ const api = {
   getShareDeviceInfo:(id)=>request.get(`short_urls/${id}`,{}, {
     baseURL: `${app.apiServer}/api/v1/`
   }),
+
+  /**
+   * 获取批改试卷
+   * @param { String } sn required
+   * @param { String } type required 'XuekewangExercise'
+   */
+  getCorrectPaper:(sn,type)=>request.get(`xuekewang_papers`,{
+    sn: sn,
+    type: type
+  }, {
+    baseURL: `${app.apiServer}/api/v1/`
+  }),
 }
 
 export default api

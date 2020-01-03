@@ -78,7 +78,7 @@
 		</button>
 		<view class="conf-botton">
 			确认打印
-			<botttom-button class="bottom-button-box" text-right="确认打印" bindrighttap="confirm" get-phone="{{true}}"></botttom-button>
+			<bottom-button class="bottom-button-box" text-right="确认打印" bindrighttap="confirm" get-phone="{{true}}"></bottom-button>
 		</view>
 
 	</view>

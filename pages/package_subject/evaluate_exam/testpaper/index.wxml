@@ -37,7 +37,7 @@
       <view class="list-item" wx:for="{{paperList}}" wx:key="paperId" bindtap="toDetail" data-id="{{item.paperId}}">
         <view class="item-img">
           <image src="../../images/pdf.png" class="img-main" mode="widthFix" />
-          <image src="../../images/printed_tag" class="img-print-tag" mode="widthFix" />
+          <image src="../../images/printed_tag.png" wx:if="{{item.isPrint}}" class="img-print-tag" mode="widthFix" />
         </view>
         <view class="item-text">
           <view class="text-title text-overflow-points">{{item.title}}</view>

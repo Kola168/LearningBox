@@ -29,7 +29,7 @@
                 <text>分享</text>
             </button>
         </view>
-        <botttom-button class="confirm_print" text-right="确认打印" bindrighttap="confirm" get-phone="{{true}}"></botttom-button>
+        <bottom-button class="confirm_print" text-right="确认打印" bindrighttap="confirm" get-phone="{{true}}"></bottom-button>
     </view>
     <view bindtap="backIndex" class="back-index" wx:if="{{isShare}}">返回首页</view>
 </view>
