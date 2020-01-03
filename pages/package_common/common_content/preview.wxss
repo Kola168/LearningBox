@@ -3,48 +3,49 @@ page {
     position: relative;
     width: 100%;
     font-size: 36rpx;
-  }
+}
 
-  .wrap-fun {
+.wrap-fun {
     position: relative;
     width: 100%;
     height: calc(100% - 100rpx);
     overflow-y: scroll;
-  }
-  
-  .wrap-fun {
+}
+
+.wrap-fun {
     height: calc(100% - 100rpx - 130rpx);
     padding-bottom: 130rpx;
     position: relative;
-  }
+}
 
-  .wrap-fun>image {
+.wrap-fun>image {
     width: 750rpx;
-  }
+}
 
-  .swiper-box {
+.swiper-box {
     width: 100%;
     height: 100%;
-  }
-  .watermark {
+}
+
+.watermark {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 88%;
-  }
+}
 
-  .study-none {
+.study-none {
     width: 100%;
     text-align: center;
-  }
-  
-  .study-none image {
+}
+
+.study-none image {
     width: 50%;
     margin-top: 200rpx;
-  }
+}
 
-  .turn {
+.turn {
     display: flex;
     position: fixed;
     align-items: center;
@@ -54,31 +55,31 @@ page {
     width: 100%;
     box-sizing: border-box;
     background-color: #fff;
-  }
-  
-  .turn-image {
+}
+
+.turn-image {
     display: -webkit-flex;
     margin-right: 306rpx;
-  }
-  
-  .turn-content {
+}
+
+.turn-content {
     display: flex;
     width: 100%;
     box-sizing: border-box;
     padding-left: 24rpx;
     font-size: 24rpx;
-  }
-  
-  .turn-image-item {
+}
+
+.turn-image-item {
     width: 50rpx;
     vertical-align: top;
-  }
-  
-  .turn-image-left {
-    margin-right: 36rpx;
-  }
+}
 
-  .bottom {
+.turn-image-left {
+    margin-right: 36rpx;
+}
+
+.bottom {
     width: 100%;
     height: 100rpx;
     display: flex;
@@ -92,70 +93,70 @@ page {
     padding-left: 50rpx;
     padding-right: 24rpx;
     box-sizing: border-box;
-  }
-  
-  .bottom-image {
+}
+
+.bottom-image {
     width: 30rpx;
     height: 30rpx;
-  }
-  
-  .bottom .left {
+}
+
+.bottom .left {
     display: flex;
     border-radius: 20rpx;
-  
-  }
-  
-  .bottom .right {
+
+}
+
+.bottom .right {
     display: flex;
     width: 456rpx;
     border-radius: 60rpx;
     overflow: hidden;
-  }
+}
 
-  .collect {
+.collect {
     display: flex;
     justify-content: center;
     align-items: center;
     margin-right: 60rpx;
-  }
-  
-  .collect view {
+}
+
+.collect view {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-  }
+}
 
-  .font-content {
+.font-content {
     font-family: PingFangSC-Regular;
     font-size: 24rpx;
     color: #666666;
     margin-top: 4rpx;
-  }
+}
 
-  .share {
+.share {
     display: flex;
     align-items: center;
     justify-content: center;
     margin-right: 40rpx;
-  }
-  
-  .share button{
+}
+
+.share button {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     line-height: 30rpx;
-  }
+}
 
-  .share-button {
+.share-button {
     display: flex;
     align-items: center;
     margin-left: 0;
     margin-right: 0;
-  }
+}
 
-  .bottom .right-first {
+.bottom .right-first {
     position: relative;
     width: 228rpx;
     height: 74rpx;
@@ -168,20 +169,17 @@ page {
     color: #FFFFFF;
     letter-spacing: -1.22rpx;
     text-align: center;
-  }
-
-  .bottom .print-button {
-  font-family: PingFangSC-Medium;
-  width: 228rpx;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background: #FF5022;
-  height: 74rpx;
-  font-size: 30rpx;
-  color: #fff;
 }
-  
-  
-  
+
+.bottom .print-button {
+    font-family: PingFangSC-Medium;
+    width: 228rpx;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #FF5022;
+    height: 74rpx;
+    font-size: 30rpx;
+    color: #fff;
+}

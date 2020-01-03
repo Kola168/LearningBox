@@ -42,7 +42,7 @@ Page({
     }
 
   }),
-  toList(e) {
+  toNextPage(e) {
    router.navigateTo('/pages/package_common/common_content/list',{
      featureKey:''
    })

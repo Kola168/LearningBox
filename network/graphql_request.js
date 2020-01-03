@@ -1537,46 +1537,6 @@ const graphqlApi = {
       }
     })
   },
-  /**
-   * 获取错题科目列表
-   *
-   * @returns
-   */
-  getSubjects: () => {
-    return gql.query({
-      query: `query() {
-  
-        }`,
-      variables: {
-        input: input
-      }
-    })
-  },
-  getGrade: () => {
-    return gql.query({
-      query: `query {
-          currentUser {
-            sn
-            selectedKid{
-              sn
-              stage{
-                name
-                rootName
-                sn
-              }
-           }
-          }
-        }`
-    })
-  },
-
-  /**
-   * 获取错题列表
-   *
-   */
-  getMistakes: () => {
-
-  },
 
   /**
    * 注册学科网
@@ -1754,22 +1714,44 @@ const graphqlApi = {
       }
     })
   },
+  /**
+   * 获取错题科目列表
+   *
+   * @returns
+   */
+  getErrorSubjects: () => {
+    return gql.query({
+      query: `query{
+        mistakes{
+          count
+          object
+        }
+        }`
+    })
+  },
 
   /**
    * 获取错题列表
    *
    */
-  getMistakes: () => {
+  getMistakes: (params) => {
     return gql.query({
-      query: `query() {
-          // userFolderRelations(sn:$sn){
-          //   id
-          //   avatar:userAvatar
-          //   nickname:userName
-          // }
+      query: `query($course: String,$printCount: Int,$startAt: String,$endAt: String,$answer: MistakeAnswerEnum) {
+        mistakeCourse(course:$course,printCount:$printCount,startAt:$startAt,endAt:$endAt,answer:$answer){
+          created_at:createDay
+          content:mistakes{
+            answer_urls:answerUrls
+            course
+            level
+            print_count:printerOrdersCount
+            reason
+            urls
+            id
+            }
+          }
         }`,
       variables: {
-
+        ...params
       }
     })
   },
@@ -1777,14 +1759,33 @@ const graphqlApi = {
    * 保存错题
    *
    */
-  saveMistakes: () => {
+  saveMistakes: (input) => {
     return gql.mutate({
-      mutation: `mutation() {
-          
+      mutation: `mutation($input:CreateMistakeInput!) {
+        createMistake(input:$input){
+          state
+        }
         }`,
       variables: {
-        input: input
+        input:input
       }
+    })
+  },
+  /**
+   * 获取错题模板
+   *
+   * @returns
+   */
+  mistakeTemplates:() => {
+    return gql.query({
+      query: `query{
+        mistakeTemplates{
+          cateType
+          id
+          imageUrl
+          name
+          }
+        }`
     })
   },
   /**
@@ -1792,10 +1793,13 @@ const graphqlApi = {
    *
    * @returns
    */
-  getPhotoAnswer: () => {
+  getPhotoAnswer: (input) => {
     return gql.mutate({
-      mutation: `mutation() {
-          
+      mutation: `mutation($input:MistakeSearchInput!) {
+        mistakeSearch(input:$input){
+          answerUrls
+          questionUrl
+        } 
         }`,
       variables: {
         input: input
