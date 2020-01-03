@@ -58,7 +58,22 @@ Page({
         showIntrol: '',
         from_temp: false
     },
-    onShow: co.wrap(function* () {}),
+    onShow: co.wrap(function* () {
+        let authToken = storage.get('authToken')
+        if (!authToken) {
+            let url = this.share_user_id ? `/pages/authorize/index?url=${url}&share_user_id=${this.share_user_id}&way=${this.way}` : `/pages/authorize/index`
+            if (this.share_user_id) {
+                router.navigateTo('/pages/authorize/index', {
+                    share_user_id: this.share_user_id,
+                    way: this.way
+                })
+            } else {
+                router.navigateTo('/pages/authorize/index', )
+            }
+        } else{
+            yield this.getSubjects()
+        }
+    }),
     onLoad: co.wrap(function* (options) {
         event.on('Authorize', this, function (data) {
             this.setData({
@@ -105,7 +120,6 @@ Page({
         // this.way = 1
         if (options.scene) {
             let fromScene = decodeURIComponent(options.scene)
-            logger.info("4567890错题本", fromScene)
             let scene = fromScene.split('_')
             this.from = scene[0]
             if (this.from == 'application') {
@@ -117,7 +131,6 @@ Page({
                 })
             }
         }
-        yield this.getSubjects()
     }),
     toCamera: co.wrap(function* () {
         if (this.data.allowCamera != 2) {
@@ -212,18 +225,6 @@ Page({
         router.navigateTo('/pages/package_feature/error_book/use_page')
     },
     toNextPage: function () {
-        let authToken = storage.get('authToken')
-        if (!authToken) {
-            let url = this.share_user_id ? `/pages/authorize/index?url=${url}&share_user_id=${this.share_user_id}&way=${this.way}` : `/pages/authorize/index`
-            if (this.share_user_id) {
-                router.navigateTo('/pages/authorize/index', {
-                    share_user_id: this.share_user_id,
-                    way: this.way
-                })
-            } else {
-                router.navigateTo('/pages/authorize/index', )
-            }
-        } else {
             let errorBook = {
                 hideIntro: true,
                 hideHomeTip: false,
@@ -234,7 +235,6 @@ Page({
                 showIntro: false
             })
             this.getAuth()
-        }
     },
     /**
      * 用户点击右上角分享

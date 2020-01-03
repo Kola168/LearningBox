@@ -35,7 +35,6 @@ Page({
         isSetting: false,
         savable: true,
         urls: [],
-        hasAuthPhoneNum:false,
         confirmModal: {
             isShow: false,
             title: '请正确放置A4打印纸',
@@ -60,11 +59,6 @@ Page({
 
     }),
     onShow:function(){
-        let hasAuthPhoneNum = Boolean(wx.getStorageSync('hasAuthPhoneNum'))
-        this.hasAuthPhoneNum = hasAuthPhoneNum
-        this.setData({
-            hasAuthPhoneNum: app.hasPhoneNum || hasAuthPhoneNum
-        })
     },
     getPrinterCapability: co.wrap(function*() {
         wx.showLoading({
@@ -233,9 +227,6 @@ Page({
 
     //确认按钮提交
     confcheck() {
-        if(!this.hasAuthPhoneNum&&!app.hasPhoneNum){
-            return
-        }
         if (parseInt(this.data.startPage) > parseInt(this.data.endPage) || parseInt(this.data.startPage) <= 0) {
             this.setData({
                 startPrintPage: 1,
@@ -272,15 +263,6 @@ Page({
             })
         }
     },
-    getPhoneNumber:co.wrap(function*(e){
-        yield app.getPhoneNum(e)
-        wx.setStorageSync("hasAuthPhoneNum",true)
-        this.hasAuthPhoneNum = true
-        this.setData({
-            hasAuthPhoneNum:true
-        })
-        this.confcheck()
-    }),
     // 打印
     print: co.wrap(function*() {
         let images = [],

@@ -21,7 +21,7 @@ Page({
     let hideErrorBookTip = Boolean(wx.getStorageSync('hideErrorBookTip'))
     this.setData({
       url: query.url,
-      type: query.type, //photo_answer拍搜,error_book_search错题搜题
+      type: query.type, //photo_answer拍搜,error_book_search已保存错题搜索 before_add_error_book保存错题钱搜索
       hideTip: hideErrorBookTip
     })
     if (query.type === 'error_book_search') {
@@ -81,7 +81,6 @@ Page({
   handleRightBtn() {
     let urls = JSON.stringify(this.data.answerUrls)
     let type = this.data.type
-    console.log(type)
     if (type === 'photo_answer') {
       router.navigateTo('/pages/package_feature/error_book/answer_print',{
        urls:urls

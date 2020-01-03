@@ -82,8 +82,8 @@ Page({
         })
     },
     addMore: function () {
-        wx.navigateTo({
-            url: `camera?from=topic_details`
+        router.navigateTo('/pages/package_feature/error_book/camera',{
+            type:'topic_details'
         })
     },
     deleteImg: co.wrap(function* (e) {

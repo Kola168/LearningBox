@@ -33,7 +33,10 @@
   </view>
   <view class="handle-bar">
     <view class="bar-cancel" bindtap="cancelSetting">取消</view>
-    <button class="bar-confirm" bindtap="confcheck" open-type="{{hasAuthPhoneNum?'':'getPhoneNumber'}}" bindgetphonenumber="{{hasAuthPhoneNum?'':'getPhoneNumber'}}">确认</button>
+    <button class="bar-confirm">
+      确认
+      <botttom-button class="bottom-button-box" text-right="立即打印" bindrighttap="confcheck" get-phone="{{true}}"></botttom-button>
+    </button>
   </view>
 </view>
 <view class="preview" wx:else>
