@@ -157,7 +157,6 @@ Page({
     try {
       let res = yield gqlSubject.getSubjectPapers(this.subjectId, this.data.typeId, this.data.activeArea.id, this.page++),
         paperList = res.xuekewang.paperLists
-      console.log(paperList.length)
       if (paperList.length < 20) {
         this.isEnd = true
       }

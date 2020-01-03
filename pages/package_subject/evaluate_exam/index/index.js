@@ -16,7 +16,7 @@ Page({
   },
   onLoad() {
     this.weToast = new app.weToast()
-    // this.getSubjects()
+    this.getSubjects()
   },
   getSubjects: co.wrap(function* () {
     this.weToast.toast({

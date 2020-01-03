@@ -17,7 +17,7 @@
 </view>
 <!-- modal -->
 <modal modal="{{modalObj}}" bindconfirm="confirmModal">
-  <view slot="bottom" class="member-btn" bindtap="toPrint">
+  <view slot="bottom" class="member-btn" catchtap="toPrint">
     <image src="../../images/diamond.png" mode="widthFix" />
     <view>开通会员可免费使用</view>
   </view>

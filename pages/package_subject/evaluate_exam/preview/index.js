@@ -52,17 +52,15 @@ Page({
     })
   },
   toPrint: co.wrap(function* () {
-    console.log({
+    let postData = {
       featureKey: 'xuekewang_paper',
       sn: this.paperId,
       name: this.data.name,
       isPrintAnswer: this.data.printAnswer,
-      pageCount: this.imgList.length
-    })
-    wxNav.navigateTo('../../setting/index', {
-      featureKey: 'xuekewang_paper',
-      sn: this.sn,
-      isPrintAnswer: this.data.printAnswer
+      pageCount: this.data.imgList.length
+    }
+    wxNav.navigateTo('../../setting/setting', {
+      postData: encodeURIComponent(JSON.stringify(postData))
     })
   }),
   getPaperDetail: co.wrap(function* () {
