@@ -38,7 +38,7 @@ App({
   // apiServer: 'http://jhx.nat300.top',
 
   // 测试接口张伟
-  // apiServer: 'http://bboo.natapp1.cc',
+  // apiServer: 'https://bboo.utools.club',
 
   // 许成本地服务
   // apiServer: 'http://xucheng.nat100.top',

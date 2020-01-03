@@ -92,28 +92,24 @@
     <view class="nav-title">同步课堂</view>
     <view class="nav-m-content">
       <image class="desc-icon" src="../images/theme_banner.png">
-        <view class="desc-content">小白老师共有23197套试卷，你完成了230套，超越90%的同学</view>
+        <view class="desc-content">小白老师共有23197套试卷，你完成了{{printPaperCount}}套，超越{{percentage}}%的同学</view>
       </image>
     </view>
     <view class="scroll-list">
       <view class="tab-list">
-        <view class="tab-item">
-          <view class="tab-text active">期初考试</view>
-          <view class="tab-line active-line"></view>
-        </view>
-        <view class="tab-item">
-          <view class="tab-text">测试</view>
-          <view class="tab-line"></view>
+        <view class="tab-item" wx:for="{{selectedPaperTypes}}" wx:key="id" bind:tap="changeTab" data-index="{{index}}">  
+          <view class="tab-text active">{{item.name}}</view>
+          <view class="tab-line {{selectedPaperIndex == index ? 'active-line' : ''}}"></view>
         </view>
       </view>
       <view class="content">
         <view class="exam-item">
-          <image src="" />
+          <image src="../images/pdf_icon.png" />
           <view class="center-main">
-            <view class="title">【全国百强校首发】安徽省蚌埠市第二中学2019…【全国百强校首发】安徽省蚌埠市第二中学2019…</view>
-            <view class="desc">共1页 99人已学习</view>
+            <view class="title">{{item.title}}</view>
+            <view class="desc">共1页 {{item.printCount}}人已学习</view>
           </view>
-          <view class="btn-print">打印学习</view>
+          <view class="btn-print" bind:tap="toPrint" data-item="{{item}}">打印学习</view>
         </view>
       </view>
       <image class="btn-more" src="../images/btn_more.png" mode="widthFix" bind:tap="toMore"/>

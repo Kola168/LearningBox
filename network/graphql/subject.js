@@ -435,8 +435,37 @@ const graphqlApi = {
         }
       }`
     })
-  }
+  },
+
+  /**
+   * 获取试卷缓存分类
+   */
+  getPaperCates: ()=> {
+    return gql.query({
+      query: `query getPaperCates{
+        xuekewang {
+          selectedPaperTypes{
+            id
+            name
+          }
+          selectedPaperSubject{
+            subjectId
+            paperTypeId
+            areaId
+            gradeId
+          }
+          printPaperCount
+          percentage
+         
+        }
+      }`
+    })
+  },
+
 
 }
 
 export default graphqlApi
+
+
+
