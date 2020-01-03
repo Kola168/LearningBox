@@ -70,7 +70,8 @@
         "common_content/preview",
         "common_content/setting",
         "order_record/index/index",
-        "order_record/order/order"
+        "order_record/order/order",
+        "setting/setting"
       ]
     },
     {

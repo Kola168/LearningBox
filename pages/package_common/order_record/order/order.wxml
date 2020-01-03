@@ -1,5 +1,5 @@
 <wxs src="../index/index.wxs" module="utils" />
-<view class="order-main">
+<view class="order-main" hidden="1">
 	<view class="order-status sys-flex flex-m-axis-center flex-cross-axis-center" wx:if="{{orderStatus}}">
 		<image class="icon-status" src="{{orderStatus.icon}}" wx:if="{{orderStatus.icon}}" />
 		<view class="f-16 {{orderStatus.className}}">{{orderStatus.name}}</view>
@@ -11,7 +11,7 @@
 		</view>
 		<view class="sys-flex flex-m-axis-between f-14 padding-b-15">
 			<view class="nav-title color-666">名称</view>
-			<view class="product-title color-333">{{orderDetails.payableItem.name}}</view>
+			<view class="product-title color-333">{{orderDetails.payable.name}}</view>
 		</view>
 		<view class="pay-time-area sys-flex flex-m-axis-between f-14" wx:if="{{orderDetails.state == 'paid'}}">
 			<view class="nav-title color-666">支付时间</view>
@@ -21,9 +21,9 @@
 	<view class="order-price-info">
 		<view class="sys-flex flex-m-axis-between f-14 padding-b-15">
 			<view class="nav-title color-666">原价</view>
-			<view class="color-333">￥{{orderDetails.amountYuan}}</view>
+			<view class="color-333">￥{{orderDetails.payable.paidAmountYuan}}</view>
 		</view>
-		<view class="sys-flex flex-m-axis-between f-14 padding-b-15" wx:if="{{orderDetails.payableItem.discountAmount > 0 && orderDetails.payableItem.discountAmount != null}}">
+		<!-- <view class="sys-flex flex-m-axis-between f-14 padding-b-15" wx:if="{{orderDetails.payableItem.discountAmount > 0 && orderDetails.payableItem.discountAmount != null}}">
 			<view class="nav-title color-666">折扣</view>
 			<view class="product-title hint-color" wx:if="{{orderDetails.payableItem.discountType != 'free'}}">-¥{{orderDetails.payableItem.discountAmount}}</view>
 			<view class="product-title hint-color" wx:else>免费试用</view>
@@ -31,11 +31,11 @@
 		<view class="sys-flex flex-m-axis-between f-14" wx:if="{{orderDetails.payableItem.usePoints}}">
 			<view class="nav-title color-666">印豆抵扣</view>
 			<view class="product-title hint-color">-¥{{orderDetails.payableItem.pointsAmount}}</view>
-		</view>
+		</view> -->
 	</view>
 	<view class="pay-price sys-flex flex-m-axis-between .flex-cross-axis-center" wx:if="{{orderDetails.state == 'paid' || orderDetails.state == 'init'}}">
 		<view class="unpay-title f-14">{{orderDetails.state === 'paid' ? '支付金额' : '待支付金额'}}</view>
-		<view class="price f-18 color-333">￥{{orderDetails.paidAmountYuan}}</view>
+		<view class="price f-18 color-333">￥{{orderDetails.amountYuan}}</view>
 	</view>
 	<view class="pay-status sys-flex" wx:if="{{orderDetails.state === 'init'}}">
 		<image src="../../images/icon_timeout.png" />
@@ -43,8 +43,8 @@
 		<view class="btn-pay color-333 f-14" bind:tap="toPay">去支付</view>
 	</view>
 	<!-- 兼容试卷 -->
-	<view class="failed-hint f-12" wx:if="{{orderDetails.payableItem.desc.categoryType == 'cnjy_special_paper'}}">试卷购买后24小时失效，请及时打印</view>
-	<block wx:if="{{orderDetails.payableItem.desc.categoryType =='feature'}}">
+	<!-- <view class="failed-hint f-12" wx:if="{{orderDetails.payableItem.desc.categoryType == 'cnjy_special_paper'}}">试卷购买后24小时失效，请及时打印</view> -->
+	<!-- <block wx:if="{{orderDetails.payableItem.desc.categoryType =='feature'}}">
 		<button
 		 wx:if="{{orderDetails.state === 'paid'}}"
 		 class="save btn-content f-18 color-333"
@@ -54,11 +54,17 @@
 		>
 			<view>保存证件照</view>
 		</button>
-	</block>
-	<block wx:else>
+	</block> -->
+	<block wx:if="{{1}}">
 		<view class="btn-content f-18 color-333" bind:tap="contentDetail">查看详情</view>
 	</block>
 	<import src="../../../../../lib/toast/wetoast.wxml" />
 	<template is="wetoast" data="{{...__wetoast__}}" />
+</view>
+
+<view class="course-empty" wx:if="{{isEmpty}}">
+  <image  src="../../images/no_look_icon.png" mode="widthFix"/>
+  <view class="name">抱歉，该课程暂时无法查阅</view>
+  <view class="btn" bind:tap="toRecommendCourse">更多课程推荐</view>
 </view>
 

@@ -9,7 +9,10 @@ import {
 } from '../../../../utils/common_import'
 const request = util.promisify(wx.request)
 import graphql from '../../../../network/graphql/subject'
-import Logger from '../../../../utils/logger.js'
+import {
+  getLogger
+} from '../../../../utils/logger'
+const logger = new getLogger('pages/package_subject/sync_learn/learn_content/learn_content')
 import busFactory from '../busFactory'
 Page({
 
@@ -103,8 +106,10 @@ Page({
         selectedTextbook: this.data.teachBook[index],
         showSelectedText: false,
       })
+      
       this.touchTexkbook = true //用户选择了教材
       this.textbookSn = this.data.teachBook[index].sn
+
       busFactory.getComponentsChapterDataFn([]) //清空章节列表
       busFactory.sendRequestIds('textbookSn', this.textbookSn) //设置教材id缓存
       busFactory.removeSelectedCurrentData(this.subjectSn) //移除当前默认选中的教材数据和教材版本
@@ -114,6 +119,7 @@ Page({
       }
       this.longToast.hide()
     } catch(err) {
+      logger.info(err)
       this.longToast.hide()
     }
   }),
@@ -200,7 +206,6 @@ Page({
       if (!resp.xuekewang.registered) {
         return 
       }
-      console.log('学科subjectList==',  resp.xuekewang.subjects)
       this.setData({
         subjectList: resp.xuekewang.subjects,
       })
@@ -300,7 +305,7 @@ Page({
   },
 
   onUnload: function() {
-    busFactory.removeDestoryData()
+    // busFactory.removeDestoryData()
     busFactory.removeAllData()
   },
 

@@ -4,18 +4,18 @@
 	<view
 	 class="item"
 	 wx:for="{{orderList}}"
-	 wx:key="{{index}}"
-	 id="sn"
+	 wx:key="sn"
+	 id="{{item.sn}}"
 	 bindtap="toOrder"
 	>
 		<view class="left-paid">
-			<image src="{{utils.fixIcon(item.payableItem.icon)}}" class="record-icon" mode="widthFix" />
+			<image src="{{utils.fixIcon(item.payable.icon)}}" class="record-icon" mode="widthFix" />
 			<view>
 				<view class="content">
-					<view class="title">{{item.payableItem.name}}</view>
+					<view class="title">{{item.payable.name}}</view>
 				</view>
-				<view class="type" wx:if="{{item.payableItem.desc.categoryName}}">
-					<text class="cates-name">{{item.payableItem.desc.categoryName}}</text>
+				<view class="type" wx:if="{{item.payable.desc.categoryName}}">
+					<text class="cates-name">{{utils.matchCateGroyName(item.payable.typename)}}</text>
 					<text class="created-at">创建时间: {{utils.formatTime(item.createdAt, 'yyyy.MM.dd')}}</text>
 				</view>
 				<view class="type" wx:else>
