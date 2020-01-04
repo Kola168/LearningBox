@@ -17,12 +17,8 @@ page {
 	flex-direction: row;
 	justify-content: space-between;
 	padding: 24rpx 0;
-}
-
-.info-item text{
-	font-size: 32rpx;
+	font-size: 28rpx;
 	color: #333333;
-	letter-spacing: -0.58px;
 }
 
 .open-preschool {
@@ -60,18 +56,7 @@ page {
 
 .user-wrap {
 	display: flex;
-	flex-direction: row;
-}
-
-.user-info {
-	display: flex;
-	flex-direction: row;
-}
-
-.user-info text {
-	font-family: PingFangSC-Regular;
-	font-size: 32rpx;
-	color: #666666;
+	align-items: center;
 	letter-spacing: -0.42rpx;
 }
 
@@ -79,6 +64,7 @@ page {
 	width: 40rpx;
 	height: 40rpx;
 	border-radius: 50%;
+	margin-right: 20rpx;
 }
 
 .agree{
@@ -98,8 +84,8 @@ page {
 
 .agree .common-text{
 	font-size: 30rpx;
-	color: #333333;
-  margin-left:14rpx;
+  	color: #333333;
+  	margin-left:14rpx;
 }
 
 .agree .agree-text{
