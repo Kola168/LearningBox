@@ -10,21 +10,20 @@
 <view class="info-item">
 	<text>家庭信息:</text>
 	<view class="user-wrap">
-		 <image class="user-avatar" src="/images/add_circle.png" mode="widthFix"></image>
+		<image class="user-avatar" src="{{kidInfo.avatar}}" mode="widthFix"></image>
 		<view class="user-info"> 
-            <text>{{kidInfo.name}}</text>
-            <text>年级：{{kidInfo.stage.rootName}} {{kidInfo.stage.name}}</text>
+			{{kidInfo.name}} {{kidInfo.stage.rootName}} {{kidInfo.stage.name}}
     </view>
 </view>
 </view>
 <view class="info-item">
 	<text>支付金额:</text>
-	<text>{{price}}</text>
+	<text>¥ {{price}}</text>
 </view>
 <view class="agree">
-	 <image class="check-agrrement" src="{{checked? '../images/membership_icon_checked.png':'../images/membership_icon_not_checked.png'}}" mode="widthFix" bindtap="agree"></image>
-	 <text class="common-text">同意会员</text>
-	 <text class="agree-text"bindtap="agree">服务协议</text>
+	 <image class="check-agrrement" bindtap="checkProtocol" src="{{checked? '../images/membership_icon_checked.png':'../images/membership_icon_not_checked.png'}}" mode="widthFix"></image>
+	 <text class="common-text" bindtap="checkProtocol">同意会员</text>
+	 <text class="agree-text" bindtap="toProtocol">服务协议</text>
 </view>
 <view class="{{stage=='preschool'?'open-preschool':'open-subject'}}" bindtap="openeMemebership">立即开通</view>
 <view class="tip-bottom">
