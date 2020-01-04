@@ -461,6 +461,7 @@ const graphqlApi = {
             areaId
             gradeId
           }
+          totalPapers
           printPaperCount
           percentage
          
@@ -468,8 +469,22 @@ const graphqlApi = {
       }`
     })
   },
-
- 
+  /**
+   * 获取学科网学习页banner
+   */
+  getBanners: ()=> {
+    return gql.query({
+      query: `query getBanners($type: BannerTypeEnum!){
+        banners(type: $type){
+          imageUrl
+          name
+        }
+      }`,
+      variables: {
+        type: 'xuekewang'
+      }
+    })
+  }
 
 
 }

@@ -47,6 +47,7 @@ const graphqlApi = {
               ... on Course{
                 icon: iconUrl
                 name
+                sn
                 paidAmountYuan: priceYuan
               }
               ... on MemberConfig{

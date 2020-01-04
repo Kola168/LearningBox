@@ -2,6 +2,8 @@
 "use strict"
 
 import graphql from '../../../../network/graphql/common'
+import Logger from '../../../../utils/logger.js'
+const logger = new Logger.getLogger('pages/package_common/order_record/index/index')
 const app = getApp()
 import {
   regeneratorRuntime,
@@ -31,7 +33,7 @@ Page({
       const resp = yield graphql.getPaymentOrders()
       this.setData({
         orderList: resp.currentUser.paymentOrders,
-        isEmpty: !resp.currentUser.paymentOrders.length
+        isEmpty: resp.currentUser.paymentOrders && !resp.currentUser.paymentOrders.length
       })
     } catch (err) {
       util.showError(err)
@@ -52,7 +54,7 @@ Page({
         sn
       })
     } catch (err) {
-      console.error(err)
+      logger.info(err)
     }
   },
 

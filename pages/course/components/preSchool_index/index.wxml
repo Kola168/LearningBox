@@ -120,5 +120,5 @@ module.exports = {
     </view>
   </view>
 </view>
-<import src="../../../../lib/toast/wetoast.wxml" />
+<import src="/lib/toast/wetoast.wxml" />
 <template is="wetoast" data="{{...__wetoast__}}" />

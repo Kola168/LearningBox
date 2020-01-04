@@ -102,42 +102,60 @@ const getPrinterCapacity = co.wrap(function*(featureKey, fileUrl) {
 })
 
 /**
- * 支付
+ * 支付统一下单
  * @param { String } sn required 资源/课程...sn
- * @param { String } payType 支付类型默认wechat_miniapp
  * @param { String } orderType 订单类型member/course
+ * 
+ */
+
+const createPaymentOrder = co.wrap(function*(sn, orderType){
+  return yield graphql.mutate({
+    mutation: `mutation ($input: CreatePaymentOrderInput!){
+      createPaymentOrder(input:$input){
+        paymentOrder{
+          sn
+          state
+          amountYuan
+          updatedAt
+          createdAt
+        }
+      }
+    }`,
+    variables: {
+      input: {
+        sn: sn,
+        type: orderType
+      }
+    }
+  })
+})
+
+/**
+ * @param { String } sn required 订单sn
  * @param { Function } success callback
  * @param { Function } fail callback
  */
 const emptyFn = function emptyFn() {}
-const createPayment = co.wrap(function*(sn, orderType, payType="wechat_miniapp",success=emptyFn,fail=emptyFn){
+const createPayment = co.wrap(function*(sn, success=emptyFn, fail=emptyFn){
   try {
-    let orderResp = yield graphql.mutate({
-      mutation: `mutation ($input: CreatePaymentOrderInput!){
-        createPaymentOrder(input:$input){
-          paymentOrder{
-            sn
-            state
+    let paymentResp = yield graphql.mutate({
+      mutation: `mutation ($input: CreatePaymentInput!){
+        createPayment(input:$input){
+          payParams{
+            ...on WxpayParams {
+                nonceStr
+                package
+                paySign
+                signType
+                timeStamp
+            }
           }
         }
       }`,
       variables: {
         input: {
-          sn: sn,
-          type: orderType
-        }
-      }
-    })
-    let paymentResp = yield graphql.mutate({
-      mutation: `mutation ($input: CreatePaymentInput!){
-        createPayment(input:$input){
-          payParams
-        }
-      }`,
-      variables: {
-        input: {
-          paymentOrderSn: orderResp.createPaymentOrder.paymentOrder.sn,
-          paymentMethod: payType
+          paymentOrderSn: sn,
+          paymentMethod: "wechat_miniapp"
         }
       }
     })
@@ -162,5 +180,6 @@ module.exports = {
   createOrder,
   getPrinterCapacity,
   previewDocument,
+  createPaymentOrder,
   createPayment
 }

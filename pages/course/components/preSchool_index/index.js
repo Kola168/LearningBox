@@ -26,11 +26,12 @@ Component({
     recommendCourse: [],
     selectCategories: [],
     isAndroid: false,
-    isMember: false
+    isMember: false,
+    __wetoast__: null
   },
 
   lifetimes: {
-    attached: co.wrap(function*(){
+    attached: co.wrap(function *(){
       var _this = this
       this.activeDevice = app.activeDevice
       let userSn = storage.get('userSn')
@@ -49,7 +50,6 @@ Component({
       })
 
       event.on('LearnRefresh', this, co.wrap(function*() {
-        console.log('xxxxxxxxx')
         yield _this.getCourseIndex()
         _this.userSn && _this.getLastCourseInfo()
         wx.stopPullDownRefresh()

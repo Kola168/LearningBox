@@ -3,13 +3,15 @@
 
 const app = getApp()
 const downloadFile = util.promisify(wx.downloadFile)
+import Logger from '../../../../utils/logger'
+const logger = new Logger.getLogger('pages/package_common/order_record/order/order')
 import {
   regeneratorRuntime,
   co,
   util,
   wxNav
 } from '../../../../utils/common_import'
-// import wxPay from '../../../../utils/wxPay'
+import commonRequest from '../../../../utils/common_request'
 import graphql from '../../../../network/graphql/common'
 Page({
   data: {
@@ -37,26 +39,24 @@ Page({
     })
     try {
       var resp = yield graphql.getPaymentOrderDetails(sn)
-      console.log(resp,'xxxxxxx')
+      var paymentOrder = resp.currentUser.paymentOrders[0]
       this.setData({
-        orderDetails: resp.currentUser.paymentOrders[0],
-        isEmpty: !resp.currentUser.paymentOrders[0],
-        orderStatus: this.utilsOrderStatus(resp.currentUser.paymentOrders[0].state)
+        orderDetails: paymentOrder,
+        isEmpty: !paymentOrder,
+        orderStatus: this.utilsOrderStatus(paymentOrder.state)
       })
 
-      console.log(this.data.orderDetails, '==orderDetails==')
-      if (resp.currentUser.paymentOrders[0].state != 'init') {
+      if (paymentOrder.state != 'init') {
         return
       }
-      this.countDown(resp.currentUser.paymentOrders[0].createdAt.replace(/-/g,'/'), (time)=>{
+      this.countDown(paymentOrder.createdAt.replace(/-/g,'/'), (time)=>{
         this.setData({
           update_time: time,
         })
       }, ()=>{
-        // this.getOrderInfo(sn)
+        this.getOrderInfo(sn)
       })
     } catch(err) {
-      console.log(err)
       util.showError(err)
     } finally {
       this.longToast.toast()
@@ -84,28 +84,24 @@ Page({
    * 跳转支付
    */
   toPay: co.wrap(function *(){
-    wx.showLoading({
-      title: '发起支付',
-      mask: true,
+    this.longToast.toast({
+      type: 'loading',
+      title: '发起支付'
     })
     try {
-      var resp = yield wxPay.invokeWxPay({
-        paymentSn: this.data.orderDetails.sn,
-        usePoints: this.data.orderDetails.payableItem.usePoints,
+      var orderPms = this.data.orderDetails
+      var payment = yield commonRequest.createPayment(orderPms.sn, (res)=>{
+        this.longToast.hide()
+        this.getOrderInfo(this.order_sn) // 更新当前状态
+      }, (err)=>{
+        this.longToast.hide()
+        util.showError(err)
       })
-      console.log(resp, '===resp===')
-      if (resp.action === "cancel") {
-        return wx.showToast({
-          title: '取消支付',
-          icon: 'none',
-        })
-      }
-      // 更新当前状态
-      this.getOrderInfo(this.order_sn)
     } catch(err) {
+      this.longToast.hide()
       console.log(err)
     } finally {
-      wx.hideLoading()
+      this.longToast.hide()
     }
   }),
 
@@ -126,8 +122,8 @@ Page({
           sn: orderDetails.payable.sn
         })
       }
-    } catch (e) {
-      console.error(e)
+    } catch (err) {
+      logger.info(err)
     }
   },
 
@@ -214,13 +210,17 @@ Page({
       canceled: {
           name: '已取消',
           status_type: 'canceled',
+      },
+      error: {
+        name: '支付异常',
+        status_type: 'error',
       }
     }
     return statusMaps[key] ? statusMaps[key] : null
   },
 
   toRecommendCourse: function () {
-    console.log('==跳转==')
+    wxNav.switchTab('/pages/course/index')
   },
 
   onHide: function(){
