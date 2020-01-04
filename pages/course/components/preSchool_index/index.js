@@ -3,20 +3,13 @@ const app = getApp()
 import {
   regeneratorRuntime,
   co,
-  util
+  util,
+  wxNav,
+  storage
 } from '../../../../utils/common_import'
 const event = require('../../../../lib/event/event')
 import graphql from '../../../../network/graphql_request'
-import storage from '../../../../utils/storage'
-import router from '../../../../utils/nav.js'
 Component({
-  /**
-   * 组件的属性列表
-   */
-  properties: {
-
-  },
-
   data: {
     activeIndex: 0,
     autoplay: true,
@@ -54,6 +47,7 @@ Component({
         _this.userSn && _this.getLastCourseInfo()
         wx.stopPullDownRefresh()
       }))
+      this.init()
     }),
 
     detached: function() {
@@ -64,6 +58,16 @@ Component({
 
   pageLifetimes: {
     show: co.wrap(function*(){
+      this.init()
+    }),
+    hide: function(){
+      event.remove('LearnRefresh', this)
+      event.remove('Authorize', this)
+    }
+  },
+
+  methods: {
+    init: co.wrap(function *() {
       let userSn = storage.get('userSn')
       this.userSn = userSn
       if (userSn) {
@@ -90,13 +94,6 @@ Component({
         }
       }
     }),
-    hide: function(){
-      event.remove('LearnRefresh', this)
-      event.remove('Authorize', this)
-    }
-  },
-
-  methods: {
     formatCount(count) {
       if (count < 10000) {
         return count
@@ -113,7 +110,7 @@ Component({
         if (e.currentTarget.dataset.index) {
           index = e.currentTarget.dataset.index
         }
-        router.navigateTo('/pages/package_course/course/course', {
+        wxNav.navigateTo('/pages/package_course/course/course', {
           sn: id,
           isContinue: index
         })
@@ -128,7 +125,7 @@ Component({
         let index = e.currentTarget.id,
           redirectUrl = this.data.banners[index].redirectUrl
         if (redirectUrl) {
-          router.navigateTo(redirectUrl)
+          wxNav.navigateTo(redirectUrl)
         }
       }
   
@@ -137,7 +134,7 @@ Component({
     toMyCourse: co.wrap(function* () {
       let isAuth = yield this.authCheck()
       if (isAuth) {
-        router.navigateTo('/pages/package_course/mine_course_list/mine_course_list')
+        wxNav.navigateTo('/pages/package_course/mine_course_list/mine_course_list')
       }
   
     }),
@@ -145,7 +142,7 @@ Component({
     toSelectProjectList: co.wrap(function* () {
       let isAuth = yield this.authCheck()
       if (isAuth) {
-        router.navigateTo('/pages/package_course/issue_list/issue_list')
+        wxNav.navigateTo('/pages/package_course/issue_list/issue_list')
       }
     }),
   
@@ -153,7 +150,7 @@ Component({
       let isAuth = yield this.authCheck()
       if (isAuth) {
         let id = e.currentTarget.id
-        router.navigateTo('/pages/package_course/issue_center/issue_center', {
+        wxNav.navigateTo('/pages/package_course/issue_center/issue_center', {
           sn: id
         })
       }
@@ -163,7 +160,7 @@ Component({
       let isAuth = yield this.authCheck() 
       let isMember = this.data.isMember ? 1 : 0
       if (isAuth) {
-        router.navigateTo('/pages/package_course/course_center/course_center', {
+        wxNav.navigateTo('/pages/package_course/course_center/course_center', {
           isMember: isMember
         })
       }
@@ -171,7 +168,7 @@ Component({
   
     authCheck: co.wrap(function* () {
       if (!this.userSn) {
-        router.navigateTo('/pages/authorize/index')
+        wxNav.navigateTo('/pages/authorize/index')
         return false
       } else {
         return true

@@ -33,6 +33,10 @@ Component({
   lifetimes: {
     attached: co.wrap(function*(){
       this.longToast = new app.weToast(this)
+      yield this.getBanners() //获取banner
+      yield this.getLastLearn() // 获取同步练习学习人数
+      yield this.getPaperCates() //获取试卷分类
+      yield this.getSubjectPapers() // 获取试卷列表
     })
   },
   pageLifetimes: {
@@ -48,9 +52,6 @@ Component({
      * 获取banner
      */
     getBanners: co.wrap(function *(params) {
-      this.setData({
-        '__wetoast__.reveal': true
-      })
       this.longToast.toast({
         type: 'loading',
         title: '请稍后...'
@@ -220,7 +221,7 @@ Component({
      * 查看更多
      */
     toMore () {
-      wxNav.navigateTo('package_subject/evaluate_exam/index')
+      wxNav.navigateTo('package_subject/evaluate_exam/index/index')
     },
 
     /**
