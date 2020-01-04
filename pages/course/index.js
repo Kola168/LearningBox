@@ -10,8 +10,6 @@ Page({
     stage: null
   },
   onLoad: co.wrap(function () {
-    
-    logger.info('==执行了课程的相关逻辑==')
   }),
   onShow () {
     var stage = storage.get('kidStage')
@@ -19,7 +17,18 @@ Page({
       stage
     })
   },
-  
+
+  onHide(){
+    this.setData({
+      stage: null
+    })
+  },
+
+  onUnload(){
+    this.setData({
+      stage: null
+    })
+  },
   onPullDownRefreash: function () {
   },
 })
