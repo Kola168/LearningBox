@@ -1,4 +1,4 @@
-var feature_route = {
+  var feature_route = {
   literacy_card: '/pages/package_feature/cognition_card/index/index',
   free_resource: '/pages/package_common/free_resources/detail/index',
   pic_to_doc: '/pages/print_photo_doc/index',
@@ -35,6 +35,7 @@ var feature_route = {
   share_folder_pic_5in: '/pages/package_feature/share_folder/index',
   english_memory_write: '/pages/package_feature/memory_write/english/index',
   chinese_memory_write: '/pages/package_feature/memory_write/chinese/index',
+  kousuan:'/pages/package_feature/kousuan/index'
 }
 module.exports = {
   feature_route: feature_route,

@@ -57,7 +57,7 @@ Page({
       this.initTapNum()
       this.longToast.toast()
     } catch (e) {
-      console.log(e)
+      Loger(e)
       this.longToast.toast()
       util.showError(e)
     }
@@ -148,7 +148,7 @@ Page({
   },
 
   checkWebViewData: co.wrap(function*(val) {
-    console.log(val)
+    Loger(val)
     if(val===true){
       try {
         this.longToast.toast({
@@ -162,15 +162,14 @@ Page({
             answer:this.data.printAnswer
           }
         })
-        console.log(resp)
-        // wxNav.navigateTo(`/pages/finish/index`, {
-        //   media_type: 'kousuan',
-        //   state:resp.CreateResourceOrderPayload.state
-        // })
-        this.initTapNum()
+        Loger(resp)
+        wxNav.navigateTo(`/pages/finish/index`, {
+          media_type: 'kousuan',
+          state:resp.createResourceOrder.state
+        })
         this.longToast.toast()
       } catch (e) {
-        console.log(e)
+        Loger(e)
         this.longToast.toast()
         util.showError(e)
       }

@@ -17,15 +17,27 @@ page {
 	flex-direction: row;
 	justify-content: space-between;
 	padding: 24rpx 0;
-}
-
-.info-item text{
-	font-size: 32rpx;
+	font-size: 28rpx;
 	color: #333333;
-	letter-spacing: -0.58px;
 }
 
-.open {
+.open-preschool {
+	background: #f94666;
+	border-radius: 49rpx;
+	font-family: PingFangSC-Regular;
+	font-size: 36rpx;
+	color: #fff;
+	letter-spacing: 0;
+	text-align: center;
+	height: 98rpx;
+	line-height: 98rpx;
+	width: 80%;
+	position: absolute;
+	left: 10%;
+	bottom: 240rpx;
+}
+
+.open-subject {
 	background: #FFDC5E;
 	border-radius: 49rpx;
 	font-family: PingFangSC-Regular;
@@ -44,32 +56,15 @@ page {
 
 .user-wrap {
 	display: flex;
-	flex-direction: row;
-}
-
-.user-info {
-	display: flex;
-	flex-direction: row;
+	align-items: center;
+	letter-spacing: -0.42rpx;
 }
 
 .user-avatar {
 	width: 40rpx;
 	height: 40rpx;
 	border-radius: 50%;
-}
-
-.member-avatar {
-	border-radius: 50%;
-	width: 92rpx;
-	height: 92rpx;
-	margin: 0;
-}
-
-.grade {
-	font-family: PingFangSC-Regular;
-	font-size: 24rpx;
-	color: #666666;
-	letter-spacing: -0.42rpx;
+	margin-right: 20rpx;
 }
 
 .agree{
@@ -80,7 +75,7 @@ page {
 	justify-content: center;
 	position: absolute;
 	left: 0;
-	bottom: 360rpx;
+	bottom: 376rpx;
 }
 
 .agree .check-agrrement{
@@ -89,8 +84,8 @@ page {
 
 .agree .common-text{
 	font-size: 30rpx;
-	color: #333333;
-  margin-left:14rpx;
+  	color: #333333;
+  	margin-left:14rpx;
 }
 
 .agree .agree-text{

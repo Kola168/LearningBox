@@ -116,7 +116,7 @@
         </image>
         <view>免费资源库</view>
       </view>
-      <view class="tool-item">
+      <view class="tool-item" bindtap="tokousuan">
         <image src="/images/home/icon_count.png" mode="widthFix"></image>
         <view>口算</view>
       </view>

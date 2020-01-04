@@ -118,6 +118,16 @@ const createPaymentOrder = co.wrap(function*(sn, orderType){
           amountYuan
           updatedAt
           createdAt
+          payable {
+            ...on Course{
+              iconUrl
+              desc
+              totalLessons
+            }
+            ...on MemberConfig{
+              
+            }
+          }
         }
       }
     }`,
@@ -174,7 +184,6 @@ const createPayment = co.wrap(function*(sn, success=emptyFn, fail=emptyFn){
     fail(error)
   }
 })
-
 
 module.exports = {
   createOrder,
