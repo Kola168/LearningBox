@@ -10,38 +10,52 @@ import Logger from '../../../utils/logger.js'
 const logger = new Logger.getLogger('pages/index/index')
 import storage from '../../../utils/storage'
 const event = require('../../../lib/event/event')
-Page({
 
+Page({
 	data: {
-		users: null,
 		kidInfo: null,
-		shareGroupSn: '',
-		memberTipUrl: '../images/member_order_preschool_tip.png',
-		checked:false
+		memberTipUrl: '',
+		checked:false,
+		expiration:'',
+		price:''
 	},
 
 	onLoad: co.wrap(function* (options) {
 		this.longToast = new app.weToast()
 		this.options = options
-		this.userSn = storage.get('userSn')
-		if (!this.userSn) {
-			return router.navigateTo('/pages/authorize/index')
-		}
-		// yield this.getFamilyUser()
-		// if (this.options.shareGroupSn) {
-		// 	this.setData({
-		// 		shareGroupSn: this.options.shareGroupSn
-		// 	})
-		// }
-		// logger.info(this.data.shareGroupSn)
-		// event.on('Authorize', this, () => {
-		// 	this.userSn = storage.get('userSn')
-		// 	this.getFamilyUser()
-		// 	if (this.options.shareGroupSn) {
-		// 		this.setData({
-		// 			shareGroupSn: this.options.shareGroupSn
-		// 		})
-		// 	}
-		// })
+	
+		yield this.getUserInfo()
+		let stage = storage.get("kidStage")
+		this.setData({
+			stage:stage,
+			memberTipUrl: stage === 'preschool'?'../images/member_order_preschool_tip.png':'../images/member_order_subject_tip.png',
+		})
 	}),
+
+	getUserInfo: co.wrap(function*() {
+		this.longToast.toast({
+			type: 'loading'
+	})
+    try {
+			let resp = yield gql.getUser()
+			this.longToast.toast()
+      this.setData({
+        kidInfo: resp.currentUser.selectedKid,
+      })	
+    } catch (e) {
+			this.longToast.toast()
+      util.showError(e)
+    }
+	}),
+
+	agree: co.wrap(function*() {
+		this.setData({
+			checked:!this.data.checked
+		})
+	}),
+
+	openeMemebership: co.wrap(function*() {
+		
+	}),
+
 })
