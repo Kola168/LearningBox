@@ -5,8 +5,11 @@ const co = require('../../../lib/co/co')
 const _ = require('../../../lib/underscore/we-underscore')
 const util = require('../../../utils/util')
 
+const request = util.promisify(wx.request)
+
 import wxNav from '../../../utils/nav.js'
 import api from '../../../network/restful_request'
+import gql from '../../../network/graphql_request'
 
 let Loger = (app.apiServer != 'https://epbox.gongfudou.com' || app.deBug) ? console.log : function() {}
 
@@ -49,9 +52,16 @@ Page({
   },
 
   onLoad: function (options) {
-
+    this.getGradeList()
   },
+  getGradeList:co.wrap(function*(e){
+    try{
+      let resp = yield api.getGradeList()
 
+    }catch(e){
+      console.log(e)
+    }
+  }),
   nextHierarchy:function(e){
     let index=e.currentTarget.dataset.index
     wxNav.navigateTo('/pages/package_preschool/evaluation/secondlevel',{
