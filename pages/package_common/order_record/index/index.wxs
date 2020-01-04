@@ -27,7 +27,17 @@ var formatTime = function (time, fmt) {
 
 }
 
+
+var matchCateGroyName = function(typename) {
+    var types = {
+        Course: '课程',
+        MemberConfig: '会员'
+    }
+    return types[typename]
+}
+
 module.exports = {
     fixIcon: fixIcon,
-    formatTime: formatTime
+    formatTime: formatTime,
+    matchCateGroyName: matchCateGroyName,
 }

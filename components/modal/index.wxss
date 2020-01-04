@@ -21,7 +21,7 @@
 
 .confirm-modal-title {
   font-size: 36rpx;
-  padding: 60rpx 40rpx 36rpx;
+  padding: 60rpx 40rpx 0;
   text-align: center;
   font-weight: bold;
 }
@@ -33,7 +33,7 @@
 }
 
 .confirm-modal-content {
-  padding: 0 30rpx 36rpx;
+  padding: 36rpx 30rpx 36rpx;
 }
 
 .confirm-modal-content__text {

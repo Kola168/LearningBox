@@ -30,7 +30,9 @@ Page({
     })
     if (showIntro) {
       yield this.getFilters()
-      this.getWriteList()
+      if(this.materials.length>0){
+        this.getWriteList()
+      }
     }
   }),
   startWrite: co.wrap(function*() {
@@ -39,7 +41,9 @@ Page({
       showIntro: false
     })
     yield this.getFilters()
-    this.getWriteList()
+    if(this.materials.length>0){
+      this.getWriteList()
+    }
   }),
   ctrlSelector(e) {
     let type = e.currentTarget.id,
@@ -132,15 +136,14 @@ Page({
         grades = res.userStages,
         currentGrade = grades[0],
         materials = currentGrade.guessWriteCategories,
-        currentMaterial = materials[0]
-      console.log('currentGrade', currentGrade)
-      console.log('currentMaterial', currentMaterial)
+        currentMaterial = materials[0] ? materials[0] : []
       this.materials = materials
       this.grades = grades
       this.setData({
         currentMaterial,
         currentGrade
       })
+      this.weToast.hide()
     } catch (error) {
       this.weToast.hide()
       util.showError(error)
@@ -154,6 +157,7 @@ Page({
       let resp = yield graphql.getWriteList(this.data.currentMaterial.sn),
         writeList = resp.category.children,
         isEmpty = writeList.length >= 0 ? false : true
+      this.weToast.hide()
       if (isEmpty) {
         this.setData({
           isEmpty
@@ -170,7 +174,6 @@ Page({
           loadReady: true
         })
       }
-      this.weToast.hide()
     } catch (error) {
       this.weToast.hide()
       util.showError(error)

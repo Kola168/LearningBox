@@ -927,8 +927,9 @@ const graphqlApi = {
           contents {
             iconUrl
             pageCount
+            printerOrdersCount
             sn
-            title
+            name
           }
         }
       }`,
@@ -950,7 +951,7 @@ const graphqlApi = {
             nameUrl
           }
           pageCount
-          title
+          name
           featureKey
         }
       }`,

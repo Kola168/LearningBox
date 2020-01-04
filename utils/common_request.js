@@ -2,6 +2,8 @@ import { regeneratorRuntime, co } from './common_import'
 import getLoopsEvent from './worker'
 import graphql from '../network/graphql_config'
 import api from '../network/restful_request'
+import Logger from './logger.js'
+const logger = new Logger.getLogger('common_request')
 /**
  * 创建订单
  * @param { String } featureKey required 对应功能的key
@@ -99,9 +101,66 @@ const getPrinterCapacity = co.wrap(function*(featureKey, fileUrl) {
   return capacity
 })
 
+/**
+ * 支付
+ * @param { String } sn required 资源/课程...sn
+ * @param { String } payType 支付类型默认wechat_miniapp
+ * @param { String } orderType 订单类型member/course
+ * @param { Function } success callback
+ * @param { Function } fail callback
+ */
+const emptyFn = function emptyFn() {}
+const createPayment = co.wrap(function*(sn, orderType, payType="wechat_miniapp",success=emptyFn,fail=emptyFn){
+  try {
+    let orderResp = yield graphql.mutate({
+      mutation: `mutation ($input: CreatePaymentOrderInput!){
+        createPaymentOrder(input:$input){
+          paymentOrder{
+            sn
+            state
+          }
+        }
+      }`,
+      variables: {
+        input: {
+          sn: sn,
+          type: orderType
+        }
+      }
+    })
+    let paymentResp = yield graphql.mutate({
+      mutation: `mutation ($input: CreatePaymentInput!){
+        createPayment(input:$input){
+          payParams
+        }
+      }`,
+      variables: {
+        input: {
+          paymentOrderSn: orderResp.createPaymentOrder.paymentOrder.sn,
+          paymentMethod: payType
+        }
+      }
+    })
+    wx.requestPayment({
+      ...paymentResp.createPayment.payParams,
+      success(res){
+        success(res)
+      },
+      fail(error){
+        logger.info(error)
+        fail(error)
+      }
+    })
+  } catch (error) {
+    logger.info(error)
+    fail(error)
+  }
+})
+
 
 module.exports = {
   createOrder,
   getPrinterCapacity,
   previewDocument,
+  createPayment
 }

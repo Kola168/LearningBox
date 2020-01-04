@@ -135,7 +135,7 @@ Page({
       let categorys = this.data.currentGrade.guessWriteCategories
       if (categorys.length === 0) {
         this.setData({
-          isEmpty
+          isEmpty: true
         })
         this.weToast.hide()
         return

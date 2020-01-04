@@ -33,7 +33,7 @@
         </button>
       </view>
       <view class="confirm-print">
-        <botttom-button class="confirm-print-btn" text-right="确认打印" bindrighttap="showConfirmMdal" get-phone="{{true}}"></botttom-button>
+        <bottom-button class="confirm-print-btn" text-right="确认打印" bindrighttap="showConfirmMdal" get-phone="{{true}}"></bottom-button>
       </view>
     </view>
   </view>

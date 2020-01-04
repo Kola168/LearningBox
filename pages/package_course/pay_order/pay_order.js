@@ -9,6 +9,7 @@ import wxPay from '../../../utils/wxPay'
 import Logger from '../../../utils/logger.js'
 const logger = new Logger.getLogger('pages/package_course/issue_center/issue_center')
 import router from '../../../utils/nav'
+import commonRequest from '../../../utils/common_request'
 Page({
   data: {
     sn: null, //课程id
@@ -48,12 +49,22 @@ Page({
 
   // 提交订单
   submitOrder: co.wrap(function* (e) {
-    try {
-      var _this = this
-      yield _this.getPayment()
-    } catch (err) {
-      logger.info(err)
-    }
+    // try {
+    //   var _this = this
+    //   yield _this.getPayment()
+    // } catch (err) {
+    //   logger.info(err)
+    // }
+    this.longToast.toast({
+      type: 'loading'
+    })
+      commonRequest.createPayment(this.data.sn,'course','wechat_miniapp',()=>{
+        this.longToast.hide()
+        // ...
+      },(err)=>{
+        this.longToast.hide()
+        util.showError(err)
+      })
   }),
 
   // 获取支付能力

@@ -34,7 +34,7 @@
         <view class="item-title flex align-center">
           <view class="title-l flex align-center">
             <image src="../../images/check_{{item.isCheck?'yes':'no'}}.png" />
-            <view>{{item.title}}</view>
+            <view>{{item.name}}</view>
           </view>
           <view class="title-r">打印次数 {{item.printCount}}</view>
         </view>

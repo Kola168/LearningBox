@@ -1,7 +1,7 @@
 // pages/account/feedback.js
 "use strict"
 
-import graphql from '../../../../utils/graphql_request'
+import graphql from '../../../../network/graphql/common'
 const app = getApp()
 import {
   regeneratorRuntime,
@@ -28,9 +28,9 @@ Page({
       title: '请稍候'
     })
     try {
-      const resp = yield graphql.getOrderRecords()
+      const resp = yield graphql.getPaymentOrders()
       this.setData({
-        orderList: resp.payments,
+        orderList: resp.currentUser.paymentOrders,
         isEmpty: !resp.payments.length
       })
     } catch (err) {
