@@ -1,11 +1,3 @@
-/*
- * @Author: your name
- * @Date: 2019-12-12 19:34:39
- * @LastEditTime: 2019-12-25 16:32:47
- * @LastEditors: Please set LastEditors
- * @Description: In User Settings Edit
- * @FilePath: /LearningBox/pages/account/index.js
- */
 const app = getApp()
 import gql from '../../network/graphql_request.js'
 import {
@@ -69,9 +61,7 @@ Page({
       util.showError(e)
     }
   }),
-  toFeature(e) {
-    wxNav.navigateTo(e.currentTarget.id)
-  },
+ 
   toNext(e) {
     let pageKey = e.currentTarget.id,
       url = ''
@@ -97,7 +87,16 @@ Page({
         url: `/pages/webview/index?url=${encodeURIComponent(url)}`
       })
     }
-  }),
+	}),
+	
+	clickFeature: co.wrap(function* (e) {
+	 wxNav.navigateTo(e.currentTarget.id)
+
+	}),
+
+	feedBack:co.wrap(function* () {
+		wxNav.navigateTo('/pages/package_common/feedback')
+	}),
 
   onUnload() {
     event.remove('Authorize', this)
