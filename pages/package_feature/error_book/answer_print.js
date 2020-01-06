@@ -66,6 +66,7 @@ Page({
         })
         try {
             var resp = yield commonRequest.getPrinterCapacity('doc_a4')
+            console.log(resp)
             this.longToast.hide()
             let isColorPrinter = false
             if (resp.color==true) {
@@ -292,7 +293,7 @@ Page({
             router.redirectTo('/pages/finish/index', {
                 type: 'photo_answer',
                 media_type: 'photo_answer',
-                state: resp.createResourceOrder.state
+                state: resp.createOrder.state
             })
             this.longToast.hide()
         } catch (e) {
