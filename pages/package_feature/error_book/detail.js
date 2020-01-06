@@ -61,9 +61,9 @@ Page({
             const resp = yield gql.getMistakes(params)
             logger.info('错题本列表====', resp)
             if (resp.mistakeCourse.length == 0) {
-              this.setData({
-                noEntry: true
-              })
+                this.setData({
+                    noEntry: true
+                })
             }
             this.setData({
                 array: resp.mistakeCourse,
@@ -82,7 +82,7 @@ Page({
                     })
                 }
             }
-        console.log('-----------', this.data.array)
+            console.log('-----------', this.data.array)
             this.longToast.hide()
         } catch (e) {
             this.longToast.hide()
@@ -236,16 +236,19 @@ Page({
                 showConfirmModal: null,
             })
         }
-        let ids = []
+        let ids = [],sns=[]
         this.ids = ids
+        this.sns=sns
         for (let i = 0; i < this.data.middlearr.length; i++) {
             ids.push(this.data.middlearr[i].id)
-            logger.info("11111", ids)
+            sns.push(this.data.middlearr[i].sn)
+            logger.info("11111", ids,sns)
         }
         router.navigateTo('/pages/package_feature/error_book/print', {
             course: this.data.course,
             ids: JSON.stringify(ids),
-            mistakecount: this.data.middlearr.length
+            mistakecount: this.data.middlearr.length,
+            sns:JSON.stringify(sns)
         })
         return
         this.setData({
@@ -274,6 +277,7 @@ Page({
             type: 'loading'
         })
         let ids = []
+
         for (let i = 0; i < this.data.middlearr.length; i++) {
             ids.push(this.data.middlearr[i].id)
             logger.info("11111", ids)
@@ -411,8 +415,8 @@ Page({
         }
     }),
     toCamera: function () {
-        router.redirectTo('/pages/package_feature/error_book/camera',{
-            type:'error_book'
+        router.redirectTo('/pages/package_feature/error_book/camera', {
+            type: 'error_book'
         })
     }
 

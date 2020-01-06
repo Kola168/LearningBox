@@ -19,6 +19,7 @@ Page({
     },
 
     onLoad: co.wrap(function* (options) {
+        this.from = options.type
         // if (this.from == 'error_book') {
         //     let errorBook = wx.getStorageSync('errorBook')
         //     if (!errorBook || !errorBook.hideCameraTip) {

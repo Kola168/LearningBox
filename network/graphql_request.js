@@ -1749,6 +1749,7 @@ const graphqlApi = {
             reason
             urls
             id
+            sn
             }
           }
         }`,
@@ -1766,6 +1767,7 @@ const graphqlApi = {
       mutation: `mutation($input:CreateMistakeInput!) {
         createMistake(input:$input){
           state
+          mistake
         }
         }`,
       variables: {

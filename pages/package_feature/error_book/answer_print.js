@@ -42,13 +42,13 @@ Page({
         }
     },
 
-    onLoad: co.wrap(function*(options) {
+    onLoad: co.wrap(function* (options) {
         this.longToast = new app.weToast()
         let urls = JSON.parse(options.urls)
         this.setData({
             urls: urls
         })
-        // this.getPrinterCapability()
+        this.getPrinterCapability()
         this.setData({
             startPrintPage: 1,
             endPrintPage: urls.length,
@@ -59,30 +59,29 @@ Page({
         })
 
     }),
-    onShow:function(){
-    },
-    getPrinterCapability: co.wrap(function*() {
-         this.longToast.toast({
+    onShow: function () {},
+    getPrinterCapability: co.wrap(function* () {
+        this.longToast.toast({
             type: 'loading'
         })
         try {
-            let resp = yield commonRequest.getPrinterCapability()
-            wx.hideLoading()
+            var resp = yield commonRequest.getPrinterCapacity('doc_a4')
+            this.longToast.hide()
             let isColorPrinter = false
-            if (resp.color_modes.length > 1) {
+            if (resp.color==true) {
                 isColorPrinter = true
             }
             this.setData({
                 isColorPrinter: isColorPrinter
             })
         } catch (error) {
-            wx.hideLoading()
+            this.longToast.hide()
             console.log(error)
         }
     }),
 
     //减少份数
-    cutPrintNum: function() {
+    cutPrintNum: function () {
         if (this.data.documentPrintNum <= 1) {
             return
         }
@@ -93,7 +92,7 @@ Page({
     },
 
     //增加份数
-    addPrintNum: co.wrap(function*() {
+    addPrintNum: co.wrap(function* () {
         console.log(this.data.documentPrintNum)
         this.data.documentPrintNum += 1
         if (this.data.documentPrintNum <= 30) {
@@ -116,11 +115,11 @@ Page({
     }),
 
     //输入打印起始页
-    inputstartpage: function(e) {
+    inputstartpage: function (e) {
         this.data.startPage = e.detail.value
     },
 
-    startpagejudge: function(e) {
+    startpagejudge: function (e) {
         if (parseInt(e.detail.value) > parseInt(this.data.endPrintPage) || parseInt(e.detail.value) <= 0) {
             this.setData({
                 startPrintPage: 1,
@@ -169,7 +168,7 @@ Page({
         })
     },
 
-    allowSave: function(e) {
+    allowSave: function (e) {
         if (!e.detail.authSetting['scope.writePhotosAlbum']) {
             return
         }
@@ -177,7 +176,7 @@ Page({
             savable: true
         })
     },
-    saveImg: co.wrap(function*() {
+    saveImg: co.wrap(function* () {
         this.longToast.toast({
             type: 'loading'
         })
@@ -257,7 +256,7 @@ Page({
             return
         }
         let hideConfirmPrintBox = Boolean(wx.getStorageSync("hideConfirmPrintBox"))
-        if(hideConfirmPrintBox){
+        if (hideConfirmPrintBox) {
             this.print()
         } else {
             this.setData({
@@ -266,46 +265,38 @@ Page({
         }
     },
     // 打印
-    print: co.wrap(function*() {
+    print: co.wrap(function* () {
         let images = [],
             startPage = Number(this.data.startPage) - 1,
             endPage = Number(this.data.endPage)
         let urls = this.data.urls.slice(startPage, endPage)
         for (let i = 0; i < urls.length; i++) {
             let tempObj = {}
-            tempObj.url = urls[i]
-            tempObj.pre_convert_url = urls[i]
-            tempObj.color = this.data.colorcheck
-            tempObj.duplex = false
-            tempObj.number = this.data.documentPrintNum
+            tempObj.originalUrl = urls[i]
+            tempObj.printUrl = urls[i]
+            tempObj.color = this.data.colorcheck == "Color" ? true : false,
+                tempObj.duplex = false
+            tempObj.copies = this.data.documentPrintNum
+            tempObj.grayscale = false
+            tempObj.startPage = startPage
+            tempObj.endPage = endPage
             images.push(tempObj)
         }
-        let params = {
-            openid: app.openId,
-            urls: images,
-            media_type: 'search_question',
-            from: 'mini_app'
-        }
-        wx.showLoading({
-            title: '正在提交',
-            mask: true
+        this.longToast.toast({
+            type: 'loading'
         })
         try {
             // 拍搜打印
-            // const resp = yield api.printPhotoAnswer(params)
+            const resp = yield commonRequest.createOrder('photo_answer', images)
             console.log(resp)
-            if (resp.code !== 0) {
-                throw (resp)
-            }
-
-            wx.hideLoading()
-            console.log('订单创建成功', resp)
-            wx.redirectTo({
-                url: `../../../finish/index?type=photo_answer&media_type=photo_answer&state=${resp.order.state}`
+            router.redirectTo('/pages/finish/index', {
+                type: 'photo_answer',
+                media_type: 'photo_answer',
+                state: resp.createResourceOrder.state
             })
-
+            this.longToast.hide()
         } catch (e) {
-            wx.hideLoading()
+            this.longToast.hide()
             util.showErr(e)
         }
     }),

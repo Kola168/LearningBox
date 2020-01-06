@@ -80,12 +80,13 @@ Page({
         _this.mistakeCount = options.mistakecount
         _this.course = options.course
         _this.ids = options.ids && JSON.parse(options.ids)
+        _this.sns = options.sns && JSON.parse(options.sns)
         _this.longToast = new app.weToast()
         _this.initArea()
         _this.initColors()
         yield _this.getTemplates()
         yield _this.getDrawPic()
-        // yield _this.getCapability()
+        yield _this.getCapability()
         _this.getAuth()
     }),
     onShow: function () {},
@@ -481,32 +482,46 @@ Page({
         })
         let link = []
         for (let i = 0; i < this.data.convert_urls.length; i++) {
-            let urls = {}
-            urls.originalUrl = this.data.convert_urls[i]
-            urls.printUrl = this.data.convert_urls[i]
-            urls.color = this.data.color == 'Color' ? true : false
-            urls.copies = 1
-            urls.grayscale = false
-            link.push(urls)
+            // let urls = {}
+            // urls.originalUrl = this.data.convert_urls[i]
+            // urls.printUrl = this.data.convert_urls[i]
+            // urls.color = this.data.color == 'Color' ? true : false
+            // urls.copies = 1
+            // urls.grayscale = false
+            // link.push(urls)
+            link.push(this.data.convert_urls[i])
         }
         if (this.data.answer_urls.length > 0 && this.data.answer == 1) {
             for (let i = 0; i < this.data.answer_urls.length; i++) {
-                let urls = {}
-                urls.originalUrl = this.data.answer_urls[i]
-                urls.printUrl = this.data.answer_urls[i]
-                urls.color = this.data.color == 'Color' ? true : false
-                urls.number = 1
-                urls.grayscale = false
-                link.push(urls)
+                // let urls = {}
+                // urls.originalUrl = this.data.answer_urls[i]
+                // urls.printUrl = this.data.answer_urls[i]
+                // urls.color = this.data.color == 'Color' ? true : false
+                // urls.number = 1
+                // urls.grayscale = false
+                // link.push(urls)
+                link.push(this.data.answer_urls[i])
                 console.log("1111111", link)
             }
         }
         this.longToast.toast({
             type: 'loading'
         })
+        let p = {
+            featureKey: 'mistake',
+            resourceOrderType: 'Mistake',
+            resourceAttribute: {
+                originalUrl: link,
+                printUrl: link,
+                resource_type: Mistake,
+                category_sns:  this.sns,
+                answer: this.data.answer_urls.length > 0 ? true : false
+            }
+        }
 
         try {
-            const resp = yield commonRequest.createOrder('mistake', link)
+            // const resp = yield commonRequest.createOrder('mistake', link)
+            const resp = createResourceOrder(p)
             return
             // const resp = yield request({
             //     url: app.apiServer + `/ec/v2/orders`,
