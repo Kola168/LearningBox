@@ -72,8 +72,9 @@
         <text>保存</text>
     </button>
     <form report-submit="{{true}}" class="right">
-        <button hover-class="none" open-type="{{hasAuthPhoneNum?'':'getPhoneNumber'}}" bindgetphonenumber="{{hasAuthPhoneNum?'':'getPhoneNumber'}}" form-type='submit'>立即打印</button>
-        <botttom-button class="bottom-button-box" text-right="立即打印" bindrighttap="quickPrint" get-phone="{{true}}"></botttom-button>
+        <button hover-class="none" form-type='submit'>立即打印</button>
+        <bottom-button class="bottom-button-box" text-right="确认打印" bindrighttap="quickPrint" get-phone="{{true}}">
+        </bottom-button>
     </form>
 </view>
 

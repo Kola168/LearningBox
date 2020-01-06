@@ -1726,7 +1726,7 @@ const graphqlApi = {
       query: `query{
         mistakes{
           count
-          object
+          object:course
         }
         }`
     })
@@ -1769,7 +1769,7 @@ const graphqlApi = {
         }
         }`,
       variables: {
-        input:input
+        input: input
       }
     })
   },
@@ -1778,7 +1778,7 @@ const graphqlApi = {
    *
    * @returns
    */
-  mistakeTemplates:() => {
+  mistakeTemplates: () => {
     return gql.query({
       query: `query{
         mistakeTemplates{

@@ -19,7 +19,6 @@ Page({
     },
 
     onLoad: co.wrap(function* (options) {
-        this.from = options.type
         // if (this.from == 'error_book') {
         //     let errorBook = wx.getStorageSync('errorBook')
         //     if (!errorBook || !errorBook.hideCameraTip) {
@@ -36,6 +35,8 @@ Page({
         // error_book:错题本首次上传图片
         // topic_details:错题详情页补充图片
         // photoAnswer:拍搜
+        // before_add_error_book 错题保存前 直接用错题的图去搜索，不需要拍照
+        //错题保存后拍搜 直接用错题的图去搜索，不需要拍照
     }),
     getAuth: co.wrap(function* () {
         try {

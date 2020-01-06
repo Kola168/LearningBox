@@ -8,7 +8,7 @@
       </view>
       <view class="answer">
         <view class="answer-label">搜索结果</view>
-        <image wx:for="{{answerUrls}}" src="{{item}}" wx:key="{{index}}" mode="widthFix" />
+        <image wx:for="{{answerUrls}}" src="{{item}}" wx:key="answerUrls" mode="widthFix" />
       </view>
       <view class="handle-btns {{type==='photo_answer'?'three-btns':'two-btns'}}">
         <block wx:if="{{type==='photo_answer'}}">

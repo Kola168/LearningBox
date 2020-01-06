@@ -43,11 +43,12 @@ Page({
     },
 
     onLoad: co.wrap(function*(options) {
+        this.longToast = new app.weToast()
         let urls = JSON.parse(options.urls)
         this.setData({
             urls: urls
         })
-        this.getPrinterCapability()
+        // this.getPrinterCapability()
         this.setData({
             startPrintPage: 1,
             endPrintPage: urls.length,
@@ -61,8 +62,8 @@ Page({
     onShow:function(){
     },
     getPrinterCapability: co.wrap(function*() {
-        wx.showLoading({
-            title: '请稍等'
+         this.longToast.toast({
+            type: 'loading'
         })
         try {
             let resp = yield commonRequest.getPrinterCapability()
@@ -177,8 +178,8 @@ Page({
         })
     },
     saveImg: co.wrap(function*() {
-        wx.showLoading({
-            title: '请稍等'
+        this.longToast.toast({
+            type: 'loading'
         })
         try {
             let urls = this.data.urls
@@ -191,7 +192,7 @@ Page({
                     filePath: tempPath
                 })
                 if (i == (urls.length - 1)) {
-                    wx.hideLoading()
+                    this.longToast.hide()
                     wx.showToast({
                         title: '保存成功',
                         icon: 'none'
@@ -199,7 +200,7 @@ Page({
                 }
             }
         } catch (e) {
-            wx.hideLoading()
+            this.longToast.hide()
             let resp = yield getSetting()
             if (resp.authSetting['scope.writePhotosAlbum'] == false) {
                 this.setData({
@@ -227,6 +228,7 @@ Page({
 
     //确认按钮提交
     confcheck() {
+        console.log('34567890-')
         if (parseInt(this.data.startPage) > parseInt(this.data.endPage) || parseInt(this.data.startPage) <= 0) {
             this.setData({
                 startPrintPage: 1,

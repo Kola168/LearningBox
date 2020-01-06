@@ -44,13 +44,13 @@ Page({
                 selected: false, //用于点击的状态
                 checked: false,
             },
-            {
-                name: '灰度',
-                key: 'Mono',
-                id: 2,
-                selected: false,
-                checked: false,
-            },
+            // {
+            //     name: '灰度',
+            //     key: 'Mono',
+            //     id: 2,
+            //     selected: false,
+            //     checked: false,
+            // },
             {
                 name: '全彩',
                 key: 'Color',
@@ -365,7 +365,7 @@ Page({
     //获取打印能力
     getCapability: co.wrap(function* () {
         this.longToast.toast({
-            type:'loading'
+            type: 'loading'
         })
         try {
             var resp = yield commonRequest.getPrinterCapacity('doc_a4') //获取打印能力数据//获取打印能力
@@ -465,7 +465,7 @@ Page({
     confirmPrint: co.wrap(function* (e) {
         let info
         this.longToast.toast({
-            type:'loading'
+            type: 'loading'
         })
         try {
             info = yield getUserInfo()
@@ -482,41 +482,31 @@ Page({
         let link = []
         for (let i = 0; i < this.data.convert_urls.length; i++) {
             let urls = {}
-            urls.url = this.data.convert_urls[i]
-            urls.pre_convert_url = this.data.convert_urls[i]
-            urls.color = "Color"
-            urls.number = "1"
+            urls.originalUrl = this.data.convert_urls[i]
+            urls.printUrl = this.data.convert_urls[i]
+            urls.color = this.data.color == 'Color' ? true : false
+            urls.copies = 1
+            urls.grayscale = false
             link.push(urls)
         }
         if (this.data.answer_urls.length > 0 && this.data.answer == 1) {
             for (let i = 0; i < this.data.answer_urls.length; i++) {
                 let urls = {}
-                urls.url = this.data.answer_urls[i]
-                urls.pre_convert_url = this.data.answer_urls[i]
-                urls.color = this.data.color
-                urls.number = "1"
+                urls.originalUrl = this.data.answer_urls[i]
+                urls.printUrl = this.data.answer_urls[i]
+                urls.color = this.data.color == 'Color' ? true : false
+                urls.number = 1
+                urls.grayscale = false
                 link.push(urls)
                 console.log("1111111", link)
             }
-        }
-
-        let params2 = {
-            resourceAttribute: {
-                originalUrl: link,
-                printUrl: link,
-                resourceType: 'Mistake',
-                copies: 1,
-                answer: this.data.answer == 1 ? true : false,
-            },
-            featureKey: 'mistake',
-            resourceOrderType: 'Mistake',
         }
         this.longToast.toast({
             type: 'loading'
         })
 
         try {
-            const resp = yield gql.createMistakeOrder(params2)
+            const resp = yield commonRequest.createOrder('mistake', link)
             return
             // const resp = yield request({
             //     url: app.apiServer + `/ec/v2/orders`,
