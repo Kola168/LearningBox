@@ -3,22 +3,13 @@
 <view class="certificate-main">
   <image class="cert-icon" src="../../images/preSchool_certificate_bg.png" mode="widthFix"></image>
   <view class="cert-list">
-    <view class="cert-item">
-      <view class="cert-name">奖状标题</view>
-      <view class="learn-day">连续坚持7天</view>
-      <image src=""></image>
+    <view class="cert-item" wx:for="{{testimonials}}" wx:key="subTitle">
+      <view class="cert-name">{{iem.title}}</view>
+      <view class="learn-day">{{item.subTitle}}</view>
+      <image src="{{item.imageUrl}}"></image>
       <view class="btn-main">
-        <view class="btn">打印奖状</view>
-        <bottom-button class="bottom-but" bindrighttap="toPrint" textRight='1' get-phone="{{true}}"></bottom-button>
-      </view>
-    </view>
-    <view class="cert-item">
-      <view class="cert-name">奖状标题</view>
-      <view class="learn-day">连续坚持17天</view>
-      <image src=""></image>
-      <view class="btn-main">
-        <view class="btn">打印奖状</view>
-        <bottom-button class="bottom-but" bindrighttap="toPrint" textRight='1' get-phone="{{true}}"></bottom-button>
+        <view class="btn {{item.isGet ? 'btn-print' : ''}}">{{item.isGet ? '打印奖状' : '未获得'}}</view>
+        <bottom-button class="bottom-but" wx:if="{{item.isGet}}" bindrighttap="toPrint" textRight='1' get-phone="{{true}}"></bottom-button>
       </view>
     </view>
   </view>
@@ -34,3 +25,6 @@
       <view class="btn" catch:tap="submit">提交宝宝名称</view>
   </view>
 </view>
+
+<import src="../../../../lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />

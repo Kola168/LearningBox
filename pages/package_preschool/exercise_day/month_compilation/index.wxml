@@ -4,26 +4,22 @@
 <view class="month-main">
   <view class="header">
     <view class="search-main">
-      <view>2019年</view>
-      <view class="arrow-icon"></view>
+      <picker bindchange="bindPickerChange" value="{{index}}" range="{{cateGorys}}"  range-key="{{'name'}}" >
+        <view class="year-name">{{cateGorys[index].name}}年</view>
+        <view class="arrow-icon"></view>
+      </picker>
     </view>
   </view>
-  <view class="month-list-main">
-    <view class="month-line">
-      <image class="month-item" src="../../images/preSchool_compilation.png" mode="widthFix">
+  <view class="month-list-main" >
+    <view class="month-line" wx:for="{{currentMonth}}" wx:key="*this">
+      <image class="month-item" wx:for="{{item}}" wx:for-item="currentItem" wx:key="sn" src="../../images/preSchool_compilation.png" mode="widthFix" bind:tap="toMonthDetail" data-item="{{currentItem}}">
         <view class="month-name">
-          <view class="month-num">7</view>
-          <view class="month-unit">月</view>
-        </view>
-      </image>
-      <image class="month-item" src="../../images/preSchool_compilation.png" mode="widthFix">
-        <view class="month-name">
-          <view class="month-num">7</view>
+          <view class="month-num">{{currentItem.name}}</view>
           <view class="month-unit">月</view>
         </view>
       </image>
     </view>
-    <view class="month-line">
+    <!-- <view class="month-line">
       <image class="month-item" src="../../images/preSchool_compilation.png" mode="widthFix">
         <view class="month-name">
           <view class="month-num">7</view>
@@ -36,6 +32,11 @@
           <view class="month-unit">月</view>
         </view>
       </image>
-    </view>
+    </view> -->
   </view>
 </view>
+
+
+
+<import src="../../../../lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />

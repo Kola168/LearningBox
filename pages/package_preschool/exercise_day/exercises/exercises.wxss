@@ -14,22 +14,46 @@
 }
 
 .exercise-app .compilation-month {
-  width: 204rpx;
-  height: 66rpx;
-  background-color: #ccc;
+  position: relative;
+  width: 208rpx;
+  height: 74rpx;
 }
 
 .exercise-app .baby-certificate {
-  width: 236rpx;
-  height: 66rpx;
-  background-color: #ccc;
+  position: relative;
+  width: 240rpx;
+  height: 74rpx;
+}
+
+.exercise-app .name {
+  position: absolute;
+  left: 20rpx;
+  top: 0;
+  width: 100%;
+  line-height: 100%;
+  font-size: 28rpx;
+  color: #fff;
 }
 
 .exercise-subject {
   margin: 0 60rpx;
-  height: calc( 100vh - 412rpx );
+  height: calc( 100vh - 476rpx );
   background: #FFFFFF;
   box-shadow: 0 0 34rpx 0 rgba(144,92,116,0.31);
+}
+
+swiper {
+  width: 100%;
+  height: calc( 100vh - 476rpx );
+}
+
+swiper-item{
+  width: 100%;
+  height: calc( 100vh - 476rpx );
+}
+
+.swiper-img {
+  width: 100%;
 }
 
 .btn-main {
@@ -58,4 +82,29 @@
 .btn-print {
   color: #fff;
   background: #905C74;
+}
+
+
+
+/* 首页 styles */
+.main-index-box image {
+  position: relative;
+  width: 100%;
+  min-height: 50vh;
+}
+
+.main-index-box .btn {
+  position: absolute;
+  left: 50%;
+  bottom: 46rpx;
+  width: 700rpx;
+  height: 98rpx;
+  line-height: 98rpx;
+  text-align: center;
+  font-size: 36rpx;
+  color: #FFFFFF;
+  border-radius: 50rpx;
+  background: #905C74;
+  box-shadow: 0 4rpx 0 0 #733753;
+  margin-left: -350rpx;
 }

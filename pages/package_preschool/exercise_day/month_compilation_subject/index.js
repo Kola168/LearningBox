@@ -7,6 +7,7 @@ import {
   co,
   util
 } from '../../../../utils/common_import'
+import graphql from '../../../../network/graphql/preschool'
 Page({
 
   /**
@@ -20,54 +21,34 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    this.longtoast = new app.weToast()
+    this.sn = options.sn
+    this.getMonthExercises()
 
   },
 
   /**
-   * 生命周期函数--监听页面初次渲染完成
+   * 获取月度练习列表
    */
-  onReady: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
+  getMonthExercises: co.wrap(function*(){
+    this.longtoast.toast({
+      type: 'loading',
+      title: '请稍后...'
+    })
+    try {
+      var resp = yield graphql.getMonthExercises(this.sn)
+      console.log(resp, '===resp===')
+    }catch(err) {
+      util.showError(err)
+    } finally {
+      this.longtoast.hide()
+    }
+  }),
+  
   onReachBottom: function () {
 
   },
 
-  /**
-   * 用户点击右上角分享
-   */
   onShareAppMessage: function () {
 
   }

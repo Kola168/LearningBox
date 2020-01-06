@@ -1,6 +1,0 @@
-<nav-bar background="#fff" title="每日一练" />
-<view class="main-box">
-  <image  src="" mode="widthFix" >
-    <view class="btn">马上学习吧</view>
-  </image>
-</view>

@@ -1,22 +1,39 @@
 import {
   co,
   regeneratorRuntime,
-  storage
+  storage,
+  util
 } from "../../utils/common_import"
 import Logger from '../../utils/logger'
 const logger = new Logger.getLogger('pages/course/index')
+import gql from '../../network/graphql_request'
 Page({
   data: {
     stage: null
   },
-  onLoad: co.wrap(function () {
+  onLoad: co.wrap(function *() {
+
   }),
-  onShow () {
-    var stage = storage.get('kidStage')
+  onShow: co.wrap(function*() {
+    var user = yield this.getUserInfo()
     this.setData({
-      stage
+      stage: user.selectedKid.stageRoot.rootKey
     })
-  },
+  }),
+
+  /**
+   * 获取用户信息
+   */
+  getUserInfo: co.wrap(function*() {
+    try {
+      let resp = yield gql.getUser()
+			storage.put("userSn", resp.currentUser.sn)
+			storage.put("kidStage", resp.currentUser.selectedKid.stageRoot.rootKey)
+      return resp.currentUser
+    } catch (e) {
+      util.showError(e)
+    }
+  }),
 
   onHide(){
     this.setData({

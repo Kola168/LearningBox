@@ -7,6 +7,7 @@ import {
   co,
   util
 } from '../../../../utils/common_import'
+import graphql from '../../../../network/graphql/preschool'
 Page({
 
   /**
@@ -14,19 +15,39 @@ Page({
    */
   data: {
     isShowModal: false,
-    babyName: ''
+    babyName: '',
+    testimonials: null, //奖状列表
   },
 
-  /**
-   * 生命周期函数--监听页面加载
-   */
   onLoad: function (options) {
-    
+    this.longtoast = new app.weToast()
+    this.getCertifacate()
   },
 
   onShow: function () {
 
   },
+
+  /**
+   * 获取奖状
+   */
+  getCertifacate: co.wrap(function *() {
+    this.longtoast.toast({
+      type: 'loading',
+      title: '请稍后...'
+    })
+    try {
+      var resp = yield graphql.getCertifacate()
+      console.log(resp)
+      this.setData({
+        testimonials: resp.testimonials
+      })
+    }catch(err) {
+      util.showError(err)
+    } finally {
+      this.longtoast.hide()
+    }
+  }),
 
   /**
    * 关闭录入宝宝姓名弹窗

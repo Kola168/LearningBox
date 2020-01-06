@@ -179,7 +179,6 @@
         "growth_plan/print_setting/print_setting",
         "growth_plan/checkpoint/plan_checkpoint",
         "growth_plan/checkpoint/plan_detail",
-        "exercise_day/index/index",
         "exercise_day/setting/setting",
         "evaluation/index",
         "evaluation/choosegrade",
