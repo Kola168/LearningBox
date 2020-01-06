@@ -72,14 +72,20 @@ const graphqlApi = {
 	 getGradeList:()=>{
     return gql.query({
       query:`query{
-          userStages{
-          name
-          sn
-         	rootName
-          sn
-          kousuanCategories{
-            name
-            sn
+        userStages{
+          currentStage{
+             name
+             sn
+          }
+          siblings{
+           name
+           sn
+           rootName
+           sn
+           kousuanCategories{
+             name
+             sn
+           }
           }
         }
       }`
@@ -136,7 +142,7 @@ const graphqlApi = {
       }
     })
   }
-	
+
 }
 
 export default graphqlApi
