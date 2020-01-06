@@ -1776,6 +1776,24 @@ const graphqlApi = {
     })
   },
   /**
+   * 删除错题
+   *
+   * @param {*} input
+   * @returns
+   */
+  deleteMistakes: (input) => {
+    return gql.mutate({
+      mutation: `mutation($input:DeleteMistakeInput!) {
+        deleteMistake(input:$input){
+         code
+        }
+        }`,
+      variables: {
+        input: input
+      }
+    })
+  },
+  /**
    * 获取错题模板
    *
    * @returns
@@ -1918,7 +1936,7 @@ const graphqlApi = {
           }
         }`,
       variables: {
-        featureKey:featureKey
+        featureKey: featureKey
       }
     })
   },
@@ -1944,7 +1962,7 @@ const graphqlApi = {
           }
         }`,
       variables: {
-          sn:sn
+        sn: sn
       }
     })
   },
@@ -1953,7 +1971,7 @@ const graphqlApi = {
    *
    * @returns
    */
-  customizeContents: (sn,page) => {
+  customizeContents: (sn, page) => {
     return gql.query({
       query: `query($sn:String!,$page:String!) {
         customizeContents(sn:$sn,page:$page){
@@ -1965,11 +1983,58 @@ const graphqlApi = {
           }
         }`,
       variables: {
-          sn:sn,
-          page:page
+        sn: sn,
+        page: page
       }
     })
   },
+
+  /**
+   * 内容详情
+   *
+   * @param {*} sn
+   * @returns
+   */
+  customizeContent: (sn) => {
+    return gql.query({
+      query: `query($sn:String!) {
+        content(sn:$sn){
+          sn
+          contentCollected
+          contentImages{
+            id
+            nameUrl
+          }
+          featureKey
+          fileUrl
+          name
+          pageCount
+          }
+        }`,
+      variables: {
+        sn: sn
+      }
+    })
+  },
+  /**
+   * 内容收藏
+   *
+   * @param {*} input
+   * @returns
+   */
+  collectContent: (input) => {
+    return gql.mutate({
+      mutation: `mutation($input: ResourceCollectInput!) {
+        collect(input:$input){
+          state
+        }
+        }`,
+      variables: {
+        input: input
+      }
+    })
+  },
+  
 }
 
 export default graphqlApi
