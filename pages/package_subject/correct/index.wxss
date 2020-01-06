@@ -132,13 +132,25 @@ page {
   border-bottom: 2rpx solid #E7E7E7;
 }
 
+.topic-question {
+  padding: 0 20rpx 46rpx;
+}
+
+.child-box {
+  padding-top: 20rpx;
+}
+
 .body-options {
   padding-top: 40rpx;
 }
 
+.child-body-options {
+  padding: 24rpx 0;
+}
+
+
 .option-item {
   display: flex;
-  align-items: center;
 }
 
 .topic-answer {
@@ -148,7 +160,7 @@ page {
 .answer-title {
   font-size: 28rpx;
   color: #333;
-  padding-bottom: 28rpx;
+  padding-bottom: 14rpx;
 }
 
 .answer-main {
@@ -255,7 +267,6 @@ page {
 .error-tip {
   color: #FB5130;
   left: 0;
-  width: 100%;
   text-align: center;
 }
 
@@ -286,4 +297,58 @@ page {
 .handle-next-forbid {
   color: #999;
   background: #f7f7f7;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-main {
+  width: 80%;
+}
+
+.main-wrap {
+  background: #fff;
+  color: #333;
+  border-radius: 20rpx;
+  overflow: hidden;
+}
+
+.modal-header {
+  width: 200rpx;
+  margin: 0 auto;
+}
+
+.main-img {
+  width: 100%;
+}
+
+.main-content {
+  color: #333;
+  font-size: 32rpx;
+  text-align: center;
+  padding: 60rpx 0;
+}
+
+.modal-progress {
+  width: 70%;
+  border-radius: 5rpx;
+  margin: 0 auto 70rpx;
+  overflow: hidden;
+  background: #E8E8E8;
+}
+
+.progress-active {
+  height: 10rpx;
+  background: linear-gradient(to right, #FFE27A, #FF7D15);
+  border-radius: 5rpx;
 }

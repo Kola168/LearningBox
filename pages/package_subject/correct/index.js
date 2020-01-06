@@ -19,6 +19,7 @@ Page({
     currentResult: null, //当前题目批改结果
     topicIndex: 0, //当前批改索引,
     currentTopicType: 'single', //single客观小题,multipleObj客观大题,multipleSub主观大题
+    progress: 0
   },
   onLoad: co.wrap(function* (query) {
     let areaHeight = 0
@@ -33,9 +34,16 @@ Page({
     })
     this.weToast = new app.weToast()
     let scene = query.scene
-    this.paperId = scene.split('_')[1]
+    this.paperId = Number(scene.split('_')[1])
     this.correctType = scene.split('_')[2] === 'paper' ? 'XuekewangPaper' : 'XuekewangExercise'
     this.getCorrectPaper()
+    setInterval(() => {
+      if (this.data.progress < 100) {
+        this.setData({
+          progress: this.data.progress + 5
+        })
+      }
+    }, 500)
   }),
   unfoldSerial() {
     this.setData({
@@ -55,27 +63,16 @@ Page({
       let tempData = resp.res
       this.topics = tempData.questions
       let currentTopic = this.topics[0],
+        formatResult = this.formatTopic(currentTopic),
         topicsResult = new Array(this.topics.length)
-      currentTopic = this.formatOption(currentTopic)
-      let currentTopicType = '',
-        subjectName = tempData.subject_name
-      if (currentTopic.children.length === 0) {
-        currentTopicType = 'single'
-      } else {
-        if (subjectName === '语文' || subjectName === '英语') {
-          currentTopicType = 'multipleObj'
-        } else {
-          currentTopicType = 'multipleSub'
-        }
-      }
+      this.subjectName = tempData.subject_name
       this.currentTopicId = currentTopic.ques_id
       this.setData({
         loadReady: true,
         title: tempData.title,
-        currentTopicType,
-        subjectName,
+        currentTopicType: formatResult.topicType,
         topicsResult,
-        currentTopic
+        currentTopic: formatResult.currentTopic
       })
       this.weToast.hide()
     } catch (error) {
@@ -88,12 +85,13 @@ Page({
     let index = e.currentTarget.dataset.index,
       tagetResult = this.data.topicsResult[index]
     if (tagetResult != null) {
-      let currentTopic = this.formatOption(this.topics[index])
+      let formatResult = this.formatTopic(this.topics[index])
       this.changeTopicIndex = index //切换题目index
       this.changeTopicFlag = true //切换题目nextTopicIndex不增加
       this.currentTopicId = currentTopic.ques_id
       this.setData({
-        currentTopic,
+        currentTopic: formatResult.currentTopic,
+        currentTopicType: formatResult.topicType,
         topicIndex: index,
         currentResult: tagetResult.point
       })
@@ -109,8 +107,6 @@ Page({
   // 下一题
   nextTopic() {
     let currentResult = this.data.currentResult
-    console.log(this.data.topicIndex)
-    console.log(this.data.topicIndex + 1)
     if (currentResult != null) {
       let dataKey = `topicsResult[${this.data.topicIndex}]`,
         nextTopicIndex = this.data.topicIndex + 1
@@ -119,7 +115,6 @@ Page({
         dataKey = `topicsResult[${this.changeTopicIndex}]`
         nextTopicIndex = this.data.topicIndex + 1
       }
-      // let currentTopic = this.formatOption(this.topics[nextTopicIndex])
       let dataObj = {
         [dataKey]: {
           point: this.data.currentResult,
@@ -127,16 +122,17 @@ Page({
         },
         currentResult: null
       }
-      if (nextTopicIndex > this.data.topicsResult.length) {
+      if (nextTopicIndex === this.data.topicsResult.length) {
         this.setData(dataObj)
         this.preSubmit()
       } else {
-        let currentTopic = this.formatOption(this.topics[nextTopicIndex])
+        let formatResult = this.formatTopic(this.topics[nextTopicIndex])
         dataObj.topicIndex = nextTopicIndex
-        dataObj.currentTopic = currentTopic
+        dataObj.currentTopic = formatResult.currentTopic
+        dataObj.currentTopicType = formatResult.topicType
         this.setData(dataObj)
         this.changeTopicFlag = false
-        this.currentTopicId = currentTopic.ques_id
+        this.currentTopicId = formatResult.currentTopic.ques_id
       }
     }
   },
@@ -148,36 +144,51 @@ Page({
     })
     try {
       let res = yield subjectGql.submitCorrect(this.data.topicsResult, this.correctType, this.paperId)
-      console.log(res)
       this.weToast.hide()
+      wxNav.navigateTo('../report/index/index', {
+        from: 'correct',
+        sn: ''
+      })
     } catch (e) {
       this.weToast.hide()
       util.showError(e)
     }
   }),
 
-  // 格式化option
-  formatOption(currentTopic) {
+  // 格式化题目
+  formatTopic(currentTopic) {
     let formatCurrentTopic = Object.assign({}, currentTopic),
       tempArr = [],
-      hasChildren = false,
-      options = {}
-    if (formatCurrentTopic.option != null) {
-      options = formatCurrentTopic.option
-    } else if (formatCurrentTopic.children && formatCurrentTopic.children.option.length > 0) {
-      hasChildren = true
-      options = formatCurrentTopic.children.option
-    }
-    let forObj = Object.keys(options)
-    for (let i = 0; i < forObj.length; i++) {
-      let itemArr = [forObj[i], options[forObj[i]]]
-      tempArr.push(itemArr)
-    }
-    if (hasChildren) {
-      formatCurrentTopic.children.option = tempArr
-    } else {
+      topicType = ''
+    if (formatCurrentTopic.option !== '{}' || !formatCurrentTopic.option) {
+      let options = formatCurrentTopic.option,
+        forObj = Object.keys(options)
+      for (let i = 0; i < forObj.length; i++) {
+        let itemArr = [forObj[i], options[forObj[i]]]
+        tempArr.push(itemArr)
+      }
+      topicType = 'single'
       formatCurrentTopic.option = tempArr
+    } else if (formatCurrentTopic.children && formatCurrentTopic.children.length > 0) {
+      let children = formatCurrentTopic.children
+      if (this.subjectName === '语文' || this.subjectName === '英语') {
+        topicType = 'multipleObj'
+      } else {
+        topicType = 'multipleSub'
+      }
+      for (let i = 0; i < children.length; i++) {
+        tempArr = []
+        let forObj = Object.keys(children[i].option)
+        for (let j = 0; j < forObj.length; j++) {
+          let itemArr = [forObj[j], children[i].option[forObj[j]]]
+          tempArr.push(itemArr)
+        }
+        formatCurrentTopic.children[i].option = tempArr
+      }
     }
-    return formatCurrentTopic
+    return {
+      currentTopic: formatCurrentTopic,
+      topicType: topicType
+    }
   }
 })

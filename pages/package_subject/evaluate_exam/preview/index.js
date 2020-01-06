@@ -13,6 +13,7 @@ Page({
     hasReport: false,
     printAnswer: false,
     imgList: [],
+    isFullScreen: false,
     modalObj: {
       isShow: false,
       slotBottom: true,
@@ -27,7 +28,8 @@ Page({
     this.subjectSn = query.sn
     this.setData({
       hasReport: Boolean(Number(query.hasReport)),
-      name: query.name
+      name: query.name,
+      isFullScreen: app.isFullScreen
     })
     this.getPaperDetail()
   },
