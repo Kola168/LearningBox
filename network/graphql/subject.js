@@ -37,6 +37,7 @@ const graphqlApi = {
             subjectId
             subjectName
             totalNumber
+            sn
           }
         }
       }`
@@ -118,7 +119,7 @@ const graphqlApi = {
   /**
    * 获取学科网学科目录
    */
-  getSubject: ()=> {
+  getSubject: () => {
     return gql.query({
       query: `query getSubject{
         xuekewang{
@@ -131,7 +132,7 @@ const graphqlApi = {
           }
         }
       }`
-      
+
     })
   },
 
@@ -139,7 +140,7 @@ const graphqlApi = {
    * 获取学科版本
    * @param {sn} 学科的sn
    */
-  getTextbookVersion: (sn)=> {
+  getTextbookVersion: (sn) => {
     return gql.query({
       query: `query getTextbookVersion($sn: String!){
         xuekewang{
@@ -155,7 +156,7 @@ const graphqlApi = {
       }
     })
   },
-    /**
+  /**
    * 获取学科教材信息
    * @param {sn} 学科教材版本的sn
    */
@@ -295,7 +296,7 @@ const graphqlApi = {
    * @param {diff} 难度id
    * @param {nodeSn} 章节的sn
    */
-  getDefaultExercise:  (diff, nodeSn)=>{
+  getDefaultExercise: (diff, nodeSn) => {
     return gql.query({
       query: `query getDefaultExercise($diff:Int!, $nodeSn:String!){
         xuekewang{
@@ -326,7 +327,7 @@ const graphqlApi = {
    * @param {diff} 难度id
    * @param {nodeSn} 章节的sn
    */
-  getExercises: (diff, nodeSn)=>{
+  getExercises: (diff, nodeSn) => {
     return gql.query({
       query: `query getExercises($diff:Int!, $nodeSn:String!){
         xuekewang{
@@ -355,7 +356,7 @@ const graphqlApi = {
    * 获取练习详情
    * @param {sn} 子章节sn
    */
-  getExercisesDetail: (sn)=>{
+  getExercisesDetail: (sn) => {
     return gql.query({
       query: `query getExercisesDetail($sn:String!){
         xuekewang{
@@ -377,7 +378,7 @@ const graphqlApi = {
       }
     })
   },
-  
+
   /**
    * 获取子章节详情
    * @param {sn} 子章节sn
@@ -427,7 +428,7 @@ const graphqlApi = {
   /**
    * 首页学科
    */
-  getLastLearn: ()=> {
+  getLastLearn: () => {
     return gql.query({
       query: `query Subject{
         xuekewang {
@@ -447,7 +448,7 @@ const graphqlApi = {
   /**
    * 获取试卷缓存分类
    */
-  getPaperCates: ()=> {
+  getPaperCates: () => {
     return gql.query({
       query: `query getPaperCates{
         xuekewang {
@@ -469,12 +470,28 @@ const graphqlApi = {
     })
   },
 
- 
-
-
+  /**
+   * 提交批改
+   * @param { Array } questions 批改结果
+   * @param { String } type 批改类型
+   * @param { id } id 批改id
+   */
+  submitCorrect: (questions, type, id) => {
+    return gql.mutate({
+      mutation: `mutation ($input: SubmitWrongQuestionInput!){
+        submitXuekewangWrongQuestion(input:$input){
+          state
+        }
+      }`,
+      variables: {
+        input: {
+          questions: questions,
+          type: type,
+          id: id
+        }
+      }
+    })
+  }
 }
 
 export default graphqlApi
-
-
-

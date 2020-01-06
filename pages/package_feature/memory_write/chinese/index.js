@@ -115,8 +115,8 @@ Page({
     })
     try {
       let res = yield graphql.getStages(this.sn),
-        grades = res.userStages,
-        currentGrade = grades[0]
+        grades = res.userStages.siblings,
+        currentGrade = res.userStages.currentStage
       this.setData({
         currentGrade,
         grades
