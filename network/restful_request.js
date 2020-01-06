@@ -123,15 +123,20 @@ const api = {
 
   /**
    * 获取批改试卷
-   * @param { String } sn required
+   * @param { String } id required
    * @param { String } type required 'XuekewangExercise'
    */
-  getCorrectPaper:(sn,type)=>request.get(`xuekewang_papers`,{
-    sn: sn,
+  getCorrectPaper:(id,type)=>request.get(`xuekewang_papers`,{
+    id: id,
     type: type
   }, {
     baseURL: `${app.apiServer}/api/v1/`
   }),
+
+  getGradeList:()=>request.get(`examinations`,{}, {
+    baseURL: `${app.apiServer}/api/v1/`
+  }),
+
 }
 
 export default api

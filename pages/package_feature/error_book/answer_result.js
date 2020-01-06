@@ -14,16 +14,14 @@ Page({
     answerUrls: [],
     hasResult: true,
     loadReady: false,
-    hideTip: true,
-    iosModal: false,
-    text: '非会员设备次数已用完，升级会员即可畅享使用'
+    hideTip: true
   },
   onLoad(query) {
     this.longToast = new app.weToast()
     let hideErrorBookTip = Boolean(wx.getStorageSync('hideErrorBookTip'))
     this.setData({
       url: query.url,
-      type: query.type,
+      type: query.type, //photo_answer拍搜,error_book_search已保存错题搜索 before_add_error_book保存错题钱搜索
       hideTip: hideErrorBookTip
     })
     if (query.type === 'error_book_search') {
@@ -40,7 +38,7 @@ Page({
     router.redirectTo('/pages/package_feature/error_book/topic_details', {
       url: url,
       answer_urls: answerUrls,
-      type: photo_answer
+      type: 'photo_answer'
     })
   },
   getPhotoAnswer: co.wrap(function* () {
@@ -48,37 +46,29 @@ Page({
       type: 'loading'
     })
     let params = {
-      openid: app.openId,
       url: this.data.url,
-      version: true
     }
     try {
-      let resp = yield gql.getPhotoAnswer()
-      // let resp = yield api.getPhotoAnswer(params)
-      // if (resp.code == 80000) {
-      //   wx.hideLoading()
-      //   return this.setData({
-      //     iosModal: true,
-      //   })
-      // } else if (resp.code !== 0) {
-      //   throw (resp)
-      // }
+      let resp = yield gql.getPhotoAnswer(params)
+      console.log(resp)
+
       this.longToast.hide()
       // console.log('resp.res', resp.res)
-      // if (resp.res.answer_urls.length > 0) {
-      //   this.setData({
-      //     hasResult: true,
-      //     loadReady: true,
-      //     answerUrls: resp.res.answer_urls
-      //   })
-      //   this.answerUrls = resp.res.answer_urls
-      //   this.questionUrl = resp.res.question_url
-      // } else {
-      //   this.setData({
-      //     loadReady: true,
-      //     hasResult: false
-      //   })
-      // }
+      let mistakeSearch = resp.mistakeSearch
+      if (mistakeSearch.answerUrls.length > 0) {
+        this.setData({
+          hasResult: true,
+          loadReady: true,
+          answerUrls: mistakeSearch.answerUrls
+        })
+        this.answerUrls = mistakeSearch.answerUrls
+        this.questionUrl = mistakeSearch.questionUrl
+      } else {
+        this.setData({
+          loadReady: true,
+          hasResult: false
+        })
+      }
     } catch (error) {
       this.setData({
         loadReady: true,
@@ -92,8 +82,8 @@ Page({
     let urls = JSON.stringify(this.data.answerUrls)
     let type = this.data.type
     if (type === 'photo_answer') {
-      wx.navigateTo({
-        url: `./print?urls=${urls}`
+      router.navigateTo('/pages/package_feature/error_book/answer_print',{
+       urls:urls
       })
     } else if (type === 'error_book_search') {
       this.updateErrorBook()
@@ -108,19 +98,17 @@ Page({
     }
   },
   updateErrorBook: co.wrap(function* () {
-    wx.showLoading({
-      title: '请稍等',
-      mask: true
-    })
+    this.longToast.toast({
+      type: 'loading'
+  })
     try {
       let urls = this.data.answerUrls
       let params = {
-        openid: app.openId,
+        urls: this.questionUrl,
         course: this.course,
         level: this.level,
         reason: this.reason,
-        urls: this.questionUrl,
-        answer_urls: urls
+        answerUrls: urls
       }
       // let resp = yield api.updateErrorBook(params, this.mistakeId)
       // if (resp.code !== 0) {
@@ -138,11 +126,11 @@ Page({
   handleLeftBtn() {
     let type = this.data.type
     if (type === 'photo_answer') {
-      wx.redirectTo({
-        url: './camera'
+      router.redirectTo('/pages/package_feature/error_book/camera', {
+        type
       })
     } else {
-      wx.navigateBack()
+      router.navigateBack()
     }
   },
   closeTip() {

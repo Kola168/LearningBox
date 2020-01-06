@@ -36,7 +36,7 @@
       <text class="date1">{{item.created_at}}</text>
       <text>{{item.content.length}}题</text>
     </view>
-    <view wx:for="{{item.content}}" wx:for-item="data" wx:for-index="i" wx:key="item.content" id="{{i}}" data-type="{{index}}">
+    <view wx:for="{{item.content}}" wx:for-item="data" wx:for-index="i" wx:key="icontent" id="{{i}}" data-type="{{index}}">
       <view class='des'>
         <view wx:if="{{isDelete||firstPrint}}" class='left-icon'>
           <block wx-if="{{!data.checked}}">
@@ -54,7 +54,7 @@
           <text class='describe' wx:if="{{data.reason!=null}}">{{data.reason}}</text>
         </view>
       </view>
-      <view wx:for="{{data.urls}}" wx:for-item="d" wx:for-index="j" wx:key="data.urls" id="{{i}}" data-type="{{index}}"
+      <view wx:for="{{data.urls}}" wx:for-item="d" wx:for-index="j" wx:key="durls" id="{{i}}" data-type="{{index}}"
         bindtap='toTopic'>
         <image src='{{d}}' class='img' mode='widthFix'>
           <view class="anwser" wx:if="{{j==0&&data.answer_urls.length>0&&data.answer_urls!=null}}">有解析</view>

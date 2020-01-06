@@ -8,4 +8,5 @@ page{
 
 .preview-bg{
   width:700rpx;
+  position:relative;
 }

@@ -133,8 +133,8 @@ Page({
     })
     try {
       let res = yield graphql.getStages(this.sn),
-        grades = res.userStages,
-        currentGrade = grades[0],
+        grades = res.userStages.siblings,
+        currentGrade = res.userStages.currentStage,
         materials = currentGrade.guessWriteCategories,
         currentMaterial = materials[0] ? materials[0] : []
       this.materials = materials

@@ -25,6 +25,7 @@ Page({
   onLoad: co.wrap(function* (query) {
     this.weToast = new app.weToast()
     this.subjectId = Number(query.id)
+    this.subjectSn = Number(query.sn)
     this.setData({
       topBarHeight: app.navBarInfo.topBarHeight + 50
     })
@@ -84,7 +85,8 @@ Page({
     wxNav.navigateTo('../preview/index', {
       id: id,
       hasReport: hasReport,
-      name: name
+      name: name,
+      sn: this.subjectSn
     })
   },
 
