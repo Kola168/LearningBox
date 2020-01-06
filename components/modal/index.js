@@ -6,10 +6,11 @@
  * @param {Object} modal             { 配置对象
  *                                     isShow: false, 是否显示
  *                                     title: '', 弹窗标题
- *                                     showCancel: false, 是否显示取消按钮
+ *                                     hasCancel: false, 是否显示取消按钮
  *                                     image: '', 弹窗内容图片
  *                                     content: '', 弹窗内容文字
- *                                     soltContent: false, 是否自定义弹窗内容
+ *                                     slotContent: false, 是否自定义弹窗内容
+ *                                     slotBottom: false, 是否自定义底部按钮
  *                                     confirmText: '', 确认按钮文字
  *                                     cancelText: '' 取消按钮文字
  *                                   }

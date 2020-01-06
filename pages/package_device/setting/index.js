@@ -1,6 +1,11 @@
 const app = getApp()
 const event = require('../../../lib/event/event')
-import { regeneratorRuntime, co, util, wxNav } from '../../../utils/common_import'
+import {
+  regeneratorRuntime,
+  co,
+  util,
+  wxNav
+} from '../../../utils/common_import'
 import graphql from '../../../network/graphql/device'
 Page({
   data: {
@@ -14,21 +19,20 @@ Page({
     modalObj: {
       isShow: false,
       title: '',
-      showCancel: false,
       image: '',
       content: '',
-      soltContent: false,
+      slotContent: false,
       confirmText: ''
     }
   },
-  onLoad: function(query) {
+  onLoad: function (query) {
     this.weToast = new app.weToast()
     this.resetModalObj = this.data.modalObj
     this.deviceSn = query.sn
     this.getDeviceDetail()
   },
 
-  getDeviceDetail: co.wrap(function*() {
+  getDeviceDetail: co.wrap(function* () {
     this.weToast.toast({
       type: 'loading'
     })
@@ -36,9 +40,7 @@ Page({
       let res = yield graphql.getDeviceDetail(this.deviceSn)
       this.weToast.hide()
       let device = res.currentUser.devices[0]
-      if (device.connectThrough) {
-        device.connectThrough = device.connectThrough === 'pc' ? true : false
-      }
+      this.pressPrint = res.currentUser.pressPrint
       this.setData({
         device
       })
@@ -59,7 +61,7 @@ Page({
    * @param {string} setKey required 设置的选项
    * @param {string} setVal required 设置选项值
    */
-  updateDeviceSetting: co.wrap(function*(setKey, setVal) {
+  updateDeviceSetting: co.wrap(function* (setKey, setVal) {
     this.weToast.toast({
       type: 'loading'
     })
@@ -67,6 +69,9 @@ Page({
       yield graphql.updateDeviceSetting(this.deviceSn, {
         [setKey]: setVal
       }, setKey)
+      if (setKey === 'connectTo') {
+        setKey = 'connectThrough'
+      }
       this.setData({
         [`device.${setKey}`]: setVal
       })
@@ -86,7 +91,7 @@ Page({
   },
 
   // 弹窗提示
-  showModal(e) {
+  showModal: co.wrap(function* (e) {
     try {
       let modalType = e.currentTarget.id,
         modalObj = Object.assign({}, this.resetModalObj),
@@ -125,17 +130,18 @@ Page({
           extraData.renameVal = ''
           break;
         case "connectThrough":
-          let switchFlag = this.data.device.connectThrough
-            // 重新显示提示框
+          let switchFlag = this.data.device.connectThrough === 'pc' ? true : false
+          // 重新显示提示框
           this.reSwitchComputerPrint = false
           if (switchFlag) {
             if (e.hasComputerStatus) {
               modalObj.title = "您现在已处于电脑打印状态"
               modalObj.content = "此时在小程序上发送的打印任务暂时无法打印哦"
             } else {
+              let type = this.data.device.connectThrough === 'box' ? 'pc' : 'box'
+              yield this.updateDeviceSetting('connectTo', type)
               modalObj.title = "电脑打印状态已关闭"
               modalObj.content = "小程序已恢复打印状态"
-                // extraData.computerPrintFlag = !switchFlag
             }
           } else {
             modalObj.title = "电脑端打印请提前检查驱动是否安装完成"
@@ -155,25 +161,22 @@ Page({
     } catch (error) {
       console.log(error)
     }
-  },
+  }),
 
   // 确认弹窗
-  confirmModal() {
+  confirmModal: co.wrap(function* () {
     let modalType = this.modalType
     switch (modalType) {
       case "connectThrough":
         if (this.reSwitchComputerPrint) {
-          this.setData({
-            computerPrintFlag: !this.data.computerPrintFlag
-          })
+          let type = this.data.device.connectThrough === 'box' ? 'pc' : 'box'
+          yield this.updateDeviceSetting('connectTo', type)
           this.showModal({
             currentTarget: {
               id: "connectThrough"
-            }
+            },
+            hasComputerStatus: true
           })
-        } else {
-          let type = this.data.device.connectThrough ? 'box' : 'pc'
-          this.updateDeviceSetting('connectThrough', type)
         }
         break;
       case "rename":
@@ -186,7 +189,7 @@ Page({
         this.unbindDevice()
         break;
     }
-  },
+  }),
 
   // 确认修改名称
   comfirmRename() {
@@ -205,7 +208,7 @@ Page({
   },
 
   // 解绑打印机
-  unbindDevice: co.wrap(function*() {
+  unbindDevice: co.wrap(function* () {
     this.weToast.toast({
       type: 'loading'
     })
@@ -242,6 +245,7 @@ Page({
       case "longpress":
         url = `../longpress/index`
         params.sn = this.deviceSn
+        params.pressPrint = Number(this.pressPrint)
         break;
       case "offlineSolve":
         url = `../offline/index`
@@ -260,13 +264,15 @@ Page({
         break;
       case "deviceMaintain":
         url = `../maintain/index/index`
+        params.sn = this.deviceSn
+        params.updateInfo = this.data.device.updateInfo
         break;
     }
     wxNav.navigateTo(url, params)
   },
 
   // 清空打印队列
-  clearJobs: co.wrap(function*() {
+  clearJobs: co.wrap(function* () {
     this.weToast.toast({
       type: 'loading'
     })

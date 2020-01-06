@@ -1,8 +1,9 @@
 <nav-bar title="测评与考试"></nav-bar>
-<view class="container">
+<view class="container" wx:if="{{loadReady}}">
   <view class="tip-img">
     <image src="../../images/nav_figure_card.png" mode="widthFix" />
-    <view>海量优质真题试卷，随心打印</view>
+    <view wx:if="{{printPaperCount===0}}">海量优质真题试卷，随心打印</view>
+    <view wx:else>已做{{printPaperCount}}套卷子，超越{{percentage}}%的同学</view>
   </view>
   <view class="subjects">
     <view class="subject-item" wx:for="{{subjects}}" wx:key="subjectId" bindtap="toSubject" data-id="{{item.subjectId}}">

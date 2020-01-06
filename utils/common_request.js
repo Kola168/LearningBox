@@ -2,6 +2,8 @@ import { regeneratorRuntime, co } from './common_import'
 import getLoopsEvent from './worker'
 import graphql from '../network/graphql_config'
 import api from '../network/restful_request'
+import Logger from './logger.js'
+const logger = new Logger.getLogger('common_request')
 /**
  * 创建订单
  * @param { String } featureKey required 对应功能的key
@@ -99,9 +101,92 @@ const getPrinterCapacity = co.wrap(function*(featureKey, fileUrl) {
   return capacity
 })
 
+/**
+ * 支付统一下单
+ * @param { String } sn required 资源/课程...sn
+ * @param { String } orderType 订单类型member/course
+ * 
+ */
+
+const createPaymentOrder = co.wrap(function*(sn, orderType){
+  return yield graphql.mutate({
+    mutation: `mutation ($input: CreatePaymentOrderInput!){
+      createPaymentOrder(input:$input){
+        paymentOrder{
+          sn
+          state
+          amountYuan
+          payable {
+            ...on Course{
+              iconUrl
+              desc
+              totalLessons
+            }
+            ...on MemberConfig{
+              
+            }
+          }
+        }
+      }
+    }`,
+    variables: {
+      input: {
+        sn: sn,
+        type: orderType
+      }
+    }
+  })
+})
+
+/**
+ * @param { String } sn required 订单sn
+ * @param { Function } success callback
+ * @param { Function } fail callback
+ */
+const emptyFn = function emptyFn() {}
+const createPayment = co.wrap(function*(sn, success=emptyFn, fail=emptyFn){
+  try {
+    let paymentResp = yield graphql.mutate({
+      mutation: `mutation ($input: CreatePaymentInput!){
+        createPayment(input:$input){
+          payParams{
+            ...on WxpayParams {
+                nonceStr
+                package
+                paySign
+                signType
+                timeStamp
+            }
+          }
+        }
+      }`,
+      variables: {
+        input: {
+          paymentOrderSn: sn,
+          paymentMethod: "wechat_miniapp"
+        }
+      }
+    })
+    wx.requestPayment({
+      ...paymentResp.createPayment.payParams,
+      success(res){
+        success(res)
+      },
+      fail(error){
+        logger.info(error)
+        fail(error)
+      }
+    })
+  } catch (error) {
+    logger.info(error)
+    fail(error)
+  }
+})
 
 module.exports = {
   createOrder,
   getPrinterCapacity,
   previewDocument,
+  createPaymentOrder,
+  createPayment
 }

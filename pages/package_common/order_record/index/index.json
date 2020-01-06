@@ -1,0 +1,6 @@
+{
+    "disableScroll": false,
+    "enablePullDownRefresh": false,
+    "navigationBarTitleText": "购买记录",
+    "onReachBottomDistance": 50
+}

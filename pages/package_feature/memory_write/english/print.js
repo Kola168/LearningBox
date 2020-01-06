@@ -1,9 +1,9 @@
 "use strict"
 
 const app = getApp()
-import { regeneratorRuntime, co, util,wxNav,storage } from '../../../../utils/common_import'
-// const common_util = require('../../../../../utils/common_util')
+import { regeneratorRuntime, co, util, wxNav, storage } from '../../../../utils/common_import'
 import api from '../../../../network/restful_request'
+import graphql from '../../../../network/graphql_request'
 const showModal = util.promisify(wx.showModal)
 const saveImageToPhotosAlbum = util.promisify(wx.saveImageToPhotosAlbum)
 const downloadFile = util.promisify(wx.downloadFile)
@@ -19,7 +19,9 @@ Page({
     currentTemplateType: 'yyz',
     templateTypes: ['yyz', 'zyy'],
     printCount: 1,
-    hasAuthPhoneNum:false,
+    hasAuthPhoneNum: false,
+    isFullScreen: false,
+    areaHeight: 0,
     confirmModal: {
       isShow: false,
       title: '请正确放置A4打印纸',
@@ -28,7 +30,13 @@ Page({
   },
   onLoad(query) {
     this.weToast = new app.weToast()
-    this.sns = JSON.parse(query.sns)
+    this.sns = JSON.parse(decodeURIComponent(query.sns))
+    let topBarHeight = app.navBarInfo.topBarHeight,
+      safeArea = app.isFullScreen ? 30 : 0
+    this.setData({
+      areaHeight: app.sysInfo.screenHeight - topBarHeight - safeArea,
+      isFullScreen: app.isFullScreen
+    })
     this.getWritePreview()
   },
   onShow() {
@@ -96,71 +104,44 @@ Page({
     }
   },
   showConfirmMdal() {
-    if(!this.hasAuthPhoneNum&&!app.hasPhoneNum){
-      return
-    }
     let hideConfirmPrintBox = Boolean(storage.get("hideConfirmPrintBox"))
-    if(hideConfirmPrintBox){
-        this.print()
+    if (hideConfirmPrintBox) {
+      this.print()
     } else {
-        this.setData({
-            ['confirmModal.isShow']: true
-        })
+      this.setData({
+        ['confirmModal.isShow']: true
+      })
     }
   },
   print: co.wrap(function*() {
     this.weToast.toast({
-      type:'loading'
+      type: 'loading'
     })
     try {
-      let userData = yield getUserInfo(),
-      endPage = this.data.images.length
+      let userData = yield getUserInfo()
       let params = {
-        openid: app.openId,
-        media_type: 'en_guess_write',
-        resourceable: {
-          type: 'subject_unit',
-          sn: this.sn
-        },
-        setting: {
-          number: this.data.printCount,
-          start_page: 1,
-          end_page: endPage
-        },
-        from: 'mini_app',
+        featureKey: 'guess_write',
+        resourceOrderType: 'GuessWrite',
+        resourceAttribute: {
+          originalUrl: this.previewPdfUrl,
+          copies: this.data.printCount,
+          categorySns: this.sns,
+        }
       }
-      let resp = yield api.printMemoryWrite(params)
-      if (resp.code !== 0) {
-        throw (resp)
-      }
+      let resp = yield graphql.createResourceOrder(params)
       this.weToast.hide()
-      wxNav.navigateTo('/pages/finish/sourdefinish', {
+      wxNav.navigateTo('/pages/finish/sourcefinish', {
         type: 'english_memory_write',
-        state: resp.order.state,
+        state: resp.createResourceOrder.state,
         media_type: 'memory_write',
-        avatarUrl:encodeURIComponent(JSON.stringify(userData.userInfo.avatarUrl)),
-        nickName:userData.userInfo.nickName,
-        count:resp.statistics.day_count,
-        printed_count:resp.statistics.print_count,
-        user_share_qrcode:encodeURIComponent(JSON.stringify(resp.qrcode))
+        avatarUrl: encodeURIComponent(JSON.stringify(userData.userInfo.avatarUrl)),
+        nickName: userData.userInfo.nickName,
       })
-      // wx.redirectTo({
-      //   url: `/pages/finish/oral_mistake_index?type=english_memory_write&&state=${resp.order.state}&media_type=memory_write&avatarUrl=${userData.userInfo.avatarUrl}&nickName=${userData.userInfo.nickName}&count=${resp.statistics.day_count}&printed_count=${resp.statistics.print_count}&user_share_qrcode=${common_util.encodeLongParams(resp.qrcode)}`
-      // })
     } catch (error) {
       this.weToast.hide()
       util.showError(error)
     }
 
-  }),
-  getPhoneNumber:co.wrap(function*(e){
-    yield app.getPhoneNum(e)
-    storage.put("hasAuthPhoneNum",true)
-    this.hasAuthPhoneNum = true
-    this.setData({
-      hasAuthPhoneNum:true
-    })
-    this.showConfirmMdal()
   }),
   allowSave: function(e) {
     if (!e.detail.authSetting['scope.writePhotosAlbum']) {
@@ -211,26 +192,28 @@ Page({
   }),
   getWritePreview: co.wrap(function*() {
     this.weToast.toast({
-      type:'loading'
+      type: 'loading'
     })
     try {
-      let currentTemplateType = this.data.currentTemplateType
-      let resp = yield api.getWritePreview(app.openId, this.sns, 'html', currentTemplateType)
+      let currentTemplateType = this.data.currentTemplateType,
+        params = {
+          feature_key: 'guess_write',
+          category_sns: this.sns,
+          language_type: 'en',
+          en_type: currentTemplateType
+        }
+      let resp = yield api.synthesisWorker(params)
       if (resp.code !== 0) {
         throw (resp)
       }
       this.weToast.hide()
       this.setData({
-        images: resp.res.images
+        images: resp.res.image_urls
       })
-      this.sn = resp.res.sn
+      this.previewPdfUrl = resp.res.pdf_url
     } catch (error) {
-      let err = error
-      if (err.code === 60001) {
-        err.message = '文档转换失败'
-      }
       this.weToast.hide()
-      util.showError(err)
+      util.showError(error)
     }
   })
 })

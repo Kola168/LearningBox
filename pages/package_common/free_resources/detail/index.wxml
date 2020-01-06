@@ -1,4 +1,4 @@
-<nav-bar title="免费资源库"></nav-bar>
+<nav-bar title="{{title}}"></nav-bar>
 <view class="container" style="height:{{windowHeight}}px;" wx:if="{{!showPrintSetting}}">
   <swiper class="swiper" bindchange="swpierChange" current="{{current}}">
     <swiper-item class="swiper-item" wx:for="{{sources}}" wx:key="index">
@@ -24,7 +24,7 @@
         <view class="btns-consumable">适配耗材</view>
         <view class="btns-print">
           打印
-          <botttom-button class="cover-but" text-right="打印" bindrighttap="showPrintSetting" get-phone="{{true}}"></botttom-button>
+          <bottom-button class="cover-but" text-right="打印" bindrighttap="showPrintSetting" get-phone="{{true}}"></bottom-button>
         </view>
       </view>
     </view>

@@ -2,41 +2,32 @@
 
 const app = getApp()
 import { regeneratorRuntime, co, util, storage, wxNav } from '../../../../utils/common_import'
-import api from '../../../../network/restful_request'
+import graphql from '../../../../network/graphql/feature'
 Page({
   data: {
     showSelector: false,
     writeList: [],
     grades: [],
-    types: [],
     currentGrade: null,
-    // currentType: null,
+    topBarHeight: 0,
     checkCount: 0,
     allCheck: false,
     loadReady: false,
-    isEmpty: false
+    isEmpty: false,
+    isFullScreen: false
   },
-  onLoad: co.wrap(function*(options) {
+  onLoad: co.wrap(function*(query) {
     this.weToast = new app.weToast()
-      // if (options.scene) {
-      //   let fromScene = decodeURIComponent(options.scene)
-      //   let scene = fromScene.split('_')
-      //   if (scene[0] === 'application') {
-      //     this.share_user_id = scene[1]
-      //     this.way = 5
-      //   }
-      // }
+    this.sn = query.sn
     let showIntro = storage.get('hasViewCnWrite')
     this.setData({
-      showIntro: showIntro ? false : true
+      isFullScreen: app.isFullScreen,
+      showIntro: showIntro ? false : true,
+      topBarHeight: app.navBarInfo.topBarHeight
     })
-    this.page = 1
-    this.pageSize = 20
     if (showIntro) {
-      let filterInfo = yield this.getFilters()
-      if (filterInfo.hasFilter) {
-        this.getWriteList()
-      }
+      yield this.getGrades()
+      yield this.getWriteList()
     }
   }),
   startWrite: co.wrap(function*() {
@@ -44,21 +35,18 @@ Page({
     this.setData({
       showIntro: false
     })
-    let filterInfo = yield this.getFilters()
-    if (filterInfo.hasFilter) {
-      this.getWriteList()
-    }
+    yield this.getGrades()
+    this.getWriteList()
   }),
   selectorItemCheck(e) {
-    let index = e.currentTarget.id
+    let index = e.currentTarget.id,
+      currentGrade = this.data.grades[index]
     this.setData({
-      currentGrade: this.data.grades[index]
-    })
+        currentGrade
+      })
     this.resetData()
   },
   resetData() {
-    this.page = 1
-    this.pageEnd = false
     this.setData({
       allCheck: false,
       isEmpty: false,
@@ -118,72 +106,59 @@ Page({
       this.weToast.hide()
     }
     wxNav.navigateTo('../chinese/print', {
-      sns: JSON.stringify(sns),
-      type: type
+      sns: encodeURIComponent(JSON.stringify(sns))
     })
   },
-  onReachBottom() {
-    if (this.pageEnd) return
-    this.getWriteList()
-  },
-  getFilters: co.wrap(function*() {
+  getGrades: co.wrap(function*() {
     this.weToast.toast({
       type: 'loading'
     })
     try {
-      let grades = yield this.getGrades(),
+      let res = yield graphql.getStages(this.sn),
+        grades = res.userStages,
         currentGrade = grades[0]
       this.setData({
         currentGrade,
         grades
       })
       this.weToast.hide()
-      return {
-        hasFilter: true
-      }
     } catch (error) {
       this.weToast.hide()
       util.showError(error)
     }
-  }),
-  getGrades: co.wrap(function*() {
-    let resp = yield api.getWritesGradess()
-    if (resp.code !== 0) {
-      throw (resp)
-    }
-    return resp.res
-  }),
-  getTypes: co.wrap(function*() {
-    let resp = yield api.getChineseWritesTypes()
-    if (resp.code !== 0) {
-      throw (resp)
-    }
-    return resp.res
   }),
   getWriteList: co.wrap(function*() {
     this.weToast.toast({
       type: 'loading'
     })
     try {
-      let stageSn = this.data.currentGrade.sn,
-        page = this.page++;
-      let resp = yield api.getWriteList('cn', stageSn, page)
-      if (resp.code !== 0) {
-        throw (resp)
+      let categorys = this.data.currentGrade.guessWriteCategories
+      if (categorys.length === 0) {
+        this.setData({
+          isEmpty: true
+        })
+        this.weToast.hide()
+        return
       }
-      let currentWriteList = this.data.writeList,
-        tempData = resp.res,
-        isEmpty = page === 1 && tempData.length === 0
-      this.pageEnd = tempData.length < this.pageSize ? true : false
-      let checkFlag = this.data.allCheck ? true : false
-      for (let i = 0; i < tempData.length; i++) {
-        tempData[i].isCheck = checkFlag
+      let resp = yield graphql.getWriteList(categorys[0].sn),
+        writeList = resp.category.children,
+        isEmpty = writeList.length >= 0 ? false : true
+      if (isEmpty) {
+        this.setData({
+          isEmpty
+        })
+        return
+      } else {
+        let checkFlag = this.data.allCheck ? true : false
+        for (let i = 0; i < writeList.length; i++) {
+          writeList[i].isCheck = checkFlag
+        }
+        this.setData({
+          writeList,
+          isEmpty,
+          loadReady: true
+        })
       }
-      this.setData({
-        writeList: currentWriteList.concat(tempData),
-        loadReady: true,
-        isEmpty
-      })
       this.weToast.hide()
     } catch (error) {
       this.weToast.hide()

@@ -1,11 +1,3 @@
-/*
- * @Author: your name
- * @Date: 2019-12-12 19:34:39
- * @LastEditTime: 2019-12-25 16:32:47
- * @LastEditors: Please set LastEditors
- * @Description: In User Settings Edit
- * @FilePath: /LearningBox/pages/account/index.js
- */
 const app = getApp()
 import gql from '../../network/graphql_request.js'
 import {
@@ -16,11 +8,15 @@ import {
 } from '../../utils/common_import.js'
 import storage from '../../utils/storage'
 const event = require('../../lib/event/event')
+import {
+  features
+} from 'config'
 
 Page({
   data: {
     kidInfo: null,
-    activeDevice: null
+    activeDevice: null,
+    features
   },
   onLoad: function (options) {
     this.longToast = new app.weToast()
@@ -54,6 +50,7 @@ Page({
     })
     try {
       let resp = yield gql.getUser()
+      console.log(resp)
       this.setData({
         kidInfo: resp.currentUser.selectedKid,
         activeDevice: resp.currentUser.selectedDevice
@@ -64,14 +61,11 @@ Page({
       util.showError(e)
     }
   }),
-
+ 
   toNext(e) {
     let pageKey = e.currentTarget.id,
       url = ''
     switch (pageKey) {
-      case 'records':
-        url = '/pages/package_common/records/index/index'
-        break;
       case 'deviceList':
         url = '/pages/package_device/list/index'
         break;
@@ -83,9 +77,9 @@ Page({
         break;
     }
     wxNav.navigateTo(url, {})
-	},
-	
-	onlineGuest: co.wrap(function*() {
+  },
+
+  onlineGuest: co.wrap(function* () {
     let isAuth = yield this.checkIsScope()
     if (isAuth) {
       let url = 'https://gfd178.udesk.cn/im_client/?web_plugin_id=63138'
@@ -93,9 +87,18 @@ Page({
         url: `/pages/webview/index?url=${encodeURIComponent(url)}`
       })
     }
-  }),
+	}),
 	
-	onUnload() {
+	clickFeature: co.wrap(function* (e) {
+	 wxNav.navigateTo(e.currentTarget.id)
+
+	}),
+
+	feedBack:co.wrap(function* () {
+		wxNav.navigateTo('/pages/package_common/feedback')
+	}),
+
+  onUnload() {
     event.remove('Authorize', this)
   }
 })

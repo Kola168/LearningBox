@@ -5,12 +5,7 @@ const app = getApp()
 const regeneratorRuntime = require('../../lib/co/runtime')
 const co = require('../../lib/co/co')
 const util = require('../../utils/util')
-
-const chooseImage = util.promisify(wx.chooseImage)
-const showModal = util.promisify(wx.showModal)
-const request = util.promisify(wx.request)
-const getImageInfo = util.promisify(wx.getImageInfo)
-const getNetworkType = util.promisify(wx.getNetworkType)
+const feature_route=require('../../utils/feature_index')
 
 import wxNav from '../../utils/nav.js'
 import storage from '../../utils/storage.js'
@@ -114,7 +109,11 @@ Page({
 	},
 
 	continuePrint: function () {
-		wxNav.navigateBack(getCurrentPages().length>3?getCurrentPages().length:4-2)
+		if(this.media_type==='memory_write'){
+			wxNav.backPage(feature_route.feature_route[this.printType])
+		} else {
+			wxNav.backPage(feature_route.feature_route[this.media_type])
+		}
 	},
 
 	onShareAppMessage: function () {

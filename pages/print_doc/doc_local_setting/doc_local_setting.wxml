@@ -119,7 +119,7 @@
 		</view>
 	</view>
 </view>
-<botttom-button class="conf-box" text-right="确认打印" bindrighttap="confCheck" get-phone="{{true}}"></botttom-button>
+<bottom-button class="conf-box" text-right="确认打印" bindrighttap="confCheck" get-phone="{{true}}"></bottom-button>
 
 
 <!-- 打印确认框 -->

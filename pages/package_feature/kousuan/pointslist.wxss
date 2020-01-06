@@ -1,0 +1,135 @@
+/* pages/package_feature/kousuan/pointslist.wxss */
+page {
+  width: 100%;
+  min-height:100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+  padding-top: 10rpx;
+}
+
+view {
+  box-sizing: border-box;
+}
+
+.points-list-box {
+  width: 700rpx;
+  height: 176rpx;
+  padding: 24rpx 26rpx;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 4rpx 16rpx 0 rgba(204, 204, 204, 0.40);
+  border-radius: 20rpx;
+  margin-top: 30rpx;
+}
+
+.points-name-icon {
+  width: 16rpx;
+  height: 16rpx;
+  background: #FFDC5E;
+  margin-right: 12rpx;
+}
+
+.points-name {
+  font-size: 32rpx;
+  color: #333333;
+  display:flex;
+  align-items:center;
+}
+
+.points-img {
+  width: 200rpx;
+
+}
+
+.point-num-box {
+  display: flex;
+  align-items: center;
+}
+
+.points-icon-style {
+  width: 36rpx;
+}
+
+.points-num {
+  font-size: 28rpx;
+  color: #333333;
+  margin: 0 16rpx;
+}
+
+.bottom-box{
+  width:100%;
+  height:100rpx;
+  position:fixed;
+  bottom:0;
+  left:0;
+  font-size: 36rpx;
+  background: #fff;
+  display:flex;
+}
+
+.bottom-but-style{
+  flex:1;
+  height:100rpx;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  position:relative;
+}
+
+.bottom-left-botton {
+  border-top: 1px solid #e7e7e7;
+  color: #666;
+}
+
+.bottom-right-botton {
+  border-top: 1px solid #ffdc5e;
+  color: #333;
+  background:#ffdc5e;
+}
+
+.bottom-heigher{
+  height:140rpx;
+}
+
+.bottom-left-heigher{
+  border-bottom: 1px solid #e7e7e7;
+}
+
+.bottom-but{
+  position:absolute;
+  width:100%;
+  height:100%;
+  top:0;
+  left:0;
+  opacity:0;
+}
+
+.bottom-check{
+  width:40rpx;
+  height:40rpx;
+  border-radius:50%;
+  margin-right:20rpx;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border:1rpx solid #666;
+}
+
+.bottom-checked{
+  background:#FFDC5E;
+  border:1rpx solid #FFDC5E;
+}
+
+.bottom-checked:after{
+  content:'';
+  width:19rpx;
+  height:11rpx;
+  border-left:3rpx solid #000;
+  border-bottom:3rpx solid #000;
+  transform: rotate(-40deg);
+  position:relative;
+  top:-1rpx;
+}

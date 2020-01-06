@@ -36,7 +36,7 @@
 	<view class="bottom-tip-medium">
 		<view class="bottom-tip-medium-text">目前只支持doc、docx、ppt、pptx、pdf、xls、xlsx 7种格式</view>
 	</view>
-	<botttom-button class="bottom" extra-class="{{allCount > 0 ? '':'button-gray'}}" text-left="继续选择" bindlefttap="chooseDocFile" text-right="确认" bindrighttap="confirm" get-phone="{{true}}"></botttom-button>
+	<bottom-button class="bottom" extra-class="{{allCount > 0 ? '':'button-gray'}}" text-left="继续选择" bindlefttap="chooseDocFile" text-right="确认" bindrighttap="confirm" get-phone="{{true}}"></bottom-button>
 
 </view>
 

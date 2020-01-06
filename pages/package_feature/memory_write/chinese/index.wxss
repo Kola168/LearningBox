@@ -9,11 +9,11 @@
 }
 
 .intro {
-  background: #F8FFF8;
+  background: #e7f8ff;
 }
 
 .container {
-  padding-top: 146rpx;
+  padding-top: 90rpx;
   padding-bottom: 120rpx;
 }
 
@@ -21,7 +21,6 @@
   background: #fff;
   position: fixed;
   left: 0;
-  top: 0;
   width: 100%;
 }
 
@@ -30,7 +29,11 @@
   color: #666;
   justify-content: space-between;
   padding: 0 24rpx;
-  height: 60rpx;
+  height: 47px;
+}
+
+.options {
+  height: 100%;
 }
 
 .options image {
@@ -38,15 +41,6 @@
   height: 12rpx;
   margin-left: 16rpx;
 }
-
-.select-list {
-  top: 60rpx;
-}
-
-/* .content-box {
-  border-radius: 12rpx;
-  background: #fff;
-} */
 
 .item-main {
   flex-wrap: wrap;

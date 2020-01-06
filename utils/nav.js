@@ -138,19 +138,14 @@ const navigateTo = (url, query = {}, cb = emptyFn) => {
 const backPage=(url, query = {}, cb = emptyFn)=>{
   let pages = getCurrentPages()
   url = relative2AbsolutePath(url)
-  console.log(url)
   let len = pages.length
-  console.log(len)
   let delta=0
   for (let i = 0; i < len; i++) {
-    console.log(pages[i].route)
     if (pages[i].route === url) {
-      console.log(i)
       delta= len - i - 1
       break
     }
   }
-  console.log(delta)
   if (delta>0) { //已存在页面栈
     navigateBack(delta, cb)
   } else if (pages.length >= MAX_PAGES_LENGTH) { //超过10层

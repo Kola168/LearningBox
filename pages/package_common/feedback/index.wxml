@@ -25,9 +25,12 @@
     <view class="bottom-item">
         <view>客服微信：</view>
         <view class="content">gfdxiaobai</view>
-        <view class='btn'>
+        <!-- <view class='btn'>
             <button hover-class='none' bindtap='copyText'>复制</button>
-        </view>
+				</view> -->
+				<view class='btn' bindtap='copyText'>
+					复制
+			</view>
     </view>
     <view>（工作时间：周一至周六9:00-18:00）</view>
 </view>

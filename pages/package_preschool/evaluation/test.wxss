@@ -1,0 +1,146 @@
+/* pages/package_preschool/evaluation/test.wxss */
+@import "../../../common/icon/icon";
+
+page {
+  width: 100%;
+  min-height: 100%;
+  background: #4CBAFF;
+  padding: 16rpx 24rpx;
+  box-sizing: border-box;
+}
+
+view {
+  box-sizing: border-box;
+}
+
+.test-bg {
+  width: 100%;
+  position: relative;
+}
+
+.test-content-box {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 30rpx;
+}
+
+.content-top-box {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 100rpx;
+}
+
+.process-box{
+  display:flex;
+  align-items:center;
+}
+
+.process-num-box {
+  font-size: 32rpx;
+  color: #666666;
+}
+
+.process-star-box{
+
+}
+
+.icon-wujiaoxing{
+  font-size:56rpx;
+  color:#e4e4e4;
+  margin-left:20rpx;
+}
+
+.yellow-star{
+  color:#ffdc5e;
+}
+
+.time-box{
+  display:flex;
+  align-items:center;
+}
+
+.voice-icon{
+  width:70rpx;
+}
+
+.clock-icon{
+  width:68rpx;
+  position:relative;
+  margin-left:40rpx;
+}
+
+.remaining-box{
+  width:100%;
+  height:100%;
+  position:absolute;
+  top:0;
+  left:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size: 28rpx;
+  color: #FB5130;
+  padding-top:6rpx;
+}
+
+.content-question-box{
+  width:642rpx;
+  height:390rpx;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  border:4rpx solid #d6efff;
+  border-radius:20rpx;
+  margin-top:28rpx;
+  margin-bottom:20rpx;
+}
+
+.question-img{
+  width:100%;
+}
+
+.content-options-box{
+  width:100%;
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:space-around;
+}
+
+.content-options-item{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  margin-top:20rpx;
+  border-radius:20rpx;
+}
+
+.content-options-img{
+  width:268rpx;
+  margin-bottom:5rpx;
+}
+
+.content-options-selected{
+  border:4rpx solid #ffdc5e;
+}
+
+.check-item{
+  width:48rpx;
+  height:48rpx;
+  border-radius:24rpx;
+  font-size: 30rpx;
+  color: #333333;
+  line-height:48rpx;
+  text-align:center;
+}
+
+.check-item-selected{
+  background:#ffdc5e;
+}

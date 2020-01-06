@@ -181,6 +181,6 @@ Page({
   },
   onReachBottom() {
     if (this.data.showRemind) return
-    this.getRecord()
+    this.getPrinterRecords()
   }
 })
