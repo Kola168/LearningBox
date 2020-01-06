@@ -2,7 +2,7 @@
 const app = getApp()
 import { regeneratorRuntime, co, util, wxNav } from '../../../../utils/common_import'
 import graphql from '../../../../network/graphql_request'
-const constants = require('../../../../utils/test.js');
+// const constants = require('../../../../utils/test.js');
 // 右侧每一类的 bar 的高度（固定）
 const RIGHT_BAR_HEIGHT = 40;
 // 左侧每个类的高度（固定）

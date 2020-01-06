@@ -39,7 +39,8 @@ Page({
       content: '绑定设备后学习更方便!',
       confirmText: '立即绑定',
       image: '/images/home/device_tip.png'
-    }
+    },
+    beforeSchoolContent:[]
   },
 
   //事件处理函数
@@ -79,8 +80,7 @@ Page({
           showAuth: false
         })
         app.authToken = authToken
-        yield this.getUserInfo()
-        yield this.getBanners()
+        yield this.afterUnion()
       }
       if (!authToken) {
         this.setData({
@@ -120,8 +120,8 @@ Page({
         selectedKid: resp.currentUser.selectedKid,
         stageRoot: resp.currentUser.selectedKid.stageRoot
       })
-			storage.put("userSn", resp.currentUser.sn)
-			storage.put("kidStage", resp.currentUser.selectedKid.stageRoot.rootKey)
+      storage.put("userSn", resp.currentUser.sn)
+			storage.put("kidStage", resp.currentUser.selectedKid.stageRoot)
 
       if (resp.currentUser.phone) {
         app.hasPhoneNum = true
@@ -142,6 +142,29 @@ Page({
       }
     } catch (e) {
       util.showError(e)
+    }
+  }),
+  //获取学前模块
+  customizeFeatures:co.wrap(function*(){
+    if(this.data.selectedKid.stageRoot==null){
+       return
+    }
+    try {
+      let resp = yield gql.customizeFeatures()
+      this.setData({
+        beforeSchoolContent:resp.customizeFeatures
+      })
+    } catch (error) {
+      util.showError(error) 
+    }
+  }),
+  afterUnion:co.wrap(function*(){
+    try {
+      yield this.getUserInfo()
+      yield this.getBanners()
+      yield this.customizeFeatures()
+    } catch (error) {
+      console.log(error)
     }
   }),
   userInfoHandler: co.wrap(function*(e) {
@@ -189,8 +212,7 @@ Page({
       this.setData({
         showAuth: false
       })
-      yield this.getUserInfo()
-      yield this.getBanners()
+      yield this.afterUnion()
       if (this.scene) {
         this.handleScene(this.scene)
       }
@@ -305,8 +327,14 @@ Page({
   toBindDevice: function () {
     wxNav.navigateTo('/pages/package_device/network/index/index')
   },
-
   tokousuan:function(){
     wxNav.navigateTo('/pages/package_feature/kousuan/index')
+  },
+  toContentList:function(e){
+    console.log(e)
+    wxNav.navigateTo('/pages/package_common/common_content/index',{
+      key: e.currentTarget.id,
+      name:e.currentTarget.dataset.name
+    })
   }
 })

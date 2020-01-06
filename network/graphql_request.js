@@ -1877,41 +1877,72 @@ const graphqlApi = {
       }
     })
   },
+
   /**
-   * 获取内容首页
+   * 获取首页学前feature
    *
    * @returns
    */
-  getFeatureIndex: () => {
+  customizeFeatures: (featureKey) => {
     return gql.query({
-      query: `query() {
-          // userFolderRelations(sn:$sn){
-          //   id
-          //   avatar:userAvatar
-          //   nickname:userName
-          // }
+      query: `query{
+        customizeFeatures{
+          hasCategory
+          iconUrl
+          key
+          name
+          }
+        }`
+    })
+  },
+  /**
+   * 获取内容首页大分类
+   *
+   * @returns
+   */
+  customizeCategories: (featureKey) => {
+    return gql.query({
+      query: `query($featureKey:String!) {
+        customizeCategories(featureKey:$featureKey){
+          depth
+          name
+          sn
+          children{
+            depth
+            name
+            previewUrl
+            sn
+          }
+          }
         }`,
       variables: {
-
+        featureKey:featureKey
       }
     })
   },
   /**
-   * 获取内容tab
+   * 获取内容列表页
    *
    * @returns
    */
-  getFeatureTab: () => {
+  customizeCategory: (sn) => {
     return gql.query({
-      query: `query() {
-          // userFolderRelations(sn:$sn){
-          //   id
-          //   avatar:userAvatar
-          //   nickname:userName
-          // }
+      query: `query($sn:String!) {
+        customizeCategory(sn:$sn){
+          depth
+          name
+          previewUrl
+          sn
+          children{
+            depth
+            name
+            previewUrl
+            sn
+           }
+          }
         }`,
       variables: {
-
+          sn:sn
       }
     })
   },
@@ -1920,17 +1951,20 @@ const graphqlApi = {
    *
    * @returns
    */
-  getFeatureList: () => {
+  customizeContents: (sn,page) => {
     return gql.query({
-      query: `query() {
-          // userFolderRelations(sn:$sn){
-          //   id
-          //   avatar:userAvatar
-          //   nickname:userName
-          // }
+      query: `query($sn:String!,$page:String!) {
+        customizeContents(sn:$sn,page:$page){
+          sn
+          print_count:printerOrdersCount
+          title:name
+          icon_url:iconUrl
+          total_page:pageCount
+          }
         }`,
       variables: {
-
+          sn:sn,
+          page:page
       }
     })
   },
