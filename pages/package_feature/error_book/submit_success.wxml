@@ -1,4 +1,5 @@
 <!-- pages/error_book/submit_success.wxml -->
+<nav-bar background="#fff" title="错题本"></nav-bar>
 <view class="content">
     <icon type="success" size="100" />
     <view class="success">{{type=="error_book_search"?'更新成功':'录题成功'}}</view>

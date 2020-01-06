@@ -1539,46 +1539,6 @@ const graphqlApi = {
       }
     })
   },
-  /**
-   * 获取错题科目列表
-   *
-   * @returns
-   */
-  getSubjects: () => {
-    return gql.query({
-      query: `query() {
-  
-        }`,
-      variables: {
-        input: input
-      }
-    })
-  },
-  getGrade: () => {
-    return gql.query({
-      query: `query {
-          currentUser {
-            sn
-            selectedKid{
-              sn
-              stage{
-                name
-                rootName
-                sn
-              }
-           }
-          }
-        }`
-    })
-  },
-
-  /**
-   * 获取错题列表
-   *
-   */
-  getMistakes: () => {
-
-  },
 
   /**
    * 注册学科网
@@ -1756,22 +1716,45 @@ const graphqlApi = {
       }
     })
   },
+  /**
+   * 获取错题科目列表
+   *
+   * @returns
+   */
+  getErrorSubjects: () => {
+    return gql.query({
+      query: `query{
+        mistakes{
+          count
+          object:course
+        }
+        }`
+    })
+  },
 
   /**
    * 获取错题列表
    *
    */
-  getMistakes: () => {
+  getMistakes: (params) => {
     return gql.query({
-      query: `query() {
-          // userFolderRelations(sn:$sn){
-          //   id
-          //   avatar:userAvatar
-          //   nickname:userName
-          // }
+      query: `query($course: String,$printCount: Int,$startAt: String,$endAt: String,$answer: MistakeAnswerEnum) {
+        mistakeCourse(course:$course,printCount:$printCount,startAt:$startAt,endAt:$endAt,answer:$answer){
+          created_at:createDay
+          content:mistakes{
+            answer_urls:answerUrls
+            course
+            level
+            print_count:printerOrdersCount
+            reason
+            urls
+            id
+            sn
+            }
+          }
         }`,
       variables: {
-
+        ...params
       }
     })
   },
@@ -1779,10 +1762,13 @@ const graphqlApi = {
    * 保存错题
    *
    */
-  saveMistakes: () => {
+  saveMistakes: (input) => {
     return gql.mutate({
-      mutation: `mutation() {
-          
+      mutation: `mutation($input:CreateMistakeInput!) {
+        createMistake(input:$input){
+          state
+          mistake
+        }
         }`,
       variables: {
         input: input
@@ -1790,14 +1776,34 @@ const graphqlApi = {
     })
   },
   /**
+   * 获取错题模板
+   *
+   * @returns
+   */
+  mistakeTemplates: () => {
+    return gql.query({
+      query: `query{
+        mistakeTemplates{
+          cateType
+          id
+          imageUrl
+          name
+          }
+        }`
+    })
+  },
+  /**
    * 拍照搜题
    *
    * @returns
    */
-  getPhotoAnswer: () => {
+  getPhotoAnswer: (input) => {
     return gql.mutate({
-      mutation: `mutation() {
-          
+      mutation: `mutation($input:MistakeSearchInput!) {
+        mistakeSearch(input:$input){
+          answerUrls
+          questionUrl
+        } 
         }`,
       variables: {
         input: input
@@ -1873,41 +1879,72 @@ const graphqlApi = {
       }
     })
   },
+
   /**
-   * 获取内容首页
+   * 获取首页学前feature
    *
    * @returns
    */
-  getFeatureIndex: () => {
+  customizeFeatures: (featureKey) => {
     return gql.query({
-      query: `query() {
-          // userFolderRelations(sn:$sn){
-          //   id
-          //   avatar:userAvatar
-          //   nickname:userName
-          // }
+      query: `query{
+        customizeFeatures{
+          hasCategory
+          iconUrl
+          key
+          name
+          }
+        }`
+    })
+  },
+  /**
+   * 获取内容首页大分类
+   *
+   * @returns
+   */
+  customizeCategories: (featureKey) => {
+    return gql.query({
+      query: `query($featureKey:String!) {
+        customizeCategories(featureKey:$featureKey){
+          depth
+          name
+          sn
+          children{
+            depth
+            name
+            previewUrl
+            sn
+          }
+          }
         }`,
       variables: {
-
+        featureKey:featureKey
       }
     })
   },
   /**
-   * 获取内容tab
+   * 获取内容列表页
    *
    * @returns
    */
-  getFeatureTab: () => {
+  customizeCategory: (sn) => {
     return gql.query({
-      query: `query() {
-          // userFolderRelations(sn:$sn){
-          //   id
-          //   avatar:userAvatar
-          //   nickname:userName
-          // }
+      query: `query($sn:String!) {
+        customizeCategory(sn:$sn){
+          depth
+          name
+          previewUrl
+          sn
+          children{
+            depth
+            name
+            previewUrl
+            sn
+           }
+          }
         }`,
       variables: {
-
+          sn:sn
       }
     })
   },
@@ -1916,17 +1953,20 @@ const graphqlApi = {
    *
    * @returns
    */
-  getFeatureList: () => {
+  customizeContents: (sn,page) => {
     return gql.query({
-      query: `query() {
-          // userFolderRelations(sn:$sn){
-          //   id
-          //   avatar:userAvatar
-          //   nickname:userName
-          // }
+      query: `query($sn:String!,$page:String!) {
+        customizeContents(sn:$sn,page:$page){
+          sn
+          print_count:printerOrdersCount
+          title:name
+          icon_url:iconUrl
+          total_page:pageCount
+          }
         }`,
       variables: {
-
+          sn:sn,
+          page:page
       }
     })
   },

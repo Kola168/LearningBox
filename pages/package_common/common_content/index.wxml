@@ -1,28 +1,15 @@
 <!--pages/package_common/common_content/index.wxml-->
 <nav-bar background="#fff" title="在家上早教"></nav-bar>
-<view class="title">科学叫醒</view>
-<view class="content-wrap">
-    <view class="content-item">
-        <image src="https://cdn-h.gongfudou.com/epbox/backend/2019/11/26/84c12303-be26-4814-a967-6baa1c125af8.jpg"
-            mode="widthFix" />
-        <view>经典童谣</view>
+<block wx:for="{{allList}}" wx:key="allList">
+    <view class="title">{{item.name}}</view>
+    <view class="content-wrap">
+        <view class="content-item" wx:for="{{item.children}}" wx:for-item="data" wx:key="children" id="{{data.sn}}" bindtap="toNextPage">
+            <image src="{{data.previewUrl}}" mode="widthFix" />
+            <view>{{data.name}}</view>
+        </view>
     </view>
-    <view class="content-item">
-        <image src="https://cdn-h.gongfudou.com/epbox/backend/2019/11/26/84c12303-be26-4814-a967-6baa1c125af8.jpg"
-            mode="widthFix" />
-        <view>经典童谣</view>
-    </view>
-    <view class="content-item">
-        <image src="https://cdn-h.gongfudou.com/epbox/backend/2019/11/26/84c12303-be26-4814-a967-6baa1c125af8.jpg"
-            mode="widthFix" />
-        <view>经典童谣</view>
-    </view>
-    <view class="content-item">
-        <image src="https://cdn-h.gongfudou.com/epbox/backend/2019/11/26/84c12303-be26-4814-a967-6baa1c125af8.jpg"
-            mode="widthFix" />
-        <view>经典童谣</view>
-    </view>
-</view>
+</block>
+
 
 <view class="title">宝宝成长计划</view>
 <view class="plan-item">

@@ -28,15 +28,22 @@ Page({
         })
     }),
     camera: co.wrap(function* () {
-        if (this.data.type == 'photoAnswer' || this.data.type == 'error_book_search') {
-            wx.navigateTo({
-                url: `../photo_answer/camera`,
-            })
-        } else {
-            wx.navigateTo({
-                url: `camera?course=${this.course}`,
-            })
+        let params = {
+            type: this.data.type,
         }
+        if (this.data.type == 'error_book') {
+            params.course = this.course
+        }
+        router.redirectTo('/pages/package_feature/error_book/camera', params)
+        // if (this.data.type == 'photoAnswer' || this.data.type == 'error_book_search') {
+        //     wx.navigateTo({
+        //         url: `../photo_answer/camera`,
+        //     })
+        // } else {
+        //     wx.navigateTo({
+        //         url: `camera?course=${this.course}`,
+        //     })
+        // }
 
     }),
     //打印项设置

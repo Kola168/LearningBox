@@ -1,11 +1,12 @@
+<nav-bar background="#fff" title="打印预览"></nav-bar>
 <view class="setting" wx:if="{{isSetting}}">
   <view class="doc_setting">
     <view class="setting_item">
       <view class="item_label">打印份数</view>
       <view class="item_main">
-        <image src="{{documentPrintNum==1?'/images/document_cut.png':'/images/minus_y.png'}}" mode="aspectFit" class="print_num" bindtap="cutPrintNum"></image>
+        <image src="{{documentPrintNum==1?'../images/document_cut.png':'../images/minus_y.png'}}" mode="aspectFit" class="print_num" bindtap="cutPrintNum"></image>
         <text class="document_print_num">{{documentPrintNum}}</text>
-        <image src="{{documentPrintNum>=30?'/images/document_add_gray.png':'/images/plus_y.png'}}" mode="aspectFit" class="print_num" bindtap="addPrintNum"></image>
+        <image src="{{documentPrintNum>=30?'../images/document_add_gray.png':'../images/plus_y.png'}}" mode="aspectFit" class="print_num" bindtap="addPrintNum"></image>
       </view>
     </view>
     <view class="setting_item">
@@ -22,30 +23,33 @@
       <view class="item_main">
         <view class="color_check_box" data-style="Mono" bindtap="colorCheck">
           <text class="color_type">黑白</text>
-          <image src="{{colorcheck!='Color'?'/images/document_checked.png':'/images/icon_circle_not_selected.png'}}" class="color_check"></image>
+          <image src="{{colorcheck!='Color'?'../images/document_checked.png':'../images/icon_circle_not_selected.png'}}" class="color_check"></image>
         </view>
         <view class="color_check_box" data-style="Color" bindtap="colorCheck">
           <text class="color_type">彩色</text>
-          <image src="{{colorcheck=='Color'?'/images/document_checked.png':'/images/icon_circle_not_selected.png'}}" class="color_check"></image>
+          <image src="{{colorcheck=='Color'?'../images/document_checked.png':'../images/icon_circle_not_selected.png'}}" class="color_check"></image>
         </view>
       </view>
     </view>
   </view>
   <view class="handle-bar">
     <view class="bar-cancel" bindtap="cancelSetting">取消</view>
-    <button class="bar-confirm" bindtap="confcheck" open-type="{{hasAuthPhoneNum?'':'getPhoneNumber'}}" bindgetphonenumber="{{hasAuthPhoneNum?'':'getPhoneNumber'}}">确认</button>
+    <button class="bar-confirm">
+      确认
+      <bottom-button class="bottom-button-box" text-right="立即打印" bindrighttap="confcheck" get-phone="{{true}}"></bottom-button>
+    </button>
   </view>
 </view>
 <view class="preview" wx:else>
   <image wx:for="{{urls}}" src="{{item}}" wx:key="{{index}}" mode="widthFix" />
   <view class="preview-btns">
     <view class="btn-item" wx:if="{{savable}}" bindtap="saveImg">
-      <image src="/images/save_img.png"></image>
+      <image src="../images/save_img.png"></image>
       <view>保存</view>
     </view>
     <view class="btn-item" wx:if="{{!savable}}">
       <button open-type="openSetting" hover-class="none" bindopensetting="allowSave">
-        <image src="/images/save_img.png"></image>
+        <image src="../images/save_img.png"></image>
         <view>保存</view>
       </button>
     </view>

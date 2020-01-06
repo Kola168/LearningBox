@@ -21,40 +21,37 @@ Page({
         // 0 未授权 1，授权失败， 2 已授权
         allowCamera: 0, //相机授权
         activePeriodIndex: 0,
-        allSubjects: [
-            [{
-                    name: '语文',
-                    id: 'yuwen'
-                },
-                {
-                    name: '数学',
-                    id: 'shuxue'
-                }, {
-                    name: '英语',
-                    id: 'yingyu'
-                },
-                {
-                    name: '物理',
-                    id: 'wuli'
-                }, {
-                    name: '化学',
-                    id: 'huaxue'
-                }, {
-                    name: '生物',
-                    id: 'shengwu'
-                }, {
-                    name: '政治',
-                    id: 'zhengzhi'
-                }, {
-                    name: '历史',
-                    id: 'lishi'
-                }, {
-                    name: '地理',
-                    id: 'dili'
-                }
-            ]
-        ], //依次为小学初中高中
-        subjectList: [],
+        subjectList:  [{
+            name: '语文',
+            id: 'yuwen'
+        },
+        {
+            name: '数学',
+            id: 'shuxue'
+        }, {
+            name: '英语',
+            id: 'yingyu'
+        },
+        {
+            name: '物理',
+            id: 'wuli'
+        }, {
+            name: '化学',
+            id: 'huaxue'
+        }, {
+            name: '生物',
+            id: 'shengwu'
+        }, {
+            name: '政治',
+            id: 'zhengzhi'
+        }, {
+            name: '历史',
+            id: 'lishi'
+        }, {
+            name: '地理',
+            id: 'dili'
+        }
+    ],
         showTipModal: false,
         from_temp: false,
         mediumRecommend: '',
@@ -62,6 +59,20 @@ Page({
         from_temp: false
     },
     onShow: co.wrap(function* () {
+        let authToken = storage.get('authToken')
+        if (!authToken) {
+            let url = this.share_user_id ? `/pages/authorize/index?url=${url}&share_user_id=${this.share_user_id}&way=${this.way}` : `/pages/authorize/index`
+            if (this.share_user_id) {
+                router.navigateTo('/pages/authorize/index', {
+                    share_user_id: this.share_user_id,
+                    way: this.way
+                })
+            } else {
+                router.navigateTo('/pages/authorize/index', )
+            }
+        } else{
+            yield this.getSubjects()
+        }
     }),
     onLoad: co.wrap(function* (options) {
         event.on('Authorize', this, function (data) {
@@ -109,7 +120,6 @@ Page({
         // this.way = 1
         if (options.scene) {
             let fromScene = decodeURIComponent(options.scene)
-            logger.info("4567890错题本", fromScene)
             let scene = fromScene.split('_')
             this.from = scene[0]
             if (this.from == 'application') {
@@ -171,23 +181,23 @@ Page({
     },
     //获取当前学段的学科和错题数
     getSubjects: co.wrap(function* () {
+        this.longToast.toast({
+            type: 'loading'
+        })
         try {
-            const resp = yield gql.getSubjects()
-            // const resp = yield request({
-            //     url: app.apiServer + `/ec/v2/mistakes?${app.openId}`,
-            //     method: 'GET',
-            //     dataType: 'json',
-            //     data: {
-            //         'openid': app.openId,
-            //     }
-            // })
-            // if (resp.data.code != 0) {
-            //     throw (resp.data)
-            // }
-            logger.info('错题科目列表====', resp)
-            // this.setData({
-            //     subjectList: resp.data.mistakes
-            // })
+            const resp = yield gql.getErrorSubjects()
+            let subjectList = this.data.subjectList
+            let mistakes = resp.mistakes
+            subjectList.forEach(data=>{
+                mistakes.forEach(vata=>{
+                    if(data.name==vata.object){
+                        data.count=vata.count
+                    }
+                })   
+            })
+            this.setData({
+                subjectList
+            })
             this.longToast.hide()
         } catch (e) {
             this.longToast.hide()
@@ -195,11 +205,9 @@ Page({
         }
     }),
     toList: function (e) {
-        let index = e.currentTarget.id
-        let item = this.data.allSubjects[this.data.activePeriodIndex]
+        let item = this.data.subjectList[e.currentTarget.id]
         router.navigateTo('/pages/package_feature/error_book/detail', {
-            grade: this.data.activeGrade,
-            course: item[index].name
+            course: item.name
         })
     },
     hideTipModal: function () {
@@ -217,18 +225,6 @@ Page({
         router.navigateTo('/pages/package_feature/error_book/use_page')
     },
     toNextPage: function () {
-        let authToken = storage.get('authToken')
-        if (!authToken) {
-            let url = this.share_user_id ? `/pages/authorize/index?url=${url}&share_user_id=${this.share_user_id}&way=${this.way}` : `/pages/authorize/index`
-            if (this.share_user_id) {
-                router.navigateTo('/pages/authorize/index', {
-                    share_user_id: this.share_user_id,
-                    way: this.way
-                })
-            } else {
-                router.navigateTo('/pages/authorize/index', )
-            }
-        } else {
             let errorBook = {
                 hideIntro: true,
                 hideHomeTip: false,
@@ -239,7 +235,6 @@ Page({
                 showIntro: false
             })
             this.getAuth()
-        }
     },
     /**
      * 用户点击右上角分享

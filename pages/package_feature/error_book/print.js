@@ -7,7 +7,7 @@ const co = require('../../../lib/co/co')
 const common_util = require('../../../utils/common_util')
 const util = require('../../../utils/util')
 import modal from '../../../components/confirm-reinforce-modal/event'
-
+import commonRequest from '../../../utils/common_request'
 const request = util.promisify(wx.request)
 const saveImageToPhotosAlbum = util.promisify(wx.saveImageToPhotosAlbum)
 const getSetting = util.promisify(wx.getSetting)
@@ -18,6 +18,7 @@ import router from '../../../utils/nav'
 import gql from '../../../network/graphql_request.js'
 import Logger from '../../../utils/logger.js'
 const logger = new Logger.getLogger('pages/index/index')
+import getLoopsEvent from '../../../utils/worker'
 
 Page({
     data: {
@@ -43,13 +44,13 @@ Page({
                 selected: false, //用于点击的状态
                 checked: false,
             },
-            {
-                name: '灰度',
-                key: 'Mono',
-                id: 2,
-                selected: false,
-                checked: false,
-            },
+            // {
+            //     name: '灰度',
+            //     key: 'Mono',
+            //     id: 2,
+            //     selected: false,
+            //     checked: false,
+            // },
             {
                 name: '全彩',
                 key: 'Color',
@@ -64,7 +65,6 @@ Page({
         showupLoad: false,
         showTitle: true,
         showContent: true,
-        hasAuthPhoneNum: false,
         confirmModal: {
             isShow: false,
             title: '请正确放置A4打印纸',
@@ -76,11 +76,12 @@ Page({
      */
     onLoad: co.wrap(function* (options) {
         let _this = this
-        logger.info("错题打印页", options)
+        console.log("错题打印页", options)
         _this.mistakeCount = options.mistakecount
         _this.course = options.course
         _this.ids = options.ids && JSON.parse(options.ids)
-        _this.longToast = new app.Wehide()
+        _this.sns = options.sns && JSON.parse(options.sns)
+        _this.longToast = new app.weToast()
         _this.initArea()
         _this.initColors()
         yield _this.getTemplates()
@@ -88,17 +89,11 @@ Page({
         yield _this.getCapability()
         _this.getAuth()
     }),
-    onShow: function () {
-        let hasAuthPhoneNum = Boolean(wx.getStorageSync('hasAuthPhoneNum'))
-        this.hasAuthPhoneNum = hasAuthPhoneNum
-        this.setData({
-            hasAuthPhoneNum: app.hasPhoneNum || hasAuthPhoneNum
-        })
-    },
+    onShow: function () {},
     // 初始化显示区域
     initArea: co.wrap(function* () {
         let res = wx.getSystemInfoSync()
-        logger.info('系统信息', res)
+        console.log('系统信息', res)
         let areaWidth = res.windowWidth * (750 / res.windowWidth) - 120
         let areaHeight = res.windowHeight * (750 / res.windowWidth) - 490 - 100
 
@@ -108,7 +103,7 @@ Page({
             height = areaHeight - 20
             width = height / 2156 * 1456
         }
-        logger.info('ertyjkl;', areaWidth, areaHeight, width, height)
+        console.log('ertyjkl;', areaWidth, areaHeight, width, height)
 
         this.setData({
             width: width,
@@ -144,9 +139,9 @@ Page({
             this.setData({
                 allowCamera: this.allowCamera
             })
-            logger.info(' 0 未授权 1，授权失败， 2 已授权', this.allowCamera)
+            console.log(' 0 未授权 1，授权失败， 2 已授权', this.allowCamera)
         } catch (e) {
-            logger.info('获取授权/授权失败', e)
+            console.log('获取授权/授权失败', e)
             this.allowCamera = 1
             this.setData({
                 allowCamera: this.allowCamera
@@ -195,7 +190,7 @@ Page({
         })
         const [colors] = selectColors.filter(item => item.selected) // 只区分两种
         const [currentColors] = selectColors.filter(item => item.selected) // 获取当前选中的id
-        // logger.info(colors,'colors')
+        // console.log(colors,'colors')
         _this.setData({
             selectColors,
             color: colors.key == 'Grays' ? 'Mono' : colors.key,
@@ -223,46 +218,44 @@ Page({
     // 获取编辑需要的sn
     getBlackEnhanceSn: co.wrap(function* () {
         this.longToast.toast({
-            img: '/images/loading.gif',
-            title: '请稍候',
-            duration: 0
+            type: 'loading'
         })
         try {
             const [colors] = this.data.selectColors.filter(item => item.selected) // 需要区分三种
             let worker_data = {
+                is_async: true,
                 ids: this.ids,
-                order: this.data.order,
                 course: this.course,
                 template_id: this.data.template_id ? this.data.template_id : this.data.template[0] && this.data.template[0].id,
-                media_type: 'pic2doc',
             }
-
             if (colors.key == 'Grays') {
                 worker_data.bw = true
                 worker_data.gray = false
             } else {
                 worker_data.gray = colors.key == 'Color' ? false : true
             }
-            const resp = yield request({
-                url: app.apiServer + '/boxapi/v2/workers',
-                method: 'POST',
-                dataType: 'json',
-                data: {
-                    openid: app.openId,
-                    handle: 'mistake_convert',
-                    worker_data,
-                }
+            console.log('0000000', worker_data)
+            this.longToast.toast({
+                type: 'loading'
             })
-            if (resp.data.code != 0) {
-                throw (resp.data)
-            }
-            this.longToast.hide()
-            if (resp.data.res && resp.data.res.sn) {
-                this.getLoopsPic(resp.data.res.sn)
+            try {
+                getLoopsEvent({
+                    feature_key: 'mistake',
+                    worker_data: worker_data
+                }, (resp) => {
+                    this.longToast.hide()
+                    this.getLoopsPic(resp)
+                }, () => {
+                    this.longToast.hide()
+                })
+            } catch (err) {
+                console.log(err)
+                this.longToast.hide()
+                util.showError(err)
             }
         } catch (err) {
             this.longToast.hide()
-            logger.info(err);
+            console.log(err);
         }
     }),
     // 绘制图片服务
@@ -281,68 +274,62 @@ Page({
         }))
     },
     // 轮询绘制编辑图片
-    getLoopsPic: function (sn) {
+    getLoopsPic: function (res) {
         try {
-            const nowTime = new Date(); // 初始化开始时间
+            // const nowTime = new Date(); // 初始化开始时间
             const _this = this;
             _this.setData({
                 showupLoad: true
             }) //显示进度modal
             _this.requestAnimationPercent() //模拟动画进度
-            _this.timer = setInterval(() => {
-                let carryTime = new Date() //执行时间
-                if (carryTime - nowTime > 60000) { //判断处理大于12秒  提示处理失败
-                    _this.timer && clearInterval(_this.timer)
-                    _this.setData({
-                        percent: 0,
-                        showupLoad: false
-                    })
-                    return util.showError({
-                        message: '图片处理失败, 请重新尝试!'
-                    })
-                }
-                // 开启绘制
-                _this.drawRequest(sn).then(res => {
-                    if (res.state === 'processing') { // 处理中
-                        return _this.setData({
-                            percent: this.data.percent + 30
-                        })
-                    }
-                    _this.timer && clearInterval(_this.timer) //关闭定时
-                    _this.setData({
-                        percent: 0,
-                        showupLoad: false
-                    })
-
-                    if (res.state === 'finished') {
-                        let printData = wx.getStorageSync(`printData`)
-                        let _key = `${_this.data.template_id}-${_this.data.color_id}`
-
-                        printData = printData ? JSON.parse(printData) : {}
-
-                        printData[`${_key}`] = {
-                            convert_urls: res.worker_data.urls,
-                            answer_urls: res.worker_data && res.worker_data.answer_urls ? res.worker_data.answer_urls : [],
-                        }
-
-                        wx.setStorageSync(`printData`, JSON.stringify(printData))
-
-                        _this.setData({
-                            convert_urls: res.worker_data.urls,
-                            num: 0,
-                            answer_urls: res.worker_data.answer_urls ? res.worker_data.answer_urls : []
-                        })
-                    } else if (res.state === 'failed') {
-                        util.showError({
-                            message: '绘制有误'
-                        })
-                    } else {
-                        logger.info('drawRequest exclude state: ', res)
-                    }
+            if (res.status == 'timeout') {
+                _this.setData({
+                    percent: 0,
+                    showupLoad: false
                 })
-            }, 3000)
+                return util.showError({
+                    message: res.message
+                })
+            }
+            if (res.status === 'processing') { // 处理中
+                return _this.setData({
+                    percent: this.data.percent + 30
+                })
+            }
+            _this.timer && clearInterval(_this.timer) //关闭定时
+            _this.setData({
+                percent: 0,
+                showupLoad: false
+            })
+
+            if (res.status === 'finished') {
+                console.log('34567890', res)
+                let printData = wx.getStorageSync(`printData`)
+                let _key = `${_this.data.template_id}-${_this.data.color_id}`
+
+                printData = printData ? JSON.parse(printData) : {}
+
+                printData[`${_key}`] = {
+                    convert_urls: res.data.urls,
+                    answer_urls: res.data && res.data.answer_urls ? res.data.answer_urls : [],
+                }
+
+                wx.setStorageSync(`printData`, JSON.stringify(printData))
+
+                _this.setData({
+                    convert_urls: res.data.urls,
+                    num: 0,
+                    answer_urls: res.data.answer_urls ? res.data.answer_urls : []
+                })
+            } else if (res.status === 'failed') {
+                util.showError({
+                    message: '绘制有误'
+                })
+            } else {
+                console.log('drawRequest exclude state: ', res)
+            }
         } catch (err) {
-            logger.info(`draw Pic Error =`, err);
+            console.log(`draw Pic Error =`, err);
         }
     },
     // 首次模拟动画效果
@@ -374,29 +361,20 @@ Page({
         this.setData({
             answer: id
         })
-        logger.info(this.data.answer)
+        console.log(this.data.answer)
     }),
     //获取打印能力
     getCapability: co.wrap(function* () {
         this.longToast.toast({
-            img: '/images/loading.gif',
-            title: '请稍候',
-            duration: 0
+            type: 'loading'
         })
         try {
-            const resp = yield request({
-                url: app.apiServer + `/ec/v2/apps/printer_capability`,
-                method: 'GET',
-                dataType: 'json',
-                data: {
-                    openid: app.openId
-                }
-            })
-            if (resp.data.code != 0) {
-                throw (resp.data)
+            var resp = yield commonRequest.getPrinterCapacity('doc_a4') //获取打印能力数据//获取打印能力
+            if (!resp) {
+                return
             }
             this.longToast.hide()
-            if (resp.data.print_capability.color_modes.length < 2) {
+            if (!resp.color) {
                 let selectColors = this.data.selectColors
                 selectColors.splice(2, 1)
                 selectColors[selectColors.length - 1].selected = true
@@ -413,7 +391,7 @@ Page({
         }
     }),
     tab_slide: function (e) {
-        logger.info(e.detail.current)
+        console.log(e.detail.current)
         this.setData({
             num: e.detail.current
         })
@@ -442,26 +420,16 @@ Page({
     // 获取模板
     getTemplates: co.wrap(function* (e) {
         this.longToast.toast({
-            img: '/images/loading.gif',
-            title: '请稍候',
-            duration: 0
+            type: 'loading'
         })
         try {
-            const resp = yield request({
-                url: app.apiServer + `/ec/v2/mistake_templates`,
-                method: 'GET',
-                dataType: 'json'
-            })
-            if (resp.data.code != 0) {
-                throw (resp.data)
-            }
-            logger.info('打印模板====', resp.data)
+            const resp = yield gql.mistakeTemplates()
             let template_id = ''
-            if (resp.data.mistake_template && resp.data.mistake_template[0]) {
-                template_id = resp.data.mistake_template[0].id
+            if (resp.mistakeTemplates.length > 0) {
+                template_id = resp.mistakeTemplates[0].id
             }
             this.setData({
-                template: resp.data.mistake_template,
+                template: resp.mistakeTemplates,
                 template_id: template_id
             })
             this.longToast.hide()
@@ -480,15 +448,12 @@ Page({
             })
             this.getDrawPic()
         } catch (err) {
-            logger.info(err)
+            console.log(err)
         }
     }),
 
     //打印
     quickPrint: function (e) {
-        if (!this.hasAuthPhoneNum && !app.hasPhoneNum) {
-            return
-        }
         let hideConfirmPrintBox = Boolean(wx.getStorageSync("hideConfirmPrintBox"))
         if (hideConfirmPrintBox) {
             this.confirmPrint()
@@ -498,21 +463,15 @@ Page({
             })
         }
     },
-    getPhoneNumber: co.wrap(function* (e) {
-        yield app.getPhoneNum(e)
-        wx.setStorageSync("hasAuthPhoneNum", true)
-        this.hasAuthPhoneNum = true
-        this.setData({
-            hasAuthPhoneNum: true
-        })
-        this.quickPrint(e)
-    }),
     confirmPrint: co.wrap(function* (e) {
         let info
+        this.longToast.toast({
+            type: 'loading'
+        })
         try {
             info = yield getUserInfo()
         } catch (error) {
-            logger.info('error==', error)
+            console.log('error==', error)
             return
         }
 
@@ -521,54 +480,62 @@ Page({
             nickName: info.userInfo.nickName
 
         })
-        this.longToast.toast({
-            type: 'loading'
-        })
-
         let link = []
         for (let i = 0; i < this.data.convert_urls.length; i++) {
-            let urls = {}
-            urls.url = this.data.convert_urls[i]
-            urls.pre_convert_url = this.data.convert_urls[i]
-            urls.color = "Color"
-            urls.number = "1"
-            link.push(urls)
+            // let urls = {}
+            // urls.originalUrl = this.data.convert_urls[i]
+            // urls.printUrl = this.data.convert_urls[i]
+            // urls.color = this.data.color == 'Color' ? true : false
+            // urls.copies = 1
+            // urls.grayscale = false
+            // link.push(urls)
+            link.push(this.data.convert_urls[i])
         }
         if (this.data.answer_urls.length > 0 && this.data.answer == 1) {
             for (let i = 0; i < this.data.answer_urls.length; i++) {
-                let urls = {}
-                urls.url = this.data.answer_urls[i]
-                urls.pre_convert_url = this.data.answer_urls[i]
-                urls.color = this.data.color
-                urls.number = "1"
-                link.push(urls)
-                logger.info("1111111", link)
+                // let urls = {}
+                // urls.originalUrl = this.data.answer_urls[i]
+                // urls.printUrl = this.data.answer_urls[i]
+                // urls.color = this.data.color == 'Color' ? true : false
+                // urls.number = 1
+                // urls.grayscale = false
+                // link.push(urls)
+                link.push(this.data.answer_urls[i])
+                console.log("1111111", link)
+            }
+        }
+        this.longToast.toast({
+            type: 'loading'
+        })
+        let p = {
+            featureKey: 'mistake',
+            resourceOrderType: 'Mistake',
+            resourceAttribute: {
+                originalUrl: link,
+                printUrl: link,
+                resource_type: Mistake,
+                category_sns:  this.sns,
+                answer: this.data.answer_urls.length > 0 ? true : false
             }
         }
 
-        let params2 = {
-            openid: app.openId,
-            media_type: "mistake",
-            urls: link,
-            mistake_ids: this.ids,
-            user_statistics: {
-                mistake_count: this.mistakeCount
-            }
-        }
         try {
-            const resp = yield request({
-                url: app.apiServer + `/ec/v2/orders`,
-                method: 'POST',
-                dataType: 'json',
-                data: params2
-            })
-            if (resp.data.code != 0) {
-                throw (resp.data)
-            }
-            logger.info('打印====', resp.data)
-            router.redirectTo('/pages/finish/index', {
+            // const resp = yield commonRequest.createOrder('mistake', link)
+            const resp = createResourceOrder(p)
+            return
+            // const resp = yield request({
+            //     url: app.apiServer + `/ec/v2/orders`,
+            //     method: 'POST',
+            //     dataType: 'json',
+            //     data: params2
+            // })
+            // if (resp.data.code != 0) {
+            //     throw (resp.data)
+            // }
+            // console.log('打印====', resp.data)
+            // router.redirectTo('/pages/finish/index', {
 
-                })
+            // })
             // wx.redirectTo({
             //     url: `../../../finish/oral_mistake_index?media_type=mistake&state=${resp.data.order.state}&avatarUrl=${this.data.avatarUrl}&nickName=${this.data.nickName}&count=${resp.data.statistics.count}&printed_count=${resp.data.statistics.printed_count}&user_share_qrcode=${common_util.encodeLongParams(resp.data.qrcode)}&course=${this.course}`
             // })
@@ -579,10 +546,8 @@ Page({
         }
     }),
     save: co.wrap(function* (e) {
-
-        wx.showLoading({
-            title: '请稍后',
-            mask: true
+        this.longToast.toast({
+            type: 'loading'
         })
         try {
             for (var i = 0; i < this.data.convert_urls.length; i++) {
@@ -601,7 +566,7 @@ Page({
                 }
             }
         } catch (e) {
-            logger.info(e)
+            console.log(e)
             wx.hideLoading()
             wx.showModal({
                 title: '错误',
