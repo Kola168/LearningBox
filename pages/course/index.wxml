@@ -1,6 +1,5 @@
-<!-- <nav-bar background="#fff" title="学习" /> -->
 <view class="main">
-  <preSchool-index/>
-  <!-- <subject-index/> -->
+  <preSchool-index wx:if="{{stage =='preschool'}}"/>
+  <subject-index wx:if="{{stage =='subject'}}"/>
 </view>
 

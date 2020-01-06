@@ -72,8 +72,10 @@ Component({
         }
       }
     }) {
+      var subjectSn = busFactory.getIds('subjectSn')
       wxNav.navigateTo('/pages/package_subject/sync_learn/learn_detail/index', {
-        sn: sn
+        sn: sn,
+        subjectSn: subjectSn,
       })
     })
   }

@@ -1,0 +1,61 @@
+/* pages/package_preschool/exercise_day/exercises/exercises.wxss */
+
+.main-box {
+  width: 100%;
+  height: calc( 100vh - 68rpx );
+  background-color: #FEEECA;
+}
+
+.exercise-app {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 30rpx 46rpx 40rpx 46rpx;
+}
+
+.exercise-app .compilation-month {
+  width: 204rpx;
+  height: 66rpx;
+  background-color: #ccc;
+}
+
+.exercise-app .baby-certificate {
+  width: 236rpx;
+  height: 66rpx;
+  background-color: #ccc;
+}
+
+.exercise-subject {
+  margin: 0 60rpx;
+  height: calc( 100vh - 412rpx );
+  background: #FFFFFF;
+  box-shadow: 0 0 34rpx 0 rgba(144,92,116,0.31);
+}
+
+.btn-main {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 50rpx auto 0;
+  width: calc( 100% - 44rpx );
+}
+
+.btn-main .btn {
+  width: 320rpx;
+  height: 98rpx;
+  line-height: 98rpx;
+  text-align: center;
+  border-radius: 60rpx;
+  font-size: 36rpx;
+  box-sizing: border-box;
+}
+
+.btn-handbook {
+  color: #905C74;
+  border: 2rpx solid #905C74;
+}
+
+.btn-print {
+  color: #fff;
+  background: #905C74;
+}

@@ -116,6 +116,8 @@ const createPaymentOrder = co.wrap(function*(sn, orderType){
           sn
           state
           amountYuan
+          updatedAt
+          createdAt
           payable {
             ...on Course{
               iconUrl
