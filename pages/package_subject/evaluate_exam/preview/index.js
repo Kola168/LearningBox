@@ -24,6 +24,7 @@ Page({
   onLoad: function (query) {
     this.weToast = new app.weToast()
     this.paperId = query.id
+    this.subjectSn = query.sn
     this.setData({
       hasReport: Boolean(Number(query.hasReport)),
       name: query.name
@@ -71,16 +72,20 @@ Page({
       getLoopsEvent({
         feature_key: 'xuekewang_paper',
         worker_data: {
-          paper_id: this.paperId
+          paper_id: this.paperId,
+          subject_sn: this.subjectSn
         }
       }, (res) => {
-        if (res.data.state === 'finished') {
+        if (res.status === 'finished') {
           this.setData({
             imgList: res.data.images
           })
           this.sn = res.data.sn
           this.weToast.hide()
         }
+      },(error)=>{
+        this.weToast.hide()
+        util.showError(error)
       })
     } catch (error) {
       this.weToast.hide()
