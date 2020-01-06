@@ -132,6 +132,11 @@ const api = {
   }, {
     baseURL: `${app.apiServer}/api/v1/`
   }),
+
+  getGradeList:()=>request.get(`examinations`,{}, {
+    baseURL: `${app.apiServer}/api/v1/`
+  }),
+
 }
 
 export default api
