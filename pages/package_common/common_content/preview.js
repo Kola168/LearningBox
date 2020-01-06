@@ -28,6 +28,11 @@ Page({
     duplexcheck: false,
     isColorPrinter: true,
     isDuplex: true,
+    confirmModal: {
+      isShow: false,
+      title: '请正确放置A4打印纸',
+      image: 'https://cdn.gongfudou.com/miniapp/ec/confirm_print_a4_new.png'
+  }
   },
   onLoad: co.wrap(function* (options) {
     this.options = options
@@ -152,181 +157,205 @@ Page({
     })
   }),
   //增加份数
-	addPrintNum: co.wrap(function* () {
-		console.log(this.data.documentPrintNum)
-		this.data.documentPrintNum += 1
-		if (this.data.documentPrintNum <= 30) {
-			this.setData({
-				documentPrintNum: this.data.documentPrintNum
-			})
-		} else {
-			this.setData({
-				documentPrintNum: 30
-			})
-			yield showModal({
-				content: '每次最多打印30份',
-				confirmColor: '#2086ee',
-				confirmText: "确认",
-				showCancel: false
-			})
-			return
-		}
+  addPrintNum: co.wrap(function* () {
+    console.log(this.data.documentPrintNum)
+    this.data.documentPrintNum += 1
+    if (this.data.documentPrintNum <= 30) {
+      this.setData({
+        documentPrintNum: this.data.documentPrintNum
+      })
+    } else {
+      this.setData({
+        documentPrintNum: 30
+      })
+      yield showModal({
+        content: '每次最多打印30份',
+        confirmColor: '#2086ee',
+        confirmText: "确认",
+        showCancel: false
+      })
+      return
+    }
 
-	}),
-	//输入打印起始页
-	inputstartpage: function (e) {
-		this.data.startPrintPage = e.detail.value
-	},
+  }),
+  //输入打印起始页
+  inputstartpage: function (e) {
+    this.data.startPrintPage = e.detail.value
+  },
 
-	startpagejudge: function (e) {
-		console.log('起始页===', parseInt(e.detail.value), typeof (e.detail.value))
-		if (parseInt(e.detail.value) > parseInt(this.data.endPrintPage) || parseInt(e.detail.value) <= 0) {
-			this.setData({
-				startPrintPage: 1,
-				// startPage: 1
-			})
-			wx.showModal({
-				content: '请输入正确的起始页',
-				confirmColor: '#2086ee',
-				confirmText: "确认",
-				showCancel: false
-			})
-			return
-		} else {
-			console.log('打印起始页===', e.detail.value)
-			this.data.startPrintPage = e.detail.value
-		}
-	},
-	//输入打印结束页
-	inputendpage(e) {
-		this.data.endPrintPage = e.detail.value
-	},
-	endpagejudge(e) {
-		if (parseInt(e.detail.value) < parseInt(this.data.startPrintPage) || parseInt(e.detail.value) > this.data.detail.preview_urls.length) {
-			console.log('结束页===', parseInt(e.detail.value), typeof (e.detail.value))
-			this.setData({
-				endPrintPage: this.data.detail.preview_urls.length,
-			})
-			wx.showModal({
-				content: '请输入正确的结束页',
-				confirmColor: '#2086ee',
-				confirmText: "确认",
-				showCancel: false
-			})
-			return
-		} else {
-			console.log('打印完成页===', e.detail.value)
-			this.data.endPrintPage = e.detail.value
-		}
-	},
+  startpagejudge: function (e) {
+    console.log('起始页===', parseInt(e.detail.value), typeof (e.detail.value))
+    if (parseInt(e.detail.value) > parseInt(this.data.endPrintPage) || parseInt(e.detail.value) <= 0) {
+      this.setData({
+        startPrintPage: 1,
+        // startPage: 1
+      })
+      wx.showModal({
+        content: '请输入正确的起始页',
+        confirmColor: '#2086ee',
+        confirmText: "确认",
+        showCancel: false
+      })
+      return
+    } else {
+      console.log('打印起始页===', e.detail.value)
+      this.data.startPrintPage = e.detail.value
+    }
+  },
+  //输入打印结束页
+  inputendpage(e) {
+    this.data.endPrintPage = e.detail.value
+  },
+  endpagejudge(e) {
+    if (parseInt(e.detail.value) < parseInt(this.data.startPrintPage) || parseInt(e.detail.value) > this.data.detail.preview_urls.length) {
+      console.log('结束页===', parseInt(e.detail.value), typeof (e.detail.value))
+      this.setData({
+        endPrintPage: this.data.detail.preview_urls.length,
+      })
+      wx.showModal({
+        content: '请输入正确的结束页',
+        confirmColor: '#2086ee',
+        confirmText: "确认",
+        showCancel: false
+      })
+      return
+    } else {
+      console.log('打印完成页===', e.detail.value)
+      this.data.endPrintPage = e.detail.value
+    }
+  },
 
-	//选择颜色
-	colorCheck(e) {
-		this.setData({
-			colorcheck: e.currentTarget.dataset.style
-		})
-	},
+  //选择颜色
+  colorCheck(e) {
+    this.setData({
+      colorcheck: e.currentTarget.dataset.style
+    })
+  },
 
-	//选择单双面打印模式
-	duplexCheck(e) {
-		console.log(e)
-		let duplexcheck = e.currentTarget.dataset.style == '0' ? false : true
-		this.setData({
-			duplexcheck: duplexcheck
-		})
+  //选择单双面打印模式
+  duplexCheck(e) {
+    console.log(e)
+    let duplexcheck = e.currentTarget.dataset.style == '0' ? false : true
+    this.setData({
+      duplexcheck: duplexcheck
+    })
   },
   //确认按钮提交
-	confcheck() {
-			if (this.data.startPrintPage == '') {
-				wx.showModal({
-					content: '请输入正确的开始页',
-					confirmColor: '#2086ee',
-					confirmText: "确认",
-					showCancel: false
-				})
-				return
-			}
+  confcheck() {
+    if (this.data.startPrintPage == '') {
+      wx.showModal({
+        content: '请输入正确的开始页',
+        confirmColor: '#2086ee',
+        confirmText: "确认",
+        showCancel: false
+      })
+      return
+    }
 
-			if (this.data.endPrintPage == '') {
-				wx.showModal({
-					content: '请输入正确的结束页',
-					confirmColor: '#2086ee',
-					confirmText: "确认",
-					showCancel: false
-				})
-				return
-			}
+    if (this.data.endPrintPage == '') {
+      wx.showModal({
+        content: '请输入正确的结束页',
+        confirmColor: '#2086ee',
+        confirmText: "确认",
+        showCancel: false
+      })
+      return
+    }
 
-		let hideConfirmPrintBox = Boolean(wx.getStorageSync("hideConfirmPrintBox"))
-		if (hideConfirmPrintBox) {
-			this.print()
-		} else {
-			this.setData({
-				['confirmModal.isShow']: true
-			})
-		}
+    let hideConfirmPrintBox = Boolean(wx.getStorageSync("hideConfirmPrintBox"))
+    if (hideConfirmPrintBox) {
+      this.print()
+    } else {
+      this.setData({
+        ['confirmModal.isShow']: true
+      })
+    }
   },
   print: co.wrap(function* (e) {
-		try {
-			this.longToast.toast({
-			type:'loading'
-			})
+    try {
+      this.longToast.toast({
+        type: 'loading'
+      })
 
-			let that = this
-			let resourceable = {}
-			resourceable.type = 'ec_content'
-			resourceable.sn = that.id
-			resourceable.category_sn = that.sn
+      let that = this
+      // let resourceable = {}
+      // resourceable.type = 'ec_content'
+      // resourceable.sn = that.id
+      // resourceable.category_sn = that.sn
 
-			let setting = {}
-			setting.duplex = that.data.duplexcheck
-			setting.color = that.data.colorcheck
-			setting.number = that.data.documentPrintNum
-			if (that.data.type != '_learning') {
-				setting.start_page = that.data.startPrintPage
-				setting.end_page = that.data.endPrintPage
-			}
+      // let setting = {}
+      // setting.duplex = that.data.duplexcheck
+      // setting.color = that.data.colorcheck
+      // setting.number = that.data.documentPrintNum
+      // if (that.data.type != '_learning') {
+      //   setting.start_page = that.data.startPrintPage
+      //   setting.end_page = that.data.endPrintPage
+      // }
 
-			let params = {
-				resourceable: resourceable,
-				setting: setting,
-			}
-			if (that.data.type != '_learning') {
-				params.is_vip = true
-			}
-			console.log('打印参数', params)
-			const resp = yield request({
-				url: app.apiServer + `/boxapi/v2/orders`,
-				method: 'POST',
-				dataType: 'json',
-				data: params
-			})
-			if (resp.data.code == 0) {
-				this.longToast.toast()
-				console.log('打印成功', resp.data)
-				wx.redirectTo({
-					url: `../finish/index?media_type=${this.data.media_type}&&state=${resp.data.order.state}&&type=${this.data.type}`
-				})
-			} else if (resp.data.code == 1) {
-				this.longToast.toast()
-				const res = yield showModal({
-					title: '提示',
-					content: resp.data.message,
-					showCancel: false,
-					confirmColor: '#fae100',
-				})
-				if (res.confirm) {
-					wx.navigateBack()
-				}
-			} else {
-				throw (resp.data)
-			}
+      // let params = {
+      //   resourceable: resourceable,
+      //   setting: setting,
+      // }
+      let p = {
+        featureKey: this.data.detail.featureKey,
+        resourceOrderType: 'Resource',
+        resourceAttribute: {
+          resourceType: 'Content',
+          sn: this.data.detail.sn,
+          copies: that.data.documentPrintNum,
+          startPage: that.data.startPrintPage,
+          endPage: that.data.endPrintPage,
+          duplex:that.data.duplexcheck
+        }
+      }
 
-		} catch (e) {
-			this.longToast.toast()
-			util.showErr(e)
-		}
-	}),
+      try {
+
+        const resp = gql.createResourceOrder(p)
+
+        console.log(resp)
+        router.redirectTo('/pages/finish/index', {
+          type: 'photo_answer',
+          media_type: 'photo_answer',
+          state: resp.createOrder.state
+        })
+        this.longToast.hide()
+      } catch (e) {
+        this.longToast.hide()
+        util.showErr(e)
+      }
+      // const resp = yield request({
+      // 	url: app.apiServer + `/boxapi/v2/orders`,
+      // 	method: 'POST',
+      // 	dataType: 'json',
+      // 	data: params
+      // })
+      // if (resp.data.code == 0) {
+      // 	this.longToast.toast()
+      // 	console.log('打印成功', resp.data)
+      // 	wx.redirectTo({
+      // 		url: `../finish/index?media_type=${this.data.media_type}&&state=${resp.data.order.state}&&type=${this.data.type}`
+      // 	})
+      // } else if (resp.data.code == 1) {
+      // 	this.longToast.toast()
+      // 	const res = yield showModal({
+      // 		title: '提示',
+      // 		content: resp.data.message,
+      // 		showCancel: false,
+      // 		confirmColor: '#fae100',
+      // 	})
+      // 	if (res.confirm) {
+      // 		wx.navigateBack()
+      // 	}
+      // } else {
+      // 	throw (resp.data)
+      // }
+
+    } catch (e) {
+      this.longToast.toast()
+      util.showErr(e)
+    }
+  }),
 
   onShareAppMessage: function () {
 

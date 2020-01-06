@@ -125,5 +125,6 @@
         <bottom-button class="bottom-button-box" text-right="立即打印" bindrighttap="confcheck" get-phone="{{true}}"></bottom-button>
     </button>
 </view>
+<confirm-print bindconfirm="print" modal="{{confirmModal}}"></confirm-print>
 <import src="../../../lib/toast/wetoast.wxml" />
 <template is="wetoast" data="{{...__wetoast__}}" />
