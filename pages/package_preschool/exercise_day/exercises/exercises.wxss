@@ -2,7 +2,7 @@
 
 .main-box {
   width: 100%;
-  height: 100vh;
+  height: calc( 100vh - 68rpx );
   background-color: #FEEECA;
 }
 
@@ -26,9 +26,36 @@
 }
 
 .exercise-subject {
-  padding: 0 60rpx;
-  width: 100%;
-  height: calc( 100vh - 344rpx );
+  margin: 0 60rpx;
+  height: calc( 100vh - 412rpx );
   background: #FFFFFF;
   box-shadow: 0 0 34rpx 0 rgba(144,92,116,0.31);
+}
+
+.btn-main {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 50rpx auto 0;
+  width: calc( 100% - 44rpx );
+}
+
+.btn-main .btn {
+  width: 320rpx;
+  height: 98rpx;
+  line-height: 98rpx;
+  text-align: center;
+  border-radius: 60rpx;
+  font-size: 36rpx;
+  box-sizing: border-box;
+}
+
+.btn-handbook {
+  color: #905C74;
+  border: 2rpx solid #905C74;
+}
+
+.btn-print {
+  color: #fff;
+  background: #905C74;
 }

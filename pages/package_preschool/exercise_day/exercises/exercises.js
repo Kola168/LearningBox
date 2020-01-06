@@ -1,4 +1,12 @@
 // pages/package_preschool/exercise_day/exercises/exercises.js
+"use strict"
+
+const app = getApp()
+import {
+  regeneratorRuntime,
+  co,
+  util
+} from '../../../../utils/common_import'
 Page({
 
   /**
@@ -22,45 +30,25 @@ Page({
 
   },
 
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
   onHide: function () {
 
   },
 
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
+  // 去打印
+  toPrint: co.wrap(function*(){
+    console.log('==去打印给宝宝==')
+  }),
 
-  },
+  tobabyAnswer: co.wrap(function *() {
+    console.log('==查看宝宝答案==')
+  }),
 
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
+  toMonthCompilation: co.wrap(function *() {
+    console.log('==查看月度集合==')
+  }),
 
-  },
+  toBabyCertificate: co.wrap(function *() {
+    console.log('去宝宝奖状')
+  }),
 
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-
-  }
 })

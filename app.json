@@ -188,7 +188,11 @@
         "evaluation/testfinish",
         "evaluationprint/printpreview",
         "evaluationprint/printset",
-        "exercise_day/exercises/exercises"
+        "exercise_day/exercises/exercises",
+        "exercise_day/month_compilation/index",
+        "exercise_day/answer/index",
+        "exercise_day/certificate/index",
+        "exercise_day/month_compilation_subject/index"
       ]
     },
     {

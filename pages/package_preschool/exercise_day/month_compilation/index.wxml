@@ -1,0 +1,41 @@
+<!--pages/package_preschool/exercise_day/month_compilation/index.wxml-->
+
+<nav-bar background="#fff" title="月度集合" />
+<view class="month-main">
+  <view class="header">
+    <view class="search-main">
+      <view>2019年</view>
+      <view class="arrow-icon"></view>
+    </view>
+  </view>
+  <view class="month-list-main">
+    <view class="month-line">
+      <image class="month-item" src="../../images/preSchool_compilation.png" mode="widthFix">
+        <view class="month-name">
+          <view class="month-num">7</view>
+          <view class="month-unit">月</view>
+        </view>
+      </image>
+      <image class="month-item" src="../../images/preSchool_compilation.png" mode="widthFix">
+        <view class="month-name">
+          <view class="month-num">7</view>
+          <view class="month-unit">月</view>
+        </view>
+      </image>
+    </view>
+    <view class="month-line">
+      <image class="month-item" src="../../images/preSchool_compilation.png" mode="widthFix">
+        <view class="month-name">
+          <view class="month-num">7</view>
+          <view class="month-unit">月</view>
+        </view>
+      </image>
+      <image class="month-item" src="../../images/preSchool_compilation.png" mode="widthFix">
+        <view class="month-name">
+          <view class="month-num">7</view>
+          <view class="month-unit">月</view>
+        </view>
+      </image>
+    </view>
+  </view>
+</view>
