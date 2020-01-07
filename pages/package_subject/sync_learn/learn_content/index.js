@@ -135,6 +135,7 @@ Page({
       currentTabIndex: index
     })
     this.subjectSn = subjectSn
+    busFactory.sendRequestIds('subjectSn', subjectSn)
     this.versionSn = null
     this.textbookSn = null 
     yield this.updateConditionData() //学科下所有数据节点更新
@@ -196,7 +197,9 @@ Page({
     yield this.getTeachBook() //获取学科下所有教材
     yield this.getSelectedTextbook() //获取当前科目下选中教材
     yield this.mappingConditions() //同步匹配默认筛选项
-    yield this.getSyncExercisePrecent() //获取当前教材下用户学习的进度
+    if (this.textbookSn){
+      yield this.getSyncExercisePrecent() //获取当前教材下用户学习的进度
+    }
   }),
 
   /**
