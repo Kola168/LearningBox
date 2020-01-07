@@ -43,6 +43,7 @@
         </view>
     <!-- 已订阅 结束 -->
     <!-- 未订阅 开始 -->
+        <!--<view class="item-cont-block" wx:if="{{tabToContent==1}}">-->
         <view class="item-cont-block" wx:if="{{tabToContent==1}}">
             <view class="item-cont" wx:for="{{lists}}" wx:key="index" id="{{item.id}}">
                 <view class="item-left">
@@ -62,7 +63,7 @@
                     </view>
                 </view>
             </view>
-            
+            <!--
             <view class="item-cont">
                 <view class="item-left">
                     <image class="item-img" src="https://cdn-h.gongfudou.com/LearningBox/main/pic2doc_add_img.png"></image>
@@ -81,7 +82,7 @@
                     </view>
                 </view>
             </view>
-            
+            -->
         </view>
     <!-- 未订阅 结束 -->
     <!-- 已完成 开始 -->

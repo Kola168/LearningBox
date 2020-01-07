@@ -1,11 +1,11 @@
 // pages/package_preschool/list/index.js
 const app = getApp()
-import {regeneratorRuntime, co, wxNav, util, logger} from '../../../../utils/common_import'
-// import api from '../../../network/restful_request'
+import {regeneratorRuntime, co, wxNav, util} from '../../../../utils/common_import'
+import gql from '../../../../network/graphql_request'
 const showModal = util.promisify(wx.showModal)
-// const logger = new Logger.getLogger('pages/index/index')
 import Logger from '../../../../utils/logger.js'
-// const logger = new Logger.getLogger('pages/package_preschool/growth_plan/list/index')
+// const logger = new Logger.getLogger('pages/index/index')
+const logger = new Logger.getLogger('pages/package_preschool/growth_plan/list/index')
 
 Page({
 
@@ -13,24 +13,26 @@ Page({
    * 页面的初始数据
    */
   data: {
-    lists: [
-      {
-        image: 'https://cdn-h.gongfudou.com/LearningBox/main/pic2doc_add_img.png',
-        title: '好奇宝宝培养计划',
-        desc: '简单描述描述描述描述简单描述描述描述描述',
-        tag: '在家上早教',
-        currentProgress: '30',
-        allProgress: '100'
-      },
-      {
-        image: 'https://cdn-h.gongfudou.com/LearningBox/main/pic2doc_add_img.png',
-        title: '轻松抓住语言关键期',
-        desc: '简单描述描述描述描述',
-        tag: '入园早准备',
-        currentProgress: '60',
-        allProgress: '100'
-      }
-    ],
+    // lists: [
+    //   {
+    //     image: 'https://cdn-h.gongfudou.com/LearningBox/main/pic2doc_add_img.png',
+    //     title: '好奇宝宝培养计划',
+    //     desc: '简单描述描述描述描述简单描述描述描述描述',
+    //     tag: '在家上早教',
+    //     currentProgress: '30',
+    //     allProgress: '100'
+    //   },
+    //   {
+    //     image: 'https://cdn-h.gongfudou.com/LearningBox/main/pic2doc_add_img.png',
+    //     title: '轻松抓住语言关键期',
+    //     desc: '简单描述描述描述描述',
+    //     tag: '入园早准备',
+    //     currentProgress: '60',
+    //     allProgress: '100'
+    //   }
+    // ],
+    lists:[],
+    subscription: false,
     tabToContent: 1,
     modalObj: {
       isShow: false, //是否显示
@@ -43,10 +45,39 @@ Page({
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function (options) {
+  onLoad: co.wrap(function* (options) {
     this.longToast = new app.weToast
+    try{
+      logger.info(11)
+      // if(tabToContent==1){
+        const resp = yield gql.getPlans()
+        logger.info(1122)
+        // this.setData({
+        //   image:resp.iconUrl,
+        //   title:resp.name,
+        //   desc:resp.subTitle,
+        //   tag:resp.categoryName,
+        //   subscription:resp.subscription
+        // })
+        // this.setData({
+        //   lists:resp.data
+        // })
+        logger.info('0000')
+        logger.info('未订阅',resp.data)
+        this.longToast.weToast()
+        wx.showToast({
+          title: '提交成功！',
+          icon: 'none',
+          duration: 3000
+        })
+      // } 
 
-  },
+    }catch(e){
+      this.longToast.weToast()
+      util.showError(e)
+    }
+
+  }),
 
   /* 去订阅 */
   toSubscribe: function(e){
