@@ -12,7 +12,7 @@
       <image class="check-on" src="../../images/check_{{printAnswer?'on':'off'}}.png"></image>
       <view class="title">打印答案</view>
     </view>
-    <view bindtap="checkMember" class="confirm-print">确认打印</view>
+    <view bindtap="toPrint" class="confirm-print">确认打印</view>
   </view>
 </view>
 <!-- modal -->
