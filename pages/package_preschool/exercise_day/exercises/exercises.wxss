@@ -7,6 +7,7 @@
 }
 
 .exercise-app {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -27,14 +28,16 @@
 
 .new-tag {
   position: absolute;
-  right: -10rpx;
-  top: -10rpx;
-  width: 100rpx;
-  height: 50rpx;
+  right: 10rpx;
+  top: 20rpx;
+  width: 70rpx;
+  height: 35rpx;
   background-color: #fc4026;
   border-radius: 10rpx 10rpx 10rpx 0;
-  font-size: 12rpx;
+  font-size: 24rpx;
   color: #fff;
+  text-align: center;
+  line-height: 30rpx;
 }
 
 .exercise-app .name {

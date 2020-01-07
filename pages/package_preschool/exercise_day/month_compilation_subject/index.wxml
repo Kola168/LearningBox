@@ -1,5 +1,5 @@
 <!--pages/package_preschool/exercise_day/month_compilation_subject/index.wxml-->
-<nav-bar background="#fff" title="月度集合" />
+<nav-bar background="#fff" title="{{month}}月合辑" />
 <view class="month-compilation">
   <image src="../../images/preSchool_compilation_banner.png" class="header-icon" mode="widthFix">
     <view class="nav-content">
