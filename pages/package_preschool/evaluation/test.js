@@ -4,12 +4,10 @@ const regeneratorRuntime = require('../../../lib/co/runtime')
 const co = require('../../../lib/co/co')
 const _ = require('../../../lib/underscore/we-underscore')
 const util = require('../../../utils/util')
-const event = require('../../../lib/event/event')
 
 import wxNav from '../../../utils/nav.js'
 import api from '../../../network/restful_request'
 import gql from '../../../network/graphql/preschool'
-import commonRequest from '../../../utils/common_request'
 
 let Loger = (app.apiServer != 'https://epbox.gongfudou.com' || app.deBug) ? console.log : function() {}
 
@@ -25,19 +23,26 @@ Page({
   answerList: [], //回答的问题列表
   is_right:false, //选择的题目的正确与否
   onLoad: function(options) {
+    this.longToast = new app.weToast()
     this.sn = options.sn
     this.getTestList()
   },
 
   getTestList: co.wrap(function*() {
+    this.longToast.toast({
+      type:'loading'
+    })
     try {
       let resp = yield gql.getTestList(this.sn)
         this.setData({
           subjectList: resp.examination.questions
         })
+        this.longToast.toast()
         this.startAnswer()
     } catch (e) {
+      this.longToast.toast()
       Loger(e)
+      util.showError(e)
     }
   }),
 

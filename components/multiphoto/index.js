@@ -807,7 +807,8 @@ Component({
         }),
 
         baiduprint:function(e){
-          this.imgChooseInit(e.detail[0].url)
+          console.log(e)
+          this.imgChooseInit({path:e.detail[0].url})
         },
     }
 })

@@ -155,9 +155,9 @@ Page({
       return
     }
     if(type=='practice'){
-      this.data.pointPickList=_.pluck(this.data.calculationList,'typeName')
+      this.data.pointPickList=_.pluck(this.data.calculationList,'name')
     }else if(type=='knowledge'){
-      this.data.pointPickList=_.pluck(this.data.calculationList[this.data.ksTypeIndex].points,'name')
+      this.data.pointPickList=_.pluck(this.data.calculationList[this.data.ksTypeIndex].children,'name')
     }else{
       this.data.pointPickList=null
     }
