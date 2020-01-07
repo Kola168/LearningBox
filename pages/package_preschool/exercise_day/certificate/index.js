@@ -5,7 +5,8 @@ const app = getApp()
 import {
   regeneratorRuntime,
   co,
-  util
+  util,
+  wxNav
 } from '../../../../utils/common_import'
 import graphql from '../../../../network/graphql/preschool'
 Page({
@@ -61,10 +62,49 @@ Page({
   /**
    * 去打印
    */
-  toPrint: co.wrap(function *() {
-    this.setData({
-      isShowModal: true
-    })
+  toPrint: co.wrap(function *({currentTarget: {dataset: {item}}}) {
+    // this.setData({
+    //   isShowModal: true
+    // })
+    try {
+      wxNav.navigateTo('/pages/package_common/setting/setting', {
+        settingData: encodeURIComponent(JSON.stringify({
+          file: {
+            name: '测试的名字'
+          },
+          orderPms: {
+            url: item.imageUrl,
+            printType: 'PRINTDOC',
+            pageCount: 1,
+            featureKey: 'testimonial',
+          },
+          checkCapabilitys: {
+            isSettingColor: true,
+          }
+
+          // file: {
+          //   name: '测试的名字'
+          // },
+          // orderPms: {
+          //   printType: 'RESOURCE',
+          //   pageCount: this.data.practiceQuestionImages.length,
+          //   featureKey: 'daily_practice',
+          //   resourceOrderType: 'DailyPractice',
+          //   resourceAttribute: {
+          //     sn: this.printSn,
+          //     resourceType: 'Content',
+          //     answer: true,
+          //   }
+          // },
+          // checkCapabilitys: {
+          //   isSettingColor: true,
+          // }
+       }))
+      })
+    } catch(err) {
+      util.showError(err)
+    }
+
   }),
 
   /**
