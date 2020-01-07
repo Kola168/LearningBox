@@ -136,7 +136,7 @@
 
 <!-- 底部设置按钮 -->
 <block >
-  <botttom-button  wx:if="{{!setting.btn.isBack}}" class="conf-box" text-right="{{setting.btn.btnContent}}" bindrighttap="confirm" get-phone="{{true}}"></botttom-button>
+  <bottom-button  wx:if="{{!setting.btn.isBack}}" class="conf-box" text-right="{{setting.btn.btnContent}}" bindrighttap="confirm" get-phone="{{true}}"></bottom-button>
   <view class="conf-box" wx:else bind:tap="confCheck">{{setting.btn.btnContent}}</view>
 </block>
 

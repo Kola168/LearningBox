@@ -134,8 +134,8 @@ Page({
         isPreview: settingData.isPreview,
         name: settingData.name,
         btn: {
-          isBack: settingData.btn.isBack, //判断设置页是否需要返回保存setting
-          btnContent: settingData.btn.btnContent || settingData.btn.isBack ? '确认设置' : '确认打印' //打印按钮文案
+          isBack: settingData.btn && settingData.btn.isBack, //判断设置页是否需要返回保存setting
+          btnContent: settingData.btn && settingData.btn.btnContent || settingData.btn && settingData.btn.isBack ? '确认设置' : '确认打印' //打印按钮文案
         },
         orderPms: {
           ...settingData,
@@ -188,6 +188,7 @@ Page({
    */
   getPrinterCapability: co.wrap(function* (setBaseData) {
     try {
+      if (!setBaseData)return
       var printterCapacity = yield printConfig.getPrinterCapability(setBaseData.orderPms) //获取打印能力数据
       console.log(printterCapacity,'==printterCapacity==')
       this.setData({

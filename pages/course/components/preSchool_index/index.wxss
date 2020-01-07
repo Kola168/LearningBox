@@ -1,4 +1,5 @@
 /* pages/course/components/components/preSchool_index/index.wxss */
+@import "/lib/toast/wetoast.wxss";
 .container {
   padding: 0 24rpx;
 }

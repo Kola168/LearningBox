@@ -1,5 +1,6 @@
 <wxs src="../index/index.wxs" module="utils" />
-<view class="order-main" hidden="1">
+<nav-bar background="#fff" title="购买记录"/>
+<view class="order-main">
 	<view class="order-status sys-flex flex-m-axis-center flex-cross-axis-center" wx:if="{{orderStatus}}">
 		<image class="icon-status" src="{{orderStatus.icon}}" wx:if="{{orderStatus.icon}}" />
 		<view class="f-16 {{orderStatus.className}}">{{orderStatus.name}}</view>
@@ -55,10 +56,10 @@
 			<view>保存证件照</view>
 		</button>
 	</block> -->
-	<block wx:if="{{1}}">
+	<block wx:if="{{orderDetails.categoryName!='MemberConfig'}}">
 		<view class="btn-content f-18 color-333" bind:tap="contentDetail">查看详情</view>
 	</block>
-	<import src="../../../../../lib/toast/wetoast.wxml" />
+	<import src="../../../../lib/toast/wetoast.wxml" />
 	<template is="wetoast" data="{{...__wetoast__}}" />
 </view>
 

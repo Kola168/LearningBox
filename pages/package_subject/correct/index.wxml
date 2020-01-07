@@ -2,19 +2,21 @@
 <view class="container" wx:if="{{loadReady}}" style="background:{{isSubjectMember?'#F7F7F7':'#fff'}};height:{{areaHeight}}px;">
   <view class="is-subject-member" wx:if="{{isSubjectMember}}">
     <view class="paper-header flex align-center">
-      <view class="header-title">2019年南师大附中数学期末考试</view>
+      <view class="header-title text-overflow-points">{{title}}</view>
       <view class="header-serial flex align-center {{showSerial?'header-serial-unfold':''}}" bindtap="unfoldSerial">
-        <view>第07/16题</view>
+        <view>第{{topicIndex+1}}/{{topicsResult.length}}题</view>
         <image src="../images/arrow_{{showSerial?'top':'bottom'}}.png" mode="widthFix" />
       </view>
     </view>
     <view class="paper-content">
       <view class="content-serial flex align-center" wx:if="{{showSerial}}">
-        <view class="serial-item" wx:for="{{[1,2,3,4,5,6,7,8,9,10,11]}}">{{index}}</view>
+        <view class="serial-item {{item!=null?'serial-item-actived':''}} {{index===topicIndex?'serial-item-active':''}}" wx:for="{{topicsResult}}" data-index="{{index}}" wx:key="index" bindtap="changeTopic">
+          {{index+1}}
+        </view>
       </view>
-      <view class="content-topic">
+      <view class="content-topic" wx:if="{{currentTopicType==='single'}}">
         <view class="topic-body">
-          <rich-text nodes="{{currentTopic.quesBody}}"></rich-text>
+          <rich-text nodes="{{currentTopic.ques_body}}"></rich-text>
           <view class="body-options">
             <view class="option-item" wx:for="{{currentTopic.option}}" wx:key="index">
               <view>{{item[0]}}.</view>
@@ -24,44 +26,105 @@
         </view>
         <view class="topic-answer">
           <view class="answer-title">答案解析：</view>
-          <view>答案：{{currentTopic.quesAnswer}}</view>
-          <rich-text nodes="{{currentTopic.quesParse}}"></rich-text>
+          <view class="answer-main">
+            <view>答案：</view>
+            <rich-text nodes="{{currentTopic.ques_answer}}"></rich-text>
+          </view>
+          <rich-text nodes="{{currentTopic.ques_parse}}"></rich-text>
         </view>
+      </view>
+      <view class="content-topic" wx:if="{{currentTopicType!=='single'}}">
+        <view class="topic-body">
+          <rich-text nodes="{{currentTopic.ques_body}}"></rich-text>
+        </view>
+        <view class="topic-question">
+          <view wx:for="{{currentTopic.children}}" class="child-box" wx:key="ques_id">
+            <rich-text nodes="{{item.ques_body}}"></rich-text>
+            <view class="child-body-options">
+              <view class="option-item" wx:for="{{item.option}}" wx:key="index" wx:for-item="childItem">
+                <view>{{childItem[0]}}.</view>
+                <rich-text nodes="{{childItem[1]}}"></rich-text>
+              </view>
+            </view>
+            <view class="child-answer" wx:if="{{item.ques_answer}}">
+              <view class="answer-title" wx:if="{{item.ques_answer||item.ques_parse}}">答案解析：</view>
+              <view class="answer-main" wx:if="{{item.ques_answer}}">
+                <view>答案：</view>
+                <rich-text nodes="{{item.ques_answer}}"></rich-text>
+              </view>
+              <rich-text nodes="{{item.ques_parse}}" wx:if="{{item.ques_parse}}"></rich-text>
+            </view>
+          </view>
+        </view>
+        <!-- <view class="topic-answer">
+          <view class="answer-title">答案解析：</view>
+          <view class="answer-main">
+            <view>答案：</view>
+            <rich-text nodes="{{currentTopic.ques_answer}}"></rich-text>
+          </view>
+          <rich-text nodes="{{currentTopic.ques_parse}}"></rich-text>
+        </view> -->
       </view>
     </view>
     <view class="paper-handle">
       <view class="handle-choose">
         <view class="choose-title flex align-center">
           <image src="../images/dog_teacher.png" mode="widthFix" />
-          <view wx:if="{{false}}">做对了吗？</view>
-          <view>请选择题目的正确程度</view>
+          <view wx:if="{{currentTopicType==='single'}}">做对了吗？</view>
+          <view wx:if="{{currentTopicType==='multipleSub'}}">请选择题目的正确程度</view>
+          <view wx:if="{{currentTopicType==='multipleObj'}}">做对了吗？请选择错误的小题</view>
+          <view></view>
         </view>
-        <view class="choose-content normal-content flex align-center" wx:if="{{false}}">
-          <view class="content-item normal-right">错误</view>
-          <view class="content-item">正确</view>
+        <!-- 客观小题 -->
+        <view class="choose-content normal-content flex align-center" wx:if="{{currentTopicType==='single'}}">
+          <view class="content-item normal-right {{currentResult===0?'content-fault-active':''}}" data-point="0" bindtap="checkScore">
+            错误
+          </view>
+          <view class="content-item {{currentResult===100?'content-right-active':''}}" data-point="100" bindtap="checkScore">
+            正确
+          </view>
         </view>
-        <view class="choose-content multiply-content-detachable flex align-center">
-          <view class="content-item">第一题</view>
-          <view class="content-item">第一题</view>
-          <view class="content-item">第一题</view>
-          <view class="content-item">第一题</view>
-          <view class="content-item">第一题</view>
-          <view class="content-item">第一题</view>
-          <view class="content-item">第一题</view>
-          <view class="content-item">第一题</view>
-          <view class="content-item">无错题</view>
+        <!-- 客观大题 -->
+        <view class="choose-content multiply-content-detachable flex align-center" wx:if="{{currentTopicType==='multipleObj'}}">
+          <view class="content-item" wx:for="{{currentTopic.children.option}}" wx:key="index">
+            第{{index+1}}题
+          </view>
+          <view class="content-item" data-point="100">无错题</view>
         </view>
-        <view class="choose-content multiply-content-undetachable flex align-center" wx:if="{{false}}">
-          <view class="content-item">0%</view>
-          <view class="content-item">25%</view>
-          <view class="content-item">50%</view>
-          <view class="content-item">75%</view>
-          <view class="content-item">100%</view>
+        <!-- 主观大题 -->
+        <view class="choose-content multiply-content-undetachable flex align-center" wx:if="{{currentTopicType==='multipleSub'}}">
+          <view class="content-item {{currentResult===0?'content-right-active':''}}" data-point="0" bindtap="checkScore">
+            0%
+          </view>
+          <view class="content-item {{currentResult===25?'content-right-active':''}}" data-point="25" bindtap="checkScore">
+            25%
+          </view>
+          <view class="content-item {{currentResult===50?'content-right-active':''}}" data-point="50" bindtap="checkScore">
+            50%
+          </view>
+          <view class="content-item {{currentResult===75?'content-right-active':''}}" data-point="75" bindtap="checkScore">
+            75%
+          </view>
+          <view class="content-item {{currentResult===100?'content-right-active':''}}" data-point="100" bindtap="checkScore">
+            100%
+          </view>
         </view>
-        <view class="error-tip">本题将自动加入错题本</view>
-        <view class="error-tip" wx:if="{{false}}">正确程度未达100%，本题自动加入错题本</view>
+        <view class="error-box">
+          <view class="error-tip" wx:if="{{currentResult<100&&currentResult!=null&&(currentTopicType==='single'||currentTopicType==='multipleObj')}}">
+            本题将自动加入错题本
+          </view>
+          <view class="error-tip" wx:if="{{currentTopicType==='multipleSub'&&currentResult<100&&currentResult!=null}}">
+            正确程度未达100%，本题自动加入错题本
+          </view>
+          <view class="tip-last" wx:if="{{(topicIndex+1)===topicsResult.length}}">
+            <image src="../images/analyze_icon.png" mode="widthFix" />
+            <view>同时生成测评报告</view>
+          </view>
+        </view>
       </view>
-      <view class="handle-next">下一题</view>
+      <view class="handle-next {{currentResult==null?'handle-next-forbid ':''}}" bindtap="nextTopic">
+        {{(topicIndex+1)===topicsResult.length?'提交':'下一题'}}
+      </view>
     </view>
   </view>
   <view class="not-subject-member flex align-center" wx:else>
@@ -70,7 +133,21 @@
     <view class="to-know">立即了解</view>
   </view>
 </view>
-
+<view class="modal" wx:if="{{false}}">
+  <view class="modal-main">
+    <image src="../images/dog_header.png" class="modal-header" mode="widthFix" />
+    <view class="main-wrap">
+      <image src="../images/notice_banner.png" class="main-img" mode="widthFix" />
+      <view class="main-content">
+        <view>小白老师正在分析你的试卷</view>
+        <view>试卷分析生成中</view>
+      </view>
+      <view class="modal-progress">
+        <view class="progress-active" style="width:{{progress}}%;"></view>
+      </view>
+    </view>
+  </view>
+</view>
 <!-- loading -->
 <import src="/lib/toast/wetoast.wxml" />
 <template is="wetoast" data="{{...__wetoast__}}" />

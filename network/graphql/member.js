@@ -3,17 +3,36 @@
 import gql from '../graphql_config'
 const graphqlApi = {
   /**
-   * 注册学科网
+   * 获取会员支付信息
+   * @param { string } sn
    *
-   * @returns
    */
-  register: () => {
-    return gql.mutate({
-      mutation: `mutation ($input: RegisterInput!){
-        Register{
-          state
+  getMemberPaymentOrder: (sn) => {
+    return gql.query({
+      query: `query ($sn: String!){
+        currentUser{
+          selectedKid{
+            avatar
+            name
+            stage{
+              name
+              rootName
+            }
+          }
+          paymentOrders(sn: $sn){
+            payable{
+              ...on MemberConfig{
+                displayPriceY
+                priceY
+                afterRechargeDate
+              }
+            }
+          }
         }
-      }`
+      }`,
+      variables: {
+        sn: sn
+      }
     })
   }
 }
