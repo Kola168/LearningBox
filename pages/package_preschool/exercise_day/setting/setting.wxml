@@ -1,4 +1,4 @@
-<nav-bar background="#fff" title="文档打印" />
+<nav-bar background="#fff" title="设置" />
 <view class="document-title">
 	<view class="title-text">
 		<view class="text-name">{{fileTitle}}</view>
@@ -118,7 +118,7 @@
 		</view>
 	</view>
 </view> -->
-<botttom-button class="conf-box" text-right="确认设置" bindrighttap="confCheck" get-phone="{{true}}"></botttom-button>
+<bottom-button class="conf-box" text-right="确认设置" bindrighttap="confCheck" get-phone="{{true}}"></bottom-button>
 <!-- <view class="confirm-main" wx:if="{{showConfirm}}" catchtap="cancelRepair">
 	<view class="confirm-modal">
 		<view class="confirm-title">确认使用文件修复吗？</view>

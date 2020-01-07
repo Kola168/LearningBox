@@ -1,0 +1,56 @@
+/* pages/package_preschool/exercise_day/answer/index.wxss */
+
+.answer-main {
+  padding: 70rpx 0 60rpx;
+  background-color: #FEEECA;
+}
+
+.answer-box {
+  margin: 0rpx 48rpx  0rpx;
+  height: calc( 100vh - 448rpx );
+  background: #FFFFFF;
+  border-radius: 15rpx;
+  box-shadow: 0 0 17px 0 rgba(144,92,116,0.31);
+}
+
+.btn {
+  margin: 80rpx 84rpx 0;
+  height: 98rpx;
+  line-height: 98rpx;
+  text-align: center;
+  font-size: 36rpx;
+  border-radius: 50rpx;
+  color: #FFFFFF;
+  background: #905C74;
+}
+
+.bottom-but {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  z-index: 10;
+}
+
+.btn-main {
+  width: 100%;
+  height: 200rpx;
+  position: relative;
+}
+
+
+swiper {
+  width: 100%;
+  height: calc( 100vh - 448rpx );
+}
+
+swiper-item{
+  width: 100%;
+  height: calc( 100vh - 448rpx );
+}
+
+.swiper-img {
+  width: 100%;
+}

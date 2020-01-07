@@ -91,9 +91,10 @@
         </view>
       </view>
     </view>
-    <view class="content-list" wx:for="{{contentList}}" wx:key="contentLists" id="{{idnex}}">
-      <view class="home-title">{{item.title}}</view>
-      <image src="{{item.url}}" class="content-image" mode="widthFix" id="{{index}}" />
+
+    <view class="content-list" wx:for="{{beforeSchoolContent}}" wx:key="beforeSchoolContent" id="{{item.key}}">
+      <view class="home-title">{{item.name}}</view>
+      <image src="{{item.iconUrl}}" class="content-image" mode="widthFix" id="{{item.key}}"  bindtap="toContentList" data-name="{{item.name}}"/>
     </view>
     <view class="tips">
       <view>

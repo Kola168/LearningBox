@@ -1,0 +1,30 @@
+<!--pages/package_preschool/exercise_day/certificate/index.wxml-->
+<nav-bar background="#fff" title="奖状" />
+<view class="certificate-main">
+  <image class="cert-icon" src="../../images/preSchool_certificate_bg.png" mode="widthFix"></image>
+  <view class="cert-list">
+    <view class="cert-item" wx:for="{{testimonials}}" wx:key="subTitle">
+      <view class="cert-name">{{iem.title}}</view>
+      <view class="learn-day">{{item.subTitle}}</view>
+      <image src="{{item.imageUrl}}"></image>
+      <view class="btn-main">
+        <view class="btn {{item.isGet ? 'btn-print' : ''}}">{{item.isGet ? '打印奖状' : '未获得'}}</view>
+        <bottom-button class="bottom-but" wx:if="{{item.isGet}}" bindrighttap="toPrint" textRight='1' get-phone="{{true}}"></bottom-button>
+      </view>
+    </view>
+  </view>
+</view>
+<view class="input-cert-toast" mut-bind:tap="cancelModal" catch:touchmove="return" wx:if="{{isShowModal}}">
+  <view class="toast-main" >
+      <image class="" src="../../images/preSchool_nav_toast.png" mode="widthFix" lazy-load="false" binderror="" bindload=""></image>
+      <view class="title">
+        <view class="text">输入宝宝名称</view>
+        <view class="text">坚持学习将解锁更多奖状哦</view>
+      </view>
+      <input type="text" placeholder="请输入宝宝的名称" mut-bind:tap="111"   mut-bind:input="inputBabyName"/>
+      <view class="btn" catch:tap="submit">提交宝宝名称</view>
+  </view>
+</view>
+
+<import src="../../../../lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />

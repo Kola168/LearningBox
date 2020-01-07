@@ -1,5 +1,5 @@
 /* pages/course/components/components/subject_index/index.wxss */
-
+@import "/lib/toast/wetoast.wxss";
 .learn-main {
   padding: 0 24rpx 60rpx 24rpx;
 }
@@ -230,12 +230,15 @@
 }
 
 .scroll-list .tab-list {
-  display: flex;
+  width: calc( 100% - 88rpx );
   margin: 40rpx 44rpx 0;
+  white-space: nowrap;
+  overflow: scroll;
 }
 
 .scroll-list .tab-list .tab-item {
   margin-right: 70rpx;
+  display: inline-block;
   width: fit-content;
   font-size: 28rpx;
 }
@@ -293,6 +296,11 @@
   border-radius: 26rpx;
   color: #333333;
   background-color: #FFDC5E;
+}
+
+.empty-box {
+  text-align: center;
+  padding: 20rpx;
 }
 
 .btn-more {

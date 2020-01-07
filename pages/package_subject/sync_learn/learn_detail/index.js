@@ -24,6 +24,7 @@ Page({
   onLoad: co.wrap(function* (options) {
     this.longToast = new app.weToast()
     this.sn = options.sn
+    this.subjectSn = options.subjectSn
     yield this.getDifficulty()
     yield this.getNodeDetails()
     yield this.getDefaultExercise()
@@ -62,6 +63,7 @@ Page({
       worker_data: {
         diff: this.data.currentDiff.id,
         sn: this.sn,
+        subject_sn: this.subjectSn,
       }
     }, (resp) => {
       if (resp.status == 'finished') {
