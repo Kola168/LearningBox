@@ -29,7 +29,12 @@
   color: #FFFFFF;
 }
 
+.year-name {
+  display: inline-block;
+}
+
 .arrow-icon {
+  display: inline-block;
   margin-top: 10rpx;
   width: 0;
   height: 0;

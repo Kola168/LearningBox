@@ -1,12 +1,27 @@
 <nav-bar background="#fff" title="每日一练" />
-<view class="main-box">
+<view class="main-box" wx:if="{{isUse}}">
   <view class="exercise-app">
-    <image class="compilation-month" mode="widthFix" bind:tap="toMonthCompilation"></image>
-    <image class="baby-certificate" mode="widthFix" bind:tap="toBabyCertificate"></image>
+    <image class="compilation-month" src="../../images/btn_month_compilation.png"  bind:tap="toMonthCompilation"/>
+    <image class="baby-certificate"  src="../../images/btn_cert.png"   bind:tap="toBabyCertificate"/>
   </view>
-  <view class="exercise-subject"></view>
+  <view class="exercise-subject">
+    <swiper>
+      <swiper-item class="" item-id=""  wx:for="{{practiceQuestionImages}}" wx:for-item="src" wx:key="*this">
+        <image class="swiper-img" src="{{src}}" mode="widthFix"/>
+      </swiper-item>
+    </swiper>
+  </view>
   <view class="btn-main">
     <view class="btn btn-handbook" bind:tap="tobabyAnswer">查看亲子指南</view>
     <view class="btn btn-print" bind:tap="toPrint">打印给宝宝</view>
   </view>
 </view>
+
+<view class="main-index-box" wx:else>
+  <image  src="https://cdn-h.gongfudou.com/LearningBox/preschool/preSchool_daily_practice_desc.jpg" mode="widthFix" >
+    <view class="btn" bind:tap="toStudy">马上学习吧</view>
+  </image>
+</view>
+
+<import src="../../../../lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />

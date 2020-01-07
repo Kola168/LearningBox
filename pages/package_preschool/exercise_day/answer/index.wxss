@@ -39,3 +39,18 @@
   height: 200rpx;
   position: relative;
 }
+
+
+swiper {
+  width: 100%;
+  height: calc( 100vh - 448rpx );
+}
+
+swiper-item{
+  width: 100%;
+  height: calc( 100vh - 448rpx );
+}
+
+.swiper-img {
+  width: 100%;
+}

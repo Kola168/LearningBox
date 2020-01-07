@@ -3,10 +3,17 @@
 <nav-bar background="#fff" title="每日一练" />
 <view class="answer-main">
     <view class="answer-box">
-
+      <swiper>
+        <swiper-item class="" item-id="" wx:for="{{practiceAnswerImages}}" wx:for-item="src" wx:key="*this">
+          <image class="swiper-img" src="{{src}}" mode="widthFix"   />
+        </swiper-item>
+      </swiper>
     </view>
     <view class="btn-main">
       <view class="btn">打印给宝宝</view>
       <bottom-button class="bottom-but" bindrighttap="toPrint" textRight='1' get-phone="{{true}}"></bottom-button>
     </view>
 </view>
+
+<import src="../../../../lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />
