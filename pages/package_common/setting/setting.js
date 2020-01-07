@@ -61,7 +61,6 @@ Page({
 
   onLoad: co.wrap(function* (options) {
     this.longToast = new app.weToast()
-    console.log(printConfig,'==printConfig==')
     try {
       // var options = {
       //   settingData: encodeURIComponent(JSON.stringify({
@@ -77,7 +76,7 @@ Page({
       //     orderPms: { // 订单参数
       //       pageCount: 20,
       //       printType: 'subject',
-      //       attributes: { // 订单提交参数
+      //       attributes || resourceAttribute: { // 订单提交参数
       //         resourceType: 'XuekewangExercise',
       //         sn: '789560367499',
       //         isAnswer: true,
@@ -94,6 +93,7 @@ Page({
       //   }))
       // }
       var baseSettings = yield this.initSettings(options)
+      console.log(baseSettings, '==baseSettings==')
       this.setData({
         setting: {
           ...baseSettings,
@@ -131,14 +131,14 @@ Page({
       var settingData = this.settingData = JSON.parse(decodeURIComponent(options.settingData))
       yield this.getPrinterCapability(settingData)
       var baseSettings = {
-        isPreview: settingData.isPreview,
-        name: settingData.name,
+        isPreview: settingData.isPreview || false,
+        name: settingData.file.name,
         btn: {
-          isBack: settingData.btn && settingData.btn.isBack, //判断设置页是否需要返回保存setting
+          isBack: settingData.btn && settingData.btn.isBack || false, //判断设置页是否需要返回保存setting
           btnContent: settingData.btn && settingData.btn.btnContent || settingData.btn && settingData.btn.isBack ? '确认设置' : '确认打印' //打印按钮文案
         },
         orderPms: {
-          ...settingData,
+          ...settingData.orderPms,
           pageCount: settingData.orderPms.pageCount || this.data.printterCapacity.pageCount,
           printType: settingData.orderPms.printType, //打印类型
           featureKey: settingData.orderPms.featureKey, //打印标示key
@@ -190,7 +190,6 @@ Page({
     try {
       if (!setBaseData)return
       var printterCapacity = yield printConfig.getPrinterCapability(setBaseData.orderPms) //获取打印能力数据
-      console.log(printterCapacity,'==printterCapacity==')
       this.setData({
         printterCapacity
       })
@@ -210,7 +209,7 @@ Page({
     this.setData({
       color,
       grayscale,
-      isDuplex: true, //设置是否支持多面打印
+      isDuplex: duplex, //设置是否支持多面打印
       isColorPrinter: color && grayscale, //黑白彩色模式
     })
   }),
@@ -324,7 +323,6 @@ Page({
       color: this.data.color,
       grayscale: !this.data.color, // 灰度与彩色取反
     })
-    console.log(this.data.color, '==color==', this.data.grayscale)
 
   },
 
@@ -340,7 +338,6 @@ Page({
     }
   }) {
     this.data.duplex = duplex == 1 ? true : false
-    console.log(duplex, '==duplex==')
     this.setData({
       duplex: this.data.duplex
     })
@@ -512,30 +509,32 @@ Page({
    try {
     var checkCapabilitys = this.data.setting.checkCapabilitys
     var pms = {
-      ...this.data.setting.orderPms.attributes,
+      ...this.data.setting.orderPms,
+     capabilitys: {
       copies: this.data.copies,
       startPage: this.data.startPage,
       endPage: this.data.endPage,
+     }
     }
     if (checkCapabilitys.isSettingDuplex) {
-      pms.duplex = this.data.duplex
+      pms.capabilitys.duplex = this.data.duplex
     }
 
     if (checkCapabilitys.isSettingOddEven) {
-      pms.extract = this.data.extract
+      pms.capabilitys.extract = this.data.extract
     }
 
     if (checkCapabilitys.isSettingSkipGs) {
-      pms.skipGs = this.data.skipGs
+      pms.capabilitys.skipGs = this.data.skipGs
     }
 
     if (checkCapabilitys.isSinglePageLayout) {
-      pms.singlePageLayoutsCount = this.data.singlePageLayoutsCount
+      pms.capabilitys.singlePageLayoutsCount = this.data.singlePageLayoutsCount
     }
 
     if (checkCapabilitys.isSettingColor) {
-      pms.color = this.data.color
-      pms.grayscale = this.data.grayscale
+      pms.capabilitys.color = this.data.color
+      pms.capabilitys.grayscale = this.data.grayscale
     }
     return pms
    } catch(err) {
@@ -544,9 +543,16 @@ Page({
   },
 
   print: co.wrap(function *() {
-    var params = this.setOrderParams()
-    return console.log(params,'==params==')
-    var resp = yield printConfig.createOrder(this.data.featureKey, params)
+    try {
+      var params = this.setOrderParams()
+      var resp = yield printConfig.createOrder({
+        printType: this.data.setting.orderPms.printType,
+        featureKey: this.data.setting.orderPms.featureKey,
+        params
+      })
+    } catch(err) {
+      console.log(err)
+    }
   })
 
 })

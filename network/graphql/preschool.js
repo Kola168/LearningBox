@@ -25,6 +25,7 @@ const graphqlApi = {
       query: `query getPracticeContentToday($key: String!){
         feature(key: $key){
           practiceContentToday{
+            sn
             practiceQuestionImages
             practiceAnswerImages
           }
@@ -79,15 +80,14 @@ const graphqlApi = {
   },
 
   /**
-   * 获取月度练习列表
+   * 获取指定日期的每日一练题目
    */
   getMonthExercises: (sn) => {
     return gql.query({
       query: `query getMonthExercises($sn: String!){
         content(sn: $sn){
-          name
-          iconUrl
-          haveLearned
+          sn
+          practiceQuestionImages
         }
       }`,
       variables: {
@@ -95,6 +95,55 @@ const graphqlApi = {
       }
     })
   },
+
+  /**
+   * 获取每日一练月份集合
+   * @param {String} 年份分类sn
+   */
+  getPracticeCategory: (sn) => {
+    return gql.query({
+      query: `query getPracticeCategory($sn: String!){
+        category(sn: $sn){
+          sn
+          name
+          subTitle
+          image
+          children{
+            name
+            sn
+            subTitle
+            position
+          }
+        }
+      }`,
+      variables: {
+        sn
+      }
+    })
+  },
+
+    /**
+   * 获取每日一练天数集合
+   * @param {String} 月份分类sn
+   */
+  getPracticeDayCategory: (sn) => {
+    return gql.query({
+      query: `query getPracticeDayCategory($sn: String!){
+        category(sn: $sn){
+          contents{
+            sn
+            name
+            practiceQuestionImages
+            haveLearned
+            pageCount
+          }
+        }
+      }`,
+      variables: {
+        sn
+      }
+    })
+  }
   
 
 }

@@ -5,7 +5,8 @@ const app = getApp()
 import {
   regeneratorRuntime,
   co,
-  util
+  util,
+  wxNav
 } from '../../../../utils/common_import'
 import graphql from '../../../../network/graphql/preschool'
 Page({
@@ -14,17 +15,17 @@ Page({
    * 页面的初始数据
    */
   data: {
-
+    month: '',
+    exerciseContent: []
   },
 
-  /**
-   * 生命周期函数--监听页面加载
-   */
   onLoad: function (options) {
     this.longtoast = new app.weToast()
     this.sn = options.sn
+    options.month && this.setData({
+      month: options.month
+    })
     this.getMonthExercises()
-
   },
 
   /**
@@ -36,13 +37,24 @@ Page({
       title: '请稍后...'
     })
     try {
-      var resp = yield graphql.getMonthExercises(this.sn)
-      console.log(resp, '===resp===')
+      var resp = yield graphql.getPracticeDayCategory(this.sn)
+      this.setData({
+        exerciseContent: resp.category.contents
+      })
     }catch(err) {
       util.showError(err)
     } finally {
       this.longtoast.hide()
     }
+  }),
+
+  /**
+   * 跳转每日练习详情
+   */
+  toExerciseDetail: co.wrap(function*({currentTarget: {dataset: {sn}}}){
+    wxNav.navigateTo('../exercises/exercises', {
+      sn
+    })
   }),
   
   onReachBottom: function () {

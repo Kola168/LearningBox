@@ -4,34 +4,16 @@
   <image src="../../images/preSchool_compilation_banner.png" class="header-icon" mode="widthFix">
     <view class="nav-content">
       <view class="title">幼儿综合潜能开发纸质游戏</view>
-      <view class="month">7月合辑</view>
+      <view class="month">{{month}}月合辑</view>
       <view class="guide-title">快来学习吧～</view>
     </view>
   </image>
   <view class="card-list">
-    <view class="card-item">
-      <image class="" src="" mode="aspectFit|aspectFill|widthFix" lazy-load="false" binderror="" bindload="">
-        <view class="card-tag">已学习</view>
+    <view class="card-item" wx:for="{{exerciseContent}}" wx:key="sn" bind:tap="toExerciseDetail" data-sn="{{item.sn}}">
+      <image class="" src="{{item.practiceQuestionImages[0]}}" >
+        <view class="card-tag" wx:if="{{item.haveLearned}}">已学习</view>
       </image>
-      <view class="card-month-title">7月1日</view>
-    </view>
-    <view class="card-item">
-      <image class="" src="" mode="aspectFit|aspectFill|widthFix" lazy-load="false" binderror="" bindload="">
-        <view class="card-tag">已学习</view>
-      </image>
-      <view class="card-month-title">7月1日</view>
-    </view>
-    <view class="card-item">
-      <image class="" src="" mode="aspectFit|aspectFill|widthFix" lazy-load="false" binderror="" bindload="">
-        <view class="card-tag">已学习</view>
-      </image>
-      <view class="card-month-title">7月1日</view>
-    </view>
-    <view class="card-item">
-      <image class="" src="" mode="aspectFit|aspectFill|widthFix" lazy-load="false" binderror="" bindload="">
-        <view class="card-tag">已学习</view>
-      </image>
-      <view class="card-month-title">7月1日</view>
+      <view class="card-month-title">{{item.name}}</view>
     </view>
   </view>
 </view>
