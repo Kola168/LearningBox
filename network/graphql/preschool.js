@@ -59,8 +59,8 @@ const graphqlApi = {
     return gql.query({
       query: `query ($sn:String!,$sns: [String!]!,$randomNum:Int!){
         examinationRandomContents(sn:$sn,sns:$sns,randomNum:$randomNum){
-         featureKey
-        	iconUrl
+          featureKey
+          iconUrl
           name
           sn
         }

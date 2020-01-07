@@ -1,12 +1,92 @@
 /* pages/package_preschool/evaluationprint/printpreview.wxss */
-page{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  background:#4CBAFF;
+@import "../../../common/icon/icon";
+
+page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #4CBAFF;
 }
 
-.preview-bg{
-  width:700rpx;
-  position:relative;
+.preview-bg {
+  width: 700rpx;
+  position: relative;
+  margin-top: 20rpx;
+}
+
+.preview-content-box {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.show-img {
+  width: 556rpx;
+  border: 6rpx solid #d6efff;
+  border-radius: 20rpx;
+  overflow: hidden;
+  margin-top: 114rpx;
+}
+
+.bottom-box {
+  position: absolute;
+  width: 100%;
+  bottom: 60rpx;
+  left: 0;
+}
+
+.change-box {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.img-total {
+  font-size: 24rpx;
+  color: #999999;
+  position: absolute;
+  left: 72rpx;
+  top: 8rpx;
+}
+
+.icon-box {
+  width: 50rpx;
+  height: 50rpx;
+  border-radius: 25rpx;
+  background: #999999;
+  color: #FFF;
+  margin: 0 20rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.iconfont {
+  font-size: 34rpx;
+  font-weight: 600;
+}
+
+.icon-back{
+    margin-left: 2rpx;
+}
+
+.icon-next{
+    margin-left: 4rpx;
+}
+
+.bottom-button {
+  width: 620rpx;
+  line-height: 100rpx;
+  text-align: center;
+  border-radius: 50rpx;
+  font-size: 36rpx;
+  color: #333333;
+  background: #FFDC5E;
+  margin:0 auto;
+  margin-top: 40rpx;
 }
