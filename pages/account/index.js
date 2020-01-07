@@ -104,5 +104,13 @@ Page({
 
   onUnload() {
     event.remove('Authorize', this)
-  }
+	},
+	
+	member(){
+		wx.showToast({
+			title: '暂未开放，敬请期待',
+			icon: 'none',
+			duration: 2000
+		})
+	}
 })
