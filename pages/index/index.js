@@ -285,7 +285,7 @@ Page({
     if (!url) {
       return wx.showModal({
         title: '提示',
-        content: '该功能暂未开放',
+        content: '暂未开放，敬请期待',
         showCancel: false,
       })
     }

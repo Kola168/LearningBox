@@ -1,5 +1,21 @@
 <!--pages/package_preschool/evaluationprint/printpreview.wxml-->
 <nav-bar title="专题训练"></nav-bar>
 <image src="../images/evaluation_test-bg.png" mode="widthFix" class="preview-bg">
-
+  <view class="preview-content-box">
+    <image src="{{printImgs[showIndex]}}" mode="widthFix" class="show-img"></image>
+    <view class="bottom-box">
+      <view class="change-box">
+        <text class="img-total">共{{printImgs.length}}题</text>
+        <view class="icon-box" bindtap="backImg">
+          <text class="iconfont icon-back"></text>
+        </view>
+        <view class="icon-box" bindtap="nextImg">
+          <text class="iconfont icon-next"></text>
+        </view>
+      </view>
+      <view class="bottom-button" bindtap="setPrint">
+        下一步
+      </view>
+    </view>
+  </view>
 </image>

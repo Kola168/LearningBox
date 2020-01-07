@@ -6,103 +6,17 @@ const _ = require('../../../lib/underscore/we-underscore')
 const util = require('../../../utils/util')
 
 import wxNav from '../../../utils/nav.js'
+import api from '../../../network/restful_request'
+import graphql from '../../../network/graphql/feature'
+
+let Loger = (app.apiServer != 'https://epbox.gongfudou.com' || app.deBug) ? console.log : function() {}
 
 Page({
 
   data: {
     //年级和教材列表
-    textBookList:[
-      {
-      grade:'一年级',
-      list:[{
-        textboox:'人教版'
-      },{
-        textboox:'苏教版'
-      }]
-    },{
-      grade:'二年级',
-      list:[{
-        textboox:'人教版'
-      },{
-        textboox:'苏教版'
-      }]
-    },{
-      grade:'三年级',
-      list:[{
-        textboox:'人教版'
-      },{
-        textboox:'苏教版'
-      }]
-    },{
-      grade:'四年级',
-      list:[{
-        textboox:'人教版'
-      },{
-        textboox:'苏教版'
-      }]
-    }],
-    knowledgeList:[
-      {
-      typeName:'纯口算',
-      points:[{
-        name:'十以内加减法',
-        img:'../resource_images/album_top.png'
-      },
-      {
-        name:'十以内加法',
-        img:'../resource_images/album_top.png'
-      },
-      {
-        name:'十以内减法',
-        img:'../resource_images/album_top.png'
-      }]
-    },{
-      typeName:'单位换算',
-      points:[{
-        name:'千克',
-        img:'../resource_images/album_top.png'
-      },
-      {
-        name:'磅',
-        img:'../resource_images/album_top.png'
-      },
-      {
-        name:'千',
-        img:'../resource_images/album_top.png'
-      },
-      {
-        name:'十',
-        img:'../resource_images/album_top.png'
-      }]
-    },{
-      typeName:'竖式运算',
-      points:[{
-        name:'1',
-        img:'../resource_images/album_top.png'
-      },
-      {
-        name:'2',
-        img:'../resource_images/album_top.png'
-      },
-      {
-        name:'3',
-        img:'../resource_images/album_top.png'
-      }]
-    },,{
-      typeName:'其他计算',
-      points:[{
-        name:'1',
-        img:'../resource_images/album_top.png'
-      },
-      {
-        name:'2',
-        img:'../resource_images/album_top.png'
-      },
-      {
-        name:'3',
-        img:'../resource_images/album_top.png'
-      }]
-    }],
+    textBookList:[],
+    calculationList:[],
     gradeIndex:0,  //年级index
     textbookIndex:0,  // 教科书index
     pick_type:'',  //顶部导航栏选择样式
@@ -122,9 +36,52 @@ Page({
   },
 
   onLoad: function (options) {
-
+    this.longToast = new app.weToast()
+    this.getstageList()
   },
+  getstageList:co.wrap(function*(){
+    try{
+      this.longToast.toast({
+        type:'loading'
+      })
+      let resp=yield graphql.getGradeList()
+      this.setData({
+        textBookList:resp.userStages.siblings,
+        gradeIndex:_.findIndex(resp.userStages.siblings,resp.userStages.currentStage)
+      })
+      this.getPointsList()
+      this.longToast.toast()
+    }catch(e){
+      this.longToast.toast()
+      Loger(e)
+      util.showError(e)
+    }
+  }),
 
+  getPointsList:co.wrap(function*(){
+    if(!this.data.textBookList[this.data.gradeIndex].kousuanCategories[this.data.textbookIndex]){
+      return wx.showModal({
+        title:'提示',
+        content:'该年龄段暂无口算',
+        showCancel: false,
+        confirmColor: '#FFE27A'
+      })
+    }
+    try{
+      this.longToast.toast({
+        type:'loading'
+      })
+      let resp=yield graphql.getKousuanType(this.data.textBookList[this.data.gradeIndex].kousuanCategories[this.data.textbookIndex].sn)
+      this.setData({
+        calculationList:resp.category.children
+      })
+      this.longToast.toast()
+    }catch(e){
+      Loger(e)
+      this.longToast.toast()
+      util.showError(e)
+    }
+  }),
   showPicker:function(e){
     let that=this
     let type=e.currentTarget.dataset.type
@@ -132,9 +89,9 @@ Page({
       this.hidePicker()
     }else{
       if(type=='grade'){
-        this.data.pickList=_.pluck(this.data.textBookList,'grade')
+        this.data.pickList=_.pluck(this.data.textBookList,'name')
       }else{
-        this.data.pickList=_.pluck(this.data.textBookList[this.data.gradeIndex].list,'textboox')
+        this.data.pickList=_.pluck(this.data.textBookList[this.data.gradeIndex].kousuanCategories,'name')
       }
       this.setData({
         pickList:this.data.pickList,
@@ -198,9 +155,9 @@ Page({
       return
     }
     if(type=='practice'){
-      this.data.pointPickList=_.pluck(this.data.knowledgeList,'typeName')
+      this.data.pointPickList=_.pluck(this.data.calculationList,'typeName')
     }else if(type=='knowledge'){
-      this.data.pointPickList=_.pluck(this.data.knowledgeList[this.data.ksTypeIndex].points,'name')
+      this.data.pointPickList=_.pluck(this.data.calculationList[this.data.ksTypeIndex].points,'name')
     }else{
       this.data.pointPickList=null
     }

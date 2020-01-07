@@ -1,4 +1,6 @@
 // pages/package_preschool/evaluationprint/printpreview.js
+import wxNav from '../../../utils/nav.js'
+
 Page({
 
   data: {
@@ -10,4 +12,29 @@ Page({
 
   },
 
+  backImg:function(){
+    if(this.data.showIndex<=0){
+      this.data.showIndex=this.data.printImgs.length-1
+    }else{
+      this.data.showIndex--
+    }
+    this.setData({
+      showIndex:this.data.showIndex
+    })
+  },
+
+  nextImg:function(){
+    if(this.data.showIndex>=(this.data.printImgs.length-1)){
+      this.data.showIndex=0
+    }else{
+      this.data.showIndex++
+    }
+    this.setData({
+      showIndex:this.data.showIndex
+    })
+  },
+
+  setPrint:function(){
+    wxNav.redirectTo('/pages/package_preschool/evaluationprint/printset')
+  }
 })

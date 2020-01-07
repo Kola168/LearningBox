@@ -37,11 +37,11 @@
         <image src="/images/home/icon_voice.png" mode="widthFix"></image>
         <view>童音录制</view>
       </view>
-      <view class="tool-item">
+      <view class="tool-item" bindtap="toFunction">
         <image src="/images/home/icon_test.png" mode="widthFix"></image>
         <view>宝贝测评</view>
       </view>
-      <view class="tool-item">
+      <view class="tool-item" bindtap="toFunction">
         <image src="/images/home/icon_miaohong.png" mode="widthFix"></image>
         <view>幼儿描红</view>
       </view>
@@ -117,10 +117,11 @@
         </image>
         <view>免费资源库</view>
       </view>
+      <!--没数据先注释着
       <view class="tool-item" bindtap="tokousuan">
         <image src="/images/home/icon_count.png" mode="widthFix"></image>
         <view>口算</view>
-      </view>
+      </view>-->
       <view class="tool-item" bindtap="toFunction" id="memoryWrite">
         <image src="/images/home/icon_write.png" mode="widthFix"></image>
         <view>默写</view>

@@ -22,7 +22,7 @@ page{
   display:flex;
   justify-content:center;
   align-items:center;
-  font-size:24rpx;
+  font-size:26rpx;
   color:#999;
   background:#eaeaea;
 }
@@ -40,7 +40,7 @@ page{
 
 .tips-title{
   margin-top:56rpx;
-  margin-bottom:80rpx;
+  /* margin-bottom:80rpx; */
 }
 
 .step-img{
@@ -57,4 +57,11 @@ page{
   position:fixed;
   bottom:176rpx;
   font-weight:500;
+}
+
+.tips-sub-title{
+	font-size:26rpx;
+	color:#fb5130;
+	margin-top:12rpx;
+  margin-bottom:80rpx;
 }

@@ -37,7 +37,8 @@ Page({
       })
       let resp=yield graphql.getGradeList()
       this.setData({
-        textBookList:resp.userStages
+        textBookList:resp.userStages.siblings,
+        gradeIndex:_.findIndex(resp.userStages.siblings,resp.userStages.currentStage)
       })
       this.getPointsList()
       this.longToast.toast()
@@ -49,6 +50,14 @@ Page({
   }),
 
   getPointsList:co.wrap(function*(){
+    if(!this.data.textBookList[this.data.gradeIndex].kousuanCategories[this.data.textbookIndex]){
+      return wx.showModal({
+        title:'提示',
+        content:'该年龄段暂无口算',
+        showCancel: false,
+        confirmColor: '#FFE27A'
+      })
+    }
     try{
       this.longToast.toast({
         type:'loading'
