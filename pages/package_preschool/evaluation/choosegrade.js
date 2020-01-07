@@ -27,12 +27,12 @@ Page({
   getGradeList:co.wrap(function*(e){
     try{
       let resp = yield gql.getGradeList()
-      console.log(resp)
+      Loger(resp)
       this.setData({
         gradeList:resp.examinations
       })
     }catch(e){
-      console.log(e)
+      Loger(e)
       util.showError(e)
     }
   }),

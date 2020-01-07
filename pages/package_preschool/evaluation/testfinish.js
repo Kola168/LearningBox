@@ -62,7 +62,7 @@ Page({
         })
       }
     } catch (e) {
-      console.log(e)
+      Loger(e)
     }
   }),
 
@@ -73,10 +73,10 @@ Page({
         sns: this.data.recommendTest.length>0?_.pluck(this.data.recommendTest, 'sn'):_.pluck(this.data.achievementArr, 'sn'),
         randomNum:this.data.recommendTest.length>0?1:2
       })
-      console.log(resp)
+      Loger(resp)
 
      } catch (e) {
-      console.log(e)
+      Loger(e)
     }
   }),
 

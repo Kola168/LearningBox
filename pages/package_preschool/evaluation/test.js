@@ -37,7 +37,7 @@ Page({
         })
         this.startAnswer()
     } catch (e) {
-      console.log(e)
+      Loger(e)
     }
   }),
 
