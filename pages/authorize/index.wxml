@@ -1,36 +1,20 @@
-<!--
- * @Author: your name
- * @Date: 2019-12-06 14:45:27
- * @LastEditTime : 2020-01-07 09:54:09
- * @LastEditors  : Please set LastEditors
- * @Description: In User Settings Edit
- * @FilePath: /LearningBox/pages/authorize/index.wxml
- -->
-<!-- 
-<view class="auth-container">
-		<image class="authorize-title" src="/images/common_authorize_title.png" mode="widthFix"></image>
-    <image class="authorize-logo" src="/images/logo-72.png" mode="widthFix">
-		</image>
-		<image class="authorize-tip" src="/images/common_authorize_tip.png" mode="widthFix"></image>
- 
-  
-    <button class='authorize-confirm' open-type="getUserInfo" bindgetuserinfo="authorize" form-type='submit'>确认授权</button>
-		
-		<button class="back-to" bindtap="backTo">先逛逛</button>
-</view> -->
 <nav-bar title="登录"></nav-bar>
-
-<view class="container">
-	<image class="authorize-tip" src="/images/common_authorize_tip.png" mode="widthFix"></image>
- 
-
-
-	<button class='authorize-confirm' open-type="getUserInfo" bindgetuserinfo="authorize" form-type='submit'>确认授权</button>
-		
-	<button class="back-to" bindtap="backTo">先逛逛</button>
+<image class="authorize-bg" src="https://cdn-h.gongfudou.com/LearningBox/main/common_authorize_bg.png" mode="widthFix">
+</image>
+<view class="auth-container">
+	<image class="authorize-tip" src="https://cdn-h.gongfudou.com/LearningBox/main/common_authorize_tip.png"
+		mode="widthFix"></image>
+	<view class="authorize-login-view">
+		<image class="authorize-person" src="https://cdn-h.gongfudou.com/LearningBox/main/common_authorize_person.png"
+			mode="widthFix"></image>
+		<button class="btn-scope"open-type="getUserInfo" bindgetuserinfo="authorize">
+			<image class="authorize-login" src="https://cdn-h.gongfudou.com/LearningBox/main/common_authorize_login.png"
+				mode="widthFix"></image>
+		</button>
+	</view>
+	<image class="authorize-just" src="https://cdn-h.gongfudou.com/LearningBox/main/common_authorize_just.png"
+		mode="widthFix" bindtap="backTo"></image>
 </view>
-
-
 
 <import src="/lib/toast/wetoast.wxml" />
 <template is="wetoast" data="{{...__wetoast__}}" />

@@ -33,7 +33,7 @@ Page({
         allNum: '',
         //选择题目数
         printNum: '',
-        answer: 'no_answer'
+        answer: 'all'
     },
     onLoad: co.wrap(function* (options) {
         logger.info("options", options)
@@ -53,9 +53,12 @@ Page({
         })
         logger.info("课程", this.data.course)
         let params = {
-            'course': this.data.course,
-            'answer': this.data.answer
+            'course': this.data.course
         }
+        if (this.data.answer != 'all') {
+            params.answer = this.data.answer
+        }
+
         logger.info("params", params)
         try {
             const resp = yield gql.getMistakes(params)
@@ -236,19 +239,20 @@ Page({
                 showConfirmModal: null,
             })
         }
-        let ids = [],sns=[]
+        let ids = [],
+            sns = []
         this.ids = ids
-        this.sns=sns
+        this.sns = sns
         for (let i = 0; i < this.data.middlearr.length; i++) {
             ids.push(this.data.middlearr[i].id)
             sns.push(this.data.middlearr[i].sn)
-            logger.info("11111", ids,sns)
+            logger.info("11111", ids, sns)
         }
         router.navigateTo('/pages/package_feature/error_book/print', {
             course: this.data.course,
             ids: JSON.stringify(ids),
             mistakecount: this.data.middlearr.length,
-            sns:JSON.stringify(sns)
+            sns: JSON.stringify(sns)
         })
         return
         this.setData({
@@ -287,7 +291,7 @@ Page({
         }
         logger.info("params2", params2)
         try {
-            const resp=gql.deleteMistakes(params2)
+            const resp = gql.deleteMistakes(params2)
             logger.info('删除====', resp.data)
             wx.showToast({
                 title: '删除成功',

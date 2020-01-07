@@ -162,7 +162,7 @@ Page({
     try {
       yield this.getUserInfo()
       yield this.getBanners()
-      yield this.customizeFeatures()
+      // yield this.customizeFeatures()
     } catch (error) {
       console.log(error)
     }
@@ -336,5 +336,8 @@ Page({
       key: e.currentTarget.id,
       name:e.currentTarget.dataset.name
     })
-  }
+  },
+  changeSwiper: co.wrap(function* (e) {
+		this.data.current = e.detail.current
+	}),
 })

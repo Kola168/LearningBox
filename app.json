@@ -286,5 +286,8 @@
         "selectedIconPath": "images/home/icon_tab_account_selected.png"
       }
     ]
-  }
+	},
+	"navigateToMiniProgramAppIdList": [
+		"wxfb4fb840f87fef41"
+		]
 }
