@@ -265,7 +265,14 @@ Page({
         break;
       case 'memoryWrite':
         url = '/pages/package_feature/memory_write/index/index'
-        break;
+				break;
+			default:
+				wx.showToast({
+					title: '暂未开放，敬请期待',
+					icon: 'none',
+					duration: 2000
+				})
+				break;
     }
     wxNav.navigateTo(url)
   },
