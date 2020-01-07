@@ -69,36 +69,35 @@ Page({
     try {
       wxNav.navigateTo('/pages/package_common/setting/setting', {
         settingData: encodeURIComponent(JSON.stringify({
-          file: {
-            name: '测试的名字'
-          },
-          orderPms: {
-            url: item.imageUrl,
-            printType: 'PRINTDOC',
-            pageCount: 1,
-            featureKey: 'testimonial',
-          },
-          checkCapabilitys: {
-            isSettingColor: true,
-          }
-
           // file: {
           //   name: '测试的名字'
           // },
           // orderPms: {
-          //   printType: 'RESOURCE',
-          //   pageCount: this.data.practiceQuestionImages.length,
-          //   featureKey: 'daily_practice',
-          //   resourceOrderType: 'DailyPractice',
-          //   resourceAttribute: {
-          //     sn: this.printSn,
-          //     resourceType: 'Content',
-          //     answer: true,
-          //   }
+          //   url: item.imageUrl,
+          //   printType: 'PRINTDOC',
+          //   pageCount: 1,
+          //   featureKey: 'testimonial',
           // },
           // checkCapabilitys: {
           //   isSettingColor: true,
           // }
+
+          file: {
+            name: item.title
+          },
+          orderPms: {
+            printType: 'RESOURCE',
+            pageCount: 1,
+            featureKey: 'testimonial',
+            resourceOrderType: 'Testimonial',
+            resourceAttribute: {
+              sn: this.printSn,
+              resourceType: 'Content'
+            }
+          },
+          checkCapabilitys: {
+            isSettingColor: true,
+          }
        }))
       })
     } catch(err) {

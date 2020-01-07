@@ -5,7 +5,8 @@ const app = getApp()
 import {
   regeneratorRuntime,
   co,
-  util
+  util,
+  wxNav
 } from '../../../../utils/common_import'
 import graphql from '../../../../network/graphql/preschool'
 Page({
@@ -14,6 +15,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    practiceContentToday: null,
     practiceAnswerImages: []
   },
 
@@ -38,7 +40,9 @@ Page({
     })
     try {
       var resp = yield graphql.getPracticeContentToday()
+      this.printSn = resp.feature.practiceContentToday && resp.feature.practiceContentToday.sn
       this.setData({
+        practiceContentToday: resp.feature.practiceContentToday,
         practiceAnswerImages: resp.feature.practiceContentToday && resp.feature.practiceContentToday.practiceAnswerImages
       })
     }catch(err) {
@@ -49,7 +53,31 @@ Page({
   }),
 
   toPrint: co.wrap(function *() {
-    console.log('去打印')
+    try {
+      wxNav.navigateTo('/pages/package_common/setting/setting', {
+        settingData: encodeURIComponent(JSON.stringify({
+          file: {
+            name: this.data.practiceContentToday.name
+          },
+          orderPms: {
+            printType: 'RESOURCE',
+            pageCount: this.data.practiceAnswerImages.length,
+            featureKey: 'daily_practice',
+            resourceOrderType: 'DailyPractice',
+            resourceAttribute: {
+              sn: this.printSn,
+              resourceType: 'Content',
+              answer: true,
+            }
+          },
+          checkCapabilitys: {
+            isSettingColor: true,
+          }
+       }))
+      })
+    } catch(err) {
+      util.showError(err)
+    }
   }),
 
   onShareAppMessage: function () {

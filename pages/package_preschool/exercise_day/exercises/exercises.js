@@ -13,12 +13,13 @@ import graphql from '../../../../network/graphql/preschool'
 Page({
   data: {
     isUse: false,
-    practiceQuestionImages: []
+    practiceQuestionImages: [],
+    practiceContentToday: null,
   },
 
   onLoad: co.wrap(function * (options) {
     this.longtoast = new app.weToast()
-    this.sn = options.sn || ''
+    this.sn = options && options.sn || ''
     var isUse = storage.get('isUse')
     this.setData({
       isUse:!!isUse
@@ -45,6 +46,7 @@ Page({
       var resp = yield graphql.getMonthExercises(this.sn)
       this.printSn = resp.content.sn
       this.setData({
+        practiceContentToday: resp.content,
         practiceQuestionImages: resp.content.practiceQuestionImages,
         
       })
@@ -65,8 +67,9 @@ Page({
     })
     try {
       var resp = yield graphql.getPracticeContentToday()
-      this.printSn = resp.feature.practiceContentToday.sn
+      this.printSn = resp.feature.practiceContentToday && resp.feature.practiceContentToday.sn
       this.setData({
+        practiceContentToday: resp.feature.practiceContentToday,
         practiceQuestionImages: resp.feature.practiceContentToday && resp.feature.practiceContentToday.practiceQuestionImages
       })
     }catch(err) {
@@ -92,7 +95,7 @@ Page({
       wxNav.navigateTo('/pages/package_common/setting/setting', {
         settingData: encodeURIComponent(JSON.stringify({
           file: {
-            name: '测试的名字'
+            name: this.data.practiceContentToday.name
           },
           orderPms: {
             printType: 'RESOURCE',
@@ -102,7 +105,7 @@ Page({
             resourceAttribute: {
               sn: this.printSn,
               resourceType: 'Content',
-              answer: true,
+              answer: false,
             }
           },
           checkCapabilitys: {

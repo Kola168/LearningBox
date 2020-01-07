@@ -25,6 +25,7 @@ const graphqlApi = {
       query: `query getPracticeContentToday($key: String!){
         feature(key: $key){
           practiceContentToday{
+            name
             sn
             practiceQuestionImages
             practiceAnswerImages
@@ -48,6 +49,7 @@ const graphqlApi = {
           title
           subTitle
           isGet
+          sn
         }
       }`,
     })

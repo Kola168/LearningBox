@@ -2,7 +2,9 @@
 <view class="main-box" wx:if="{{isUse}}">
   <view class="exercise-app">
     <image class="compilation-month" src="../../images/btn_month_compilation.png"  bind:tap="toMonthCompilation"/>
-    <image class="baby-certificate"  src="../../images/btn_cert.png"   bind:tap="toBabyCertificate"/>
+    <image class="baby-certificate"  src="../../images/btn_cert.png"   bind:tap="toBabyCertificate">
+    </image>
+    <view class="new-tag">new</view>
   </view>
   <view class="exercise-subject">
     <swiper>

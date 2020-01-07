@@ -91,7 +91,7 @@ var createOrder = co.wrap(function *(createPms) {
           }),
           resourceOrderType: params.resourceOrderType,
         })
-        return resp.createXuekewangOrder
+        return resp.createResourceOrder
        } catch(err) {
          console.log(err)
        }

@@ -505,6 +505,10 @@ Page({
     })
   }),
 
+  /**
+   * 处理打印参数
+   * @return {Object}
+   */
   setOrderParams: function () {
    try {
     var checkCapabilitys = this.data.setting.checkCapabilitys
@@ -542,6 +546,9 @@ Page({
    }
   },
 
+  /**
+   * 打印订单
+   */
   print: co.wrap(function *() {
     try {
       var params = this.setOrderParams()
@@ -550,6 +557,13 @@ Page({
         featureKey: this.data.setting.orderPms.featureKey,
         params
       })
+      // 
+      wxNav.navigateTo('/pages/finish/index', {
+        type: this.data.setting.orderPms.featureKey,
+        media_type: this.data.setting.orderPms.featureKey,
+        state: resp.state
+      })
+
     } catch(err) {
       console.log(err)
     }
