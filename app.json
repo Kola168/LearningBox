@@ -205,7 +205,6 @@
         "evaluate_exam/index/index",
         "evaluate_exam/testpaper/index",
         "correct/index",
-        "report/index/index",
         "report/preview/index"
       ]
     },
