@@ -142,7 +142,8 @@ Page({
   }),
   toNextPage(e) {
     router.navigateTo('/pages/package_common/common_content/preview', {
-      featureKey: ''
+      sn: e.currentTarget.id,
+      name:e.currentTarget.dataset.name
     })
   },
   onShareAppMessage: function () {

@@ -1,61 +1,130 @@
 <!--pages/package_common/common_content/preview.wxml-->
 <nav-bar background="#fff" title="在家上早教"></nav-bar>
-<view class="wrap-fun">
-    <swiper class="swiper-box" duration="500" current="{{num}}" bindchange="tab_slide" circular="{{circular}}"
-        wx:if="{{detail.preview_urls.length>0}}">
-        <block wx:for="{{detail.preview_urls}}" wx:key="{{index}}">
-            <swiper-item style="overflow-y:scroll;overflow-x:hidden;">
-                <image style="width:100%" mode="widthFix" src="{{item}}">
-                    <image src='https://cdn.gongfudou.com/miniapp/ec/shuiyin_new.png' class='watermark'></image>
-                </image>
-            </swiper-item>
-        </block>
-    </swiper>
-    <view wx:if="{{detail.preview_urls.length==0}}" class="study-none">
-        <image src="https://cdn.gongfudou.com/miniapp/ec/study_detail_none.png" mode="widthFix"></image>
-    </view>
-    <!--翻页-->
-    <view class="turn" wx:if="{{detail.preview_urls.length>0}}">
-        <view class="turn-content">
-            <text style="color: #999;">{{num+1}}/{{detail.preview_urls.length}}</text>
+<block wx:if="{{!showSetting}}">
+    <view class="wrap-fun">
+        <swiper class="swiper-box" duration="500" current="{{num}}" bindchange="tab_slide" circular="{{circular}}"
+            wx:if="{{detail.contentImages.length>0}}">
+            <block wx:for="{{detail.contentImages}}" wx:key="contentImages">
+                <swiper-item style="overflow-y:scroll;overflow-x:hidden;">
+                    <image style="width:100%" mode="widthFix" src="{{item.nameUrl}}">
+                        <image src='https://cdn.gongfudou.com/miniapp/ec/shuiyin_new.png' class='watermark'></image>
+                    </image>
+                </swiper-item>
+            </block>
+        </swiper>
+        <view wx:if="{{detail.contentImages.length==0}}" class="study-none">
+            <image src="https://cdn.gongfudou.com/miniapp/ec/study_detail_none.png" mode="widthFix"></image>
         </view>
-        <view class="turn-image">
-            <image class="turn-image-item turn-image-left" src="/images/preview-turn-left.png" mode="widthFix"
-                data-turn="left" catchtap="turnImg"></image>
-            <image class="turn-image-item" src="/images/preview-turn-right.png" mode="widthFix" data-turn="right"
-                catchtap="turnImg"></image>
-        </view>
-    </view>
-</view>
-
-<view class="bottom">
-    <view class="left">
-        <view class="collect">
-            <view bindtap="collect">
-                <image mode="widthFix" src="../../images/collect_{{collection?'orange':'gray'}}.png"
-                    class='bottom-image'>
-                </image>
-                <text class="font-content">{{collection?'已收藏':'收藏'}}</text>
+        <!--翻页-->
+        <view class="turn" wx:if="{{detail.contentImages.length>0}}">
+            <view class="turn-content">
+                <text style="color: #999;">{{num+1}}/{{detail.contentImages.length}}</text>
+            </view>
+            <view class="turn-image">
+                <image class="turn-image-item turn-image-left" src="/images/doc_preview_turn_left.png" mode="widthFix"
+                    data-turn="left" catchtap="turnImg"></image>
+                <image class="turn-image-item" src="/images/doc_preview_turn_right.png" mode="widthFix"
+                    data-turn="right" catchtap="turnImg"></image>
             </view>
         </view>
-        <view class="share">
-            <button class="share-button" open-type="{{userAuthorize?'share':''}}"
-                bindtap="{{userAuthorize?'':'linktoauthorize'}}" hover-class="none">
-                <image mode="widthFix" src="../../images/gfd-share_gray.png" class='bottom-image'></image>
-                <text class="font-content">分享</text>
+    </view>
+
+    <view class="bottom">
+        <view class="left">
+            <view class="collect">
+                <view bindtap="collect">
+                    <image mode="widthFix" src="/images/doc_collect_{{collection?'orange':'gray'}}.png"
+                        class='bottom-image'>
+                    </image>
+                    <text class="font-content">{{collection?'已收藏':'收藏'}}</text>
+                </view>
+            </view>
+            <view class="share">
+                <button class="share-button" open-type="{{userAuthorize?'share':''}}"
+                    bindtap="{{userAuthorize?'':'linktoauthorize'}}" hover-class="none">
+                    <image mode="widthFix" src="/images/gfd-share_gray.png" class='bottom-image'></image>
+                    <text class="font-content">分享</text>
+                </button>
+            </view>
+        </view>
+        <view class="right">
+            <view class="right-first">适配耗材
+                <consumables class="modify" bind:myevent="onMyEvent" supply_types="{{supply_types}}"
+                    consumables-icon="consumables-icon" medium_recommend="{{mediumRecommend}}" find="library">
+                </consumables>
+
+            </view>
+
+            <button bindtap="toConfirm" class="print-button">
+                打印
             </button>
         </view>
     </view>
-    <view class="right">
-        <view class="right-first">适配耗材
-            <consumables class="modify" bind:myevent="onMyEvent" supply_types="{{supply_types}}"
-                consumables-icon="consumables-icon" medium_recommend="{{mediumRecommend}}" find="library">
-            </consumables>
-
-        </view>
-
-        <button bindtap="toConfirm" class="print-button">
-            打印
-        </button>
+</block>
+<view wx:else>
+    <view class="document_title">
+        <view>{{title}}</view>
     </view>
+    <view class="doc_setting">
+        <view class="setting_item">
+            <view class="item_label">打印份数</view>
+            <view class="item_main">
+                <image src="{{documentPrintNum==1?'../images/doc_document_cut.png':'../images/minus_y.png'}}" mode="aspectFit"
+                    class="print_num" bindtap="cutPrintNum"></image>
+                <text class="document_print_num">{{documentPrintNum}}</text>
+                <image src="{{documentPrintNum>=30?'../images/document_add_gray.png':'../images/plus_y.png'}}"
+                    mode="aspectFit" class="print_num" bindtap="addPrintNum"></image>
+            </view>
+        </view>
+        <view class="setting_item" wx:if="{{type!='_learning'}}">
+            <view class="item_label">打印范围</view>
+            <view class="item_main">
+                <input id="1" class="page_input" type="number" bindinput="inputstartpage" bindblur="startpagejudge"
+                    value="{{startPrintPage}}" />
+                <text class="page_text">至</text>
+                <input id="2" class="page_input" type="number" bindinput="inputendpage" bindblur="endpagejudge"
+                    value="{{endPrintPage}}" />
+                <text class="page_text">页</text>
+            </view>
+        </view>
+        <view class="setting_item" wx:if="{{isColorPrinter}}">
+            <view class="item_label">色彩选择</view>
+            <view class="item_main">
+                <view class="color_check_box" data-style="Mono" bindtap="colorCheck">
+                    <text class="color_type">黑白</text>
+                    <image
+                        src="{{colorcheck!='Color'?'../images/document_checked.png':'../images/icon_circle_not_selected.png'}}"
+                        mode="widthFix" class="color_check"></image>
+                </view>
+                <view class="color_check_box" data-style="Color" bindtap="colorCheck">
+                    <text class="color_type">全彩</text>
+                    <image
+                        src="{{colorcheck=='Color'?'../images/document_checked.png':'../images/icon_circle_not_selected.png'}}"
+                        mode="widthFix" class="color_check"></image>
+                </view>
+            </view>
+        </view>
+        <view class="setting_item" wx:if="{{isDuplex&&is_doc}}">
+            <view class="item_label">双面打印</view>
+            <view class="item_main">
+                <view class="color_check_box" data-style="0" bindtap="duplexCheck">
+                    <text class="color_type">单面</text>
+                    <image src="{{duplexcheck?'../images/icon_circle_not_selected.png':'../images/document_checked.png'}}"
+                        mode="widthFix" class="color_check"></image>
+                </view>
+                <view class="color_check_box" data-style="1" bindtap="duplexCheck">
+                    <text class="color_type">双面</text>
+                    <image src="{{duplexcheck?'/images/document_checked.png':'../images/icon_circle_not_selected.png'}}"
+                        mode="widthFix" class="color_check"></image>
+                </view>
+            </view>
+        </view>
+    </view>
+    <view class="conf_box-left" bindtap="cancelcheck">取消</view>
+    <button class="conf_box-right">确认
+        <bottom-button class="bottom-button-box" text-right="立即打印" bindrighttap="confcheck" get-phone="{{true}}"></bottom-button>
+    </button>
 </view>
+<confirm-print bindconfirm="print" modal="{{confirmModal}}"></confirm-print>
+<import src="../../../lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />

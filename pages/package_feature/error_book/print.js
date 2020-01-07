@@ -35,7 +35,6 @@ Page({
         // 0 未授权 1，授权失败， 2 已授权
         allowCamera: 0, //保存到相授权
         color: null,
-        canPrintColor: false,
         answer: 2,
         selectColors: [{
                 name: '黑白',
@@ -226,7 +225,7 @@ Page({
                 is_async: true,
                 ids: this.ids,
                 course: this.course,
-                template_id: this.data.template_id ? this.data.template_id : this.data.template[0] && this.data.template[0].id,
+                mistake_template_id: this.data.template_id ? this.data.template_id : this.data.template[0] && this.data.template[0].id,
             }
             if (colors.key == 'Grays') {
                 worker_data.bw = true
@@ -382,9 +381,6 @@ Page({
                     selectColors: selectColors
                 })
             }
-            // this.setData({
-            //     canPrintColor: resp.data.print_capability.color_modes.length == 2 ? true : false,
-            // })
         } catch (e) {
             this.longToast.hide()
             util.showError(e)
@@ -513,32 +509,21 @@ Page({
             resourceAttribute: {
                 originalUrl: link,
                 printUrl: link,
-                resource_type: Mistake,
-                category_sns:  this.sns,
+                resourceType: 'Mistake',
+                categorySns: this.sns,
                 answer: this.data.answer_urls.length > 0 ? true : false
             }
         }
 
         try {
-            // const resp = yield commonRequest.createOrder('mistake', link)
-            const resp = createResourceOrder(p)
-            return
-            // const resp = yield request({
-            //     url: app.apiServer + `/ec/v2/orders`,
-            //     method: 'POST',
-            //     dataType: 'json',
-            //     data: params2
-            // })
-            // if (resp.data.code != 0) {
-            //     throw (resp.data)
-            // }
-            // console.log('打印====', resp.data)
-            // router.redirectTo('/pages/finish/index', {
 
-            // })
-            // wx.redirectTo({
-            //     url: `../../../finish/oral_mistake_index?media_type=mistake&state=${resp.data.order.state}&avatarUrl=${this.data.avatarUrl}&nickName=${this.data.nickName}&count=${resp.data.statistics.count}&printed_count=${resp.data.statistics.printed_count}&user_share_qrcode=${common_util.encodeLongParams(resp.data.qrcode)}&course=${this.course}`
-            // })
+            const resp = yield gql.createResourceOrder(p)
+            router.redirectTo('/pages/finish/index', {
+                type: 'mistake',
+                media_type: 'mistake',
+                state: resp.createResourceOrder.state
+            })
+
             this.longToast.hide()
         } catch (e) {
             this.longToast.hide()

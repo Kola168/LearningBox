@@ -1,5 +1,4 @@
-<gio-marketing />
-<nav-bar background="#fff" title="小白智慧打印"></nav-bar>
+<nav-bar background="#fff" title="商城"></nav-bar>
 
 <view class='center'>
 		<image src='https://cdn.gongfudou.com/miniapp/ec/mall_banckground2.png' mode='widthFix' class='center-bg'></image>
@@ -7,19 +6,19 @@
 				<image src='https://cdn.gongfudou.com/miniapp/ec/mall_title1.png' mode='widthFix' class='recommend-image'></image>
 				<image src='https://cdn.gongfudou.com/miniapp/ec/mall_sub_title.png' mode='widthFix' class='recommend-image recommend-image-top'></image>
 		</view>
-		<view class="top" bindtap="toAuth">
+		<view class="top" bindtap="toPrinter">
 				<image src='https://cdn.gongfudou.com/miniapp/ec/mall_printer_xiaobai.png' mode='widthFix' class='image'></image>
 		</view>
-		<view class="top" bindtap="toAuth">
+		<view class="top" bindtap="toBox">
 			<image src='https://cdn.gongfudou.com/miniapp/ec/mall_box_xiaobai.png' mode='widthFix' class='image'></image>
 	</view>
-		<view class="top" bindtap="toAuth">
+		<view class="top" bindtap="toPromotion">
 				<image src='https://cdn.gongfudou.com/miniapp/ec/mall_preferential.png' mode='widthFix' class='image'></image>
 		</view>
-		<view class="top" bindtap="toAuth">
+		<view class="top" bindtap="toPaper">
 				<image src='https://cdn.gongfudou.com/miniapp/ec/mall_printer_consumables.png' mode='widthFix' class='image'></image>
 		</view>
-		<view class="top" bindtap="toAuth">
+		<view class="top" bindtap="toOrder">
 				<image src='https://cdn.gongfudou.com/miniapp/ec/mall_my_order.png' mode='widthFix' class='to-order'></image>
 		</view>
 </view>

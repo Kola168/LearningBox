@@ -34,7 +34,8 @@ export const features= [{
 			url: `/pages/webview/index?url=${encodeURIComponent(`https://gfd178.udesk.cn/im_client/?web_plugin_id=111131`)}`,
 			key:'onlineGuest'
     }, ]
-  }, {
+	}, 
+	{
     title: '更多服务',
     features: [{
       name: '账号管理',
@@ -53,4 +54,5 @@ export const features= [{
 			key:'familyGroup'
 
     }, ]
-  }]
+	}
+]

@@ -82,8 +82,8 @@ Page({
         })
     },
     addMore: function () {
-        router.navigateTo('/pages/package_feature/error_book/camera',{
-            type:'topic_details'
+        router.navigateTo('/pages/package_feature/error_book/camera', {
+            type: 'topic_details'
         })
     },
     deleteImg: co.wrap(function* (e) {
@@ -100,7 +100,10 @@ Page({
             level: this.data.level[this.data.levelId],
             reason: this.data.reason[this.data.reasonId],
         }
-        if (this.data.length > 0) {
+        if (this.data.reEdit) {
+            params.id = Number(this.id)
+        }
+        if (this.data.answer_urls.length > 0) {
             params.answerUrls = this.data.answer_urls
         }
         this.longToast.toast({
@@ -116,10 +119,10 @@ Page({
                 prevPage.getMistakes()
                 router.navigateBack()
             } else {
-                router.redirectTo('/pages/package_feature/error_book/submit_success',{
-                    course:params.course,
-                    type:this.data.type,
-                    // id:resp.data.mistake.id
+                router.redirectTo('/pages/package_feature/error_book/submit_success', {
+                    course: params.course,
+                    type: this.data.type,
+                    id: resp.createMistake.mistake
                 })
             }
 
@@ -148,20 +151,20 @@ Page({
             id: this.id,
             type: 'error_book_search'
         })
-        router.navigateTo('/pages/package_feature/error_book/answer_result',{
-            url:this.data.urls[0],
-            course:this.course,
-            level:this.data.level[this.data.levelId],
-            reason:this.data.reason[this.data.reasonId],
-            id:this.id,
-            type:'error_book_search'
+        router.navigateTo('/pages/package_feature/error_book/answer_result', {
+            url: this.data.urls[0],
+            course: this.course,
+            level: this.data.level[this.data.levelId],
+            reason: this.data.reason[this.data.reasonId],
+            id: this.id,
+            type: 'error_book_search'
         })
     },
     //搜答案
     searchBeforAdd: function () {
-        logger.info(this.course)
-        router.navigateTo('/pages/error_book/pages/photo_answer/result', {
-            type: 'before_add_error_book'
+        router.navigateTo('/pages/package_feature/error_book/answer_result', {
+            type: 'before_add_error_book',
+            url: this.data.urls[0]
         })
     },
 
