@@ -179,4 +179,8 @@ Page({
 			return
 		}
 	}),
+
+	changeWifi:function(){
+		wxNav.navigateBack()
+	}
 })
