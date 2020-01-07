@@ -336,5 +336,8 @@ Page({
       key: e.currentTarget.id,
       name:e.currentTarget.dataset.name
     })
-  }
+  },
+  changeSwiper: co.wrap(function* (e) {
+		this.data.current = e.detail.current
+	}),
 })
