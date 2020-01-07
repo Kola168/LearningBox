@@ -108,16 +108,15 @@ Page({
         course: this.course,
         level: this.level,
         reason: this.reason,
-        answerUrls: urls
+        answerUrls: urls,
+        id:Number(this.mistakeId)
       }
-      // let resp = yield api.updateErrorBook(params, this.mistakeId)
-      // if (resp.code !== 0) {
-      //   throw (resp)
-      // }
-      // wx.hideLoading()
-      // wx.redirectTo({
-      //   url: `../error_book/submit_success?course=${this.course}&type=error_book_search&id=${resp.mistake.id}`
-      // })
+      const resp = yield gql.saveMistakes(params)
+      this.longToast.hide()
+      router.redirectTo('/pages/package_feature/error_book/submit_success',{
+        type:'error_book_search',
+        id:resp.createMistake.mistake
+      })
     } catch (error) {
       wx.hideLoading()
       util.showError(error)

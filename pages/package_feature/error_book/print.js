@@ -517,7 +517,8 @@ Page({
 
         try {
 
-            const resp = gql.createResourceOrder(p)
+            const resp = yield gql.createResourceOrder(p)
+            console.log(resp)
             router.redirectTo('/pages/finish/index', {
                 type: 'mistake',
                 media_type: 'mistake',

@@ -46,7 +46,7 @@ page {
 .cover {
     position: absolute;
     left: 10%;
-    bottom: 128rpx;
+    bottom: 176rpx;
     height: 200rpx;
     width: 80%;
     display: flex;
