@@ -1,2 +1,3 @@
-<!--pages/package_preschool/exercise_day/finish/index.wxml-->
-<text>pages/package_preschool/exercise_day/finish/index.wxml</text>
+<view class="finish-main">
+  <image class="" src="https://cdn-h.gongfudou.com/LearningBox/preschool/preSchool_success_banner.jpg" mode="aspectFit|aspectFill|widthFix" lazy-load="false" binderror="" bindload=""></image>
+</view>

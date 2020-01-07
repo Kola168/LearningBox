@@ -93,6 +93,7 @@
   display: flex;
   margin-top: 32rpx;
   width: 100%;
+  justify-content: space-between;
 }
 
 .box-entry .left-entry, .right-entry{
