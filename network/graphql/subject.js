@@ -60,6 +60,12 @@ const graphqlApi = {
             id
             name
           }
+          selectedPaperSubject {
+            areaId
+            paperTypeId
+            subjectId
+            gradeId
+          }
         }
       }`
     })

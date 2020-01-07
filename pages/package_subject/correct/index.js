@@ -19,7 +19,15 @@ Page({
     currentResult: null, //当前题目批改结果
     topicIndex: 0, //当前批改索引,
     currentTopicType: 'single', //single客观小题,multipleObj客观大题,multipleSub主观大题
-    progress: 0
+    progress: 0,
+    multipleObjResult: [], //multipleObj客观大题大题结果
+    modalObj: {
+      isShow: false,
+      hasCancel: true,
+      content: '您已批改过次练习，重复批改有可能会导致数据不精准',
+      cancelText: '不批改',
+      confirmText: '无所谓'
+    }
   },
   onLoad: co.wrap(function* (query) {
     let areaHeight = 0
@@ -37,13 +45,13 @@ Page({
     this.paperId = Number(scene.split('_')[1])
     this.correctType = scene.split('_')[2] === 'paper' ? 'XuekewangPaper' : 'XuekewangExercise'
     this.getCorrectPaper()
-    setInterval(() => {
-      if (this.data.progress < 100) {
-        this.setData({
-          progress: this.data.progress + 5
-        })
-      }
-    }, 500)
+    // setInterval(() => {
+    //   if (this.data.progress < 100) {
+    //     this.setData({
+    //       progress: this.data.progress + 5
+    //     })
+    //   }
+    // }, 500)
   }),
   unfoldSerial() {
     this.setData({
@@ -72,7 +80,8 @@ Page({
         title: tempData.title,
         currentTopicType: formatResult.topicType,
         topicsResult,
-        currentTopic: formatResult.currentTopic
+        currentTopic: formatResult.currentTopic,
+        ['modalObj.isShow']: false //是否已批改
       })
       this.weToast.hide()
     } catch (error) {
@@ -80,6 +89,11 @@ Page({
       util.showError(error)
     }
   }),
+
+  exitCorrect() {
+    wxNav.switchTab('/pages/index/index')
+  },
+
   // 切换题目
   changeTopic(e) {
     let index = e.currentTarget.dataset.index,
@@ -88,7 +102,7 @@ Page({
       let formatResult = this.formatTopic(this.topics[index])
       this.changeTopicIndex = index //切换题目index
       this.changeTopicFlag = true //切换题目nextTopicIndex不增加
-      this.currentTopicId = currentTopic.ques_id
+      this.currentTopicId = formatResult.currentTopic.ques_id
       this.setData({
         currentTopic: formatResult.currentTopic,
         currentTopicType: formatResult.topicType,
@@ -100,9 +114,39 @@ Page({
   // 选择题目分数
   checkScore(e) {
     let currentResult = Number(e.currentTarget.dataset.point)
-    this.setData({
-      currentResult
-    })
+    if (this.data.currentTopicType === 'multipleObj') {
+      if (currentResult === 100) {
+        let multipleObjResult = this.data.multipleObjResult
+        for (let i = 0; i < multipleObjResult.length; i++) {
+          multipleObjResult[i] = 0
+        }
+        this.setData({
+          currentResult,
+          multipleObjResult
+        })
+      } else {
+        let index = e.currentTarget.dataset.index,
+          setKey = `multipleObjResult[${index}]`,
+          multipleObjResult = this.data.multipleObjResult,
+          selectCount = 0
+        multipleObjResult[index] = multipleObjResult[index] ? 0 : 1
+        for (let i = 0; i < multipleObjResult.length; i++) {
+          if (multipleObjResult[i]) {
+            selectCount = selectCount + 1
+          }
+        }
+        selectCount = multipleObjResult.length - selectCount
+        currentResult = (selectCount / multipleObjResult.length) * 100
+        this.setData({
+          [setKey]: multipleObjResult[index] ? 1 : 0,
+          currentResult: currentResult.toFixed(2)
+        })
+      }
+    } else {
+      this.setData({
+        currentResult
+      })
+    }
   },
   // 下一题
   nextTopic() {
@@ -111,7 +155,7 @@ Page({
       let dataKey = `topicsResult[${this.data.topicIndex}]`,
         nextTopicIndex = this.data.topicIndex + 1
 
-      if (this.changeTopicFlag) {
+      if (this.changeTopicFlag) { //重新批改
         dataKey = `topicsResult[${this.changeTopicIndex}]`
         nextTopicIndex = this.data.topicIndex + 1
       }
@@ -122,7 +166,7 @@ Page({
         },
         currentResult: null
       }
-      if (nextTopicIndex === this.data.topicsResult.length) {
+      if (nextTopicIndex === this.data.topicsResult.length) { //最后一题
         this.setData(dataObj)
         this.preSubmit()
       } else {
@@ -160,7 +204,7 @@ Page({
     let formatCurrentTopic = Object.assign({}, currentTopic),
       tempArr = [],
       topicType = ''
-    if (formatCurrentTopic.option !== '{}' || !formatCurrentTopic.option) {
+    if ((formatCurrentTopic.option !== '{}' || !formatCurrentTopic.option) && formatCurrentTopic.children.length === 0) {
       let options = formatCurrentTopic.option,
         forObj = Object.keys(options)
       for (let i = 0; i < forObj.length; i++) {
@@ -173,6 +217,13 @@ Page({
       let children = formatCurrentTopic.children
       if (this.subjectName === '语文' || this.subjectName === '英语') {
         topicType = 'multipleObj'
+        let multipleObjResult = []
+        for (let k = 0; k < children.length; k++) {
+          multipleObjResult.push(0)
+        }
+        this.setData({
+          multipleObjResult
+        })
       } else {
         topicType = 'multipleSub'
       }

@@ -17,7 +17,7 @@
       <view class="content-topic" wx:if="{{currentTopicType==='single'}}">
         <view class="topic-body">
           <rich-text nodes="{{currentTopic.ques_body}}"></rich-text>
-          <view class="body-options">
+          <view class="body-options" wx:if="{{currentTopic.option.length>0}}">
             <view class="option-item" wx:for="{{currentTopic.option}}" wx:key="index">
               <view>{{item[0]}}.</view>
               <rich-text nodes="{{item[1]}}"></rich-text>
@@ -40,7 +40,7 @@
         <view class="topic-question">
           <view wx:for="{{currentTopic.children}}" class="child-box" wx:key="ques_id">
             <rich-text nodes="{{item.ques_body}}"></rich-text>
-            <view class="child-body-options">
+            <view class="child-body-options" wx:if="{{item.option.length>0}}">
               <view class="option-item" wx:for="{{item.option}}" wx:key="index" wx:for-item="childItem">
                 <view>{{childItem[0]}}.</view>
                 <rich-text nodes="{{childItem[1]}}"></rich-text>
@@ -56,14 +56,6 @@
             </view>
           </view>
         </view>
-        <!-- <view class="topic-answer">
-          <view class="answer-title">答案解析：</view>
-          <view class="answer-main">
-            <view>答案：</view>
-            <rich-text nodes="{{currentTopic.ques_answer}}"></rich-text>
-          </view>
-          <rich-text nodes="{{currentTopic.ques_parse}}"></rich-text>
-        </view> -->
       </view>
     </view>
     <view class="paper-handle">
@@ -86,10 +78,10 @@
         </view>
         <!-- 客观大题 -->
         <view class="choose-content multiply-content-detachable flex align-center" wx:if="{{currentTopicType==='multipleObj'}}">
-          <view class="content-item" wx:for="{{currentTopic.children.option}}" wx:key="index">
+          <view class="content-item {{item===1?'content-fault-active':''}}" wx:for="{{multipleObjResult}}" wx:key="index" data-point="0" data-index="{{index}}" bindtap="checkScore">
             第{{index+1}}题
-          </view>
-          <view class="content-item" data-point="100">无错题</view>
+          </view >
+          <view class="content-item {{currentResult===100?'content-right-active':''}}" data-point="100" bindtap="checkScore">无错题</view>
         </view>
         <!-- 主观大题 -->
         <view class="choose-content multiply-content-undetachable flex align-center" wx:if="{{currentTopicType==='multipleSub'}}">
@@ -148,6 +140,7 @@
     </view>
   </view>
 </view>
+<modal modal="{{modalObj}}" bindcancel="exitCorrect"></modal>
 <!-- loading -->
 <import src="/lib/toast/wetoast.wxml" />
 <template is="wetoast" data="{{...__wetoast__}}" />

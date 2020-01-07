@@ -154,13 +154,13 @@ page {
 }
 
 .topic-answer {
-  padding: 48rpx 20rpx 32rpx;
+  padding: 24rpx 20rpx 32rpx;
 }
 
 .answer-title {
   font-size: 28rpx;
   color: #333;
-  padding-bottom: 14rpx;
+  padding: 14rpx 0;
 }
 
 .answer-main {
