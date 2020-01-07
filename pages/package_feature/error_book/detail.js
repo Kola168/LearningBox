@@ -283,20 +283,11 @@ Page({
             logger.info("11111", ids)
         }
         let params2 = {
-            'openid': app.openId,
             'ids': ids
         }
         logger.info("params2", params2)
         try {
-            const resp = yield request({
-                url: app.apiServer + `/ec/v2/mistakes/destroy`,
-                method: 'POST',
-                dataType: 'json',
-                data: params2
-            })
-            if (resp.data.code != 0) {
-                throw (resp.data)
-            }
+            const resp=gql.deleteMistakes(params2)
             logger.info('删除====', resp.data)
             wx.showToast({
                 title: '删除成功',
