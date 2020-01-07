@@ -372,7 +372,8 @@ Page({
       _.each(this.data.photoList,function(value,index,list){
         imgs[index]={
           originalUrl:value.localUrl,
-          printUrl:value.url
+          printUrl:value.url,
+          copies:value.number
         }
       })
       let resp = yield commonRequest.createOrder(this.mediaType, imgs)
