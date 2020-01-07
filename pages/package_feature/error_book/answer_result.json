@@ -1,7 +1,4 @@
 {
   "enablePullDownRefresh": false,
-  "navigationBarTitleText": "搜索结果",
-  "usingComponents": {
-    "ios-tip":"../../../../components/ios_tip/index"
-  }
+  "navigationBarTitleText": "搜索结果"
 }

@@ -8,6 +8,7 @@ import graphql from '../../../network/graphql_request'
 import storage from '../../../utils/storage'
 import router from '../../../utils/nav.js'
 import Logger from '../../../utils/logger.js'
+import commonRequest from '../../../utils/common_request'
 const logger = new Logger.getLogger('pages/package_course/course/course')
 Page({
   data: {

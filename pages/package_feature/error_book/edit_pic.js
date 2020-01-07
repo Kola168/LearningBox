@@ -19,10 +19,14 @@ Page({
     // error_book:错题本首次上传图片
     // topic_details:错题详情页补充图片
     // photo_answer:拍搜
-    from: '',
+    type: '',
   },
   onLoad: co.wrap(function* (options) {
     this.options = options
+    this.setData({
+      type:options.type
+    })
+    console.log(options)
     this.longToast = new app.weToast()
     this.setData({
       croppers: {
@@ -67,6 +71,7 @@ Page({
   },
   //上传图片
   uploadImage: co.wrap(function* (tempUlr) {
+    console.log('34567890-',this.options)
     this.longToast.toast({
       type: 'loading',
       duration: 0

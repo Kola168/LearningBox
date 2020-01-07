@@ -1,16 +1,15 @@
+
 // pages/authorize/index.js
 "use strict"
 const app = getApp()
-const regeneratorRuntime = require('../../lib/co/runtime')
-const co = require('../../lib/co/co')
-const util = require('../../utils/util')
 const checkSession = util.promisify(wx.checkSession)
 
 import Logger from '../../utils/logger.js'
-const logger = new Logger.getLogger('pages/index/index')
+const logger = new Logger.getLogger('pages/authorize/index')
 import api from '../../network/restful_request.js'
-import storage from '../../utils/storage.js'
+import gql from '../../network/graphql_request.js'
 
+import { regeneratorRuntime, co, wxNav, util, storage } from '../../utils/common_import'
 
 Page({
 	data: {
@@ -22,63 +21,39 @@ Page({
 
 	onShow: co.wrap(function* () { }),
 
+	checkSession: co.wrap(function*() {
+    try {
+      yield checkSession()
+      return true
+    } catch (e) {
+      return false
+    }
+  }),
+
 	authorize: co.wrap(function* (e) {
-		this.detail = e.detail
-		logger.info('detail======', this.detail)
-
-		if (!e.detail.userInfo || !e.detail.encryptedData) {
-			return
-		}
-		yield this.loopGetOpenId()
-	}),
-
-	loopGetOpenId: co.wrap(function* () {
-		let loopCount = 0
-		let _this = this
-		if (app.openId) {
-			logger.info('openId++++++++++++----', app.openId)
-			yield _this.decrypt()
-			return
-		} else {
-			setTimeout(function () {
-				loopCount++
-				if (loopCount <= 100) {
-					logger.info('openId not found loop getting...')
-					_this.loopGetOpenId()
-				} else {
-					logger.info('loop too long, stop')
-				}
-			}, 2000)
-		}
-	}),
-	
-	checkSession: co.wrap(function* () {
-		try {
-			yield checkSession()
-			return true
-		} catch (e) {
-			console.log('need login', e)
-			return false
-		}
-	}),
-	
-	decrypt: co.wrap(function* () {
-		console.log('here======')
-		this.longToast.toast({
+		console.log('执行到这里=========')
+		logger.info('********** userInfoHandler', e)
+    if (!e.detail.userInfo || !e.detail.encryptedData) {
+      return
+    }
+    let detail = e.detail
+    this.longToast.toast({
       type: "loading",
       duration: 0
-		})
-
-		let session = yield this.checkSession()
-		if (!session) {
-			yield app.login()
+    })
+    let session = yield this.checkSession()
+    if (!session) {
+      yield app.login()
 		}
-		try {
+		
+		console.log('执行到这里=====111111====')
+
+    try {
       let params = {
         openid: app.openId,
         encrypted_info: {
-          encrypted_data: encodeURIComponent(this.detail.encryptedData),
-          iv: encodeURIComponent(this.detail.iv),
+          encrypted_data: encodeURIComponent(detail.encryptedData),
+          iv: encodeURIComponent(detail.iv),
         },
         mobile_info: {
           device_type: app.sysInfo.model,
@@ -90,30 +65,60 @@ Page({
         },
         decr_type: 'login'
 			}
+			
+			console.log('执行到这里=====2222====')
 
-			const resp = yield api.wechatDecryption(params)
-
+      const resp = yield api.wechatDecryption(params)
       if (resp.code != 0) {
         throw (resp)
-			}
-			logger.info('通用接口授权解密成功=====',resp)
+      }
       storage.put('authToken', resp.res.auth_token)
       storage.put('unionId', resp.res.unionid)
+			storage.put('refreshToken', resp.res.refresh_token)
 
-      // if (resp.data.res.phone) {
-      //   app.hasPhoneNum = true
-      //   app.globalPhoneNum = resp.data.res.phone
-      //   wx.setStorageSync("phonenum", resp.data.res.phone)
-      // }
       app.authToken = resp.res.auth_token
-      
+    
+      yield this.afterUnion()
+   
+
       this.longToast.toast()
     } catch (e) {
       yield app.login()
       this.longToast.toast()
-      util.showErr(e)
+      util.showError(e)
     }
 	}),
+
+	afterUnion:co.wrap(function*(){
+    try {
+      yield this.getUserInfo()
+    } catch (error) {
+      console.log(error)
+    }
+  }),
+
+	getUserInfo: co.wrap(function*() {
+    try {
+      let resp = yield gql.getUser()
+			storage.put("userSn", resp.currentUser.sn)
+			if(resp.currentUser.selectedKid.stageRoot){
+				storage.put("kidStage", resp.currentUser.selectedKid.stageRoot)
+			}
+		
+      if (resp.currentUser.phone) {
+        app.hasPhoneNum = true
+        app.globalPhoneNum = resp.currentUser.phone
+        wx.setStorageSync("phoneNum", resp.currentUser.phone)
+      }
+      if (!resp.currentUser.selectedKid.stageRoot) {
+        wxNav.redirectTo('/pages/index/grade')
+      }else{
+				wx.navigateBack()
+			}
+    } catch (e) {
+      util.showError(e)
+    }
+  }),
 
 	backTo: function () {
 		wx.navigateBack()

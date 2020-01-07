@@ -5,7 +5,6 @@ const app = getApp()
 const regeneratorRuntime = require('../../../lib/co/runtime')
 const co = require('../../../lib/co/co')
 const util = require('../../../utils/util')
-const uploadFormId = require('../../../utils/gfd-formid-upload')
 import router from '../../../utils/nav'
 import gql from '../../../network/graphql_request.js'
 import Logger from '../../../utils/logger.js'
@@ -54,46 +53,39 @@ Page({
         })
         logger.info("课程", this.data.course)
         let params = {
-            'course': this.data.course,
-            'answer': this.data.answer
+            'course': this.data.course
         }
+        if (this.data.answer != 'all') {
+            params.answer = this.data.answer
+        }
+
         logger.info("params", params)
         try {
-            const resp = yield gql.getMistakes()
-            // const resp = yield request({
-            //     url: app.apiServer + `/ec/v2/mistakes?openid=${app.openId}`,
-            //     method: 'GET',
-            //     dataType: 'json',
-            //     data: params
-            // })
-            // if (resp.data.code != 0) {
-            //     throw (resp.data)
-            // }
+            const resp = yield gql.getMistakes(params)
+            logger.info('错题本列表====', resp)
+            if (resp.mistakeCourse.length == 0) {
+                this.setData({
+                    noEntry: true
+                })
+            }
+            this.setData({
+                array: resp.mistakeCourse,
+                middlearr: [],
+            })
 
-            // logger.info('错题本列表====', resp.data)
-            // if (resp.data.mistakes.length == 0) {
-            //   this.setData({
-            //     noEntry: true
-            //   })
-            // }
-            // this.setData({
-            //     array: resp.data.mistakes,
-            //     middlearr: [],
-            // })
-
-            // var con = []
-            // for (let i = 0; i < this.data.array.length; i++) {
-            //     for (let j = 0; j < this.data.array[i].content.length; j++) {
-            //         con.push(this.data.array[i].content[j])
-            //         this.data.array[i].content[j].checked = false
-            //         this.setData({
-            //             // middlearr: con,
-            //             array: this.data.array,
-            //             allNum: con.length
-            //         })
-            //     }
-            // }
-            // logger.info('-----------', this.data.array)
+            var con = []
+            for (let i = 0; i < this.data.array.length; i++) {
+                for (let j = 0; j < this.data.array[i].content.length; j++) {
+                    con.push(this.data.array[i].content[j])
+                    this.data.array[i].content[j].checked = false
+                    this.setData({
+                        // middlearr: con,
+                        array: this.data.array,
+                        allNum: con.length
+                    })
+                }
+            }
+            console.log('-----------', this.data.array)
             this.longToast.hide()
         } catch (e) {
             this.longToast.hide()
@@ -237,8 +229,6 @@ Page({
     //打印
     quickPrint: function (e) {
         logger.info('错题打印时form发生了submit事件，携带数据为：', e.detail.formId, 'print_mistake')
-        uploadFormId.dealFormIds(e.detail.formId, `print_error_book`)
-        uploadFormId.upload()
         if (this.data.middlearr.length == 0) {
             return wx.showToast({
                 title: '请勾选错题',
@@ -249,16 +239,20 @@ Page({
                 showConfirmModal: null,
             })
         }
-        let ids = []
+        let ids = [],
+            sns = []
         this.ids = ids
+        this.sns = sns
         for (let i = 0; i < this.data.middlearr.length; i++) {
             ids.push(this.data.middlearr[i].id)
-            logger.info("11111", ids)
+            sns.push(this.data.middlearr[i].sn)
+            logger.info("11111", ids, sns)
         }
         router.navigateTo('/pages/package_feature/error_book/print', {
             course: this.data.course,
             ids: JSON.stringify(ids),
-            mistakecount: this.data.middlearr.length
+            mistakecount: this.data.middlearr.length,
+            sns: JSON.stringify(sns)
         })
         return
         this.setData({
@@ -287,25 +281,17 @@ Page({
             type: 'loading'
         })
         let ids = []
+
         for (let i = 0; i < this.data.middlearr.length; i++) {
             ids.push(this.data.middlearr[i].id)
             logger.info("11111", ids)
         }
         let params2 = {
-            'openid': app.openId,
             'ids': ids
         }
         logger.info("params2", params2)
         try {
-            const resp = yield request({
-                url: app.apiServer + `/ec/v2/mistakes/destroy`,
-                method: 'POST',
-                dataType: 'json',
-                data: params2
-            })
-            if (resp.data.code != 0) {
-                throw (resp.data)
-            }
+            const resp = gql.deleteMistakes(params2)
             logger.info('删除====', resp.data)
             wx.showToast({
                 title: '删除成功',
@@ -424,8 +410,8 @@ Page({
         }
     }),
     toCamera: function () {
-        wx.redirectTo({
-            url: 'camera'
+        router.redirectTo('/pages/package_feature/error_book/camera', {
+            type: 'error_book'
         })
     }
 

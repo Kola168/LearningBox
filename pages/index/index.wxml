@@ -48,14 +48,14 @@
       <view class="tool-item">
       </view>
     </view>
-    <view class="home-title">
+    <!-- <view class="home-title">
       <view>宝贝学习计划</view>
       <view>
         <text>更多</text>
         <image src="/images/doc_item_arrow.png" mode="widthFix"></image>
       </view>
-    </view>
-    <scroll-view class="study-plan-wrap" scroll-x>
+    </view> -->
+    <!-- <scroll-view class="study-plan-wrap" scroll-x>
       <view class="study-plan">
         <image src="/images/home/study_plan_none.png" mode="widthFix" class="study-plan-image"></image>
         <view class="has-plan">
@@ -80,9 +80,9 @@
           </view>
         </view>
       </view>
-    </scroll-view>
+    </scroll-view> -->
 
-    <view class="study-plan">
+    <!-- <view class="study-plan">
       <image src="/images/home/study_plan_none.png" mode="widthFix" class="study-plan-image"></image>
       <view>
         <view>快去定制宝宝的学习计划吧~</view>
@@ -90,12 +90,13 @@
           <view>新增计划</view>
         </view>
       </view>
-    </view>
-    <view class="content-list" wx:for="{{contentList}}" wx:key="contentLists" id="{{idnex}}">
-      <view class="home-title">{{item.title}}</view>
-      <image src="{{item.url}}" class="content-image" mode="widthFix" id="{{index}}" />
-    </view>
-    <view class="tips">
+    </view> -->
+
+    <!-- <view class="content-list" wx:for="{{beforeSchoolContent}}" wx:key="beforeSchoolContent" id="{{item.key}}">
+      <view class="home-title">{{item.name}}</view>
+      <image src="{{item.iconUrl}}" class="content-image" mode="widthFix" id="{{item.key}}"  bindtap="toContentList" data-name="{{item.name}}"/>
+    </view> -->
+    <!-- <view class="tips">
       <view>
         <image src="/images/home/icon_book.png" mode="widthFix" />
         <view>什么是纸质学习法？</view>
@@ -104,7 +105,7 @@
         <image src="/images/home/icon_teacher.png" mode="widthFix" />
         <view>小白老师是谁？</view>
       </view>
-    </view>
+    </view> -->
   </block>
   <!-- 学科 ui -->
   <block wx:if="{{homeType=='学科'}}">

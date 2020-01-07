@@ -6,7 +6,7 @@
     <view wx:else>已做{{printPaperCount}}套卷子，超越{{percentage}}%的同学</view>
   </view>
   <view class="subjects">
-    <view class="subject-item" wx:for="{{subjects}}" wx:key="subjectId" bindtap="toSubject" data-id="{{item.subjectId}}">
+    <view class="subject-item" wx:for="{{subjects}}" wx:key="sn" bindtap="toSubject" id="{{item.sn}}" data-id="{{item.subjectId}}">
       <image src="{{item.iconUrl}}" mode="widthFix" />
       <view class="item-name">{{item.subjectName}}</view>
       <view class="item-count">共{{item.totalNumber}}套试卷</view>

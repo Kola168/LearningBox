@@ -1,11 +1,12 @@
 <!--pages/account/order.wxml-->
 <wxs src="./index.wxs" module="utils" />
+<nav-bar background="#fff" title="购买记录"/>
 <view class="list">
 	<view
 	 class="item"
 	 wx:for="{{orderList}}"
 	 wx:key="sn"
-	 id="{{item.sn}}"
+	 data-sn="{{item.sn}}"
 	 bindtap="toOrder"
 	>
 		<view class="left-paid">
@@ -14,8 +15,8 @@
 				<view class="content">
 					<view class="title">{{item.payable.name}}</view>
 				</view>
-				<view class="type" wx:if="{{item.payable.desc.categoryName}}">
-					<text class="cates-name">{{utils.matchCateGroyName(item.payable.typename)}}</text>
+				<view class="type" wx:if="{{item.payable.categoryName}}">
+					<text class="cates-name">{{utils.matchCateGroyName(item.payable.categoryName)}}</text>
 					<text class="created-at">创建时间: {{utils.formatTime(item.createdAt, 'yyyy.MM.dd')}}</text>
 				</view>
 				<view class="type" wx:else>
