@@ -90,12 +90,16 @@ Page({
 	}),
 	
 	clickFeature: co.wrap(function* (e) {
-	 wxNav.navigateTo(e.currentTarget.id)
-
-	}),
-
-	feedBack:co.wrap(function* () {
-		wxNav.navigateTo('/pages/package_common/feedback')
+		if(e.currentTarget.id!=''){
+			wxNav.navigateTo(e.currentTarget.id)
+		}else{
+			wx.showToast({
+				title: '暂未开放，敬请期待',
+				icon: 'none',
+				duration: 2000
+			})
+		}
+	
 	}),
 
   onUnload() {
