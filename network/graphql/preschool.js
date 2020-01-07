@@ -193,9 +193,10 @@ const graphqlApi = {
       query: `query ($sn:String!,$sns: [String!]!,$randomNum:Int!){
         examinationRandomContents(sn:$sn,sns:$sns,randomNum:$randomNum){
           featureKey
-          iconUrl
-          name
           sn
+          contentImages{
+            nameUrl
+          }
         }
       }`,
       variables: param

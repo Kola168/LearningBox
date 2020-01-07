@@ -22,17 +22,23 @@ Page({
   },
 
   onLoad: function (options) {
+    this.longToast = new app.weToast()
     this.getGradeList()
   },
   getGradeList:co.wrap(function*(e){
+    this.longToast.toast({
+      type:'loading'
+    })
     try{
       let resp = yield gql.getGradeList()
       Loger(resp)
       this.setData({
         gradeList:resp.examinations
       })
+      this.longToast.toast()
     }catch(e){
       Loger(e)
+      this.longToast.toast()
       util.showError(e)
     }
   }),

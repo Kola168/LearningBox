@@ -32,11 +32,11 @@ Page({
 		activeDevice: null,
 		printType: '',
 		showAdvertisement: true,
+		continueText:null,
 	},
 	media_type: '',
 	onLoad: function (options) {
 		this.longToast = new app.weToast()
-		Loger('options=======', options)
 		Loger(options.media_type)
 		this.media_type = options.media_type
 		this.printType = options.type
@@ -45,6 +45,7 @@ Page({
 				printType: this.printType
 			})
 		}
+
 		this.category_id = options.category_id
 		this.setData({
 			state: options.state
@@ -55,7 +56,11 @@ Page({
 		if (options.sticker_type) {
 			wx.removeStorageSync(options.sticker_type)
 		}
-
+		if(options.media_type=='baobeicepin'){
+			this.setData({
+				continueText:'再次测评'
+			})
+		}
 		// this.getAccounts()
 		// let getSupplyAfter = commonRequest.getSupplyAfter()
 		// let that = this

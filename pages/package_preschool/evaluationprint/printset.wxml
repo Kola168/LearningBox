@@ -1,5 +1,7 @@
 <!--pages/package_preschool/evaluationprint/printset.wxml-->
 <nav-bar title="打印设置"></nav-bar>
+<confirm-print bindconfirm="makeOrder" modal="{{confirmModal}}" />
+
 <view class="setting-item">
   <view class="setting-name">
     打印份数
@@ -27,4 +29,7 @@
 </view>
 <view class="conf-button">
   确认打印
+  <bottom-button class="cover-button" text-right="确认" bindrighttap="confBut"  get-phone="{{true}}"></bottom-button>
 </view>
+<import src="/lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />
