@@ -4,12 +4,10 @@ const regeneratorRuntime = require('../../../lib/co/runtime')
 const co = require('../../../lib/co/co')
 const _ = require('../../../lib/underscore/we-underscore')
 const util = require('../../../utils/util')
-const event = require('../../../lib/event/event')
 
 import wxNav from '../../../utils/nav.js'
 import api from '../../../network/restful_request'
 import gql from '../../../network/graphql/preschool'
-import commonRequest from '../../../utils/common_request'
 
 let Loger = (app.apiServer != 'https://epbox.gongfudou.com' || app.deBug) ? console.log : function() {}
 
@@ -25,6 +23,7 @@ Page({
   },
 
   onLoad: function(options) {
+    this.longToast = new app.weToast()
     this.answerList=JSON.parse(decodeURIComponent(options.snlist))
     this.sn = options.sn
     this.initGrade()
@@ -66,23 +65,27 @@ Page({
     }
   }),
 
-  getprintList: co.wrap(function*() {
+  toprint: co.wrap(function*() {
     try {
+      this.longToast.toast({
+        type:'loading'
+      })
       let resp = yield gql.getGradePrint({
         sn:this.sn,
         sns: this.data.recommendTest.length>0?_.pluck(this.data.recommendTest, 'sn'):_.pluck(this.data.achievementArr, 'sn'),
         randomNum:this.data.recommendTest.length>0?1:2
       })
-      Loger(resp)
-
+      Loger(resp.examinationRandomContents)
+      this.longToast.toast()
+      wxNav.redirectTo('/pages/package_preschool/evaluationprint/printpreview',{
+        orderInfo:encodeURIComponent(JSON.stringify(resp.examinationRandomContents))
+      })
      } catch (e) {
+      this.longToast.toast()
       Loger(e)
+      util.showError(e)
     }
-  }),
 
-  toprint: function() {
-    this.getprintList()
-    // wxNav.navigateTo('/pages/package_preschool/evaluationprint/printpreview')
-  },
+  }),
 
 })
