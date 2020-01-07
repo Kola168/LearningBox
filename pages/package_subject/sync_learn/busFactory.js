@@ -99,6 +99,7 @@ var busFactory = function () {
     }
     requestIds[key] = value
   }
+  
   // 根据key获取指定的id
   var getIds = function (key) {
     if (!requestIds) {

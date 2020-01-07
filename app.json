@@ -156,10 +156,10 @@
     {
       "root": "pages/package_member",
       "pages": [
-				"member/active",
-				"member/caculate",
-				"member/index",
-				"member/order",
+        "member/active",
+        "member/caculate",
+        "member/index",
+        "member/order",
         "group/index"
       ]
     },
@@ -187,7 +187,12 @@
         "evaluation/test",
         "evaluation/testfinish",
         "evaluationprint/printpreview",
-        "evaluationprint/printset"
+        "evaluationprint/printset",
+        "exercise_day/exercises/exercises",
+        "exercise_day/month_compilation/index",
+        "exercise_day/answer/index",
+        "exercise_day/certificate/index",
+        "exercise_day/month_compilation_subject/index"
       ]
     },
     {

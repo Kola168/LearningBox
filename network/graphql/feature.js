@@ -28,11 +28,21 @@ const graphqlApi = {
     return gql.query({
       query: `query($sn: String!) {
         userStages {
-          sn
-          name
-          guessWriteCategories(sn:$sn){
+          currentStage{
             sn
             name
+            guessWriteCategories(sn:$sn){
+              sn
+              name
+            }
+          }
+          siblings{
+            sn
+            name
+            guessWriteCategories(sn:$sn){
+              sn
+              name
+            }
           }
         }
       }`,

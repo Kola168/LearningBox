@@ -10,6 +10,9 @@ import graphql from '../../../../network/graphql/subject'
 Component({
 
   data: {
+    __wetoast__: {
+      reveal: false
+    },
     navIcon: [
       '../images/chinese_icon.png',
       '../images/math_icon.png',
@@ -22,21 +25,50 @@ Component({
     },
     printPaperCount: 0,
     percentage: 0,
+    totalPapers: 0,
     selectedPaperIndex: 0, //选中的试卷分类索引
     selectedPaperTypes: [], //试卷分类
+    banners: [],
   },
-
-  attached() {
-    this.longToast = new app.weToast()
+  lifetimes: {
+    attached: co.wrap(function*(){
+      this.longToast = new app.weToast(this)
+      yield this.getBanners() //获取banner
+      yield this.getLastLearn() // 获取同步练习学习人数
+      yield this.getPaperCates() //获取试卷分类
+      yield this.getSubjectPapers() // 获取试卷列表
+    })
   },
-
   pageLifetimes: {
     show: co.wrap(function *() {
-      yield this.getLastLearn()
-      yield this.getPaperCates()
+      yield this.getBanners() //获取banner
+      yield this.getLastLearn() // 获取同步练习学习人数
+      yield this.getPaperCates() //获取试卷分类
+      yield this.getSubjectPapers() // 获取试卷列表
     })
   },
   methods: {
+    /**
+     * 获取banner
+     */
+    getBanners: co.wrap(function *(params) {
+      this.longToast.toast({
+        type: 'loading',
+        title: '请稍后...'
+      })
+
+      try {
+        var resp = yield graphql.getBanners()
+        var banners = resp.banners
+        this.setData({
+          banners
+        })
+      } catch (err) {
+        util.showError(err)
+      } finally {
+        this.longToast.hide()
+      }
+    }),
     /**
      * 获取最后一次学习
      */
@@ -91,17 +123,24 @@ Component({
       try {
         var resp = yield graphql.getPaperCates()
         var selectedPaperTypes = resp.xuekewang.selectedPaperTypes
-        var [selectedPaperType] = selectedPaperTypes.filter(item=> {
-          return item.id == resp.selectedPaperSubject.paperTypeId
+        var selectedPaperType = null, selectedPaperIndex = 0
+        selectedPaperTypes.forEach((item, idx)=> {
+          if (item.id == resp.xuekewang.selectedPaperSubject.paperTypeId) {
+            selectedPaperIndex = idx
+            selectedPaperType= item
+          }
         })
-        this.subjectId = resp.selectedPaperSubject.subjectId
-        this.paperType = selectedPaperType.paperType
-        this.areaId = resp.selectedPaperSubject.areaId
+        this.gradeId = resp.xuekewang.selectedPaperSubject.gradeId
+        this.subjectId = resp.xuekewang.selectedPaperSubject.subjectId
+        this.paperType = resp.xuekewang.selectedPaperSubject.paperTypeId
+        this.areaId = resp.xuekewang.selectedPaperSubject.areaId
 
         this.setData({
+          selectedPaperIndex,
           selectedPaperTypes: resp.xuekewang.selectedPaperTypes,
           printPaperCount: resp.xuekewang.printPaperCount,
           percentage: resp.xuekewang.percentage,
+          totalPapers: resp.xuekewang.totalPapers,
         })
       } catch(err) {
         util.showError(err)
@@ -120,9 +159,10 @@ Component({
         title: '请稍后...'
       })
       try {
-        var resp = yield graphql.getSubjectPapers(this.subjectId, this.paperType, this.areaId, 1)
-       console.log(resp.xuekewang,'==getPaperCates==')
-      
+        var resp = yield graphql.getSubjectPapers(this.subjectId, this.paperType, this.gradeId, this.areaId,  1)
+        this.setData({
+          paperLists: resp.xuekewang.paperLists
+        })
       } catch (err) {
         util.showError(err)
       } finally {
@@ -137,6 +177,9 @@ Component({
     changeTab: co.wrap(function *({currentTarget: {dataset: {index}}}) {
       var cateGorys = this.data.selectedPaperTypes[index]
       this.paperType = cateGorys.id
+      this.setData({
+        selectedPaperIndex: index
+      })
       this.getSubjectPapers()
     }),
 
@@ -178,7 +221,7 @@ Component({
      * 查看更多
      */
     toMore () {
-      wxNav.navigateTo('/pages/package_subject/evaluate_exam/index/index')
+      wxNav.navigateTo('package_subject/evaluate_exam/index/index')
     },
 
     /**

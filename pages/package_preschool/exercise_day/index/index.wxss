@@ -1,1 +1,26 @@
 /* pages/package_preschool/exercise_day/index/index.wxss */
+
+.main-box {
+  width: 100%;
+}
+
+.main-box image {
+  position: relative;
+  width: 100%;
+}
+
+.btn {
+  position: absolute;
+  left: 50%;
+  bottom: 46rpx;
+  width: 700rpx;
+  height: 98rpx;
+  line-height: 98rpx;
+  text-align: center;
+  font-size: 36rpx;
+  color: #FFFFFF;
+  border-radius: 30rpx;
+  background: #905C74;
+  box-shadow: 0 4rpx 0 0 #733753;
+  margin-left: -350rpx;
+}

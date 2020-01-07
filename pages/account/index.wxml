@@ -37,9 +37,11 @@
 <view class="content-wrap" wx:for="{{features}}" wx:key="features">
     <view class="title">{{item.title}}</view>
     <view class="content">
-        <view class="content-item" bindtap="toFeature" wx:for="{{item.features}}" wx:key="feature" wx:for-item="data" id="{{data.url}}">
+        <view wx:for="{{item.features}}" wx:key="feature" wx:for-item="data" >
+					<view class="content-item" bindtap="clickFeature" id="{{data.url}}" data-key="{{data.key}}"> 
             <image src="{{data.image}}" mode="widthFix" />
-            <view>{{data.name}}</view>
+						<view>{{data.name}}</view>
+					</view>
         </view>
     </view>
 </view>

@@ -1,0 +1,12 @@
+<nav-bar background="#fff" title="每日一练" />
+<view class="main-box">
+  <view class="exercise-app">
+    <image class="compilation-month" mode="widthFix" bind:tap="toMonthCompilation"></image>
+    <image class="baby-certificate" mode="widthFix" bind:tap="toBabyCertificate"></image>
+  </view>
+  <view class="exercise-subject"></view>
+  <view class="btn-main">
+    <view class="btn btn-handbook" bind:tap="tobabyAnswer">查看亲子指南</view>
+    <view class="btn btn-print" bind:tap="toPrint">打印给宝宝</view>
+  </view>
+</view>
