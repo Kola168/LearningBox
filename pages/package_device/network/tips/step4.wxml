@@ -1,0 +1,16 @@
+<view class="container">
+
+
+
+
+	<image src="https://cdn-h.gongfudou.com/LearningBox/device/ap/network_equip_box.png" mode="widthFix" class="box-img"></image>
+
+  <text>盒子设备编号:{{serial}}</text>
+	<view class="btn-left">
+		<view class="btn-left" bindtap="ignoreAp">跳过配网</view>
+		<view class="btn-right" bindtap="setAp"></view>
+	</view>
+	
+</view>
+
+
