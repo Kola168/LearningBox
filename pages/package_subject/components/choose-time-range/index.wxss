@@ -1,0 +1,88 @@
+/* pages/package_subject/components/choose-time-range/index.wxss */
+
+
+.choose-date-range .title {
+  margin-bottom: 30rpx;
+  text-align: center;
+  font-size: 36rpx;
+  color: #333333;
+  font-weight: 500;
+}
+
+.range .label{
+  font-size: 32rpx;
+  color: #333333;
+}
+
+.range .filtrate-main {
+  margin: 34rpx 0 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+
+.range .btn-range {
+  margin:0 40rpx 40rpx 0;
+  padding:0 46rpx;
+  width: fit-content;
+  height: 68rpx;
+  line-height: 68rpx;
+  border-radius: 37rpx;
+  box-sizing: border-box;
+  border: 1px solid #E7E7E7;
+  font-size: 28rpx;
+  text-align: center;
+  color: #666666;
+}
+
+.date-range {
+  margin-bottom: 160rpx;
+  display: flex;
+  align-items: center;
+}
+
+.date-range picker {
+  margin-right: 10rpx;
+  display: flex;
+}
+
+.middle-name {
+  padding: 0 40rpx;
+  color: #999999;
+}
+
+.start-date, .end-date {
+  display: flex;
+  align-items: center;
+  color: #333333;
+  font-size: 30rpx;
+}
+
+.arrow-icon {
+  margin-top: 10rpx;
+  width: 0;
+  height: 0;
+  border-right: 10rpx solid transparent;
+  border-left: 10rpx solid transparent;
+  border-top: 10rpx solid #999999;
+  border-bottom: 10rpx solid transparent;
+}
+
+
+.btn {
+  margin: auto;
+  width: 600rpx;
+  height: 98rpx;
+  line-height: 98rpx;
+  border-radius: 49rpx;
+  text-align: center;
+  font-size: 36rpx;
+  color: #454545;
+  background-color: #FFDC5E;
+}
+
+.btn-active {
+  background-color: #FFDC5E;
+  border-color: #FFDC5E!important;
+}

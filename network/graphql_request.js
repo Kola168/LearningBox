@@ -662,6 +662,11 @@ const graphqlApi = {
       mutation: `mutation createResourceOrder($input: CreateResourceOrderInput!) {
         createResourceOrder(input: $input){
           state
+          statistic{
+            ... on DailyPractice{
+              keepDays
+            }
+          }
         }
       }`,
       variables: {
