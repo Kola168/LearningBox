@@ -21,7 +21,7 @@ App({
   // apiServer: 'https://epbox.gongfudou.com',
 
   //staging
-	// apiServer: 'https://lb-stg.gongfudou.com',
+	apiServer: 'https://lb-stg.gongfudou.com',
 	apiWbviewServer: 'https://lb-stg.gongfudou.com',
 
   //王析理本地地址

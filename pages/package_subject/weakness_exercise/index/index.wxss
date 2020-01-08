@@ -56,3 +56,23 @@
   text-align: center;
   color: #454545;
 }
+
+
+/* 暂无练习题 */
+
+.empty-exercise {
+  padding: 160rpx  76rpx 0;
+}
+
+.empty-exercise image {
+  margin: 0 auto;
+  width: 240rpx;
+  height: 144rpx;
+}
+
+.empty-exercise .name {
+  padding-top: 36rpx;
+  text-align: center;
+  font-size: 32rpx;
+  color: #666666;
+}

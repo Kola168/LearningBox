@@ -8,4 +8,15 @@
     <view class="content">小白老师根据错题本分析你的薄弱项，给你推荐你的专属练习～</view>
   </image>
   <view class="btn-setTopic">生成练习</view>
+  <!-- <view class="exercise-main">
+    <view class="exercise-search">
+    </view>
+    <view class="exercise-content">
+    </view>
+  </view> -->
+  <view class="empty-exercise">
+    <image class="empty-icon" src="https://cdn-h.gongfudou.com/LearningBox/subject/empty_icon.png"/>
+    <view class="name">还没有生成练习哦，点击上方按钮添加练习</view>
+  </view>
 </view>
+<member-toast  id="memberToast"/>
