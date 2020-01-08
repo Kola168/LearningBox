@@ -91,7 +91,7 @@ Page({
             featureKey: 'testimonial',
             resourceOrderType: 'Testimonial',
             resourceAttribute: {
-              sn: this.printSn,
+              sn: item.sn,
               resourceType: 'Content'
             }
           },

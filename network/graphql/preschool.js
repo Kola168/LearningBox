@@ -22,19 +22,17 @@ const graphqlApi = {
    */
   getPracticeContentToday: () => {
     return gql.query({
-      query: `query getPracticeContentToday($key: String!){
-        feature(key: $key){
-          practiceContentToday{
-            name
+      query: `query getPracticeContentToday{
+        dailyPractice{
+          practiceContentToday:contentToday{
             sn
-            practiceQuestionImages
+            name
             practiceAnswerImages
+            practiceQuestionImages
           }
+          hasNewTestimonial
         }
-      }`,
-      variables: {
-        key: 'daily_practice'
-      }
+      }`
     })
   },
 
@@ -60,9 +58,9 @@ const graphqlApi = {
    */
   getMonthCompilations: () => {
     return gql.query({
-      query: `query getMonthCompilations($key: String!){
-        feature(key: $key){
-          practiceCategories{
+      query: `query getMonthCompilations{
+        dailyPractice{
+          practiceCategories:categories{
             name
             sn
             subTitle
@@ -74,10 +72,7 @@ const graphqlApi = {
             }
           }
         }
-      }`,
-      variables: {
-        key: 'daily_practice'
-      }
+      }`
     })
   },
 

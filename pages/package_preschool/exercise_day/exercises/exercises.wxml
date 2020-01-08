@@ -4,7 +4,7 @@
     <image class="compilation-month" src="../../images/btn_month_compilation.png"  bind:tap="toMonthCompilation"/>
     <image class="baby-certificate"  src="../../images/btn_cert.png"   bind:tap="toBabyCertificate">
     </image>
-    <view class="new-tag">new</view>
+    <view class="new-tag" wx:if="{{hasNewTestimonial}}">new</view>
   </view>
   <view class="exercise-subject">
     <swiper>

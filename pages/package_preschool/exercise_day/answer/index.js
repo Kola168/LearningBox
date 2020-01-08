@@ -40,11 +40,13 @@ Page({
     })
     try {
       var resp = yield graphql.getPracticeContentToday()
-      this.printSn = resp.feature.practiceContentToday && resp.feature.practiceContentToday.sn
-      this.setData({
-        practiceContentToday: resp.feature.practiceContentToday,
-        practiceAnswerImages: resp.feature.practiceContentToday && resp.feature.practiceContentToday.practiceAnswerImages
-      })
+      if (resp.dailyPractice.practiceContentToday) {
+        this.printSn = resp.dailyPractice.practiceContentToday && resp.dailyPractice.practiceContentToday.sn
+        this.setData({
+          practiceContentToday: resp.dailyPractice.practiceContentToday,
+          practiceAnswerImages: resp.dailyPractice.practiceContentToday && resp.dailyPractice.practiceContentToday.practiceAnswerImages
+        })
+      }
     }catch(err) {
       util.showError(err)
     }finally {

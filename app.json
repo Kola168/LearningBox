@@ -206,7 +206,8 @@
         "evaluate_exam/index/index",
         "evaluate_exam/testpaper/index",
         "evaluate_exam/preview/index",
-        "correct/index"
+        "correct/index",
+        "weakness_exercise/index/index"
       ]
     },
     {
@@ -288,8 +289,8 @@
         "selectedIconPath": "images/home/icon_tab_account_selected.png"
       }
     ]
-	},
-	"navigateToMiniProgramAppIdList": [
-		"wxfb4fb840f87fef41"
-		]
+  },
+  "navigateToMiniProgramAppIdList": [
+    "wxfb4fb840f87fef41"
+  ]
 }

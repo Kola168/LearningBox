@@ -4,7 +4,7 @@
   <image class="cert-icon" src="../../images/preSchool_certificate_bg.png" mode="widthFix"></image>
   <view class="cert-list">
     <view class="cert-item" wx:for="{{testimonials}}" wx:key="subTitle">
-      <view class="cert-name">{{iem.title}}</view>
+      <view class="cert-name">{{item.title}}</view>
       <view class="learn-day">{{item.subTitle}}</view>
       <image src="{{item.imageUrl}}"></image>
         <view class="btn {{item.isGet ? 'btn-print' : ''}}" bind:tap="toPrint" data-item="{{item}}">{{item.isGet ? '打印奖状' : '未获得'}}</view>

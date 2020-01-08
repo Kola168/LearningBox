@@ -15,6 +15,7 @@ Page({
     isUse: false,
     practiceQuestionImages: [],
     practiceContentToday: null,
+    hasNewTestimonial: false,
   },
 
   onLoad: co.wrap(function * (options) {
@@ -67,11 +68,15 @@ Page({
     })
     try {
       var resp = yield graphql.getPracticeContentToday()
-      this.printSn = resp.feature.practiceContentToday && resp.feature.practiceContentToday.sn
-      this.setData({
-        practiceContentToday: resp.feature.practiceContentToday,
-        practiceQuestionImages: resp.feature.practiceContentToday && resp.feature.practiceContentToday.practiceQuestionImages
-      })
+      this.printSn = resp.dailyPractice.practiceContentToday && resp.dailyPractice.practiceContentToday.sn
+      if (resp.dailyPractice.practiceContentToday) {
+        this.setData({
+          hasNewTestimonial:  resp.dailyPractice.practiceContentToday.hasNewTestimonial,
+          practiceContentToday: resp.dailyPractice.practiceContentToday,
+          practiceQuestionImages: resp.dailyPractice.practiceContentToday.practiceQuestionImages
+        })
+      }  
+     
     }catch(err) {
       util.showError(err)
     } finally {
