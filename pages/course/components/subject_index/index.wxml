@@ -44,13 +44,13 @@
         <view class="top-text">学习报告</view>
       </view>
       <view class="box-entry">
-        <image class="left-entry" src="../images/eaxm_report.png">
+        <image class="left-entry" src="../images/eaxm_report.png" bind:tap="toExaminationReporter">
           <view class="entry-title">试卷测评报告</view>
           <view class="sub-main">
             <view class="sub-text">共39份试卷报告</view>
           </view>
         </image>
-        <image class="right-entry" src="../images/stage_report.png">
+        <image class="right-entry" src="../images/stage_report.png" bind:tap="toStageReporter">
           <view class="entry-title">阶段报告</view>
           <view class="sub-main">
             <view class="sub-text">暂无数据</view>

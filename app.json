@@ -191,7 +191,8 @@
         "exercise_day/month_compilation/index",
         "exercise_day/answer/index",
         "exercise_day/certificate/index",
-        "exercise_day/month_compilation_subject/index"
+        "exercise_day/month_compilation_subject/index",
+        "exercise_day/finish/index"
       ]
     },
     {
@@ -204,7 +205,9 @@
         "setting/setting",
         "evaluate_exam/index/index",
         "evaluate_exam/testpaper/index",
-        "correct/index"
+        "evaluate_exam/preview/index",
+        "correct/index",
+        "weakness_exercise/index/index"
       ]
     },
     {
@@ -286,8 +289,8 @@
         "selectedIconPath": "images/home/icon_tab_account_selected.png"
       }
     ]
-	},
-	"navigateToMiniProgramAppIdList": [
-		"wxfb4fb840f87fef41"
-		]
+  },
+  "navigateToMiniProgramAppIdList": [
+    "wxfb4fb840f87fef41"
+  ]
 }

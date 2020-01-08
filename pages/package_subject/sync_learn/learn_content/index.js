@@ -17,6 +17,7 @@ import busFactory from '../busFactory'
 Page({
 
   data: {
+    textbookPercentage: null,
     showSelectedText: false, //是否显示教材
     selectedBookVersionIndex: -1, //教材版本选中下标
     selectedTeachIndex: -1, //教材选中下标
@@ -134,6 +135,7 @@ Page({
       currentTabIndex: index
     })
     this.subjectSn = subjectSn
+    busFactory.sendRequestIds('subjectSn', subjectSn)
     this.versionSn = null
     this.textbookSn = null 
     yield this.updateConditionData() //学科下所有数据节点更新
@@ -195,6 +197,9 @@ Page({
     yield this.getTeachBook() //获取学科下所有教材
     yield this.getSelectedTextbook() //获取当前科目下选中教材
     yield this.mappingConditions() //同步匹配默认筛选项
+    if (this.textbookSn){
+      yield this.getSyncExercisePrecent() //获取当前教材下用户学习的进度
+    }
   }),
 
   /**
@@ -298,6 +303,18 @@ Page({
       ...mappingChooseIndex
     })
 
+  }),
+
+  getSyncExercisePrecent: co.wrap(function*(){
+    try {
+      var resp = yield graphql.getSyncExercisePrecent(this.textbookSn)
+      this.setData({
+        textbookPercentage: resp.xuekewang && resp.xuekewang.textbookPercentage,
+      })
+     
+    }catch(err) {
+      util.showError(err)
+    }
   }),
 
   onHide: function () {

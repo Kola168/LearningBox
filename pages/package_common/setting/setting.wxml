@@ -1,7 +1,7 @@
 <nav-bar background="#fff" title="文档打印" />
 <view class="document-title">
 	<view class="title-text">
-		<view class="text-name">{{setting.file.name}}</view>
+		<view class="text-name">{{setting.name}}</view>
 		<!-- <view class="text-suffix">.{{fileTitle.suffix}}</view> -->
 	</view>
 	<view class="title-preview" bindtap="preview" wx:if="{{isPreview}}">预览</view>

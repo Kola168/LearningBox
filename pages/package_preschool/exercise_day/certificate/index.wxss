@@ -2,7 +2,8 @@
 
 .certificate-main {
   padding: 260rpx 48rpx 0;
-  height: 100vh;
+  min-height: 100vh;
+  box-sizing: border-box;
   background: #FEEECA;
 }
 

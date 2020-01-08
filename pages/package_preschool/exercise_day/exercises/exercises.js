@@ -13,18 +13,48 @@ import graphql from '../../../../network/graphql/preschool'
 Page({
   data: {
     isUse: false,
-    practiceQuestionImages: []
+    practiceQuestionImages: [],
+    practiceContentToday: null,
+    hasNewTestimonial: false,
   },
 
   onLoad: co.wrap(function * (options) {
     this.longtoast = new app.weToast()
+    this.sn = options && options.sn || ''
     var isUse = storage.get('isUse')
     this.setData({
       isUse:!!isUse
     })
 
     if (isUse) {
-      yield this.getPracticeContentToday()
+      if (this.sn) {
+        yield this.getMonthExercises()
+      } else {
+        yield this.getPracticeContentToday()
+      }
+    }
+  }),
+
+  /**
+   * 获取指定日期的每日一练题目
+   */
+  getMonthExercises: co.wrap(function *() {
+    this.longtoast.toast({
+      type: 'loading',
+      title: '请稍后...'
+    })
+    try {
+      var resp = yield graphql.getMonthExercises(this.sn)
+      this.printSn = resp.content.sn
+      this.setData({
+        practiceContentToday: resp.content,
+        practiceQuestionImages: resp.content.practiceQuestionImages,
+        
+      })
+    }catch(err) {
+      util.showError(err)
+    } finally {
+      this.longtoast.hide()
     }
   }),
 
@@ -38,9 +68,15 @@ Page({
     })
     try {
       var resp = yield graphql.getPracticeContentToday()
-      this.setData({
-        practiceQuestionImages: resp.feature.practiceContentToday && resp.feature.practiceContentToday.practiceQuestionImages
-      })
+      this.printSn = resp.dailyPractice.practiceContentToday && resp.dailyPractice.practiceContentToday.sn
+      if (resp.dailyPractice.practiceContentToday) {
+        this.setData({
+          hasNewTestimonial:  resp.dailyPractice.practiceContentToday.hasNewTestimonial,
+          practiceContentToday: resp.dailyPractice.practiceContentToday,
+          practiceQuestionImages: resp.dailyPractice.practiceContentToday.practiceQuestionImages
+        })
+      }  
+     
     }catch(err) {
       util.showError(err)
     } finally {
@@ -60,16 +96,22 @@ Page({
    * 去打印
    */
   toPrint: co.wrap(function*(){
-    console.log('==去打印给宝宝==')
     try {
       wxNav.navigateTo('/pages/package_common/setting/setting', {
         settingData: encodeURIComponent(JSON.stringify({
           file: {
-            name: '测试的名字'
+            name: this.data.practiceContentToday.name
           },
           orderPms: {
-            printType: 'doc_a4',
-            featureKey: 'doc_a4'
+            printType: 'RESOURCE',
+            pageCount: this.data.practiceQuestionImages.length,
+            featureKey: 'daily_practice',
+            resourceOrderType: 'DailyPractice',
+            resourceAttribute: {
+              sn: this.printSn,
+              resourceType: 'Content',
+              answer: false,
+            }
           },
           checkCapabilitys: {
             isSettingColor: true,

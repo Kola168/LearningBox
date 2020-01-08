@@ -1,0 +1,7 @@
+<nav-bar background="#fff" title="奖状" />
+<view class="finish-main">
+  <image class="banner" src="https://cdn-h.gongfudou.com/LearningBox/preschool/preSchool_success_banner.jpg" mode="widthFix"></image>
+  <view class="finish-name">打印任务提交成功，请耐心等候</view>
+  <view class="btn">返回首页</view>
+  <image class="consumable" mode="widthFix" src="../../images/consumable_icon.png"></image>
+</view>

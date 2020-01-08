@@ -10,10 +10,10 @@ const showModal = util.promisify(wx.showModal)
 
 //原图合成打印图片resize参数
 const mediaResizeData={
-    '_6inch':'/resize,m_fill,h_1950,w_1300,limit_0/quality,Q_100/format,jpg',
-    '_5inch':'/resize,m_fill,h_1560,w_1092,limit_0/quality,Q_95/format,jpg',
-    '_a4':'/resize,m_fill,h_3564,w_2520,limit_0/quality,Q_95/format,jpg',
-    '_7inch':'/resize,m_fill,h_2184,w_1560,limit_0/quality,Q_95/format,jpg',
+    'pic_in6':'/resize,m_fill,h_1950,w_1300,limit_0/quality,Q_100/format,jpg',
+    'pic_in5':'/resize,m_fill,h_1560,w_1092,limit_0/quality,Q_95/format,jpg',
+    'pic_a4':'/resize,m_fill,h_3564,w_2520,limit_0/quality,Q_95/format,jpg',
+    'pic_in7':'/resize,m_fill,h_2184,w_1560,limit_0/quality,Q_95/format,jpg',
     'pic2doc':'/resize,m_pad,h_3564,w_2520,limit_0/quality,Q_95/format,jpg',
     'mini_album':'/resize,m_fill,h_620,w_465,limit_0/quality,Q_85/format,jpg',
     'lomo':'/resize,m_fill,h_1240,w_874,limit_0/quality,Q_95/format,jpg',

@@ -1,2 +1,35 @@
 <!--pages/package_preschool/evaluationprint/printset.wxml-->
-<text>pages/package_preschool/evaluationprint/printset.wxml</text>
+<nav-bar title="打印设置"></nav-bar>
+<confirm-print bindconfirm="makeOrder" modal="{{confirmModal}}" />
+
+<view class="setting-item">
+  <view class="setting-name">
+    打印份数
+  </view>
+  <view class="setting-value">
+    <text class="iconfont icon-sami-select {{printNum<=1?'color-gray':''}}" bindtap="decreaseNum"></text>
+    <text class="print-num">{{printNum}}</text>
+    <text class="iconfont icon-add-select" bindtap="addNum"></text>
+  </view>
+</view>
+<view class="setting-item">
+  <view class="setting-name">
+    色彩选择
+  </view>
+  <view class="setting-value">
+    <view class="color-name" data-type="black" bindtap="changeColor">
+      黑白
+      <view class="color-circle {{colorType=='black'?'color-checked':''}}"></view>
+    </view>
+    <view class="color-name" data-type="color" bindtap="changeColor">
+      全彩
+      <view class="color-circle {{colorType=='color'?'color-checked':''}}"></view>
+    </view>
+  </view>
+</view>
+<view class="conf-button">
+  确认打印
+  <bottom-button class="cover-button" text-right="确认" bindrighttap="confBut"  get-phone="{{true}}"></bottom-button>
+</view>
+<import src="/lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />

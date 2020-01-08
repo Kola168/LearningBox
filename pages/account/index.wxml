@@ -14,7 +14,7 @@
         wx:if="{{kidInfo.name&&kidInfo.stage&&kidInfo.avatar}}"></image>
     <image src="../../images/tip_add_kid_info.png" mode="widthFix" class="after-tip" wx:else></image>
 </view>
-<image src="/images/account_member_center.png" mode="widthFix" class="member" />
+<image src="/images/account_member_center.png" bindtap="member" mode="widthFix" class="member" />
 <view class="has-device" wx:if="{{activeDevice}}" bindtap="toNext" id="deviceList">
     <view class="device-img">
         <image src="/images/{{activeDevice.model==='3115'?'L3115':'EP400'}}.png" mode="widthFix" />
