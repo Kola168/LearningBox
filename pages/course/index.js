@@ -25,14 +25,19 @@ Page({
    * 获取用户信息
    */
   getUserInfo: co.wrap(function*() {
-    try {
-      let resp = yield gql.getUser()
-			storage.put("userSn", resp.currentUser.sn)
-			storage.put("kidStage", resp.currentUser.selectedKid.stageRoot.rootKey)
-      return resp.currentUser
-    } catch (e) {
-      util.showError(e)
-    }
+		let userSn = storage.get('userSn')
+		this.userSn = userSn
+		if(this.userSn){
+			try {
+				let resp = yield gql.getUser()
+				storage.put("userSn", resp.currentUser.sn)
+				storage.put("kidStage", resp.currentUser.selectedKid.stageRoot.rootKey)
+				return resp.currentUser
+			} catch (e) {
+				// util.showError(e)
+			}
+		}
+    
   }),
 
   onHide(){

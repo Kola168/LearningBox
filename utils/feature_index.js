@@ -35,7 +35,8 @@
   share_folder_pic_5in: '/pages/package_feature/share_folder/index',
   english_memory_write: '/pages/package_feature/memory_write/english/index',
   chinese_memory_write: '/pages/package_feature/memory_write/chinese/index',
-  kousuan:'/pages/package_feature/kousuan/index'
+  kousuan:'/pages/package_feature/kousuan/index',
+  baobeicepin:'/pages/package_preschool/evaluation/index'
 }
 module.exports = {
   feature_route: feature_route,

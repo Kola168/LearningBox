@@ -27,22 +27,31 @@ page {
 
 .show-img {
   width: 556rpx;
+  flex:1;
   border: 6rpx solid #d6efff;
   border-radius: 20rpx;
   overflow: hidden;
   margin-top: 114rpx;
 }
 
+.show-img-item{
+  width:100%;
+}
+
+.show-img-img{
+  width:100%;
+}
+
 .bottom-box {
-  position: absolute;
   width: 100%;
-  bottom: 60rpx;
-  left: 0;
+  margin-bottom: 60rpx;
 }
 
 .change-box {
   width: 100%;
   display: flex;
+  position:relative;
+  margin-top:20rpx;
   justify-content: center;
 }
 
