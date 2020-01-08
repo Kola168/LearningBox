@@ -35,6 +35,9 @@ Page({
   }
   },
   onLoad: co.wrap(function* (options) {
+    this.setData({
+      naem:options.name
+    })
     this.options = options
     console.log(options)
     this.longToast = new app.weToast()
