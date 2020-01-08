@@ -4,11 +4,11 @@
 <block wx:if="{{!showIntro}}">
     <view class="padding">
     <view style="margin-bottom:280rpx;">
-        <view class="item-3" bindtap='toList' id="{{index}}" wx:for="{{allSubjects[activePeriodIndex]}}"
-            wx:key="allSubjects[activePeriodIndex]">
+        <view class="item-3" bindtap='toList' id="{{index}}" wx:for="{{subjectList}}"
+            wx:key="subjectList">
             <image src="../images/error_book_{{item.id}}.png" class='url-3' mode="aspectFill"></image>
             <view class='title title-3'>{{item.name}}</view>
-            <view class="count">共错{{subjectList[item.name].length||0}}题</view>
+            <view class="count">共错{{item.count}}题</view>
         </view>
     </view>
     <image class="use-book" mode="widthFix" src="../images/use_book.png" bindtap="toUsePage"></image>
@@ -34,7 +34,6 @@
     </view>
 </block>
 <block wx:if="{{showIntro}}">
-    <view class="app-bottom-tip" wx:if="{{from_temp}}" bindtap="backToHome">返回首页</view>
     <image class="intro" mode="widthFix" src="https://cdn.gongfudou.com/miniapp/ec/error_book_intro1.png"></image>
 
     <view class="bottom" bindtap="toNextPage">

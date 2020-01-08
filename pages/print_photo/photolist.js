@@ -367,13 +367,23 @@ Page({
       this.longToast.toast({
         type: "loading",
       })
-
+      let that=this
       let imgs = []
       _.each(this.data.photoList,function(value,index,list){
-        imgs[index]={
-          originalUrl:value.localUrl,
-          printUrl:value.url
+        if(value.editImg){
+          imgs[index]={
+            originalUrl:value.localUrl,
+            printUrl:value.url,
+            copies:value.number
+          }
+        }else{
+          imgs[index]={
+            originalUrl:value.localUrl,
+            printUrl:imginit.mediaResize(value.localUrl,that.mediaType),
+            copies:value.number
+          }
         }
+
       })
       let resp = yield commonRequest.createOrder(this.mediaType, imgs)
       wxNav.navigateTo(`pages/finish/index`, {
@@ -421,7 +431,8 @@ Page({
       type: "loading",
     })
     this.setData({
-      [`photoList[${postData.index}].url`]: postData.url
+      [`photoList[${postData.index}].url`]: postData.url,
+      [`photoList[${postData.index}].editImg`]: true,
     })
     this.longToast.toast()
   },

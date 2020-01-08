@@ -1,29 +1,18 @@
 <nav-bar title="测评与考试"></nav-bar>
-<view class="container">
+<view class="container" wx:if="{{loadReady}}">
   <view class="tip-img">
-    <image src="../../images/temp_1.png" mode="widthFix" />
-    <view>海量优质真题试卷，随心打印</view>
+    <image src="../../images/nav_figure_card.png" mode="widthFix" />
+    <view wx:if="{{printPaperCount===0}}">海量优质真题试卷，随心打印</view>
+    <view wx:else>已做{{printPaperCount}}套卷子，超越{{percentage}}%的同学</view>
   </view>
   <view class="subjects">
-    <view class="subject-item">
-      <image src="../../images/chinese_icon.png" mode="widthFix" />
-      <view class="item-name">语文</view>
-      <view class="item-count">共4958套试卷</view>
-    </view>
-    <view class="subject-item">
-      <image src="../../images/english_icon.png" mode="widthFix" />
-      <view class="item-name">语文</view>
-      <view class="item-count">共4958套试卷</view>
-    </view>
-    <view class="subject-item">
-      <image src="../../images/math_icon.png" mode="widthFix" />
-      <view class="item-name">语文</view>
-      <view class="item-count">共4958套试卷</view>
-    </view>
-    <view class="subject-item">
-      <image src="../../images/math_icon.png" mode="widthFix" />
-      <view class="item-name">语文</view>
-      <view class="item-count">共4958套试卷</view>
+    <view class="subject-item" wx:for="{{subjects}}" wx:key="sn" bindtap="toSubject" id="{{item.sn}}" data-id="{{item.subjectId}}">
+      <image src="{{item.iconUrl}}" mode="widthFix" />
+      <view class="item-name">{{item.subjectName}}</view>
+      <view class="item-count">共{{item.totalNumber}}套试卷</view>
     </view>
   </view>
 </view>
+<!-- loading -->
+<import src="/lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />

@@ -5,6 +5,6 @@
   "usingComponents": {
     "confirm-reinforce-modal": "../../../../components/confirm-reinforce-modal/index",
     "progress-modal": "../../../../components/progress-modal/index",
-    "confirm-print": "../../../../components/confirm-print"
+    "confirm-print": "../../../components/confirm-print"
   }
 }

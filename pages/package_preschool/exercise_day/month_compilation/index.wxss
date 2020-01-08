@@ -1,0 +1,98 @@
+/* pages/package_preschool/exercise_day/month_compilation/index.wxss */
+
+.month-main {
+  width: 100%;
+  height: 100vh;
+  background-color: #975e38;
+}
+
+.month-main .header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 36rpx;
+  width: 100%;
+  height: 80rpx;
+  box-sizing: border-box;
+}
+
+.search-main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 174rpx;
+  height: 44rpx;
+  background-color: #6B330B;
+  border-radius: 20rpx;
+  font-size: 30rpx;
+  text-align: center;
+  color: #FFFFFF;
+}
+
+.year-name {
+  display: inline-block;
+}
+
+.arrow-icon {
+  display: inline-block;
+  margin-top: 10rpx;
+  width: 0;
+  height: 0;
+  border-top: 10rpx solid white;
+  border-right: 10rpx solid transparent;
+  border-bottom: 10rpx solid transparent;
+  border-left: 10rpx solid transparent;
+}
+
+.month-list-main {
+  padding: 0 36rpx;
+}
+
+.month-line {
+  position: relative;
+  display: flex;
+  justify-content: space-around;
+  padding-top: 40rpx;
+  background-color: #6B330B;
+}
+
+.month-line::after{
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  content: '';
+  width: 100%;
+  height: 20rpx;
+  background-color: #985E34;
+}
+
+.month-item {
+  width: 274rpx;
+  position: relative;
+}
+
+.month-item .month-name {
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  bottom: 44rpx;
+  left: 50%;
+  width: 188rpx;
+  height: 188rpx;
+  margin-left: -94rpx;
+  color: #333333;
+}
+
+.month-num {
+  font-size: 116rpx;
+  height: 188rpx;
+  font-weight: 500;
+  line-height: 188rpx;
+}
+
+.month-unit {
+  font-size: 30rpx;
+  padding-top: 97rpx;
+  height: 188rpx;
+  box-sizing: border-box;
+}

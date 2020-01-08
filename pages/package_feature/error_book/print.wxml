@@ -1,6 +1,7 @@
 <!--pages/error_book/pages/error_book/print.wxml-->
 <!-- <image mode="widthFix">
     </image> -->
+<nav-bar background="#fff" title="错题本"></nav-bar>
 <swiper class="swiper-box" duration="500" current="{{num}}" bindchange="tab_slide" circular="{{circular}}" style="width:100%;height:{{areaHeight}}rpx">
     <block wx:for="{{convert_urls}}" wx:key="convert_urls">
         <swiper-item>
@@ -17,14 +18,14 @@
         <text style="color: #999;">{{num+1}}/{{convert_urls.length}}</text>
     </view>
     <view class="turn-image">
-        <image class="turn-image-item turn-image-left" src="/images/preview-turn-left.png" mode="widthFix" data-turn="left"
+        <image class="turn-image-item turn-image-left" src="/images/doc_preview_turn_left.png" mode="widthFix" data-turn="left"
             catchtap="turnImg"></image>
-        <image class="turn-image-item" src="/images/preview-turn-right.png" mode="widthFix" data-turn="right" catchtap="turnImg"></image>
+        <image class="turn-image-item" src="/images/doc_preview_turn_right.png" mode="widthFix" data-turn="right" catchtap="turnImg"></image>
     </view>
 </view>
 <scroll-view class="templetes" scroll-x>
     <view class="templetes-item" wx:for="{{template}}" wx:key="template" id="{{index}}" bindtap="changeTemp">
-        <image mode="widthFix" src="{{item.url.url}}">
+        <image mode="widthFix" src="{{item.imageUrl}}">
             <view class="temp-border {{template_id==item.id?'yellow':''}}">
                 <view>{{item.name}}</view>
             </view>
@@ -36,13 +37,13 @@
         <!-- 色彩选择 -->
         <view>
             <text class='title'>色彩选择</text>
-            <image class="print-effect-pic" src="/images/manage_intro.png" bindtap="showExamModal"/>
+            <image class="print-effect-pic" src="/images/pic2doc_tip_icon.png" bindtap="showExamModal"/>
         </view>
     </view>
     <view class="setting-right">
         <view class="switch-item" wx:for="{{selectColors}}" wx:key="*this">
              <text>{{item.name}}</text>
-            <image mode="widthFix" src="{{item.selected ?'/images/selected_yellow.png':'/images/noselected.png'}}" bindtap="chooseColor" data-index="{{index}}"></image>
+            <image mode="widthFix" src="{{item.selected ?'../images/document_checked.png':'../images/icon_circle_not_selected.png'}}" bindtap="chooseColor" data-index="{{index}}"></image>
         </view>
     </view>
 </view>
@@ -54,12 +55,12 @@
         <view class="setting-right">
             <view>
                 <text>是</text>
-                <image mode="widthFix" src="/images/{{answer==1?'selected_yellow':'noselected'}}.png"
+                <image mode="widthFix" src="../images/{{answer==1?'document_checked':'icon_circle_not_selected'}}.png"
                     bindtap="changeAnswer" id="1"></image>
             </view>
             <view style="margin-left:30rpx;">
                 <text>否</text>
-                <image mode="widthFix" src="/images/{{answer==2?'selected_yellow':'noselected'}}.png"
+                <image mode="widthFix" src="../images/{{answer==2?'document_checked':'icon_circle_not_selected'}}.png"
                     bindtap="changeAnswer" id="2"></image>
             </view>
         </view>
@@ -70,14 +71,15 @@
         <image mode="widthFix" src="../images/error_book_save.png"></image>
         <text>保存</text>
     </button>
-    <form report-submit="{{true}}" bindsubmit="quickPrint" class="right">
-        <button hover-class="none" open-type="{{hasAuthPhoneNum?'':'getPhoneNumber'}}" bindgetphonenumber="{{hasAuthPhoneNum?'':'getPhoneNumber'}}" form-type='submit'>立即打印</button>
+    <form report-submit="{{true}}" class="right">
+        <button hover-class="none" form-type='submit'>立即打印</button>
+        <bottom-button class="bottom-button-box" text-right="确认打印" bindrighttap="quickPrint" get-phone="{{true}}">
+        </bottom-button>
     </form>
 </view>
 
 <!-- 打印确认框 -->
 <confirm-print bindconfirm="confirmPrint" modal="{{confirmModal}}"></confirm-print>
-
 <confirm-reinforce-modal></confirm-reinforce-modal>
 <progress-modal  percent="{{percent}}" wx:if="{{showupLoad}}" bindcancel="cancelDraw" slotTitle="{{showTitle}}" slotContent="{{showContent}}">
     <view class="progress-title" slot="title">图片正在处理中</view>

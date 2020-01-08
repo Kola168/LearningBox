@@ -1,0 +1,4 @@
+<nav-bar background="#fff" title="拍照搜题"></nav-bar>
+<image src="https://cdn.gongfudou.com/miniapp/ec/photo_answer_intro.png" mode="widthFix" />
+<button wx:if="{{allowCamera}}" hover-class="none" bindtap="allowAuth">开始拍照</button>
+<button wx:else open-type="openSetting" hover-class="none" bindopensetting="authBack">开始拍照</button>

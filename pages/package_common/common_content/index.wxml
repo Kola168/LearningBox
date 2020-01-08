@@ -1,0 +1,27 @@
+<!--pages/package_common/common_content/index.wxml-->
+<nav-bar background="#fff" title="在家上早教"></nav-bar>
+<block wx:for="{{allList}}" wx:key="allList">
+    <view class="title">{{item.name}}</view>
+    <view class="content-wrap">
+        <view class="content-item" wx:for="{{item.children}}" wx:for-item="data" wx:key="children" id="{{data.sn}}" bindtap="toNextPage">
+            <image src="{{data.previewUrl}}" mode="widthFix" />
+            <view>{{data.name}}</view>
+        </view>
+    </view>
+</block>
+
+
+<view class="title">宝宝成长计划</view>
+<view class="plan-item">
+    <image src="https://cdn-h.gongfudou.com/epbox/backend/2019/11/26/84c12303-be26-4814-a967-6baa1c125af8.jpg"
+        mode="widthFix" />
+    <view class="plan-right">
+        <view class="plan-title">好奇宝宝培养计划</view>
+        <view>大风起兮云飞扬，威加海内兮归故乡</view>
+        <view class="play-sort">在家上早教</view>
+        <view class="button-subscription">订阅</view>
+    </view>
+</view>
+
+<import src="../../../lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />

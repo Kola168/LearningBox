@@ -5,29 +5,49 @@ import {
 } from '../../../utils/common_import'
 const app = getApp()
 import graphql from '../../../network/graphql_request'
-import wxPay from '../../../utils/wxPay'
 import Logger from '../../../utils/logger.js'
 const logger = new Logger.getLogger('pages/package_course/issue_center/issue_center')
 import router from '../../../utils/nav'
+import commonRequest from '../../../utils/common_request'
 Page({
   data: {
     sn: null, //课程id
     loading: false, //loading状态
     usePoints: true,
+    paymentOrder: null, //订单支付信息
   },
   
-  onLoad: function (options) {
+  onLoad: co.wrap(function * (options) {
     var _this = this
     _this.longToast = new app.weToast()
     _this.data.sn = options.sn || ''
-    _this.getCourses()
-  },
+    yield _this.getCourses()
+    yield _this.payOrder()
+  }),
 
   switchPoints: function () {
     this.setData({
       usePoints: !this.data.usePoints
     })
   },
+  
+  payOrder: co.wrap(function *(params) {
+    this.longToast.toast({
+      type: 'loading',
+      title: '请稍后'
+    })
+    try {
+      var resp = yield commonRequest.createPaymentOrder(this.data.sn, 'course')
+      this.setData({
+        paymentOrder: resp.createPaymentOrder.paymentOrder
+      })
+    } catch (err) {
+      util.showError(err)
+      logger.info(err)
+    } finally {
+      this.longToast.hide()
+    }
+  }),
 
   getCourses: co.wrap(function* () {
     this.longToast.toast({
@@ -48,54 +68,19 @@ Page({
 
   // 提交订单
   submitOrder: co.wrap(function* (e) {
+    this.longToast.toast({
+      type: 'loading'
+    })
     try {
-      var _this = this
-      yield _this.getPayment()
+      commonRequest.createPayment(this.data.paymentOrder.sn, ()=>{
+        this.longToast.hide()
+        this.paySuccess()
+      },(err)=>{
+        this.longToast.hide()
+        util.showError(err)
+      })
     } catch (err) {
       logger.info(err)
-    }
-  }),
-
-  // 获取支付能力
-  getPayment: co.wrap(function* () {
-    try {
-      var _this = this
-      _this.setData({
-        loading: true
-      })
-      this.longToast.toast({
-        type: 'loading',
-        title: '请稍后'
-      })
-      var params = {
-        sn: _this.data.sn,
-        type: "course",
-      }
-      var payment =  yield graphql.getPaymentCheck(params)
-      var isFree = payment.currentUser.paymentCheck && payment.currentUser.paymentCheck.free
-
-      if (isFree) {
-        yield graphql.createResource(params)
-      } else {
-        var payOrder = yield graphql.createPaymentOrder(params)
-        var resp = yield graphql.createPayment({
-          paymentSn: payOrder.createPaymentOrder.paymentOrder.sn,
-          paymentMethod: "wechat_miniapp"
-        })
-
-        var payParams = resp.payParams
-        console.log(payParams,'==payParams==')
-      }
-   
-      _this.paySuccess()
-
-    } catch (e) {
-      util.showError(e)
-    } finally {
-      _this.setData({
-        loading: false
-      })
-      this.longToast.hide()
     }
   }),
 

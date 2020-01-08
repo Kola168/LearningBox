@@ -17,7 +17,7 @@
     <view class="btn-right" hidden="{{type===''}}">
       {{type==='template'?'我要打印':'编辑完成'}}
       <!-- getPhoneNumber -->
-      <botttom-button class="cover-but" text-right="{{type==='template'?'我要打印':'编辑完成'}}" bindrighttap="preCheck" get-phone="{{true}}"></botttom-button>
+      <bottom-button class="cover-but" text-right="{{type==='template'?'我要打印':'编辑完成'}}" bindrighttap="preCheck" get-phone="{{true}}"></bottom-button>
     </view>
   </view>
 </view>

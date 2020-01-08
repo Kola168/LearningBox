@@ -2,80 +2,51 @@
 
 const app = getApp()
 import { regeneratorRuntime, co, util, storage, wxNav } from '../../../../utils/common_import'
-import api from '../../../../network/restful_request'
+import graphql from '../../../../network/graphql/feature'
 Page({
   data: {
     showSelector: false,
     writeList: [],
     grades: [],
-    types: [],
     currentGrade: null,
-    currentType: null,
-    showTip: false,
+    topBarHeight: 0,
     checkCount: 0,
     allCheck: false,
     loadReady: false,
-    isEmpty: false
+    isEmpty: false,
+    isFullScreen: false
   },
-  onLoad: co.wrap(function*(options) {
+  onLoad: co.wrap(function*(query) {
     this.weToast = new app.weToast()
-      // if (options.scene) {
-      //   let fromScene = decodeURIComponent(options.scene)
-      //   let scene = fromScene.split('_')
-      //   if (scene[0] === 'application') {
-      //     this.share_user_id = scene[1]
-      //     this.way = 5
-      //   }
-      // }
+    this.sn = query.sn
     let showIntro = storage.get('hasViewCnWrite')
     this.setData({
-      showIntro: showIntro ? false : true
+      isFullScreen: app.isFullScreen,
+      showIntro: showIntro ? false : true,
+      topBarHeight: app.navBarInfo.topBarHeight
     })
-    this.page = 1
-    this.pageSize = 20
     if (showIntro) {
-      let filterInfo = yield this.getFilters()
-      if (filterInfo.hasFilter) {
-        this.getWriteList()
-      }
+      yield this.getGrades()
+      yield this.getWriteList()
     }
   }),
   startWrite: co.wrap(function*() {
-    // let unionId = wx.getStorageSync('unionId')
-    // console.log('应用二维码参数传参', this.share_user_id, this.way)
-    // if (unionId) {
     storage.put('hasViewCnWrite', true)
     this.setData({
       showIntro: false
     })
-    let filterInfo = yield this.getFilters()
-    if (filterInfo.hasFilter) {
-      this.getWriteList()
-    }
-    // } else {
-    //   let url = this.share_user_id ? `/pages/authorize/index?share_user_id=${this.share_user_id}&way=${this.way}` : `/pages/authorize/index`
-    //   wx.navigateTo({
-    //     url: url,
-    //   })
-    // }
+    yield this.getGrades()
+    this.getWriteList()
   }),
-  navTap(e) {
-    let type = e.currentTarget.id
-    this.setData({
-      currentType: type,
-    })
-    this.resetData()
-  },
   selectorItemCheck(e) {
-    let index = e.currentTarget.id
+    let index = e.currentTarget.id,
+      currentGrade = this.data.grades[index]
     this.setData({
-      currentGrade: this.data.grades[index]
-    })
+        currentGrade
+      })
     this.resetData()
   },
-  resetData(){
-    this.page = 1
-    this.pageEnd = false
+  resetData() {
     this.setData({
       allCheck: false,
       isEmpty: false,
@@ -114,11 +85,7 @@ Page({
       showSelector: !this.data.showSelector
     })
   },
-  ctrlTip() {
-    this.setData({
-      showTip: !this.data.showTip
-    })
-  },
+
   toPrint(e) {
     let sns = [],
       type = ''
@@ -139,80 +106,59 @@ Page({
       this.weToast.hide()
     }
     wxNav.navigateTo('../chinese/print', {
-      sns: JSON.stringify(sns),
-      type: type
+      sns: encodeURIComponent(JSON.stringify(sns))
     })
   },
-  onReachBottom() {
-    if (this.pageEnd) return
-    this.getWriteList()
-  },
-  getFilters: co.wrap(function*() {
+  getGrades: co.wrap(function*() {
     this.weToast.toast({
-      type:'loading'
+      type: 'loading'
     })
     try {
-      let grades = yield this.getGrades(),
-        types = yield this.getTypes(),
-        currentGrade = grades[0],
-        currentType = types[0].key
+      let res = yield graphql.getStages(this.sn),
+        grades = res.userStages.siblings,
+        currentGrade = res.userStages.currentStage
       this.setData({
-        currentType,
         currentGrade,
-        grades,
-        types
+        grades
       })
       this.weToast.hide()
-      return {
-        hasFilter: true
-      }
     } catch (error) {
       this.weToast.hide()
       util.showError(error)
     }
   }),
-  getGrades: co.wrap(function*() {
-    let resp = yield api.getWritesGradess()
-    if (resp.code !== 0) {
-      throw (resp)
-    }
-    return resp.res
-  }),
-  getTypes: co.wrap(function*() {
-    let resp = yield api.getChineseWritesTypes()
-    if (resp.code !== 0) {
-      throw (resp)
-    }
-    return resp.res
-  }),
   getWriteList: co.wrap(function*() {
     this.weToast.toast({
-      type:'loading'
+      type: 'loading'
     })
     try {
-      let stageSn = this.data.currentGrade.sn,
-        outer = this.data.currentType,
-        page = this.page++;
-      let resp = yield api.getWriteList('cn', stageSn, outer, page)
-      if (resp.code !== 0) {
-        throw (resp)
+      let categorys = this.data.currentGrade.guessWriteCategories
+      if (categorys.length === 0) {
+        this.setData({
+          isEmpty: true
+        })
+        this.weToast.hide()
+        return
       }
-      let writeType = this.data.currentType,
-        currentWriteList = this.data.writeList,
-        tempData = resp.res,
-        isEmpty = page === 1 && tempData.length === 0
-      this.pageEnd = tempData.length < this.pageSize ? true : false
-      if (writeType === 'ymz') {
+      let resp = yield graphql.getWriteList(categorys[0].sn),
+        writeList = resp.category.children,
+        isEmpty = writeList.length >= 0 ? false : true
+      if (isEmpty) {
+        this.setData({
+          isEmpty
+        })
+        return
+      } else {
         let checkFlag = this.data.allCheck ? true : false
-        for (let i = 0; i < tempData.length; i++) {
-          tempData[i].isCheck = checkFlag
+        for (let i = 0; i < writeList.length; i++) {
+          writeList[i].isCheck = checkFlag
         }
+        this.setData({
+          writeList,
+          isEmpty,
+          loadReady: true
+        })
       }
-      this.setData({
-        writeList: currentWriteList.concat(tempData),
-        loadReady: true,
-        isEmpty
-      })
       this.weToast.hide()
     } catch (error) {
       this.weToast.hide()

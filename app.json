@@ -47,7 +47,7 @@
     "pages/finish/index",
     "pages/mall/index",
     "pages/webview/index",
-		"pages/webview/member"
+    "pages/webview/member"
   ],
   "subPackages": [
     {
@@ -64,7 +64,14 @@
         "records/detail/index",
         "records/cancel_intro/index",
         "feedback/index",
-        "my_collection/index"
+        "my_collection/index",
+        "common_content/index",
+        "common_content/list",
+        "common_content/preview",
+        "common_content/setting",
+        "order_record/index/index",
+        "order_record/order/order",
+        "setting/setting"
       ]
     },
     {
@@ -122,6 +129,7 @@
         "share_folder/share_manage",
         "share_folder/content",
         "share_folder/manage",
+        "memory_write/index/index",
         "memory_write/chinese/index",
         "memory_write/chinese/print",
         "memory_write/english/index",
@@ -131,16 +139,29 @@
         "error_book/use_page",
         "error_book/camera",
         "error_book/edit_pic",
+        "error_book/topic_details",
+        "error_book/print",
+        "error_book/setting",
+        "error_book/submit_success",
+        "error_book/photo_anwser_intro",
+        "error_book/answer_result",
+        "error_book/answer_print",
         "kousuan/index",
-        "error_book/topic_details"
+        "kousuan/learningplan",
+        "kousuan/createplan",
+        "kousuan/pointslist",
+        "kousuan/previewWebview"
       ]
     },
     {
       "root": "pages/package_member",
       "pages": [
-				"pay/index",
-				"group/index"
-			]
+        "member/active",
+        "member/caculate",
+        "member/index",
+        "member/order",
+        "group/index"
+      ]
     },
     {
       "root": "pages/package_other",
@@ -158,7 +179,20 @@
         "growth_plan/print_setting/print_setting",
         "growth_plan/checkpoint/plan_checkpoint",
         "growth_plan/checkpoint/plan_detail",
-        "exercise_day/index/index"
+        "exercise_day/setting/setting",
+        "evaluation/index",
+        "evaluation/choosegrade",
+        "evaluation/secondlevel",
+        "evaluation/test",
+        "evaluation/testfinish",
+        "evaluationprint/printpreview",
+        "evaluationprint/printset",
+        "exercise_day/exercises/exercises",
+        "exercise_day/month_compilation/index",
+        "exercise_day/answer/index",
+        "exercise_day/certificate/index",
+        "exercise_day/month_compilation_subject/index",
+        "exercise_day/finish/index"
       ]
     },
     {
@@ -166,8 +200,14 @@
       "pages": [
         "sync_learn/index/index",
         "sync_learn/learn_content/index",
+        "sync_learn/learn_detail/index",
+        "sync_learn/preview_subject/index",
+        "setting/setting",
         "evaluate_exam/index/index",
-        "evaluate_exam/testpaper/index"
+        "evaluate_exam/testpaper/index",
+        "evaluate_exam/preview/index",
+        "correct/index",
+        "weakness_exercise/index/index"
       ]
     },
     {
@@ -190,19 +230,19 @@
 				"network/tips/step3",
 				"network/tips/step4",
         "network/wificonnect/list",
-				"network/wificonnect/connect",
-				"ble/common/connect_success",
-				"ble/common/no_bluetooth",
-				"ble/common/bluetooth_intro",
-				"ble/common/no_device",
-				"ble/common/no_wifi",
-				"ble/device/index",
-				"ble/device/device",
-				"ble/device/device_connect",
-				"ble/network/configure",
-				"ble/network/wifi_list",
-				"ble/printer/index",
-				"ble/common/serach_serial"
+        "network/wificonnect/connect",
+        "ble/common/connect_success",
+        "ble/common/no_bluetooth",
+        "ble/common/bluetooth_intro",
+        "ble/common/no_device",
+        "ble/common/no_wifi",
+        "ble/device/index",
+        "ble/device/device",
+        "ble/device/device_connect",
+        "ble/network/configure",
+        "ble/network/wifi_list",
+        "ble/printer/index",
+        "ble/common/serach_serial"
       ]
     }
   ],
@@ -215,9 +255,8 @@
   },
   "usingComponents": {
     "nav-bar": "components/nav-bar/index",
-    "botttom-button": "components/bottom-button/index"
+    "bottom-button": "components/bottom-button/index"
   },
-  "style": "v2",
   "sitemapLocation": "sitemap.json",
   "tabBar": {
     "color": "#BFBFBF",
@@ -251,5 +290,8 @@
         "selectedIconPath": "images/home/icon_tab_account_selected.png"
       }
     ]
-  }
+  },
+  "navigateToMiniProgramAppIdList": [
+    "wxfb4fb840f87fef41"
+  ]
 }

@@ -1,0 +1,127 @@
+/* pages/package_preschool/exercise_day/exercises/exercises.wxss */
+
+.main-box {
+  width: 100%;
+  height: calc( 100vh - 68rpx );
+  background-color: #FEEECA;
+}
+
+.exercise-app {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 30rpx 46rpx 40rpx 46rpx;
+}
+
+.exercise-app .compilation-month {
+  position: relative;
+  width: 208rpx;
+  height: 74rpx;
+}
+
+.exercise-app .baby-certificate {
+  position: relative;
+  width: 240rpx;
+  height: 74rpx;
+}
+
+.new-tag {
+  position: absolute;
+  right: 10rpx;
+  top: 20rpx;
+  width: 70rpx;
+  height: 35rpx;
+  background-color: #fc4026;
+  border-radius: 10rpx 10rpx 10rpx 0;
+  font-size: 24rpx;
+  color: #fff;
+  text-align: center;
+  line-height: 30rpx;
+}
+
+.exercise-app .name {
+  position: absolute;
+  left: 20rpx;
+  top: 0;
+  width: 100%;
+  line-height: 100%;
+  font-size: 28rpx;
+  color: #fff;
+}
+
+.exercise-subject {
+  margin: 0 60rpx;
+  height: calc( 100vh - 476rpx );
+  background: #FFFFFF;
+  box-shadow: 0 0 34rpx 0 rgba(144,92,116,0.31);
+  border-radius: 20rpx;
+}
+
+swiper {
+  width: 100%;
+  height: calc( 100vh - 476rpx );
+}
+
+swiper-item{
+  width: 100%;
+  height: calc( 100vh - 476rpx );
+}
+
+.swiper-img {
+  width: 100%;
+  border-radius: 20rpx 20rpx 0 0;
+}
+
+.btn-main {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 50rpx auto 0;
+  width: calc( 100% - 44rpx );
+}
+
+.btn-main .btn {
+  width: 320rpx;
+  height: 98rpx;
+  line-height: 98rpx;
+  text-align: center;
+  border-radius: 60rpx;
+  font-size: 36rpx;
+  box-sizing: border-box;
+}
+
+.btn-handbook {
+  color: #905C74;
+  border: 2rpx solid #905C74;
+}
+
+.btn-print {
+  color: #fff;
+  background: #905C74;
+}
+
+
+
+/* 首页 styles */
+.main-index-box image {
+  position: relative;
+  width: 100%;
+  min-height: 50vh;
+}
+
+.main-index-box .btn {
+  position: absolute;
+  left: 50%;
+  bottom: 46rpx;
+  width: 700rpx;
+  height: 98rpx;
+  line-height: 98rpx;
+  text-align: center;
+  font-size: 36rpx;
+  color: #FFFFFF;
+  border-radius: 50rpx;
+  background: #905C74;
+  box-shadow: 0 4rpx 0 0 #733753;
+  margin-left: -350rpx;
+}

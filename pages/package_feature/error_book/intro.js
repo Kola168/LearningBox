@@ -2,10 +2,18 @@
 "use strict"
 const co = require('../../../lib/co/co')
 const regeneratorRuntime = require('../../../lib/co/runtime')
+import router from '../../../utils/nav'
+import gql from '../../../network/graphql_request.js'
+import Logger from '../../../utils/logger.js'
+const logger = new Logger.getLogger('pages/index/index')
 
 Page({
 	data: {
-		from_temp: false
+		from_temp: false,
+		// error_book:错题本首次上传图片
+		// topic_details:错题详情页补充图片
+		// photo_answer:拍搜
+		from: '',
 	},
 	onLoad: co.wrap(function* (options) {
 		this.way = 1
@@ -29,28 +37,22 @@ Page({
 	toNextPage: function () {
 		let unionId = wx.getStorageSync('unionId')
 		if (!unionId) {
-			let url = this.share_user_id ? `/pages/authorize/index?url=${url}&share_user_id=${this.share_user_id}&way=${this.way}` : `/pages/authorize/index`
-			return wx.navigateTo({
-				url
+			return router.navigateTo('/pages/authorize/index', {
+				url: url,
+				share_user_id: this.share_user_id,
+				way: this.way
 			})
-		}else{
+		} else {
 			let errorBook = {
 				hideIntro: true,
 				hideHomeTip: false,
 				hideCameraTip: false
 			}
 			wx.setStorageSync('errorBook', errorBook)
-			return wx.redirectTo({
-				url: `index`
-			})
+			return router.redirectTo('/pages/package_feature/error_book/index')
 		}
 	},
 	onShareAppMessage: function () {
 
-	},
-	backToHome: function () {
-		wx.switchTab({
-			url: '../../index/index'
-		})
 	}
 })

@@ -1,7 +1,12 @@
 const app = getApp()
 const event = require('../../../lib/event/event')
-import { regeneratorRuntime, co, util, wxNav } from '../../../utils/common_import'
-import graphql from '../../../network/graphql_request'
+import {
+  regeneratorRuntime,
+  co,
+  util,
+  wxNav
+} from '../../../utils/common_import'
+import graphql from '../../../network/graphql/device'
 Page({
   data: {
     device: {
@@ -11,34 +16,33 @@ Page({
     modalType: "",
     printType: "ep320",
     renameVal: "",
-    // 电脑打印
-    computerPrintFlag: false,
     modalObj: {
       isShow: false,
       title: '',
-      showCancel: false,
       image: '',
       content: '',
-      soltContent: false,
+      slotContent: false,
       confirmText: ''
     }
   },
-  onLoad: function(query) {
+  onLoad: function (query) {
     this.weToast = new app.weToast()
     this.resetModalObj = this.data.modalObj
     this.deviceSn = query.sn
     this.getDeviceDetail()
   },
 
-  getDeviceDetail: co.wrap(function*() {
+  getDeviceDetail: co.wrap(function* () {
     this.weToast.toast({
       type: 'loading'
     })
     try {
       let res = yield graphql.getDeviceDetail(this.deviceSn)
       this.weToast.hide()
+      let device = res.currentUser.devices[0]
+      this.pressPrint = res.currentUser.pressPrint
       this.setData({
-        device: res.currentUser.devices[0]
+        device
       })
     } catch (error) {
       this.weToast.hide()
@@ -57,22 +61,22 @@ Page({
    * @param {string} setKey required 设置的选项
    * @param {string} setVal required 设置选项值
    */
-  updateDeviceSetting: co.wrap(function*(setKey, setVal) {
+  updateDeviceSetting: co.wrap(function* (setKey, setVal) {
     this.weToast.toast({
       type: 'loading'
     })
     try {
       yield graphql.updateDeviceSetting(this.deviceSn, {
         [setKey]: setVal
-      }, setKey).then(function(res) {
-				console.log('更新系统设置=====',res)
-			})
+      }, setKey)
+      if (setKey === 'connectTo') {
+        setKey = 'connectThrough'
+      }
       this.setData({
         [`device.${setKey}`]: setVal
       })
       this.weToast.hide()
     } catch (error) {
-			console.log(error)
       this.weToast.hide()
       util.showError(error)
     }
@@ -87,7 +91,7 @@ Page({
   },
 
   // 弹窗提示
-  showModal(e) {
+  showModal: co.wrap(function* (e) {
     try {
       let modalType = e.currentTarget.id,
         modalObj = Object.assign({}, this.resetModalObj),
@@ -125,18 +129,19 @@ Page({
           modalObj.slotContent = true
           extraData.renameVal = ''
           break;
-        case "computerPrint":
-          let switchFlag = this.data.computerPrintFlag
-            // 重新显示提示框
+        case "connectThrough":
+          let switchFlag = this.data.device.connectThrough === 'pc' ? true : false
+          // 重新显示提示框
           this.reSwitchComputerPrint = false
           if (switchFlag) {
             if (e.hasComputerStatus) {
               modalObj.title = "您现在已处于电脑打印状态"
               modalObj.content = "此时在小程序上发送的打印任务暂时无法打印哦"
             } else {
+              let type = this.data.device.connectThrough === 'box' ? 'pc' : 'box'
+              yield this.updateDeviceSetting('connectTo', type)
               modalObj.title = "电脑打印状态已关闭"
               modalObj.content = "小程序已恢复打印状态"
-              extraData.computerPrintFlag = !switchFlag
             }
           } else {
             modalObj.title = "电脑端打印请提前检查驱动是否安装完成"
@@ -156,20 +161,19 @@ Page({
     } catch (error) {
       console.log(error)
     }
-  },
+  }),
 
   // 确认弹窗
-  confirmModal() {
+  confirmModal: co.wrap(function* () {
     let modalType = this.modalType
     switch (modalType) {
-      case "computerPrint":
+      case "connectThrough":
         if (this.reSwitchComputerPrint) {
-          this.setData({
-            computerPrintFlag: !this.data.computerPrintFlag
-          })
+          let type = this.data.device.connectThrough === 'box' ? 'pc' : 'box'
+          yield this.updateDeviceSetting('connectTo', type)
           this.showModal({
             currentTarget: {
-              id: "computerPrint"
+              id: "connectThrough"
             },
             hasComputerStatus: true
           })
@@ -185,7 +189,7 @@ Page({
         this.unbindDevice()
         break;
     }
-  },
+  }),
 
   // 确认修改名称
   comfirmRename() {
@@ -204,7 +208,7 @@ Page({
   },
 
   // 解绑打印机
-  unbindDevice: co.wrap(function*() {
+  unbindDevice: co.wrap(function* () {
     this.weToast.toast({
       type: 'loading'
     })
@@ -232,16 +236,16 @@ Page({
     wxNav.navigateTo(`../offline/index`)
   },
 
-  // 长按打印
+  // 跳转
   toNextPage(e) {
     let pageKey = e.currentTarget.dataset.key,
       url = '',
-      params = {
-
-      }
+      params = {}
     switch (pageKey) {
       case "longpress":
         url = `../longpress/index`
+        params.sn = this.deviceSn
+        params.pressPrint = Number(this.pressPrint)
         break;
       case "offlineSolve":
         url = `../offline/index`
@@ -260,13 +264,15 @@ Page({
         break;
       case "deviceMaintain":
         url = `../maintain/index/index`
+        params.sn = this.deviceSn
+        params.updateInfo = this.data.device.updateInfo
         break;
     }
     wxNav.navigateTo(url, params)
   },
 
   // 清空打印队列
-  clearJobs: co.wrap(function*() {
+  clearJobs: co.wrap(function* () {
     this.weToast.toast({
       type: 'loading'
     })

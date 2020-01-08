@@ -1,0 +1,86 @@
+<!--pages/package_feature/kousuan/createplan.wxml-->
+<nav-bar title="练习计划"></nav-bar>
+
+<view class="configure-box" bindtap="hidePointsScroll">
+  <view class="textbook-box {{pick_type=='grade'?'configure-checked':''}}" data-type="grade" bindtap="showPicker">
+    <view>
+      {{textBookList[gradeIndex].name}}
+    </view>
+    <text class="iconfont icon-show-more {{pick_type=='grade'?'icon-checked':''}}"></text>
+  </view>
+  <view class="textbook-box {{pick_type=='textbook'?'configure-checked':''}}" data-type="textbook" bindtap="showPicker">
+    <view>
+      {{textBookList[gradeIndex].kousuanCategories[textbookIndex].name}}
+    </view>
+    <text class="iconfont icon-show-more {{pick_type=='textbook'?'icon-checked':''}}"></text>
+  </view>
+</view>
+<view class="rest-box" bindtap="hidePointsScroll">
+  <view wx:if="{{pick_type}}" class="picker-box-bg {{showBgAnimate?'pick-box-animate':''}}" bindtap="hidePicker">
+    <view class="picker-box {{showAnimate?'pick-animate':''}}">
+      <view wx:for="{{pickList}}" wx:key="pick_type" class="picker-item {{index==(pick_type=='grade'?gradeIndex:textbookIndex)?'picker-checked':''}}" data-index="{{index}}" catchtap="checkPicker">
+        {{item}}
+      </view>
+    </view>
+    <view class="gray-bg"></view>
+  </view>
+  <view class="plan-box">
+    <view class="plan-top-tip">
+      本计划会在一个星期内连续打印某一项知识点，每天打印一页
+    </view>
+    <view class="plan-draft-box">
+      <view class="check-contain-box">
+        <view class="check-name-box">练习项</view>
+        <view class="check-content-box" data-type="practice" catchtap="checkPoints">
+          <text class="check-value-box">{{calculationList[ksTypeIndex].name}}</text>
+          <text class="iconfont icon-down"></text>
+          <view class="scroll-position-box" wx:if="{{pointType=='practice'}}">
+            <view class="scroll-list-box">
+              <view wx:for="{{pointPickList}}" wx:key="pointType" class="scroll-list {{index==ksTypeIndex?'scroll-list-checked':''}}" data-index="{{index}}" catchtap="tapPractice">
+                {{item}}
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+      <view class="check-contain-box">
+        <view class="check-name-box">知识点</view>
+        <view class="check-content-box" data-type="knowledge" catchtap="checkPoints">
+          <text class="check-value-box">{{calculationList[ksTypeIndex].children[pointIndex].name}}</text>
+          <text class="iconfont icon-down"></text>
+          <view class="scroll-position-box" wx:if="{{pointType=='knowledge'}}">
+            <view class="scroll-list-box">
+              <view wx:for="{{pointPickList}}" wx:key="pointType" class="scroll-list {{index==pointIndex?'scroll-list-checked':''}}" data-index="{{index}}" catchtap="tapKnowledge">
+                {{item}}
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+      <image src="{{calculationList[ksTypeIndex].points[pointIndex].img}}" mode="widthFix" class="check-point-img"></image>
+      <view class="check-contain-box">
+        <view class="check-name-box">每天</view>
+        <view class="check-content-box" data-type="remindTime" catchtap="checkPoints">
+          <text class="check-value-box">{{hours[checkedHourIndex]}}:{{minutes[checkedMinutesIndex]}}</text>
+          <text class="iconfont icon-down"></text>
+          <view class="scroll-position-box" wx:if="{{pointType=='remindTime'}}" catchtap="preventTap">
+            <picker-view class="picker-view-box" indicator-class="picker-choosed" value="{{[checkedHourIndex,checkedMinutesIndex]}}" bindchange="bindChange">
+              <picker-view-column>
+                <view wx:for="{{hours}}" class="picker-item" wx:key="hours">{{item}}</view>
+              </picker-view-column>
+              <picker-view-column>
+                <view wx:for="{{minutes}}" class="picker-item" wx:key="minutes">{{item}}</view>
+              </picker-view-column>
+            </picker-view>
+          </view>
+        </view>
+        <view class="check-print-tip">自动打印</view>
+      </view>
+      <view class="conf-check-but">
+        开启新计划
+      </view>
+    </view>
+  </view>
+</view>
+<import src="/lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />

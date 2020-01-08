@@ -14,7 +14,7 @@
         wx:if="{{kidInfo.name&&kidInfo.stage&&kidInfo.avatar}}"></image>
     <image src="../../images/tip_add_kid_info.png" mode="widthFix" class="after-tip" wx:else></image>
 </view>
-<image src="/images/account_member_center.png" mode="widthFix" class="member" />
+<image src="/images/account_member_center.png" bindtap="member" mode="widthFix" class="member" />
 <view class="has-device" wx:if="{{activeDevice}}" bindtap="toNext" id="deviceList">
     <view class="device-img">
         <image src="/images/{{activeDevice.model==='3115'?'L3115':'EP400'}}.png" mode="widthFix" />
@@ -34,54 +34,14 @@
     <image src="/images/account_add_device.png" mode="widthFix" />
     <view>请先添加设备</view>
 </view>
-<view class="content-wrap">
-    <view class="title">记录与收藏</view>
+<view class="content-wrap" wx:for="{{features}}" wx:key="features">
+    <view class="title">{{item.title}}</view>
     <view class="content">
-        <view class="content-item" bindtap="toNext" id="records">
-            <image src="/images/account_print_record.png" mode="widthFix" />
-            <view>打印记录</view>
-        </view>
-        <view class="content-item">
-            <image src="/images/account_order.png" mode="widthFix" />
-            <view>购买记录</view>
-        </view>
-        <view class="content-item">
-            <image src="/images/account_cllection.png" mode="widthFix" />
-            <view>我的收藏</view>
-        </view>
-    </view>
-</view>
-<view class="content-wrap">
-    <view class="title">帮助与反馈</view>
-    <view class="content">
-        <view class="content-item">
-            <image src="/images/account_use_info.png" mode="widthFix" />
-            <view>使用说明</view>
-        </view>
-        <view class="content-item" bindtap="feedback">
-            <image src="/images/account_feedback.png" mode="widthFix" />
-            <view>意见反馈</view>
-        </view>
-        <view class="content-item" bindtap="onlineGuest">
-            <image src="/images/account_service.png" mode="widthFix" />
-            <view>在线客服</view>
-        </view>
-    </view>
-</view>
-<view class="content-wrap">
-    <view class="title">更多服务</view>
-    <view class="content">
-        <view class="content-item">
-            <image src="/images/account_manage.png" mode="widthFix" />
-            <view>账号管理</view>
-        </view>
-        <view class="content-item">
-            <image src="/images/account_paper.png" mode="widthFix" />
-            <view>纸质化学习法</view>
-        </view>
-        <view class="content-item">
-            <image src="/images/account_family.png" mode="widthFix" />
-            <view>我的家庭</view>
+        <view wx:for="{{item.features}}" wx:key="feature" wx:for-item="data" >
+					<view class="content-item" bindtap="clickFeature" id="{{data.url}}" data-key="{{data.key}}"> 
+            <image src="{{data.image}}" mode="widthFix" />
+						<view>{{data.name}}</view>
+					</view>
         </view>
     </view>
 </view>

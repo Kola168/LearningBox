@@ -6,7 +6,7 @@
     <view class="device-item device-item-active">
       <view class="item-left" bindtap="toSetting" data-sn="{{activeDevice.sn}}">
         <view class="left-img">
-          <image src="/images/{{activeDevice.model==='3115'?'L3115':'EP400'}}.png" mode="widthFix" />
+          <image src="/images/{{activeDevice.model==='EP320'?'L3115':'EP400'}}.png" mode="widthFix" />
         </view>
         <view class="left-name text-overflow-points active-name-box">
           <view>{{activeDevice.name||activeDevice.model}}</view>
@@ -29,7 +29,7 @@
     <view class="device-item" wx:for="{{devices}}" wx:key="sn" wx:if="{{!item.selected}}">
       <view class="item-left" bindtap="toSetting" data-sn="{{item.sn}}">
         <view class="left-img">
-          <image src="/images/{{item.model==='3115'?'L3115':'EP400'}}.png" mode="widthFix" />
+          <image src="/images/{{item.model==='EP320'?'L3115':'EP400'}}.png" mode="widthFix" />
         </view>
         <view class="left-name text-overflow-points">{{item.name||item.model}}</view>
       </view>

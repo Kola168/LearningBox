@@ -1,0 +1,53 @@
+<nav-bar background="#fff" title="搜索结果"></nav-bar>
+<block wx:if="{{!iosModal}}">
+  <view class="result-wrap" wx:if="{{hasResult}}">
+    <block wx:if="{{loadReady}}">
+      <view class="question">
+        <view class="question-label">题目</view>
+        <image src="{{url}}" mode="widthFix" class="question-img" />
+      </view>
+      <view class="answer">
+        <view class="answer-label">搜索结果</view>
+        <image wx:for="{{answerUrls}}" src="{{item}}" wx:key="answerUrls" mode="widthFix" />
+      </view>
+      <view class="handle-btns {{type==='photo_answer'?'three-btns':'two-btns'}}">
+        <block wx:if="{{type==='photo_answer'}}">
+          <view class="btn-item" bindtap="handleLeftBtn">
+            <image src="../images/error_book_success_camera.png" />
+            <view>再拍一题</view>
+          </view>
+          <view class="btn-item" bindtap="addErrorBook">
+            <image src="../images/add_error_book.png" />
+            <view>加入错题本</view>
+          </view>
+          <view class="btn-item preview-btn" bindtap="handleRightBtn">打印预览</view>
+          <view class="btn-tip" hidden="{{hideTip}}">
+            <view>加入错题本，题目永不丢失，可随时查看，一键打印保护视力</view>
+            <image src="../images/close.png" bindtap="closeTip" />
+          </view>
+        </block>
+        <block wx:else>
+          <view class="btn-item" bindtap="handleLeftBtn">
+            <image src="../images/back.png" />
+            <view>返回</view>
+          </view>
+          <view class="btn-item preview-btn" bindtap="handleRightBtn">
+            <image src="../images/replace.png" />
+            <view>替换题目</view>
+          </view>
+        </block>
+      </view>
+    </block>
+  </view>
+  <view class="empty" wx:else>
+    <image src="../images/bg-no-photo.png" mode="widthFix" />
+    <view>没有找到</view>
+    <button hover-class="none" bindtap="handleLeftBtn" wx:if="{{type==='photo_answer'}}">重新拍摄</button>
+  </view>
+
+</block>
+
+<image src="../images/ios_search_topic_bg.jpg" mode="widthFix" wx:if="{{iosModal}}" class="ios-bg" />
+
+<import src="../../../lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />

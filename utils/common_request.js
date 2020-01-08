@@ -1,7 +1,9 @@
 import { regeneratorRuntime, co } from './common_import'
 import getLoopsEvent from './worker'
-import graphql from '../network/graphql_request'
+import graphql from '../network/graphql_config'
 import api from '../network/restful_request'
+import Logger from './logger.js'
+const logger = new Logger.getLogger('common_request')
 /**
  * 创建订单
  * @param { String } featureKey required 对应功能的key
@@ -21,54 +23,29 @@ import api from '../network/restful_request'
  * }
  */
 const createOrder = function(featureKey, fileAttributes) {
-  return graphql.createOrder({
-    featureKey,
-    fileAttributes
+  return graphql.mutate({
+    mutation: `mutation ($input: CreateOrderInput!){
+      createOrder(input:$input){
+        state
+      }
+    }`,
+    variables: {
+      input: {
+        featureKey: featureKey,
+        fileAttributes: fileAttributes
+      }
+    }
   })
 }
 
-/**
- * 获取打印机能力
- * @param { String } featureKey required
- * @returns {
-    borderless 是否无边距
-    grayscale 是否支持灰度
-    color 是否是彩色打印机
-    highQuality 是否支持高质量
-    duplex 是否支持双面打印
- * }
- */
-
-// const getPrinterCapacity = co.wrap(function*(params = {}) {
-//   // let authToken = storage.get('authToken')
-//   // let resp = yield request({
-//   //   url: UPLOAD_AUTH_URL,
-//   //   header: {
-//   //     'AUTHORIZATION': `Token token=${authToken}`
-//   //   },
-//   //   method: 'GET',
-//   //   dataType: 'json',
-//   //   data: params
-//   // })
-//   // let authInfo = resp.data.res
-//   // if (resp.data.code != 0) {
-//   //   throw (authInfo)
-//   // }
-//   let res = { "code": 0, "print_capability": { "color_modes": ["Color", "Mono"], "page_count": 29, "media_sizes": [{ "media_size": 0, "media_name": "A4文件", "duplex": true }, { "media_size": 3, "media_name": "A5文件", "duplex": false }] } }
-//   return res.print_capability
-// })
-
-
 const previewDocument = co.wrap(function*(data, callback) {
   getLoopsEvent(data, (result) => {
-    console.log(result, '==result==')
     if (result.status == 'finished') {
       var converted_url = result.data.converted_url
       wx.downloadFile({
         url: converted_url,
         success: (res) => {
           callback()
-
           wx.openDocument({
             filePath: res.tempFilePath
           })
@@ -90,28 +67,130 @@ const previewDocument = co.wrap(function*(data, callback) {
 * }
 */
 
-const getPrinterCapacity = co.wrap(function*(featureKey,fileUrl) {
-let capacity =  yield graphql.getPrinterCapability(featureKey)
-capacity = capacity.currentUser && capacity.currentUser.selectedDevice.capability
-capacity.grayscale = true
-if(fileUrl) {
-  let fileObj = yield api.synthesisWorker({
-    feature_key: featureKey,
-    url: fileUrl,
-    is_async: false
+const getPrinterCapacity = co.wrap(function*(featureKey, fileUrl) {
+  let capacity = yield graphql.query({
+    query: `query($featureKey: String!) {
+      currentUser{
+        selectedDevice {
+          capability(featureKey:$featureKey) {
+            borderless
+            color
+            highQuality
+            duplex
+          }
+        }
+      }
+    }`,
+    variables: {
+      featureKey: featureKey
+    }
   })
-
-  capacity = Object.assign({
-    pageCount: fileObj.res.pages
-    }, capacity)
-}
-return capacity
-// return { "color_modes": ["Color", "Mono"], "page_count": 29, "media_sizes": [{ "media_size": 0, "media_name": "A4文件", "duplex": true }, { "media_size": 3, "media_name": "A5文件", "duplex": false }] }
+  capacity = capacity.currentUser && capacity.currentUser.selectedDevice.capability
+  capacity.grayscale = true
+  if (fileUrl) {
+    let fileObj = yield api.synthesisWorker({
+      feature_key: featureKey,
+      url: fileUrl,
+      is_async: false
+    })
+    if (fileObj.res && fileObj.res.pages) {
+      capacity = Object.assign({
+        pageCount: fileObj.res.pages
+      }, capacity)
+    }
+    
+  }
+  return capacity
 })
 
+/**
+ * 支付统一下单
+ * @param { String } sn required 资源/课程...sn
+ * @param { String } orderType 订单类型member/course
+ * 
+ */
+
+const createPaymentOrder = co.wrap(function*(sn, orderType){
+  return yield graphql.mutate({
+    mutation: `mutation ($input: CreatePaymentOrderInput!){
+      createPaymentOrder(input:$input){
+        paymentOrder{
+          sn
+          state
+          amountYuan
+          updatedAt
+          createdAt
+          payable {
+            ...on Course{
+              iconUrl
+              desc
+              totalLessons
+            }
+            ...on MemberConfig{
+              
+            }
+          }
+        }
+      }
+    }`,
+    variables: {
+      input: {
+        sn: sn,
+        type: orderType
+      }
+    }
+  })
+})
+
+/**
+ * @param { String } sn required 订单sn
+ * @param { Function } success callback
+ * @param { Function } fail callback
+ */
+const emptyFn = function emptyFn() {}
+const createPayment = co.wrap(function*(sn, success=emptyFn, fail=emptyFn){
+  try {
+    let paymentResp = yield graphql.mutate({
+      mutation: `mutation ($input: CreatePaymentInput!){
+        createPayment(input:$input){
+          payParams{
+            ...on WxpayParams {
+                nonceStr
+                package
+                paySign
+                signType
+                timeStamp
+            }
+          }
+        }
+      }`,
+      variables: {
+        input: {
+          paymentOrderSn: sn,
+          paymentMethod: "wechat_miniapp"
+        }
+      }
+    })
+    wx.requestPayment({
+      ...paymentResp.createPayment.payParams,
+      success(res){
+        success(res)
+      },
+      fail(error){
+        logger.info(error)
+        fail(error)
+      }
+    })
+  } catch (error) {
+    logger.info(error)
+    fail(error)
+  }
+})
 
 module.exports = {
   createOrder,
   getPrinterCapacity,
   previewDocument,
+  createPaymentOrder,
+  createPayment
 }

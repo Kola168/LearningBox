@@ -1,0 +1,58 @@
+/* pages/package_subject/weakness_exercise/index/index.wxss */
+
+.weakness-main {
+  position: relative;
+  width: 100%;
+  padding-top: 48rpx;
+}
+
+.weakness-main .head-remind {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 48rpx;
+  background-color: #FFF8E0;
+}
+
+.weakness-main .head-remind image {
+  width: 26rpx;
+}
+
+.weakness-main .head-remind .name {
+  font-size: 24rpx;
+  color: #FFA200;
+}
+
+
+.nav-card {
+  position: relative;
+  margin: 60rpx auto;
+  width: 700rpx;
+}
+
+.content {
+  position: absolute;
+  left: 0;
+  top: 36rpx;
+  padding-left: 174rpx;
+  width: 60%;
+  font-size: 24rpx;
+  color: #FFA200;
+}
+
+
+.btn-setTopic {
+  margin: 0 auto;
+  width: 600rpx;
+  height: 98rpx;
+  line-height: 98rpx;
+  background: #FFDC5E;
+  border-radius: 49rpx;
+  font-size: 36rpx;
+  text-align: center;
+  color: #454545;
+}

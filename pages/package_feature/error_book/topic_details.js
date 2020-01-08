@@ -3,7 +3,10 @@ const app = getApp()
 const regeneratorRuntime = require('../../../lib/co/runtime')
 const co = require('../../../lib/co/co')
 const util = require('../../../utils/util')
-const uploadFormId = require('../../../utils/gfd-formid-upload')
+import router from '../../../utils/nav'
+import gql from '../../../network/graphql_request.js'
+import Logger from '../../../utils/logger.js'
+const logger = new Logger.getLogger('pages/index/index')
 
 
 Page({
@@ -16,16 +19,6 @@ Page({
         levelId: 0,
         reasonId: 0,
         reEdit: false, //从错题列表再次修改
-        gradeList: [{
-            "title": "小学",
-            "grades": ["一年级(上)", "一年级(下)", "二年级(上)", "二年级(下)", "三年级(上)", "三年级(下)", "四年级(上)", "四年级(下)", "五年级(上)", "五年级(下)", "六年级(上)", "六年级(下)"]
-        }, {
-            "title": "初中",
-            "grades": ["初一(上)", "初一(下)", "初二(上)", "初二(下)", "初三(上)", "初三(下)"]
-        }, {
-            "title": "高中",
-            "grades": ["高一(上)", "高一(下)", "高二(上)", "高二(下)", "高三(上)", "高三(下)"]
-        }],
         activeGrade: '',
         openGrade: 0,
         showGrade: false,
@@ -37,7 +30,7 @@ Page({
     },
     onLoad: co.wrap(function* (options) {
         this.longToast = new app.weToast()
-        console.log('保存页参数', options)
+        logger.info('保存页参数', options)
         if (options.url) {
             this.data.urls.push(options.url)
         }
@@ -45,7 +38,7 @@ Page({
             this.reEdit = true
             let reason = this.data.reason.indexOf(options.reason)
             let level = this.data.level.indexOf(options.level)
-            console.log(reason, level)
+            logger.info(reason, level)
             this.setData({
                 reasonId: reason,
                 levelId: level,
@@ -63,9 +56,9 @@ Page({
 
         this.setData({
             urls: this.data.urls,
-            type: this.options.type||null
+            type: this.options.type || null
         })
-        console.log('所有图片', this.data.urls)
+        logger.info('所有图片', this.data.urls)
     }),
     onShow: function () {
 
@@ -89,8 +82,8 @@ Page({
         })
     },
     addMore: function () {
-        wx.navigateTo({
-            url: `camera?from=topic_details`
+        router.navigateTo('/pages/package_feature/error_book/camera', {
+            type: 'topic_details'
         })
     },
     deleteImg: co.wrap(function* (e) {
@@ -101,89 +94,77 @@ Page({
         })
     }),
     save: co.wrap(function* (e) {
-        console.log('错题保存form发生了submit事件，携带数据为：', e.detail.formId)
-        uploadFormId.dealFormIds(e.detail.formId, e.currentTarget.dataset.type)
-        uploadFormId.upload()
-        let method = this.data.reEdit ? 'PUT' : 'POST'
-        let id = this.id ? this.id : ''
         let params = {
-            openid: app.openId,
-            course: this.course ? this.course : this.data.subjects[this.data.subjectId], //学科
             urls: this.data.urls,
+            course: this.course ? this.course : this.data.subjects[this.data.subjectId], //学科
             level: this.data.level[this.data.levelId],
             reason: this.data.reason[this.data.reasonId],
-            version: true
         }
-        if (this.data.answer_urls != null) {
-            params.answer_urls = this.data.answer_urls
+        if (this.data.reEdit) {
+            params.id = Number(this.id)
+        }
+        if (this.data.answer_urls.length > 0) {
+            params.answerUrls = this.data.answer_urls
         }
         this.longToast.toast({
             type: 'loading'
         })
-        console.log('提交错题参数', params)
+        logger.info('提交错题参数', params)
         try {
-            const resp = yield gql.saveMistakes()
-            // const resp = yield request({
-            //     url: app.apiServer + `/ec/v2/mistakes/${id}`,
-            //     method: method,
-            //     dataType: 'json',
-            //     data: params
-            // })
-            // if (resp.data.code == 80000) {
-            //     this.longToast.toast()
-            //     return this.setData({
-            //         iosModal: true,
-            //     })
-            // } else if (resp.data.code != 0) {
-            //     throw (resp.data)
-            // }
-            // console.log('错题已提交====', resp.data)
-            // if (this.data.reEdit) {
-            //     let pages = getCurrentPages()
-            //     let prevPage = pages[pages.length - 2]
-            //     prevPage.getMistakes()
-            //     wx.navigateBack()
-            // } else {
-            //     wx.redirectTo({
-            //         url: `submit_success?course=${params.course}&type=${this.data.type}&id=${resp.data.mistake.id}`
-            //     })
-            // }
+            const resp = yield gql.saveMistakes(params)
+
+            if (this.data.reEdit) {
+                let pages = getCurrentPages()
+                let prevPage = pages[pages.length - 2]
+                prevPage.getMistakes()
+                router.navigateBack()
+            } else {
+                router.redirectTo('/pages/package_feature/error_book/submit_success', {
+                    course: params.course,
+                    type: this.data.type,
+                    id: resp.createMistake.mistake
+                })
+            }
 
 
             this.longToast.hide()
         } catch (e) {
-            this.longToast.toast()
+            this.longToast.hide()
             util.showErr(e)
         }
     }),
-    showGrades: function () {
-        this.setData({
-            showGrade: true
-        })
-    },
-    hideGrades: function () {
-        this.setData({
-            showGrade: false
-        })
-    },
     //查看解析
     watch: function () {
-        wx.navigateTo({
-            url: `/pages/error_book/pages/photo_answer/print?urls=${JSON.stringify(this.data.answer_urls)}&type=photoAnswer`
+        router.navigateTo('/pages/error_book/pages/photo_answer/print', {
+            urls: JSON.stringify(this.data.answer_urls),
+            type: 'photoAnswer'
         })
     },
     //搜答案
     search: function () {
-        console.log(this.course)
-        wx.navigateTo({
-            url: `../photo_answer/result?url=${this.data.urls[0]}&course=${this.course}&level=${this.data.level[this.data.levelId]}&reason=${this.data.reason[this.data.reasonId]}&id=${this.id}&type=error_book_search`,
+        logger.info(this.course)
+        router.navigateTo('/pages/error_book/pages/photo_answer/result', {
+            url: this.data.urls[0],
+            course: this.course,
+            level: this.data.level[this.data.levelId],
+            reason: this.data.reason[this.data.reasonId],
+            id: this.id,
+            type: 'error_book_search'
+        })
+        router.navigateTo('/pages/package_feature/error_book/answer_result', {
+            url: this.data.urls[0],
+            course: this.course,
+            level: this.data.level[this.data.levelId],
+            reason: this.data.reason[this.data.reasonId],
+            id: this.id,
+            type: 'error_book_search'
         })
     },
     //搜答案
     searchBeforAdd: function () {
-        console.log(this.course)
-        wx.navigateTo({
-            url: `../photo_answer/result?url=${this.data.urls[0]}&type=before_add_error_book`,
+        router.navigateTo('/pages/package_feature/error_book/answer_result', {
+            type: 'before_add_error_book',
+            url: this.data.urls[0]
         })
     },
 

@@ -5,7 +5,7 @@
     <view class="top-right" bindtap="selectAllUser">{{selectAllFlag?'取消全选':'全选'}}</view>
   </view>
   <view class="user-list">
-    <view class="list-item" wx:for="{{userList}}" wx:key="{{index}}" bindtap="selectUser" id="{{index}}">
+    <view class="list-item" wx:for="{{userList}}" wx:key="index" bindtap="selectUser" id="{{index}}">
       <view class="item-left">
         <image src="{{item.avatar}}" class="item-user-image" />
         <view class="text-overflow-points item-user-name">{{item.name}}</view>
@@ -13,12 +13,14 @@
       <image src="../images/share_user_{{(item.selectFlag||selectAllFlag)?'':'un'}}check.png" class="item-user-select" />
     </view>
   </view>
-  <view class="stop-share {{isFullScreen?'is-full-screen':''}}" bindtap="stopShare" wx:if="{{userList.length>0}}">停止分享</view>
+  <view class="stop-share {{isFullScreen?'is-full-screen':''}}" bindtap="showConfirm" wx:if="{{userList.length>0}}">停止分享</view>
   <view wx:if="{{userList.length===0}}" class="no-share">
     <image src="../images/empty_list.png" mode="widthFix" />
     <view>暂无分享记录</view>
   </view>
 </view>
+<!-- modal -->
+<modal modal="{{modalObj}}" bindconfirm="stopShare"></modal>
 <!-- loading -->
 <import src="/lib/toast/wetoast.wxml" />
 <template is="wetoast" data="{{...__wetoast__}}" />

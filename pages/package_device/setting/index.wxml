@@ -1,7 +1,7 @@
 <nav-bar title="设备管理"></nav-bar>
 <view class="container">
   <view class="device-base border-bottom">
-    <image src="/images/{{device.model==='3115'?'L3115':'EP400'}}.png" class="device-img" mode="widthFix" />
+    <image src="/images/{{device.model==='EP320'?'L3115':'EP400'}}.png" class="device-img" mode="widthFix" />
     <view class="device-name">
       <view class="text-overflow-points">{{device.name}}</view>
       <view class="device-flag {{device.onlineState==='online'?'online-active-flag':''}}"></view>
@@ -66,12 +66,13 @@
         </view>
       </view>
       <view class="setting-box">
-        <view class="setting-item">
+        <view class="setting-item" wx:if="{{device.connectThrough}}">
           <view class="item-left">
             <view class="left-label">切换为电脑打印</view>
           </view>
-          <view class="item-right" bindtap="showModal" id="computerPrint">
-            <image src="/images/switch_{{computerPrintFlag?'on':'off'}}.png" class="right-switch" />
+          <view class="item-right" bindtap="showModal" id="connectThrough" data-key="connectThrough" data-val="{{device.connectThrough==='box'?'pc':'box'}}">
+            <image src="/images/switch_on.png" wx:if="{{device.connectThrough==='pc'}}" class="right-switch" />
+            <image src="/images/switch_off.png" wx:if="{{device.connectThrough==='box'}}" class="right-switch" />
           </view>
         </view>
         <view class="setting-item">
@@ -144,7 +145,7 @@
             </view>
           </view>
         </view>
-        <view class="setting-item" bindtap="toNextPage" data-key="deviceMaintain">
+        <view class="setting-item" wx:if="{{device.model==='EP320'}}" bindtap="toNextPage" data-key="deviceMaintain">
           <view class="item-left">
             <view class="left-label">设备维护</view>
           </view>

@@ -1,0 +1,142 @@
+/* pages/package_common/common_content/list.wxss */
+page {
+    position: relative;
+    box-shadow: none;
+    width: 100%;
+    height: 100%;
+    padding: 0 20rpx;
+    padding-top: 70rpx;
+    box-sizing: border-box;
+}
+
+.tabs {
+    position: fixed;
+    top: 176rpx;
+    left: 0;
+    height: 70rpx;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    font-size: 32rpx;
+    padding: 0 24rpx;
+    justify-content: space-between;
+    box-sizing: border-box;
+    z-index: 100;
+}
+
+
+.type {
+    width: calc(100% - 60rpx);
+    white-space: nowrap;
+    color: #666;
+    font-size: 32rpx;
+    box-sizing: border-box;
+    /* padding: 0 40rpx; */
+    height: 70rpx;
+    background: #fff;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+.see-all {
+    width: 60rpx;
+    text-align: right;
+    font-size: 22rpx;
+    height: 70rpx;
+    line-height: 44rpx;
+    background: #fff;
+}
+
+.see-all image {
+    width: 30rpx;
+    height: 30rpx;
+}
+
+.tab-item {
+    position: relative;
+    margin-right: 60rpx;
+}
+
+.activeType {
+    /* border-bottom: 4rpx solid #ffc35b; */
+    color: #ffc35b !important;
+}
+
+.active-border {
+    position: absolute;
+    top: 56rpx;
+    left: 25%;
+    width: 50%;
+    /* margin: 4rpx auto 0; */
+    height: 4rpx;
+}
+
+.activeType .active-border {
+    margin: 4rpx auto 0;
+    background: #ffc35b;
+    width: 50%;
+}
+
+.item-3 {
+    width: calc(100% / 3);
+    display: inline-block;
+    text-align: center;
+    margin: 36rpx 0 15rpx;
+}
+
+.url-3 {
+    position: relative;
+    width: 200rpx;
+    height: 200rpx;
+}
+
+.print {
+    display: flex;
+    align-items: center;
+    margin-top: 20rpx;
+}
+
+.print_icon {
+    width: 26rpx;
+    padding-right: 8rpx;
+}
+
+.print_num {
+    font-size: 24rpx;
+    color: #666;
+}
+
+.print-3 {
+    width: 200rpx;
+    margin: 0 auto;
+    margin-top: 10rpx;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.print-3>view {
+    display: flex;
+    align-items: center;
+}
+
+.pages {
+    font-size: 20rpx;
+    color: #666;
+}
+
+.title-3 {
+    color: #333;
+    margin-top: 42rpx;
+    font-size: 28rpx;
+    width: 200rpx;
+    margin: 0;
+    margin: 0 auto;
+    text-align: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  

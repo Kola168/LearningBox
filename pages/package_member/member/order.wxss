@@ -1,0 +1,114 @@
+page {
+	width: 100%;
+	padding: 24rpx;
+	box-sizing: border-box;
+}
+
+
+.member-tip{
+  width:100%;
+}
+
+.info-item-top{
+  margin-top: 30rpx;
+}
+.info-item {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	padding: 24rpx 0;
+	font-size: 28rpx;
+	color: #333333;
+}
+
+.open-preschool {
+	background: #f94666;
+	border-radius: 49rpx;
+	font-family: PingFangSC-Regular;
+	font-size: 36rpx;
+	color: #fff;
+	letter-spacing: 0;
+	text-align: center;
+	height: 98rpx;
+	line-height: 98rpx;
+	width: 80%;
+	position: absolute;
+	left: 10%;
+	bottom: 240rpx;
+}
+
+.open-subject {
+	background: #FFDC5E;
+	border-radius: 49rpx;
+	font-family: PingFangSC-Regular;
+	font-size: 36rpx;
+	color: #333333;
+	letter-spacing: 0;
+	text-align: center;
+	height: 98rpx;
+	line-height: 98rpx;
+	width: 80%;
+	position: absolute;
+	left: 10%;
+	bottom: 240rpx;
+}
+
+
+.user-wrap {
+	display: flex;
+	align-items: center;
+	letter-spacing: -0.42rpx;
+}
+
+.user-avatar {
+	width: 40rpx;
+	height: 40rpx;
+	border-radius: 50%;
+	margin-right: 20rpx;
+}
+
+.agree{
+	display: flex;
+	flex-direction: row;
+	width: 100%;
+	align-items: center;
+	justify-content: center;
+	position: absolute;
+	left: 0;
+	bottom: 376rpx;
+}
+
+.agree .check-agrrement{
+   width:38rpx;
+}
+
+.agree .common-text{
+	font-size: 30rpx;
+  	color: #333333;
+  	margin-left:14rpx;
+}
+
+.agree .agree-text{
+	font-size: 30rpx;
+	color: #ffa200;
+}
+
+.tip-bottom {
+	display: flex;
+	flex-direction: column;
+	padding: 24rpx;
+	box-sizing: border-box;
+	position: absolute;
+	left: 0;
+	bottom: 30rpx;
+}
+
+.tip-bottom text {
+	font-size: 26rpx;
+	color: #666666;
+	letter-spacing: -0.58px;
+}
+
+.tip-bottom .tip-top{
+  margin-top:10rpx;
+}

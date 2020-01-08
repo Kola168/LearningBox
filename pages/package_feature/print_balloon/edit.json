@@ -3,7 +3,7 @@
     "nav-bar": "../../../components/nav-bar/index",
     "edit-photo":"../../../components/multiphoto/index",
     "bottom-button":"../../../components/bottom-button/index",
-    "confirm-print": "../../components/confStorageModal/index"
+    "confirm-print": "../../../components/confStorageModal/index"
   },
   "disableScroll":true
 }

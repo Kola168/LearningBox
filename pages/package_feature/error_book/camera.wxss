@@ -12,7 +12,10 @@ page {
 
 .cover-title {
     color: #fff;
-    font-size: 36rpx;
+    font-family: PingFangSC-Regular;
+    font-size: 28rpx;
+    color: #FFFFFF;
+    letter-spacing: -1.08px;
     position: absolute;
     left: 0;
     top: 0;
@@ -43,7 +46,7 @@ page {
 .cover {
     position: absolute;
     left: 10%;
-    bottom: 128rpx;
+    bottom: 176rpx;
     height: 200rpx;
     width: 80%;
     display: flex;

@@ -6,53 +6,63 @@ const regeneratorRuntime = require('../../../lib/co/runtime')
 const co = require('../../../lib/co/co')
 const util = require('../../../utils/util')
 import router from '../../../utils/nav'
+import gql from '../../../network/graphql_request.js'
+import Logger from '../../../utils/logger.js'
+const logger = new Logger.getLogger('pages/index/index')
 
 const chooseImage = util.promisify(wx.chooseImage)
 
 Page({
     data: {
-        showTipModal: false,
+        showTipModal: true,
         // showCameraTip: true
     },
+
     onLoad: co.wrap(function* (options) {
-        let errorBook = wx.getStorageSync('errorBook')
-        console.log('错题本', errorBook)
-        if (!errorBook || !errorBook.hideCameraTip) {
-            this.setData({
-                showTipModal: true
-            })
-        }
+        this.from = options.type
+        // if (this.from == 'error_book') {
+        //     let errorBook = wx.getStorageSync('errorBook')
+        //     if (!errorBook || !errorBook.hideCameraTip) {
+        //         this.setData({
+        //             showTipModal: true
+        //         })
+        //     }
+        // }
+
+        logger.info('错题本', errorBook)
+
         this.longToast = new app.weToast()
         this.options = options
         // error_book:错题本首次上传图片
         // topic_details:错题详情页补充图片
         // photoAnswer:拍搜
-        this.from = options.from
+        // before_add_error_book 错题保存前 直接用错题的图去搜索，不需要拍照
+        //错题保存后拍搜 直接用错题的图去搜索，不需要拍照
     }),
     getAuth: co.wrap(function* () {
         try {
             let setting = yield getSetting()
-            console.log('是否授权', setting)
+            logger.info('是否授权', setting)
             let camera = setting.authSetting['scope.camera']
             if (camera === undefined) {
                 this.allowCamera = 0
                 // let auth = yield authorize({
                 //     scope: 'scope.camera'
                 // })
-                // console.log('进入页面就授权', auth)
+                // logger.info('进入页面就授权', auth)
             } else if (camera === false) {
                 this.allowCamera = 1
                 let oepnAuth = yield openSetting()
-                console.log('授权失败后再次授权', oepnAuth)
+                logger.info('授权失败后再次授权', oepnAuth)
             } else {
                 this.allowCamera = 2
             }
             this.setData({
                 allowCamera: this.allowCamera
             })
-            console.log(' 0 未授权 1，授权失败， 2 已授权', this.allowCamera)
+            logger.info(' 0 未授权 1，授权失败， 2 已授权', this.allowCamera)
         } catch (e) {
-            console.log('获取授权/授权失败', e)
+            logger.info('获取授权/授权失败', e)
             switch (this.allowCamera) {
                 case 0:
                     wx.navigateBack()
@@ -66,7 +76,7 @@ Page({
         }
     }),
     takePhoto: co.wrap(function* (e) {
-        console.log('666')
+        logger.info('666')
         let CameraContext = wx.createCameraContext()
         let id = e.currentTarget.id
         let that = this
@@ -75,9 +85,10 @@ Page({
                 CameraContext.takePhoto({
                     quality: 'high',
                     success: function (res) {
+                        logger.info('相机', res)
                         router.redirectTo('pages/package_feature/error_book/edit_pic', {
                             url: res.tempImagePath,
-                            from: this.from
+                            type: that.from
                         })
                     }
                 })
@@ -87,14 +98,19 @@ Page({
                     sizeType: ['compressed'],
                     sourceType: ['album']
                 })
-                console.log('相册', res)
+                logger.info('相册', res)
                 router.redirectTo('pages/package_feature/error_book/edit_pic', {
-                    url: res.tempImagePath,
-                    from: this.from
+                    url: res.tempFilePaths[0],
+                    type: that.from
                 })
             }
         } catch (e) {
-            console.log(e)
+            logger.info(e)
+            util.showError({
+                tite: '提示',
+                mesage: '图片加载失败'
+
+            })
         }
 
     }),
@@ -102,7 +118,7 @@ Page({
         return app.share
     },
     cancel: function () {
-        wx.navigateBack()
+        router.navigateBack()
     },
     hideTipModal: function () {
         // let errorBook = wx.getStorageSync('errorBook')
@@ -113,7 +129,7 @@ Page({
         })
     },
     // closeCameraTip: function() {
-    //     console.log('hhhhhh')
+    //     logger.info('hhhhhh')
     //     this.setData({
     //         showCameraTip: false
     //     })

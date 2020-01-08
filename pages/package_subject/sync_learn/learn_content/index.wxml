@@ -1,114 +1,48 @@
 <nav-bar background="#fff" title="同步练习"/>
 <view class="content-main">
-  <scroll-view scroll-x="true">
-    <view class="tab-item">
-      <view class="tab-name active">测试一</view>
-      <view class="tab-line active-line"></view>
-    </view>
-    <view class="tab-item">
-      <view class="tab-name">测试一</view>
-      <view class="tab-line"></view>
-    </view>
-    <view class="tab-item">
-      <view class="tab-name">测试一</view>
-      <view class="tab-line"></view>
-    </view>
-    <view class="tab-item">
-      <view class="tab-name">测试一</view>
-      <view class="tab-line"></view>
-    </view>
-    <view class="tab-item">
-      <view class="tab-name">测试一</view>
-      <view class="tab-line"></view>
-    </view>
-    <view class="tab-item">
-      <view class="tab-name">测试一</view>
-      <view class="tab-line"></view>
-    </view>
-    <view class="tab-item">
-      <view class="tab-name">测试一</view>
-      <view class="tab-line"></view>
-    </view>
-    <view class="tab-item">
-      <view class="tab-name">测试一</view>
-      <view class="tab-line"></view>
-    </view>
-    <view class="tab-item">
-      <view class="tab-name">测试一</view>
-      <view class="tab-line"></view>
-    </view>
-    <view class="tab-item">
-      <view class="tab-name">测试一</view>
-      <view class="tab-line"></view>
-    </view>
-    <view class="tab-item">
-      <view class="tab-name">测试一</view>
-      <view class="tab-line"></view>
-    </view>
-    <view class="tab-item">
-      <view class="tab-name">测试一</view>
-      <view class="tab-line"></view>
-    </view>
-    <view class="tab-item">
-      <view class="tab-name">测试一</view>
-      <view class="tab-line"></view>
-    </view>
-    <view class="tab-item">
-      <view class="tab-name">测试一</view>
-      <view class="tab-line"></view>
-    </view>
-    <view class="tab-item">
-      <view class="tab-name">测试一</view>
-      <view class="tab-line"></view>
-    </view>
-    <view class="tab-item">
-      <view class="tab-name">测试一</view>
-      <view class="tab-line"></view>
-    </view>
-    <view class="tab-item">
-      <view class="tab-name">测试一</view>
-      <view class="tab-line"></view>
-    </view>
-    <view class="tab-item">
-      <view class="tab-name">测试一</view>
-      <view class="tab-line"></view>
-    </view>
-    <view class="tab-item">
-      <view class="tab-name">测试一</view>
-      <view class="tab-line"></view>
-    </view>
-    <view class="tab-item">
-      <view class="tab-name">测试一</view>
-      <view class="tab-line"></view>
-    </view>
-    <view class="tab-item">
-      <view class="tab-name">测试一</view>
-      <view class="tab-line"></view>
+  <scroll-view scroll-x="true"  scroll-with-animation scroll-into-view="to_{{currentTabIndex}}">
+    <view class="tab-item"  id="to_{{index}}" wx:for="{{subjectList}}" wx:key="sn"  bindtap="chooseSubject" data-index="{{index}}">
+      <view class="tab-name {{currentTabIndex == index ? 'active' : ''}}">{{item.subjectName}}</view>
+      <view class="tab-line {{currentTabIndex == index ? 'active-line' : ''}}"></view>
     </view>
   </scroll-view>
-
   <image class="notice-card" src="../../images/nav_figure_card.png">
-    <view class="nav-text">课本同步练习，不遗漏任何知识点</view>
+    <view class="nav-text">
+      <block wx:if="{{textbookPercentage && textbookPercentage.count}}">
+        已学习{{textbookPercentage.count}}个章节，超过{{textbookPercentage.percentage}}%的同学
+      </block>
+      <block wx:else>
+        课本同步练习，不遗漏任何知识点
+      </block>
+    </view>
   </image>
-  <!-- <view class="form-main">
-    <form-textbook/>
-  </view> -->
-  <view class="current-input-value" bind:tap="touchText">
-    <view class="version">人教版</view>
-    <view class="grade">七年级</view>
-    <view class="arrow-icon"></view>
-  </view>
-  <view class="choose-box {{showSelectedText ? 'choose-box-show' : ''}}" catch:tap="touchText">
-    <view class="select-bar" wx:if="{{showSelectedText}}">
-      <view class="left-select-content">
-        <view class="select-item {{index == selectedBookIndex ? 'select-active' : ''}}" wx:for="{{textbookVersion}}" data-index="{{index}}" wx:key="_id" catchtap="chooseTextbook">{{item.name}}</view>
-      </view>
-      <view class="right-select-content">
-        <view class="content-item" wx:for="{{gradeList}}" data-index="{{index}}" wx:key="_id" catchtap="chooseGrade">{{item.name}}</view>
+  <!-- 教材筛选器 -->
+  <block wx:if="{{selectedTextbookVersion && selectedTextbook}}">
+    <view class="current-input-value {{showSelectedText ? 'current-active' : ''}}" bind:tap="touchShowText">
+      <view class="version">{{selectedTextbookVersion.name || ''}}</view>
+      <view class="grade">{{selectedTextbook.volume || ''}}</view>
+      <view class="arrow-icon {{showSelectedText ? 'arrow-active' : ''}}"></view>
+    </view>
+    <view class="choose-box {{showSelectedText ? 'choose-box-show' : ''}}" catchtouchmove="true" catch:tap="touchShowText">
+      <view class="select-bar" wx:if="{{showSelectedText}}">
+        <view class="left-select-content">
+          <view class="select-item {{textbookIndex == selectedBookVersionIndex ? 'select-active' : ''}}" wx:for="{{textbookVersion}}" wx:for-index="textbookIndex" data-index="{{textbookIndex}}" wx:key="versionId" catchtap="chooseTextbooVersion">{{item.name}}</view>
+        </view>
+        <view class="right-select-content">
+          <view class="content-item {{teachIndex ==selectedTeachIndex ? 'active-text' : ''}}" wx:for="{{teachBook}}" wx:for-index="teachIndex" data-index="{{teachIndex}}" wx:key="textbookId" catchtap="chooseTextbook">{{item.volume}}</view>
+        </view>
       </view>
     </view>
-  </view>
+  </block>
+  <!-- 章节列表 -->
   <view class="chapter-main">
     <chapter/>
   </view>
+  <!-- 默认教材选择器 -->
+  <view class="form-main" wx:if="{{!selectedTextbookVersion || !selectedTextbook}}">
+    <form-textbook subjectSn="{{subjectSn}}" bindchooseTextbook="chooseComponentTextbook" wx:if="{{subjectSn && loadSuccess}}"/>
+  </view>
 </view>
+
+<import src="../../../../lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />

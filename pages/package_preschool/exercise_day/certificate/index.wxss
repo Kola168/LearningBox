@@ -1,0 +1,147 @@
+/* pages/package_preschool/exercise_day/certificate/index.wxss */
+
+.certificate-main {
+  padding: 260rpx 48rpx 0;
+  min-height: 100vh;
+  box-sizing: border-box;
+  background: #FEEECA;
+}
+
+.cert-icon {
+  position: absolute;
+  top: 128rpx;
+  left: 58rpx;
+  width: calc( 100% - 116rpx );
+}
+
+.cert-list {
+  padding: 180rpx 48rpx 30rpx;
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 200rpx;
+  background: #FFFFFF;
+  border-radius: 20rpx;
+  box-shadow: 0 0 17px 0 rgba(144,92,116,0.31);
+}
+
+.cert-list .cert-item {
+  display: inline-block;
+  margin-right: 44rpx;
+  display: inline-block;
+  width: calc( ( 100% - 44rpx ) / 2 );
+}
+
+.cert-list .cert-item:nth-child(even) {
+  margin-right: 0;
+}
+
+
+.cert-item .cert-name {
+  padding-bottom: 2rpx;
+  text-align: center;
+  color: #333333;
+  font-size: 28rpx;
+}
+
+.cert-item .learn-day {
+  padding-bottom: 12rpx;
+  text-align: center;
+  color: #666666;
+  font-size: 24rpx;
+}
+
+.cert-item image {
+  width: 262rpx;
+  height: 186rpx;
+  background-color: #E9E9E9;
+}
+
+.cert-item .btn {
+  margin: 26rpx auto 0;
+  width: 160rpx;
+  height: 52rpx;
+  line-height: 52rpx;
+  border-radius: 30rpx;
+  font-size: 28rpx;
+  text-align: center;
+  background: #EAEAEA;
+  color: #999999;
+}
+
+.cert-item .btn-print {
+  background-color: #FFDC5E;
+  color: #333333;
+}
+
+
+/* toast */
+
+.input-cert-toast {
+  position: fixed;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: center;align-items: center;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(0,0,0,0.60);
+}
+
+.toast-main {
+  position: relative;
+  width: 620rpx;
+  height: 586rpx;
+  border-radius: 15rpx;
+  background-color: #FFFFFF;
+}
+
+.toast-main image {
+  position: absolute;
+  top: -168rpx;
+  left: 0;
+  width: 100%;
+}
+
+.toast-main .title {
+  margin-top: 176rpx;
+  color: #333333;
+  font-size: 28rpx;
+  text-align: center;
+}
+
+.toast-main input {
+  margin: 10rpx auto 74rpx;
+  width: calc( 100% -  164rpx );
+  height: 68rpx;
+  text-align: center;
+  background: #F8F8F8;
+}
+
+.toast-main .btn {
+  margin: 0 auto;
+  width: 440rpx;
+  height: 90rpx;
+  line-height: 90rpx;
+  border-radius: 40rpx;
+  text-align: center;
+  font-size: 36rpx;
+  background-color: #FFDC5E;
+  color: #333333;
+}
+
+
+.bottom-but {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  z-index: 10;
+}
+
+.btn-main {
+  width: 100%;
+  height: 52rpx;
+  position: relative;
+}

@@ -1,0 +1,100 @@
+/* pages/package_preschool/evaluation/testfinish.wxss */
+page {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #4CBAFF;
+  box-sizing: border-box;
+}
+
+view {
+  box-sizing: border-box;
+}
+
+.finish-top {
+  width: 562rpx;
+  margin-top: 20rpx;
+}
+
+.finish-top-text {
+  font-size: 30rpx;
+  color: #FFFFFF;
+  text-align: center;
+}
+
+.achievement-box {
+  width: 640rpx;
+  padding: 10rpx 60rpx 50rpx;
+  background: #fff;
+  margin-top: 46rpx;
+  border-radius: 20rpx;
+}
+
+.achievement-item {
+  margin-top: 40rpx;
+  display: flex;
+  align-items: flex;
+}
+
+.achievement-name {
+  width: 148rpx;
+  height: 64rpx;
+  text-align: center;
+  line-height: 64rpx;
+  background: #E3F4FF;
+  border-radius: 10rpx;
+}
+
+.achievement-flower-box {
+  display: flex;
+  margin-left: 2rpx;
+  align-items: center;
+}
+
+.achievement-flower-img {
+  width: 43rpx;
+  margin-left: 38rpx;
+}
+
+.comment-box {
+  width: 640rpx;
+  height: 254rpx;
+  border-radius: 20rpx;
+  background: #fff;
+  margin-top: 40rpx;
+  display: flex;
+  position:relative;
+}
+
+.comment-text {
+  font-size: 28rpx;
+  color: #666666;
+  margin-top: 36rpx;
+  margin-left: 48rpx;
+}
+
+.comment-tip-color {
+  font-size: 30rpx;
+  color: #fe6274;
+}
+
+.bottom-button {
+  margin-top: 60rpx;
+  margin-bottom: 80rpx;
+  width: 600rpx;
+  line-height: 100rpx;
+  border-radius:50rpx;
+  text-align: center;
+  font-size: 36rpx;
+  color: #333333;
+  background: #FFDC5E;
+  box-shadow: 0 2px 0 0 #CEA100;
+}
+
+.comment-bg-img{
+  width:136rpx;
+  position:absolute;
+  top:0;
+  left:0;
+}

@@ -1,6 +1,6 @@
-<nav-bar background="#fff" title="同步课堂"/>
+<nav-bar background="#fff" title="同步课堂" />
 <view class="learn-main">
-  <image class="banner" src="../../images/index_banner.png"></image>
+  <image class="banner" src="https://cdn-h.gongfudou.com/LearningBox/subject/sync_banner.png"></image>
   <view class="entry">
     <view class="entry-item" wx:for="{{entryList}}" wx:key="key">
       <image class="nav-icon" src="{{item.icon}}"></image>

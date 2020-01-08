@@ -8,6 +8,7 @@ require('../../utils/mixin.js')
 import index from "../../mixins/index.js"
 import init from "../../mixins/init.js"
 import gql from '../../network/graphql_request.js'
+import gqlDevice from '../../network/graphql/device'
 import api from '../../network/restful_request.js'
 const checkSession = util.promisify(wx.checkSession)
 
@@ -38,7 +39,8 @@ Page({
       content: '绑定设备后学习更方便!',
       confirmText: '立即绑定',
       image: '/images/home/device_tip.png'
-    }
+    },
+    beforeSchoolContent:[]
   },
 
   //事件处理函数
@@ -78,8 +80,7 @@ Page({
           showAuth: false
         })
         app.authToken = authToken
-        yield this.getUserInfo()
-        yield this.getBanners()
+        yield this.afterUnion()
       }
       if (!authToken) {
         this.setData({
@@ -120,6 +121,8 @@ Page({
         stageRoot: resp.currentUser.selectedKid.stageRoot
       })
       storage.put("userSn", resp.currentUser.sn)
+			storage.put("kidStage", resp.currentUser.selectedKid.stageRoot)
+
       if (resp.currentUser.phone) {
         app.hasPhoneNum = true
         app.globalPhoneNum = resp.currentUser.phone
@@ -129,7 +132,7 @@ Page({
         wxNav.navigateTo('/pages/index/grade')
       } else {
         this.setData({
-          homeType: this.data.selectedKid.stageRoot.rootName
+					homeType: this.data.selectedKid.stageRoot.rootName,
         })
       }
       if (!resp.currentUser.selectedDevice) {
@@ -137,9 +140,31 @@ Page({
           'deviceModal.isShow': true
         })
       }
-
     } catch (e) {
       util.showError(e)
+    }
+  }),
+  //获取学前模块
+  customizeFeatures:co.wrap(function*(){
+    if(this.data.selectedKid.stageRoot==null){
+       return
+    }
+    try {
+      let resp = yield gql.customizeFeatures()
+      this.setData({
+        beforeSchoolContent:resp.customizeFeatures
+      })
+    } catch (error) {
+      util.showError(error) 
+    }
+  }),
+  afterUnion:co.wrap(function*(){
+    try {
+      yield this.getUserInfo()
+      yield this.getBanners()
+      // yield this.customizeFeatures()
+    } catch (error) {
+      console.log(error)
     }
   }),
   userInfoHandler: co.wrap(function*(e) {
@@ -179,14 +204,15 @@ Page({
       }
       storage.put('authToken', resp.res.auth_token)
       storage.put('unionId', resp.res.unionid)
-      storage.put('refreshToken', resp.res.refresh_token)
+			storage.put('refreshToken', resp.res.refresh_token)
+			// storage.put('kidStage', resp.res.refresh_token)
+
 
       app.authToken = resp.res.auth_token
       this.setData({
         showAuth: false
       })
-      yield this.getUserInfo()
-      yield this.getBanners()
+      yield this.afterUnion()
       if (this.scene) {
         this.handleScene(this.scene)
       }
@@ -237,10 +263,38 @@ Page({
       case 'freeResources':
         url = '/pages/package_common/free_resources/index/index'
         break;
+      case 'memoryWrite':
+        url = '/pages/package_feature/memory_write/index/index'
+        break;
+      case 'exerciseWords':
+        url = ''
+        break;
+      case 'takePhotoSearchExercise' :
+        url = '/pages/package_feature/error_book/photo_anwser_intro'
+        break;
+      case 'syncLearn':
+        // url = '/pages/package_subject/sync_learn/index/index'
+        break;
+      case 'evaluate_exam':
+        // url = '/pages/package_subject/evaluate_exam/index/index'
+        break;
+      case 'errorBook':
+        url = '/pages/package_feature/error_book/index'
+        break;
+    }
+    if (!url) {
+      return wx.showModal({
+        title: '提示',
+        content: '暂未开放，敬请期待',
+        showCancel: false,
+      })
     }
     wxNav.navigateTo(url)
   },
 
+  toLearnCenter: co.wrap(function*(){
+    wxNav.switchTab('/pages/course/index')
+  }),
   // toId: function () {
   //   wxNav.navigateTo('/pages/print_id/index')
   // }
@@ -268,7 +322,7 @@ Page({
         throw (info)
       }
       this.bindShareDevice(info.res.device_sn)
-      yield gql.bindShareDevice()
+      // yield gql.bindShareDevice()
     } catch (error) {
       this.longToast.hide()
       util.showError(error)
@@ -281,7 +335,7 @@ Page({
       type: 'loading'
     })
     try {
-      let res = yield gql.bindShareDevice(deviceSn)
+      let res = yield gqlDevice.bindShareDevice(deviceSn)
       if (res.bindSharer.device) {
         this.longToast.hide()
         wx.showToast({
@@ -297,5 +351,18 @@ Page({
   }),
   toBindDevice: function () {
     wxNav.navigateTo('/pages/package_device/network/index/index')
-  }
+  },
+  tokousuan:function(){
+    wxNav.navigateTo('/pages/package_feature/kousuan/index')
+  },
+  toContentList:function(e){
+    console.log(e)
+    wxNav.navigateTo('/pages/package_common/common_content/index',{
+      key: e.currentTarget.id,
+      name:e.currentTarget.dataset.name
+    })
+  },
+  changeSwiper: co.wrap(function* (e) {
+		this.data.current = e.detail.current
+	}),
 })

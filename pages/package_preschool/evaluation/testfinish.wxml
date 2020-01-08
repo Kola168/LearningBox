@@ -1,0 +1,31 @@
+<!--pages/package_preschool/evaluation/testfinish.wxml-->
+<nav-bar title="宝贝测评"></nav-bar>
+<image src="../images/evaluation_testfinish_top.png" mode="widthFix" class="finish-top"></image>
+<text class="finish-top-text">已做完全部题目
+  赶快来看自己的成绩吧！</text>
+<view class="achievement-box">
+  <view wx:for="{{achievementArr}}" wx:key="achievementArr" class="achievement-item">
+    <view class="achievement-name">
+      {{item.category_name}}
+    </view>
+    <view class="achievement-flower-box">
+      <image wx:for="{{fullMarks}}" wx:for-index="imgIndex" wx:for-item="imgItem" wx:key="fullMarks" src="{{(imgIndex<(item.grade*(fullMarks/item.num)))?'../images/evaluation_testfinish_flower_red.png':'../images/evaluation_testfinish_flower_gray.png'}}"
+        mode="widthFix" class="achievement-flower-img"></image>
+    </view>
+  </view>
+</view>
+<view class="comment-box">
+  <image src="../images/evaluation_testfinish_comment.png" mode="widthFix" class="comment-bg-img"></image>
+  <text class="comment-text">宝宝真棒，已经超过{{kidpercent}}%同年龄段小朋友，
+    <block wx:if="{{recommendTest.length>0}}">再接再厉，做最棒的宝宝，赶快
+      进行针对 <text wx:for="{{recommendTest}}" wx:key="recommendTest" wx:if="{{index<=1}}" class="comment-tip-color">{{index==1?'，':''}}{{item.category_name}}</text>
+      等训练吧！
+    </block>
+    <block wx:else>再打印试试其他题吧</block>
+  </text>
+</view>
+<view class="bottom-button" bindtap="toprint">
+  专题训练
+</view>
+<import src="/lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />

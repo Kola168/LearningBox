@@ -84,7 +84,7 @@
         </view>
     </view>
 </view>
-<botttom-button class="conf_box" text-right="确认打印" bindrighttap="confcheck" get-phone="{{true}}"></botttom-button>
+<bottom-button class="conf_box" text-right="确认打印" bindrighttap="confcheck" get-phone="{{true}}"></bottom-button>
 
 <!-- 打印确认框 -->
 <confirm-print bindconfirm="print" modal="{{confirmModal}}"></confirm-print>

@@ -1,111 +1,82 @@
 // pages/package_subject/sync_learn/components/chapter/index.js
+
+const app = getApp()
+import {
+  regeneratorRuntime,
+  co,
+  util,
+  wxNav
+} from '../../../../../utils/common_import'
+import graphql from '../../../../../network/graphql/subject'
+import busFactory from '../../busFactory'
 Component({
-  /**
-   * 组件的属性列表
-   */
-  properties: {
 
-  },
-
-  /**
-   * 组件的初始数据
-   */
   data: {
     isUnfold: false,
-    chapters: [
-      {
-        chapter_name: '【第一章】 集合与函数概念',
-        isUnfold: false,
-        sn: 1212121212121,
-        content: [
-          {
-            title: ' 集合',
-            _id: 111111111,
-            periodList: [
-              {
-                is_pre_learn: false,
-                name: ' 集合的概念'
-              },
-              {
+    chapters: []
+  },
 
-                is_pre_learn: false,
-                name: '  集合的组成'
-              }
-            ]
-          },
-          {
-            title: ' 数组',
-            is_pre_learn: false,
-            isUnfold: false,
-            _id: 2222222,
-            periodList: [
-              {
-                is_pre_learn: false,
-                name: ' 数组的概念',
-                content: [
-                  {
-                    name: '数组的历史'
-                  }
-                ]
-              },
-              {
-                is_pre_learn: true,
-                name: '  数组的组成',
-              }
-            ]
-          }
-        ]
-      },
-      {
-        chapter_name: '【第一章】 集合与函数概念',
-        sn: 1212121212121,
-        content: [
-          {
-            title: ' 集合',
-            _id: 111111111,
-            periodList: [
-              {
-                is_pre_learn: true,
-                name: ' 集合的概念'
-              },
-              {
-
-                is_pre_learn: false,
-                name: '  集合的组成'
-              }
-            ]
-          },
-          {
-            title: ' 数组',
-            is_pre_learn: false,
-            _id: 2222222,
-            periodList: [
-              {
-                is_pre_learn: false,
-                name: ' 数组的概念',
-                content: [
-                  {
-                    name: '数组的历史'
-                  }
-                ]
-              },
-              {
-                is_pre_learn: true,
-                name: '  数组的组成',
-              }
-            ]
-          }
-        ]
-      }
-    ]
+  attached: function () {
+    this.longToast = new app.weToast()
+    busFactory.listenChapterData((chapters) => {
+      this.setData({
+        chapters
+      })
+    })
   },
 
   methods: {
-    lookChapter: function(e) {
-      var index = e.currentTarget.dataset.index
+    lookChapter: function (e) {
+      var index = this.nodeIndex = e.currentTarget.dataset.index
       this.setData({
         [`chapters[${index}]isUnfold`]: !this.data.chapters[index].isUnfold
       })
-    }
+      if (this.data.chapters[index].isUnfold) {
+        this.getChapterContentDetails(this.data.chapters[index].sn)
+      }
+    },
+
+    // 获取章节详情数据
+    getChapterContentDetails: co.wrap(function* (sn) {
+      this.longToast.toast({
+        title: '请稍后...',
+        type: 'loading'
+      })
+      try {
+        var resp = yield graphql.getChapterDetail(sn)
+        if (!resp.xuekewang.childrenNodes.length) {
+          this.longToast.hide()
+          this.setData({
+            [`chapters[${this.nodeIndex}]isUnfold`]: false
+          })
+          return util.showError({
+            message: '章节数据暂无'
+          })
+        }
+        this.setData({
+          [`chapters[${this.nodeIndex}].children`]: resp.xuekewang.childrenNodes
+        })
+        this.longToast.hide()
+      } catch (err) {
+        this.longToast.hide()
+        util.showError(err)
+      }
+    }),
+    /**
+     * 跳转练习页
+     */
+    toExeDetail: co.wrap(function* ({
+      currentTarget: {
+        dataset: {
+          sn
+        }
+      }
+    }) {
+      var subjectSn = busFactory.getIds('subjectSn')
+      wxNav.navigateTo('/pages/package_subject/sync_learn/learn_detail/index', {
+        sn: sn,
+        subjectSn: subjectSn,
+      })
+    })
   }
 })

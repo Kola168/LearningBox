@@ -37,25 +37,25 @@
         <image src="/images/home/icon_voice.png" mode="widthFix"></image>
         <view>童音录制</view>
       </view>
-      <view class="tool-item">
+      <view class="tool-item" bindtap="toFunction">
         <image src="/images/home/icon_test.png" mode="widthFix"></image>
         <view>宝贝测评</view>
       </view>
-      <view class="tool-item">
+      <view class="tool-item" bindtap="toFunction">
         <image src="/images/home/icon_miaohong.png" mode="widthFix"></image>
         <view>幼儿描红</view>
       </view>
       <view class="tool-item">
       </view>
     </view>
-    <view class="home-title">
+    <!-- <view class="home-title">
       <view>宝贝学习计划</view>
       <view>
         <text>更多</text>
         <image src="/images/doc_item_arrow.png" mode="widthFix"></image>
       </view>
-    </view>
-    <scroll-view class="study-plan-wrap" scroll-x>
+    </view> -->
+    <!-- <scroll-view class="study-plan-wrap" scroll-x>
       <view class="study-plan">
         <image src="/images/home/study_plan_none.png" mode="widthFix" class="study-plan-image"></image>
         <view class="has-plan">
@@ -80,9 +80,9 @@
           </view>
         </view>
       </view>
-    </scroll-view>
+    </scroll-view> -->
 
-    <view class="study-plan">
+    <!-- <view class="study-plan">
       <image src="/images/home/study_plan_none.png" mode="widthFix" class="study-plan-image"></image>
       <view>
         <view>快去定制宝宝的学习计划吧~</view>
@@ -90,12 +90,13 @@
           <view>新增计划</view>
         </view>
       </view>
-    </view>
-    <view class="content-list" wx:for="{{contentList}}" wx:key="contentLists" id="{{idnex}}">
-      <view class="home-title">{{item.title}}</view>
-      <image src="{{item.url}}" class="content-image" mode="widthFix" id="{{index}}" />
-    </view>
-    <view class="tips">
+    </view> -->
+
+    <!-- <view class="content-list" wx:for="{{beforeSchoolContent}}" wx:key="beforeSchoolContent" id="{{item.key}}">
+      <view class="home-title">{{item.name}}</view>
+      <image src="{{item.iconUrl}}" class="content-image" mode="widthFix" id="{{item.key}}"  bindtap="toContentList" data-name="{{item.name}}"/>
+    </view> -->
+    <!-- <view class="tips">
       <view>
         <image src="/images/home/icon_book.png" mode="widthFix" />
         <view>什么是纸质学习法？</view>
@@ -104,7 +105,7 @@
         <image src="/images/home/icon_teacher.png" mode="widthFix" />
         <view>小白老师是谁？</view>
       </view>
-    </view>
+    </view> -->
   </block>
   <!-- 学科 ui -->
   <block wx:if="{{homeType=='学科'}}">
@@ -116,33 +117,34 @@
         </image>
         <view>免费资源库</view>
       </view>
-      <view class="tool-item">
+      <!--没数据先注释着
+      <view class="tool-item" bindtap="tokousuan">
         <image src="/images/home/icon_count.png" mode="widthFix"></image>
         <view>口算</view>
-      </view>
-      <view class="tool-item">
+      </view>-->
+      <view class="tool-item" bindtap="toFunction" id="memoryWrite">
         <image src="/images/home/icon_write.png" mode="widthFix"></image>
         <view>默写</view>
       </view>
       <view class="tool-item">
-        <image src="/images/home/icon_camera_search.png" mode="widthFix"></image>
+        <image src="/images/home/icon_camera_search.png" mode="widthFix" bind:tap="toFunction" id="takePhotoSearchExercise"></image>
         <view>拍搜</view>
       </view>
       <view class="tool-item">
-        <image src="/images/home/icon_word.png" mode="widthFix"></image>
+        <image src="/images/home/icon_word.png" mode="widthFix" bind:tap="toFunction" id="exerciseWords"></image>
         <view>练好字</view>
       </view>
     </view>
     <view class="home-title">智能辅导</view>
     <view class="subject-aptitude">
-      <image src="/images/home/subject_follow.png" mode="widthFix" />
-      <image src="/images/home/subject_learning.png" mode="widthFix" />
-      <image src="/images/home/subject_test.png" mode="widthFix" />
-      <image src="/images/home/subject_correction.png" mode="widthFix" />
-      <image src="/images/home/subject_train.png" mode="widthFix" />
-      <image src="/images/home/subject_report.png" mode="widthFix" />
+      <image src="/images/home/subject_follow.png" mode="widthFix"  />
+      <image src="/images/home/subject_learning.png" mode="widthFix" bind:tap="toFunction" id="syncLearn"/>
+      <image src="/images/home/subject_test.png" mode="widthFix" bind:tap="toFunction" id="evaluate_exam"/>
+      <image src="/images/home/subject_correction.png" mode="widthFix"  bind:tap="toFunction" id="errorBook" />
+      <image src="/images/home/subject_train.png" mode="widthFix" bind:tap="toFunction" id="weaknessExercise"  />
+      <image src="/images/home/subject_report.png" mode="widthFix" bind:tap="toFunction" id="stageReporter"  />
     </view>
-    <view class="tips tips-sub">
+    <!-- <view class="tips tips-sub">
       <view>
         <image src="/images/home/icon_subject_book.png" mode="widthFix" />
         <view>什么是纸质学习法？</view>
@@ -151,12 +153,12 @@
         <image src="/images/home/icon_subject_teacher.png" mode="widthFix" />
         <view>小白老师是谁？</view>
       </view>
-    </view>
-    <view class="study-center">
+    </view> -->
+    <view class="study-center" bind:tap="toLearnCenter">
       <text>进入学习中心</text>
       <image src="/images/home/to_study_center.png" mode="widthFix" />
     </view>
-    <view class="home-title">
+    <!-- <view class="home-title">
       <view>升学专题</view>
       <view>
         <text>更多</text>
@@ -185,10 +187,10 @@
         <view class="other course" bindtap="toCourse" id="{{index}}" data-type="{{index}}">
           <image src="{{item.url}}" mode="widthFix" />
           <view class="small-title">{{item.title}}</view>
-          <!-- <view class="small-title">{{item.total_lessons}}课时</view> -->
+          <view class="small-title">{{item.total_lessons}}课时</view>
         </view>
       </block>
-    </scroll-view>
+    </scroll-view> -->
   </block>
 
 </block>

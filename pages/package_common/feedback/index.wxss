@@ -123,16 +123,10 @@ page {
 .btn {
     background: #FFE27A;
     width: 60rpx;
-    height: 35rpx;
-    display: flex;
-    margin-left: 10rpx;
-    border-radius: 5rpx;
+		display: flex;
+    margin-left: 16rpx;
+		border-radius: 5rpx;
+		padding: 8rpx;
+		
 }
 
-view button {
-    width: 60rpx;
-    height: 35rpx;
-    line-height: 6rpx;
-    color: #000;
-    font-size: 20rpx;
-}

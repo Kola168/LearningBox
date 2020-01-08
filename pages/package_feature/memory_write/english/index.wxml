@@ -1,10 +1,10 @@
 <nav-bar title="英语默写"></nav-bar>
 <view class="intro" wx:if="{{showIntro}}">
-  <image src="https://cdn-h.gongfudou.com/LearningBox/feature/english_intro.png" mode="widthFix" />
+  <image src="https://cdn-h.gongfudou.com/LearningBox/feature/momory_write_english.png" mode="widthFix" />
   <view class="next" bindtap="startWrite">开始使用</view>
 </view>
 <view class="container" hidden="{{!loadReady||showIntro}}">
-  <view class="selector flex">
+  <view class="selector flex" style="top:{{topBarHeight}}px;">
     <view class="left-options flex align-center" bindtap="ctrlSelector" id="materials">
       <view class="{{showSelector&&selectorType==='materials'?'option-on':''}}">
         {{currentMaterial.name}}
@@ -18,33 +18,39 @@
       <image src="../../images/arrow_bottom_trangle_{{showSelector&&selectorType==='grades'?'on':'off'}}.png" />
     </view>
   </view>
-  <view class="select-list" bindtap="ctrlSelector" hidden="{{!showSelector}}">
+  <view class="select-list" style="top:{{topBarHeight+47}}px;" bindtap="ctrlSelector" hidden="{{!showSelector}}">
     <view class="list-box">
-      <view class="list-item {{(selectorType==='grades'&&item.sn===currentGrade.sn)||(selectorType==='materials'&&item.sn===currentMaterial.sn)?'option-on':''}}" wx:for="{{currentFilters}}" wx:key="{{index}}" bindtap="selectorItemCheck" id="{{index}}">
+      <view class="list-item {{(selectorType==='grades'&&item.sn===currentGrade.sn)||(selectorType==='materials'&&item.sn===currentMaterial.sn)?'option-on':''}}" wx:for="{{currentFilters}}" wx:key="index" bindtap="selectorItemCheck" id="{{index}}">
         {{item.name}}
       </view>
     </view>
   </view>
   <block wx:if="{{!isEmpty}}">
     <view class="content">
-      <view class="all-check" hidden="{{writeList.length===0}}" bindtap="allCheck">{{allCheck?'取消':'全选'}}</view>
-      <view class="content-item" wx:for="{{writeList}}" wx:key="{{index}}" bindtap="checkUnit" id="{{index}}">
+      <view class="all-check" hidden="{{writeList.length===0}}" bindtap="allCheck">
+        {{allCheck?'取消':'全选'}}
+      </view>
+      <view class="content-item" wx:for="{{writeList}}" wx:key="index" bindtap="checkUnit" id="{{index}}">
         <view class="item-title flex align-center">
           <view class="title-l flex align-center">
             <image src="../../images/check_{{item.isCheck?'yes':'no'}}.png" />
-            <view>{{item.title}}</view>
+            <view>{{item.name}}</view>
           </view>
-          <view class="title-r">打印次数 {{item.print_count}}</view>
+          <view class="title-r">打印次数 {{item.printCount}}</view>
         </view>
         <view class="item-main">
-          <view wx:for="{{item.items}}" wx:for-index="childIndex" wx:key="{{childIndex}}" wx:for-item="childItem">
-            <text>{{childItem.character}}</text>
-            <text>{{childItem.chinese_character}}</text>
+          <view wx:for="{{item.questions}}" wx:for-index="childIndex" wx:key="childIndex" wx:for-item="childItem">
+            <text>{{childItem.title}}</text>
+            <text>{{childItem.answer}}</text>
           </view>
         </view>
       </view>
     </view>
-    <view class="print {{checkCount===0?'unable':''}}" bindtap="toPrint">我要打印</view>
+    <view class="print {{checkCount===0?'unable':''}} {{isFullScreen?'is-full-screen':''}}" bindtap="toPrint">我要打印</view>
   </block>
   <view wx:else class="content-empty">暂无内容</view>
 </view>
+
+<!-- loading -->
+<import src="/lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />
