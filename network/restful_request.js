@@ -18,6 +18,18 @@ const api = {
     baseURL: `${app.apiServer}/api/v1/`
   }),
 
+
+	 /**
+   *刷新auth_token
+   *
+   * @param {*} params
+   */
+  refreshAuthToken: (token) => request.post(`users/sessions/refresh_token`, {
+		token:token
+	}, {
+    baseURL: `${app.apiServer}/api/v1/`
+  }),
+
   /**
    *证件照合成
    *
