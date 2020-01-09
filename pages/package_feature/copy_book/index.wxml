@@ -1,4 +1,3 @@
-<gio-marketing />
 <view class='top' style="{{showNotice?'':'margin-bottom:80rpx'}}">
     <view class='top-left'>
         <text>我的练习</text>
@@ -7,10 +6,7 @@
       <view>晒成果</view>
     </button>
     </view>
-    <!-- <view class='top-right'>
-    <text>练字提醒</text>
-    <image src="{{!remind ?'/images/turn_off.png':'/images/turn_on.png'}}" mode="widthFix" wx:if="{!remind}}" bindtap="setNotice" class="turn-onoff-btn"></image>
-  </view> -->
+
 </view>
 <picker bindchange="bindPickerChange" value="{{tindex}}" range="{{time}}">
     <view class="picker">
@@ -81,7 +77,6 @@
 </view>
 <view class="app-bottom-tip" wx:if="{{from_temp}}" bindtap="backToHome">返回首页</view>
 
-<consumables class="modify" bind:myevent="onMyEvent" supply_types="{{supply_types}}" consumables-icon="consumables-icon" medium_recommend="{{mediumRecommend}}" find="common"></consumables>
 <import src="../../../../lib/toast/wetoast.wxml" />
 
 <ios-tip ios-tip-modal="ios-tip-modal" showModal="{{iosModal}}" text="{{text}}" bindback="closeIosTip"></ios-tip>

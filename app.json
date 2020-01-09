@@ -47,7 +47,8 @@
     "pages/finish/index",
     "pages/mall/index",
     "pages/webview/index",
-    "pages/webview/member"
+    "pages/webview/member",
+    "pages/account/collection/index"
   ],
   "subPackages": [
     {
@@ -234,10 +235,10 @@
         "network/index/index",
         "network/tips/step1",
         "network/tips/step2",
-				"network/tips/step3",
-				"network/tips/step4",
-				"network/wificonnect/list",
-				"network/common/nowifi",
+        "network/tips/step3",
+        "network/tips/step4",
+        "network/wificonnect/list",
+        "network/common/nowifi",
         "network/wificonnect/connect",
         "ble/common/connect_success",
         "ble/common/no_bluetooth",

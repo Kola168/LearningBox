@@ -1,21 +1,19 @@
 "use strict"
 const app = getApp()
 
-import api from '../../../../network/api'
+import api from '../../../network/api'
 import {
   regeneratorRuntime,
   co,
   util,
   _,
-  uploadFormId,
   common_util
-} from '../../../../utils/common_import'
+} from '../../../utils/common_import'
 
 const getUserInfo = util.promisify(wx.getUserInfo)
-var mta = require('../../../../utils/mta_analysis.js');
-const event = require('../../../../lib/event/event')
-import commonRequest from '../../../../utils/common_request.js'
-
+const event = require('../../../lib/event/event')
+import api from '../../../network/restful_request'
+import graphql from '../../../network/graphql/feature'
 Page({
   data: {
     time: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23'],
@@ -29,7 +27,6 @@ Page({
   },
   onLoad: co.wrap(function* (options) {
     this.longToast = new app.WeToast()
-    mta.Page.init()
 
     if (options.share_user_id) {
       console.log('options.share_user_id======', options.share_user_id)
@@ -38,7 +35,6 @@ Page({
       this.setData({
         from_temp: true
       })
-      mta.Event.stat("zitie_share_to", {})
     }
     if (options.scene) {
       let fromScene = decodeURIComponent(options.scene)
@@ -50,9 +46,7 @@ Page({
         this.setData({
           from_temp: true
         })
-        mta.Event.stat('sacn_qr_code', {
-          'zitie': 'true'
-        })
+
       }
     }
 
@@ -61,9 +55,7 @@ Page({
       this.setData({
         from_temp: true
       })
-      mta.Event.stat('zitie_push', {
-        'push': 'true'
-      })
+
     }
     event.on('Authorize', this, function (data) {
       this.loopOpenId()
@@ -87,7 +79,7 @@ Page({
         supply_types: supply_types
       })
 		})
-		
+
 		try {
 			app.gio('track', 'copyBook', {})
 		} catch (e) {}
@@ -248,15 +240,6 @@ Page({
       duration: 0
     })
     let type = e.currentTarget.id
-    if (type == 'normal') {
-      mta.Event.stat('copy_book_index_button', {
-        'lianzi': 'true'
-      })
-    } else {
-      mta.Event.stat('copy_book_index_button', {
-        'bishun': 'true'
-      })
-    }
     try {
       let params = {
         openid: app.openId,
@@ -296,9 +279,7 @@ Page({
     let sn = this.data.copybookSets[e.currentTarget.id].sn
     let choose_grade = this.data.copybookSets[e.currentTarget.id].choose_grade
     let price = this.data.copybookSets[e.currentTarget.id].price_yuan
-    mta.Event.stat('zitie_collect_index', {
-      'zitieknowledge': sn
-    })
+
     if (choose_grade == true) {
       wx.navigateTo({
         url: `subject?title=${title}&sn=${sn}&user_share_qrcode=${common_util.encodeLongParams(this.data.user_share_qrcode)}&user_selected_grade=${this.data.user_selected_grade}&price=${price}`,
@@ -312,16 +293,13 @@ Page({
   }),
 
   toCommonSense: co.wrap(function* (e) {
-    mta.Event.stat('zitie_collect_index', {
-      'commonknowledge': 'true'
-    })
+
     wx.navigateTo({
       url: `commonSense`,
     })
   }),
 
   toShare: co.wrap(function* (e) {
-    mta.Event.stat("zitie_share_index", {})
     const info = yield getUserInfo()
     this.setData({
       avatarUrl: info.userInfo.avatarUrl,

@@ -1,0 +1,88 @@
+/* pages/account/collection/index.wxss */
+@import "../../../common/icon/icon";
+
+page{
+  width:100%;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  box-sizing:border-box;
+}
+
+view{
+  box-sizing:border-box;
+}
+
+.item-list-box{
+  width:100%;
+  padding:38rpx 32rpx;
+  border-bottom:2rpx solid #E7E7E7;
+  display:flex;
+  align-items:center;
+}
+
+.list-img{
+  width:76rpx;
+  height:76rpx;
+}
+
+.list-content{
+  flex:1;
+  height:76rpx;
+  display:flex;
+  margin-left:20rpx;
+  flex-direction:column;
+  justify-content:space-between;
+}
+
+.list-content-name{
+  width:100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 28rpx;
+  color: #333333;
+}
+
+.list-content-type{
+  width:100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 24rpx;
+  color: #999999;
+}
+
+.icon-next{
+  font-size:40rpx;
+  color: #CECECE;
+  font-weight:600;
+}
+
+.no-data-box{
+  width:100%;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  margin-top:300rpx;
+}
+
+.no-data-img{
+  width:216rpx;
+}
+
+.no-data-text{
+  font-size: 32rpx;
+  color: #666666;
+  margin-top:36rpx;
+}
+
+.no-data-button{
+  width:280rpx;
+  line-height:80rpx;
+  border-radius:40rpx;
+  text-align:center;
+  border: 1rpx solid #CECECE;
+  font-size: 36rpx;
+  color: #999999;
+}
