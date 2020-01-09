@@ -1,0 +1,60 @@
+<nav-bar title="超级错题本"></nav-bar>
+<view class="container">
+  <view class="func-item" bindtap="toNext" id="errorbook">
+    <view class="item-left">
+      <view class="left-img">
+        <image src="../../images/super_errorbook_icon.png" />
+      </view>
+      <view class="left-main">
+        <view class="main-title">
+          超级错题本
+          <text>共错99题</text>
+        </view>
+        <view class="main-sub text-overflow-points">精准提分从超级错题本开始</view>
+      </view>
+    </view>
+    <view class="item-right">使用</view>
+  </view>
+  <view class="func-item" bindtap="toNext" id="weekness">
+    <view class="item-left">
+      <view class="left-img">
+        <image src="../../images/weakness_exercise_icon.png" />
+      </view>
+      <view class="left-main">
+        <view class="main-title">薄弱项习题</view>
+        <view class="main-sub text-overflow-points">精准提分从超级错题本开始</view>
+      </view>
+    </view>
+    <view class="item-right">使用</view>
+  </view>
+  <view class="atlas">
+    <view class="atlas-header">
+      <view class="header-left">
+        <view>知识图谱</view>
+        <image src="../../images/hot_icon.png" mode="widthFix" />
+      </view>
+      <view class="header-right" bindtap="toNext" id="atlas">
+        <view>查看详情</view>
+        <image src="../../images/arrow.png" mode="widthFix" />
+      </view>
+    </view>
+    <block wx:if="{{isMember}}">
+      <canvas style="width: {{canvasWidth}}px; height: {{canvasWidth}}px;" canvas-id="radar" wx:if="{{false}}"></canvas>
+      <block wx:if="{{false}}">
+        <view class="bar-title">得分率</view>
+        <canvas style="width: {{canvasWidth}}px; height: {{canvasWidth-60}}px;" canvas-id="bar"></canvas>
+      </block>
+      <view class="no-atlas">
+        <image src="../../images/no_atlas.png" mode="widthFix" />
+        <view class="no-atlas-title">你还没有专属知识图谱哦</view>
+        <view class="no-atlas-step">
+          <view>如何生成我的知识图谱？</view>
+          <view>1.打印同步练习或试卷</view>
+          <view>2.扫描打印出的试卷上方二维码</view>
+          <view>3.进行批改，批改后小白老师会根据您的做题情况制作知识图谱哦</view>
+        </view>
+      </view>
+    </block>
+    <image src="https://cdn-h.gongfudou.com/LearningBox/subject/not_subject_member.png" mode="widthFix" bindtap="toNext" id="member" wx:else />
+  </view>
+</view>

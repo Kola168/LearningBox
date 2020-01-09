@@ -1,0 +1,34 @@
+<nav-bar title="知识图谱"></nav-bar>
+<view class="container">
+  <image src="../../images/knowledge_list_tip.png" mode="widthFix" />
+  <view class="knowledge">
+    <view class="knowledge-title">知识点列表</view>
+    <view class="knowledge-list">
+      <view class="list-line line-one"></view>
+      <view class="list-line line-two"></view>
+      <view class="list-line line-three"></view>
+      <view class="final-precent">100%</view>
+      <view class="list-item">
+        <view class="item-title">有理数</view>
+        <view class="item-progress" style="width:100%;">
+          <!-- <view class="progress-bar" style="width:100%;"></view> -->
+          <view class="progress-text">100%</view>
+        </view>
+      </view>
+      <view class="list-item">
+        <view class="item-title">微积分</view>
+        <view class="item-progress" style="width:50%;">
+          <!-- <view class="progress-bar" style="width:50%;"></view> -->
+          <view class="progress-text">50%</view>
+        </view>
+      </view>
+      <view class="list-item">
+        <view class="item-title">函数</view>
+        <view class="item-progress" style="width:90%;">
+          <!-- <view class="progress-bar" style="width:90%;"></view> -->
+          <view class="progress-text">90%</view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

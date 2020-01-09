@@ -205,7 +205,13 @@
         "evaluate_exam/index/index",
         "evaluate_exam/testpaper/index",
         "correct/index",
-        "report/preview/index"
+        "report/preview/index",
+        "member_intro/index",
+        "super_errorbook/index/index",
+        "super_errorbook/atlas/index",
+        "super_errorbook/errorbook/index",
+        "super_errorbook/errorbook/list",
+        "super_errorbook/knowledge_list/index"
       ]
     },
     {
