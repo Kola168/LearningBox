@@ -139,6 +139,29 @@ const graphqlApi = {
     })
   },
 
+  //获取年级下对应的口算类型接口
+  getKousuanTypeAndChildren:(sn)=>{
+    return gql.query({
+      query:`query($sn: String!){
+        category(sn:$sn){
+          children{
+            name
+            image
+            sn
+            children{
+              name
+              image
+              sn
+            }
+          }
+        }
+      }`,
+      variables: {
+        sn
+      }
+    })
+  },
+
   //口算打印接口
   createKousunOrder:(input)=>{
     return gql.mutate({

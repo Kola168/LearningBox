@@ -51,6 +51,9 @@ Page({
 
   getPointsList:co.wrap(function*(){
     if(!this.data.textBookList[this.data.gradeIndex].kousuanCategories[this.data.textbookIndex]){
+      this.setData({
+        calculationList:[]
+      })
       return wx.showModal({
         title:'提示',
         content:'该年龄段暂无口算',

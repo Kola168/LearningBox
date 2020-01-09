@@ -2,6 +2,10 @@
 <nav-bar title="练习计划"></nav-bar>
 
 <view class="top-tap">
+  <view class="top-tap-style {{planTypeCheck=='unSet'?'type-checked':''}}" data-type="unSet" bindtap="checkPlanType">
+    未设置
+    <view wx:if="{{planTypeCheck=='unSet'}}" class="type-checked-line"></view>
+  </view>
   <view class="top-tap-style {{planTypeCheck=='executing'?'type-checked':''}}" data-type="executing" bindtap="checkPlanType">
     执行中
     <view wx:if="{{planTypeCheck=='executing'}}" class="type-checked-line"></view>
@@ -10,6 +14,34 @@
     已结束
     <view wx:if="{{planTypeCheck=='finished'}}" class="type-checked-line"></view>
   </view>
+</view>
+
+<view wx:if="{{planTypeCheck=='unSet'}}" class="list-box">
+  <block wx:if="{{unSetList.length>0}}">
+    <view wx:for="{{unSetList}}" wx:key="executingList" class="list-item">
+      <view class="list-msg-box">
+        <view class="list-cont-box">
+          <text class="list-name"><text class="list-name-point"></text>{{item.name}}</text>
+          <view class="list-detail-box">
+            <view class="list-type">{{item.calculateType}}</view>
+            <view class="list-type-detail">{{item.typeName}}</view>
+          </view>
+        </view>
+        <view class="list-state">
+          {{item.state}}
+        </view>
+      </view>
+      <view class="list-time-box">
+        从{{item.startTime}}开始至{{item.finishTime}}结束
+      </view>
+    </view>
+  </block>
+  <block wx:else>
+    <image src="https://cdn-h.gongfudou.com/LearningBox/feature/kousuan_nofinish.png" mode="widthFix" class="nofinishedList-img"></image>
+    <view class="nofinishedList-text">
+      您还没有未设置的计划哦
+    </view>
+  </block>
 </view>
 
 <view wx:if="{{planTypeCheck=='executing'}}" class="list-box">
@@ -28,7 +60,8 @@
         </view>
       </view>
       <view class="list-time-box">
-        从{{item.startTime}}开始至{{item.finishTime}}结束
+        <text class="list-time-text">每天{{item.time}}执行</text>
+        <text>由于每天的计划量比较大，可能会有一定时间的延迟</text>
       </view>
     </view>
 
@@ -42,14 +75,13 @@
     </view>
     <image src="https://cdn-h.gongfudou.com/LearningBox/feature/kousuan_noplan.png" mode="widthFix" class="noexecuting-img"></image>
   </block>
-  <view class="add-button" bindtap="createPlan">
-    开启新计划
-  </view>
+  <bottom-button text-right="开启新计划" bindrighttap="createPlan" class="add-button"></bottom-button>
+
 </view>
 
 <view wx:if="{{planTypeCheck=='finished'}}" class="list-box">
   <block wx:if="{{finishedList.length>0}}">
-    <view wx:for="{{finishedList}}" wx:key="executingList" class="list-item">
+    <view wx:for="{{finishedList}}" wx:key="executingList" class="list-item list-finish-item">
       <view class="list-msg-box">
         <view class="list-cont-box">
           <text class="list-name"><text class="list-name-point"></text>{{item.name}}</text>
@@ -62,8 +94,8 @@
           {{item.state}}
         </view>
       </view>
-      <view class="list-time-box">
-        从{{item.startTime}}开始至{{item.finishTime}}结束
+      <view class="list-time-box list-finish-time">
+        每天{{item.time}}执行
       </view>
     </view>
   </block>
