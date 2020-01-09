@@ -30,7 +30,7 @@ var dateToTimestamp = function(date) {
  */
 var getCurrentDate = function () {
   var timeStamp = (new Date()).getTime()
-  return timestampToDate(timeStamp)
+  return timestampToDate(timeStamp) 
 }
 
 /**

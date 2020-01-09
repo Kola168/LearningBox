@@ -5,7 +5,21 @@ Page({
    * 页面的初始数据
    */
   data: {
-
+    currentTabIndex: 0,
+    subjectList: [
+      {
+        subjectName: '语文',
+        sn: 1
+      },
+      {
+        subjectName: '语文',
+        sn: 1
+      },
+      {
+        subjectName: '语文',
+        sn: 1
+      },
+    ]
   },
 
   /**

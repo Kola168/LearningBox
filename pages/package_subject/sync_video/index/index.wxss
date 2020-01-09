@@ -1,1 +1,55 @@
 /* pages/package_subject/sync_video/index/index.wxss */
+
+
+.main-box scroll-view {
+  height: 74rpx;
+  white-space: nowrap;
+  padding-left: 36rpx;
+}
+
+.main-box .tab-item {
+  display: inline-block;
+  min-width: 100rpx;
+  margin-right: 50rpx;
+  width: fit-content;
+  text-align: center;
+}
+
+.main-box .tab-name {
+  color: #666;
+  font-size: 32rpx;
+}
+
+.main-box .tab-line {
+  margin: 20rpx auto 0;
+  width: 28rpx;
+  height: 4rpx;
+  border-radius: 2rpx;
+}
+
+.main-box .active {
+  color: #FFA200;
+}
+
+.active-line {
+  background-color: #FFA200;
+}
+
+.notice-card {
+  margin: 40rpx 24rpx 0 24rpx;
+  position: relative;
+  width: calc( 100% - 48rpx );
+  height: 134rpx;
+}
+
+.notice-card .nav-text {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 70%;
+  height: 100%;
+  line-height: 124rpx;
+  color: #FFA200;
+  font-size: 24rpx;
+  padding-left: 27%;
+}

@@ -3,16 +3,16 @@
     <image class="content-icon" src="../../images/pdf.png"></image>
     <view class="exercise-in-content">
       <view class="main-content">
-        <view class="name">专项薄弱练习1</view>
-        <view class="exercise-activity-icon">最新</view>
+        <view class="name">{{item.exerciseName}}</view>
+        <view class="exercise-activity-icon" wx:if="{{index == 0}}">最新</view>
       </view>
       <view class="effect-content">
         <image src="/images/doc_discover_pages.png" />
-        <view class="page-count">共2页</view>
+        <view class="page-count">共{{item.pageSize}}页</view>
         <image src="../../images/time_icon.png" />
-        <view class="create-date">2019-09-09</view>
+        <view class="create-date">{{item.dateTime}}</view>
       </view>
     </view>
-    <view class="btn-print">打印练习</view>
+    <view class="btn-print" bind:tap="toPrint" data-item="{{item}}">打印练习</view>
   </view>
 </template>

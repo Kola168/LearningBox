@@ -7,6 +7,9 @@ import {
   storage,
   wxNav
 } from '../../../../utils/common_import'
+import api from '../../../../network/restful_request'
+import graphql from '../../../../network/graphql/subject'
+import getLoopsEvent from '../../../../utils/worker'
 Page({
 
   /**
@@ -31,7 +34,8 @@ Page({
       appoint: ['today', 'yesterday'],
       dayRange: [7]
     },
-    knowledgeList: []
+    knowledgeList: [],
+    subjects: []
   },
 
   /**
@@ -44,7 +48,50 @@ Page({
       navBarHeight,
       isFullScreen: app.isFullScreen
     })
+    this.getSubject()
+    this.getExerciseList()
   },
+
+   /**
+   * 获取学科信息
+   */
+  getSubject: co.wrap(function*(){
+    try {
+      var resp = yield graphql.getSubject()
+      this.setData({
+        subjects: resp.xuekewang.subjects,
+        currentSubject: resp.xuekewang.subjects[0],
+      })
+    } catch(err) {
+      console.log(err)
+    }
+  }),
+
+  /**
+   * 获取知识点
+   */
+  getKnowledges: co.wrap(function*(){
+    this.longToast.toast({
+      type: 'loading',
+      title: '请稍后...'
+    })
+
+    try {
+      var resp = yield graphql.getKnowledges({
+        sn: this.data.checkedSubject.sn,
+        startTime: this.data.checkedDate.startDate,
+        endTime: this.data.checkedDate.endDate
+      })
+
+      this.setData({
+        knowledgeList: resp.xuekewangSubject.knowledges
+      })
+      this.longToast.hide()
+    } catch(err) {
+      this.longToast.hide()
+      util.showError(err)
+    }
+  }),
 
   /**
    * 选择知识点 
@@ -61,70 +108,44 @@ Page({
    * @param {*} e 
    */
   chooseSubject: function({detail}) {
-    console.log(detail,'====xxx')
     this.setData({
       showSubjectCheckbox: false,
       showTimeCheckbox: true,
       checkedSubject: detail
     })
   },
+
   /**
    * 选择日期
    * @param {*} e 
    */
   chooseDate: function({detail}) {
-    console.log(detail,'====xxx')
     this.setData({
       showTimeCheckbox: false,
       showKnowledgeCheckbox: true,
       checkedDate: detail
     })
-    this.getKnowledgeList()
+    this.getKnowledges()
   },
-
-  
-
-  /**
-   * 获取知识点列表
-   */
-  getKnowledgeList: co.wrap(function*(){
-    try {
-      this.longToast.toast({
-        type: 'loading',
-        title: '请稍后...'
-      })
-      setTimeout(()=>{
-        this.setData({
-          knowledgeList: [{
-              checked: false,
-              name: '函数的概念及基本初等函数函数'
-          },
-          {
-            checked: true,
-            name: '立体几何初步'
-          }]
-        })
-        this.longToast.hide()
-      }, 2000)
-    } catch(err) {
-      this.longToast.hide()
-    }
-  }),
 
   /**
    * 获取练习列表
    */
   getExerciseList: co.wrap(function*(){
-    console.log('getExerciseList')
     try {
       this.longToast.toast({
         type: 'loading',
         title: '请稍后...'
       })
+      // 2091261782649911
+      var resp = yield graphql.getKnowledgeExercises(this.data.checkedSubject.sn)
+      this.setData({
+        exerciseList: resp.xuekewang.exercises
+      })
+      this.longToast.hide()
     } catch(err) {
       this.long.hide()
     }
-
   }),
 
   /**
@@ -142,17 +163,63 @@ Page({
    * 生成练习
    */
   createExercise: function(){
-    this.getExerciseList()
+    //var ids = this.knowedgeIds()
+    this.longToast.toast({
+      type: 'loading',
+      title: '正在出题...'
+    })
+
+    getLoopsEvent({
+      feature_key: 'xuekewang_exercise',
+      worker_data: {
+        exercise_type: 'kpoint',
+        // subject_sn: this.data.checkedSubject.sn,
+        // end_time: this.data.checkedDate.endDate,
+        // start_time: this.data.checkedDate.startDate,
+        // ids: ids
+        subject_sn: 2091261782649911,
+        end_time: '2020-01-23',
+        start_time: '2019-06-17',
+        ids: '10418'
+      }
+    }, (resp) => {
+      if (resp.status == 'finished') {
+        this.longToast.hide()
+        this.setData({
+          showKnowledgeCheckbox: false
+        })
+        this.getExerciseList()
+      }
+    }, () => {
+      this.longToast.hide()
+    })
+  },
+
+  /**
+   * 匹配知识点ids
+   */
+  knowedgeIds: function() {
+    var knowedges = this.data.knowledgeList.filter(item=>item.checked)
+    var ids = knowedges.length && knowedges.reduce((pre,cur)=>[''+ pre.id].concat('' + cur.id) || [])
+    return ids.join(',')
   },
 
   /**
    * 搜索分类
    */
   searchCategory: co.wrap(function *({currentTarget: {dataset: {key}}}) {
-    if (key == 'subject') {
 
+    if (key == 'subject') {
+      this.setData({
+        showSubjectForm: true
+      }) 
     }
   }),
+
+  toPrint: function(){
+    console.log('==去打印==')
+    // wxNav.navigateTo()
+  },
 
   onUnload: function(){
     storage.remove("subjectsData")
