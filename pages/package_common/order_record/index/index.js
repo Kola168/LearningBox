@@ -2,7 +2,7 @@
 "use strict"
 
 import graphql from '../../../../network/graphql/common'
-import Logger from '../../../../utils/logger.js'
+import Logger from '../../../../utils/logger'
 const logger = new Logger.getLogger('pages/package_common/order_record/index/index')
 const app = getApp()
 import {
