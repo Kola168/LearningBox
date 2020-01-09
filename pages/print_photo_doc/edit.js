@@ -53,31 +53,49 @@ Page({
     galleryImages: {
       images: []
     },
+    currentIndex:0,
+    currentCount:1,
   },
+
   onLoad: co.wrap(function*(options) {
-    options.url = JSON.parse(decodeURIComponent(options.url))
-    this.options = options
-    this.setData({
-      isSingle: options.isSingle,
-      currentCount: options.currentCount
-    })
     this.longToast = new app.weToast()
-    this.options = this.checkImgOptions(options.index)
+    this.postData=JSON.parse(decodeURIComponent(options.postData))
+    console.log(this.postData)
+    this.data.currentIndex=0
     this.setData({
-      isFullScreen: app.isFullScreen,
-      croppers: {
-        tempInfo: {
-          width: W,
-          height: H,
-          top: TOP,
-          left: 20
-        },
-        mode: 'quadrectangle'
-      }
+      currentCount:this.postData.length
     })
-    this.initData(this.options)
+    this.initEdit()
     this.getColor()
   }),
+
+  initEdit:function(){
+    try{
+      this.setData({
+        isSingle: this.postData[0].isSingle,
+      })
+      this.options = this.postData[this.data.currentIndex]
+      this.options = this.checkImgOptions(this.options.index)
+      this.setData({
+        isFullScreen: app.isFullScreen,
+        croppers: {
+          tempInfo: {
+            width: W,
+            height: H,
+            top: TOP,
+            left: 20
+          },
+          mode: 'quadrectangle'
+        },
+        currentIndex:this.data.currentIndex,
+      })
+      this.initData(this.options)
+    }catch(e){
+      console.log(e)
+    }
+
+  },
+
   // 检查入参 是否是有效数据
   checkImgOptions: function(index) {
     let galleryImages = this.getImgStorage()
