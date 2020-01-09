@@ -1,0 +1,6 @@
+{
+  "component": true,
+  "usingComponents": {
+    "choose-subject": "../../components/choose-subject/index"
+  }
+}

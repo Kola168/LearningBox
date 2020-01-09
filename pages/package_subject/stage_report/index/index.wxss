@@ -1,32 +1,4 @@
-/* pages/package_subject/weakness_exercise/index/index.wxss */
-
-.weakness-main {
-  position: relative;
-  width: 100%;
-  padding-top: 48rpx;
-}
-
-.weakness-main .head-remind {
-  position: absolute;
-  left: 0;
-  top: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 48rpx;
-  background-color: #FFF8E0;
-}
-
-.weakness-main .head-remind image {
-  width: 26rpx;
-}
-
-.weakness-main .head-remind .name {
-  font-size: 24rpx;
-  color: #FFA200;
-}
-
+/* pages/package_subject/stage_report/index/index.wxss */
 
 .nav-card {
   position: relative;
@@ -44,111 +16,12 @@
   color: #FFA200;
 }
 
-
-.btn-setTopic {
-  margin: 0 auto;
-  width: 600rpx;
-  height: 98rpx;
-  line-height: 98rpx;
-  background: #FFDC5E;
-  border-radius: 49rpx;
-  font-size: 36rpx;
-  text-align: center;
-  color: #454545;
+.notice-text {
+  padding: 40rpx 24rpx 30rpx 24rpx;
+  color: #FFA200;
 }
 
 
-/* 暂无练习题 */
-
-.empty-exercise {
-  padding: 160rpx  76rpx 0;
-}
-
-.empty-exercise image {
-  margin: 0 auto;
-  width: 240rpx;
-  height: 144rpx;
-}
-
-.empty-exercise .name {
-  padding-top: 36rpx;
-  text-align: center;
-  font-size: 32rpx;
-  color: #666666;
-}
-
-.choose-subject {
-  margin: 76rpx 52rpx;
-}
-
-.choose-date-range {
-  padding: 0 26rpx;
-}
-
-
-/* 知识点 */
-
-.knowledge-main {
-  width: 100%;
-}
-
-.knowledge-main .title {
-  margin: 60rpx 0 40rpx;
-  text-align: center;
-  font-size: 36rpx;
-  color: #333333;
-}
-
-.knowledge-content {
-  padding: 0 24rpx;
-}
-
-.knowledge-content .knowledge-item {
-  margin-bottom: 50rpx;
-  display: flex;
-  align-items: center;
-}
-
-.knowledge-content image{
-  margin-right: 20rpx;
-  width: 40rpx;
-}
-
-.knowledge-content .name{
-  margin-right: 36rpx;
-  width: 70%;
-  height: 40rpx;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  word-break: break-all;
-  font-size: 28rpx;
-  color: #333333;
-}
-
-.know-card {
-  width: 160rpx;
-  height: 36rpx;
-  line-height: 36rpx;
-  font-size: 20rpx;
-  text-align: center;
-  border-radius: 18rpx;
-  color: #FB5130;
-  background: #FFEBE7;
-}
-
-.btn-convert {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 98rpx;
-  line-height: 98rpx;
-  text-align: center;
-  font-size: 36rpx;
-  color: #333333;
-  background-color: #FFDC5E;
-}
 
 /* 搜索 */
 
@@ -180,7 +53,6 @@
   border-top: 10rpx solid #999999;
   border-bottom: 10rpx solid transparent;
 }
-
 
 /* 练习列表 */
 
@@ -260,6 +132,22 @@
   color: #333333;
   background: #FFDC5E;
   border-radius: 26rpx;
+}
+
+
+/* 生成练习 */
+
+.btn-convert {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 98rpx;
+  line-height: 98rpx;
+  text-align: center;
+  font-size: 36rpx;
+  color: #333333;
+  background-color: #FFDC5E;
 }
 
 /* 分类筛选器 */

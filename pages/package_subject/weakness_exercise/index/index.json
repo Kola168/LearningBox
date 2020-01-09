@@ -1,3 +1,7 @@
 {
-  "usingComponents": {}
+  "usingComponents": {
+    "member-toast": "../../sync_learn/components/member-toast/index",
+    "choose-subject": "../../components/choose-subject/index",
+    "choose-time-range": "../../components/choose-time-range/index"
+  }
 }
