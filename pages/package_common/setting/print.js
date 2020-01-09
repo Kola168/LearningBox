@@ -53,8 +53,14 @@ var createOrder = co.wrap(function *(createPms) {
           duplex: Boolean 是否双面打印
        */
       [printTypes.doc]: co.wrap(function *(featureKey, params) {
-        var resp = yield commonRequest.createOrder(featureKey, params)
-        return resp.createOrder
+        try {
+          var resp = yield commonRequest.createOrder(featureKey, params)
+          return resp.createOrder
+        } catch(err) {
+          util.showError(err)
+        }
+
+        
       }),
       /**
        * @param  {String} featureKey
@@ -65,12 +71,16 @@ var createOrder = co.wrap(function *(createPms) {
           ... 自定义的扩展参数
        */
       [printTypes.subject]: co.wrap(function *(featureKey, params) {
-        var resp = yield graphqlSubject.createXuekewangOrder({featureKey, attributes: Object.assign({
-          ...params.attributes,
-          ...params.capabilitys
-        })})
-        return resp.createXuekewangOrder
-      }),
+        try {
+          var resp = yield graphqlSubject.createXuekewangOrder({featureKey, attributes: Object.assign({
+            ...params.attributes,
+            ...params.capabilitys
+          })})
+          return resp.createXuekewangOrder
+        } catch(err) {
+          util.showError(err)
+        }
+      }), 
 
       /**
        * @param  {String} featureKey
@@ -93,7 +103,7 @@ var createOrder = co.wrap(function *(createPms) {
         })
         return resp.createResourceOrder
        } catch(err) {
-         console.log(err)
+        util.showError(err)
        }
       }),
     }

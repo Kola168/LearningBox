@@ -118,7 +118,7 @@ Page({
             resourceOrderType: 'Testimonial',
             resourceAttribute: {
               sn: item.sn,
-              resourceType: 'Content'
+              resourceType: 'Testimonial'
             }
           },
           checkCapabilitys: {
