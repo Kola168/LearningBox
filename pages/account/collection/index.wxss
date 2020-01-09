@@ -85,4 +85,5 @@ view{
   border: 1rpx solid #CECECE;
   font-size: 36rpx;
   color: #999999;
+  margin-top:60rpx;
 }
