@@ -120,7 +120,7 @@ const graphqlApi = {
    * 宝贝成长计划 预览
    * 
    */
-  getContent: (planSn) => {
+  getPreviewContent: (planSn) => {
     return gql.query({
       query: `query ($planSn: String!){
         content(sn: $planSn) {

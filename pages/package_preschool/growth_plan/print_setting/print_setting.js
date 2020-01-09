@@ -32,7 +32,10 @@ Page({
   onLoad: co.wrap(function* (options) {
 
     this.userPlanSn = this.options.userPlanSn
+    this.featureKey= this.options.featureKey
+    this.contentImagesLength= this.options.contentImagesLength
     console.log('8888', this.userPlanSn)
+    console.log('featureKey2202020', this.featureKey)
 
     this.longToast = new app.weToast
     this.setData({

@@ -17,17 +17,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-    imgUrls: [
-      {
-        image: '../../images/plan_detail_img.jpg'
-      },
-      {
-        image: '../../images/plan_detail_img.jpg'
-      },
-      {
-        image: '../../images/plan_detail_img.jpg'
-      }
-    ],
+    imgUrls:[],
     currentPage: 1,
     allPage: 3,
     currentImage: '',
@@ -40,26 +30,28 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: co.wrap(function *(options) {
-      this.longToast = new app.weToast
-      let currentImage=this.data.imgUrls[1].image
-      this.setData({
-        currentImage: currentImage,
-        isFullScreen: app.isFullScreen
-      })
+      // this.longToast = new app.weToast
+      // let currentImage=this.data.imgUrls[1].image
+      // this.setData({
+      //   currentImage: currentImage,
+      //   isFullScreen: app.isFullScreen
+      // })
 
-      console.log('=======feacture',this.options)
+      this.userPlanSn= this.options.userPlanSn
+      this.sn = this.options.sn
   
     try {
-      this.userPlanSn= this.options.userPlanSn
-      var sn= this.options.sn
-      const resp = yield gql.getContent(sn)
-      var len = resp.content.contentImages.length
-      console.log('lenlen',len)
+      const resp= yield gql.getPreviewContent(this.sn)
       console.log('resp===',resp)
+      this.featureKey= resp.content.featureKey
+      this.contentImagesLength= resp.content.contentImages.length
+      console.log('contentImagesLength===',this.contentImagesLength)
+      this.data.imgUrls= resp.content.contentImages
+      console.log('this.data.imgUrls===',this.data.imgUrls)
       this.setData({
-        imgUrls: resp.content.contentImages,
+        imgUrls: this.data.imgUrls,
         allPage:resp.content.pageCount,
-        currentPage:this.data.currentPage
+        // currentPage:this.data.currentPage
       })
 
     } catch (error) {
@@ -118,7 +110,9 @@ Page({
   beginPrint: co.wrap(function* (userPlanSn) {
     console.log('lalal',this.userPlanSn)
     wxNav.navigateTo('/pages/package_preschool/growth_plan/print_setting/print_setting',{
-      userPlanSn:this.userPlanSn
+      userPlanSn:this.userPlanSn,
+      featureKey:this.featureKey,
+      contentImagesLength:this.contentImagesLength
     })
   }),
 })
