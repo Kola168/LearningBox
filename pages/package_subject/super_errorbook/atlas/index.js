@@ -2,7 +2,7 @@ const app = getApp()
 import {
   wxNav
 } from "../../../../utils/common_import"
-const FundCharts = require('../../charts.min.js/index.js')
+const FundCharts = require('../../charts.min.js')
 const RadarChart = FundCharts.radar
 const BarChart = FundCharts.bar
 Page({
