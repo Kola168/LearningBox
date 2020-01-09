@@ -135,7 +135,7 @@ Page({
     }),
     //查看解析
     watch: function () {
-        router.navigateTo('/pages/error_book/pages/photo_answer/print', {
+        router.navigateTo('/pages/package_feature/error_book/answer_print', {
             urls: JSON.stringify(this.data.answer_urls),
             type: 'photoAnswer'
         })
@@ -143,14 +143,6 @@ Page({
     //搜答案
     search: function () {
         logger.info(this.course)
-        router.navigateTo('/pages/error_book/pages/photo_answer/result', {
-            url: this.data.urls[0],
-            course: this.course,
-            level: this.data.level[this.data.levelId],
-            reason: this.data.reason[this.data.reasonId],
-            id: this.id,
-            type: 'error_book_search'
-        })
         router.navigateTo('/pages/package_feature/error_book/answer_result', {
             url: this.data.urls[0],
             course: this.course,

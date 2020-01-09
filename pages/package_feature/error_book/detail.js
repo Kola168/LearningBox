@@ -291,31 +291,29 @@ Page({
         }
         logger.info("params2", params2)
         try {
-            const resp = gql.featureGql(params2)
-            logger.info('删除====', resp.data)
+            const resp = featureGql.deleteMistakes(params2)
             wx.showToast({
                 title: '删除成功',
                 icon: 'none',
                 duration: 3000
             })
-            // this.toClose()
-            this.getMistakes()
-            // let newArray=[]
-            // for (let i = 0; i < this.data.array.length; i++) {
-            //   this.data.array[i].notDeleteNum=this.data.array[i].content.length//没删除的数量
-            //   for (let j = 0; j < this.data.array[i].content.length; j++) {
-            //     if (this.data.array[i].content[j].checked==true) {
-            //       // this.data.array[i].content.splice(j, 1);
-            //       this.data.array[i].content[j].hasDelete=true//已删除
-            //       this.data.array[i].notDeleteNum=this.data.array[i].notDeleteNum-1
-            //       logger.info(this.data.array)
-            //       this.setData({
-            //         array: this.data.array,
-            //         middlearr: []
-            //       })
-            //     }
-            //   }
-            // }
+            this.toClose()
+            let newArray=[]
+            for (let i = 0; i < this.data.array.length; i++) {
+              this.data.array[i].notDeleteNum=this.data.array[i].content.length//没删除的数量
+              for (let j = 0; j < this.data.array[i].content.length; j++) {
+                if (this.data.array[i].content[j].checked==true) {
+                  // this.data.array[i].content.splice(j, 1);
+                  this.data.array[i].content[j].hasDelete=true//已删除
+                  this.data.array[i].notDeleteNum=this.data.array[i].notDeleteNum-1
+                  logger.info(this.data.array)
+                  this.setData({
+                    array: this.data.array,
+                    middlearr: []
+                  })
+                }
+              }
+            }
             this.longToast.toast()
         } catch (e) {
             this.longToast.toast()
