@@ -2,26 +2,27 @@
 "use strict"
 
 const app = getApp()
-const regeneratorRuntime = require('../../lib/co/runtime')
-const co = require('../../lib/co/co')
-const util = require('../../utils/util')
-const feature_route=require('../../utils/feature_index')
-
+const feature_route = require('../../utils/feature_index')
+import {
+  regeneratorRuntime,
+  co,
+  util,
+  storage,
+  wxNav
+} from '../../utils/common_import'
 const chooseImage = util.promisify(wx.chooseImage)
 const showModal = util.promisify(wx.showModal)
 const request = util.promisify(wx.request)
 const getImageInfo = util.promisify(wx.getImageInfo)
 const getNetworkType = util.promisify(wx.getNetworkType)
-
-import wxNav from '../../utils/nav.js'
-import storage from '../../utils/storage.js'
-import gql from '../../network/graphql_request'
-import commonRequest from '../../utils/common_request'
+// import gql from '../../network/graphql_request'
+// import commonRequest from '../../utils/common_request'
 
 let Loger = (app.apiServer != 'https://epbox.gongfudou.com' || app.deBug) ? console.log : function() {}
 
 Page({
 	data: {
+		exerciseDay: 0,
 		owner: false,
 		audit_free: false,
 		state: '',
@@ -61,6 +62,7 @@ Page({
 				continueText:'再次测评'
 			})
 		}
+		this.initExerciseStatus()
 		// this.getAccounts()
 		// let getSupplyAfter = commonRequest.getSupplyAfter()
 		// let that = this
@@ -82,6 +84,21 @@ Page({
 		})
 
 	},
+
+	initExerciseStatus: co.wrap(function*(){
+		try {
+			var mediaTypes = ['daily_practice'] //练习相关的media_types
+			var isExercise =  mediaTypes.indexOf(this.media_type) > -1
+			var orderData = storage.get('orderSuccessParams')
+			this.setData({
+				isExercise,
+				exerciseDay: orderData.statistic && orderData.statistic.keepDays
+			})
+			storage.remove('orderSuccessParams')
+		} catch(err) {
+
+		}
+	}),
 
 	// getAccounts: co.wrap(function* () {
 	// 	this.longToast.toast({

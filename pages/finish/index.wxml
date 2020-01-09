@@ -10,7 +10,15 @@
   <image src='/images/arrow-right-gray.png' class='top-right'></image>
 </view>
 <block wx:if="{{state!='verifying'}}">
-  <image class="image" mode="widthFix" src="/images/finish_print_finish.png"></image>
+  <!-- 是否练习相关 -->
+  <image class="baby-exercise" wx:if="{{isExercise}}" mode="widthFix" src="http://cdn-h.gongfudou.com/LearningBox/preschool/preSchool_success_new_banner.jpg">
+    <view class="success-main">
+      <view class="day-content">{{exerciseDay}}</view>
+      <view class="day-name">天</view>
+    </view>
+  </image>
+  <!-- normal -->
+  <image class="image" mode="widthFix" wx:else src="/images/finish_print_finish.png"></image>
   <view class="wait-view">任务已发送，使用其他功能或继续打印</view>
 </block>
 <block wx:else>

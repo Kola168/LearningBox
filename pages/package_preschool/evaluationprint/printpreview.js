@@ -14,7 +14,7 @@ let Loger = (app.apiServer != 'https://epbox.gongfudou.com' || app.deBug) ? cons
 Page({
 
   data: {
-    printImgs:['../images/record_voice_btn_recorder.png','../images/record_voice_btn_record_stop.png'],
+    printImgs:[],
     showIndex:0,
   },
 

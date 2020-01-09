@@ -1,0 +1,148 @@
+/* pages/package_feature/kousuan/createTime.wxss */
+@import "../../../common/icon/icon";
+
+page {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 30rpx 24rpx;
+}
+
+.content-bg{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+view {
+  box-sizing: border-box;
+}
+
+.plan-top-tip {
+  width: 100%;
+  font-size: 24rpx;
+  color: #FFA200;
+}
+
+.tips-top-text{
+  font-size: 16px;
+  color: #333333;
+  margin-top:100rpx;
+}
+
+.plan-draft-box {
+  width: 100%;
+  background: #FFFFFF;
+  box-shadow: 0 2px 8px 0 rgba(204, 204, 204, 0.40);
+  border-radius: 10px;
+  margin-top: 38rpx;
+  padding: 0 24rpx 50rpx;
+  display: flex;
+  flex-direction: column;
+}
+
+.check-contain-box {
+  width: 100%;
+  padding:024rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 40rpx;
+}
+
+.check-name-box {
+  width:200rpx;
+  font-size: 28rpx;
+  color: #666666;
+  margin-right: 20rpx;
+  text-align: justify;
+  text-align-last: justify;
+}
+
+.check-content-box {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 2rpx solid #E7E7E7;
+  border-radius: 12rpx;
+  position:relative;
+}
+
+.check-value-box {
+  font-size: 14px;
+  color: #333333;
+  margin: 20rpx;
+}
+
+.check-print-tip {
+  font-size: 28rpx;
+  color: #666666;
+  margin-left:20rpx;
+}
+
+.conf-check-but{
+  width:600rpx;
+  line-height:100rpx;
+  border-radius:50rpx;
+  text-align:center;
+  background:#FFDC5E;
+  font-size: 36rpx;
+  color: #454545;
+  margin:0 auto;
+  position:fixed;
+  bottom:290rpx;
+}
+
+.scroll-position-box{
+  width:calc(100% + 4rpx);
+  position:absolute;
+  z-index:1;
+  top:72rpx;
+  left:-2rpx;
+  border: 1px solid #E7E7E7;
+  border-top:1px solid #fff;
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
+  overflow:hidden;
+}
+
+.picker-view-box{
+  width:100%;
+  height:300rpx;
+  background:#fff;
+}
+
+.picker-item{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size: 40rpx;
+  color: #333333;
+  padding:0;
+  line-height:60rpx;
+}
+
+.picker-choosed{
+  border-top:1rpx solid #FFA200;
+  border-bottom:1rpx solid #FFA200;
+}
+
+.icon-down {
+  transition: 0.2s;
+  font-size: 32rpx;
+  color: #CECECE;
+  margin-right: 20rpx;
+  font-weight: 600;
+}
+
+.icon-checked {
+  color: #ff9702;
+  transform: rotate(-180deg);
+}
+
+.icon-rotate{
+  transform:rotate(-180deg);
+}

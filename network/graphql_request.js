@@ -662,6 +662,11 @@ const graphqlApi = {
       mutation: `mutation createResourceOrder($input: CreateResourceOrderInput!) {
         createResourceOrder(input: $input){
           state
+          statistic{
+            ... on DailyPractice{
+              keepDays
+            }
+          }
         }
       }`,
       variables: {
@@ -1090,6 +1095,26 @@ const graphqlApi = {
       }
     })
   },
+
+ /**
+  * 取消打印订单
+  * @param { String } sn 打印订单sn
+  */
+ cancalPrintOrder: (sn) => {
+   return gql.mutate({
+     mutation: `mutation destroyOrder($input: DestroyOrderInput!) {
+      destroyOrder(input: $input){
+         state
+       }
+     }`,
+     variables: {
+       input: {
+         sn
+       }
+     }
+   })
+ },
+
   //查询模板列表
   searchTemplate: (type) => {
     return gql.query({
@@ -1897,7 +1922,6 @@ const graphqlApi = {
       }
     })
   },
-
   /**
    * 获取首页学前feature
    *
@@ -1915,8 +1939,9 @@ const graphqlApi = {
         }`
     })
   },
+
   /**
-   * 获取内容首页大分类
+   * 获取学前内容首页大分类
    *
    * @returns
    */
@@ -1940,6 +1965,7 @@ const graphqlApi = {
       }
     })
   },
+
   /**
    * 获取内容列表页
    *
@@ -1964,6 +1990,47 @@ const graphqlApi = {
       variables: {
         sn: sn
       }
+    })
+  },
+
+  /**
+   * 获取学前可订阅列表
+   *
+   * @returns
+   */
+  customizeFeaturePlans: (featureKey) => {
+    return gql.query({
+      query: `query($featureKey:String!){
+        customizeFeaturePlans(featureKey:$featureKey){
+          categoryName
+          iconUrl
+          name
+          planSize
+          sn
+          subTitle
+          subscription
+          }
+        }`,
+        variables: {
+          featureKey
+        }
+    })
+  },
+  /**
+   * 订阅内容
+   *
+   * @returns
+   */
+  joinPlan: (input) => {
+    return gql.query({
+      query: `mutation($input: JoinPlanInput!){
+        joinPlan(input:$input){
+          state
+          }
+        }`,
+        variables: {
+         input
+        }
     })
   },
   /**
