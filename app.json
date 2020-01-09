@@ -151,7 +151,13 @@
         "kousuan/createplan",
         "kousuan/pointslist",
         "kousuan/previewWebview",
-        "kousuan/createTime"
+        "kousuan/createTime",
+        "copy_book/commonSense",
+        "copy_book/detail",
+        "copy_book/index",
+        "copy_book/list",
+        "copy_book/post",
+        "copy_book/subject"
       ]
     },
     {

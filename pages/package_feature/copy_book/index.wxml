@@ -1,0 +1,89 @@
+<gio-marketing />
+<view class='top' style="{{showNotice?'':'margin-bottom:80rpx'}}">
+    <view class='top-left'>
+        <text>我的练习</text>
+        <button class='top-share' bindtap='toShare' hover-class='none'>
+      <image src='/images/share_gray.png' mode='widthFix'></image>
+      <view>晒成果</view>
+    </button>
+    </view>
+    <!-- <view class='top-right'>
+    <text>练字提醒</text>
+    <image src="{{!remind ?'/images/turn_off.png':'/images/turn_on.png'}}" mode="widthFix" wx:if="{!remind}}" bindtap="setNotice" class="turn-onoff-btn"></image>
+  </view> -->
+</view>
+<picker bindchange="bindPickerChange" value="{{tindex}}" range="{{time}}">
+    <view class="picker">
+        <view class='set-clock-time' wx:if="{{showNotice}}">
+            <view>
+                <image class='clock-icon' src='/images/clock_icon.png'></image>
+                <text class='practic-time'>每日{{clock}}</text>
+            </view>
+            <image class="item-arrow" mode="widthFix" src="/images/gfd_con_arrow_right.png"></image>
+        </view>
+    </view>
+</picker>
+<view class='number'>
+    <view class='num'>
+        <view style='display:flex;align-items:center'>
+            <view>{{word_count}}</view>
+            <text style='font-size:30rpx' wx:if="{{word_count>99999}}">万</text>
+        </view>
+        <view class='gray'>累计练习/字</view>
+    </view>
+    <view class='num'>
+        <view style='display:flex;align-items:center'>
+            <view>{{day_count}}</view>
+            <text style='font-size:30rpx' wx:if="{{day_count>99999}}">万</text>
+        </view>
+        <view class='gray'>累计练字/天</view>
+    </view>
+    <view class='num'>
+        <view style='display:flex;align-items:center'>
+            <view>{{print_count}}</view>
+            <text style='font-size:30rpx' wx:if="{{print_count>99999}}">万</text>
+        </view>
+        <view class='gray'>累计完成/篇</view>
+    </view>
+</view>
+<view class='line'></view>
+<view class="content" wx:if="{{!iosModal}}">
+    <textarea placeholder="自由输入汉字，一键生成字帖" class='content-input' bindblur='contentinput' bindinput="contentinput" maxlength='50' placeholder-class='textarea' bindfocus="closeIosTip"/>
+    <view class='word'>{{num}}/50</view>
+</view>
+<view class='practice'>
+    <view class="practice-font">
+        <view class="font-item" bindtap="chooseFont" id="kt">
+            <image src="/images/document_{{fontType==='kt'?'':'un'}}checked.png" />
+            <view>楷体</view>
+        </view>
+        <view class="font-item" bindtap="chooseFont" id="lmsxk">
+            <image src="/images/document_{{fontType==='lmsxk'?'':'un'}}checked.png" />
+            <view>黎明手写楷体</view>
+        </view>
+    </view>
+    <view class="practice-type">
+        <view bindtap='toDetail' id='stroke' hidden="{{fontType==='lmsxk'}}">练笔顺</view>
+        <view bindtap='toDetail' id='normal'>练字</view>
+    </view>
+</view>
+<view class='line1'></view>
+<view class='title'>字帖集</view>
+<view class='detail'>
+    <view bindtap='toCommonSense'>
+        <image src='../../images/copybook_common_sense.png' class='url'></image>
+        <text>书写基本常识</text>
+    </view>
+    <view wx:for="{{copybookSets}}" wx:key="{{index}}" id="{{index}}" bindtap='toList'>
+        <image src='{{item.icon_url}}' class='url'></image>
+        <text>{{item.name}}</text>
+    </view>
+</view>
+<view class="app-bottom-tip" wx:if="{{from_temp}}" bindtap="backToHome">返回首页</view>
+
+<consumables class="modify" bind:myevent="onMyEvent" supply_types="{{supply_types}}" consumables-icon="consumables-icon" medium_recommend="{{mediumRecommend}}" find="common"></consumables>
+<import src="../../../../lib/toast/wetoast.wxml" />
+
+<ios-tip ios-tip-modal="ios-tip-modal" showModal="{{iosModal}}" text="{{text}}" bindback="closeIosTip"></ios-tip>
+
+<template is="wetoast" data="{{...__wetoast__}}" />
