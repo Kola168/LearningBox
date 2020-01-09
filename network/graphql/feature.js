@@ -211,12 +211,26 @@ const graphqlApi = {
     return gql.query({
       query: `query($state: TimedTaskStateEnum!,$taskType: TimedTaskTypeEnum!){
         timedTasks(state:$state,taskType:$taskType){
+          startTime
+          endTime
           categoryName
           day
     	    isEndtime
           sn
           state
           timing
+        }
+      }`,
+      variables: param
+    })
+  },
+
+  //提前结束定时任务
+  updateTimedtask:(input)=>{
+    return gql.mutate({
+      mutation: `mutation ($input: UpdateTimedTaskInput!){
+        updateTimedtask(input:$input){
+          state
         }
       }`,
       variables: {
