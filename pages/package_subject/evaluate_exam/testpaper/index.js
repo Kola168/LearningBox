@@ -56,7 +56,7 @@ Page({
       dataObj = {}
     if (this.showFilterType === 'area') {
       dataObj.activeArea = this.data.areas[index]
-    } else if (this.showFilterType === 'grade') {      
+    } else if (this.showFilterType === 'grade') {
       dataObj.activeGrade = this.data.grades[index]
     }
     this.setData(dataObj)
@@ -98,19 +98,41 @@ Page({
     try {
       let res = yield gqlSubject.getSubjectAreasAndGrades(this.subjectId),
         tempAreas = res.xuekewang.areas,
-        areas = []
+        areas = [],
+        grades = res.xuekewang.grades,
+        selectedPaperSubject = res.xuekewang.selectedPaperSubject
+      let activeArea = [],
+        activeGrade = grades[0]
       for (let i = 0; i < tempAreas.length; i++) {
         let area = {
           id: tempAreas[i].areaId,
           name: tempAreas[i].areaName
         }
         areas.push(area)
+        if (selectedPaperSubject) {
+          if (tempAreas[i].areaId == selectedPaperSubject.areaId) {
+            activeArea = {
+              id: tempAreas[i].areaId,
+              name: tempAreas[i].areaName
+            }
+          }
+        }
+      }
+      if (selectedPaperSubject) {
+        this.typeId = selectedPaperSubject.paperTypeId
+        for (let i = 0; i < grades.length; i++) {
+          if (grades[i].id == selectedPaperSubject.gradeId) {
+            activeGrade = grades[i]
+          }
+        }
+      } else {
+        activeArea = areas[0]
       }
       this.setData({
         areas,
-        grades: res.xuekewang.grades,
-        activeGrade: res.xuekewang.grades[0],
-        activeArea: areas[0]
+        grades,
+        activeGrade,
+        activeArea
       })
       this.weToast.hide()
     } catch (error) {
@@ -125,10 +147,17 @@ Page({
     })
     try {
       let res = yield gqlSubject.getSubjectPaperTypes(this.subjectId),
-        paperTypes = res.xuekewang.paperTypes
+        paperTypes = res.xuekewang.paperTypes,
+        tabId = 'tab_0'
+      for (let k = 0; k < paperTypes.length; k++) {
+        if (this.typeId === paperTypes[k].id) {
+          tabId = `tab_${k}`
+        }
+      }
       this.setData({
         paperTypes: paperTypes,
-        typeId: paperTypes[0].id
+        tabId: tabId,
+        typeId: this.typeId ? this.typeId : paperTypes[0].id
       })
       this.weToast.hide()
     } catch (error) {

@@ -60,6 +60,9 @@ Page({
 
   getPointsList:co.wrap(function*(){
     if(!this.data.textBookList[this.data.gradeIndex].kousuanCategories[this.data.textbookIndex]){
+      this.setData({
+        calculationList:[]
+      })
       return wx.showModal({
         title:'提示',
         content:'该年龄段暂无口算',
@@ -71,7 +74,8 @@ Page({
       this.longToast.toast({
         type:'loading'
       })
-      let resp=yield graphql.getKousuanType(this.data.textBookList[this.data.gradeIndex].kousuanCategories[this.data.textbookIndex].sn)
+      let resp=yield graphql.getKousuanTypeAndChildren(this.data.textBookList[this.data.gradeIndex].kousuanCategories[this.data.textbookIndex].sn)
+      Loger(resp)
       this.setData({
         calculationList:resp.category.children
       })
@@ -85,39 +89,9 @@ Page({
   showPicker:function(e){
     let that=this
     let type=e.currentTarget.dataset.type
-    if(this.data.pick_type==type){
-      this.hidePicker()
-    }else{
-      if(type=='grade'){
-        this.data.pickList=_.pluck(this.data.textBookList,'name')
-      }else{
-        this.data.pickList=_.pluck(this.data.textBookList[this.data.gradeIndex].kousuanCategories,'name')
-      }
-      this.setData({
-        pickList:this.data.pickList,
-      })
-      if(this.data.pick_type){
-        this.setData({
-          showAnimate:false
-        })
-        setTimeout(function(){
-          that.setData({
-            showAnimate:true,
-          })
-        },100)
-      }else{
-        setTimeout(function(){
-          that.setData({
-            showAnimate:true,
-            showBgAnimate:true,
-          })
-        },50)
-
-      }
-      this.setData({
-        pick_type:type,
-      })
-    }
+    this.setData({
+      pick_type:type,
+    })
   },
 
 
@@ -126,7 +100,7 @@ Page({
     let index=e.currentTarget.dataset.index
     let checkedIndex=this.data.pick_type=='grade'?'gradeIndex':'textbookIndex'
     if(this.data[checkedIndex]==index){
-      this.hidePicker()
+      return this.hidePicker()
     }
     this.setData({
       [checkedIndex]:index
@@ -145,6 +119,7 @@ Page({
         pick_type:null
       })
     },100)
+    this.getPointsList()
   },
 
   //显示联系想or知识点列表
@@ -207,5 +182,16 @@ Page({
       checkedMinutesIndex:indexArr[1]
     })
   },
+
+  createPlan:co.wrap(function*(){
+    if(_.isEmpty(this.data.calculationList)||_.isEmpty(this.data.calculationList[this.data.ksTypeIndex].children)||_.isEmpty(this.data.calculationList[this.data.ksTypeIndex].children[this.data.pointIndex].sn)){
+      return wx.showToast({
+        title:'还未设置完毕哦',
+        duration:'2000',
+        mask:true
+      })
+    }
+
+  }),
 
 })

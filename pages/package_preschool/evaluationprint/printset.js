@@ -53,9 +53,6 @@ Page({
     })
   },
   confBut:function(){
-    console.log(111111)
-    try{
-
 
     this.setData({
       confirmModal: {
@@ -64,9 +61,7 @@ Page({
   			image: 'https://cdn-h.gongfudou.com/LearningBox/main/doc_confirm_print_a4_new.png'
       },
     })
-  }catch(e){
-    Loger(e)
-  }
+
   },
   makeOrder:co.wrap(function*(){
     try {

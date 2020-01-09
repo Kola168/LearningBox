@@ -150,7 +150,8 @@
         "kousuan/learningplan",
         "kousuan/createplan",
         "kousuan/pointslist",
-        "kousuan/previewWebview"
+        "kousuan/previewWebview",
+        "kousuan/createTime"
       ]
     },
     {
@@ -204,8 +205,15 @@
         "setting/setting",
         "evaluate_exam/index/index",
         "evaluate_exam/testpaper/index",
-        "evaluate_exam/preview/index",
         "correct/index",
+        "report/preview/index",
+        "member_intro/index",
+        "super_errorbook/index/index",
+        "super_errorbook/atlas/index",
+        "super_errorbook/errorbook/index",
+        "super_errorbook/errorbook/list",
+        "super_errorbook/knowledge_list/index",
+        "evaluate_exam/preview/index",
         "weakness_exercise/index/index",
         "stage_report/index/index",
         "exam_paper_report/index/index"
@@ -228,8 +236,10 @@
         "network/index/index",
         "network/tips/step1",
         "network/tips/step2",
-        "network/tips/step3",
-        "network/wificonnect/list",
+				"network/tips/step3",
+				"network/tips/step4",
+				"network/wificonnect/list",
+				"network/common/nowifi",
         "network/wificonnect/connect",
         "ble/common/connect_success",
         "ble/common/no_bluetooth",

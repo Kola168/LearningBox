@@ -2,84 +2,148 @@
 
 import gql from '../graphql_config'
 const graphqlApi = {
-  /**
-   * 注册学科网
-   *
-   * @returns
-   */
-  register: () => {
-    return gql.mutate({
-      mutation: `mutation ($input: RegisterInput!){
-        Register{
-          state
-        }
-      }`
-    })
-  },
-
-  /**
-   * 获取每日一练当日练习题
-   */
-  getPracticeContentToday: () => {
+	getPlans: () => {
     return gql.query({
-      query: `query getPracticeContentToday{
-        dailyPractice{
-          practiceContentToday:contentToday{
-            sn
-            name
-            practiceAnswerImages
-            practiceQuestionImages
-          }
-          hasNewTestimonial
-        }
-      }`
-    })
-  },
-
-  /**
-   * 获取奖状
-   */
-  getCertifacate: () => {
-    return gql.query({
-      query: `query getCertifacate{
-        testimonials{
-          imageUrl
-          title
+      query: `query {
+        plans {
+          iconUrl
+          name
           subTitle
-          isGet
+          categoryName
+          subscription
+          sn
+        }
+      }`
+    })
+  },
+
+  /**
+   * 宝贝成长计划 已订阅&&已完成
+   * 
+   */
+  getUserPlans: (tab) => {
+    return gql.query({
+      query: `query userPlans($tab: String!){
+        userPlans(tab: $tab){
+          currentIndex
+          planCategoryName
+          planIconUrl
+          planName
+          planSize
+          planSubTitle
+          planSn
           sn
         }
       }`,
+      variables: {
+        tab
+      }
     })
   },
 
   /**
-   * 获取月度集合分类
+   * 宝贝成长计划 去订阅
+   * 
    */
-  getMonthCompilations: () => {
-    return gql.query({
-      query: `query getMonthCompilations{
-        dailyPractice{
-          practiceCategories:categories{
-            name
-            sn
-            subTitle
-            children{
-              name
-              sn
-              subTitle
-              position
-            }
-          }
+  joinPlan: (sn) => {
+    return gql.mutate({
+      mutation: `mutation ($input: JoinPlanInput!){
+        joinPlan(input: $input) {
+          state
         }
-      }`
+      }`,
+      variables: {
+        input:{sn: sn}
+      }
     })
   },
+
+  /**
+   * 宝贝成长计划 取消订阅
+   * 
+   */
+  deleteUserPlanInput: (sn) => {
+    return gql.mutate({
+      mutation: `mutation ($input: DeleteUserPlanInput!){
+        deleteUserPlan(input: $input) {
+          state
+        }
+      }`,
+      variables: {
+        input:{
+          sn: sn
+        }
+      }
+    })
+  },
+
+  /**
+   * 宝贝成长计划 闯关
+   * 
+   */
+  getPlanContents: (planSn) => {
+    return gql.query({
+      query: `query ($planSn: String!){
+        planContents(sn: $planSn) {
+          name
+          iconUrl
+          sn
+          isShow
+        }
+      }`,
+      variables: {
+        planSn
+      }
+    })
+  },
+
+
+  /**
+   * 宝贝成长计划 订阅标识
+   * 
+   */
+  getPlan: (planSn) => {
+    return gql.query({
+      query: `query ($planSn: String!){
+        plan(sn: $planSn) {
+          subscription
+        }
+      }`,
+      variables: {
+        planSn
+      }
+    })
+  },
+
+
+  /**
+   * 宝贝成长计划 预览
+   * 
+   */
+  getContent: (planSn) => {
+    return gql.query({
+      query: `query ($planSn: String!){
+        content(sn: $planSn) {
+          featureKey
+          iconUrl
+          pageCount
+          sn
+          contentImages{
+            nameUrl
+          }
+        }
+      }`,
+      variables: {
+        planSn
+      }
+    })
+  },
+
 
   /**
    * 获取指定日期的每日一练题目
    */
-  getMonthExercises: (sn) => {
+  getContent: (planSn) => {
     return gql.query({
       query: `query getMonthExercises($sn: String!){
         content(sn: $sn){
@@ -137,11 +201,29 @@ const graphqlApi = {
         }
       }`,
       variables: {
-        sn
+        planSn
       }
     })
   },
-  
+
+  /**
+   * 打印设置
+   *
+   */ 
+  createResourceOrder: (sn) => {
+    return gql.mutate({
+      mutation: `mutation ($input: CreateResourceOrderInput!){
+        createResourceOrder(input: $input) {
+          state
+          statistic
+      }`,
+      variables: {
+        input:{
+          sn: sn
+        }
+      }
+    })
+  },
 
 
   //获取宝贝测评试题列表

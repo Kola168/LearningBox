@@ -15,12 +15,12 @@
       <text class="iconfont icon-show-more {{pick_type=='textbook'?'icon-checked':''}}"></text>
     </view>
   </view>
-  <!--<view class="plan-box" bindtap="toPlan">
+  <view class="plan-box" bindtap="toPlan">
     <view class="plan-button">
       练习计划
     </view>
     <image src="../resource_images/kousuan_hot_icon.png" mode="widthFix" class="plan-icon"></image>
-  </view>-->
+  </view>
 </view>
 <view class="rest-box">
   <view wx:if="{{pick_type}}" class="picker-box-bg {{showBgAnimate?'pick-box-animate':''}}" bindtap="hidePicker">

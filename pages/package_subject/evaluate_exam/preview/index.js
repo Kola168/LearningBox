@@ -18,7 +18,7 @@ Page({
       isShow: false,
       slotBottom: true,
       title: '开通学科会员 可使用海量优质试卷',
-      image: 'https://micro.obs.cn-east-2.myhuaweicloud.com/LearningBox/subject/toast_testpaper.png'
+      image: 'https://cdn-h.gongfudou.com/LearningBox/subject/toast_testpaper.png'
     }
   },
 
