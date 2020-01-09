@@ -4,13 +4,13 @@
 <view class="configure-box" bindtap="hidePointsScroll">
   <view class="textbook-box {{pick_type=='grade'?'configure-checked':''}}" data-type="grade" bindtap="showPicker">
     <view>
-      {{textBookList[gradeIndex].grade}}
+      {{textBookList[gradeIndex].name}}
     </view>
     <text class="iconfont icon-show-more {{pick_type=='grade'?'icon-checked':''}}"></text>
   </view>
   <view class="textbook-box {{pick_type=='textbook'?'configure-checked':''}}" data-type="textbook" bindtap="showPicker">
     <view>
-      {{textBookList[gradeIndex].list[textbookIndex].textboox}}
+      {{textBookList[gradeIndex].kousuanCategories[textbookIndex].name}}
     </view>
     <text class="iconfont icon-show-more {{pick_type=='textbook'?'icon-checked':''}}"></text>
   </view>
@@ -32,7 +32,7 @@
       <view class="check-contain-box">
         <view class="check-name-box">练习项</view>
         <view class="check-content-box" data-type="practice" catchtap="checkPoints">
-          <text class="check-value-box">{{knowledgeList[ksTypeIndex].typeName}}</text>
+          <text class="check-value-box">{{calculationList[ksTypeIndex].name}}</text>
           <text class="iconfont icon-down"></text>
           <view class="scroll-position-box" wx:if="{{pointType=='practice'}}">
             <view class="scroll-list-box">
@@ -46,7 +46,7 @@
       <view class="check-contain-box">
         <view class="check-name-box">知识点</view>
         <view class="check-content-box" data-type="knowledge" catchtap="checkPoints">
-          <text class="check-value-box">{{knowledgeList[ksTypeIndex].points[pointIndex].name}}</text>
+          <text class="check-value-box">{{calculationList[ksTypeIndex].children[pointIndex].name}}</text>
           <text class="iconfont icon-down"></text>
           <view class="scroll-position-box" wx:if="{{pointType=='knowledge'}}">
             <view class="scroll-list-box">
@@ -57,7 +57,7 @@
           </view>
         </view>
       </view>
-      <image src="{{knowledgeList[ksTypeIndex].points[pointIndex].img}}" mode="widthFix" class="check-point-img"></image>
+      <image src="{{calculationList[ksTypeIndex].points[pointIndex].img}}" mode="widthFix" class="check-point-img"></image>
       <view class="check-contain-box">
         <view class="check-name-box">每天</view>
         <view class="check-content-box" data-type="remindTime" catchtap="checkPoints">
@@ -82,3 +82,5 @@
     </view>
   </view>
 </view>
+<import src="/lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />

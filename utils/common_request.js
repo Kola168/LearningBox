@@ -93,10 +93,12 @@ const getPrinterCapacity = co.wrap(function*(featureKey, fileUrl) {
       url: fileUrl,
       is_async: false
     })
-
-    capacity = Object.assign({
-      pageCount: fileObj.res.pages
-    }, capacity)
+    if (fileObj.res && fileObj.res.pages) {
+      capacity = Object.assign({
+        pageCount: fileObj.res.pages
+      }, capacity)
+    }
+    
   }
   return capacity
 })

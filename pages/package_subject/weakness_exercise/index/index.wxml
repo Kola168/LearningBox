@@ -1,0 +1,11 @@
+<nav-bar background="#fff" title="同步练习"/>
+<view class="weakness-main">
+  <view class="head-remind">
+    <image src="" />
+    <view class="name">开通学科会员享有专属错题本，新用户免费体验！</view>
+  </view>
+  <image class="nav-card" src="../../images/nav_figure_card.png" mode="widthFix">
+    <view class="content">小白老师根据错题本分析你的薄弱项，给你推荐你的专属练习～</view>
+  </image>
+  <view class="btn-setTopic">生成练习</view>
+</view>

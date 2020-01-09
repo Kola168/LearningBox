@@ -9,10 +9,7 @@
         </swiper-item>
       </swiper>
     </view>
-    <view class="btn-main">
-      <view class="btn">打印给宝宝</view>
-      <bottom-button class="bottom-but" bindrighttap="toPrint" textRight='1' get-phone="{{true}}"></bottom-button>
-    </view>
+    <view class="btn" bind:tap="toPrint">打印给宝宝</view>
 </view>
 
 <import src="../../../../lib/toast/wetoast.wxml" />

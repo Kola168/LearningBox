@@ -7,6 +7,7 @@
 }
 
 .exercise-app {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -25,6 +26,20 @@
   height: 74rpx;
 }
 
+.new-tag {
+  position: absolute;
+  right: 10rpx;
+  top: 20rpx;
+  width: 70rpx;
+  height: 35rpx;
+  background-color: #fc4026;
+  border-radius: 10rpx 10rpx 10rpx 0;
+  font-size: 24rpx;
+  color: #fff;
+  text-align: center;
+  line-height: 30rpx;
+}
+
 .exercise-app .name {
   position: absolute;
   left: 20rpx;
@@ -40,6 +55,7 @@
   height: calc( 100vh - 476rpx );
   background: #FFFFFF;
   box-shadow: 0 0 34rpx 0 rgba(144,92,116,0.31);
+  border-radius: 20rpx;
 }
 
 swiper {
@@ -54,6 +70,7 @@ swiper-item{
 
 .swiper-img {
   width: 100%;
+  border-radius: 20rpx 20rpx 0 0;
 }
 
 .btn-main {

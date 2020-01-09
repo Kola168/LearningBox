@@ -25,53 +25,41 @@ Page({
 
   },
 
-  loopCheck: co.wrap(function*() {
-    this.longToast.toast({
-      type: "loading",
-    })
-    try {
-      let that = this
-      if (!this.loopCheck.loopTime) {
-        this.loopCheck.loopTime = 0
-      }
-      this.loopCheck.loopTime++
-      if (this.loopCheck.loopTime >= 3) {
-        this.longToast.toast()
-        wx.showToast({
-          title: '未搜索到设备',
-          icon: 'none'
-        })
-        this.loopCheck.loopTime = 0
-        return
-      }
-      this.checkequipment()
-    } catch (e) {
-      console.log(e)
-    }
-  }),
-
   checkequipment: co.wrap(function*() {
-    let that = this
-    try {
-      const resp = yield request({
+		  let that = this
+		  this.longToast.toast({
+      type: "loading",
+		})
+		var timer,resp = undefined
+		timer = setTimeout(() => {
+			resp.abort()
+			wx.showToast({
+				title: '设备未绑定,请按照提示连接设备',
+				icon: 'none',
+				duration: 3000
+			})
+		}, 3000)
+
+		try {
+        resp = wx.request({
         url: 'http://192.168.178.1:1788/check',
         header: {
           'content-type': 'application/x-www-form-urlencoded'
         },
         method: 'GET',
-        dataType: 'json'
+				dataType: 'json',
+				success(resp){
+					if (resp.data.code == 0) {
+						that.getEquipmentInfo()
+					}
+				},complete(){
+					that.longToast.toast()
+					timer && clearTimeout(timer)
+				}
       })
-      console.log(resp)
-      if (resp.data.code == 0) {
-        this.getEquipmentInfo()
-        return
-      }
     } catch (e) {
-      console.log(e)
-      let that = this
-      setTimeout(function() {
-        that.loopCheck()
-      }, 1500)
+			this.longToast.toast()
+			util.showError(e)
     }
   }),
 
@@ -90,10 +78,10 @@ Page({
       if (resp.data.code == 0) {
         this.longToast.toast()
         let that = this
-        wxNav.navigateTo('/pages/package_device/network/wificonnect/list',{equipInfo:`${encodeURIComponent(JSON.stringify(resp.data.data))}`})
-      }
-      return
+				return	wxNav.navigateTo('/pages/package_device/network/tips/step4',{equipInfo:`${encodeURIComponent(JSON.stringify(resp.data.data))}`})
+      } 
     } catch (e) {
+			this.longToast.toast()
       this.checkequipment()
     }
   }),

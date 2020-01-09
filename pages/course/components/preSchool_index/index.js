@@ -193,7 +193,7 @@ Component({
         this.longToast.hide()
       } catch (error) {
         this.longToast.hide()
-        util.showError(error)
+        // util.showError(error)
       }
     }),
     

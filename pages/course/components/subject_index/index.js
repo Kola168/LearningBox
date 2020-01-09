@@ -221,18 +221,38 @@ Component({
      * 查看更多
      */
     toMore () {
-      wxNav.navigateTo('package_subject/evaluate_exam/index/index')
+      wxNav.navigateTo('/pages/package_subject/evaluate_exam/index/index')
     },
 
     /**
      * 打印学习
      */
     toPrint: co.wrap(function *({currentTarget: {dataset: {item}}}) {
-      wxNav.navigateTo('package_subject/evaluate_exam/preview', {
+     try {
+      wxNav.navigateTo('/pages/package_subject/evaluate_exam/preview/index', {
         id: item.paperId,
         hasReport: item.isReport ? 1 : 0,
         name:item.title
       })
-    })
+     } catch(err) {
+      //  console.log(err)
+     }
+    }),
+
+    toExaminationReporter: co.wrap(function*(){
+      wx.showModal({
+        title: '提示',
+        content: '该功能暂未开放',
+        showCancel: false
+      })
+    }),
+
+    toStageReporter: co.wrap(function*(){
+      wx.showModal({
+        title: '提示',
+        content: '该功能暂未开放',
+        showCancel: false
+      })
+    }),
   }
 })

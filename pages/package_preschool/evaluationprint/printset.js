@@ -1,66 +1,96 @@
 // pages/package_preschool/evaluationprint/printset.js
+const app = getApp()
+const regeneratorRuntime = require('../../../lib/co/runtime')
+const co = require('../../../lib/co/co')
+const _ = require('../../../lib/underscore/we-underscore')
+const util = require('../../../utils/util')
+
+import wxNav from '../../../utils/nav.js'
+import api from '../../../network/restful_request'
+import gql from '../../../network/graphql/preschool'
+import commonRequest from '../../../utils/common_request'
+
+let Loger = (app.apiServer != 'https://epbox.gongfudou.com' || app.deBug) ? console.log : function() {}
+
 Page({
 
-  /**
-   * 页面的初始数据
-   */
   data: {
-
+    printNum: 1,
+    colorType: 'color',
+    confirmModal: {},
   },
 
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad: function (options) {
-
+  onLoad: function(options) {
+    this.longToast = new app.weToast()
+    this.imgs=JSON.parse(decodeURIComponent(options.imgs))
+    this.type=options.type
   },
 
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
+  decreaseNum: function() {
+    if (this.data.printNum <= 1) {
+      return
+    }
+    this.data.printNum--
+    this.setData({
+      printNum: this.data.printNum
+    })
   },
 
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-
+  addNum: function() {
+    if (this.data.printNum >= 99) {
+      return
+    }
+    this.data.printNum++
+    this.setData({
+      printNum: this.data.printNum
+    })
   },
 
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-
+  changeColor: function(e) {
+    let type = e.currentTarget.dataset.type
+    this.setData({
+      colorType: type
+    })
   },
+  confBut:function(){
+    console.log(111111)
+    try{
 
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
 
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-
+    this.setData({
+      confirmModal: {
+        isShow: true,
+        title: '请正确放置A4打印纸',
+  			image: 'https://cdn-h.gongfudou.com/LearningBox/main/doc_confirm_print_a4_new.png'
+      },
+    })
+  }catch(e){
+    Loger(e)
   }
+  },
+  makeOrder:co.wrap(function*(){
+    try {
+      this.longToast.toast({
+        type: "loading",
+      })
+
+      let imgs=[]
+      _.each(this.imgs,function(value,index,list){
+        imgs.push({
+          printUrl:value,
+          originalUrl:value
+        })
+      })
+      let orderSn = yield commonRequest.createOrder(this.type, imgs)
+      wxNav.navigateTo(`/pages/finish/index`, {
+        media_type: 'baobeicepin',
+        state:orderSn.createOrder.state
+      })
+      this.longToast.toast()
+    } catch (e) {
+      this.longToast.toast()
+      util.showError(e)
+      Loger(e)
+    }
+  }),
 })

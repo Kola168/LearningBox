@@ -266,10 +266,35 @@ Page({
       case 'memoryWrite':
         url = '/pages/package_feature/memory_write/index/index'
         break;
+      case 'exerciseWords':
+        url = ''
+        break;
+      case 'takePhotoSearchExercise' :
+        url = '/pages/package_feature/error_book/photo_anwser_intro'
+        break;
+      case 'syncLearn':
+        // url = '/pages/package_subject/sync_learn/index/index'
+        break;
+      case 'evaluate_exam':
+        // url = '/pages/package_subject/evaluate_exam/index/index'
+        break;
+      case 'errorBook':
+        url = '/pages/package_feature/error_book/index'
+        break;
+    }
+    if (!url) {
+      return wx.showModal({
+        title: '提示',
+        content: '暂未开放，敬请期待',
+        showCancel: false,
+      })
     }
     wxNav.navigateTo(url)
   },
 
+  toLearnCenter: co.wrap(function*(){
+    wxNav.switchTab('/pages/course/index')
+  }),
   // toId: function () {
   //   wxNav.navigateTo('/pages/print_id/index')
   // }

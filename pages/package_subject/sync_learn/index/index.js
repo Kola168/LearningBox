@@ -14,7 +14,7 @@ Page({
       icon: '../../images/learn_icon.png',
       key: 'subject'
     }, {
-      title: '同步练习',
+      title: '同步视频',
       desc: '五种难度智能出题',
       icon: '../../images/video_icon.png',
       key: 'video'
@@ -32,7 +32,14 @@ Page({
       }
     }
   }) {
-    console.log(key, 'xxxxx')
+    if (key == 'video') {
+      return wx.showModal({
+        title: '提示',
+        content: '该功能暂未开放',
+        showCancel: false,
+      })
+    }
+
     wxNav.navigateTo('/pages/package_subject/sync_learn/learn_content/index', {
       key
     })

@@ -7,7 +7,14 @@
     </view>
   </scroll-view>
   <image class="notice-card" src="../../images/nav_figure_card.png">
-    <view class="nav-text">课本同步练习，不遗漏任何知识点</view>
+    <view class="nav-text">
+      <block wx:if="{{textbookPercentage && textbookPercentage.count}}">
+        已学习{{textbookPercentage.count}}个章节，超过{{textbookPercentage.percentage}}%的同学
+      </block>
+      <block wx:else>
+        课本同步练习，不遗漏任何知识点
+      </block>
+    </view>
   </image>
   <!-- 教材筛选器 -->
   <block wx:if="{{selectedTextbookVersion && selectedTextbook}}">

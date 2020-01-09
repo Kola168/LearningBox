@@ -517,6 +517,26 @@ const graphqlApi = {
   },
 
   /**
+   * 获取教材下用户学习的进度
+   */
+  getSyncExercisePrecent: (sn) => {
+    return gql.query({
+      query: `query getSyncExercisePrecent($sn: String!){
+       xuekewang{
+        textbookPercentage(sn: $sn){
+          count
+          percentage
+        }
+       }
+      }`,
+      variables: {
+        sn
+      }
+    })
+  },
+
+
+  /**
    * 获取学科错题列表
    */
   getSubjectsErrorbook: () => {

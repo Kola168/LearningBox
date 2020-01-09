@@ -6,7 +6,7 @@
     测试完成可针对宝宝测试结果
     对应出题训练</text>
   </view>
-  <view class="grade-box" bindtap="showGradeList">
+  <!--<view class="grade-box" bindtap="showGradeList">
     <view class="grade-name">
       {{gradeList[gradeIndex].name}}
     </view>
@@ -18,21 +18,23 @@
         </view>
       </view>
     </view>
-  </view>
+  </view>-->
 </image>
-<view wx:for="{{gradeList[gradeIndex].testPaper}}" wx:key="testPaper" class="text-paper-box" data-index="{{index}}" bindtap="{{item.children && item.children.length>0?'nextHierarchy':'startTest'}}">
-  <image src="{{item.image}}" mode="widthFix" class="text-paper-img"></image>
+<view wx:for="{{gradeList}}" wx:key="testPaper" class="text-paper-box" data-index="{{index}}" bindtap="startTest">
+  <image src="{{item.iconUrl}}" mode="widthFix" class="text-paper-img"></image>
   <view class="text-content-box">
     <view class="content-top-box">
       <view class="content-title">
-        {{item.title}}
+        {{item.categoryName}}
       </view>
       <text wx:if="{{item.children && item.children.length>0}}" class="iconfont icon-next"></text>
     </view>
+
     <view class="content-desc-box">
       <view class="content-desc">
-        {{item.desc}}
+        {{item.name}}
       </view>
+        <!--
       <block wx:if="{{!item.children || item.children.length==0}}">
         <view wx:if="{{!item.state}}" class="content-no-test">
           暂未测试
@@ -42,6 +44,10 @@
           <view>已超越{{item.state}}宝宝</view>
         </view>
       </block>
+        -->
     </view>
+
   </view>
 </view>
+<import src="/lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />

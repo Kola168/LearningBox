@@ -4,57 +4,97 @@ const regeneratorRuntime = require('../../../lib/co/runtime')
 const co = require('../../../lib/co/co')
 const _ = require('../../../lib/underscore/we-underscore')
 const util = require('../../../utils/util')
-const event = require('../../../lib/event/event')
 
 import wxNav from '../../../utils/nav.js'
 import api from '../../../network/restful_request'
-import graphql from '../../../network/graphql/feature'
-import commonRequest from '../../../utils/common_request'
+import gql from '../../../network/graphql/preschool'
 
 let Loger = (app.apiServer != 'https://epbox.gongfudou.com' || app.deBug) ? console.log : function() {}
 
 Page({
 
   data: {
-    subjectList:[{
-      voice:null,
-      question:'../images/record_tips.png',
-      options:['../images/record_voice_btn_recorder.png','../images/record_voice_btn_record_stop.png','../images/record_voice_btn_record_disabled.png','../images/record_voice_btn_playing.png'],
-      correctOption:0,
-    },{
-      voice:"https://cdn-h.gongfudou.com/epbox/pciup/2020/1/2/f990435d-f5cd-4ba2-8dc1-75f6a80c4082.m4a",
-      question:'../images/record_tips.png',
-      options:['../images/record_voice_btn_recorder.png','../images/record_voice_btn_record_stop.png','../images/record_voice_btn_record_disabled.png','../images/record_voice_btn_playing.png'],
-      correctOption:0,
-    },{
-      voice:null,
-      question:'../images/record_tips.png',
-      options:['../images/record_voice_btn_recorder.png','../images/record_voice_btn_record_stop.png','../images/record_voice_btn_record_disabled.png','../images/record_voice_btn_playing.png'],
-      correctOption:0,
-    },{
-      voice:null,
-      question:'../images/record_tips.png',
-      options:['../images/record_voice_btn_recorder.png','../images/record_voice_btn_record_stop.png','../images/record_voice_btn_record_disabled.png','../images/record_voice_btn_playing.png'],
-      correctOption:0,
-    },{
-      voice:null,
-      question:'../images/record_tips.png',
-      options:['../images/record_voice_btn_recorder.png','../images/record_voice_btn_record_stop.png','../images/record_voice_btn_record_disabled.png','../images/record_voice_btn_playing.png'],
-      correctOption:0,
-    },{
-      voice:null,
-      question:'../images/record_tips.png',
-      options:['../images/record_voice_btn_recorder.png','../images/record_voice_btn_record_stop.png','../images/record_voice_btn_record_disabled.png','../images/record_voice_btn_playing.png'],
-      correctOption:0,
-    }],
-    nowIndex:1, //当前测试index
-    remainingTime:90, //剩余时间
-    selectIndex:0,
+    subjectList: [], //问题总列表
+    nowIndex: 0, //当前测试index
+    remainingTime: 90, //剩余时间
+    selectIndex: null,
+  },
+  originalRemainingTime: 90,
+  answerList: [], //回答的问题列表
+  is_right:false, //选择的题目的正确与否
+  onLoad: function(options) {
+    this.longToast = new app.weToast()
+    this.sn = options.sn
+    this.getTestList()
   },
 
-  onLoad: function (options) {
+  getTestList: co.wrap(function*() {
+    this.longToast.toast({
+      type:'loading'
+    })
+    try {
+      let resp = yield gql.getTestList(this.sn)
+        this.setData({
+          subjectList: resp.examination.questions
+        })
+        this.longToast.toast()
+        this.startAnswer()
+    } catch (e) {
+      this.longToast.toast()
+      Loger(e)
+      util.showError(e)
+    }
+  }),
 
+
+  //问题回答倒计时
+  startAnswer: function() {
+    let that = this
+    this.interval = setInterval(function() {
+      that.data.remainingTime--
+      if (that.data.remainingTime < 0) {
+        that.initQuestion()
+        that.data.remainingTime = that.originalRemainingTime
+      }
+      that.setData({
+        remainingTime: that.data.remainingTime,
+        nowIndex: that.data.nowIndex,
+      })
+    }, 1000)
   },
 
+  initQuestion: function() {
 
+    let param = this.data.subjectList[_.clone(this.data.nowIndex)]
+    this.answerList.push({
+      sn: param.categorySn,
+      category_name: param.categoryName,
+      is_right: _.clone(this.is_right)
+    })
+    this.data.nowIndex += 1
+    this.is_right=false
+    if (this.data.nowIndex > (this.data.subjectList.length - 1)) {
+      return this.toSummary()
+    }
+    this.setData({
+      selectIndex:null
+    })
+  },
+
+  selectAnswer: function(e) {
+    let index = e.currentTarget.dataset.index
+    this.setData({
+      selectIndex:index
+    })
+    this.data.remainingTime=this.data.remainingTime<=3?this.data.remainingTime:3
+    this.is_right=this.data.subjectList[this.data.nowIndex].answers[index].isRight
+  },
+
+  toSummary: function() {
+    clearInterval(this.interval)
+    wxNav.redirectTo('/pages/package_preschool/evaluation/testfinish', {
+      snlist: encodeURIComponent(JSON.stringify(this.answerList)),
+      sn:this.sn
+    })
+  }
 })

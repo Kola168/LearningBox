@@ -1,0 +1,13 @@
+var caculateSignal = function (signal) {
+  if(parseInt(signal)>=80){
+		return '../../images/ap_signal3.png'
+	}else if(parseInt(signal)>40 && parseInt(signal)<=40){
+		return '../../images/ap_signal2.png'
+	}else{
+		return '../../images/ap_signal1.png'
+	}
+}
+
+module.exports = {
+	caculateSignal: caculateSignal
+}

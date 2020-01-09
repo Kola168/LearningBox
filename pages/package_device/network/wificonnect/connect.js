@@ -170,7 +170,9 @@ Page({
 					title: '配网成功',
 					duration: 2000,
 				})
-				wxNav.switchTab('/pages/index/index')
+				setTimeout(function(){
+					wxNav.switchTab('/pages/index/index')
+				},1700)
 			}
 		} catch (e) {
 			this.longToast.toast()
@@ -179,4 +181,8 @@ Page({
 			return
 		}
 	}),
+
+	changeWifi:function(){
+		wxNav.navigateBack()
+	}
 })

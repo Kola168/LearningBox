@@ -1,5 +1,7 @@
 <view class="main">
   <preSchool-index wx:if="{{stage =='preschool'}}"/>
-  <subject-index wx:if="{{stage =='subject'}}"/>
+	<subject-index wx:if="{{stage =='subject'}}"/>
+	<!-- <preSchool-index/> -->
+ 
 </view>
 

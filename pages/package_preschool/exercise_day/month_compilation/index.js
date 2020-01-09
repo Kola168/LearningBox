@@ -31,9 +31,31 @@ Page({
   bindPickerChange: function ({detail: {value}}) {
     this.setData({
       index: +value,
-      currentMonth: this.resetMonthData(this.data.cateGorys[+value].children)
     })
+    this.yearSn = this.data.cateGorys[+value].sn
+    this.getPracticeCategory()
   },
+
+    /**
+   * 获取月度集合分类
+   */
+  getPracticeCategory: co.wrap(function *() {
+    this.longtoast.toast({
+      type: 'loading',
+      title: '请稍后...'
+    })
+    try {
+      var resp = yield graphql.getPracticeCategory(this.yearSn)
+      var currentMonth = this.resetMonthData(resp.category.children)
+      this.setData({
+        currentMonth
+      })
+    }catch(err) {
+      util.showError(err)
+    } finally {
+      this.longtoast.hide()
+    }
+  }),
 
     /**
    * 获取月度集合分类
@@ -45,10 +67,10 @@ Page({
     })
     try {
       var resp = yield graphql.getMonthCompilations()
-      var currentMonth = this.resetMonthData(resp.feature.practiceCategories[0].children)
+      var currentMonth = resp.dailyPractice.practiceCategories && this.resetMonthData(resp.dailyPractice.practiceCategories[0].children)
       this.setData({
         currentMonth,
-        cateGorys: resp.feature.practiceCategories
+        cateGorys: resp.dailyPractice.practiceCategories
       })
     }catch(err) {
       util.showError(err)
@@ -75,7 +97,8 @@ Page({
   
   toMonthDetail: function({currentTarget: {dataset: {item}}}) {
     wxNav.navigateTo('../month_compilation_subject/index', {
-      sn: item.sn
+      sn: item.sn,
+      month: item.name
     })
   },
 
