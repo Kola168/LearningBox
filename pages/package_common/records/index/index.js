@@ -1,6 +1,12 @@
 "use strict"
 const app = getApp()
-import { regeneratorRuntime, co, wxNav, util, storage } from '../../../../utils/common_import'
+import {
+  regeneratorRuntime,
+  co,
+  wxNav,
+  util,
+  storage
+} from '../../../../utils/common_import'
 import graphql from '../../../../network/graphql_request'
 import deviceGraphql from '../../../../network/graphql/device'
 
@@ -23,7 +29,7 @@ Page({
       content: ''
     }
   },
-  onLoad: co.wrap(function*(options) {
+  onLoad: co.wrap(function* (options) {
     this.weToast = new app.weToast()
     this.page = 1
     let navBarHeight = app.navBarInfo.topBarHeight
@@ -39,7 +45,7 @@ Page({
     })
   },
   // 获取打印机列表
-  getDeviceList: co.wrap(function*() {
+  getDeviceList: co.wrap(function* () {
     this.weToast.toast({
       type: 'loading'
     })
@@ -77,7 +83,7 @@ Page({
     this.getPrinterRecords()
   },
   // 获取打印记录
-  getPrinterRecords: co.wrap(function*() {
+  getPrinterRecords: co.wrap(function* () {
     try {
       let res = yield graphql.getPrinterRecords(this.data.activeDevice.sn, this.page++),
         currentOrders = res.currentUser.devices[0].orders,
@@ -125,7 +131,7 @@ Page({
   },
 
   // 拒绝或同意
-  verifyOrder: co.wrap(function*(e) {
+  verifyOrder: co.wrap(function* (e) {
     let type = e.currentTarget.id,
       sn = e.currentTarget.dataset.sn
     try {
@@ -155,30 +161,42 @@ Page({
     }
   },
   // 确认弹窗
-  confirmModal() {
+  confirmModal: co.wrap(function* () {
     let modalType = this.modalType
     if (modalType === 'delete') {
-      console.log('接口暂未提供')
-      // let orders = this.data.orders
-      // //减少接口调用
-      // if (orders.length >= 10) { //防止数据过少触发不了底部事件
-      //   orders.splice(this.deleteIndex, 1)
-      //   this.setData({
-      //     orders
-      //   })
-      // } else {
-      //   this.page = 1
-      //   this.setData({
-      //     showRemind: false,
-      //     loadReady: false,
-      //     orders: []
-      //   })
-      //   this.getPrinterRecords()
-      // }
+      this.weToast.toast({
+        type: 'loading'
+      })
+      try {
+        let sn = this.data.orders[this.deleteIndex].sn,
+          res = yield graphql.cancalPrintOrder(sn)
+        this.weToast.hide()
+        if (res.destroyOrder.state) {
+          let orders = this.data.orders
+          //减少接口调用
+          if (orders.length >= 10) { //防止数据过少触发不了底部事件
+            orders.splice(this.deleteIndex, 1)
+            this.setData({
+              orders
+            })
+          } else {
+            this.page = 1
+            this.setData({
+              showRemind: false,
+              loadReady: false,
+              orders: []
+            })
+            this.getPrinterRecords()
+          }
+        }
+      } catch (error) {
+        util.showError(error)
+        this.weToast.hide()
+      }
     } else if (modalType === 'cancelPrint') {
       wxNav.navigateTo('../cancel_intro/index')
     }
-  },
+  }),
   onReachBottom() {
     if (this.data.showRemind) return
     this.getPrinterRecords()
