@@ -31,7 +31,7 @@ export default GraphQL({
   errorHandler: function(res) {
     console.log('graphql全局错误拦截', res)
 			//如果auth
-    if (1) {
+    if (1==0) {
 			var refreshToken = storage.get('refreshToken')	
       api.refreshAuthToken(refreshToken).then(function(resp){
 				console.log('返回的resp======',resp)
