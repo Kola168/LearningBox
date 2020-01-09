@@ -1,10 +1,14 @@
 // pages/package_preschool/list/index.js
 const app = getApp()
-import {regeneratorRuntime, co, wxNav, util} from '../../../../utils/common_import'
-import gql from '../../../../network/graphql_request'
+import {
+  regeneratorRuntime,
+  co,
+  wxNav,
+  util
+} from '../../../../utils/common_import'
+import gql from '../../../../network/graphql/preschool'
 const showModal = util.promisify(wx.showModal)
 import Logger from '../../../../utils/logger.js'
-// const logger = new Logger.getLogger('pages/index/index')
 const logger = new Logger.getLogger('pages/package_preschool/growth_plan/list/index')
 
 Page({
@@ -13,25 +17,9 @@ Page({
    * 页面的初始数据
    */
   data: {
-    // lists: [
-    //   {
-    //     image: 'https://cdn-h.gongfudou.com/LearningBox/main/pic2doc_add_img.png',
-    //     title: '好奇宝宝培养计划',
-    //     desc: '简单描述描述描述描述简单描述描述描述描述',
-    //     tag: '在家上早教',
-    //     currentProgress: '30',
-    //     allProgress: '100'
-    //   },
-    //   {
-    //     image: 'https://cdn-h.gongfudou.com/LearningBox/main/pic2doc_add_img.png',
-    //     title: '轻松抓住语言关键期',
-    //     desc: '简单描述描述描述描述',
-    //     tag: '入园早准备',
-    //     currentProgress: '60',
-    //     allProgress: '100'
-    //   }
-    // ],
-    lists:[],
+    lists: [],
+    subscriptList: [],
+    completeList: [],
     subscription: false,
     tabToContent: 1,
     modalObj: {
@@ -39,98 +27,162 @@ Page({
       title: '不再订阅此计划了吗？',
       content: '', //弹窗内容文字
       hasCancel: true
-    }      
+    }
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: co.wrap(function* (options) {
-    this.longToast = new app.weToast
-    try{
-      logger.info(11)
-      // if(tabToContent==1){
-        const resp = yield gql.getPlans()
-        logger.info(1122)
-        // this.setData({
-        //   image:resp.iconUrl,
-        //   title:resp.name,
-        //   desc:resp.subTitle,
-        //   tag:resp.categoryName,
-        //   subscription:resp.subscription
-        // })
-        // this.setData({
-        //   lists:resp.data
-        // })
-        logger.info('0000')
-        logger.info('未订阅',resp.data)
-        this.longToast.weToast()
-        wx.showToast({
-          title: '提交成功！',
-          icon: 'none',
-          duration: 3000
-        })
-      // } 
+    this.longToast = new app.weToast()
+    this.currentTab = ''
+    try {
+      const resp = yield gql.getPlans()
+      // this.data.lists = resp.plans
+      this.setData({
+        lists: resp.plans
+      })
 
-    }catch(e){
+      logger.info('未订阅2', lists)
+
+      this.longToast.weToast()
+      wx.showToast({
+        title: '提交成功！',
+        icon: 'none',
+        duration: 3000
+      })
+    } catch (e) {
       this.longToast.weToast()
       util.showError(e)
     }
 
   }),
 
-  /* 去订阅 */
-  toSubscribe: function(e){
-      wxNav.navigateTo('/pages/package_preschool/growth_plan/checkpoint/plan_checkpoint')
-  },
-
- /*** 取消订阅 ***/
-  handleSubscribe: function(e){
-    console.log('=====', e)
-    console.log('=====', e.currentTarget.id)
-    this.cancelIndex = e.currentTarget.id
-    if(this.data.lists.length > 0){
+  getUserPlans: co.wrap(function* () {
+    try {
+      let tab = this.currentTab
+      const resp = yield gql.getUserPlans(tab)
+      let dataKey = ''
+      if(tab==='subscription'){
+        dataKey = 'subscriptList'
+      } else if(tab==='finished'){
+        dataKey = "completeList"
+      } else {
+        dataKey = "lists"
+      }
       this.setData({
-        ['modalObj.isShow']:true
+        [dataKey]: resp.userPlans
       })
+
+      this.longToast.weToast()
+      wx.showToast({
+        title: '提交成功！',
+        icon: 'none',
+        duration: 3000
+      })
+    } catch (error) {
+      this.longToast.weToast()
+      util.showError(e)
     }
+  }),
 
-
-    // let res = yield showModal({
-    //   title: '提示',
-    //   content: '确认删除此订阅？',
-    //   confirmColor: '#fae100',
-    // })
-    // if(!res.confirm){
-    //   return
-    // }
-    // let index = e.currentTarget.dataset.id
-
-
-
+  /* 切换Nav */
+  toChangeNav: function () {
+    this.setData({
+      tabToContent: 1
+    })
   },
+
+  /* 去订阅 */
+  toSubscribe: co.wrap(function* (e) {
+    var idx = e.currentTarget.id
+    logger.info('idx', idx)
+    let sn = this.data.lists[idx].sn
+    try {
+      yield gql.joinPlan(sn)
+      let resp = yield gql.getPlans()
+      logger.info('=====', resp)
+      this.setData({
+        lists: resp.plans
+      })
+    } catch (e) {
+      this.longToast.weToast()
+      util.showError(e)
+    }
+    console.log(11110)
+  }),
+
+
+
+  /*** 取消订阅 ***/
+  handleSubscribe: co.wrap(function* (e) {
+    try {
+      this.cancelIndex = e.currentTarget.id
+      this.setData({
+        ['modalObj.isShow']: true
+      })
+    } catch (e) {
+      this.longToast.weToast()
+      util.showError(e)
+    }
+  }),
 
   /*** 订阅弹出框 ***/
-  confirmModal: function(e){
-    console.log('=====ppp', e)
-    console.log('=====ppp', e.currentTarget.id)
-    let index = this.cancelIndex
-    this.data.lists.slice(index, 1)
-    this.setData({
-      lists: this.data.lists,
-      ['modalObj.isShow']: false
-    })
-  }, 
+  confirmModal: co.wrap(function *(cancelIndex) {
+    // let index = this.cancelIndex
+    let cancelSn = this.data.subscriptList[this.cancelIndex].sn
+    try {
+      const res = yield gql.deleteUserPlanInput(cancelSn)
+      this.getUserPlans()
+    } catch (error) {
+      console.log(error)
+    }
+    
+  }),
 
   /** 显示列表内容 **/
   navTap: co.wrap(function* (e) {
-    // logger.info(e)
-    // this.longToast = new app.weToast() 
-    let index = e ? e.currentTarget.id : 1
+    logger.info(e)
+    this.longToast = new app.weToast()
     this.setData({
-      tabToContent: index,
+      tabToContent: e.currentTarget.id,
       scrollTop: 0
     })
-	}),
+    if (this.data.tabToContent == 0) {
+      this.currentTab = 'subscription'
+      this.getUserPlans()
+    } else if (this.data.tabToContent == 2) {
+      this.currentTab = 'finished'
+      this.getUserPlans()
+    } else {
+      this.currentTab = ''
+      const resp = yield gql.getPlans()
+      this.setData({
+        lists: resp.plans
+      })
+    }
+  }),
+
+  /**闯关 */
+  toProgress: co.wrap(function* (e) {
+    var planSn = e.currentTarget.dataset.plansn
+    var userPlanSn = e.currentTarget.dataset.userplansn
+    var subscribe = e.currentTarget.dataset.subscript
+    wxNav.navigateTo(
+      `/pages/package_preschool/growth_plan/checkpoint/plan_checkpoint`,{
+        planSn,
+        userPlanSn,
+        subscribe
+      }
+    )
+
+    // var idx= e.currentTarget.id
+    // try {
+
+    // } catch (e) {
+    //   this.longToast.weToast()
+    //   util.showError(e)
+    // }
+  }),
 
 })

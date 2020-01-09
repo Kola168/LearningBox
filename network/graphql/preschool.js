@@ -3,99 +3,164 @@
 import gql from '../graphql_config'
 const graphqlApi = {
   /**
-   * 注册学科网
-   *
-   * @returns
+   * 宝贝成长计划 未订阅
+   * 
    */
-  register: () => {
-    return gql.mutate({
-      mutation: `mutation ($input: RegisterInput!){
-        Register{
-          state
+  getPlans: () => {
+    return gql.query({
+      query: `query {
+        plans {
+          iconUrl
+          name
+          subTitle
+          categoryName
+          subscription
+          sn
         }
       }`
     })
   },
 
   /**
-   * 获取每日一练当日练习题
+   * 宝贝成长计划 已订阅&&已完成
+   * 
    */
-  getPracticeContentToday: () => {
+  getUserPlans: (tab) => {
     return gql.query({
-      query: `query getPracticeContentToday($key: String!){
-        feature(key: $key){
-          practiceContentToday{
-            practiceQuestionImages
-            practiceAnswerImages
-          }
+      query: `query userPlans($tab: String!){
+        userPlans(tab: $tab){
+          currentIndex
+          planCategoryName
+          planIconUrl
+          planName
+          planSize
+          planSubTitle
+          planSn
+          sn
         }
       }`,
       variables: {
-        key: 'daily_practice'
+        tab
       }
     })
   },
 
   /**
-   * 获取奖状
+   * 宝贝成长计划 去订阅
+   * 
    */
-  getCertifacate: () => {
-    return gql.query({
-      query: `query getCertifacate{
-        testimonials{
-          imageUrl
-          title
-          subTitle
-          isGet
-        }
-      }`,
-    })
-  },
-
-  /**
-   * 获取月度集合分类
-   */
-  getMonthCompilations: () => {
-    return gql.query({
-      query: `query getMonthCompilations($key: String!){
-        feature(key: $key){
-          practiceCategories{
-            name
-            sn
-            subTitle
-            children{
-              name
-              sn
-              subTitle
-              position
-            }
-          }
+  joinPlan: (sn) => {
+    return gql.mutate({
+      mutation: `mutation ($input: JoinPlanInput!){
+        joinPlan(input: $input) {
+          state
         }
       }`,
       variables: {
-        key: 'daily_practice'
+        input:{sn: sn}
       }
     })
   },
 
   /**
-   * 获取月度练习列表
+   * 宝贝成长计划 取消订阅
+   * 
    */
-  getMonthExercises: (sn) => {
+  deleteUserPlanInput: (sn) => {
+    return gql.mutate({
+      mutation: `mutation ($input: DeleteUserPlanInput!){
+        deleteUserPlan(input: $input) {
+          state
+        }
+      }`,
+      variables: {
+        input:{
+          sn: sn
+        }
+      }
+    })
+  },
+
+  /**
+   * 宝贝成长计划 闯关
+   * 
+   */
+  getPlanContents: (planSn) => {
     return gql.query({
-      query: `query getMonthExercises($sn: String!){
-        content(sn: $sn){
+      query: `query ($planSn: String!){
+        planContents(sn: $planSn) {
           name
           iconUrl
-          haveLearned
+          sn
+          isShow
         }
       }`,
       variables: {
-        sn
+        planSn
       }
     })
   },
-  
+
+
+  /**
+   * 宝贝成长计划 订阅标识
+   * 
+   */
+  getPlan: (planSn) => {
+    return gql.query({
+      query: `query ($planSn: String!){
+        plan(sn: $planSn) {
+          subscription
+        }
+      }`,
+      variables: {
+        planSn
+      }
+    })
+  },
+
+
+  /**
+   * 宝贝成长计划 预览
+   * 
+   */
+  getContent: (planSn) => {
+    return gql.query({
+      query: `query ($planSn: String!){
+        content(sn: $planSn) {
+          featureKey
+          iconUrl
+          pageCount
+          sn
+          contentImages{
+            nameUrl
+          }
+        }
+      }`,
+      variables: {
+        planSn
+      }
+    })
+  },
+
+  /**
+   * 打印设置
+   *
+   */ 
+  createResourceOrder: (sn) => {
+    return gql.mutate({
+      mutation: `mutation ($input: CreateResourceOrderInput!){
+        createResourceOrder(input: $input) {
+          state
+          statistic
+      }`,
+      variables: {
+        input:{
+          sn: sn
+        }
+      }
+    })
+  },
 
 }
 

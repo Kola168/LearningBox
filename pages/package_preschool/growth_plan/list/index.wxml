@@ -9,33 +9,33 @@
     <view class="tab-content">
     <!-- 已订阅 开始 -->
         <view class="item-cont-block" wx:if="{{tabToContent==0}}">
-            <block wx:if="{{!lists.length}}">
+            <block wx:if="{{!subscriptList.length}}">
                 <view class="item-none">
                     <image mode="widthFix" class="item-none-img" src="https://cdn-h.gongfudou.com/LearningBox/preschool/growth_plan_none.png" mode="widthFix"></image>
                     <text class="item-none-desc">您还未订阅宝宝成长计划哦～</text>
-                    <view class="btn-default" bindtap="toSubscribe">去订阅</view>
+                    <view class="btn-default" bindtap="toChangeNav">去订阅</view>
                 </view>
             </block>
-            <view class="item-cont" wx:for="{{lists}}" wx:key="index" id="{{index}}">
+            <view class="item-cont" wx:for="{{subscriptList}}" wx:key="index" data-planSn="{{item.planSn}}" data-userPlanSn="{{item.sn}}" bindtap="toProgress" data-subscript="subscript">
                 <view class="item-left">
-                    <image class="item-img" src="{{item.image}}"></image>
+                    <image class="item-img" src="{{item.planIconUrl}}"></image>
                 </view>
                 <view class="item-right">
                     <view class="item-right-top">
-                        <view class="item-title">{{item.title}}</view>
-                        <view class="item-desc">{{item.desc}}</view>
-                        <view class="item-tag">{{item.tag}}</view>
+                        <view class="item-title">{{item.planName}}</view>
+                        <view class="item-desc">{{item.planSubTitle}}</view>
+                        <view class="item-tag">{{item.planCategoryName}}</view>
                     </view>
                     <view class="item-right-bottom">
                         <view class="bottom-left">
                             <view class="progress-cont">
-                                <view class="progress" style="width:{{item.allProgress}}%;"></view>
-                                <view class="progress-on" style="width:{{item.currentProgress}}%;"></view>
+                                <view class="progress" style="width:{{item.planSize}}%;"></view>
+                                <view class="progress-on" style="width:{{item.currentIndex}}%;"></view>
                             </view>
-                            <text class="progress-num">{{item.currentProgress}}/{{item.allProgress}}</text>
+                            <text class="progress-num">{{item.currentIndex}}/{{item.planSize}}</text>
                         </view>
                         <view class="bottom-right bottom-right-no">
-                            <view class="btn-default" id="{{index}}" bindtap="handleSubscribe">取消订阅</view>
+                            <view class="btn-default" id="{{index}}" catchtap="handleSubscribe">取消订阅</view>
                         </view>
                     </view>
                 </view>
@@ -43,83 +43,44 @@
         </view>
     <!-- 已订阅 结束 -->
     <!-- 未订阅 开始 -->
-        <!--<view class="item-cont-block" wx:if="{{tabToContent==1}}">-->
         <view class="item-cont-block" wx:if="{{tabToContent==1}}">
-            <view class="item-cont" wx:for="{{lists}}" wx:key="index" id="{{item.id}}">
+            <view class="item-cont" wx:for="{{lists}}" wx:key="{{index}}" data-planSn="{{item.sn}}" data-userPlanSn="" bindtap="toProgress" data-subscript='noSubscript'>
                 <view class="item-left">
-                    <image class="item-img" src="{{item.image}}"></image>
+                    <image class="item-img" src="{{item.iconUrl}}"></image>
                 </view>
                 <view class="item-right">
                     <view class="item-right-top">
-                        <view class="item-title">{{item.title}}</view>
-                        <view class="item-desc">{{item.desc}}</view>
-                        <view class="item-tag">{{item.tag}}</view>
+                        <view class="item-title">{{item.name}}</view>
+                        <view class="item-desc">{{item.subTitle}}</view>
+                        <view class="item-tag">{{item.categoryName}}</view>
                     </view>
                     <view class="item-right-bottom">
                         <view class="bottom-left"></view>
                         <view class="bottom-right">
-                            <view class="btn-primary" bindtap="toSubscribe" id="{{item.id}}">订阅</view>
+                            <view class="btn-primary" bindtap="toSubscribe" id="{{index}}">订阅</view>
                         </view>
                     </view>
                 </view>
             </view>
-            <!--
-            <view class="item-cont">
-                <view class="item-left">
-                    <image class="item-img" src="https://cdn-h.gongfudou.com/LearningBox/main/pic2doc_add_img.png"></image>
-                </view>
-                <view class="item-right">
-                    <view class="item-right-top">
-                        <view class="item-title">好奇宝宝培养计划</view>
-                        <view class="item-desc">简单描述描述描述描述</view>
-                        <view class="item-tag">在家上早教</view>
-                    </view>
-                    <view class="item-right-bottom">
-                        <view class="bottom-left"></view>
-                        <view class="bottom-right">
-                            <view class="btn-primary" bindtap="toSubscribe">订阅</view>
-                        </view>
-                    </view>
-                </view>
-            </view>
-            -->
         </view>
     <!-- 未订阅 结束 -->
     <!-- 已完成 开始 -->
         <view class="item-cont-block" wx:if="{{tabToContent==2}}">
-            <block wx:if="{{!lists.length}}">
+            <block wx:if="{{!completeList.length}}">
                 <view class="item-none">
                     <image class="item-none-img" src="https://cdn-h.gongfudou.com/LearningBox/preschool/growth_plan_none.png" mode="widthFix"></image>
                     <text class="item-none-desc">暂未已完成计划哦～</text>
                 </view>
             </block>
-            <view class="item-cont">
+            <view class="item-cont" wx:for="{{completeList}}" wx:key="index" data-planSn="{{item.planSn}}" data-userPlanSn="{{item.sn}}" bindtap="toProgress"  data-subscript="finished">
                 <view class="item-left">
-                    <image class="item-img" src="https://cdn-h.gongfudou.com/LearningBox/main/pic2doc_add_img.png"></image>
+                    <image class="item-img" src="{{item.planIconUrl}}"></image>
                 </view>
                 <view class="item-right">
                     <view class="item-right-top">
-                        <view class="item-title">好奇宝宝培养计划</view>
-                        <view class="item-desc">简单描述描述描述描述</view>
-                        <view class="item-tag">在家上早教</view>
-                    </view>
-                    <view class="item-right-bottom">
-                        <view class="bottom-left"></view>
-                        <view class="bottom-right">
-                            <view class="btn-primary" bindtap="toSubscribe">订阅</view>
-                        </view>
-                    </view>
-                </view>
-            </view>
-            <view class="item-cont">
-                <view class="item-left">
-                    <image class="item-img" src="https://cdn-h.gongfudou.com/LearningBox/main/pic2doc_add_img.png"></image>
-                </view>
-                <view class="item-right">
-                    <view class="item-right-top">
-                        <view class="item-title">好奇宝宝培养计划</view>
-                        <view class="item-desc">简单描述描述描述描述</view>
-                        <view class="item-tag">在家上早教</view>
+                        <view class="item-title">{{item.planName}}</view>
+                        <view class="item-desc">{{item.planSubTitle}}</view>
+                        <view class="item-tag">{{item.planCategoryName}}</view>
                     </view>
                     <view class="item-right-bottom">
                         <view class="bottom-left"></view>
