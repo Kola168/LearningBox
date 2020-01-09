@@ -1,4 +1,7 @@
 /* pages/package_member/member/index.wxss */
+page {
+    position: relative
+}
 
 image {
     width: 100%;
@@ -9,7 +12,7 @@ image {
     position: relative;
 }
 
-.bottom-image view {
+.bottom-image .view {
     position: absolute;
     top: 0;
     left: calc((100% - 600rpx)/2);
@@ -18,16 +21,91 @@ image {
     border-radius: 45rpx;
     width: 600rpx;
     height: 98rpx;
-    line-height:98rpx;
+    line-height: 98rpx;
     font-family: PingFangSC-Regular;
     font-size: 36rpx;
     color: #C9B498;
     letter-spacing: -0.86rpx;
     text-align: center;
 }
-.bottom-image image {
+
+.bottom-image .image {
     position: absolute;
     top: 138rpx;
     left: 26rpx;
     width: calc(100% - 52rpx);
+}
+
+.access-member {
+    position: absolute;
+    bottom: 24rpx;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: PingFangSC-Regular;
+    font-size: 24rpx;
+    color: #333333;
+    letter-spacing: 0;
+    text-align: right;
+    background: transparent;
+}
+
+.access-member image {
+    width: 10rpx;
+    margin-left:5rpx;
+}
+
+.active-member {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.60);
+    z-index: 1000;
+}
+
+.active-member .back {
+    position: absolute;
+    left: 66rpx;
+    top: 340rpx;
+    width: calc(100% - 132rpx);
+    overflow: visible;
+}
+
+.active-member .close {
+    position: absolute;
+    left: calc((100% - 72rpx) / 2);
+    bottom: -80rpx;
+    width: 72rpx;
+}
+
+.active-member .content {
+    position: absolute;
+    width: calc(100% - 240rpx);
+    top: 70rpx;
+    left: 120rpx;
+    font-family: PingFangSC;
+    font-size: 28rpx;
+    color: #5a5a5a;
+}
+
+.active-member .content image {
+    width: 250rpx;
+    margin: 0 auto;
+    margin-bottom: 40rpx;
+}
+
+.active-member .button {
+    /* background:yellow; */
+    background: transparent;
+    position: absolute;
+    width: calc(100% - 200rpx);
+    height: 98rpx;
+    bottom: 105rpx;
+    left: 100rpx;
+    border-radius: 50rpx;
+    z-index: 1000
 }

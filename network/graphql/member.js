@@ -46,10 +46,12 @@ const graphqlApi = {
         currentUser{
           sn
           selectedDevice{
-            sn
             name
-            model
-            onlineState
+            lmAvailableMember{
+              goodsName
+              time
+              unit
+            }
           }
         }
       }`
