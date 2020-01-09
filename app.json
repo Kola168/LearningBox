@@ -150,7 +150,8 @@
         "kousuan/learningplan",
         "kousuan/createplan",
         "kousuan/pointslist",
-        "kousuan/previewWebview"
+        "kousuan/previewWebview",
+        "kousuan/createTime"
       ]
     },
     {

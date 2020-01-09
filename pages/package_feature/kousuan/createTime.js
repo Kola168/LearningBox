@@ -1,4 +1,4 @@
-// pages/package_feature/kousuan/createplan.js
+// pages/package_feature/kousuan/createTime.js
 const app = getApp()
 const regeneratorRuntime = require('../../../lib/co/runtime')
 const co = require('../../../lib/co/co')
@@ -60,9 +60,6 @@ Page({
 
   getPointsList:co.wrap(function*(){
     if(!this.data.textBookList[this.data.gradeIndex].kousuanCategories[this.data.textbookIndex]){
-      this.setData({
-        calculationList:[]
-      })
       return wx.showModal({
         title:'提示',
         content:'该年龄段暂无口算',
@@ -89,9 +86,39 @@ Page({
   showPicker:function(e){
     let that=this
     let type=e.currentTarget.dataset.type
-    this.setData({
-      pick_type:type,
-    })
+    if(this.data.pick_type==type){
+      this.hidePicker()
+    }else{
+      if(type=='grade'){
+        this.data.pickList=_.pluck(this.data.textBookList,'name')
+      }else{
+        this.data.pickList=_.pluck(this.data.textBookList[this.data.gradeIndex].kousuanCategories,'name')
+      }
+      this.setData({
+        pickList:this.data.pickList,
+      })
+      if(this.data.pick_type){
+        this.setData({
+          showAnimate:false
+        })
+        setTimeout(function(){
+          that.setData({
+            showAnimate:true,
+          })
+        },100)
+      }else{
+        setTimeout(function(){
+          that.setData({
+            showAnimate:true,
+            showBgAnimate:true,
+          })
+        },50)
+
+      }
+      this.setData({
+        pick_type:type,
+      })
+    }
   },
 
 
