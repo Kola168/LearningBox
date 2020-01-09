@@ -52,6 +52,8 @@ const previewDocument = co.wrap(function*(data, callback) {
         }
       })
     }
+  }, ()=>{
+    callback()
   })
 })
 

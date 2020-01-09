@@ -273,10 +273,10 @@ Page({
         url = '/pages/package_feature/error_book/photo_anwser_intro'
         break;
       case 'syncLearn':
-        // url = '/pages/package_subject/sync_learn/index/index'
+        url = '/pages/package_subject/sync_learn/index/index'
         break;
       case 'evaluate_exam':
-        // url = '/pages/package_subject/evaluate_exam/index/index'
+        url = '/pages/package_subject/evaluate_exam/index/index'
         break;
       case 'errorBook':
         url = '/pages/package_feature/error_book/index'

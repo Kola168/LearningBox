@@ -50,7 +50,8 @@ App({
   sysInfo: null,
   navBarInfo: null,
   rpxPixel: 0.5,
-  deBug: false, //线上环境log调试
+	deBug: false, //线上环境log调试
+	refreshing:false,  //这个变量切勿占用，刷新token用
 
   onLaunch: co.wrap(function*() {
     yield this.getSystemInfo()
