@@ -123,7 +123,7 @@
 
 .bar-item image {
   width: 16rpx;
-  margin-left: 12rpx;
+  
 }
 
 .bar-date-item {
@@ -141,10 +141,12 @@
 
 .date-item-box image:first-child {
   width: 24rpx;
+  margin-right: 8rpx;
 }
 
 .date-item-box image:last-child {
   width: 10rpx;
+  margin-left: 12rpx;
 }
 
 /* 选择弹出层 */

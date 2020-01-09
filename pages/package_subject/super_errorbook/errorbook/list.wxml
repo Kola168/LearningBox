@@ -24,19 +24,19 @@
     </view>
     <block wx:else>
       <view class="tab-bar" style="top:{{navBarHeight}}px;">
-        <view class="bar-item">
+        <view class="bar-item" bindtap="showFilter" id="knowledge">
           <view>知识点</view>
           <image src="../../images/arrow_bottom.png" mode="widthFix" />
         </view>
-        <view class="bar-item">
+        <view class="bar-item" bindtap="showFilter" id="type">
           <view>题型</view>
           <image src="../../images/arrow_bottom.png" mode="widthFix" />
         </view>
-        <view class="bar-item">
+        <view class="bar-item" bindtap="showFilter" id="case">
           <view>已学会</view>
           <image src="../../images/arrow_bottom.png" mode="widthFix" />
         </view>
-        <view class="bar-item bar-date-item">
+        <view class="bar-item bar-date-item" bindtap="showFilter" id="date">
           <view class="date-item-box">
             <image src="../../images/date_icon.png" mode="widthFix" />
             <view>七天内</view>
@@ -44,8 +44,8 @@
           </view>
         </view>
       </view>
-      <view class="filter" style="top:{{navBarHeight+50}}px;" catchtouchmove="true" wx:if="{{showFilter}}">
-        <view class="filter-box" bindtap="hideFilter">
+      <view class="filter" style="top:{{navBarHeight+50}}px;" catchtouchmove="true" wx:if="{{showFilter}}" bindtap="hideFilter">
+        <view class="filter-box">
           <view class="filter-item" catchtap="checkFilter">一元一次方程（24）</view>
           <view class="filter-item" catchtap="checkFilter">一元一次方程（24）</view>
           <view class="filter-item" catchtap="checkFilter">一元一次方程（24）</view>
