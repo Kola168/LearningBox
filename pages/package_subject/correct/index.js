@@ -43,7 +43,8 @@ Page({
     this.weToast = new app.weToast()
     let scene = query.scene
     this.paperId = Number(scene.split('_')[1])
-    this.correctType = scene.split('_')[2] === 'paper' ? 'XuekewangPaper' : 'XuekewangExercise'
+    this.correctType = scene.split('_')[2] === 'paper' ? 'XuekewangPaper' : 'XuekewangExercise' //批改类型
+    this.singleTopicIds = new Set()
     this.getCorrectPaper()
     // setInterval(() => {
     //   if (this.data.progress < 100) {
@@ -136,10 +137,10 @@ Page({
           }
         }
         selectCount = multipleObjResult.length - selectCount
-        currentResult = (selectCount / multipleObjResult.length) * 100
+        currentResult = Math.ceil((selectCount / multipleObjResult.length) * 100)
         this.setData({
           [setKey]: multipleObjResult[index] ? 1 : 0,
-          currentResult: currentResult.toFixed(2)
+          currentResult: currentResult
         })
       }
     } else {
@@ -153,7 +154,29 @@ Page({
     let currentResult = this.data.currentResult
     if (currentResult != null) {
       let dataKey = `topicsResult[${this.data.topicIndex}]`,
-        nextTopicIndex = this.data.topicIndex + 1
+        nextTopicIndex = this.data.topicIndex + 1,
+        parent = false //是否包含小题
+
+      if (this.data.currentTopicType === 'multipleObj') {
+        parent = true
+        let multipleObjResult = this.data.multipleObjResult
+        let hasSingleTopic = multipleObjResult.some((val) => { //是否选择了小题
+          return val == 1
+        })
+        if (hasSingleTopic) {
+          let currentTopic = this.data.currentTopic
+          for (let i = 0; i < multipleObjResult.length; i++) {
+            if (multipleObjResult[i]) {
+              this.singleTopicIds.add(currentTopic.children[i].ques_id)
+            } else {
+              let reCorrect = this.singleTopicIds.has(currentTopic.children[i].ques_id)
+              if (reCorrect) {
+                this.singleTopicIds.delete(currentTopic.children[i].ques_id)
+              }
+            }
+          }
+        }
+      }
 
       if (this.changeTopicFlag) { //重新批改
         dataKey = `topicsResult[${this.changeTopicIndex}]`
@@ -162,7 +185,8 @@ Page({
       let dataObj = {
         [dataKey]: {
           point: this.data.currentResult,
-          questionId: this.currentTopicId
+          questionId: this.currentTopicId,
+          parent
         },
         currentResult: null
       }
@@ -187,7 +211,18 @@ Page({
       type: 'loading'
     })
     try {
-      let res = yield subjectGql.submitCorrect(this.data.topicsResult, this.correctType, this.paperId)
+      let topicsResult = this.data.topicsResult,
+        singleTopicIds = [...this.singleTopicIds],
+        tempSingleTopicIds = []
+      for (let i = 0; i < singleTopicIds.length; i++) {
+        tempSingleTopicIds.push({
+          point: 0,
+          questionId: singleTopicIds[i],
+          parent: false
+        })
+      }
+      topicsResult = topicsResult.concat(tempSingleTopicIds)
+      let res = yield subjectGql.submitCorrect(topicsResult, this.correctType, this.paperId)
       this.weToast.hide()
       wxNav.navigateTo('../report/index/index', {
         from: 'correct',

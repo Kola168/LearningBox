@@ -9,7 +9,7 @@ const graphqlApi = {
   register: () => {
     return gql.mutate({
       mutation: `mutation ($input: RegisterInput!){
-        Register(input:$input){
+        register(input:$input){
           state
         }
       }`,
@@ -502,7 +502,7 @@ const graphqlApi = {
   /**
    * 获取学科网学习页banner
    */
-  getBanners: ()=> {
+  getBanners: () => {
     return gql.query({
       query: `query getBanners($type: BannerTypeEnum!){
         banners(type: $type){
@@ -514,9 +514,26 @@ const graphqlApi = {
         type: 'xuekewang'
       }
     })
-  }
+  },
 
-
+  /**
+   * 获取学科错题列表
+   */
+  getSubjectsErrorbook: () => {
+    return gql.query({
+      query: `query {
+        xuekewang {
+          subjects {
+            iconUrl
+            subjectId
+            subjectName
+            sn
+            errorBooksNum
+          }
+        }
+      }`
+    })
+  },
 }
 
 export default graphqlApi

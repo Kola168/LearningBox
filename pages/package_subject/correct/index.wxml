@@ -58,7 +58,7 @@
         </view>
       </view>
     </view>
-    <view class="paper-handle">
+    <view class="paper-handle {{isFullScreen?'is-full-screen':''}}">
       <view class="handle-choose">
         <view class="choose-title flex align-center">
           <image src="../images/dog_teacher.png" mode="widthFix" />
@@ -120,7 +120,7 @@
     </view>
   </view>
   <view class="not-subject-member flex align-center" wx:else>
-    <image src="../images/temp_1.png" mode="widthFix" />
+    <image src="https://cdn-h.gongfudou.com/LearningBox/subject/correct_member_toast.png" mode="widthFix" />
     <view class="member-text">开通学科会员，解锁线上批改试卷功能</view>
     <view class="to-know">立即了解</view>
   </view>
