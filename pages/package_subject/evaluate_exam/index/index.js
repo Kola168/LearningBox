@@ -43,7 +43,7 @@ Page({
   registerSubject: co.wrap(function* () {
     try {
       let res = yield gqlSubject.register()
-      if (res.Register.state) {
+      if (res.register.state) {
         this.getSubjects()
       } else {
         throw (res)

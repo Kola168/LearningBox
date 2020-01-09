@@ -1,0 +1,162 @@
+<nav-bar title="超级错题本"></nav-bar>
+<view class="container" style="background:{{isMember?'#f7f7f7':'#fff'}};">
+  <block wx:if="{{false}}">
+    <view class="not-member-tip">
+      <image src="../../images/diamond.png" mode="widthFix" />
+      <view>开通学科会员，升级专属错题本，新用户免费体验！</view>
+    </view>
+    <view class="not-member-content">
+      <image src="../../images/no_errorbook.png" mode="widthFix" />
+      <view class="content-text">当前科目还没有录入错题呢，点击下方添加</view>
+      <view class="not-member-btn">添加错题</view>
+    </view>
+  </block>
+  <block wx:else>
+    <view class="empty" wx:if="{{false}}">
+      <image src="../../images/no_errorbook.png" mode="widthFix" />
+      <view class="empty-tip">您还没有录入错题哦！</view>
+      <view class="empty-content">
+        <view>如何录入错题？</view>
+        <view>1.打印同步练习或试卷</view>
+        <view>2.扫描打印出的试卷上方二维码</view>
+        <view>3.进行批改，批改后题会自动录入此处哦</view>
+      </view>
+    </view>
+    <block wx:else>
+      <view class="tab-bar" style="top:{{navBarHeight}}px;">
+        <view class="bar-item" bindtap="showFilter" id="knowledge">
+          <view>知识点</view>
+          <image src="../../images/arrow_bottom.png" mode="widthFix" />
+        </view>
+        <view class="bar-item" bindtap="showFilter" id="type">
+          <view>题型</view>
+          <image src="../../images/arrow_bottom.png" mode="widthFix" />
+        </view>
+        <view class="bar-item" bindtap="showFilter" id="case">
+          <view>已学会</view>
+          <image src="../../images/arrow_bottom.png" mode="widthFix" />
+        </view>
+        <view class="bar-item bar-date-item" bindtap="showFilter" id="date">
+          <view class="date-item-box">
+            <image src="../../images/date_icon.png" mode="widthFix" />
+            <view>七天内</view>
+            <image src="../../images/arrow.png" mode="widthFix" />
+          </view>
+        </view>
+      </view>
+      <view class="filter" style="top:{{navBarHeight+50}}px;" catchtouchmove="true" wx:if="{{showFilter}}" bindtap="hideFilter">
+        <view class="filter-box">
+          <view class="filter-item" catchtap="checkFilter">一元一次方程（24）</view>
+          <view class="filter-item" catchtap="checkFilter">一元一次方程（24）</view>
+          <view class="filter-item" catchtap="checkFilter">一元一次方程（24）</view>
+          <view class="filter-item" catchtap="checkFilter">一元一次方程（24）</view>
+          <view class="filter-item" catchtap="checkFilter">一元一次方程（24）</view>
+          <view class="filter-item" catchtap="checkFilter">一元一次方程（24）</view>
+          <view class="filter-item" catchtap="checkFilter">一元一次方程（24）</view>
+          <view class="filter-item" catchtap="checkFilter">一元一次方程（24）</view>
+          <view class="filter-item" catchtap="checkFilter">一元一次方程（24）</view>
+        </view>
+      </view>
+      <view class="list-content">
+        <view class="content-title">
+          <view>共8道错题</view>
+          <!-- <view class="title-select">
+            <image src="../../images/select_icon.png" mode="widthFix" />
+            <view>选择</view>
+          </view> -->
+          <view class="select-btn">
+            <view>全选</view>
+            <view>取消</view>
+          </view>
+        </view>
+        <view class="content-item">
+          <view class="item-top">
+            <image src="../../images/check_yes.png" mode="widthFix" />
+            <view>
+              <!-- <rich-text></rich-text> -->
+              如何生成我的知识图谱？1.打印同步练习或试卷2.扫描打印出的试卷上方二维码3.进行批改，批改后小白老师会根据您的做题情况制作知识图谱哦
+            </view>
+          </view>
+          <view class="item-bottom">
+            <view class="item-knowledge">
+              <view class="knowledge-left">
+                <view>知识点:</view>
+                <view class="knowledge-list text-overflow-points">
+                  <text class="list-item">一元一次方程</text>
+                  <text class="list-item">集合</text>
+                </view>
+              </view>
+              <image src="../../images/arrow.png" mode="widthFix" />
+            </view>
+            <view class="item-type">
+              <view class="type-text">选择题</view>
+              <view class="item-date">2019-09-09 13:23</view>
+            </view>
+          </view>
+        </view>
+        <view class="content-item">
+          <view class="item-top">
+            <image src="../../images/check_yes.png" mode="widthFix" />
+            <view>
+              <!-- <rich-text></rich-text> -->
+              如何生成我的知识图谱？1.打印同步练习或试卷2.扫描打印出的试卷上方二维码3.进行批改，批改后小白老师会根据您的做题情况制作知识图谱哦
+            </view>
+          </view>
+          <view class="item-bottom">
+            <view class="item-knowledge">
+              <view class="knowledge-left">
+                <view>知识点:</view>
+                <view class="knowledge-list text-overflow-points">
+                  <text class="list-item">一元一次方程</text>
+                  <text class="list-item">集合</text>
+                </view>
+              </view>
+              <image src="../../images/arrow.png" mode="widthFix" />
+            </view>
+            <view class="item-type">
+              <view class="type-text">选择题</view>
+              <view class="item-date">2019-09-09 13:23</view>
+            </view>
+          </view>
+        </view>
+        <view class="content-item">
+          <view class="item-top">
+            <image src="../../images/check_yes.png" mode="widthFix" />
+            <view>
+              <!-- <rich-text></rich-text> -->
+              如何生成我的知识图谱？1.打印同步练习或试卷2.扫描打印出的试卷上方二维码3.进行批改，批改后小白老师会根据您的做题情况制作知识图谱哦
+            </view>
+          </view>
+          <view class="item-bottom">
+            <view class="item-knowledge">
+              <view class="knowledge-left">
+                <view>知识点:</view>
+                <view class="knowledge-list text-overflow-points">
+                  <text class="list-item">一元一次方程</text>
+                  <text class="list-item">集合</text>
+                </view>
+              </view>
+              <image src="../../images/arrow.png" mode="widthFix" />
+            </view>
+            <view class="item-type">
+              <view class="type-text">选择题</view>
+              <view class="item-date">2019-09-09 13:23</view>
+            </view>
+          </view>
+        </view>
+      </view>
+      <view class="handle-btns">
+        <view>标记为已学会</view>
+        <view>打印平行题</view>
+        <view>打印原题</view>
+      </view>
+    </block>
+  </block>
+</view>
+<!-- modal -->
+<modal modal="{{modalObj}}" bindconfirm="confirmModal">
+  <view slot="bottom" class="member-btn" catchtap="toPrint">
+    <image src="../../images/diamond.png" mode="widthFix" />
+    <view>开通会员可免费使用</view>
+  </view>
+</modal>
