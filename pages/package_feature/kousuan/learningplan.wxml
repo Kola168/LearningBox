@@ -2,13 +2,13 @@
 <nav-bar title="练习计划"></nav-bar>
 
 <view class="top-tap">
-  <view class="top-tap-style {{planTypeCheck=='unSet'?'type-checked':''}}" data-type="unSet" bindtap="checkPlanType">
+  <view class="top-tap-style {{planTypeCheck=='created'?'type-checked':''}}" data-type="created" bindtap="checkPlanType">
     未设置
-    <view wx:if="{{planTypeCheck=='unSet'}}" class="type-checked-line"></view>
+    <view wx:if="{{planTypeCheck=='created'}}" class="type-checked-line"></view>
   </view>
-  <view class="top-tap-style {{planTypeCheck=='executing'?'type-checked':''}}" data-type="executing" bindtap="checkPlanType">
+  <view class="top-tap-style {{planTypeCheck=='processing'?'type-checked':''}}" data-type="processing" bindtap="checkPlanType">
     执行中
-    <view wx:if="{{planTypeCheck=='executing'}}" class="type-checked-line"></view>
+    <view wx:if="{{planTypeCheck=='processing'}}" class="type-checked-line"></view>
   </view>
   <view class="top-tap-style {{planTypeCheck=='finished'?'type-checked':''}}" data-type="finished" bindtap="checkPlanType">
     已结束
@@ -16,7 +16,7 @@
   </view>
 </view>
 
-<view wx:if="{{planTypeCheck=='unSet'}}" class="list-box">
+<view wx:if="{{planTypeCheck=='created'}}" class="list-box">
   <block wx:if="{{unSetList.length>0}}">
     <view wx:for="{{unSetList}}" wx:key="executingList" class="list-item">
       <view class="list-msg-box">
@@ -44,7 +44,7 @@
   </block>
 </view>
 
-<view wx:if="{{planTypeCheck=='executing'}}" class="list-box">
+<view wx:if="{{planTypeCheck=='processing'}}" class="list-box">
   <block wx:if="{{executingList.length>0}}">
     <view wx:for="{{executingList}}" wx:key="executingList" class="list-item">
       <view class="list-msg-box">
@@ -106,3 +106,6 @@
     </view>
   </block>
 </view>
+
+<import src="/lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />

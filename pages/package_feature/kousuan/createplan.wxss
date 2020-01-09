@@ -2,11 +2,16 @@
 page {
   width: 100%;
   height: 100%;
+  box-sizing: border-box;
+  padding: 30rpx 24rpx;
+}
+
+.content-bg{
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  box-sizing: border-box;
-  padding: 30rpx 24rpx;
 }
 
 view {
@@ -63,21 +68,20 @@ view {
 
 .check-point-img {
   width: 150rpx;
-  margin-left: 106rpx;
-  margin-bottom:-30rpx;
+  position:relative;
+  left:-125rpx;
 }
 
-
 .conf-check-but{
-  width:308rpx;
-  line-height:76rpx;
-  border-radius:38rpx;
+  width:600rpx;
+  line-height:100rpx;
+  border-radius:50rpx;
   text-align:center;
   background:#FFDC5E;
   font-size: 36rpx;
   color: #454545;
   margin:0 auto;
-  margin-top:52rpx;
+  margin-top:150rpx;
 }
 
 .scroll-position-box{

@@ -174,8 +174,56 @@ const graphqlApi = {
         input: input
       }
     })
-  }
+  },
 
+  //创建定时任务
+  createTimedtask:(input)=>{
+    return gql.mutate({
+      mutation: `mutation ($input: CreateTimedTaskInput!){
+        createTimedtask(input:$input){
+          task{
+            sn
+          }
+        }
+      }`,
+      variables: {
+        input: input
+      }
+    })
+  },
+
+  //定时任务设置时间
+  joinSubscription:(input)=>{
+    return gql.mutate({
+      mutation: `mutation ($input: CreateSubscriptionInput!){
+        joinSubscription(input:$input){
+          state
+        }
+      }`,
+      variables: {
+        input: input
+      }
+    })
+  },
+
+  //查询口算计划状态列表
+  timedTasks:(param)=>{
+    return gql.query({
+      query: `query($state: TimedTaskStateEnum!,$taskType: TimedTaskTypeEnum!){
+        timedTasks(state:$state,taskType:$taskType){
+          categoryName
+          day
+    	    isEndtime
+          sn
+          state
+          timing
+        }
+      }`,
+      variables: {
+        input: input
+      }
+    })
+  },
 }
 
 export default graphqlApi

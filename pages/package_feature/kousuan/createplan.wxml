@@ -1,68 +1,72 @@
 <!--pages/package_feature/kousuan/createplan.wxml-->
 <nav-bar title="练习计划"></nav-bar>
+<view class="content-bg" bindtap="closeAll">
+  <view class="plan-top-tip">
+    本计划会在一个星期内连续打印某一项知识点，每天打印一页
+  </view>
+  <view class="check-contain-box">
+    <view class="check-name-box">
+      <view class="check-name-box-space">年级</view>
+    </view>
+    <view class="check-content-box" data-type="grade" catchtap="showPicker">
+      <text class="check-value-box">{{textBookList[gradeIndex].name}}</text>
+      <text class="iconfont icon-down {{pick_type=='grade'?'icon-rotate':''}}"></text>
+      <view class="scroll-position-box" wx:if="{{pick_type=='grade'}}">
+        <view class="scroll-list-box">
+          <view wx:for="{{textBookList}}" wx:key="textBookList" class="scroll-list {{index==gradeIndex?'scroll-list-checked':''}}" data-index="{{index}}" catchtap="checkPicker">
+            {{item.name}}
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class="check-contain-box">
+    <view class="check-name-box">教材版本</view>
+    <view class="check-content-box" data-type="textbook" catchtap="showPicker">
+      <text class="check-value-box">{{textBookList[gradeIndex].kousuanCategories[textbookIndex].name}}</text>
+      <text class="iconfont icon-down {{pick_type=='textbook'?'icon-rotate':''}}"></text>
+      <view class="scroll-position-box" wx:if="{{pick_type=='textbook'}}">
+        <view class="scroll-list-box">
+          <view wx:for="{{textBookList[gradeIndex].kousuanCategories}}" wx:key="kousuanCategories" class="scroll-list {{index==textbookIndex?'scroll-list-checked':''}}" data-index="{{index}}" catchtap="checkPicker">
+            {{item.name}}
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class="check-contain-box">
+    <view class="check-name-box">练习项</view>
+    <view class="check-content-box" data-type="practice" catchtap="checkPoints">
+      <text class="check-value-box">{{calculationList[ksTypeIndex].name}}</text>
+      <text class="iconfont icon-down {{pointType=='practice'?'icon-rotate':''}}"></text>
+      <view class="scroll-position-box" wx:if="{{pointType=='practice'}}">
+        <view class="scroll-list-box">
+          <view wx:for="{{calculationList}}" wx:key="calculationList" class="scroll-list {{index==ksTypeIndex?'scroll-list-checked':''}}" data-index="{{index}}" catchtap="tapPractice">
+            {{item.name}}
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class="check-contain-box">
+    <view class="check-name-box">知识点</view>
+    <view class="check-content-box" data-type="knowledge" catchtap="checkPoints">
+      <text class="check-value-box">{{calculationList[ksTypeIndex].children[pointIndex].name}}</text>
+      <text class="iconfont icon-down {{pointType=='knowledge'?'icon-rotate':''}}"></text>
+      <view class="scroll-position-box" wx:if="{{pointType=='knowledge'}}">
+        <view class="scroll-list-box">
+          <view wx:for="{{calculationList[ksTypeIndex].children}}" wx:key="calculationListchildren" class="scroll-list {{index==pointIndex?'scroll-list-checked':''}}" data-index="{{index}}" catchtap="tapKnowledge">
+            {{item.name}}
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+  <image src="{{calculationList[ksTypeIndex].children[pointIndex].image}}" mode="widthFix" class="check-point-img"></image>
+  <view class="conf-check-but" bindtap="setTime">
+    下一步
+  </view>
+</view>
 
-<view class="plan-top-tip">
-  本计划会在一个星期内连续打印某一项知识点，每天打印一页
-</view>
-<view class="check-contain-box">
-  <view class="check-name-box"><view class="check-name-box-space">年级</view></view>
-  <view class="check-content-box" data-type="grade" catchtap="showPicker">
-    <text class="check-value-box">{{textBookList[gradeIndex].name}}</text>
-    <text class="iconfont icon-down {{pick_type=='grade'?'icon-rotate':''}}"></text>
-    <view class="scroll-position-box" wx:if="{{pick_type=='grade'}}">
-      <view class="scroll-list-box">
-        <view wx:for="{{textBookList}}" wx:key="textBookList" class="scroll-list {{index==gradeIndex?'scroll-list-checked':''}}" data-index="{{index}}" catchtap="checkPicker">
-          {{item.name}}
-        </view>
-      </view>
-    </view>
-  </view>
-</view>
-<view class="check-contain-box">
-  <view class="check-name-box">教材版本</view>
-  <view class="check-content-box" data-type="textbook" catchtap="showPicker">
-    <text class="check-value-box">{{textBookList[gradeIndex].kousuanCategories[textbookIndex].name}}</text>
-    <text class="iconfont icon-down {{pick_type=='textbook'?'icon-rotate':''}}"></text>
-    <view class="scroll-position-box" wx:if="{{pick_type=='textbook'}}">
-      <view class="scroll-list-box">
-        <view wx:for="{{textBookList[gradeIndex].kousuanCategories}}" wx:key="kousuanCategories" class="scroll-list {{index==textbookIndex?'scroll-list-checked':''}}" data-index="{{index}}" catchtap="checkPicker">
-          {{item.name}}
-        </view>
-      </view>
-    </view>
-  </view>
-</view>
-<view class="check-contain-box">
-  <view class="check-name-box">练习项</view>
-  <view class="check-content-box" data-type="practice" catchtap="checkPoints">
-    <text class="check-value-box">{{calculationList[ksTypeIndex].name}}</text>
-    <text class="iconfont icon-down {{pointType=='practice'?'icon-rotate':''}}"></text>
-    <view class="scroll-position-box" wx:if="{{pointType=='practice'}}">
-      <view class="scroll-list-box">
-        <view wx:for="{{pointPickList}}" wx:key="pointPickList" class="scroll-list {{index==ksTypeIndex?'scroll-list-checked':''}}" data-index="{{index}}" catchtap="tapPractice">
-          {{item}}
-        </view>
-      </view>
-    </view>
-  </view>
-</view>
-<view class="check-contain-box">
-  <view class="check-name-box">知识点</view>
-  <view class="check-content-box" data-type="knowledge" catchtap="checkPoints">
-    <text class="check-value-box">{{calculationList[ksTypeIndex].children[pointIndex].name}}</text>
-    <text class="iconfont icon-down {{pointType=='knowledge'?'icon-rotate':''}}"></text>
-    <view class="scroll-position-box" wx:if="{{pointType=='knowledge'}}">
-      <view class="scroll-list-box">
-        <view wx:for="{{pointPickList}}" wx:key="pointPickList" class="scroll-list {{index==pointIndex?'scroll-list-checked':''}}" data-index="{{index}}" catchtap="tapKnowledge">
-          {{item}}
-        </view>
-      </view>
-    </view>
-  </view>
-</view>
-<image src="{{calculationList[ksTypeIndex].children[pointIndex].image}}" mode="widthFix" class="check-point-img"></image>
-<view class="conf-check-but" bindtap="createPlan">
-  下一步
-</view>
 <import src="/lib/toast/wetoast.wxml" />
 <template is="wetoast" data="{{...__wetoast__}}" />
