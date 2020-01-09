@@ -1,4 +1,6 @@
 <!--pages/network/wificonnect/list.wxml-->
+<wxs module="cal" src="wifi.wxs"></wxs>
+
 <nav-bar title="配置网络"></nav-bar>
 
 <view wx:if="{{wifiList.length>0||loading}}" class="wifilist-box">
@@ -6,11 +8,15 @@
     请选择要连接的WiFi网络
   </view>
   <view wx:for="{{wifiList}}" wx:key="wifilist" class="wifilist" data-index="{{index}}" bindtap="connect">
-    <text class="wifi-name">{{item.SSID}}</text><text class="iconfont icon-wifi"></text>
+		<text class="wifi-name">{{item.SSID}}</text>
+		<image src="{{cal.caculateSignal(item.Signal)}}" mode="widthFix" class="signal"></image>
   </view>
 </view>
 <view wx:else class="nowifi-tips">
-  未搜索到wifi
+	抱歉没有搜索到周围的WIFI
 </view>
+
+<image src="../../images/ap_refresh_wifi.png" mode="widthFix" class="refresh-icon" bindtap="refreshWifi"></image>
+
 <import src="/lib/toast/wetoast.wxml" />
 <template is="wetoast" data="{{...__wetoast__}}" />

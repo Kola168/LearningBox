@@ -1,12 +1,15 @@
-<view class="container">
-	<image src="https://cdn-h.gongfudou.com/LearningBox/device/EP400_example.png" mode="widthFix" class="box-img"></image>
+<nav-bar title="盒子信息"></nav-bar>
 
-  <text>盒子设备编号:{{serial}}</text>
+<view class="container">
+	<image src="../../images/EP400_example.png" mode="widthFix" class="box-img"></image>
+
+	<text class="serial">盒子设备编号:{{serial}}</text>
 	<view class="btn">
 		<view class="btn-left" bindtap="ignoreAp">跳过配网</view>
-		<view class="btn-right" bindtap="setAp"></view>
+		<view class="btn-right" bindtap="setAp">立即配网</view>
 	</view>
-	
 </view>
 
 
+<import src="/lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />
