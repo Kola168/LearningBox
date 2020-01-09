@@ -288,6 +288,10 @@
   font-size: 24rpx;
 }
 
+.nav-content {
+  margin-top: 58rpx;
+}
+
 .content .btn-print {
   width: 136rpx;
   height: 52rpx;
