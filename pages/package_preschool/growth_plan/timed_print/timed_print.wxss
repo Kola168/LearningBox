@@ -20,6 +20,9 @@
     display: flex;
     justify-content: space-between;
 }
+.item-right{
+    justify-content: flex-end;
+}
 .arrow-icon{
     width:20rpx;
     height:25rpx;

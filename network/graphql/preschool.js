@@ -41,6 +41,29 @@ const graphqlApi = {
     })
   },
 
+    /**
+   * 宝贝成长计划 是否自动打印
+   * 
+   */
+  getUserPlan: (sn) => {
+    return gql.query({
+      query: `query userPlan($sn: String!){
+        userPlan(sn: $sn){
+          sn
+          subscription{
+            copies
+            enable
+            intervalDay
+            timing
+          }
+        }
+      }`,
+      variables: {
+        sn
+      }
+    })
+  },
+
   /**
    * 宝贝成长计划 去订阅
    * 
@@ -210,20 +233,20 @@ const graphqlApi = {
    * 打印设置
    *
    */ 
-  createResourceOrder: (sn) => {
-    return gql.mutate({
-      mutation: `mutation ($input: CreateResourceOrderInput!){
-        createResourceOrder(input: $input) {
-          state
-          statistic
-      }`,
-      variables: {
-        input:{
-          sn: sn
-        }
-      }
-    })
-  },
+  // createResourceOrder: (sn) => {
+  //   return gql.mutate({
+  //     mutation: `mutation ($input: CreateResourceOrderInput!){
+  //       createResourceOrder(input: $input) {
+  //         state
+  //         statistic
+  //     }`,
+  //     variables: {
+  //       input:{
+  //         sn: sn
+  //       }
+  //     }
+  //   })
+  // },
 
 
   //获取宝贝测评试题列表
@@ -279,6 +302,21 @@ const graphqlApi = {
       variables: param
     })
   },
+
+  //定时任务设置时间
+  joinSubscription:(input)=>{
+    return gql.mutate({
+      mutation: `mutation ($input: CreateSubscriptionInput!){
+        joinSubscription(input:$input){
+          state
+        }
+      }`,
+      variables: {
+        input: input
+      }
+    })
+  },
+
 }
 
 export default graphqlApi
