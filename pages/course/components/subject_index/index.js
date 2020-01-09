@@ -100,7 +100,7 @@ Component({
     registerSubject: co.wrap(function*() {
       try {
         let res = yield graphql.register()
-        if (res.Register.state) {
+        if (res.register.state) {
           this.getLastLearn()
         } else {
           throw (res)
