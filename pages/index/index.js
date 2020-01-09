@@ -155,7 +155,7 @@ Page({
         beforeSchoolContent:resp.customizeFeatures
       })
     } catch (error) {
-      util.showError(error) 
+      util.showError(error)
     }
   }),
   afterUnion:co.wrap(function*(){
@@ -280,6 +280,9 @@ Page({
         break;
       case 'errorBook':
         url = '/pages/package_feature/error_book/index'
+        break;
+      case 'baobeicepin':
+        url = '/pages/package_preschool/evaluation/index'
         break;
     }
     if (!url) {
