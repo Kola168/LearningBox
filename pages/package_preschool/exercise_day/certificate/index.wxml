@@ -1,7 +1,7 @@
 <!--pages/package_preschool/exercise_day/certificate/index.wxml-->
 <nav-bar background="#fff" title="奖状" />
 <view class="certificate-main">
-  <image class="cert-icon" src="../../images/preSchool_certificate_bg.png" mode="widthFix"></image>
+  <image class="cert-icon" wx:if="{{testimonials}}" src="../../images/preSchool_certificate_bg.png" mode="widthFix"></image>
   <view class="cert-list">
     <view class="cert-item" wx:for="{{testimonials}}" wx:key="subTitle">
       <view class="cert-name">{{item.title}}</view>

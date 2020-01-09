@@ -557,6 +557,10 @@ Page({
         featureKey: this.data.setting.orderPms.featureKey,
         params
       })
+
+      // 存下订单完成页渲染数据
+      storage.put('orderSuccessParams', resp.statistic)
+
       // 
       wxNav.navigateTo('/pages/finish/index', {
         type: this.data.setting.orderPms.featureKey,

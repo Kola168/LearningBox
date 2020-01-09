@@ -180,9 +180,9 @@ Page({
         }
       }
       let res = yield graphql.createResourceOrder(params)
-      if (res.createResourceOrder.state === 'finished') {
+      // if (res.createResourceOrder.state === 'finished') {
         wxNav.redirectTo(`/pages/finish/index`)
-      }
+      // }
       this.weToast.hide()
     } catch (error) {
       this.weToast.hide()
@@ -198,7 +198,7 @@ Page({
     try {
       let action = this.data.isCollect ? 'destroy' : 'create'
       yield graphql.collect(this.sn, 'content', action)
-      let tipText = action ? '取消收藏成功' : '收藏成功'
+      let tipText = this.data.isCollect ? '取消收藏成功' : '收藏成功'
       wx.showToast({
         icon: 'none',
         title: tipText

@@ -76,12 +76,12 @@ const graphqlApi = {
         sn: sn
       }
     })
-	},
+  },
 
-	 //获取年级以及对应教材接口
-	 getGradeList:()=>{
+  //获取年级以及对应教材接口
+  getGradeList: () => {
     return gql.query({
-      query:`query{
+      query: `query{
         userStages{
           currentStage{
              name
@@ -103,9 +103,9 @@ const graphqlApi = {
   },
 
   //获取年级下对应的口算类型接口
-  getKousuanType:(sn)=>{
+  getKousuanType: (sn) => {
     return gql.query({
-      query:`query($sn: String!){
+      query: `query($sn: String!){
         category(sn:$sn){
           children{
             name
@@ -121,9 +121,9 @@ const graphqlApi = {
   },
 
   //获取口算类型具体题目接口
-  getKnowledgePoints:(sn)=>{
+  getKnowledgePoints: (sn) => {
     return gql.query({
-      query:`query($sn: String!){
+      query: `query($sn: String!){
         category(sn:$sn){
           children{
             name
@@ -139,8 +139,31 @@ const graphqlApi = {
     })
   },
 
+  //获取年级下对应的口算类型接口
+  getKousuanTypeAndChildren: (sn) => {
+    return gql.query({
+      query: `query($sn: String!){
+        category(sn:$sn){
+          children{
+            name
+            image
+            sn
+            children{
+              name
+              image
+              sn
+            }
+          }
+        }
+      }`,
+      variables: {
+        sn
+      }
+    })
+  },
+
   //口算打印接口
-  createKousunOrder:(input)=>{
+  createKousunOrder: (input) => {
     return gql.mutate({
       mutation: `mutation ($input: CreateResourceOrderInput!){
         createResourceOrder(input:$input){
@@ -211,6 +234,22 @@ const graphqlApi = {
       }
     })
   },
+
+  //创建定时任务
+  createTimedtask: (input) => {
+    return gql.mutate({
+      mutation: `mutation ($input: CreateTimedTaskInput!){
+        createTimedtask(input:$input){
+          task{
+            sn
+          }
+        }
+      }`,
+      variables: {
+        input: input
+      }
+    })
+  },
   /**
    * 删除错题
    *
@@ -264,6 +303,20 @@ const graphqlApi = {
       }
     })
   },
+
+  //定时任务设置时间
+  joinSubscription: (input) => {
+    return gql.mutate({
+      mutation: `mutation ($input: CreateSubscriptionInput!){
+        joinSubscription(input:$input){
+          state
+        }
+      }`,
+      variables: {
+        input: input
+      }
+    })
+  },
   /**
    * 
    *获取家庭信息
@@ -298,6 +351,24 @@ const graphqlApi = {
     })
   },
 
+  //查询口算计划状态列表
+  timedTasks: (param) => {
+    return gql.query({
+      query: `query($state: TimedTaskStateEnum!,$taskType: TimedTaskTypeEnum!){
+        timedTasks(state:$state,taskType:$taskType){
+          categoryName
+          day
+    	    isEndtime
+          sn
+          state
+          timing
+        }
+      }`,
+      variables: {
+        input: input
+      }
+    })
+  },
 }
 
 export default graphqlApi

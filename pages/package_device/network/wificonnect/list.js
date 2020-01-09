@@ -14,7 +14,8 @@ Page({
 
   data: {
     wifiList: [],
-    loading:false, //是都在请求网络
+		loading:false, //是都在请求网络
+		signalImage:''
   },
 
   onLoad: function(options) {
@@ -48,6 +49,8 @@ Page({
         loading:false
       })
       if (resp.data.code == 0) {
+				console.log('扫描到的wifi',resp.data)
+				
         this.setData({
           wifiList: resp.data.data
         })
@@ -87,5 +90,9 @@ Page({
 
   onShareAppMessage: function() {
 
-  }
+	},
+	
+	refreshWifi:function(){
+		this.searchWifi()
+	}
 })

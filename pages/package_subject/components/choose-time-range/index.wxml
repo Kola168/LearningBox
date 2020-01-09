@@ -1,0 +1,25 @@
+<view class="choose-date-range">
+  <view class="title">请选择时间</view>
+  <view class="range">
+    <view class="label">日期范围</view>
+    <view class="filtrate-main">
+      <view class="btn-range {{currentIndex == index ? 'btn-active' : ''}}" wx:for="{{btnList}}" wx:key="name" bind:tap="checkDate" data-index="{{index}}">{{item.name}}</view>
+    </view>
+    <view class="date-range">
+      <view class="start-date">
+       <picker class="" mode="date" value="{{startDate}}" bindchange="chooseStartDate">
+          <view class="date-name">{{startDate || '--'}}</view>
+       </picker>
+        <view class="arrow-icon"></view>
+      </view>
+      <view class="middle-name">到</view>
+      <view class="end-date">
+        <picker class="" mode="date" value="{{endDate}}"  bindchange="chooseEndDate">
+          <view class="date-name">{{endDate || '--'}}</view>
+        </picker>
+        <view class="arrow-icon"></view>
+      </view>
+    </view>
+  </view>
+  <view class="btn" bind:tap="submit">确 认</view>
+</view>

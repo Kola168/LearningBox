@@ -662,6 +662,11 @@ const graphqlApi = {
       mutation: `mutation createResourceOrder($input: CreateResourceOrderInput!) {
         createResourceOrder(input: $input){
           state
+          statistic{
+            ... on DailyPractice{
+              keepDays
+            }
+          }
         }
       }`,
       variables: {
@@ -1090,6 +1095,26 @@ const graphqlApi = {
       }
     })
   },
+
+ /**
+  * 取消打印订单
+  * @param { String } sn 打印订单sn
+  */
+ cancalPrintOrder: (sn) => {
+   return gql.mutate({
+     mutation: `mutation destroyOrder($input: DestroyOrderInput!) {
+      destroyOrder(input: $input){
+         state
+       }
+     }`,
+     variables: {
+       input: {
+         sn
+       }
+     }
+   })
+ },
+
   //查询模板列表
   searchTemplate: (type) => {
     return gql.query({

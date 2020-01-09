@@ -1,0 +1,10 @@
+<view class="choose-main">
+  <view class="title">请选择学科</view>
+  <view class="subject-list">
+    <view class="subject-item {{currentIndex == index ? 'item-active' : ''}}" wx:for="{{subjects}}" wx:key="sn" bind:tap="chooseSubject" data-index="{{index}}">
+      <image class="subject-icon" src="{{item.iconUrl}}"></image>
+      <view class="subject-name">{{item.subjectName}}</view>
+    </view>
+  </view>
+  <view class="btn" bind:tap="submit">确 认</view>
+</view>

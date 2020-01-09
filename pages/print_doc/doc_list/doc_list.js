@@ -130,7 +130,6 @@ Page({
       yield uploadDocs(urls, function(url, name) {
         var file = {
 					originalUrl: url,
-					printUrl: url,
           filename: name,
 					grayscale: _this.initPms.grayscale,
 					colorCheck:  _this.initPms.color ? true : false,

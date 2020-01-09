@@ -1,4 +1,4 @@
-// pages/package_preschool/exercise_day/finish/index.js
+// pages/package_subject/exam_paper_report/index/index.js
 Page({
 
   /**

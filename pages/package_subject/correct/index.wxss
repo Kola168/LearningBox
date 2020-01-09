@@ -1,6 +1,6 @@
 @font-face {
   font-family: Symbol;
-  src: url("https://bboo.utools.club/symbol.ttf")
+  src: url("https://chd-h.gongfudou.com/Leviathan/xuekewang/ttf/symbol.ttf")
 }
 
 .flex {
@@ -88,6 +88,7 @@ page {
   box-sizing: border-box;
   overflow-y: scroll;
   color: #333;
+  line-height: 24px;
 }
 
 .content-serial {
@@ -148,19 +149,22 @@ page {
   padding: 24rpx 0;
 }
 
-
 .option-item {
   display: flex;
 }
 
+.option-item>view {
+  margin-right: 6rpx;
+}
+
 .topic-answer {
-  padding: 48rpx 20rpx 32rpx;
+  padding: 24rpx 20rpx 32rpx;
 }
 
 .answer-title {
   font-size: 28rpx;
   color: #333;
-  padding-bottom: 14rpx;
+  padding: 14rpx 0;
 }
 
 .answer-main {
