@@ -1,0 +1,20 @@
+<nav-bar title="登录"></nav-bar>
+<image class="authorize-bg" src="https://cdn-h.gongfudou.com/LearningBox/main/common_authorize_bg.png" mode="widthFix">
+</image>
+<view class="auth-container">
+	<image class="authorize-tip" src="https://cdn-h.gongfudou.com/LearningBox/main/common_authorize_tip.png"
+		mode="widthFix"></image>
+	<view class="authorize-login-view">
+		<image class="authorize-person" src="https://cdn-h.gongfudou.com/LearningBox/main/common_authorize_person.png"
+			mode="widthFix"></image>
+		<button class="btn-scope"open-type="getUserInfo" bindgetuserinfo="authorize">
+			<image class="authorize-login" src="https://cdn-h.gongfudou.com/LearningBox/main/common_authorize_login.png"
+				mode="widthFix"></image>
+		</button>
+	</view>
+	<image class="authorize-just" src="https://cdn-h.gongfudou.com/LearningBox/main/common_authorize_just.png"
+		mode="widthFix" bindtap="backTo"></image>
+</view>
+
+<import src="/lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />
