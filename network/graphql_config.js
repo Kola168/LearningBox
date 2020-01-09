@@ -29,13 +29,15 @@ export default GraphQL({
 
   //全局错误拦截
   errorHandler: function(res) {
-    console.log('graphql全局错误拦截', res)
+		console.log('graphql全局错误拦截',res)
+		console.log('错误码=======',res.errors[0].extensions.code)
 			//如果auth
-    if (1==0) {
+    if (res.errors[0].extensions.code === 40001) {
 			var refreshToken = storage.get('refreshToken')	
+			console.log('refreshToken=======',refreshToken)
       api.refreshAuthToken(refreshToken).then(function(resp){
 				console.log('返回的resp======',resp)
-        if(resp.res.code == 0){
+        if(resp.code == 0){
 					storage.put('authToken', resp.res.auth_token)
 					storage.put('refreshToken', resp.res.refresh_token)
 				}
@@ -43,6 +45,10 @@ export default GraphQL({
 				console.log(e)
 			})
 
-    }
+		}
+		
+
+
+
   }
 }, true);
