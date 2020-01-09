@@ -34,7 +34,27 @@ const graphqlApi = {
         sn: sn
       }
     })
-  }
+  },
+  /**
+   *
+   * 查看用户打印机
+   * @returns
+   */
+  getDevice: () => {
+    return gql.query({
+      query: `query{
+        currentUser{
+          sn
+          selectedDevice{
+            sn
+            name
+            model
+            onlineState
+          }
+        }
+      }`
+    })
+  },
 }
 
 export default graphqlApi

@@ -6,7 +6,7 @@ const regeneratorRuntime = require('../../../lib/co/runtime')
 const co = require('../../../lib/co/co')
 const util = require('../../../utils/util')
 import router from '../../../utils/nav'
-import gql from '../../../network/graphql_request.js'
+import featureGql from '../../../network/graphql/feature'
 import Logger from '../../../utils/logger.js'
 const logger = new Logger.getLogger('pages/index/index')
 
@@ -61,7 +61,7 @@ Page({
 
         logger.info("params", params)
         try {
-            const resp = yield gql.getMistakes(params)
+            const resp = yield featureGql.getMistakes(params)
             logger.info('错题本列表====', resp)
             if (resp.mistakeCourse.length == 0) {
                 this.setData({
@@ -291,7 +291,7 @@ Page({
         }
         logger.info("params2", params2)
         try {
-            const resp = gql.deleteMistakes(params2)
+            const resp = gql.featureGql(params2)
             logger.info('删除====', resp.data)
             wx.showToast({
                 title: '删除成功',

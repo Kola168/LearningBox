@@ -3,7 +3,7 @@ const regeneratorRuntime = require('../../../lib/co/runtime')
 const co = require('../../../lib/co/co')
 const util = require('../../../utils/util')
 import router from '../../../utils/nav'
-import gql from '../../../network/graphql_request.js'
+import featureGql from '../../../network/graphql/feature'
 import Logger from '../../../utils/logger.js'
 const logger = new Logger.getLogger('pages/index/index')
 
@@ -49,7 +49,7 @@ Page({
       url: this.data.url,
     }
     try {
-      let resp = yield gql.getPhotoAnswer(params)
+      let resp = yield featureGql.getPhotoAnswer(params)
       console.log(resp)
 
       this.longToast.hide()
@@ -111,7 +111,7 @@ Page({
         answerUrls: urls,
         id:Number(this.mistakeId)
       }
-      const resp = yield gql.saveMistakes(params)
+      const resp = yield featureGql.saveMistakes(params)
       this.longToast.hide()
       router.redirectTo('/pages/package_feature/error_book/submit_success',{
         type:'error_book_search',

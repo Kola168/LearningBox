@@ -1,1 +1,33 @@
 /* pages/package_member/member/index.wxss */
+
+image {
+    width: 100%;
+    height: 200rpx;
+}
+
+.bottom-image {
+    position: relative;
+}
+
+.bottom-image view {
+    position: absolute;
+    top: 0;
+    left: calc((100% - 600rpx)/2);
+    background: #201D2A;
+    box-shadow: 0 8rpx 16rpx 0 #C6AE60;
+    border-radius: 45rpx;
+    width: 600rpx;
+    height: 98rpx;
+    line-height:98rpx;
+    font-family: PingFangSC-Regular;
+    font-size: 36rpx;
+    color: #C9B498;
+    letter-spacing: -0.86rpx;
+    text-align: center;
+}
+.bottom-image image {
+    position: absolute;
+    top: 138rpx;
+    left: 26rpx;
+    width: calc(100% - 52rpx);
+}

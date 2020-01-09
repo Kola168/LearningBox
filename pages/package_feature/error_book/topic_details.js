@@ -4,7 +4,7 @@ const regeneratorRuntime = require('../../../lib/co/runtime')
 const co = require('../../../lib/co/co')
 const util = require('../../../utils/util')
 import router from '../../../utils/nav'
-import gql from '../../../network/graphql_request.js'
+import featureGql from '../../../network/graphql/feature'
 import Logger from '../../../utils/logger.js'
 const logger = new Logger.getLogger('pages/index/index')
 
@@ -111,7 +111,7 @@ Page({
         })
         logger.info('提交错题参数', params)
         try {
-            const resp = yield gql.saveMistakes(params)
+            const resp = yield featureGql.saveMistakes(params)
 
             if (this.data.reEdit) {
                 let pages = getCurrentPages()
