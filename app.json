@@ -191,8 +191,7 @@
         "exercise_day/month_compilation/index",
         "exercise_day/answer/index",
         "exercise_day/certificate/index",
-        "exercise_day/month_compilation_subject/index",
-        "exercise_day/finish/index"
+        "exercise_day/month_compilation_subject/index"
       ]
     },
     {
@@ -213,8 +212,9 @@
         "super_errorbook/errorbook/list",
         "super_errorbook/knowledge_list/index",
         "evaluate_exam/preview/index",
-        "correct/index",
-        "weakness_exercise/index/index"
+        "weakness_exercise/index/index",
+        "stage_report/index/index",
+        "exam_paper_report/index/index"
       ]
     },
     {

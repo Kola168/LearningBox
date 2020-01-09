@@ -16,39 +16,12 @@ Page({
   data: {
     typeList: [],
     tabId: -1,
-    playList: [{
-      icon_url: 'https://cdn-h.gongfudou.com/epbox/backend/2019/11/26/84c12303-be26-4814-a967-6baa1c125af8.jpg',
-      title: '哈哈',
-      print_count: 23,
-      total_page: 10
-    }, {
-      icon_url: 'https://cdn-h.gongfudou.com/epbox/backend/2019/11/26/84c12303-be26-4814-a967-6baa1c125af8.jpg',
-      title: '哈哈',
-      print_count: 23,
-      total_page: 10
-    }, {
-      icon_url: 'https://cdn-h.gongfudou.com/epbox/backend/2019/11/26/84c12303-be26-4814-a967-6baa1c125af8.jpg',
-      title: '哈哈',
-      print_count: 23,
-      total_page: 10
-    }, {
-      icon_url: 'https://cdn-h.gongfudou.com/epbox/backend/2019/11/26/84c12303-be26-4814-a967-6baa1c125af8.jpg',
-      title: '哈哈',
-      print_count: 23,
-      total_page: 10
-    }, {
-      icon_url: 'https://cdn-h.gongfudou.com/epbox/backend/2019/11/26/84c12303-be26-4814-a967-6baa1c125af8.jpg',
-      title: '哈哈',
-      print_count: 23,
-      total_page: 10
-    }, {
-      icon_url: 'https://cdn-h.gongfudou.com/epbox/backend/2019/11/26/84c12303-be26-4814-a967-6baa1c125af8.jpg',
-      title: '哈哈',
-      print_count: 23,
-      total_page: 10
-    }, ]
+    playList: []
   },
   onLoad: co.wrap(function* (options) {
+    this.setData({
+      name: options.name
+    })
     this.options = options
     this.longToast = new app.weToast()
     this.userSn = storage.get('userSn')
@@ -121,8 +94,8 @@ Page({
     }
     this.pageEnd = false
     try {
-      console.log(this.data.typeList[this.data.tabId].sn,this.page)
-      const resp = yield gql.customizeContents(this.data.typeList[this.data.tabId].sn,this.page.toString())
+      console.log(this.data.typeList[this.data.tabId].sn, this.page)
+      const resp = yield gql.customizeContents(this.data.typeList[this.data.tabId].sn, this.page.toString())
       logger.info(resp)
       if (resp.customizeContents.length < 20) {
         this.pageEnd = true
@@ -143,7 +116,7 @@ Page({
   toNextPage(e) {
     router.navigateTo('/pages/package_common/common_content/preview', {
       sn: e.currentTarget.id,
-      name:e.currentTarget.dataset.name
+      name: e.currentTarget.dataset.name
     })
   },
   onShareAppMessage: function () {
