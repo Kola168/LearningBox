@@ -57,6 +57,30 @@ const graphqlApi = {
       }`
     })
   },
+  /**
+   * 当前会员状态
+   *
+   * @returns
+   */
+  hasMember: () => {
+    return gql.query({
+      query: `query{
+        currentUser{
+          sn
+          selectedKid{
+            preschoolMember{
+              expiresAt
+              upgradeableAmount
+              upgradeablePrice
+            }
+            schoolAgeMember{
+              expiresAt
+            }
+          }
+        }
+      }`
+    })
+  },
 }
 
 export default graphqlApi

@@ -317,39 +317,6 @@ const graphqlApi = {
       }
     })
   },
-  /**
-   * 
-   *获取家庭信息
-   * @returns
-   */
-  getFamilyUser: () => {
-    return gql.query({
-      query: `query{
-        currentUser{
-          currentGroup{
-            currentUserIsCreator
-            sn
-            kid{
-              avatar
-              name
-              sn
-              stage{
-                name
-              rootName
-              sn 
-              }
-            }
-            users{
-              avatar
-              name
-              sn
-              userIsCreator
-            }
-          }
-        }
-      }`
-    })
-  },
 
   //查询口算计划状态列表
   timedTasks: (param) => {
