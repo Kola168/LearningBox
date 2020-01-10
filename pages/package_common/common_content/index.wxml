@@ -19,7 +19,7 @@
             <view class="plan-title">{{item.name}}</view>
             <view>{{item.subTitle}}</view>
             <view class="play-sort">{{item.categoryName}}</view>
-            <view class="button-subscription" wx:if="{{item.subscription==false}}" bindtap="joinPlan" id="{{item.sn}}">订阅</view>
+            <view class="button-subscription" wx:if="{{item.subscription==false}}" bindtap="joinPlan" id="{{item.sn}}" data-name="{{item.name}}">订阅</view>
         </view>
     </view>
     

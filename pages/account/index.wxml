@@ -11,7 +11,7 @@
         </view>
     </view>
     <image src="../../images/doc_item_arrow.png" mode="widthFix" class="after"
-        wx:if="{{kidInfo.name&&kidInfo.stage&&kidInfo.avatar}}"></image>
+        wx:if="{{kidInfo.name && kidInfo.stage && kidInfo.avatar}}"></image>
     <image src="../../images/tip_add_kid_info.png" mode="widthFix" class="after-tip" wx:else></image>
 </view>
 <image src="/images/account_member_center.png" bindtap="member" mode="widthFix" class="member" />
@@ -38,7 +38,7 @@
     <view class="title">{{item.title}}</view>
     <view class="content">
         <view wx:for="{{item.features}}" wx:key="feature" wx:for-item="data" >
-					<view class="content-item" bindtap="clickFeature" id="{{data.url}}" data-key="{{data.key}}"> 
+					<view class="content-item" bindtap="clickFeature" id="{{data.url}}" data-key="{{data.key}}">
             <image src="{{data.image}}" mode="widthFix" />
 						<view>{{data.name}}</view>
 					</view>
@@ -50,5 +50,3 @@
 
 <import src="/lib/toast/wetoast.wxml" />
 <template is="wetoast" data="{{...__wetoast__}}" />
-
-

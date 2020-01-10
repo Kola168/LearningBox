@@ -1,0 +1,37 @@
+<nav-bar background="#fff" title="会员激活"></nav-bar>
+<block wx:if="{{availableMember}}">
+    <image class="title-image" src="../images/active_title.png" mode="widthFix"></image>
+    <image class="back" src="../images/active_bg.png" mode="widthFix">
+        <view class="content">
+            <view>
+                <view>会员可用有效期：12个月</view>
+                <view>激活至家庭信息：黑黑黑 一年级</view>
+            </view>
+            <view class="button">
+                <view>点击下方按钮激活后立即生效</view>
+                <view bindtap="accessMember">立即激活</view>
+            </view>
+        </view>
+
+    </image>
+    <view class="tip">
+        <view>温馨提示：</view>
+        <view>激活成功后，会员将立即绑定您当前所在的家庭，退出此家庭后暂无法继续使用</view>
+        <view></view>
+    </view>
+</block>
+<block wx:if="{{!availableMember}}">
+    <image class="back-no" src="../images/active_bg_no.png" mode="widthFix"></image>
+    <view class="back-no-content">当前暂无可激活的会员，请前往会员中心开通</view>
+</block>
+<view class="modal" wx:if="{{success&&availableMember}}">
+    <image class="modal-image" src="https://cdn-h.gongfudou.com/LearningBox/member/member_modal_image.jpg"
+        mode="widthFix"></image>
+    <view class="modal-content">
+        <view>我知道了</view>
+    </view>
+</view>
+<import src="../../../lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />
+<modal modal="{{modalObj}}" bindcomfirm="">
+</modal>

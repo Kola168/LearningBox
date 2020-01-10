@@ -16,10 +16,12 @@ Component({
 
   attached: co.wrap(function* () {
     var subjectSn = busFactory.getIds('subjectSn')
-    yield busFactory.getSelectedTextbookVersionData(subjectSn) //获取当前科目下选中教材版本
-    yield this.getTextbookVersion(subjectSn) //获取当前学科所有教材版本
-    yield this.getTeachBook() //获取学科下所有教材
-    yield busFactory.getSelectedTextbookData(subjectSn) //获取当前科目下选中教材
+    if (subjectSn) {
+      yield busFactory.getSelectedTextbookVersionData(subjectSn) //获取当前科目下选中教材版本
+      yield this.getTextbookVersion(subjectSn) //获取当前学科所有教材版本
+      yield this.getTeachBook() //获取学科下所有教材
+      yield busFactory.getSelectedTextbookData(subjectSn) //获取当前科目下选中教材
+    }
 
     var {
       selectedBookVersionIndex,

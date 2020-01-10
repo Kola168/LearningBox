@@ -1,0 +1,16 @@
+<nav-bar background="#fff" title="同步视频" />
+<view class="main-box">
+  <scroll-view scroll-x="true"  scroll-with-animation scroll-into-view="to_{{currentTabIndex}}">
+    <view class="tab-item"  id="to_{{index}}" wx:for="{{subjectList}}" wx:key="sn"  bindtap="chooseSubject" data-index="{{index}}">
+      <view class="tab-name {{currentTabIndex == index ? 'active' : ''}}">{{item.subjectName}}</view>
+      <view class="tab-line {{currentTabIndex == index ? 'active-line' : ''}}"></view>
+    </view>
+  </scroll-view>
+  <image class="notice-card" src="../../images/nav_figure_card.png">
+  <view class="nav-text">
+    <block>
+     已看完10个视频，超越90%的同学
+    </block>
+    </view>
+  </image>
+</view>

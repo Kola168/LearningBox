@@ -855,6 +855,39 @@ const graphqlApi = {
       }
     })
   },
+  /**
+   * 
+   *获取家庭信息
+   * @returns
+   */
+  getFamilyUser: () => {
+    return gql.query({
+      query: `query{
+        currentUser{
+          currentGroup{
+            currentUserIsCreator
+            sn
+            kid{
+              avatar
+              name
+              sn
+              stage{
+                name
+              rootName
+              sn 
+              }
+            }
+            users{
+              avatar
+              name
+              sn
+              userIsCreator
+            }
+          }
+        }
+      }`
+    })
+  },
 
   /**
    * 获取免费资源库
@@ -1741,151 +1774,7 @@ const graphqlApi = {
       }
     })
   },
-  /**
-   * 获取错题科目列表
-   *
-   * @returns
-   */
-  getErrorSubjects: () => {
-    return gql.query({
-      query: `query{
-        mistakes{
-          count
-          object:course
-        }
-        }`
-    })
-  },
-
-  /**
-   * 获取错题列表
-   *
-   */
-  getMistakes: (params) => {
-    return gql.query({
-      query: `query($course: String,$printCount: Int,$startAt: String,$endAt: String,$answer: MistakeAnswerEnum) {
-        mistakeCourse(course:$course,printCount:$printCount,startAt:$startAt,endAt:$endAt,answer:$answer){
-          created_at:createDay
-          content:mistakes{
-            answer_urls:answerUrls
-            course
-            level
-            print_count:printerOrdersCount
-            reason
-            urls
-            id
-            sn
-            }
-          }
-        }`,
-      variables: {
-        ...params
-      }
-    })
-  },
-  /**
-   * 保存错题
-   *
-   */
-  saveMistakes: (input) => {
-    return gql.mutate({
-      mutation: `mutation($input:CreateMistakeInput!) {
-        createMistake(input:$input){
-          state
-          mistake
-        }
-        }`,
-      variables: {
-        input: input
-      }
-    })
-  },
-  /**
-   * 删除错题
-   *
-   * @param {*} input
-   * @returns
-   */
-  deleteMistakes: (input) => {
-    return gql.mutate({
-      mutation: `mutation($input:DeleteMistakeInput!) {
-        deleteMistake(input:$input){
-         code
-        }
-        }`,
-      variables: {
-        input: input
-      }
-    })
-  },
-  /**
-   * 获取错题模板
-   *
-   * @returns
-   */
-  mistakeTemplates: () => {
-    return gql.query({
-      query: `query{
-        mistakeTemplates{
-          cateType
-          id
-          imageUrl
-          name
-          }
-        }`
-    })
-  },
-  /**
-   * 拍照搜题
-   *
-   * @returns
-   */
-  getPhotoAnswer: (input) => {
-    return gql.mutate({
-      mutation: `mutation($input:MistakeSearchInput!) {
-        mistakeSearch(input:$input){
-          answerUrls
-          questionUrl
-        } 
-        }`,
-      variables: {
-        input: input
-      }
-    })
-  },
-  /**
-   * 
-   *获取家庭信息
-   * @returns
-   */
-  getFamilyUser: () => {
-    return gql.query({
-      query: `query{
-        currentUser{
-          currentGroup{
-            currentUserIsCreator
-            sn
-            kid{
-              avatar
-              name
-              sn
-              stage{
-                name
-              rootName
-              sn 
-              }
-            }
-            users{
-              avatar
-              name
-              sn
-              userIsCreator
-            }
-          }
-        }
-      }`
-    })
-  },
+  
   /**
    * 加入/退出家庭组
    *

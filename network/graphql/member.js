@@ -34,7 +34,53 @@ const graphqlApi = {
         sn: sn
       }
     })
-  }
+  },
+  /**
+   *
+   * 查看用户打印机
+   * @returns
+   */
+  getDevice: () => {
+    return gql.query({
+      query: `query{
+        currentUser{
+          sn
+          selectedDevice{
+            name
+            lmAvailableMember{
+              goodsName
+              time
+              unit
+            }
+          }
+        }
+      }`
+    })
+  },
+  /**
+   * 当前会员状态
+   *
+   * @returns
+   */
+  hasMember: () => {
+    return gql.query({
+      query: `query{
+        currentUser{
+          sn
+          selectedKid{
+            preschoolMember{
+              expiresAt
+              upgradeableAmount
+              upgradeablePrice
+            }
+            schoolAgeMember{
+              expiresAt
+            }
+          }
+        }
+      }`
+    })
+  },
 }
 
 export default graphqlApi

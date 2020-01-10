@@ -554,6 +554,57 @@ const graphqlApi = {
       }`
     })
   },
+
+  /**
+   * 获取知识点
+   * @param {Object}
+      sn 学科的sn
+      startTime 开始时间
+      endTime 结束时间
+   */
+  getKnowledges: (pms) => {
+    return gql.query({
+      query: `query getKnowledges($sn: String!, $startTime: String!, $endTime: String!){
+        xuekewangSubject(sn:$sn, startTime: $startTime, endTime:$endTime){
+          subject{
+            sn
+          }
+          knowledges{
+            errorBookCount
+            id
+            name
+          }
+        }
+      }`,
+      variables: {
+       ...pms
+      }
+    })
+  },
+
+    /**
+   * 获取练习列表
+   */
+  getKnowledgeExercises: (subjectSn, isPrint = 0) => {
+    return gql.query({
+      query: `query getExercises($subjectSn:String, $exerciseType:String, $isPrint: Int){
+        xuekewang{
+          exercises(subjectSn:$subjectSn, exerciseType: $exerciseType, isPrint: $isPrint){
+            sn
+            dateTime
+            isPrint
+            pageSize
+            exerciseName
+          }
+        }
+      }`,
+      variables: {
+        subjectSn,
+        exerciseType: 'kpoint',
+        isPrint
+      }
+    })
+  },
 }
 
 export default graphqlApi

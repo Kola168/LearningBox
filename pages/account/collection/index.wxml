@@ -1,0 +1,26 @@
+<!--pages/account/collection/index.wxml-->
+<nav-bar title="我的收藏"></nav-bar>
+<block  wx:if="{{collectionList.length>0}}">
+  <view wx:for="{{collectionList}}" wx:key="collectionList" data-index="{{index}}" class="item-list-box">
+    <image src="{{item.iconUrl}}" mode="aspectFit" class="list-img"></image>
+    <view class="list-content">
+      <view class="list-content-name">
+        {{item.name}}
+      </view>
+      <view class="list-content-type">
+        {{item.parentName}}
+      </view>
+    </view>
+    <text class="iconfont icon-next"></text>
+  </view>
+</block>
+<view wx:else class="no-data-box">
+  <image src="/images/colleation_none.png" mode="widthFix" class="no-data-img"></image>
+  <text class="no-data-text">还没有内容哦</text>
+  <view class="no-data-button">
+    去逛逛
+  </view>
+</view>
+
+<import src="/lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />

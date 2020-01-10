@@ -144,6 +144,13 @@ const api = {
   }, {
     baseURL: `${app.apiServer}/api/v1/`
   }),
+/**
+   * 激活会员
+   * 
+   */
+  accessMember:(id)=>request.post(`users/members`,{}, {
+    baseURL: `${app.apiServer}/api/v1/ `
+  }),
 
 }
 

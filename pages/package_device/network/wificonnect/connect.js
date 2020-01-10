@@ -32,10 +32,17 @@ Page({
 
 	inputprintNum: function (e) {
 		// console.log(e)
+		// this.setData({
+		// 	passWord: e.detail.value
+		// })
+	},
+
+	endInput: function(e) {
+		console.log('endValue e=====', e.detail.value)
 		this.setData({
 			passWord: e.detail.value
 		})
-	},
+ },
 
 	confPsd: co.wrap(function* () {
 		this.longToast.toast({

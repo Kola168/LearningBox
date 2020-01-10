@@ -33,7 +33,7 @@ Component({
       var appoint = timeRange.appoint
       var dayRange = timeRange.dayRange
       // 初始化指定点的日期
-      if (appoint.length) {
+      if (appoint && appoint.length) {
         appoint.forEach(key=> {
           var current = config.appointList[key]
           if (current) {
@@ -45,7 +45,7 @@ Component({
         })
       }
       // 初始化指定范围的日期
-      if (dayRange.length) {
+      if (dayRange && dayRange.length) {
         dayRange.forEach(range=> {
           btnList.push({
             name: range + '日内',

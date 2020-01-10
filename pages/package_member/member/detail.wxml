@@ -1,0 +1,34 @@
+<!--pages/package_member/member/detail.wxml-->
+<nav-bar background="#fff" title="会员中心"></nav-bar>
+<view>
+    <image class="back-image" src="../images/detail_xueling_bg.png" mode="widthFix">
+        <view class="content">
+            <view>享受学龄前的学习内容、课程的全部会员权益</view>
+            <view class="button ">
+                <view class="update" wx:if="{{preSchool&&preSchool.upgradeableAmount>0}}">升级为学科会员</view>
+                <view class="update" wx:if="{{!preSchool||preExpiresAt=='no'}}">立即开启</view>
+                <view class="update" wx:if="{{preExpiresAt!='no'}}">立即续费</view>
+            </view>
+
+        </view>
+    </image>
+</view>
+<view class="back xueke">
+    <image class="back-image" src="../images/detail_xueke_bg.png" mode="widthFix">
+        <view class="content">
+            <view>享受学科的学习内容、视频、试卷、分析报告和课程的全部权益，不适用于学龄前会员</view>
+            <view class="button ">
+                <view class="update xueke" wx:if="{{!school||schoolExpiresAt=='no'}}">立即开启</view>
+                <view class="update xueke" wx:if="{{schoolExpiresAt!='no'}}">立即续费</view>
+            </view>
+
+        </view>
+    </image>
+</view>
+<view class="bottom-tip">同时拥有两种会员身份时，按照学龄前和学科会员的购买时间依次消耗。会员服务为虚拟产品，一经销售暂不支持退货</view>
+
+
+<import src="../../../lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />
+<modal modal="{{modalObj}}" bindcomfirm="updateConfirm">
+</modal>
