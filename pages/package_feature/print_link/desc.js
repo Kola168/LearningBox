@@ -1,66 +1,28 @@
 // pages/package_feature/print_link/desc.js
 Page({
 
-  /**
-   * 页面的初始数据
-   */
   data: {
-
+    imgArr:[],
+    title:'链接打印',
+    wx:{
+      title:'获取微信公众号文章链接',
+      imgurl:['https://cdn-h.gongfudou.com/LearningBox/feature/print_lint_wx1.png','https://cdn-h.gongfudou.com/LearningBox/feature/print_lint_wx2.png','https://cdn-h.gongfudou.com/LearningBox/feature/print_lint_wx3.png']
+    },
+    baiddu:{
+      title:'获取百度文章链接',
+      imgurl:['https://cdn-h.gongfudou.com/LearningBox/feature/print_lint_baidu1.png','https://cdn-h.gongfudou.com/LearningBox/feature/print_lint_baidu2.png','https://cdn-h.gongfudou.com/LearningBox/feature/print_lint_baidu3.png']
+    },
+    qiangguo:{
+      title:'获取学习强国文章链接',
+      imgurl:['https://cdn-h.gongfudou.com/LearningBox/feature/print_lint_qiangguo1.png','https://cdn-h.gongfudou.com/LearningBox/feature/print_lint_qiangguo2.png','https://cdn-h.gongfudou.com/LearningBox/feature/print_lint_qiangguo3.png']
+    }
   },
 
-  /**
-   * 生命周期函数--监听页面加载
-   */
   onLoad: function (options) {
-
+    this.setData({
+      imgArr:this.data[options.type].imgurl,
+      title:this.data[options.type].title,
+    })
   },
 
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-
-  }
 })

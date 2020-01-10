@@ -1,5 +1,38 @@
 <!--pages/package_feature/print_link/typeList.wxml-->
 <nav-bar title="如何获取链接"></nav-bar>
-<view class="content-item-box">
-
+<view class="content-item-box" data-type="wx" bindtap="chooseType">
+  <image src="../resource_images/icon_wx.png" mode="aspectFit" class="content-img"></image>
+  <view class="content-text-box">
+    <view class="content-text-name">
+      微信公众号文章
+    </view>
+    <view class="content-text-desc">
+      如何获取微信公众号文章
+    </view>
+  </view>
+  <text class="iconfont icon-next"></text>
+</view>
+<view class="content-item-box" data-type="baiddu" bindtap="chooseType">
+  <image src="../resource_images/icon_baidu.png" mode="aspectFit" class="content-img"></image>
+  <view class="content-text-box">
+    <view class="content-text-name">
+      百度文章
+    </view>
+    <view class="content-text-desc">
+      如何获取百度文章链接
+    </view>
+  </view>
+  <text class="iconfont icon-next"></text>
+</view>
+<view class="content-item-box" data-type="qiangguo" bindtap="chooseType">
+  <image src="../resource_images/icon_qiangguo.png" mode="aspectFit" class="content-img"></image>
+  <view class="content-text-box">
+    <view class="content-text-name">
+      学习强国
+    </view>
+    <view class="content-text-desc">
+      如何获取学习强国中文章链接
+    </view>
+  </view>
+  <text class="iconfont icon-next"></text>
 </view>
