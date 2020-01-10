@@ -35,35 +35,84 @@ Page({
       dayRange: [7]
     },
     knowledgeList: [],
-    subjects: []
+    subjects: [],
+    isSubjectCategory: true, //是否默认是学科展示分类列表
+    printStaList: [
+      {
+       name: '已打印',
+       sn: 1
+     },
+     {
+        name: '未打印',
+        sn: 0
+      }
+    ],
+    checkedPrint: null,
+    checkedSubject: null,
+    isExerciseEmpty: false,
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function (options) {
+  onLoad: co.wrap(function *(options) {
     this.longToast = new app.weToast()
     let navBarHeight = app.navBarInfo.topBarHeight
     this.setData({
       navBarHeight,
+      checkedPrint: {
+        name: '已打印',
+        sn: 1
+      },
       isFullScreen: app.isFullScreen
     })
-    this.getSubject()
-    this.getExerciseList()
-  },
+    yield this.getSubject()
+    yield this.getExerciseList()
+  }),
 
    /**
    * 获取学科信息
    */
   getSubject: co.wrap(function*(){
+    this.longToast.toast({
+      type: 'loading',
+      title: '请稍后...'
+    })
     try {
       var resp = yield graphql.getSubject()
+      if(!resp.xuekewang.registered) {
+        return this.registerSubject()
+      }
       this.setData({
         subjects: resp.xuekewang.subjects,
-        currentSubject: resp.xuekewang.subjects[0],
+        checkedSubject: resp.xuekewang.subjects[0],
       })
+      this.longToast.hide()
     } catch(err) {
-      console.log(err)
+      this.longToast.hide()
+      util.showError(error)
+    }
+  }),
+
+  /**
+   * 注册学科
+   */
+  registerSubject: co.wrap(function*() {
+    this.longToast.toast({
+      type: 'loading',
+      title: '请稍后...'
+    })
+    try {
+      let res = yield graphql.register()
+      if (res.register.state) {
+        this.getSubject()
+      } else {
+        throw (res)
+      }
+      this.longToast.hide()
+    } catch (error) {
+      this.longToast.hide()
+      util.showError(error)
     }
   }),
 
@@ -82,14 +131,31 @@ Page({
         startTime: this.data.checkedDate.startDate,
         endTime: this.data.checkedDate.endDate
       })
-
+      var knowedges = resp.xuekewangSubject && resp.xuekewangSubject.knowledges
       this.setData({
-        knowledgeList: resp.xuekewangSubject.knowledges
+        knowledgeList: knowedges
       })
+
+      if (knowedges && !knowedges.length) {
+        wx.showModal({
+          title: '提示',
+          content: '暂无知识点，请重新选择',
+          success: (res)=>{
+            if (res.confirm) {
+              this.closeKnowledgesBox()
+            }
+          }
+        })
+      }
+
       this.longToast.hide()
     } catch(err) {
       this.longToast.hide()
-      util.showError(err)
+      util.showError(err, (res)=>{
+        if (res.confirm) {
+          this.closeKnowledgesBox()
+        }
+      })
     }
   }),
 
@@ -98,8 +164,21 @@ Page({
    * @param {*} param0 
    */
   switchKnowledge: function({currentTarget: {dataset: {index}}}) {
+    var knowedges = this.data.knowledgeList
+    var checkedKnowledges = knowedges.filter(know=>{
+      return know.checked
+    })
+    // 限制每次最多5个知识点
+    if (checkedKnowledges.length >=5 && !knowedges[index].checked) {
+      return wx.showModal({
+        title: '提示',
+        content: '一次最多可选5个',
+        showCancel: false
+      })
+    }
+
     this.setData({
-      [`knowledgeList[${index}].checked`]: !this.data.knowledgeList[index].checked
+      [`knowledgeList[${index}].checked`]: !knowedges[index].checked
     })
   },
 
@@ -137,14 +216,16 @@ Page({
         type: 'loading',
         title: '请稍后...'
       })
-      // 2091261782649911
-      var resp = yield graphql.getKnowledgeExercises(this.data.checkedSubject.sn)
+      var resp = yield graphql.getKnowledgeExercises(this.data.checkedSubject.sn, this.data.checkedPrint.sn)
+      
       this.setData({
-        exerciseList: resp.xuekewang.exercises
+        exerciseList: resp.xuekewang.exercises,
+        isExerciseEmpty: resp.xuekewang && resp.xuekewang.exercises.length ? false : true
       })
       this.longToast.hide()
     } catch(err) {
-      this.long.hide()
+      util.showError(err)
+      this.longToast.hide()
     }
   }),
 
@@ -162,63 +243,138 @@ Page({
   /**
    * 生成练习
    */
-  createExercise: function(){
-    //var ids = this.knowedgeIds()
-    this.longToast.toast({
-      type: 'loading',
-      title: '正在出题...'
-    })
-
-    getLoopsEvent({
-      feature_key: 'xuekewang_exercise',
-      worker_data: {
+  createExercise: co.wrap(function * (){
+    try {
+      var ids = yield this.knowedgeIds()
+      console.log(ids, '==ids==')
+      if (!ids) return
+      
+      api.synthesisWorker({
+        feature_key: 'xuekewang_exercise',
+        is_async: false,
         exercise_type: 'kpoint',
-        // subject_sn: this.data.checkedSubject.sn,
-        // end_time: this.data.checkedDate.endDate,
-        // start_time: this.data.checkedDate.startDate,
-        // ids: ids
-        subject_sn: 2091261782649911,
-        end_time: '2020-01-23',
-        start_time: '2019-06-17',
-        ids: '10418'
-      }
-    }, (resp) => {
-      if (resp.status == 'finished') {
+        subject_sn: this.data.checkedSubject.sn,
+        end_time: this.data.checkedDate.endDate,
+        start_time: this.data.checkedDate.startDate,
+        ids: ids
+        // subject_sn: 2091261782649911,
+        // end_time: '2020-01-23',
+        // start_time: '2019-06-17',
+        // ids: '10418'
+      })
+      return
+
+      this.longToast.toast({
+        type: 'loading',
+        title: '正在出题...'
+      })
+      getLoopsEvent({
+        feature_key: 'xuekewang_exercise',
+        worker_data: {
+          exercise_type: 'kpoint',
+          // subject_sn: this.data.checkedSubject.sn,
+          // end_time: this.data.checkedDate.endDate,
+          // start_time: this.data.checkedDate.startDate,
+          // ids: ids
+          subject_sn: 2091261782649911,
+          end_time: '2020-01-23',
+          start_time: '2019-06-17',
+          ids: '10418'
+        }
+      }, (resp) => {
+        if (resp.status == 'finished') {
+          this.longToast.hide()
+          this.closeKnowledgesBox()
+          this.getExerciseList()
+        }
+      }, () => {
         this.longToast.hide()
-        this.setData({
-          showKnowledgeCheckbox: false
-        })
-        this.getExerciseList()
-      }
-    }, () => {
-      this.longToast.hide()
+      })
+
+    } catch(err) {
+      util.showError(err)
+    }
+  }),
+
+  /**
+   * 关闭知识点选择
+   */
+
+  closeKnowledgesBox: function() {
+    this.setData({
+      showKnowledgeCheckbox: false
     })
   },
 
   /**
    * 匹配知识点ids
    */
-  knowedgeIds: function() {
+  knowedgeIds: co.wrap(function*() {
     var knowedges = this.data.knowledgeList.filter(item=>item.checked)
-    var ids = knowedges.length && knowedges.reduce((pre,cur)=>[''+ pre.id].concat('' + cur.id) || [])
+    if (!knowedges.length) {
+       wx.showModal({
+        title: '提示',
+        content: '至少选择一个知识点',
+        showCancel: false
+      })
+      return false
+    }
+    console.log(knowedges, '===knowedges==')
+
+    var ids = knowedges.reduce((pre,cur)=>pre.concat('' + cur.id))
     return ids.join(',')
-  },
+  }),
 
   /**
    * 搜索分类
    */
   searchCategory: co.wrap(function *({currentTarget: {dataset: {key}}}) {
-
-    if (key == 'subject') {
-      this.setData({
-        showSubjectForm: true
-      }) 
-    }
+    this.key = key
+    this.setData({
+      isSubjectCategory: key == 'subject',
+      showSubjectForm: true
+    }) 
   }),
 
-  toPrint: function(){
-    console.log('==去打印==')
-    // wxNav.navigateTo()
+  /**
+   * 选择分类
+   */
+  chooseCategory: co.wrap(function * ({currentTarget: {dataset: {index}}}) {
+    var updateObj = {
+      subject: {
+        checkKey: 'checkedSubject',
+        key: 'subjects'
+      },
+      print: {
+        checkKey: 'checkedPrint',
+        key: 'printStaList'
+      }
+    }
+    var refreshData = updateObj[this.key]
+    this.setData({
+      [`${refreshData.checkKey}`]: this.data[refreshData.key][index], //更新对应的值
+      showSubjectForm: false, //关闭弹窗
+      isExerciseEmpty: false, //关闭为空状态
+    })
+    yield this.getExerciseList()
+  }),
+
+  /**
+   * 去打印
+   */
+  toPrint: function({currentTarget: {dataset: {sn}}}){
+    wxNav.navigateTo('../../sync_learn/preview_subject/index', {
+      sn
+    })
+  },
+
+  /**
+   * 关闭分类筛选弹窗
+   */
+  cancelActionsheet: function() {
+    this.setData({
+      showSubjectForm: false
+    })
   },
 
   onUnload: function(){

@@ -32,6 +32,22 @@ var getPrinterCapability = co.wrap(function* (orderPms) {
   }
 })
 
+/**
+ * 过滤文档类打印有效参数
+ * @param {*} attributes 
+ */
+
+var filterDocAttrs = function(attributes) {
+  var vaildData = ['originalUrl', 'printUrl', 'filename']
+  var attr = {}
+  for(var key in attributes) {
+    if (vaildData.indexOf(key) > -1) {
+      attr[key] = attributes[key]
+    }
+  }
+  return attr
+}
+
 
 var createOrder = co.wrap(function *(createPms) {
   try {
@@ -54,7 +70,10 @@ var createOrder = co.wrap(function *(createPms) {
        */
       [printTypes.doc]: co.wrap(function *(featureKey, params) {
         try {
-          var resp = yield commonRequest.createOrder(featureKey, params)
+          var resp = yield commonRequest.createOrder(featureKey, [{
+            ...filterDocAttrs(params.attributes),
+            ...params.capabilitys
+          }])
           return resp.createOrder
         } catch(err) {
           util.showError(err)

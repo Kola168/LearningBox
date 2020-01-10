@@ -98,6 +98,10 @@ Component({
     }),
 
     registerSubject: co.wrap(function*() {
+      this.longToast.toast({
+        type: 'loading',
+        title: '请稍后...'
+      })
       try {
         let res = yield graphql.register()
         if (res.register.state) {

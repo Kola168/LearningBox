@@ -72,8 +72,6 @@ Page({
 
   print: co.wrap(function* () {
     try {
-
-
       var postData = {
         name: this.data.exercise.exerciseName,
         isPrintAnswer: this.data.isPrintAnswer,
