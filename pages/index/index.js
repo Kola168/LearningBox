@@ -281,6 +281,9 @@ Page({
       case 'errorBook':
         url = '/pages/package_feature/error_book/index'
         break;
+      case 'exerciseDay':
+        url = '/pages/package_preschool/exercise_day/exercises/exercises'
+        break;
     }
     if (!url) {
       return wx.showModal({

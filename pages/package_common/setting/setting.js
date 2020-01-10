@@ -559,16 +559,17 @@ Page({
       })
 
       // 存下订单完成页渲染数据
-      storage.put('orderSuccessParams', resp.statistic)
+      resp && storage.put('orderSuccessParams', resp.statistic)
 
       // 
-      wxNav.navigateTo('/pages/finish/index', {
+      resp && wxNav.navigateTo('/pages/finish/index', {
         type: this.data.setting.orderPms.featureKey,
         media_type: this.data.setting.orderPms.featureKey,
         state: resp.state
       })
 
     } catch(err) {
+      util.showError(err)
       console.log(err)
     }
   })

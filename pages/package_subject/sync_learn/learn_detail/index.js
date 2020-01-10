@@ -63,6 +63,7 @@ Page({
       worker_data: {
         diff: this.data.currentDiff.id,
         sn: this.sn,
+        exercise_type: 'normal',
         subject_sn: this.subjectSn,
       }
     }, (resp) => {

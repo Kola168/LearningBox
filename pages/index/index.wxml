@@ -45,6 +45,10 @@
         <image src="/images/home/icon_miaohong.png" mode="widthFix"></image>
         <view>幼儿描红</view>
       </view>
+      <view class="tool-item" bindtap="toFunction" id="exerciseDay">
+        <image src="/images/home/icon_exercise_day.png" mode="widthFix"></image>
+        <view>每日一练</view>
+      </view>
       <view class="tool-item">
       </view>
     </view>
