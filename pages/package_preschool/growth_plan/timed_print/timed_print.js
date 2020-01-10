@@ -178,6 +178,7 @@ Page({
           mask: true
         })
       }
+      wxNav.navigateBack()
 
     } catch (e) {
       this.longToast.toast()

@@ -83,7 +83,7 @@ Page({
     //   type:'loading'
     // })
     try {
-      wxNav.redirectTo(`/pages/package_preschool/growth_plan/timed_print/timed_print`,{
+      wxNav.navigateTo(`/pages/package_preschool/growth_plan/timed_print/timed_print`,{
         userPlanSn:this.userPlanSn
       })
     } catch (error) {

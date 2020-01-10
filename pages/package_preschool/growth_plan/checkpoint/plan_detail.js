@@ -67,6 +67,10 @@ Page({
     }
   }),
 
+  // changeFunc: co.wrap(function *(){
+
+  // })
+
   /**
    * 上一页
    */
@@ -116,7 +120,6 @@ Page({
    * 开始打印
    */
   beginPrint: co.wrap(function* (userPlanSn) {
-
     wxNav.navigateTo('/pages/package_common/setting/setting', {
       settingData: encodeURIComponent(JSON.stringify({
         file: {

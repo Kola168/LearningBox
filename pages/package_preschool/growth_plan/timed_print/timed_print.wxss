@@ -20,7 +20,7 @@
     display: flex;
     justify-content: space-between;
 }
-.item-right{
+.lists .list-item:nth-of-type(1) .item-right{
     justify-content: flex-end;
 }
 .arrow-icon{

@@ -42,15 +42,6 @@ Page({
       this.setData({
         lists: resp.plans
       })
-
-      logger.info('未订阅2', lists)
-
-      this.longToast.toast()
-      wx.showToast({
-        title: '提交成功！',
-        icon: 'none',
-        duration: 3000
-      })
     } catch (e) {
       this.longToast.toast()
       util.showError(e)
@@ -62,6 +53,7 @@ Page({
     try {
       let tab = this.currentTab
       const resp = yield gql.getUserPlans(tab)
+      logger.info('resp====',resp)
       let dataKey = ''
       if(tab==='subscription'){
         dataKey = 'subscriptList'
@@ -72,13 +64,6 @@ Page({
       }
       this.setData({
         [dataKey]: resp.userPlans
-      })
-
-      this.longToast.toast()
-      wx.showToast({
-        title: '提交成功！',
-        icon: 'none',
-        duration: 3000
       })
     } catch (e) {
       this.longToast.toast()
