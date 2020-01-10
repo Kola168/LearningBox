@@ -11,6 +11,10 @@ page {
     position: relative;
 }
 
+.back {
+    margin-top: 40rpx;
+}
+
 .content {
     position: absolute;
     width: 100%;
@@ -23,4 +27,35 @@ page {
     font-size: 28rpx;
     color: #333333;
     letter-spacing: 0;
+}
+
+.button {
+    position: absolute;
+    bottom: 30rpx;
+    right: 0;
+    display: flex;
+}
+
+.update {
+    background: #F94666;
+    border-radius: 26rpx;
+    font-family: PingFangSC-Regular;
+    font-size: 26rpx;
+    color: #FFFFFF;
+    letter-spacing: 0;
+    padding: 8rpx 20rpx;
+    margin-right: 30rpx;
+}
+
+.update.xueke {
+    background: #FFDC5E;
+    color: #333;
+}
+
+.bottom-tip {
+    font-family: PingFangSC-Regular;
+    font-size: 24rpx;
+    color: #666666;
+    letter-spacing: 0;
+    margin-top: 60rpx
 }
