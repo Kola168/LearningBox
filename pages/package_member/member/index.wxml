@@ -8,10 +8,12 @@
     <view bindtap="toMemberH5" class="view"  wx:if="{{system=='android'}}">
         点击加入
     </view>
-    <view bindtap="toPrint" class="view"  wx:if="{{system=='ios'}}">
+    <view bindtap="printMemberCode" class="view"  wx:if="{{system=='ios'}}">
         立即打印
     </view>
-    <image class="image" src="../images/member_free_tip_button.png" mode="widthFix" bindtap="getFreeMember"></image>
+    <image class="image" src="../images/member_free_tip_button.png" mode="widthFix" bindtap="">
+        <button open-type="contact"></button>
+    </image>
     <view class="access-member" bindtap="toNext"> 
         <view>会员激活</view>
         <image class="" src="../images/arrow_right.png" mode="widthFix"></image>
@@ -27,7 +29,7 @@
             </view>
         </view>
         <view class="button" bindtap="toAccessMember"></view>
-        <image class="close" src="../images/member_close.png" mode="widthFix" bindtap=""></image>
+        <image class="close" src="../images/member_close.png" mode="widthFix" bindtap="close"></image>
     </image>
 </view>
 <import src="../../../lib/toast/wetoast.wxml" />

@@ -4,8 +4,8 @@
     <image class="back" src="../images/active_bg.png" mode="widthFix">
         <view class="content">
             <view>
-                <view>会员可用有效期：12个月</view>
-                <view>激活至家庭信息：黑黑黑 一年级</view>
+                <view>会员可用有效期：{{device.lmAvailableMember.time}}{{unit}}</view>
+                <view>激活至家庭信息：{{kid.name}} {{kid.stage.name}}</view>
             </view>
             <view class="button">
                 <view>点击下方按钮激活后立即生效</view>
