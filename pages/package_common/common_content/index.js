@@ -75,26 +75,31 @@ Page({
 
   }),
   joinPlan: co.wrap(function* (e) {
-    this.longToast.toast({
-      type: "loading"
+    router.navigateTo('/pages/package_preschool/growth_plan/checkpoint/plan_checkpoint', {
+      planSn: e.currentTarget.id,
+      name: e.currentTarget.dataset.name
     })
-    try {
-      const resp = yield gql.joinPlan({
-        sn: e.currentTarget.id
-      })
-      logger.info(resp)
-      this.longToast.hide()
-      yield this.customizeFeaturePlans()
-    } catch (error) {
-      this.longToast.hide()
-      util.showError(error)
-    }
+
+    // this.longToast.toast({
+    //   type: "loading"
+    // })
+    // try {
+    //   const resp = yield gql.joinPlan({
+    //     sn: e.currentTarget.id
+    //   })
+    //   logger.info(resp)
+    //   this.longToast.hide()
+    //   yield this.customizeFeaturePlans()
+    // } catch (error) {
+    //   this.longToast.hide()
+    //   util.showError(error)
+    // }
 
   }),
   toNextPage(e) {
     router.navigateTo('/pages/package_common/common_content/list', {
       sn: e.currentTarget.id,
-      name:e.currentTarget.dataset.name
+      name: e.currentTarget.dataset.name
     })
   },
   onShareAppMessage: function () {

@@ -1,0 +1,34 @@
+<nav-bar background="#fff" title="会员中心"></nav-bar>
+<image class="" src="https://cdn-h.gongfudou.com/LearningBox/member/menber_index_title.png" mode="widthFix"></image>
+<image class="" src="https://cdn-h.gongfudou.com/LearningBox/member/menber_index_ios.jpg" mode="widthFix"
+    wx:if="{{system=='ios'}}"></image>
+<image class="" src="https://cdn-h.gongfudou.com/LearningBox/member/menber_index_android.jpg" mode="widthFix"
+    wx:if="{{system=='android'}}"></image>
+<image class="bottom-image" src="https://cdn-h.gongfudou.com/LearningBox/member/menber_index_after.jpg" mode="widthFix">
+    <view bindtap="toMemberH5" class="view"  wx:if="{{system=='android'}}">
+        点击加入
+    </view>
+    <view bindtap="toPrint" class="view"  wx:if="{{system=='ios'}}">
+        立即打印
+    </view>
+    <image class="image" src="../images/member_free_tip_button.png" mode="widthFix" bindtap="getFreeMember"></image>
+    <view class="access-member" bindtap="toNext"> 
+        <view>会员激活</view>
+        <image class="" src="../images/arrow_right.png" mode="widthFix"></image>
+    </view>
+</image>
+
+<view class="active-member" wx:if="{{availableMemberModal}}">
+    <image class="back" src="https://cdn-h.gongfudou.com/LearningBox/member/member_free_get.png" mode="widthFix">
+        <view class="content">
+            <image class="" src="../images/access_title.png" mode="widthFix"></image>
+            <view>
+                小白免费送您{{device.lmAvailableMember.time}}{{unit}}的{{device.lmAvailableMember.goodsName}}！点击下方按钮领取后马上使用，快快领取吧！
+            </view>
+        </view>
+        <view class="button" bindtap="toAccessMember"></view>
+        <image class="close" src="../images/member_close.png" mode="widthFix" bindtap=""></image>
+    </image>
+</view>
+<import src="../../../lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />

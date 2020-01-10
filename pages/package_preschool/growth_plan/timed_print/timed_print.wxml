@@ -28,21 +28,20 @@
             <view class="list-item">
                 <view class="item-left">打印时间</view>
                 <view class="item-right print-time">
-                
                     <picker value="{{time}}" range="{{times}}" bindchange="printTime">
-                        <view class="picker">{{currentTime}}:00</view>
+                        <view class="picker">{{currentTime}}</view>
                     </picker>
-                    <!--<view class="picker">{{currentTime}}:00</view>-->
                     <image class="arrow-icon" src="/images/doc_item_arrow.png"></image>
                 </view>
             </view>
             <view class="list-item list-frequency">
                 <view class="frequency-left">打印频率</view>
                 <view class="frequency-right">                   
-                    <view id="0" class="set-frequency" bindtap="chooseFrequency">
-                        <view>{{frequencyLists[0]}}</view>
-                        <image mode="widthFix" src="{{chooseFrequency ==0 ? '/images/radio_on.png' : '/images/radio_off.png'}}"></image>
+                    <view wx:for="{{frequencyLists}}" wx:key="frequencyLists" class="set-frequency" bindtap="chooseFrequency" id="{{title}}" data-index="{{index}}">
+                        <view>{{item.title}}</view>
+                        <image mode="widthFix" src="{{chooseFrequency ==index ? '/images/radio_on.png' : '/images/radio_off.png'}}"></image>
                     </view>
+                    <!--
                     <view id="1" class="set-frequency" bindtap="chooseFrequency">
                         <view>{{frequencyLists[1]}}</view>
                         <image mode="widthFix" src="{{chooseFrequency ==1 ? '/images/radio_on.png' : '/images/radio_off.png'}}"></image>
@@ -51,6 +50,7 @@
                         <view>{{frequencyLists[2]}}</view>
                         <image mode="widthFix" src="{{chooseFrequency ==2 ? '/images/radio_on.png' : '/images/radio_off.png'}}"></image>
                     </view>
+                    -->
                 </view>
             </view>
         </block>

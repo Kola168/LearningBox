@@ -17,13 +17,11 @@
           <picker-view-column>
             <view wx:for="{{hours}}" class="picker-item" wx:key="hours">{{item}}</view>
           </picker-view-column>
-          <picker-view-column>
-            <view wx:for="{{minutes}}" class="picker-item" wx:key="minutes">{{item}}</view>
-          </picker-view-column>
+
         </picker-view>
       </view>
     </view>
-    <view class="check-print-tip">自动执行</view>
+    <view class="check-print-tip">左右自动执行</view>
   </view>
   <view class="conf-check-but" bindtap="createPlan">
     创建计划

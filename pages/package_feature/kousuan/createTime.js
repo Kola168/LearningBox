@@ -17,7 +17,7 @@ Page({
     //年级和教材列表
 
     hours:_.map(_.range(24),function(num){return num>=10?num:('0'+num)}),  //时间的小时
-    minutes:_.map(_.range(60),function(num){return num>=10?num:('0'+num)}), //时间的分钟
+    minutes:['00'],
     checkedHourIndex:20,
     checkedMinutesIndex:0,
   },
@@ -100,6 +100,9 @@ Page({
           mask:true
         })
       }
+      setTimeout(function(){
+        wxNav.navigateBack()
+      },2000)
       this.longToast.toast()
     }catch(e){
       Loger(e)

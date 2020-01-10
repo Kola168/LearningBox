@@ -13,7 +13,7 @@ export const features= [{
     }, {
       name: '我的收藏',
       image: '/images/account_cllection.png',
-			url: '',
+			url: '/pages/account/collection/index',
 			key:'collect'
     }, ]
   }, {
@@ -34,7 +34,7 @@ export const features= [{
 			url: `/pages/webview/index?url=${encodeURIComponent(`https://gfd178.udesk.cn/im_client/?web_plugin_id=111131`)}`,
 			key:'onlineGuest'
     }, ]
-	}, 
+	},
 	{
     title: '更多服务',
     features: [{

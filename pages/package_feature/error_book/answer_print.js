@@ -10,7 +10,7 @@ const downloadFile = util.promisify(wx.downloadFile)
 
 import commonRequest from '../../../utils/common_request.js'
 import router from '../../../utils/nav'
-import gql from '../../../network/graphql_request.js'
+import featureGql from '../../../network/graphql/feature'
 import Logger from '../../../utils/logger.js'
 const logger = new Logger.getLogger('pages/index/index')
 Page({

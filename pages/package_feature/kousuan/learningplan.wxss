@@ -56,7 +56,6 @@ view {
 
 .list-item {
   width: 100%;
-  height: 260rpx;
   border-radius: 20rpx;
   box-shadow: 0 2px 8px 0 rgba(204, 204, 204, 0.40);
   padding: 20rpx 20rpx 20rpx 30rpx;
@@ -106,7 +105,6 @@ view {
 .list-type-detail {
   font-size: 24rpx;
   color: #333333;
-  margin-left: 12rpx;
 }
 
 .list-button {
@@ -119,11 +117,37 @@ view {
   color: #333333;
 }
 
+.list-print-date{
+  font-size: 24rpx;
+  color: #999999;
+  margin-top:20rpx;
+}
+
+.list-print-time{
+  width:100%;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  margin-top:40rpx;
+  font-size: 28rpx;
+  color: #333333;
+}
+
+.list-print-timeset{
+  width:130rpx;
+  line-height:52rpx;
+  background: #FFDC5E;
+  border-radius:26rpx;
+  margin-left:30rpx;
+  text-align:center;
+}
+
 .list-time-box {
   font-size: 24rpx;
   color: #999999;
   width: 100%;
   display: flex;
+  margin-top:40rpx;
   flex-direction:column;
   align-items: flex-end;
 }

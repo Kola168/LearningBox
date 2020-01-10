@@ -151,10 +151,26 @@ var translateMedium =
               break
       }
   }
+  
+  function addProcess(imgUrl, process) {
+      if (!process) {
+          process = ''
+      }
+      if (imgUrl.indexOf('?x-image-process=image') < 0) {
+          imgUrl += '?x-image-process=image'
+      }
+
+      if (process.indexOf('/resize') >= 0) {
+          process += '/marker,u_plus'
+      }
+      imgUrl +=process
+      return imgUrl
+  }
 
 module.exports = {
   calculateSize: calculateSize,
   isExcel: isExcel,
   translateMedium: translateMedium,
-  getFileType: getFileType
+  getFileType: getFileType,
+  addProcess:addProcess
 }

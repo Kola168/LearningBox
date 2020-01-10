@@ -1,0 +1,13 @@
+/* pages/package_feature/print_link/typeList.wxss */
+page{
+  width:100%;
+  display:flex;
+  flex-direction:column;
+
+}
+
+.content-item-box{
+  width:700rpx;
+  margin-top:30rpx;
+  padding:44rpx 24rpx;
+}

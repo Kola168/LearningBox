@@ -10,7 +10,12 @@
 <view class="tips-title">
   待指示灯非红灯常亮后长按盒子背后开关5秒至黄灯闪烁
 </view>
+<view class="confirm-setting">
+	<image src="{{checked ? '../../images/icon_checked.png':'../../images/icon_not_checked.png'}}" mode="widthFix" class="check-img" bindtap="confirmLight"></image>
+	<text class="confirm-text" confirm-text>此时指示灯黄灯闪烁</text>
+</view>
 <image src="https://cdn-h.gongfudou.com/LearningBox/device/ap/network_step2_1.png" mode="widthFix" class="step-img"></image>
-<view class="common-button-bg bottom-button" bindtap="nextStep">
+
+<view class="{{checked?'bottom-button-yellow':'bottom-button-gray'}}" bindtap="nextStep">
   下一步
 </view>

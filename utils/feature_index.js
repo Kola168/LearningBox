@@ -1,7 +1,7 @@
   var feature_route = {
   literacy_card: '/pages/package_feature/cognition_card/index/index',
   free_resource: '/pages/package_common/free_resources/detail/index',
-  pic_to_doc: '/pages/print_photo_doc/index',
+  pic2doc: '/pages/print_photo_doc/index',
   course: '/pages/course/index',
   kid_record: '/pages/package_preschool/record_voice/index/index',
   doc_a4: '/pages/print_doc/index/index',
@@ -36,7 +36,8 @@
   english_memory_write: '/pages/package_feature/memory_write/english/index',
   chinese_memory_write: '/pages/package_feature/memory_write/chinese/index',
   kousuan:'/pages/package_feature/kousuan/index',
-  baobeicepin:'/pages/package_preschool/evaluation/index'
+  baobeicepin:'/pages/package_preschool/evaluation/index',
+  link:'/pages/package_feature/print_link/index'
 }
 module.exports = {
   feature_route: feature_route,

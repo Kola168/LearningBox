@@ -13,56 +13,81 @@ let Loger = (app.apiServer != 'https://epbox.gongfudou.com' || app.deBug) ? cons
 Page({
 
   data: {
-    planTypeCheck:'processing',
-    stateList:[],
+    planTypeCheck: 'processing',
+    stateList: [],
   },
 
-  onLoad: function (options) {
+  onLoad: function(options) {
     this.longToast = new app.weToast()
+  },
+
+  onShow: function(options) {
     this.getTimeList()
   },
 
-  getTimeList:co.wrap(function*(){
+  getTimeList: co.wrap(function*() {
     this.longToast.toast({
-      type:'loading'
+      type: 'loading'
     })
-    try{
-      let resp=yield graphql.timedTasks({
-        state:this.data.planTypeCheck,
-        taskType:'kousuan'
+    try {
+      let resp = yield graphql.timedTasks({
+        state: this.data.planTypeCheck,
+        taskType: 'kousuan'
       })
       Loger(resp)
-      if(resp.joinSubscription.state){
-        wx.showToast({
-          title:'练习计划创建成功',
-          duration:2000,
-          icon:'none',
-          mask:true
-        })
-      }else{
-        wx.showToast({
-          title:'练习计划创建失败',
-          duration:'2000',
-          mask:true
-        })
-      }
+      this.setData({
+        stateList: resp.timedTasks
+      })
       this.longToast.toast()
-    }catch(e){
+    } catch (e) {
       Loger(e)
       this.longToast.toast()
       util.showError(e)
     }
   }),
 
-  checkPlanType:function(e){
-    let type=e.currentTarget.dataset.type
-    this.setData({
-      planTypeCheck:type
+  setPlanTime: function(e) {
+    let index = e.currentTarget.dataset.index
+    wxNav.navigateTo('/pages/package_feature/kousuan/createTime', {
+      sn: this.data.stateList[index].sn
     })
-    this.this.getTimeList()
   },
 
-  createPlan:function(){
+  stopPlan: co.wrap(function*(e) {
+    let index = e.currentTarget.dataset.index
+
+    this.longToast.toast({
+      type: 'loading'
+    })
+    try {
+      let resp = yield graphql.updateTimedtask({
+        sn: this.data.stateList[index].sn,
+      })
+      Loger(resp)
+      wx.showToast({
+        title: '已提前结束',
+        duration: 2000,
+        icon: 'none',
+        mask: true
+      })
+      this.longToast.toast()
+    } catch (e) {
+      Loger(e)
+      this.longToast.toast()
+      util.showError(e)
+    }
+    this.getTimeList()
+  }),
+
+  checkPlanType: function(e) {
+    let type = e.currentTarget.dataset.type
+    this.setData({
+      planTypeCheck: type
+    })
+    this.getTimeList()
+  },
+
+  createPlan: function() {
     wxNav.navigateTo('/pages/package_feature/kousuan/createplan')
   },
 

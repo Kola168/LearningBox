@@ -1,0 +1,78 @@
+page {
+    overflow-y: scroll;
+}
+
+.bottom {
+    width: 100%;
+    height: 100rpx;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #fff;
+    box-sizing: border-box;
+    border-top: 3rpx solid #CECECE;
+    position: fixed;
+    bottom: 0;
+}
+
+.bottom .pay-button,
+.bottom .pay-button2 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #FFE27A;
+    height: 100rpx;
+    width: 50%;
+    font-size: 36rpx;
+    color: #333333;
+}
+
+.bottom .pay-button2 {
+    flex-direction: row;
+    background: #fff;
+    color: #7c7c7c;
+}
+
+.saveimg-icon {
+    width: 44rpx;
+    margin-right: 14rpx;
+}
+
+/* 弹窗样式 */
+
+.modal-wrap {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.confirm-modal {
+    width: 90%;
+    background: #fff;
+    color: #333;
+    font-size: 36rpx;
+    border-radius: 20rpx;
+    padding-top: 40rpx;
+    text-align: center;
+}
+
+.confirm-modal image {
+    width: 80%;
+    margin-top: 40rpx;
+    margin-bottom: 60rpx;
+}
+
+.print {
+    background: #ffe27a;
+    color: #454545;
+    font-size: 36rpx;
+    border-radius: 0 0 20rpx 20rpx;
+}
