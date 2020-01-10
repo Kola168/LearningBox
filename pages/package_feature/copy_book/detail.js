@@ -2,21 +2,19 @@
 "use strict"
 const app = getApp()
 
-import api from '../../../../network/api'
 import {
     regeneratorRuntime,
     co,
     util,
     _,
     common_util
-} from '../../../../utils/common_import'
+} from '../../../utils/common_import'
 
 const request = util.promisify(wx.request)
 const downloadFile = util.promisify(wx.downloadFile)
 const saveImageToPhotosAlbum = util.promisify(wx.saveImageToPhotosAlbum)
 const getUserInfo = util.promisify(wx.getUserInfo)
-var mta = require('../../../../utils/mta_analysis.js')
-const event = require('../../../../lib/event/event')
+const event = require('../../../lib/event/event')
 
 
 Page({

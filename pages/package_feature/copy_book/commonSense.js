@@ -1,7 +1,6 @@
 "use strict"
 const app = getApp()
 
-import api from '../../../../network/api'
 import {
   regeneratorRuntime,
   co,
@@ -9,7 +8,7 @@ import {
   _,
   uploadFormId,
   common_util
-} from '../../../../utils/common_import'
+} from '../../../utils/common_import'
 
 const showModal = util.promisify(wx.showModal)
 const request = util.promisify(wx.request)

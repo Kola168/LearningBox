@@ -1,7 +1,6 @@
 "use strict"
 const app = getApp()
 
-import api from '../../../network/api'
 import {
   regeneratorRuntime,
   co,

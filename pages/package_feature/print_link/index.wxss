@@ -1,0 +1,72 @@
+/* pages/package_feature/print_link/index.wxss */
+page{
+  width:100%;
+  padding:0 24rpx;
+  box-sizing:border-box;
+}
+
+view{
+  box-sizing:border-box;
+}
+
+.top-title{
+  margin-top:30rpx;
+  font-size: 30rpx;
+  color: #454545;
+  display:flex;
+  align-items:center;
+}
+
+.yellow-line{
+  width:6rpx;
+  height:28rpx;
+  background:#FFDC5E;
+  margin-right:8rpx;
+}
+
+.input-box{
+  display:flex;
+  width:100%;
+  margin-top:40rpx;
+}
+
+.input-item-box{
+  flex:1;
+  height:76rpx;
+  border: 1rpx solid #999999;
+  border-radius: 12rpx;
+  padding:24rpx 16rpx;
+  display:flex;
+  align-items:center;
+}
+
+.input-item{
+  flex:1;
+  line-height:76rpx;
+  font-size: 28rpx;
+  color: #666;
+}
+
+.input-holder{
+  font-size: 28rpx;
+  color: #999;
+}
+
+.input-button{
+  width:164rpx;
+  font-size: 30rpx;
+  color: #333333;
+  line-height:76rpx;
+  text-align:center;
+  background: #FFDC5E;
+  border-radius:12rpx;
+  margin-left:16rpx;
+}
+
+.tips-text{
+  width:100%;
+  text-align:center;
+  margin-top:40rpx;
+  font-size: 24rpx;
+  color: #FFA200;
+}

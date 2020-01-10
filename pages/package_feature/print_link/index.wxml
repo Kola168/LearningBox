@@ -1,0 +1,17 @@
+<!--pages/package_feature/print_link/index.wxml-->
+<nav-bar title="链接打印"></nav-bar>
+<view class="top-title">
+  <view class="yellow-line"></view>
+  <text>复制链接打印</text>
+</view>
+<view class="input-box">
+  <view class="input-item-box">
+    <input class="input-item" placeholder="请将已复制的链接粘贴在此处" placeholder-class="input-holder" value="{{linkVal}}"/>
+  </view>
+  <view class="input-button">
+    获取文章
+  </view>
+</view>
+<view class="tips-text">
+  如何获取相关文档链接？
+</view>

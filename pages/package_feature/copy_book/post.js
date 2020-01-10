@@ -2,7 +2,6 @@
 "use strict"
 const app = getApp()
 
-import api from '../../../../network/api'
 import {
   regeneratorRuntime,
   co,
@@ -10,13 +9,12 @@ import {
   _,
   uploadFormId,
   common_util
-} from '../../../../utils/common_import'
+} from '../../../utils/common_import'
 
 const showModal = util.promisify(wx.showModal)
 const request = util.promisify(wx.request)
 const downloadFile = util.promisify(wx.downloadFile)
 const getSetting = util.promisify(wx.getSetting)
-var mta = require('../../../../utils/mta_analysis.js')
 Page({
   data: {
     media_type: "copy_book"
@@ -46,7 +44,7 @@ Page({
     }else{
       this.user_id = userId
     }
-    
+
   }),
   canvas: co.wrap(function*() {
     this.setData({
