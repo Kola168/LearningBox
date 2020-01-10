@@ -1,3 +1,5 @@
-{"usingComponents": {
-    "modal":"../../../components/modal/index"
-  }}
+{
+  "usingComponents": {
+    "modal": "../../../components/modal/index"
+  }
+}

@@ -129,6 +129,9 @@ Page({
             util.showError(e)
         }
     }),
+    toNext(){
+     wxNav.navigateTo('/pages/package_member/member/active')
+    },
     onUnload() {
         event.remove('Authorize', this)
     },
