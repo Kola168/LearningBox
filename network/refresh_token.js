@@ -23,7 +23,7 @@ function dealRefreshToken(code) {
 		}	
 	} else if (code == 40004) {
 		wx.reLaunch({
-			url: '/pages/test/index'
+			url: '/pages/exit/index'
 		})
 	}
 }
