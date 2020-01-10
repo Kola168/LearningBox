@@ -238,6 +238,20 @@ const graphqlApi = {
       }
     })
   },
+
+  wxFile:(input)=>{
+    return gql.mutate({
+      mutation: `mutation ($input: WxFileInput!){
+        wxFile(input:$input){
+          convertedUrl
+          pages
+        }
+      }`,
+      variables: {
+        input: input
+      }
+    })
+  }
 }
 
 export default graphqlApi

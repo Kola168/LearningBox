@@ -6,12 +6,30 @@
 </view>
 <view class="input-box">
   <view class="input-item-box">
-    <input class="input-item" placeholder="请将已复制的链接粘贴在此处" placeholder-class="input-holder" value="{{linkVal}}"/>
+    <input class="input-item" placeholder="请将已复制的链接粘贴在此处" placeholder-class="input-holder" value="{{linkVal}}" />
   </view>
   <view class="input-button">
     获取文章
   </view>
 </view>
-<view class="tips-text">
+<view class="tips-text" bindtap="bindTips">
   如何获取相关文档链接？
+</view>
+<image src="https://cdn-h.gongfudou.com/LearningBox/feature/print_lint_tipicon.png" mode="widthFix" class="tips-icon"></image>
+<view class="bottom-tips">
+  目前支持的文章链接类型如下：
+</view>
+<view class="icon-box">
+  <view class="icon-item">
+    <image src="../resource_images/icon_wx.png" mode="aspectFit" class="icon-img"></image>
+    <text>微信公众号文章</text>
+  </view>
+  <view class="icon-item">
+    <image src="../resource_images/icon_baidu.png" mode="aspectFit" class="icon-img"></image>
+    <text>百度文章链接</text>
+  </view>
+  <view class="icon-item">
+    <image src="../resource_images/icon_qiangguo.png" mode="aspectFit" class="icon-img"></image>
+    <text>学习强国链接</text>
+  </view>
 </view>

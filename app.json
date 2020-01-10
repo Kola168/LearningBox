@@ -159,7 +159,9 @@
         "copy_book/list",
         "copy_book/post",
         "copy_book/subject",
-        "print_link/index"
+        "print_link/index",
+        "print_link/typeList",
+        "print_link/desc"
       ]
     },
     {
