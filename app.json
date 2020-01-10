@@ -163,7 +163,8 @@
         "member/caculate",
         "member/index",
         "member/order",
-        "group/index"
+        "group/index",
+        "member/detail"
       ]
     },
     {

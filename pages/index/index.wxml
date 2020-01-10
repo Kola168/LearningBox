@@ -98,7 +98,7 @@
 
     <view class="content-list" wx:for="{{beforeSchoolContent}}" wx:key="beforeSchoolContent" id="{{item.key}}">
       <view class="home-title">{{item.name}}</view>
-      <image src="{{item.iconUrl}}" class="content-image" mode="widthFix" id="{{item.key}}"  bindtap="toContentList" data-name="{{item.name}}"/>
+      <image src="{{item.iconUrl}}" class="content-image" mode="widthFix" id="{{item.key}}"  bindtap="toContentList" data-name="{{item.name}}" data-has="{{item.hasCategory}}"/>
     </view>
     <view class="tips">
       <view>

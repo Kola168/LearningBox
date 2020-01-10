@@ -1,9 +1,15 @@
 const app = getApp()
-import { regeneratorRuntime, co, wxNav, util, storage } from '../../utils/common_import'
+import {
+  regeneratorRuntime,
+  co,
+  wxNav,
+  util,
+  storage
+} from '../../utils/common_import'
 
 import Logger from '../../utils/logger.js'
 const logger = new Logger.getLogger('pages/index/index')
-  // page mixins
+// page mixins
 require('../../utils/mixin.js')
 import index from "../../mixins/index.js"
 import init from "../../mixins/init.js"
@@ -40,14 +46,14 @@ Page({
       confirmText: '立即绑定',
       image: '/images/home/device_tip.png'
     },
-    beforeSchoolContent:[]
+    beforeSchoolContent: []
   },
 
   //事件处理函数
-  bindViewTap: function() {
+  bindViewTap: function () {
     wxNav.navigateTo('/pages/logs/logs')
   },
-  onLoad: co.wrap(function*(query) {
+  onLoad: co.wrap(function* (query) {
     this.longToast = new app.weToast()
     let userSn = storage.get('userSn')
     if (query.scene) {
@@ -69,10 +75,10 @@ Page({
     }
 
   }),
-  onShow: co.wrap(function*() {
+  onShow: co.wrap(function* () {
     yield this.getUnion() //授权
   }),
-  getUnion: co.wrap(function*() {
+  getUnion: co.wrap(function* () {
     try {
       let authToken = storage.get('authToken')
       if (authToken) {
@@ -93,7 +99,7 @@ Page({
       })
     }
   }),
-  checkSession: co.wrap(function*() {
+  checkSession: co.wrap(function* () {
     try {
       yield checkSession()
       return true
@@ -101,7 +107,7 @@ Page({
       return false
     }
   }),
-  getBanners: co.wrap(function*() {
+  getBanners: co.wrap(function* () {
     try {
       let resp = yield gql.getBanners('home')
       this.setData({
@@ -112,7 +118,7 @@ Page({
       util.showError(e)
     }
   }),
-  getUserInfo: co.wrap(function*() {
+  getUserInfo: co.wrap(function* () {
     try {
       let resp = yield gql.getUser()
       this.setData({
@@ -121,7 +127,7 @@ Page({
         stageRoot: resp.currentUser.selectedKid.stageRoot
       })
       storage.put("userSn", resp.currentUser.sn)
-			storage.put("kidStage", resp.currentUser.selectedKid.stageRoot)
+      storage.put("kidStage", resp.currentUser.selectedKid.stageRoot)
 
       if (resp.currentUser.phone) {
         app.hasPhoneNum = true
@@ -132,7 +138,7 @@ Page({
         wxNav.navigateTo('/pages/index/grade')
       } else {
         this.setData({
-					homeType: this.data.selectedKid.stageRoot.rootName,
+          homeType: this.data.selectedKid.stageRoot.rootName,
         })
       }
       if (!resp.currentUser.selectedDevice) {
@@ -145,20 +151,20 @@ Page({
     }
   }),
   //获取学前模块
-  customizeFeatures:co.wrap(function*(){
-    if(this.data.selectedKid.stageRoot==null){
-       return
+  customizeFeatures: co.wrap(function* () {
+    if (this.data.selectedKid.stageRoot == null) {
+      return
     }
     try {
       let resp = yield gql.customizeFeatures()
       this.setData({
-        beforeSchoolContent:resp.customizeFeatures
+        beforeSchoolContent: resp.customizeFeatures
       })
     } catch (error) {
-      util.showError(error) 
+      util.showError(error)
     }
   }),
-  afterUnion:co.wrap(function*(){
+  afterUnion: co.wrap(function* () {
     try {
       yield this.getUserInfo()
       yield this.getBanners()
@@ -167,7 +173,7 @@ Page({
       console.log(error)
     }
   }),
-  userInfoHandler: co.wrap(function*(e) {
+  userInfoHandler: co.wrap(function* (e) {
     logger.info('********** userInfoHandler', e)
     if (!e.detail.userInfo || !e.detail.encryptedData) {
       return
@@ -204,8 +210,8 @@ Page({
       }
       storage.put('authToken', resp.res.auth_token)
       storage.put('unionId', resp.res.unionid)
-			storage.put('refreshToken', resp.res.refresh_token)
-			// storage.put('kidStage', resp.res.refresh_token)
+      storage.put('refreshToken', resp.res.refresh_token)
+      // storage.put('kidStage', resp.res.refresh_token)
 
 
       app.authToken = resp.res.auth_token
@@ -217,7 +223,7 @@ Page({
         this.handleScene(this.scene)
       }
       // 通过分享打印机
-      if(this.deviceSn){
+      if (this.deviceSn) {
         this.bindShareDevice(this.deviceSn)
       }
 
@@ -231,7 +237,7 @@ Page({
       util.showError(e)
     }
   }),
-  toNomalPrint: function(e) {
+  toNomalPrint: function (e) {
     let url
     switch (e.currentTarget.id) {
       case 'photo':
@@ -269,7 +275,7 @@ Page({
       case 'exerciseWords':
         url = ''
         break;
-      case 'takePhotoSearchExercise' :
+      case 'takePhotoSearchExercise':
         url = '/pages/package_feature/error_book/photo_anwser_intro'
         break;
       case 'syncLearn':
@@ -295,7 +301,7 @@ Page({
     wxNav.navigateTo(url)
   },
 
-  toLearnCenter: co.wrap(function*(){
+  toLearnCenter: co.wrap(function* () {
     wxNav.switchTab('/pages/course/index')
   }),
   // toId: function () {
@@ -333,7 +339,7 @@ Page({
   }),
 
   // 绑定分享打印机
-  bindShareDevice: co.wrap(function*(deviceSn) {
+  bindShareDevice: co.wrap(function* (deviceSn) {
     this.longToast.toast({
       type: 'loading'
     })
@@ -355,17 +361,19 @@ Page({
   toBindDevice: function () {
     wxNav.navigateTo('/pages/package_device/network/index/index')
   },
-  tokousuan:function(){
+  tokousuan: function () {
     wxNav.navigateTo('/pages/package_feature/kousuan/index')
   },
-  toContentList:function(e){
-    console.log(e)
-    wxNav.navigateTo('/pages/package_common/common_content/index',{
+  toContentList: function (e) {
+    if (!e.currentTarget.dataset.has) {
+      return
+    }
+    wxNav.navigateTo('/pages/package_common/common_content/index', {
       key: e.currentTarget.id,
-      name:e.currentTarget.dataset.name
+      name: e.currentTarget.dataset.name
     })
   },
   changeSwiper: co.wrap(function* (e) {
-		this.data.current = e.detail.current
-	}),
+    this.data.current = e.detail.current
+  }),
 })

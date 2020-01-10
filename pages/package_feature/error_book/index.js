@@ -7,7 +7,7 @@ const co = require('../../../lib/co/co')
 const util = require('../../../utils/util')
 const event = require('../../../lib/event/event')
 import router from '../../../utils/nav'
-import gql from '../../../network/graphql_request.js'
+import featureGql from '../../../network/graphql/feature'
 import Logger from '../../../utils/logger.js'
 const logger = new Logger.getLogger('pages/index/index')
 import {
@@ -185,7 +185,7 @@ Page({
             type: 'loading'
         })
         try {
-            const resp = yield gql.getErrorSubjects()
+            const resp = yield featureGql.getErrorSubjects()
             let subjectList = this.data.subjectList
             let mistakes = resp.mistakes
             subjectList.forEach(data=>{

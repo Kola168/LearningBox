@@ -8,7 +8,6 @@ const util = require('../../../utils/util')
 
 const request = util.promisify(wx.request)
 import router from '../../../utils/nav'
-import gql from '../../../network/graphql_request.js'
 import Logger from '../../../utils/logger.js'
 const logger = new Logger.getLogger('pages/index/index')
 
