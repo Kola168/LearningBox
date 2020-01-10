@@ -7,6 +7,7 @@ import {
   util
 } from '../../../../utils/common_import'
 const showModal = util.promisify(wx.showModal)
+const event = require('../../../../lib/event/event')
 import gql from '../../../../network/graphql/preschool'
 import Logger from '../../../../utils/logger.js'
 const logger = new Logger.getLogger('pages/package_preschool/growth_plan/checkpoint/plan_checkpoint')
@@ -40,8 +41,9 @@ Page({
       this.subscribe = this.options.subscribe
       logger.info('planSn====', this.planSn)
       this.getDetail(this.planSn)
+      
     } catch (error) {
-      this.longToast.weToast()
+      this.longToast.toast()
       util.showError(error)
     }
   }),
@@ -49,7 +51,6 @@ Page({
   getDetail: co.wrap(function* (planSn) {
     try {
       const resp = yield gql.getPlanContents(planSn)
-
       this.setData({
         checkpoints: resp.planContents,
         isShadowOpcity: this.data.isShow
@@ -59,6 +60,7 @@ Page({
           isSuscribe: true
         })
       }
+      this.longToast.hide()
     } catch (e) {
       this.longToast.toast()
       util.showError(e)
@@ -71,17 +73,47 @@ Page({
   }),
 
   /* 去订阅 */
-  toSubscribe: co.wrap(function (e) {
+  toSubscribe: co.wrap(function* () {
+    try {
+      yield gql.joinPlan(this.planSn)
+      // wxNav.navigateBack()
+      event.emit('subscribeList')
+      yield gql.getPlanContents(this.planSn)
 
+      this.longToast.toast({
+        type:'loading',
+        duration:6000,
+        title:'已订阅！'
+      })
+      this.longToast.hide()
+      // setTimeout(function(){
+      //   this.toSetAuto()
+      // },6000)
+      this.toSetAuto()
+      this.longToast.hide()
+    } catch (e) {
+      this.longToast.toast()
+      util.showError(e)
+    }
+    
+  }),
 
-    wxNav.navigateTo('/pages/package_preschool/growth_plan/timed_print/timed_print')
+  toSetAuto:co.wrap(function *(){
+    try {
+      this.setData({
+        isSuscribe:false
+      })
+      this.longToast.hide()
+    } catch (e) {
+    console.log(e)  
+    }
   }),
 
   /** 自动打印 */
   setTimedPrint: co.wrap(function* () {
-    // this.longToast.toast({
-    //   type:'loading'
-    // })
+    this.longToast.toast({
+      type:'loading'
+    })
     try {
       wxNav.navigateTo(`/pages/package_preschool/growth_plan/timed_print/timed_print`,{
         userPlanSn:this.userPlanSn
@@ -90,19 +122,30 @@ Page({
       this.longToast.toast()
       util.showError(error)
     }
+    this.longToast.hide()
   }),
 
   /**打印详情 */
   toPrintDetail: co.wrap(function* (e) {
-    let clickable = this.data.checkpoints[e.currentTarget.dataset.index].isShow
-    if(clickable){
-      wxNav.navigateTo(`/pages/package_preschool/growth_plan/checkpoint/plan_detail`, {
-        sn:e.currentTarget.dataset.sn,
-        userPlanSn: this.userPlanSn,
-        name:this.data.checkpoints[e.currentTarget.dataset.index].name
+    try {
+      this.longToast.toast({
+        type:'loading'
       })
-    }else{
-      return
+
+      let clickable = this.data.checkpoints[e.currentTarget.dataset.index].isShow
+      if(clickable){
+        wxNav.navigateTo(`/pages/package_preschool/growth_plan/checkpoint/plan_detail`, {
+          sn:e.currentTarget.dataset.sn,
+          userPlanSn: this.userPlanSn,
+          name:this.data.checkpoints[e.currentTarget.dataset.index].name
+        })
+      }else{
+        return
+      }
+      this.longToast.hide()
+    } catch (e) {
+      this.longToast.toast()
+      util.showError(encodeURIComponent)
     }
   }),
 

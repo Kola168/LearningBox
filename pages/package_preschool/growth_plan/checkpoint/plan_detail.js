@@ -22,17 +22,10 @@ Page({
     allPage: 3,
     currentImage: '',
     isFullScreen: false, //iphoneX底部button兼容性
-    showArrow:true,
-    buttonList:[{
-      func:0,
-      title:'开始打印'
-    },{
-      func:1,
-      title:'购买会员'
-    },{
-      func:2,
-      title:'立即订阅'
-    }]
+    showArrow:true,//预览图片左右箭头
+    member:false,
+    subscription:true,
+    btnText:''
   },
 
   /**
@@ -60,6 +53,14 @@ Page({
         allPage:resp.content.pageCount,
         // currentPage:this.data.currentPage
       })
+      
+      if(this.data.allPage == 1){
+        this.setData({
+          showArrow:false
+        })
+      }
+
+      this.toFunc()
 
     } catch (e) {
       this.longToast.toast()
@@ -67,9 +68,32 @@ Page({
     }
   }),
 
-  // changeFunc: co.wrap(function *(){
-
-  // })
+  toFunc: co.wrap(function *(e){
+    console.log('00000',this.data.subscription)
+    try {
+      if(this.data.subscription){
+        this.btnType = 'print'
+        this.setData({
+          btnText:'开始打印'
+        })
+    
+      }else if(!this.data.member){
+        this.btnType = 'buy'
+        this.setData({
+          btnText:'购买会员'
+        })
+      }else{
+        this.btnType = 'subscription'
+        this.setData({
+          btnText:'立即订阅'
+        })
+      }
+    } catch (error) {
+      this.longToast.toast()
+      util.showError(error)
+    }
+    
+  }),
 
   /**
    * 上一页
@@ -84,6 +108,11 @@ Page({
           allPage: index,
           currentPage: currentPage - 1
         })
+        if(this.data.allPage == 1){
+          this.setData({
+            showArrow:false
+          })
+        }
       }else{
         console.log('已经第一张啦 ！')
       }
@@ -106,6 +135,11 @@ Page({
           currentPage: currentPage + 1,
           currentImage: this.data.imgUrls[currentPage].image
         })
+        if(this.data.allPage == 1){
+          this.setData({
+            showArrow:false
+          })
+        }
       }else{
         console.log('已经最后一张啦 ！')
       }
@@ -115,6 +149,14 @@ Page({
     }
   },
 
+  btnClick(){
+
+    if(this.btnType==='buy'){
+      
+    } else{
+      this.beginPrint()
+    }
+  },
 
   /**
    * 开始打印

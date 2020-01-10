@@ -27,3 +27,5 @@
     <image bindtap="setTimedPrint" src="https://cdn-h.gongfudou.com/LearningBox/preschool/growth_plan_btn_print.png" />
 </view>
 </block>
+<import src="/lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />

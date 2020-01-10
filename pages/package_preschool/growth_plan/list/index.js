@@ -8,6 +8,7 @@ import {
 } from '../../../../utils/common_import'
 import gql from '../../../../network/graphql/preschool'
 const showModal = util.promisify(wx.showModal)
+const event = require('../../../../lib/event/event')
 import Logger from '../../../../utils/logger.js'
 const logger = new Logger.getLogger('pages/package_preschool/growth_plan/list/index')
 
@@ -35,17 +36,29 @@ Page({
    */
   onLoad: co.wrap(function* (options) {
     this.longToast = new app.weToast()
+    this.longToast.toast({
+      type: "loading",
+      duration: 0
+    })
     this.currentTab = ''
+    event.on('subscribeList',this,(res)=>{
+      this.navTap({currentTarget:{
+        id:0
+      }})
+    })
     try {
       const resp = yield gql.getPlans()
       // this.data.lists = resp.plans
+      // const respUserPlans = yield gql.getUserPlans()
       this.setData({
         lists: resp.plans
       })
+      this.longToast.hide()
     } catch (e) {
       this.longToast.toast()
       util.showError(e)
     }
+    
 
   }),
 
@@ -161,5 +174,9 @@ Page({
       }
     )
   }),
+
+  onUnload(){
+    event.remove('subscribeList')
+  }
 
 })

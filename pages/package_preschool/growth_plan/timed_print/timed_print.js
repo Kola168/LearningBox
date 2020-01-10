@@ -179,6 +179,7 @@ Page({
         })
       }
       wxNav.navigateBack()
+      this.longToast.hide()
 
     } catch (e) {
       this.longToast.toast()

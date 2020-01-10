@@ -17,4 +17,9 @@
     </view>
 </view>
 
-<view class="footer {{isFullScreen?'is-full-screen':''}}" bindtap="beginPrint">开始打印</view>
+<!-- <view class="footer {{isFullScreen?'is-full-screen':''}}" bindtap="beginPrint">开始打印</view>
+-->
+<view class="footer {{isFullScreen?'is-full-screen':''}}" bindtap="btnClick">{{btnText}}</view>
+
+<import src="/lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />
