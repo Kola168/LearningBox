@@ -48,7 +48,8 @@
     "pages/mall/index",
     "pages/webview/index",
 		"pages/webview/member",
-		"pages/member/authorize"
+		"pages/member/authorize",
+		"pages/exit/index"
   ],
   "subPackages": [
     {

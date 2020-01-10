@@ -49,7 +49,7 @@ page{
 	margin-top:60rpx;
 }
 
-.bottom-button{
+.bottom-button-yellow{
   width:600rpx;
   line-height:100rpx;
   color:#333;
@@ -58,7 +58,22 @@ page{
   border-radius:50rpx;
   position:fixed;
   bottom:176rpx;
-  font-weight:500;
+	font-weight:500;
+	background:#ffdc5e;
+}
+
+.bottom-button-gray{
+  width:600rpx;
+  line-height:100rpx;
+  color:#999;
+  font-size:36rpx;
+  text-align:center;
+  border-radius:50rpx;
+  position:fixed;
+  bottom:176rpx;
+	font-weight:500;
+	background:#eaeaea;
+
 }
 
 .tips-sub-title{
@@ -66,4 +81,23 @@ page{
 	color:#fb5130;
 	margin-top:12rpx;
   margin-bottom:80rpx;
+}
+
+.confirm-setting{
+	display: flex;
+	flex-direction: row;
+	position:fixed;
+	bottom:310rpx;
+	align-items: center;
+}
+
+.confirm-setting .check-img{
+	 width: 40rpx;
+	 
+}
+
+.confirm-setting .confirm-text{
+	color:#333;
+	font-size:26rpx;
+	margin-left: 12rpx;
 }
