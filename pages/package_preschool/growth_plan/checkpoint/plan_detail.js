@@ -17,46 +17,46 @@ Page({
    * 页面的初始数据
    */
   data: {
-    imgUrls:[],
+    imgUrls: [],
     currentPage: 1,
     allPage: 3,
     currentImage: '',
     isFullScreen: false, //iphoneX底部button兼容性
-    showArrow:true,//预览图片左右箭头
-    member:false,
-    subscription:true,
-    btnText:''
+    showArrow: true, //预览图片左右箭头
+    member: false,
+    subscription: false,
+    btnText: ''
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: co.wrap(function *(options) {
-      this.longToast = new app.weToast()
-      // let currentImage=this.data.imgUrls[1].image
-      // this.setData({
-      //   currentImage: currentImage,
-      //   isFullScreen: app.isFullScreen
-      // })
+  onLoad: co.wrap(function* (options) {
+    this.longToast = new app.weToast()
+    // let currentImage=this.data.imgUrls[1].image
+    this.setData({
+      currentImage: this.data.currentImage,
+      isFullScreen: app.isFullScreen
+    })
 
-      this.userPlanSn= this.options.userPlanSn
-      this.sn = this.options.sn
-      this.name= this.options.name
-  
+    this.userPlanSn = this.options.userPlanSn
+    this.sn = this.options.sn
+    this.name = this.options.name
+
     try {
-      const resp= yield gql.getPreviewContent(this.sn)
-      this.featureKey= resp.content.featureKey
-      this.contentImagesLength= resp.content.contentImages.length
-      this.data.imgUrls= resp.content.contentImages
+      const resp = yield gql.getPreviewContent(this.sn)
+      this.featureKey = resp.content.featureKey
+      this.contentImagesLength = resp.content.contentImages.length
+      this.data.imgUrls = resp.content.contentImages
       this.setData({
         imgUrls: this.data.imgUrls,
-        allPage:resp.content.pageCount,
+        allPage: resp.content.pageCount,
         // currentPage:this.data.currentPage
       })
-      
-      if(this.data.allPage == 1){
+
+      if (this.data.allPage == 1) {
         this.setData({
-          showArrow:false
+          showArrow: false
         })
       }
 
@@ -68,55 +68,54 @@ Page({
     }
   }),
 
-  toFunc: co.wrap(function *(e){
-    console.log('00000',this.data.subscription)
+  toFunc: co.wrap(function* (e) {
     try {
-      if(this.data.subscription){
+      if (this.data.subscription) {
         this.btnType = 'print'
         this.setData({
-          btnText:'开始打印'
+          btnText: '开始打印'
         })
-    
-      }else if(!this.data.member){
+
+      } else if (!this.data.member) {
         this.btnType = 'buy'
         this.setData({
-          btnText:'购买会员'
+          btnText: '购买会员'
         })
-      }else{
+      } else {
         this.btnType = 'subscription'
         this.setData({
-          btnText:'立即订阅'
+          btnText: '立即订阅'
         })
       }
     } catch (error) {
       this.longToast.toast()
       util.showError(error)
     }
-    
+
   }),
 
   /**
    * 上一页
    */
-  prePage: function(){
-    try{
+  prePage: function () {
+    try {
       this.data.currentImage = this.data.imgUrls[0].image
       let index = this.data.imgUrls.length
       let currentPage = this.data.currentPage
-      if(this.data.currentPage > 1){
+      if (this.data.currentPage > 1) {
         this.setData({
           allPage: index,
           currentPage: currentPage - 1
         })
-        if(this.data.allPage == 1){
+        if (this.data.allPage == 1) {
           this.setData({
-            showArrow:false
+            showArrow: false
           })
         }
-      }else{
+      } else {
         console.log('已经第一张啦 ！')
       }
-    }catch(e){
+    } catch (e) {
       this.longToast.toast()
       util.showError(e)
     }
@@ -125,35 +124,34 @@ Page({
   /**
    * 下一页
    */
-  nextPage: function(){
-    try{
+  nextPage: function () {
+    try {
       let index = this.data.imgUrls.length
       let currentPage = this.data.currentPage
-      if(this.data.currentPage < index){
+      if (this.data.currentPage < index) {
         this.setData({
           allPage: index,
           currentPage: currentPage + 1,
           currentImage: this.data.imgUrls[currentPage].image
         })
-        if(this.data.allPage == 1){
+        if (this.data.allPage == 1) {
           this.setData({
-            showArrow:false
+            showArrow: false
           })
         }
-      }else{
+      } else {
         console.log('已经最后一张啦 ！')
       }
-    }catch(e){
+    } catch (e) {
       this.longToast.toast()
       util.showError(e)
     }
   },
 
-  btnClick(){
-
-    if(this.btnType==='buy'){
-      
-    } else{
+  btnClick() {
+    if (this.btnType === 'buy') {
+      wxNav.navigateTo(`/pages/package_member/member/order`)
+    } else {
       this.beginPrint()
     }
   },
@@ -181,7 +179,7 @@ Page({
         checkCapabilitys: {
           isSettingColor: true,
         }
-     }))
+      }))
     })
   }),
 })

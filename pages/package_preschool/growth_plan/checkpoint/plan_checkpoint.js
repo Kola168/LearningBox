@@ -27,6 +27,8 @@ Page({
     isShowBottomBtn: true, //是否显示底部按钮
     checkpointBg: 'https://cdn-h.gongfudou.com/LearningBox/preschool/growth_plan_step_bg.png', //背景图
     shadowOpcityImg: '../../images/growth_plan_lock.png', //透明遮罩层上的图片
+    btnImgUrl:'',
+    autoPrintBtn:false
   },
 
   /**
@@ -41,12 +43,55 @@ Page({
       this.subscribe = this.options.subscribe
       logger.info('planSn====', this.planSn)
       this.getDetail(this.planSn)
-      
+      // this.setData({
+      //   isSuscribe:this.data.isSuscribe,
+      //   isMember:this.data.isMember
+      // })
+      if(this.data.isSuscribe){
+        this.setData({
+          autoPrintBtn:true
+        })
+      }else{
+        this.toFunc()
+      }
+
+      this.longToast.hide()
     } catch (error) {
       this.longToast.toast()
       util.showError(error)
     }
   }),
+
+  toFunc: co.wrap(function *(){
+    this.longToast.toast({
+      type:'loading'
+    })
+    try {
+      if(this.data.isMember){
+        this.btnType='subscribe',
+        this.setData({
+          btnImgUrl:'https://cdn-h.gongfudou.com/LearningBox/preschool/growth_plan_btn_subscribe.png'
+        })
+      }else{
+        this.btnType='buy',
+        this.setData({
+          btnImgUrl:'https://cdn-h.gongfudou.com/LearningBox/preschool/growth_plan_btn_buy.png'
+        })
+      }
+      this.longToast.hide()
+    } catch (error) {
+      this.longToast.toast()
+      util.showError(error)
+    }
+  }),
+
+  btnClick(){
+    if(this.btnType === 'subscribe'){
+      this.toSubscribe()
+    }else if(this.btnType === 'buy'){
+      this.BuyMember()
+    }
+  },
 
   getDetail: co.wrap(function* (planSn) {
     try {
@@ -69,7 +114,7 @@ Page({
 
   /** 购买会员 */
   BuyMember: co.wrap(function* () {
-    wxNav.navigateTo('')
+    wxNav.navigateTo(`/pages/package_member/member/index`)
   }),
 
   /* 去订阅 */
@@ -86,9 +131,6 @@ Page({
         title:'已订阅！'
       })
       this.longToast.hide()
-      // setTimeout(function(){
-      //   this.toSetAuto()
-      // },6000)
       this.toSetAuto()
       this.longToast.hide()
     } catch (e) {
@@ -118,6 +160,8 @@ Page({
       wxNav.navigateTo(`/pages/package_preschool/growth_plan/timed_print/timed_print`,{
         userPlanSn:this.userPlanSn
       })
+
+      this.longToast.hide()
     } catch (error) {
       this.longToast.toast()
       util.showError(error)
