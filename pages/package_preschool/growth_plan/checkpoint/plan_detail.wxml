@@ -3,7 +3,6 @@
 <swiper class="detail-images" indicator-dots="{{indicatorDots}}" autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">
     <block wx:for="{{imgUrls}}" wx:key="index" id="{{index}}">
         <swiper-item class="detail-item">
-            <!--<image src="{{currentImage}}" class="slide-image" />-->
             <image src="{{item.nameUrl}}" class="slide-image" />
         </swiper-item>
     </block>
@@ -17,4 +16,5 @@
         </view>
     </view>
 </view>
+
 <view class="footer {{isFullScreen?'is-full-screen':''}}" bindtap="beginPrint">开始打印</view>
