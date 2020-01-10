@@ -16,6 +16,7 @@ const event = require('../../../lib/event/event')
 Page({
     data: {
         availableMember: false,
+        success:false,
         modalObj: {
             isShow: false,
             hasCancel: false,
@@ -37,19 +38,6 @@ Page({
             this.userSn = storage.get('userSn')
             this.getDevice()
         })
-    }),
-
-    getMemberPaymentOrder: co.wrap(function* () {
-        this.longToast.toast({
-            type: 'loading'
-        })
-        try {
-            // let resp = yield memberGql.getMemberPaymentOrder(),
-            this.longToast.hide()
-        } catch (e) {
-            this.longToast.hide()
-            util.showError(e)
-        }
     }),
     accessMember: co.wrap(function* () {
         this.longToast.toast({
