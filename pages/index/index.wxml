@@ -37,7 +37,7 @@
         <image src="/images/home/icon_voice.png" mode="widthFix"></image>
         <view>童音录制</view>
       </view>
-      <view class="tool-item" bindtap="toFunction">
+      <view class="tool-item" id="baobeicepin" bindtap="toFunction">
         <image src="/images/home/icon_test.png" mode="widthFix"></image>
         <view>宝贝测评</view>
       </view>

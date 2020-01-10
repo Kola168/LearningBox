@@ -49,7 +49,8 @@
     "pages/webview/index",
 		"pages/webview/member",
 		"pages/member/authorize",
-		"pages/exit/index"
+		"pages/exit/index",
+		"pages/account/collection/index"
   ],
   "subPackages": [
     {
@@ -153,7 +154,16 @@
         "kousuan/createplan",
         "kousuan/pointslist",
         "kousuan/previewWebview",
-        "kousuan/createTime"
+        "kousuan/createTime",
+        "copy_book/commonSense",
+        "copy_book/detail",
+        "copy_book/index",
+        "copy_book/list",
+        "copy_book/post",
+        "copy_book/subject",
+        "print_link/index",
+        "print_link/typeList",
+        "print_link/desc"
       ]
     },
     {

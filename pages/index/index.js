@@ -289,6 +289,8 @@ Page({
         break;
       case 'exerciseDay':
         url = '/pages/package_preschool/exercise_day/exercises/exercises'
+      case 'baobeicepin':
+        url = '/pages/package_preschool/evaluation/index'
         break;
     }
     if (!url) {

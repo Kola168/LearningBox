@@ -1,0 +1,12 @@
+var showDate=function(date){
+  return date.split(' ')[0]
+}
+var showMonth=function(date){
+  var newArr=date.split(' ')[0].split('-')
+  newArr.splice(0,1)
+  return newArr.join('-')
+}
+module.exports = {
+    showDate:showDate,
+    showMonth:showMonth
+}

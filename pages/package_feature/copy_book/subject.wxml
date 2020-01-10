@@ -1,0 +1,71 @@
+<!--pages/print_copybook/subject.wxml-->
+
+<view class="change-type" wx:if="{{showGrade}}" style="top:120rpx" >
+    <view class="device-list" wx:for="{{grades}}" wx:key="{{index}}" id="{{index}}" data-index="{{index}}" bindtap="changeGrade">
+        <view class="{{item.name==grade?'block-content-yellow':'block-content'}}">
+            {{item.name}}
+        </view>
+    </view>
+</view>
+
+<view class="content">
+    <view class="content-title" bindtap="openGradeModal">
+        <view class="content-choose">
+            <text>请选择年级</text>
+            <view>
+                <text style="{{showGrade?'color:#FFA200':''}}">{{grade}}</text>
+                <view class="icon"></view>
+            </view>
+        </view>
+    </view>
+    <view class="line-bold"></view>
+    <view class="list" wx:for="{{list}}" wx:key="{{index}}">
+        <view class="list-title">
+            <view class="square"></view>
+            {{item.unit_name}}
+        </view>
+        <view class="list-content" wx:for="{{item.books}}" wx:for-item="data" wx:for-index="i" wx:key="{{i}}" data-parent="{{index}}" bindtap="{{data.free_trial==false&&!user_paid?'toPay':'toDetail'}}" id="{{i}}">
+            <view class="name">
+                <view>{{data.name}}</view>
+                <view class='free' wx:if="{{data.free_trial==true&&!free}}">免费</view>
+
+            </view>
+            <view>
+                <view class="list-after" wx:if="{{data.printed}}">已练习</view>
+                <image mode="widthFix" src="../../../../images/icon_arrow_right.png"></image>
+            </view>
+
+        </view>
+    </view>
+</view>
+
+<block wx:if="{{list.length>0}}">
+    <view wx:if="{{!user_paid&&!free}}" class='bottom-nopay' bindtap='toPay'>
+        <view>￥{{price}} 购买《{{title}}》字帖集</view>
+    </view>
+    <view wx:if="{{user_paid&&!free}}" class="bottom-pay wx:if={{highScreen?'high-screen-bottom':''}}">
+        <view>您已购买《{{title}}》字帖集</view>
+    </view>
+</block>
+
+<view class="no-list" wx:if="{{list.length==0}}">
+    <image mode="widthFix" src="../../images/share_folder_bg.png"></image>
+    <view>
+        暂无内容 敬请期待~
+    </view>
+</view>
+<view class="modal-wrap" wx:if="{{showConfirmModal}}" catchtap="cancel">
+    <view class="confirm-modal">
+        <view>提示</view>
+        <view class='confirm-modal-content'>是否现在购买《{{title}}》字帖集？</view>
+        <view style='display:flex'>
+            <button class="cancel">取消</button>
+            <button class="confirm" bindtap='confirm'>确定</button>
+        </view>
+    </view>
+</view>
+
+<view class="template" wx:if="{{showTemplate}}" bindtap="hideModal"></view>
+
+<import src="../../../../lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />
