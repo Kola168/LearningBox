@@ -12,7 +12,7 @@
         立即打印
     </view>
     <image class="image" src="../images/member_free_tip_button.png" mode="widthFix" bindtap="getFreeMember"></image>
-    <view class="access-member" wx:if="{{availableMember}}" bindtap="showModal"> 
+    <view class="access-member" bindtap="toNext"> 
         <view>会员激活</view>
         <image class="" src="../images/arrow_right.png" mode="widthFix"></image>
     </view>

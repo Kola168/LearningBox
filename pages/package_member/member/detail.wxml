@@ -1,0 +1,15 @@
+<!--pages/package_member/member/detail.wxml-->
+<nav-bar background="#fff" title="会员中心"></nav-bar>
+<view class="back">
+    <image class="back-image" src="../images/detail_xueke_bg.png" mode="widthFix">
+        <view class="content"> 
+            <view>享受学科的学习内容、视频、试卷、分析报告和课程的全部权益，不适用于学龄前会员</view>
+            <view>立即开启</view>
+        </view>
+    </image>
+</view>
+
+<import src="../../../lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />
+<modal modal="{{modalObj}}" bindcomfirm="updateConfirm">
+</modal>

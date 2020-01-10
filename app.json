@@ -161,7 +161,8 @@
         "member/caculate",
         "member/index",
         "member/order",
-        "group/index"
+        "group/index",
+        "member/detail"
       ]
     },
     {
@@ -235,10 +236,10 @@
         "network/index/index",
         "network/tips/step1",
         "network/tips/step2",
-				"network/tips/step3",
-				"network/tips/step4",
-				"network/wificonnect/list",
-				"network/common/nowifi",
+        "network/tips/step3",
+        "network/tips/step4",
+        "network/wificonnect/list",
+        "network/common/nowifi",
         "network/wificonnect/connect",
         "ble/common/connect_success",
         "ble/common/no_bluetooth",
