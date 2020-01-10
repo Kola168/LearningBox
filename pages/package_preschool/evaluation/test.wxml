@@ -14,7 +14,7 @@
         </view>
       </view>
       <view class="time-box">
-        <image wx:if="{{subjectList[nowIndex].audioUrl}}" src="../images/evaluation_test_voice.png" mode="widthFix" class="voice-icon"></image>
+        <image wx:if="{{subjectList[nowIndex].audioUrl}}" src="../images/evaluation_test_voice.png" mode="widthFix" class="voice-icon" data-index="{{index}}" bindtap="playVideo"></image>
         <image src="../images/evaluation_test_clock.png" mode="widthFix" class="clock-icon">
           <view class="remaining-box">{{remainingTime}}s</view>
         </image>

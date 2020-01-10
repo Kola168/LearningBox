@@ -21,24 +21,26 @@ Page({
   },
   originalRemainingTime: 90,
   answerList: [], //回答的问题列表
-  is_right:false, //选择的题目的正确与否
+  is_right: false, //选择的题目的正确与否
   onLoad: function(options) {
     this.longToast = new app.weToast()
     this.sn = options.sn
     this.getTestList()
+    this.audioCtx = wx.createInnerAudioContext()
+    this.audioCtx.obeyMuteSwitch = false
   },
 
   getTestList: co.wrap(function*() {
     this.longToast.toast({
-      type:'loading'
+      type: 'loading'
     })
     try {
       let resp = yield gql.getTestList(this.sn)
-        this.setData({
-          subjectList: resp.examination.questions
-        })
-        this.longToast.toast()
-        this.startAnswer()
+      this.setData({
+        subjectList: resp.examination.questions
+      })
+      this.longToast.toast()
+      this.startAnswer()
     } catch (e) {
       this.longToast.toast()
       Loger(e)
@@ -46,6 +48,19 @@ Page({
     }
   }),
 
+  playVideo: function(e) {
+    let that = this
+    let index = e.currentTarget.dataset.index
+    this.audioCtx.src = this.data.subjectList[this.data.nowIndex].audioUrl
+    this.audioCtx.onCanplay(function() {
+      that.audioCtx.play()
+      that.audioCtx.offCanplay()
+    })
+  },
+
+  stopVideo: function() {
+    this.audioCtx.pause()
+  },
 
   //问题回答倒计时
   startAnswer: function() {
@@ -72,29 +87,30 @@ Page({
       is_right: _.clone(this.is_right)
     })
     this.data.nowIndex += 1
-    this.is_right=false
+    this.is_right = false
+    this.stopVideo()
     if (this.data.nowIndex > (this.data.subjectList.length - 1)) {
       return this.toSummary()
     }
     this.setData({
-      selectIndex:null
+      selectIndex: null
     })
   },
 
   selectAnswer: function(e) {
     let index = e.currentTarget.dataset.index
     this.setData({
-      selectIndex:index
+      selectIndex: index
     })
-    this.data.remainingTime=this.data.remainingTime<=3?this.data.remainingTime:3
-    this.is_right=this.data.subjectList[this.data.nowIndex].answers[index].isRight
+    this.data.remainingTime = this.data.remainingTime <= 3 ? this.data.remainingTime : 3
+    this.is_right = this.data.subjectList[this.data.nowIndex].answers[index].isRight
   },
 
   toSummary: function() {
     clearInterval(this.interval)
     wxNav.redirectTo('/pages/package_preschool/evaluation/testfinish', {
       snlist: encodeURIComponent(JSON.stringify(this.answerList)),
-      sn:this.sn
+      sn: this.sn
     })
   }
 })
