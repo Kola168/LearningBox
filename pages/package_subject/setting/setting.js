@@ -82,7 +82,7 @@ Page({
         totalPage: query.pageCount,
         sn: query.sn,
         pageCount: query.pageCount,
-        isPrintAnswer: query.isPrintAnswer,
+        originalUrl: query.printPdf,
         startPrintPage: 1,
         endPrintPage: query.pageCount,
         startPage: 1,
@@ -377,7 +377,7 @@ Page({
         attributes: {
           resourceType: 'XuekewangExercise',
           sn: this.data.sn,
-          isAnswer: this.data.isPrintAnswer,
+          originalUrl: this.data.originalUrl,
           copies: this.data.documentPrintNum,
           grayscale: !this.data.colorCheck,
           color: this.data.colorCheck,
