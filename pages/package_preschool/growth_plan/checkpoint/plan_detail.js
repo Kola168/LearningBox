@@ -17,57 +17,59 @@ Page({
    * 页面的初始数据
    */
   data: {
-    imgUrls: [
-      {
-        image: '../../images/plan_detail_img.jpg'
-      },
-      {
-        image: '../../images/plan_detail_img.jpg'
-      },
-      {
-        image: '../../images/plan_detail_img.jpg'
-      }
-    ],
+    imgUrls:[],
     currentPage: 1,
     allPage: 3,
     currentImage: '',
     isFullScreen: false, //iphoneX底部button兼容性
-    showArrow:true
-
+    showArrow:true,
+    buttonList:[{
+      func:0,
+      title:'开始打印'
+    },{
+      func:1,
+      title:'购买会员'
+    },{
+      func:2,
+      title:'立即订阅'
+    }]
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: co.wrap(function *(options) {
-      this.longToast = new app.weToast
-      let currentImage=this.data.imgUrls[1].image
-      this.setData({
-        currentImage: currentImage,
-        isFullScreen: app.isFullScreen
-      })
+      this.longToast = new app.weToast()
+      // let currentImage=this.data.imgUrls[1].image
+      // this.setData({
+      //   currentImage: currentImage,
+      //   isFullScreen: app.isFullScreen
+      // })
 
-      console.log('=======feacture',this.options)
+      this.userPlanSn= this.options.userPlanSn
+      this.sn = this.options.sn
+      this.name= this.options.name
   
     try {
-      this.userPlanSn= this.options.userPlanSn
-      var sn= this.options.sn
-      const resp = yield gql.getContent(sn)
-      var len = resp.content.contentImages.length
-      console.log('lenlen',len)
-      console.log('resp===',resp)
+      const resp= yield gql.getPreviewContent(this.sn)
+      this.featureKey= resp.content.featureKey
+      this.contentImagesLength= resp.content.contentImages.length
+      this.data.imgUrls= resp.content.contentImages
       this.setData({
-        imgUrls: resp.content.contentImages,
+        imgUrls: this.data.imgUrls,
         allPage:resp.content.pageCount,
-        currentPage:this.data.currentPage
+        // currentPage:this.data.currentPage
       })
 
-    } catch (error) {
-      this.longToast.weToast()
-      util.showError(error)
-      console.log(error)
+    } catch (e) {
+      this.longToast.toast()
+      util.showError(e)
     }
   }),
+
+  // changeFunc: co.wrap(function *(){
+
+  // })
 
   /**
    * 上一页
@@ -86,7 +88,8 @@ Page({
         console.log('已经第一张啦 ！')
       }
     }catch(e){
-      console.log('======',e)
+      this.longToast.toast()
+      util.showError(e)
     }
   },
 
@@ -107,7 +110,8 @@ Page({
         console.log('已经最后一张啦 ！')
       }
     }catch(e){
-      console.log('======',e)
+      this.longToast.toast()
+      util.showError(e)
     }
   },
 
@@ -116,9 +120,26 @@ Page({
    * 开始打印
    */
   beginPrint: co.wrap(function* (userPlanSn) {
-    console.log('lalal',this.userPlanSn)
-    wxNav.navigateTo('/pages/package_preschool/growth_plan/print_setting/print_setting',{
-      userPlanSn:this.userPlanSn
+    wxNav.navigateTo('/pages/package_common/setting/setting', {
+      settingData: encodeURIComponent(JSON.stringify({
+        file: {
+          name: this.name
+        },
+        orderPms: {
+          printType: 'RESOURCE',
+          pageCount: this.contentImagesLength,
+          featureKey: this.featureKey,
+          resourceOrderType: 'plan',
+          resourceAttribute: {
+            userPlanSn: this.userPlanSn,
+            sn: this.sn,
+            resourceType: 'plan',
+          }
+        },
+        checkCapabilitys: {
+          isSettingColor: true,
+        }
+     }))
     })
   }),
 })

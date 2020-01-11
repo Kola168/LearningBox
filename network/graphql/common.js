@@ -68,6 +68,22 @@ const graphqlApi = {
     })
   },
 
+  //获取收藏列表
+  collections:(param)=>{
+    return gql.query({
+      query: `query($type:CollectionTypeEnum!,$page: Int = 1){
+        collections(type:$type,page:$page){
+          ... on Content{
+            name
+            iconUrl
+
+          }
+        }
+      }`,
+      //parentName
+      variables: param
+    })
+  },
 }
 
 

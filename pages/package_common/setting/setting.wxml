@@ -110,7 +110,7 @@
 </view>
 
 <!-- 是否支持缩放打印 -->
-<view class="zoom-view" hidden="{{extract!=='all'}}"  wx:if="{{isSinglePageLayout}}" >
+<view class="zoom-view" hidden="{{extract!=='all'}}"  wx:if="{{setting.checkCapabilitys && setting.checkCapabilitys.isSinglePageLayout}}" >
 	<view class="item-label">缩放打印</view>
 	<view class="view-content">
 		<view

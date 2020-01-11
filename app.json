@@ -48,6 +48,9 @@
     "pages/mall/index",
     "pages/webview/index",
     "pages/webview/member",
+		"pages/member/authorize",
+		"pages/exit/index",
+    "pages/account/collection/index",
     "pages/print_id/pay",
     "pages/print_id/print",
     "pages/print_id/smart_save"
@@ -154,7 +157,16 @@
         "kousuan/createplan",
         "kousuan/pointslist",
         "kousuan/previewWebview",
-        "kousuan/createTime"
+        "kousuan/createTime",
+        "copy_book/commonSense",
+        "copy_book/detail",
+        "copy_book/index",
+        "copy_book/list",
+        "copy_book/post",
+        "copy_book/subject",
+        "print_link/index",
+        "print_link/typeList",
+        "print_link/desc"
       ]
     },
     {
@@ -181,7 +193,6 @@
         "record_voice/content_detail/content_detail",
         "growth_plan/list/index",
         "growth_plan/timed_print/timed_print",
-        "growth_plan/print_setting/print_setting",
         "growth_plan/checkpoint/plan_checkpoint",
         "growth_plan/checkpoint/plan_detail",
         "exercise_day/setting/setting",
@@ -209,18 +220,23 @@
         "setting/setting",
         "evaluate_exam/index/index",
         "evaluate_exam/testpaper/index",
-        "report/preview/index",
         "member_intro/index",
         "super_errorbook/index/index",
         "super_errorbook/atlas/index",
         "super_errorbook/errorbook/index",
         "super_errorbook/errorbook/list",
+        "super_errorbook/errorbook/detail",
         "super_errorbook/knowledge_list/index",
         "evaluate_exam/preview/index",
         "weakness_exercise/index/index",
         "stage_report/index/index",
-        "exam_paper_report/index/index"
-      ]
+        "exam_paper_report/index/index",
+        "sync_video/index/index",
+        "sync_video/video_list/video_list",
+        "sync_video/video_detail/video_detail",
+        "correct/index",
+				"report/index"
+			]
     },
     {
       "root": "pages/package_device",

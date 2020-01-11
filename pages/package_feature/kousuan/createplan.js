@@ -88,6 +88,10 @@ Page({
   showPicker:function(e){
     let that=this
     let type=e.currentTarget.dataset.type
+    if(type==this.data.pick_type){
+      this.hidePicker()
+      return
+    }
     this.setData({
       pick_type:type,
       pointType:'',

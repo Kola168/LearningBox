@@ -13,7 +13,7 @@ Component({
         slotContent: false,
         content: '难度划分更贴心，在家也能做练习',
         image: 'https://cdn-h.gongfudou.com/LearningBox/subject/toast_sync.png',
-        soltBottom: true
+        slotBottom: true
       }
     }
   },

@@ -3,17 +3,19 @@ import {
   regeneratorRuntime,
   co,
   wxNav,
-  util
+  util,
+  storage
 } from "../../../utils/common_import"
+const event = require('../../../lib/event/event')
 import api from '../../../network/restful_request'
 import subjectGql from '../../../network/graphql/subject'
 Page({
   data: {
-    isSubjectMember: true,
     areaHeight: 0,
     showSerial: false,
     isFullScreen: false,
     currentTopic: null,
+    title: '批改',
     loadReady: false,
     topicsResult: [], //批改结果
     currentResult: null, //当前题目批改结果
@@ -21,6 +23,7 @@ Page({
     currentTopicType: 'single', //single客观小题,multipleObj客观大题,multipleSub主观大题
     progress: 0,
     multipleObjResult: [], //multipleObj客观大题大题结果
+    showProgessModal: false,
     modalObj: {
       isShow: false,
       hasCancel: true,
@@ -36,6 +39,7 @@ Page({
     } else {
       areaHeight = app.sysInfo.screenHeight - app.getNavBarInfo().topBarHeight
     }
+    let isAuth = Boolean(storage.get('authToken'))
     this.setData({
       areaHeight,
       isFullScreen: app.isFullScreen
@@ -45,20 +49,17 @@ Page({
     this.paperId = Number(scene.split('_')[1])
     this.correctType = scene.split('_')[2] === 'paper' ? 'XuekewangPaper' : 'XuekewangExercise' //批改类型
     this.singleTopicIds = new Set()
-    this.getCorrectPaper()
-    // setInterval(() => {
-    //   if (this.data.progress < 100) {
-    //     this.setData({
-    //       progress: this.data.progress + 5
-    //     })
-    //   }
-    // }, 500)
-  }),
-  unfoldSerial() {
-    this.setData({
-      showSerial: !this.data.showSerial
+    if (isAuth) {
+      // this.getCorrectPaper()
+    }
+    event.on('authorize', this, () => {
+      this.setData({
+        isAuth: Boolean(storage.get('authToken'))
+      })
+      this.getCorrectPaper()
     })
-  },
+  }),
+
   // 获取试卷内容
   getCorrectPaper: co.wrap(function* () {
     this.weToast.toast({
@@ -77,12 +78,11 @@ Page({
       this.subjectName = tempData.subject_name
       this.currentTopicId = currentTopic.ques_id
       this.setData({
-        loadReady: true,
-        title: tempData.title,
+        title:tempData.title,
         currentTopicType: formatResult.topicType,
-        topicsResult,
+        topicsResult: topicsResult,
         currentTopic: formatResult.currentTopic,
-        ['modalObj.isShow']: false //是否已批改
+        ['modalObj.isShow']: false
       })
       this.weToast.hide()
     } catch (error) {
@@ -91,8 +91,16 @@ Page({
     }
   }),
 
+  // 推出批改
   exitCorrect() {
     wxNav.switchTab('/pages/index/index')
+  },
+
+  // 展开快速选择
+  unfoldSerial() {
+    this.setData({
+      showSerial: !this.data.showSerial
+    })
   },
 
   // 切换题目
@@ -155,10 +163,9 @@ Page({
     if (currentResult != null) {
       let dataKey = `topicsResult[${this.data.topicIndex}]`,
         nextTopicIndex = this.data.topicIndex + 1,
-        parent = false //是否包含小题
+        parent = true
 
       if (this.data.currentTopicType === 'multipleObj') {
-        parent = true
         let multipleObjResult = this.data.multipleObjResult
         let hasSingleTopic = multipleObjResult.some((val) => { //是否选择了小题
           return val == 1
@@ -224,15 +231,54 @@ Page({
       topicsResult = topicsResult.concat(tempSingleTopicIds)
       let res = yield subjectGql.submitCorrect(topicsResult, this.correctType, this.paperId)
       this.weToast.hide()
-      wxNav.navigateTo('../report/index/index', {
-        from: 'correct',
-        sn: ''
-      })
+      if (res.submitXuekewangWrongQuestion.state) {
+        if (this.correctType === 'XuekewangExercise') {
+          wxNav.navigateTo()
+        } else {
+          this.setData({
+            showProgessModal: true
+          })
+          this.workId = res.submitXuekewangWrongQuestion.id
+          this.getWorkerSn()
+        }
+      }
     } catch (e) {
       this.weToast.hide()
       util.showError(e)
     }
   }),
+
+  getWorkerSn: co.wrap(function* () {
+    try {
+      let resp = yield api.synthesisSnResult(this.workId)
+      console.log(resp)
+      if (resp.res.state === 'send') {
+        setTimeout(() => {
+          this.getWorkerSn()
+        }, 3000)
+        return
+      }
+      console.log(resp)
+      wxNav.navigateTo('../report/index', {
+        sn: resp.res.sn,
+        from: 'correct'
+      })
+    } catch (e) {
+      util.showError(error)
+    }
+  }),
+
+  // 学科会员介绍
+  toMemberIntro(e) {
+    if (app.preventMoreTap(e)) return
+    wxNav.navigateTo("../member_intro/index")
+  },
+
+  // 授权
+  toAuth(e) {
+    if (app.preventMoreTap(e)) return
+    wxNav.navigateTo("/pages/authorize/index")
+  },
 
   // 格式化题目
   formatTopic(currentTopic) {
@@ -276,5 +322,8 @@ Page({
       currentTopic: formatCurrentTopic,
       topicType: topicType
     }
+  },
+  onUnload() {
+    event.remove('authorize', this)
   }
 })

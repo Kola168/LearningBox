@@ -1,11 +1,9 @@
 <!--pages/package_feature/kousuan/learningplan.wxml-->
+<wxs src="learningplan.wxs"  module="foo"/>
 <nav-bar title="练习计划"></nav-bar>
 
 <view class="top-tap">
-  <view class="top-tap-style {{planTypeCheck=='created'?'type-checked':''}}" data-type="created" bindtap="checkPlanType">
-    未设置
-    <view wx:if="{{planTypeCheck=='created'}}" class="type-checked-line"></view>
-  </view>
+
   <view class="top-tap-style {{planTypeCheck=='processing'?'type-checked':''}}" data-type="processing" bindtap="checkPlanType">
     执行中
     <view wx:if="{{planTypeCheck=='processing'}}" class="type-checked-line"></view>
@@ -14,25 +12,34 @@
     已结束
     <view wx:if="{{planTypeCheck=='finished'}}" class="type-checked-line"></view>
   </view>
+  <view class="top-tap-style {{planTypeCheck=='created'?'type-checked':''}}" data-type="created" bindtap="checkPlanType">
+    未设置
+    <view wx:if="{{planTypeCheck=='created'}}" class="type-checked-line"></view>
+  </view>
 </view>
 
 <view wx:if="{{planTypeCheck=='created'}}" class="list-box">
-  <block wx:if="{{unSetList.length>0}}">
-    <view wx:for="{{unSetList}}" wx:key="executingList" class="list-item">
+  <block wx:if="{{stateList.length>0}}">
+    <view wx:for="{{stateList}}" wx:key="executingList" class="list-item">
       <view class="list-msg-box">
         <view class="list-cont-box">
-          <text class="list-name"><text class="list-name-point"></text>{{item.name}}</text>
+          <text class="list-name">七天专享练习{{index+1}}</text>
           <view class="list-detail-box">
-            <view class="list-type">{{item.calculateType}}</view>
-            <view class="list-type-detail">{{item.typeName}}</view>
+            <view class="list-type-detail">{{item.categoryName}}</view>
           </view>
         </view>
-        <view class="list-state">
-          {{item.state}}
+      </view>
+      <view class="list-print-date">
+        从{{foo.showDate(item.startTime)}}开始 至 {{foo.showDate(item.endTime)}}结束
+      </view>
+      <view class="list-print-time">
+        <text>执行时间未设置</text>
+        <view class="list-print-timeset" data-index="{{index}}" bindtap="setPlanTime">
+          去设置
         </view>
       </view>
       <view class="list-time-box">
-        从{{item.startTime}}开始至{{item.finishTime}}结束
+        {{foo.showMonth(item.startTime)}} 24:00之后若未设置将自动删除此计划
       </view>
     </view>
   </block>
@@ -45,26 +52,24 @@
 </view>
 
 <view wx:if="{{planTypeCheck=='processing'}}" class="list-box">
-  <block wx:if="{{executingList.length>0}}">
-    <view wx:for="{{executingList}}" wx:key="executingList" class="list-item">
+  <block wx:if="{{stateList.length>0}}">
+    <view wx:for="{{stateList}}" wx:key="executingList" class="list-item">
       <view class="list-msg-box">
         <view class="list-cont-box">
-          <text class="list-name">{{item.name}}</text>
+          <text class="list-name">七天专享练习{{index+1}}</text>
           <view class="list-detail-box">
-            <view class="list-type">{{item.calculateType}}</view>
-            <view class="list-type-detail">{{item.typeName}}</view>
+            <view class="list-type-detail">{{item.categoryName}}</view>
           </view>
         </view>
-        <view class="list-button">
+        <view class="list-button" data-index="{{index}}" bindtap="stopPlan">
           停止
         </view>
       </view>
       <view class="list-time-box">
-        <text class="list-time-text">每天{{item.time}}执行</text>
+        <text class="list-time-text">每天{{item.timing}}执行</text>
         <text>由于每天的计划量比较大，可能会有一定时间的延迟</text>
       </view>
     </view>
-
   </block>
   <block wx:else>
     <view class="noexecuting-title">
@@ -80,18 +85,17 @@
 </view>
 
 <view wx:if="{{planTypeCheck=='finished'}}" class="list-box">
-  <block wx:if="{{finishedList.length>0}}">
-    <view wx:for="{{finishedList}}" wx:key="executingList" class="list-item list-finish-item">
+  <block wx:if="{{stateList.length>0}}">
+    <view wx:for="{{stateList}}" wx:key="executingList" class="list-item list-finish-item">
       <view class="list-msg-box">
         <view class="list-cont-box">
-          <text class="list-name"><text class="list-name-point"></text>{{item.name}}</text>
+          <text class="list-name"><text class="list-name-point"></text>七天专享练习{{index+1}}</text>
           <view class="list-detail-box">
-            <view class="list-type">{{item.calculateType}}</view>
-            <view class="list-type-detail">{{item.typeName}}</view>
+            <view class="list-type-detail">{{item.categoryName}}</view>
           </view>
         </view>
-        <view class="list-state">
-          {{item.state}}
+        <view wx:if="{{item.isEndtime}}" class="list-state">
+          已提前结束
         </view>
       </view>
       <view class="list-time-box list-finish-time">

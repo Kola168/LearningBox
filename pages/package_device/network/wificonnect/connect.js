@@ -21,17 +21,18 @@ Page({
 
 	onLoad: function (options) {
 		this.longToast = new app.weToast()
-		// console.log(options)
 		this.equipInfo = JSON.parse(decodeURIComponent(options.equipInfo))
 		this.wifiSSID = JSON.parse(decodeURIComponent(options.wifiSSID))
 		this.setData({
 			wifiSSID: this.wifiSSID
 		})
-		// console.log(this.equipInfo)
 	},
 
 	inputprintNum: function (e) {
-		// console.log(e)
+	},
+
+	endInput: function (e) {
+		console.log('endValue e=====', e.detail.value)
 		this.setData({
 			passWord: e.detail.value
 		})
@@ -59,42 +60,33 @@ Page({
 			if (resp.data.code == 0) {
 				this.networkManage()  //设置成功后检查网络的物理状态
 			} else {
-				yield showModal({
-					title: '提示',
-					content: '配网失败',
-					showCancel: false,
-					confirmColor: '#ff9999'
-				})
+				this.longToast.toast()
+				this.naviagteToStep1('配网失败')
 			}
 		} catch (e) {
 			this.longToast.toast()
-			yield showModal({
-				title: '提示',
-				content: '网络异常',
-				showCancel: false,
-				confirmColor: '#ff9999'
-			})
+			util.showError(e)
 		}
 	}),
 
-		//检查网络状态
-		networkManage: co.wrap(function* () {
-			var that = this;
-			//监听网络状态
-			wx.onNetworkStatusChange(function (res) {
-				console.log('执行到这里===========55555===', res)
-				if (!res.isConnected) {
-					console.log('网络似乎不太顺畅');
-					return false
-				} else {
-					//在网络通的情况下，并且1500毫秒还是有网
-					wx.offNetworkStatusChange()
-					that.bindCode()
-				}
-			})
-		}),
+	//检查网络状态
+	networkManage: co.wrap(function* () {
+		var that = this;
+		//监听网络状态
+		wx.onNetworkStatusChange(function (res) {
+			console.log('执行到这里===========55555===', res)
+			if (!res.isConnected) {
+				console.log('网络似乎不太顺畅');
+				return false
+			} else {
+				//在网络通的情况下，并且1500毫秒还是有网
+				wx.offNetworkStatusChange()
+				that.bindCode()
+			}
+		})
+	}),
 
-		//上报code信息
+	//上报code信息
 	bindCode: co.wrap(function* () {
 		let deviceInfo = {
 			serviceSn: this.equipInfo.DeviceID,
@@ -107,33 +99,25 @@ Page({
 			let sn = res.bindDevice.device.sn
 			this.checkEquipment(sn)
 		} catch (e) {
-			console.log('bindCode错误===',e)
-			if(e === 'customize-timeout'){  //自定义3秒超时,30次
+			console.log('bindCode错误===', e)
+			if (e === 'customize-timeout') {  //自定义3秒超时,30次
 				if (!that.bindCode.time) {
 					that.bindCode.time = 0
 				}
 				that.bindCode.time++
 				if (that.bindCode.time >= 30) {
 					this.longToast.toast()
-					wx.showModal({
-						title: '提示',
-						content: '配网超时',
-					})
-					this.longToast.toast()
-					setTimeout(function(){
-						return wxNav.navigateTo('/pages/package_device/network/tips/step1')
-					},1000)
-				}else{
-					console.log('that.bindCode.time====',that.bindCode.time)
+					this.naviagteToStep1('配网超时,请重试')
+				} else {
+					console.log('that.bindCode.time====', that.bindCode.time)
 					that.bindCode()
 				}
-			}else if(e.errMsg === "request:fail timeout" || e.errMsg === "request:fail"){
-				wx.showModal({
-					title: '提示',
-					content: '配网中断',
-				})
-			}else{//其它未知错误
-				return wxNav.navigateTo('/pages/package_device/network/tips/step1')
+			} else if (e.errMsg === "request:fail timeout" || e.errMsg === "request:fail") {
+				this.longToast.toast()
+				this.naviagteToStep1('配网中断，请检查你的网络')
+			} else {//其它未知错误
+				this.longToast.toast()
+				this.naviagteToStep1('未知错误')
 			}
 		}
 	}),
@@ -153,36 +137,52 @@ Page({
 				that.checkEquipment.time++
 				if (that.checkEquipment.time >= 30) {
 					this.longToast.toast()
-					yield showModal({
+					const res = yield showModal({
 						title: '提示',
 						content: '配网失败',
 						showCancel: false,
-						confirmColor: '#ff9999'
+						confirmColor: '#ffdc5e'
 					})
-					return wxNav.navigateTo('/pages/package_device/network/tips/step1')
+					if (res.confirm) {
+						return wxNav.navigateTo('/pages/package_device/network/tips/step1')
+					}
 				}
 				setTimeout(function () {
 					that.checkEquipment(sn)
 				}, 3000)
 			} else {
 				this.longToast.toast()
-				wx.showToast({
-					title: '配网成功',
-					duration: 2000,
+				const res = yield showModal({
+					title: '提示',
+					content: '配网成功',
+					showCancel: false,
+					confirmColor: '#ffdc5e'
 				})
-				setTimeout(function(){
-					wxNav.switchTab('/pages/index/index')
-				},1700)
+				console.log('re===========',res)
+				if (res.confirm) {
+					return wxNav.switchTab('/pages/index/index')
+				}
 			}
 		} catch (e) {
 			this.longToast.toast()
 			console.log('echeckEquipment======', e)
-			wxNav.navigateTo('/pages/package_device/network/tips/step1')
-			return
+			util.showError(e)
 		}
 	}),
 
-	changeWifi:function(){
+	changeWifi: function () {
 		wxNav.navigateBack()
-	}
+	},
+
+	naviagteToStep1:co.wrap(function* (error) {
+		const res = yield showModal({
+			title: '提示',
+			content: error,
+			showCancel: false,
+			confirmColor: '#ffdc5e'
+		})
+		if (res.confirm) {
+			return wxNav.navigateTo('/pages/package_device/network/tips/step1')
+		}
+	})
 })

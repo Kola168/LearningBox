@@ -65,14 +65,13 @@ Page({
 
   checkAnswer: function () {
     this.setData({
-      isPrintAnswer: !this.data.isPrintAnswer
+      isPrintAnswer: !this.data.isPrintAnswer,
+      currentIndex: 1
     })
   },
 
   print: co.wrap(function* () {
     try {
-
-
       var postData = {
         name: this.data.exercise.exerciseName,
         isPrintAnswer: this.data.isPrintAnswer,

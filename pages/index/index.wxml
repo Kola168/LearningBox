@@ -37,7 +37,7 @@
         <image src="/images/home/icon_voice.png" mode="widthFix"></image>
         <view>童音录制</view>
       </view>
-      <view class="tool-item" bindtap="toFunction">
+      <view class="tool-item" id="baobeicepin" bindtap="toFunction">
         <image src="/images/home/icon_test.png" mode="widthFix"></image>
         <view>宝贝测评</view>
       </view>
@@ -45,12 +45,16 @@
         <image src="/images/home/icon_miaohong.png" mode="widthFix"></image>
         <view>幼儿描红</view>
       </view>
+      <view class="tool-item" bindtap="toFunction" id="exerciseDay">
+        <image src="/images/home/icon_exercise_day.png" mode="widthFix"></image>
+        <view>每日一练</view>
+      </view>
       <view class="tool-item">
       </view>
     </view>
     <view class="home-title">
       <view>宝贝学习计划</view>
-      <view>
+      <view bindtap="moreLearingPlan">
         <text>更多</text>
         <image src="/images/doc_item_arrow.png" mode="widthFix"></image>
       </view>
@@ -86,7 +90,7 @@
       <image src="/images/home/study_plan_none.png" mode="widthFix" class="study-plan-image"></image>
       <view>
         <view>快去定制宝宝的学习计划吧~</view>
-        <view class="add-plan">
+        <view class="add-plan" bindtap="addPlan">
           <view>新增计划</view>
         </view>
       </view>
@@ -143,7 +147,7 @@
       <image src="/images/home/subject_train.png" mode="widthFix" bind:tap="toFunction" id="weaknessExercise"  />
       <image src="/images/home/subject_report.png" mode="widthFix" bind:tap="toFunction" id="stageReporter"  />
     </view>
-    <!-- <view class="tips tips-sub">
+    <view class="tips tips-sub">
       <view>
         <image src="/images/home/icon_subject_book.png" mode="widthFix" />
         <view>什么是纸质学习法？</view>
@@ -152,7 +156,7 @@
         <image src="/images/home/icon_subject_teacher.png" mode="widthFix" />
         <view>小白老师是谁？</view>
       </view>
-    </view> -->
+    </view>
     <view class="study-center" bind:tap="toLearnCenter">
       <text>进入学习中心</text>
       <image src="/images/home/to_study_center.png" mode="widthFix" />

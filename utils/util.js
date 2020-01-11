@@ -208,19 +208,29 @@ function promisify(fn) {
   }
 }
 
-function showError(e) {
-  let title, content
+function showError(e, callback){
+	let title, content
+	
   if (e && e.message) {
+		if(e.code ==40001 || e.code == 40004){
+			return
+		}
     title = e.title || '提示'
     content = e.message
   } else if (e && e.errors && e.errors[0]) {
+		if(e.errors[0].extensions && (e.errors[0].extensions.code === 40001 || e.errors[0].extensions.code === 40004)){
+       return
+		}
     content = e.errors[0].message || ''
   }
   wx.showModal({
     title: title || '提示',
     content: content || '网络异常',
     showCancel: false,
-    confirmColor: '#2086ee'
+    confirmColor: '#2086ee',
+    success: function(res){
+      callback && callback(res)
+    },
   })
 }
 

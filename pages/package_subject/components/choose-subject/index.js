@@ -5,7 +5,8 @@ const app = getApp()
 import {
   regeneratorRuntime,
   co,
-  util
+  util,
+  storage,
 } from '../../../../utils/common_import'
 const request = util.promisify(wx.request)
 import graphql from '../../../../network/graphql/subject'
@@ -21,6 +22,12 @@ Component({
   },
 
   attached: co.wrap(function*(){
+    var subjects = storage.get("subjectsData")
+    if (subjects) {
+      return this.setData({
+        subjects
+      })
+    }
     yield this.getSubject()
   }),
 
@@ -29,13 +36,16 @@ Component({
   },
 
   methods: {
+    /**
+     * 获取学科信息
+     */
     getSubject: co.wrap(function*(){
       try {
         var resp = yield graphql.getSubject()
-        console.log(resp,'==resp==')
         this.setData({
           subjects: resp.xuekewang.subjects
         })
+        storage.put("subjectsData", resp.xuekewang.subjects)
       } catch(err) {
         console.log(err)
       }

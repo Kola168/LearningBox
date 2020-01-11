@@ -58,42 +58,53 @@ Page({
 			image: 'https://cdn-h.gongfudou.com/LearningBox/main/doc_confirm_print_a4_new.png'
 		},
   },
+  /**
+   * @param {Object} 
+      settingData {Object}
+        {
+          isPreview: false  *是否预览文档*
+          file: {
+            name  *文档名称*
+          }
+          btn: {
+            isBack: true,  *是否返回上一页*
+            btnContent: '确认设置', *按钮文案*
+          }
+          orderPms {
+             pageCount: 20, 可选 
+             featureKey 必选
+             printType: 【 PRINTDOC 、PRINTSUBJECT、RESOURCE 】 必选
+            /-文档类参数-/
+            attributes: { 文档类 =》 PRINTDOC
+              printUrl
+              filename
+              ...
+            }
 
+            /-学科类  资源类参数-/
+            resourceAttribute: { 学科类  资源类=》 PRINTSUBJECT || RESOURCE
+              printUrl
+              filename
+              ...
+            }
+            resourceOrderType: 必选
+            ...
+
+          }
+          checkCapabilitys: { 必选
+            isSettingDuplex: false, //是否设置单双面
+            isSettingColor: false, //是否设置色彩
+            isSettingOddEven: false, //是否设置奇偶
+            isSettingSkipGs: false, //是否支持文件修复
+            isSinglePageLayout: false //是否支持缩放
+          }
+        }
+
+   */
   onLoad: co.wrap(function* (options) {
     this.longToast = new app.weToast()
     try {
-      // var options = {
-      //   settingData: encodeURIComponent(JSON.stringify({
-      //     isPreview: true, //是否预览文档
-      //     file: {
-      //        name: '???' 设置文件名称
-      //     },
-      //     btn: {   //底部按钮
-      //       isBack: true, 
-      //       btnContent: '确认设置',
-            
-      //     },
-      //     orderPms: { // 订单参数
-      //       pageCount: 20,
-      //       printType: 'subject',
-      //       attributes || resourceAttribute: { // 订单提交参数
-      //         resourceType: 'XuekewangExercise',
-      //         sn: '789560367499',
-      //         isAnswer: true,
-      //       },
-      //       featureKey: 'xuekewang_exercise' 
-      //     },
-      //     checkCapabilitys: { // 支持设置状态参数
-              // isSettingDuplex: false, //是否设置单双面
-              // isSettingColor: false, //是否设置色彩
-              // isSettingOddEven: false, //是否设置奇偶
-              // isSettingSkipGs: false, //是否支持文件修复
-              // isSinglePageLayout: false //是否支持缩放
-      //     }
-      //   }))
-      // }
       var baseSettings = yield this.initSettings(options)
-      console.log(baseSettings, '==baseSettings==')
       this.setData({
         setting: {
           ...baseSettings,
@@ -461,7 +472,8 @@ Page({
    */
   openRepair: co.wrap(function* () {
     this.setData({
-      showConfirm: true
+      skipGs: true,
+      showConfirm: false
     })
   }),
 
@@ -559,16 +571,17 @@ Page({
       })
 
       // 存下订单完成页渲染数据
-      storage.put('orderSuccessParams', resp.statistic)
+      resp && storage.put('orderSuccessParams', resp.statistic)
 
       // 
-      wxNav.navigateTo('/pages/finish/index', {
+      resp && wxNav.navigateTo('/pages/finish/index', {
         type: this.data.setting.orderPms.featureKey,
         media_type: this.data.setting.orderPms.featureKey,
         state: resp.state
       })
 
     } catch(err) {
+      util.showError(err)
       console.log(err)
     }
   })

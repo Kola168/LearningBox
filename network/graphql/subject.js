@@ -488,6 +488,7 @@ const graphqlApi = {
       mutation: `mutation ($input: SubmitWrongQuestionInput!){
         submitXuekewangWrongQuestion(input:$input){
           state
+          id
         }
       }`,
       variables: {
@@ -552,6 +553,242 @@ const graphqlApi = {
           }
         }
       }`
+    })
+  },
+
+  /**
+   * 获取知识点
+   * @param {Object}
+      sn 学科的sn
+      startTime 开始时间
+      endTime 结束时间
+   */
+  getKnowledges: (pms) => {
+    return gql.query({
+      query: `query getKnowledges($sn: String!, $startTime: String!, $endTime: String!){
+        xuekewangSubject(sn:$sn, startTime: $startTime, endTime:$endTime){
+          subject{
+            sn
+          }
+          knowledges{
+            errorBookCount
+            id
+            name
+          }
+        }
+      }`,
+      variables: {
+        ...pms
+      }
+    })
+  },
+
+  /**
+   * 获取练习列表
+   */
+  getKnowledgeExercises: (subjectSn, isPrint = 0) => {
+    return gql.query({
+      query: `query getExercises($subjectSn:String, $exerciseType:String, $isPrint: Int){
+        xuekewang{
+          exercises(subjectSn:$subjectSn, exerciseType: $exerciseType, isPrint: $isPrint){
+            sn
+            dateTime
+            isPrint
+            pageSize
+            exerciseName
+          }
+          exerciseCount(subjectSn:$subjectSn, exerciseType: $exerciseType, isPrint: $isPrint)
+        }
+      }`,
+      variables: {
+        subjectSn,
+        exerciseType: 'kpoint',
+        isPrint
+      }
+    })
+  },
+
+  /**
+   * 获取学科错题列表
+   */
+  getSubjectsErrorbook: () => {
+    return gql.query({
+      query: `query {
+        xuekewang {
+          subjects {
+            iconUrl
+            subjectId
+            subjectName
+            sn
+            errorBooksNum
+          }
+        }
+      }`
+    })
+  },
+
+  /**
+   * 获取学科错题筛选项
+   * @param { String } sn 科目sn
+   * @param { String } startAt 开始时间
+   * @param { String } endAt 结束时间
+   */
+  getErrorbookFilters: (sn, startAt, endAt) => {
+    return gql.query({
+      query: `query($sn: String!,$startAt: String!,$endAt: String!) {
+        xuekewang {
+          errorBookKnowledges(sn:$sn,startAt:$startAt,endAt:$endAt) {
+            docCount
+            key
+          }
+          errorBookTypeNames(sn:$sn,startAt:$startAt,endAt:$endAt) {
+            docCount
+            key
+          }
+        }
+      }`,
+      variables: {
+        sn,
+        startAt,
+        endAt
+      }
+    })
+  },
+
+  /**
+   * 获取错题列表
+   * @param { String } sn 科目sn
+   * @param { String } startAt 开始时间
+   * @param { String } endAt 结束时间
+   * @param { String } knowledge 知识点
+   * @param { String } typeName 题型
+   * @param { String } state 是否学会
+   */
+  getErrorbookList: (sn, startAt, endAt, knowledge, typeName, state, page) => {
+    return gql.query({
+      query: `query($sn: String!,$startAt: String!,$endAt: String!,$knowledge: String!,$typeName: String!,$state: Int!,$page:Int!,$per:Int!){
+        xuekewang {
+          errorBooks(sn: $sn,startAt: $startAt,endAt: $endAt,knowledge: $knowledge,typeName: $typeName,state: $state,page:$page,per:$per) {
+            totalCount
+            books{
+              deletedAt
+              updatedAt
+              xuekewangQuestion {
+                quesBody
+                quesId
+                typeName
+                xuekewangKnowledges {
+                  originalId
+                  title
+                }
+              }
+            }
+          }
+        }
+      }`,
+      variables: {
+        sn,
+        startAt,
+        endAt,
+        knowledge,
+        typeName,
+        state,
+        page,
+        per: 5
+      }
+    })
+  },
+  /**
+   * 标记是否已学会
+   * @param { Array } quesIds 题目ids
+   * @param { String } action 标记类型 create/destroy
+   */
+  markErrorbook: (quesIds, action) => {
+    return gql.mutate({
+      mutation: `mutation ($input:MarkWrongQuestionInput!){
+        markXuekewangWrongQuestion(input:$input){
+         state
+       }
+     }`,
+      variables: {
+        input: {
+          quesIds,
+          action
+        }
+      }
+    })
+  },
+
+  /**
+   * 获取学科知识图谱
+   */
+  getSubjectsAtlas: () => {
+    return gql.query({
+      query: `query {
+        xuekewang {
+          subjectRate {
+            subjectName
+            subjectId
+            scoringRate
+            questionNum
+          }
+          totalErrorBooksNum
+        }
+      }`
+    })
+  },
+
+  /**
+   * 获取知识点列表
+   * @param { string } subjectId 科目id
+   */
+  getKnowledgesAtlas: (subjectId) => {
+    return gql.query({
+      query: `query($subjectId:Int) {
+        xuekewang {
+          kpointRate(subjectId:$subjectId) {
+            kpName
+            tureRate
+          }
+        }
+      }`,
+      variables: {
+        subjectId
+      }
+    })
+  },
+
+  /**
+   * 获取错题详情
+   * @param { string } id 题目id
+   */
+  getErrorbookDetail: (id) => {
+    return gql.query({
+      query: `query($id:String) {
+        xuekewang {
+          question(id:$id) {
+            children{
+              option {
+                name
+                value
+              }
+              quesAnswer
+              quesBody
+              quesParse
+            }
+            option {
+              name
+              value
+            }
+            quesAnswer
+            quesBody
+            quesParse
+          }
+        }
+      }`,
+      variables: {
+        id
+      }
     })
   },
 }

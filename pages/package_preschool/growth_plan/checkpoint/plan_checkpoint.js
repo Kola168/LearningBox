@@ -32,11 +32,9 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: co.wrap(function* (options) {
+    this.longToast = new app.weToast()
     try {
-
-      this.longToast = new app.weToast
       this.options = options
-      console.log('onload',this.options)
       this.planSn = this.options.planSn
       this.userPlanSn = this.options.userPlanSn
       this.subscribe = this.options.subscribe
@@ -45,27 +43,24 @@ Page({
     } catch (error) {
       this.longToast.weToast()
       util.showError(error)
-      console.log(error)
     }
   }),
 
   getDetail: co.wrap(function* (planSn) {
     try {
       const resp = yield gql.getPlanContents(planSn)
+
       this.setData({
         checkpoints: resp.planContents,
         isShadowOpcity: this.data.isShow
       })
-
-      console.log('subscribesubscribe',this.subscribe)
-      if(this.subscribe == 'noSubscript'){
+      if (this.subscribe == 'noSubscript') {
         this.setData({
-          isSuscribe:true
+          isSuscribe: true
         })
       }
-      
     } catch (e) {
-      this.longToast.weToast()
+      this.longToast.toast()
       util.showError(e)
     }
   }),
@@ -77,33 +72,38 @@ Page({
 
   /* 去订阅 */
   toSubscribe: co.wrap(function (e) {
-    
-    
+
+
     wxNav.navigateTo('/pages/package_preschool/growth_plan/timed_print/timed_print')
   }),
 
   /** 自动打印 */
   setTimedPrint: co.wrap(function* () {
-
-
-    wxNav.navigateTo(`/pages/package_preschool/growth_plan/timed_print/timed_print`)
+    // this.longToast.toast({
+    //   type:'loading'
+    // })
+    try {
+      wxNav.navigateTo(`/pages/package_preschool/growth_plan/timed_print/timed_print`,{
+        userPlanSn:this.userPlanSn
+      })
+    } catch (error) {
+      this.longToast.toast()
+      util.showError(error)
+    }
   }),
 
   /**打印详情 */
-  toPrintDetail: co.wrap(function *(e) {
-    try {
-      var sn= e.currentTarget.dataset.sn
-      wxNav.navigateTo(`/pages/package_preschool/growth_plan/checkpoint/plan_detail`,{
-        sn,
-        userPlanSn:this.userPlanSn
+  toPrintDetail: co.wrap(function* (e) {
+    let clickable = this.data.checkpoints[e.currentTarget.dataset.index].isShow
+    if(clickable){
+      wxNav.navigateTo(`/pages/package_preschool/growth_plan/checkpoint/plan_detail`, {
+        sn:e.currentTarget.dataset.sn,
+        userPlanSn: this.userPlanSn,
+        name:this.data.checkpoints[e.currentTarget.dataset.index].name
       })
-      // const resp = yield gql.getContent(sn)
-      // console.log('resp',resp)
-      
-    } catch (error) {
-      console.log(error)
+    }else{
+      return
     }
-    
   }),
 
 })

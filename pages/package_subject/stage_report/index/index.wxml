@@ -1,37 +1,26 @@
 <nav-bar background="#fff" title="阶段报告"/>
-<view class="stage-report-main">
+<import src="../../common/template/exercise_list.wxml"/>
+<view class="stage-report-main" wx:if="{{!showSubjectForm && !showTimeForm}}">
   <image class="nav-card" src="../../images/nav_figure_card.png" mode="widthFix">
     <view class="content">定期推送学情报告，阶段学习情况一目了然</view>
   </image>
   <view class="notice-text">每月1日生成上个月的学习报告，期中期末前生成本学期报告</view>
   <view class="exercise-search">
-    <view class="search-item">
-      <view class="search-category-name">语文</view>
+    <view class="search-item" bind:tap="openForm" data-key="showSubjectForm">
+      <view class="search-category-name">{{subjectData.subjectName}}</view>
       <view class="arrow-icon"></view>
     </view>
-    <view class="search-item">
-      <view class="search-category-name">已打印</view>
-      <view class="arrow-icon"></view>
+    <view class="search-item" bind:tap="openForm" data-key="showTimeForm">
+      <view class="search-time">
+        <image src="../../images/date_icon.png" />
+        <view class="date-content">{{startDate}}-{{endDate}}</view>
+        <view class="arrow"></view>
+      </view>
     </view>
   </view>
   <view class="exercise-content">
-      <view class="exercise-item">
-        <image class="content-icon" src="../../images/pdf.png"></image>
-        <view class="exercise-in-content">
-          <view class="main-content">
-            <view class="name">专项薄弱练习1</view>
-            <view class="exercise-activity-icon"></view>
-          </view>
-          <view class="effect-content">
-            <image src="/images/doc_discover_pages.png" />
-            <view class="page-count">共2页</view>
-            <image src="../../images/date_icon.png" />
-            <view class="create-date">2019-09-09</view>
-          </view>
-        </view>
-        <view class="btn-print">打印练习</view>
-      </view>
-      <!-- <view class="action-sheet" style="top:{{navBarHeight}}px">
+      <template is="exerciseList" />
+      <view class="action-sheet" style="top:{{navBarHeight}}px">
         <view class="current-subject">
           <view class="subject-name">语文</view>
           <view class="arrow-icon"></view>
@@ -46,7 +35,22 @@
           <view class="subject-item">数学（16）</view>
           <view class="subject-item">数学（16）</view>
         </view>
-      </view> -->
+      </view>
     </view>
+    
     <view class="btn-convert {{isFullScreen ? 'is-full-screen' : ''}}" bind:tap="createExercise">生成练习</view>
 </view>
+
+<!-- 选择学科 -->
+<view class="choose-subject" wx:if="{{showSubjectForm}}">
+  <choose-subject bind:chooseSubject="chooseSubject"/>
+</view>
+
+<!-- 选择日期 -->
+<view class="choose-date-range" wx:if="{{showTimeForm}}">
+  <choose-time-range timeRange="{{timeRange}}" bind:chooseDate="chooseDate"/>
+</view>
+
+
+<import src="../../../../lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />
