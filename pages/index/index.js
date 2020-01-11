@@ -128,7 +128,7 @@ Page({
 
   getUserInfo: co.wrap(function* () {
     try {
-      let resp = yield gql.getUser()
+			let resp = yield gql.getUser()
       this.setData({
         phone: resp.currentUser.phone,
         selectedKid: resp.currentUser.selectedKid,
@@ -136,8 +136,6 @@ Page({
       })
       storage.put("userSn", resp.currentUser.sn)
 			storage.put("kidStage", resp.currentUser.selectedKid.stageRoot)
-			storage.put("isPreschoolMember", resp.currentUser.isPreschoolMember)
-      storage.put("isSchoolAgeMember", resp.currentUser.isSchoolAgeMember)
 
       if (resp.currentUser.phone) {
         app.hasPhoneNum = true
