@@ -81,12 +81,14 @@ Page({
       currentPaper = this.data.paperList[index],
       hasReport = currentPaper.isReport,
       name = currentPaper.title,
-      id = currentPaper.paperId
+      id = currentPaper.paperId,
+      sn = currentPaper.sn
     wxNav.navigateTo('../preview/index', {
       id: id,
       hasReport: hasReport,
       name: name,
-      sn: this.subjectSn
+      subjectSn: this.subjectSn,
+      sn: sn
     })
   },
 

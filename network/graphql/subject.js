@@ -108,6 +108,7 @@ const graphqlApi = {
             isReport
             printCount
             title
+            sn
           }
         }
       }`,
@@ -488,7 +489,7 @@ const graphqlApi = {
       mutation: `mutation ($input: SubmitWrongQuestionInput!){
         submitXuekewangWrongQuestion(input:$input){
           state
-          id
+          workerSn
         }
       }`,
       variables: {
@@ -787,6 +788,77 @@ const graphqlApi = {
       }`,
       variables: {
         id
+      }
+    })
+  },
+
+  /**
+   * 获取学科会员信息
+   */
+  getSubjectMemberInfo: () => {
+    return gql.query({
+      query: `query {
+        currentUser {
+          isSchoolAgeMember
+          selectedKid{
+            schoolAgeMember{
+              expiresAt
+            }
+          }
+        }
+      }`
+    })
+  },
+
+  /**
+   * 获取试卷详情
+   * @param { string } sn
+   */
+  getPaperDetail: (sn) => {
+    return gql.query({
+      query: `query($sn:String) {
+        xuekewang {
+          paper(sn:$sn){
+            answerImages{
+              nameUrl
+            }
+            title
+            images{
+              nameUrl
+            }
+            answerPdf{
+              nameUrl
+            }
+            pdf{
+              nameUrl
+            }
+          }
+        }
+      }`,
+      variables: {
+        sn
+      }
+    })
+  },
+
+  /**
+   * 获取报告详情
+   * @param { string } sn
+   */
+  getReportDetail: (sn) => {
+    return gql.query({
+      query: `query($sn:String) {
+        xuekewang {
+          report(sn:$sn){
+            images{
+              nameUrl
+            }
+            name
+          }
+        }
+      }`,
+      variables: {
+        sn
       }
     })
   },

@@ -13,6 +13,7 @@ Page({
     currentIndex: 1,
     hasReport: false,
     printAnswer: false,
+    title: '',
     imgList: [],
     isFullScreen: false,
     modalObj: {
@@ -26,10 +27,11 @@ Page({
   onLoad: co.wrap(function* (query) {
     this.weToast = new app.weToast()
     this.paperId = query.id
-    this.subjectSn = query.sn
+    this.subjectSn = query.subjectSn
+    this.sn = query.sn != 'null' ? query.sn : ''
     this.setData({
       hasReport: Boolean(Number(query.hasReport)),
-      name: query.name,
+      title: query.name,
       isFullScreen: app.isFullScreen
     })
     yield this.getSubjectMemberInfo()
@@ -46,28 +48,30 @@ Page({
   },
 
   checkAnswer() {
+    let images = this.data.printAnswer ? this.originalImages : this.answerImages
     this.setData({
-      printAnswer: !this.data.printAnswer
+      printAnswer: !this.data.printAnswer,
+      imgList: images
     })
   },
 
   prePrint() {
-    if (this.isMember) {
+    // if (this.isMember) {
       let postData = {
         featureKey: 'xuekewang_paper',
         sn: this.sn,
-        name: this.data.name,
-        isPrintAnswer: this.data.printAnswer,
-        pageCount: this.data.imgList.length
+        name: this.data.title,
+        pageCount: this.data.imgList.length,
+        printPdf: this.data.printAnswer ? this.Pdf : this.answerPdf
       }
       wxNav.navigateTo('../../setting/setting', {
         postData: encodeURIComponent(JSON.stringify(postData))
       })
-    } else {
-      this.setData({
-        ['modalObj.isShow']: true
-      })
-    }
+    // } else {
+    //   this.setData({
+    //     ['modalObj.isShow']: true
+    //   })
+    // }
   },
 
   confirmModal: co.wrap(function* () {
@@ -81,39 +85,59 @@ Page({
     try {
       let res = yield subjectGql.getSubjectMemberInfo()
       this.isMember = res.currentUser.isSchoolAgeMember
-      this.getPaperDetail()
+      if (this.sn) {
+        this.getPaperDetail()
+      } else {
+        this.loopGetImages()
+      }
     } catch (e) {
       this.weToast.hide()
       util.showError(e)
     }
   }),
-  // 试卷预览
+
+  // 获取试卷预览
   getPaperDetail: co.wrap(function* () {
     this.weToast.toast({
       type: 'loading'
     })
     try {
-      getLoopsEvent({
-        feature_key: 'xuekewang_paper',
-        worker_data: {
-          paper_id: this.paperId,
-          subject_sn: this.subjectSn
-        }
-      }, (res) => {
-        if (res.status === 'finished') {
-          this.setData({
-            imgList: res.data.images
-          })
-          this.sn = res.data.sn
-          this.weToast.hide()
-        }
-      }, (error) => {
-        this.weToast.hide()
-        util.showError(error)
+      let res = yield subjectGql.getPaperDetail(this.sn),
+      paper = res.xuekewang.paper
+      this.originalImages = paper.images
+      this.answerImages = paper.answerImages
+      this.pdf = paper.pdf.nameUrl
+      this.answerPdf = paper.answerPdf.nameUrl
+      this.setData({
+        imgList: this.originalImages
       })
-    } catch (error) {
+      this.weToast.hide()
+    } catch (e) {
+      this.weToast.hide()
+      util.showError(e)
+    }
+  }),
+
+  // 第一次生成试卷
+  loopGetImages() {
+    this.weToast.toast({
+      type: 'loading'
+    })
+    getLoopsEvent({
+      feature_key: 'xuekewang_paper',
+      worker_data: {
+        paper_id: this.paperId,
+        subject_sn: this.subjectSn
+      }
+    }, (res) => {
+      if (res.status === 'finished') {
+        this.weToast.hide()
+        this.sn = res.data.sn
+        this.getPaperDetail()
+      }
+    }, (error) => {
       this.weToast.hide()
       util.showError(error)
-    }
-  })
+    })
+  }
 })
