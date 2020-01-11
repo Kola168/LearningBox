@@ -204,17 +204,19 @@
         "setting/setting",
         "evaluate_exam/index/index",
         "evaluate_exam/testpaper/index",
-        "report/preview/index",
         "member_intro/index",
         "super_errorbook/index/index",
         "super_errorbook/atlas/index",
         "super_errorbook/errorbook/index",
         "super_errorbook/errorbook/list",
+        "super_errorbook/errorbook/detail",
         "super_errorbook/knowledge_list/index",
         "evaluate_exam/preview/index",
         "weakness_exercise/index/index",
         "stage_report/index/index",
-        "exam_paper_report/index/index"
+        "exam_paper_report/index/index",
+        "correct/index",
+        "report/index"
       ]
     },
     {

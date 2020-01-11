@@ -12,12 +12,12 @@
       <image class="check-on" src="../../images/check_{{printAnswer?'on':'off'}}.png"></image>
       <view class="title">打印答案</view>
     </view>
-    <view bindtap="toPrint" class="confirm-print">确认打印</view>
+    <view bindtap="prePrint" class="confirm-print">确认打印</view>
   </view>
 </view>
 <!-- modal -->
-<modal modal="{{modalObj}}" bindconfirm="confirmModal">
-  <view slot="bottom" class="member-btn" catchtap="toPrint">
+<modal modal="{{modalObj}}">
+  <view slot="bottom" class="member-btn" catchtap="confirmModal">
     <image src="../../images/diamond.png" mode="widthFix" />
     <view>开通会员可免费使用</view>
   </view>

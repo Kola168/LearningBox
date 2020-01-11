@@ -1,0 +1,46 @@
+<nav-bar title="超级错题本"></nav-bar>
+<view class="container">
+  <view class="content-topic" wx:if="{{topicType==='single'}}">
+    <view class="topic-body">
+      <rich-text nodes="{{topicDetail.quesBody}}"></rich-text>
+      <view class="body-options" wx:if="{{topicDetail.option.length>0}}">
+        <view class="option-item" wx:for="{{topicDetail.option}}" wx:key="index">
+          <view>{{item.name}}.</view>
+          <rich-text nodes="{{item.value}}"></rich-text>
+        </view>
+      </view>
+    </view>
+    <view class="topic-answer">
+      <view class="answer-title">答案解析：</view>
+      <view class="answer-main">
+        <view>答案：</view>
+        <rich-text nodes="{{topicDetail.quesAnswer}}"></rich-text>
+      </view>
+      <rich-text nodes="{{topicDetail.quesParse}}"></rich-text>
+    </view>
+  </view>
+  <view class="content-topic" wx:if="{{topicType!=='single'}}">
+    <view class="topic-body">
+      <rich-text nodes="{{topicDetail.quesBody}}"></rich-text>
+    </view>
+    <view class="topic-question">
+      <view wx:for="{{topicDetail.children}}" class="child-box" wx:key="ques_id">
+        <rich-text nodes="{{item.quesBody}}"></rich-text>
+        <view class="child-body-options" wx:if="{{item.option.length>0}}">
+          <view class="option-item" wx:for="{{item.option}}" wx:key="index" wx:for-item="childItem">
+            <view>{{childItem.name}}.</view>
+            <rich-text nodes="{{childItem.value}}"></rich-text>
+          </view>
+        </view>
+        <view class="child-answer" wx:if="{{item.quesAnswer}}">
+          <view class="answer-title" wx:if="{{item.quesAnswer||item.ques_parse}}">答案解析：</view>
+          <view class="answer-main" wx:if="{{item.quesAnswer}}">
+            <view>答案：</view>
+            <rich-text nodes="{{item.quesAnswer}}"></rich-text>
+          </view>
+          <rich-text nodes="{{item.quesParse}}" wx:if="{{item.quesParse}}"></rich-text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

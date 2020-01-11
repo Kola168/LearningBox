@@ -1,36 +1,46 @@
 <nav-bar title="知识图谱"></nav-bar>
 <view class="container">
-  <canvas style="width: {{canvasWidth}}px; height: {{canvasWidth}}px;" canvas-id="radar" wx:if="{{false}}"></canvas>
-  <block wx:else>
-    <view class="bar-title">得分率</view>
-    <canvas style="width: {{canvasWidth}}px; height: {{canvasWidth-80}}px;" canvas-id="bar"></canvas>
+  <canvas style="width: {{canvasWidth}}px; height: {{canvasWidth}}px;" canvas-id="radar" wx:if="{{atlasType==='radar'}}"></canvas>
+  <block wx:if="{{atlasType==='bar'}}">
+    <chart-bar barData="{{barData}}"></chart-bar>
   </block>
   <view class="subject-type">
     <view class="type-header"></view>
     <view class="type-top type-item">
       <view class="item-title">优秀学科</view>
       <view class="item-subjects">
-        <text>英语</text>
+        <block wx:if="{{topSubjects.length>0}}">
+          <text wx:for="{{topSubjects}}" data-id="{{item.subjectId}}" bindtap="toKnowledgeList">{{item.subjectName}}</text>
+        </block>
+        <text wx:else>暂无</text>
       </view>
     </view>
     <view class="type-middle type-item">
       <view class="item-title">良好学科</view>
       <view class="item-subjects">
-        <text>数学</text>
-        <text>数学</text>
-        <text>数学</text>
-        <text>数学</text>
-        <text>数学</text>
-        <text>数学</text>
-        <text>数学</text>
-        <text>数学</text>
+        <block wx:if="{{moddleSubjects.length>0}}">
+          <text wx:for="{{moddleSubjects}}" data-id="{{item.subjectId}}" bindtap="toKnowledgeList">{{item.subjectName}}</text>
+        </block>
+        <text wx:else>暂无</text>
       </view>
     </view>
     <view class="type-bottom type-item">
       <view class="item-title">不及格学科</view>
       <view class="item-subjects">
-        <text>物理</text>
+        <block wx:if="{{bottomSubjects.length>0}}">
+          <text wx:for="{{bottomSubjects}}" data-id="{{item.subjectId}}" bindtap="toKnowledgeList">{{item.subjectName}}</text>
+        </block>
+        <text wx:else>暂无</text>
+      </view>
+    </view>
+    <view class="type-empty type-item" wx:if="{{emptySubjects.length>0}}">
+      <view class="item-title">未学习学科</view>
+      <view class="item-subjects">
+        <text wx:for="{{emptySubjects}}" data-id="{{item.subjectId}}">{{item.subjectName}}</text>
       </view>
     </view>
   </view>
 </view>
+<!-- loading -->
+<import src="/lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />

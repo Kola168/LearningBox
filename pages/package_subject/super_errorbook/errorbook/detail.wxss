@@ -1,0 +1,48 @@
+.content-topic {
+  font-size: 26rpx;
+  padding: 40rpx 68rpx;
+}
+
+.topic-body {
+  padding: 0 20rpx 46rpx;
+}
+
+.topic-question {
+  padding: 0 20rpx 46rpx;
+}
+
+.child-box {
+  padding-top: 20rpx;
+}
+
+.body-options {
+  padding-top: 40rpx;
+}
+
+.child-body-options {
+  padding: 24rpx 0;
+}
+
+.option-item {
+  display: flex;
+}
+
+.option-item>view {
+  margin-right: 6rpx;
+}
+
+.topic-answer {
+  padding: 24rpx 20rpx 32rpx;
+}
+
+.answer-title {
+  font-size: 28rpx;
+  color: #333;
+  padding: 14rpx 0;
+  font-weight: bold;
+}
+
+.answer-main {
+  display: flex;
+  align-items: center;
+}

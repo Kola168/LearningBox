@@ -1,39 +1,113 @@
 const app = getApp()
 import {
-  wxNav
+  regeneratorRuntime,
+  wxNav,
+  co,
+  util
 } from "../../../../utils/common_import"
+import subjectGql from '../../../../network/graphql/subject'
 const FundCharts = require('../../charts.min.js')
 const RadarChart = FundCharts.radar
-const BarChart = FundCharts.bar
 Page({
   data: {
-    isMember: true
+    isMember: true,
+    expiresAt: null,
+    totalErrorBooksNum: 0,
+    barData: [],
+    atlasType: 'none'
   },
   onLoad() {
+    this.weToast = new app.weToast()
     setTimeout(() => {
       this.setData({
         canvasWidth: app.sysInfo.screenWidth - 40
       })
-      this.drawRadar()
-      this.drawBar()
     }, 300)
-
+    this.getSubjectMemberInfo()
   },
+  getSubjectMemberInfo: co.wrap(function* () {
+    this.weToast.toast({
+      type: 'loading'
+    })
+    try {
+      let res = yield subjectGql.getSubjectMemberInfo()
+      this.weToast.hide()
+      let isMember = res.currentUser.isSchoolAgeMember,
+        expiresAt = res.currentUser.selectedKid.schoolAgeMember.expiresAt
+      this.setData({
+        isMember: res.currentUser.isSchoolAgeMember,
+        expiresAt: expiresAt
+      })
+      if (isMember || (!isMember && expiresAt)) {
+        this.getSubjectsAtlas()
+      }
+    } catch (e) {
+      this.weToast.hide()
+      util.showError(e)
+    }
+  }),
+  getSubjectsAtlas: co.wrap(function* () {
+    this.weToast.toast({
+      type: 'loading'
+    })
+    try {
+      let res = yield subjectGql.getSubjectsAtlas()
+      this.atlasData = {
+        title: [],
+        data: []
+      }
+      let dataObj = {
+        totalErrorBooksNum: res.xuekewang.totalErrorBooksNum,
+        atlasType: 'none'
+      }
+      let rates = res.xuekewang.subjectRate
+      for (let i = 0; i < rates.length; i++) {
+        if (rates[i].questionNum > 0) {
+          this.atlasData.title.push(rates[i].subjectName)
+          this.atlasData.data.push(rates[i].scoringRate)
+        }
+      }
+      if (this.atlasData.title.length > 2) {
+        dataObj.atlasType = 'radar'
+        this.setData(dataObj)
+        this.drawRadar()
+      } else if (this.atlasData.title.length > 0) {
+        dataObj.atlasType = 'bar'
+        let tempArr = []
+        for (let i = 0; i < 2; i++) {
+          tempArr.push({
+            title: this.atlasData.title[i],
+            rate: this.atlasData.data[i]
+          })
+        }
+        dataObj.barData = {
+          data: tempArr,
+          title: "得分率"
+        }
+        this.setData(dataObj)
+      }
+      this.weToast.hide()
+    } catch (e) {
+      this.weToast.hide()
+      util.showError(e)
+    }
+  }),
   drawRadar() {
     let canvasWidth = this.data.canvasWidth,
-      center = Math.ceil(canvasWidth / 2)
+      center = Math.ceil(canvasWidth / 2),
+      _this = this
     const radar = new RadarChart({
       id: 'radar',
       colors: ['#4D98EC'],
-      radius: center - 60, // 半径
+      radius: center - 60,
       gridNumber: 5,
-      origin: { // 中心
+      origin: {
         x: center,
         y: center
       },
-      data: [1, 2, 3, 4, 5],
+      data: _this.atlasData.data,
       onAnimation: () => {
-        let tits = ['吃', '喝', '住', '睡', '乐'];
+        let tits = _this.atlasData.title;
         let ctx = radar.ctx;
         ctx.lineWidth = 1;
         ctx.textAlign = 'center';
@@ -53,54 +127,10 @@ Page({
     });
     radar.init()
   },
-  drawBar() {
-    let canvasWidth = this.data.canvasWidth
-    let bar = new BarChart({
-      id: 'bar',
-      barMargin: 120,
-      width: canvasWidth,
-      height: canvasWidth - 60,
-      chartLeft: 44,
-      range: {
-        min: 0,
-        max: 100
-      },
-      dash: {
-        length: 4,
-        color: "#E7E7E7"
-      },
-      colors: ['#6892df'],
-      xaxis: ['语文', '数学'],
-      data: [20, 80],
-      //   handleTextX: (ctx, xArr) => {      // 处理x轴文字
-      //     // 增加x轴刻度
-      //     let _chartWidth = testline._chart.width - testline.opts.chartLeft - testline.opts.chartRight;
-      //     ctx.textAlign = 'center';
-      //     ctx.textBaseline = 'middle';
-      //     ctx.font = '10px Arial';
-      //     ctx.fillStyle = '#333';
-
-      //     for (let i in xArr) {
-      //       ctx.fillText(xArr[i], (_chartWidth / (xArr.length - 1) * i) + testline.opts.chartLeft, testline._chart.height - 13);
-      //     }
-      // },
-      // handleTextY: (ctx, yaxis) => {
-      //   console.log(yaxis);
-      //   ctx.textAlign = 'center';
-      //   ctx.textBaseline = 'middle';
-      //   ctx.font = '10px Arial';
-      //   ctx.fillStyle = '#fff';
-
-      //   ctx.fillText(yaxis.min.toFixed(0));
-      //   ctx.fillText(yaxis.max.toFixed(0));
-      //   ctx.fillText(((yaxis.max + yaxis.min) / 2).toFixed(0), 10, (bar._chart.height - bar.opts.chartTop) / 2 - 10);
-      // }
-    });
-    bar.init()
-  },
   toNext(e) {
     let id = e.currentTarget.id,
-      url = ''
+      url = '',
+      params = {}
     switch (id) {
       case "member":
         url = '../../member_intro/index'
@@ -110,6 +140,11 @@ Page({
         break;
       case "errorbook":
         url = '../errorbook/index'
+        params.isMember = this.data.isMember ? 1 : 0
+        params.expiresAt = this.data.expiresAt
+        break;
+      case "weekness":
+        url = '../../weakness_exercise/index/index'
         break;
     }
     wxNav.navigateTo(url)
