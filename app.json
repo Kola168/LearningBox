@@ -49,9 +49,9 @@
     "pages/mall/index",
     "pages/webview/index",
     "pages/webview/member",
-		"pages/member/authorize",
-		"pages/exit/index",
-		"pages/account/collection/index"
+    "pages/member/authorize",
+    "pages/exit/index",
+    "pages/account/collection/index"
   ],
   "subPackages": [
     {
@@ -75,7 +75,8 @@
         "common_content/setting",
         "order_record/index/index",
         "order_record/order/order",
-        "setting/setting"
+        "setting/setting",
+        "instructions/index"
       ]
     },
     {
@@ -233,8 +234,8 @@
         "sync_video/video_list/video_list",
         "sync_video/video_detail/video_detail",
         "correct/index",
-				"report/index"
-			]
+        "report/index"
+      ]
     },
     {
       "root": "pages/package_device",

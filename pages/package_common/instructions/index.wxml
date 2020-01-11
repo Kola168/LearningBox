@@ -1,0 +1,8 @@
+<!--pages/package_common/instructions/index.wxml-->
+<nav-bar title="使用说明"></nav-bar>
+<image src="../images/arrow_down.png" mode="aspectFit" class="search-tip-img"></image>
+<view class="content-box">
+  <view class="content-top-type">
+
+  </view>
+</view>
