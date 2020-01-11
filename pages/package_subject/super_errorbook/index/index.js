@@ -14,7 +14,7 @@ Page({
     expiresAt: null,
     totalErrorBooksNum: 0,
     barData: [],
-    atlasType: 'none'
+    atlasType: ''
   },
   onLoad() {
     this.weToast = new app.weToast()

@@ -240,8 +240,9 @@ Page({
 
   // 提交答案
   preSubmit: co.wrap(function* () {
-    this.weToast.toast({
-      type: 'loading'
+    this.setData({
+      showProgessModal: true,
+      progress: 0
     })
     try {
       let topicsResult = this.data.topicsResult,
@@ -256,20 +257,21 @@ Page({
       }
       topicsResult = topicsResult.concat(tempSingleTopicIds)
       let res = yield subjectGql.submitCorrect(topicsResult, this.correctType, this.paperId)
-      this.weToast.hide()
       if (res.submitXuekewangWrongQuestion.state) {
         if (this.correctType === 'XuekewangExercise') {
           wxNav.navigateTo()
         } else {
-          this.setData({
-            showProgessModal: true
-          })
           this.workerId = res.submitXuekewangWrongQuestion.workerSn
+          this.setData({
+            progress: this.data.progress + 30
+          })
           this.getWorkerSn()
         }
       }
     } catch (e) {
-      this.weToast.hide()
+      this.setData({
+        showProgessModal: false
+      })
       util.showError(e)
     }
   }),
@@ -279,13 +281,23 @@ Page({
       let resp = yield api.synthesisSnResult(this.workerId)
       if (resp.res.state === 'send') {
         setTimeout(() => {
+          if (this.data.progress < 90) {
+            this.setData({
+              progress: this.data.progress + 30
+            })
+          }
           this.getWorkerSn()
         }, 3000)
         return
       } else if (resp.res.state === 'finished') {
-        wxNav.navigateTo('../report/index', {
-          sn: resp.res.sn,
-          from: 'correct'
+        this.setData({
+          progress: 100,
+          showProgessModal: false
+        }, () => {
+          wxNav.navigateTo('../report/index', {
+            sn: resp.res.sn,
+            from: 'correct'
+          })
         })
       }
     } catch (e) {

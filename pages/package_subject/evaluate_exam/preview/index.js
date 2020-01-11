@@ -56,7 +56,7 @@ Page({
   },
 
   prePrint() {
-    // if (this.isMember) {
+    if (this.isMember) {
       let postData = {
         featureKey: 'xuekewang_paper',
         sn: this.sn,
@@ -67,11 +67,11 @@ Page({
       wxNav.navigateTo('../../setting/setting', {
         postData: encodeURIComponent(JSON.stringify(postData))
       })
-    // } else {
-    //   this.setData({
-    //     ['modalObj.isShow']: true
-    //   })
-    // }
+    } else {
+      this.setData({
+        ['modalObj.isShow']: true
+      })
+    }
   },
 
   confirmModal: co.wrap(function* () {
@@ -103,7 +103,7 @@ Page({
     })
     try {
       let res = yield subjectGql.getPaperDetail(this.sn),
-      paper = res.xuekewang.paper
+        paper = res.xuekewang.paper
       this.originalImages = paper.images
       this.answerImages = paper.answerImages
       this.pdf = paper.pdf.nameUrl
