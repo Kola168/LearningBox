@@ -65,7 +65,8 @@ Page({
 
   checkAnswer: function () {
     this.setData({
-      isPrintAnswer: !this.data.isPrintAnswer
+      isPrintAnswer: !this.data.isPrintAnswer,
+      currentIndex: 1
     })
   },
 

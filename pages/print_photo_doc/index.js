@@ -7,7 +7,8 @@ import {
   util,
   wxNav,
   storage,
-  uploadFormId
+  uploadFormId,
+  _
 } from '../../utils/common_import'
 import {uploadFiles} from '../../utils/upload'
 import commonRequest from '../../utils/common_request.js'
@@ -49,7 +50,6 @@ const chooseCtx = {
       }
     },
     showConfirmModal: null,
-    hasAuthPhoneNum: false,
     confirmModal: {
       isShow: false,
       title: '请正确放置A4打印纸',
@@ -72,11 +72,7 @@ const chooseCtx = {
 
 
   onShow: function() {
-    let hasAuthPhoneNum = Boolean(storage.get('hasAuthPhoneNum'))
-    this.hasAuthPhoneNum = hasAuthPhoneNum
-    this.setData({
-      hasAuthPhoneNum: app.hasPhoneNum || hasAuthPhoneNum
-    })
+
     this.needToDelete = [] //长宽比大于5，最后统一删除
   },
 
@@ -157,15 +153,21 @@ const chooseCtx = {
       flag = false
     }
   }) {
-    let image = this.data.images[id]
+    console.log(id,flag)
+    let postData=[]
+    let that=this
+    _.each(this.data.images.slice(id),function(value,index,list){
+      postData.push({
+        url: value.localUrl,
+        mode: "quadrectangle",
+        from: "pic2doc",
+        index: Number(id)+Number(index),
+        media_type: that.media_type,
+        isSingle: !flag,
+      })
+    })
     wxNav.navigateTo(`/pages/print_photo_doc/edit`, {
-      url: encodeURIComponent(JSON.stringify(image.localUrl)),
-      mode: "quadrectangle",
-      from: "pic2doc",
-      index: id,
-      media_type: this.media_type,
-      isSingle: !flag,
-      currentCount: Math.max(this.data.images.length - this.data.preAllCount, 0)
+      postData:encodeURIComponent(JSON.stringify(postData))
     })
   },
 
@@ -199,7 +201,7 @@ const chooseCtx = {
     this.selectComponent("#checkComponent").showPop()
   },
 
-  
+
   chooseImg: co.wrap(function*(e) {
     let that = this
     let res = e.detail
@@ -494,19 +496,15 @@ const chooseCtx = {
 
   confirm: co.wrap(function*(e) {
     try{
-      // uploadFormId.dealFormIds(e.detail.formId, `print_${this.media_type}`)
-      // uploadFormId.upload()
-      // if (!this.hasAuthPhoneNum && !app.hasPhoneNum) {
-      //   return
-      // }
+
       if (app.preventMoreTap(e)) {
         return
       }
-  
+
       if (this.data.uploadImg) {
         return
       }
-  
+
       if (!this.data.images.length) {
         return wx.showModal({
           title: '提示',
@@ -528,32 +526,21 @@ const chooseCtx = {
     }
   }),
 
-  // getPhoneNumber: co.wrap(function*(e) {
-  //   // yield app.getPhoneNum(e)
-  //   storage.put("hasAuthPhoneNum", true)
-  //   this.hasAuthPhoneNum = true
-  //   this.setData({
-  //     hasAuthPhoneNum: true
-  //   })
-  //   this.confirm(e)
-  // }),
-
-
   userConfirm: co.wrap(function*(e) {
     try{
       let images = this.data.images
       let newImages = []
       images.forEach((data, index) => {
-        if (data.choose == undefined || data.choose == true) {
-          let newImage = {
-            originalUrl: imginit.mediaResize(data.localUrl, this.media_type), //原图
-            copies: data.count,
-          }
-          if (data.afterEditUrl) {
-            newImage.printUrl = data.afterEditUrl //编辑之后的图
-          }
-          newImages.push(newImage)
+        let newImage = {
+          originalUrl: data.localUrl, //原图
+          copies: data.count,
         }
+        if (data.editImg) {
+          newImage.printUrl = data.url //编辑之后的图
+        }else{
+          newImage.printUrl=imginit.mediaResize(data.localUrl, this.media_type)
+        }
+        newImages.push(newImage)
         if (index === images.length - 1) {
           this.print(newImages)
         }
@@ -596,10 +583,10 @@ const chooseCtx = {
 
       this.longToast.toast()
       logger.info('订单创建成功', resp)
-      wxNav.redirectTo(
-        // url: `../finish/index?type=photo_doc&media_type=${this.media_type}&state=${resp.createOrder.state}`
-        `/pages/finish/index`
-      )
+      wxNav.redirectTo(`/pages/finish/index`,{
+        media_type: 'pic2doc',
+        state:resp.createOrder.state
+      })
 
     } catch (e) {
       this.longToast.toast()
@@ -663,7 +650,7 @@ const chooseCtx = {
   //     }
   //   }),
 
-  
+
   toUse: function() {
     var useStatus = 'picToDocUSeStatus'
     storage.put(useStatus, true)

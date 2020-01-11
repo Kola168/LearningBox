@@ -15,7 +15,8 @@ const authorize = util.promisify(wx.authorize)
 const downloadFile = util.promisify(wx.downloadFile)
 const getUserInfo = util.promisify(wx.getUserInfo)
 import router from '../../../utils/nav'
-import gql from '../../../network/graphql_request.js'
+import featureGql from '../../../network/graphql/feature'
+import gql from '../../../network/graphql_request'
 import Logger from '../../../utils/logger.js'
 const logger = new Logger.getLogger('pages/index/index')
 import getLoopsEvent from '../../../utils/worker'
@@ -419,7 +420,7 @@ Page({
             type: 'loading'
         })
         try {
-            const resp = yield gql.mistakeTemplates()
+            const resp = yield featureGql.mistakeTemplates()
             let template_id = ''
             if (resp.mistakeTemplates.length > 0) {
                 template_id = resp.mistakeTemplates[0].id

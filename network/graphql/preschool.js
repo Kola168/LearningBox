@@ -2,6 +2,130 @@
 
 import gql from '../graphql_config'
 const graphqlApi = {
+    /**
+   * 获取每日一练当日练习题
+   */
+  getPracticeContentToday: () => {
+    return gql.query({
+      query: `query getPracticeContentToday{
+        dailyPractice{
+          practiceContentToday:contentToday{
+            sn
+            name
+            practiceAnswerImages
+            practiceQuestionImages
+          }
+          hasNewTestimonial
+        }
+      }`
+    })
+  },
+
+  /**
+   * 获取奖状
+   */
+  getCertifacate: () => {
+    return gql.query({
+      query: `query getCertifacate{
+        testimonials{
+          imageUrl
+          title
+          subTitle
+          isGet
+          sn
+        }
+      }`,
+    })
+  },
+
+  /**
+   * 获取月度集合分类
+   */
+  getMonthCompilations: () => {
+    return gql.query({
+      query: `query getMonthCompilations{
+        dailyPractice{
+          practiceCategories:categories{
+            name
+            sn
+            subTitle
+            children{
+              name
+              sn
+              subTitle
+              position
+            }
+          }
+        }
+      }`
+    })
+  },
+
+  /**
+   * 获取指定日期的每日一练题目
+   */
+  getMonthExercises: (sn) => {
+    return gql.query({
+      query: `query getMonthExercises($sn: String!){
+        content(sn: $sn){
+          sn
+          practiceQuestionImages
+        }
+      }`,
+      variables: {
+        sn
+      }
+    })
+  },
+
+  /**
+   * 获取每日一练月份集合
+   * @param {String} 年份分类sn
+   */
+  getPracticeCategory: (sn) => {
+    return gql.query({
+      query: `query getPracticeCategory($sn: String!){
+        category(sn: $sn){
+          sn
+          name
+          subTitle
+          image
+          children{
+            name
+            sn
+            subTitle
+            position
+          }
+        }
+      }`,
+      variables: {
+        sn
+      }
+    })
+  },
+
+    /**
+   * 获取每日一练天数集合
+   * @param {String} 月份分类sn
+   */
+  getPracticeDayCategory: (sn) => {
+    return gql.query({
+      query: `query getPracticeDayCategory($sn: String!){
+        category(sn: $sn){
+          contents{
+            sn
+            name
+            practiceQuestionImages
+            haveLearned
+            pageCount
+          }
+        }
+      }`,
+      variables: {
+        sn
+      }
+    })
+  },
 	getPlans: () => {
     return gql.query({
       query: `query {
@@ -37,6 +161,29 @@ const graphqlApi = {
       }`,
       variables: {
         tab
+      }
+    })
+  },
+
+    /**
+   * 宝贝成长计划 是否自动打印
+   * 
+   */
+  getUserPlan: (sn) => {
+    return gql.query({
+      query: `query userPlan($sn: String!){
+        userPlan(sn: $sn){
+          sn
+          subscription{
+            copies
+            enable
+            intervalDay
+            timing
+          }
+        }
+      }`,
+      variables: {
+        sn
       }
     })
   },
@@ -120,7 +267,7 @@ const graphqlApi = {
    * 宝贝成长计划 预览
    * 
    */
-  getContent: (planSn) => {
+  getPreviewContent: (planSn) => {
     return gql.query({
       query: `query ($planSn: String!){
         content(sn: $planSn) {
@@ -135,24 +282,6 @@ const graphqlApi = {
       }`,
       variables: {
         planSn
-      }
-    })
-  },
-
-
-  /**
-   * 获取指定日期的每日一练题目
-   */
-  getContent: (planSn) => {
-    return gql.query({
-      query: `query getMonthExercises($sn: String!){
-        content(sn: $sn){
-          sn
-          practiceQuestionImages
-        }
-      }`,
-      variables: {
-        sn
       }
     })
   },
@@ -201,7 +330,7 @@ const graphqlApi = {
         }
       }`,
       variables: {
-        planSn
+        sn
       }
     })
   },
@@ -210,20 +339,20 @@ const graphqlApi = {
    * 打印设置
    *
    */ 
-  createResourceOrder: (sn) => {
-    return gql.mutate({
-      mutation: `mutation ($input: CreateResourceOrderInput!){
-        createResourceOrder(input: $input) {
-          state
-          statistic
-      }`,
-      variables: {
-        input:{
-          sn: sn
-        }
-      }
-    })
-  },
+  // createResourceOrder: (sn) => {
+  //   return gql.mutate({
+  //     mutation: `mutation ($input: CreateResourceOrderInput!){
+  //       createResourceOrder(input: $input) {
+  //         state
+  //         statistic
+  //     }`,
+  //     variables: {
+  //       input:{
+  //         sn: sn
+  //       }
+  //     }
+  //   })
+  // },
 
 
   //获取宝贝测评试题列表
@@ -279,6 +408,21 @@ const graphqlApi = {
       variables: param
     })
   },
+
+  //定时任务设置时间
+  joinSubscription:(input)=>{
+    return gql.mutate({
+      mutation: `mutation ($input: CreateSubscriptionInput!){
+        joinSubscription(input:$input){
+          state
+        }
+      }`,
+      variables: {
+        input: input
+      }
+    })
+  },
+
 }
 
 export default graphqlApi

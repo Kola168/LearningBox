@@ -1,0 +1,27 @@
+<view wx:for="{{images}}" wx:key="{{index}}" style='padding-bottom:100rpx'>
+  <image src="{{item}}" style='width:100%' mode='widthFix'></image>
+</view>
+
+<view class="bottom">
+  <!--打印-->
+  <view class="pay-button2" bindtap="toSave">
+    <image src="/images/save_img.png" mode="widthFix" class="saveimg-icon"></image>
+    <view>保存</view>
+  </view>
+  <!-- <form class="pay-button" report-submit="{{true}}" bindsubmit="toConfirm">
+    <button form-type='submit' open-type="{{hasPhoneNum?'':'getPhoneNumber'}}" bindgetphonenumber="{{hasPhoneNum?'':'getPhoneNumber'}}" hover-class="none">我要打印</button>
+  </form> -->
+</view>
+
+<view class="modal-wrap" wx:if="{{showConfirmModal}}" catchtap="cancelPrint">
+  <view class="confirm-modal">
+    <view>{{showConfirmModal.mediaType}}</view>
+    <image src="{{showConfirmModal.src}}" mode="widthFix"></image>
+    <view>
+      <button class="print" catchtap="print">开始打印</button>
+    </view>
+  </view>
+</view>
+
+<import src="../../../../lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />

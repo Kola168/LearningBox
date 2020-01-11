@@ -27,7 +27,6 @@ Page({
     ksTypeIndex:0,  //口算类型index
     pointIndex:0, //知识点类型index
     pointType:'',  //联系想与知识点选择样式
-    pointPickList:[],
 
     hours:_.map(_.range(24),function(num){return num>=10?num:('0'+num)}),  //时间的小时
     minutes:_.map(_.range(60),function(num){return num>=10?num:('0'+num)}), //时间的分钟
@@ -60,6 +59,9 @@ Page({
 
   getPointsList:co.wrap(function*(){
     if(!this.data.textBookList[this.data.gradeIndex].kousuanCategories[this.data.textbookIndex]){
+      this.setData({
+        calculationList:[]
+      })
       return wx.showModal({
         title:'提示',
         content:'该年龄段暂无口算',
@@ -71,7 +73,8 @@ Page({
       this.longToast.toast({
         type:'loading'
       })
-      let resp=yield graphql.getKousuanType(this.data.textBookList[this.data.gradeIndex].kousuanCategories[this.data.textbookIndex].sn)
+      let resp=yield graphql.getKousuanTypeAndChildren(this.data.textBookList[this.data.gradeIndex].kousuanCategories[this.data.textbookIndex].sn)
+      Loger(resp)
       this.setData({
         calculationList:resp.category.children
       })
@@ -85,66 +88,36 @@ Page({
   showPicker:function(e){
     let that=this
     let type=e.currentTarget.dataset.type
-    if(this.data.pick_type==type){
+    if(type==this.data.pick_type){
       this.hidePicker()
-    }else{
-      if(type=='grade'){
-        this.data.pickList=_.pluck(this.data.textBookList,'name')
-      }else{
-        this.data.pickList=_.pluck(this.data.textBookList[this.data.gradeIndex].kousuanCategories,'name')
-      }
-      this.setData({
-        pickList:this.data.pickList,
-      })
-      if(this.data.pick_type){
-        this.setData({
-          showAnimate:false
-        })
-        setTimeout(function(){
-          that.setData({
-            showAnimate:true,
-          })
-        },100)
-      }else{
-        setTimeout(function(){
-          that.setData({
-            showAnimate:true,
-            showBgAnimate:true,
-          })
-        },50)
-
-      }
-      this.setData({
-        pick_type:type,
-      })
+      return
     }
+    this.setData({
+      pick_type:type,
+      pointType:'',
+    })
   },
-
 
   //选择年级或教科书列表
   checkPicker:function(e){
     let index=e.currentTarget.dataset.index
     let checkedIndex=this.data.pick_type=='grade'?'gradeIndex':'textbookIndex'
     if(this.data[checkedIndex]==index){
-      this.hidePicker()
+      return this.hidePicker()
     }
     this.setData({
-      [checkedIndex]:index
+      [checkedIndex]:index,
     })
+
   },
 
   //隐藏年级教科书栏下拉列表
   hidePicker:function(){
     let that=this
-    this.setData({
-      showAnimate:false,
-      showBgAnimate:false,
+    that.setData({
+      pick_type:null
     })
-    setTimeout(function(){
-      that.setData({
-        pick_type:null
-      })
-    },100)
+    this.getPointsList()
   },
 
   //显示联系想or知识点列表
@@ -154,16 +127,9 @@ Page({
       this.hidePointsScroll()
       return
     }
-    if(type=='practice'){
-      this.data.pointPickList=_.pluck(this.data.calculationList,'name')
-    }else if(type=='knowledge'){
-      this.data.pointPickList=_.pluck(this.data.calculationList[this.data.ksTypeIndex].children,'name')
-    }else{
-      this.data.pointPickList=null
-    }
     this.setData({
       pointType:type,
-      pointPickList:this.data.pointPickList
+      pick_type:null
     })
   },
 
@@ -192,12 +158,14 @@ Page({
   hidePointsScroll:function(){
     this.setData({
       pointType:'',
-      pointPickList:''
     })
   },
 
-  preventTap:function(){
-    return false
+  closeAll:function(){
+    this.setData({
+      pointType:'',
+      pick_type:null,
+    })
   },
 
   bindChange:function(e){
@@ -207,5 +175,36 @@ Page({
       checkedMinutesIndex:indexArr[1]
     })
   },
+
+  setTime:co.wrap(function*(){
+    if(_.isEmpty(this.data.calculationList)||_.isEmpty(this.data.calculationList[this.data.ksTypeIndex].children)||_.isEmpty(this.data.calculationList[this.data.ksTypeIndex].children[this.data.pointIndex].sn)){
+      return wx.showToast({
+        title:'还未选择知识点哦',
+        duration:2000,
+        icon:'none',
+        mask:true
+      })
+    }
+    this.longToast.toast({
+      type:'loading'
+    })
+    try{
+      let resp=yield graphql.createTimedtask({
+        sn:this.data.calculationList[this.data.ksTypeIndex].children[this.data.pointIndex].sn,
+        title:"七天专项练习",
+        taskType: "kousuan",
+        day:7,
+        resource:"kousuan_category",
+      })
+      wxNav.redirectTo('/pages/package_feature/kousuan/createTime',{
+        sn:resp.createTimedtask.task.sn
+      })
+      this.longToast.toast()
+    }catch(e){
+      Loger(e)
+      this.longToast.toast()
+      util.showError(e)
+    }
+  }),
 
 })

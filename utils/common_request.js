@@ -52,6 +52,8 @@ const previewDocument = co.wrap(function*(data, callback) {
         }
       })
     }
+  }, ()=>{
+    callback()
   })
 })
 
@@ -85,7 +87,7 @@ const getPrinterCapacity = co.wrap(function*(featureKey, fileUrl) {
       featureKey: featureKey
     }
   })
-  capacity = capacity.currentUser && capacity.currentUser.selectedDevice.capability
+  capacity = capacity.currentUser && capacity.currentUser.selectedDevice && capacity.currentUser.selectedDevice.capability || {}
   capacity.grayscale = true
   if (fileUrl) {
     let fileObj = yield api.synthesisWorker({

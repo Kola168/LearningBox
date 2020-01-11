@@ -3,6 +3,7 @@
 	<swiper class="swpier-box" bindchange="changeImg">
 		<swiper-item
 		 class=""
+		 current="{{currentIndex - 1}}"
 		 item-id=""
 		 wx:for="{{!isPrintAnswer ? exercise.images : exercise.answerImages}}"
 		 wx:key="nameUrl"

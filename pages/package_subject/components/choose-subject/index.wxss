@@ -13,20 +13,28 @@
 }
 
 .subject-list {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
   width: 100%;
+  margin-bottom: 70rpx;
 }
 
 .subject-list .subject-item {
   margin-bottom: 10rpx;
+  margin-right: 40rpx;
   padding: 32rpx 0;
-  width: 160rpx;
+  display: inline-block;
+  width: calc( ( 100% - 80rpx ) / 3 );
   box-sizing: border-box;
   text-align: center;
   border-radius: 16rpx;
   border: 2rpx solid #fff;
+}
+
+.subject-list .subject-item:nth-child(3n) {
+  margin-right: 0;
+}
+
+.subject-list .subject-item:first-child {
+  margin-right: 40rpx;
 }
 
 .subject-icon {

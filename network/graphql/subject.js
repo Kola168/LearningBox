@@ -556,21 +556,73 @@ const graphqlApi = {
     })
   },
 
-  /*
-   * 获取学科会员信息
+  /**
+   * 获取知识点
+   * @param {Object}
+      sn 学科的sn
+      startTime 开始时间
+      endTime 结束时间
    */
-  getSubjectMemberInfo: () => {
+  getKnowledges: (pms) => {
     return gql.query({
-      query: `query {
-       currentUser {
-        isSchoolAgeMember
-        selectedKid {
-          schoolAgeMember {
-            expiresAt
+      query: `query getKnowledges($sn: String!, $startTime: String!, $endTime: String!){
+        xuekewangSubject(sn:$sn, startTime: $startTime, endTime:$endTime){
+          subject{
+            sn
+          }
+          knowledges{
+            errorBookCount
+            id
+            name
           }
         }
-       }
-     }`
+      }`,
+      variables: {
+        ...pms
+      }
+    })
+  },
+
+  /**
+   * 获取练习列表
+   */
+  getKnowledgeExercises: (subjectSn, isPrint = 0) => {
+    return gql.query({
+      query: `query getExercises($subjectSn:String, $exerciseType:String, $isPrint: Int){
+        xuekewang{
+          exercises(subjectSn:$subjectSn, exerciseType: $exerciseType, isPrint: $isPrint){
+            sn
+            dateTime
+            isPrint
+            pageSize
+            exerciseName
+          }
+        }
+      }`,
+      variables: {
+        subjectSn,
+        exerciseType: 'kpoint',
+        isPrint
+      }
+    })
+  },
+
+  /**
+   * 获取学科错题列表
+   */
+  getSubjectsErrorbook: () => {
+    return gql.query({
+      query: `query {
+        xuekewang {
+          subjects {
+            iconUrl
+            subjectId
+            subjectName
+            sn
+            errorBooksNum
+          }
+        }
+      }`
     })
   },
 

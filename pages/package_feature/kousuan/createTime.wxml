@@ -1,0 +1,32 @@
+<!--pages/package_feature/kousuan/createTime.wxml-->
+<nav-bar title="练习计划"></nav-bar>
+<view class="content-bg" bindtap="hidePointsScroll">
+  <view class="plan-top-tip">
+    本计划会在一个星期内连续打印某一项知识点，每天打印一页
+  </view>
+  <view class="tips-top-text">
+    选择计划开始的时间
+  </view>
+  <view class="check-contain-box">
+    <view class="check-name-box">该计划将于每天</view>
+    <view class="check-content-box" data-type="remindTime" catchtap="checkPoints">
+      <text class="check-value-box">{{hours[checkedHourIndex]}}:{{minutes[checkedMinutesIndex]}}</text>
+      <text class="iconfont icon-down {{pointType=='remindTime'?'icon-rotate':''}}"></text>
+      <view class="scroll-position-box" wx:if="{{pointType=='remindTime'}}" catchtap="preventTap">
+        <picker-view class="picker-view-box" indicator-class="picker-choosed" value="{{[checkedHourIndex,checkedMinutesIndex]}}" bindchange="bindChange">
+          <picker-view-column>
+            <view wx:for="{{hours}}" class="picker-item" wx:key="hours">{{item}}</view>
+          </picker-view-column>
+
+        </picker-view>
+      </view>
+    </view>
+    <view class="check-print-tip">左右自动执行</view>
+  </view>
+  <view class="conf-check-but" bindtap="createPlan">
+    创建计划
+  </view>
+</view>
+
+<import src="/lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />

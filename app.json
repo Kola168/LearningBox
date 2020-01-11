@@ -47,7 +47,10 @@
     "pages/finish/index",
     "pages/mall/index",
     "pages/webview/index",
-    "pages/webview/member"
+		"pages/webview/member",
+		"pages/member/authorize",
+		"pages/exit/index",
+		"pages/account/collection/index"
   ],
   "subPackages": [
     {
@@ -150,7 +153,17 @@
         "kousuan/learningplan",
         "kousuan/createplan",
         "kousuan/pointslist",
-        "kousuan/previewWebview"
+        "kousuan/previewWebview",
+        "kousuan/createTime",
+        "copy_book/commonSense",
+        "copy_book/detail",
+        "copy_book/index",
+        "copy_book/list",
+        "copy_book/post",
+        "copy_book/subject",
+        "print_link/index",
+        "print_link/typeList",
+        "print_link/desc"
       ]
     },
     {
@@ -160,7 +173,8 @@
         "member/caculate",
         "member/index",
         "member/order",
-        "group/index"
+        "group/index",
+        "member/detail"
       ]
     },
     {
@@ -176,7 +190,6 @@
         "record_voice/content_detail/content_detail",
         "growth_plan/list/index",
         "growth_plan/timed_print/timed_print",
-        "growth_plan/print_setting/print_setting",
         "growth_plan/checkpoint/plan_checkpoint",
         "growth_plan/checkpoint/plan_detail",
         "exercise_day/setting/setting",
@@ -216,7 +229,8 @@
         "stage_report/index/index",
         "exam_paper_report/index/index",
         "correct/index",
-        "report/index"
+        "report/index",
+        "sync_video/index/index"
       ]
     },
     {
@@ -236,10 +250,10 @@
         "network/index/index",
         "network/tips/step1",
         "network/tips/step2",
-				"network/tips/step3",
-				"network/tips/step4",
-				"network/wificonnect/list",
-				"network/common/nowifi",
+        "network/tips/step3",
+        "network/tips/step4",
+        "network/wificonnect/list",
+        "network/common/nowifi",
         "network/wificonnect/connect",
         "ble/common/connect_success",
         "ble/common/no_bluetooth",

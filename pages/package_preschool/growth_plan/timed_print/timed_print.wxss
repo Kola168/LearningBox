@@ -20,6 +20,9 @@
     display: flex;
     justify-content: space-between;
 }
+.lists .list-item:nth-of-type(1) .item-right{
+    justify-content: flex-end;
+}
 .arrow-icon{
     width:20rpx;
     height:25rpx;

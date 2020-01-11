@@ -14,9 +14,13 @@ var timestampToDate = function(timestamp) {
   return yyyy + '-' + mm + '-' + dd
 }
 
+var replaceDate = function(date){
+  return date.replace(/-/g, '/')
+}
+
 
 var dateToTimestamp = function(date) {
-  var timestamp = date.replace(/-/g, '/')
+  var timestamp = replaceDate(date)
   var d = new Date(timestamp)
   return d.getTime()
 }
@@ -26,7 +30,7 @@ var dateToTimestamp = function(date) {
  */
 var getCurrentDate = function () {
   var timeStamp = (new Date()).getTime()
-  return timestampToDate(timeStamp)
+  return timestampToDate(timeStamp) 
 }
 
 /**
@@ -80,6 +84,7 @@ var getAssignDate = function (appoint) {
 
 
 export default {
+  replaceDate,
   getAssignDate,
   getCurrentDayToDayFn
 }

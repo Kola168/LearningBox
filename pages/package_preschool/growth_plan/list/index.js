@@ -42,17 +42,8 @@ Page({
       this.setData({
         lists: resp.plans
       })
-
-      logger.info('未订阅2', lists)
-
-      this.longToast.weToast()
-      wx.showToast({
-        title: '提交成功！',
-        icon: 'none',
-        duration: 3000
-      })
     } catch (e) {
-      this.longToast.weToast()
+      this.longToast.toast()
       util.showError(e)
     }
 
@@ -62,6 +53,7 @@ Page({
     try {
       let tab = this.currentTab
       const resp = yield gql.getUserPlans(tab)
+      logger.info('resp====',resp)
       let dataKey = ''
       if(tab==='subscription'){
         dataKey = 'subscriptList'
@@ -73,15 +65,8 @@ Page({
       this.setData({
         [dataKey]: resp.userPlans
       })
-
-      this.longToast.weToast()
-      wx.showToast({
-        title: '提交成功！',
-        icon: 'none',
-        duration: 3000
-      })
-    } catch (error) {
-      this.longToast.weToast()
+    } catch (e) {
+      this.longToast.toast()
       util.showError(e)
     }
   }),
@@ -106,10 +91,9 @@ Page({
         lists: resp.plans
       })
     } catch (e) {
-      this.longToast.weToast()
+      this.longToast.toast()
       util.showError(e)
     }
-    console.log(11110)
   }),
 
 
@@ -122,7 +106,7 @@ Page({
         ['modalObj.isShow']: true
       })
     } catch (e) {
-      this.longToast.weToast()
+      this.longToast.toast()
       util.showError(e)
     }
   }),
@@ -134,8 +118,9 @@ Page({
     try {
       const res = yield gql.deleteUserPlanInput(cancelSn)
       this.getUserPlans()
-    } catch (error) {
-      console.log(error)
+    } catch (e) {
+      this.longToast.toast()
+      util.showError(e)
     }
     
   }),
@@ -175,14 +160,6 @@ Page({
         subscribe
       }
     )
-
-    // var idx= e.currentTarget.id
-    // try {
-
-    // } catch (e) {
-    //   this.longToast.weToast()
-    //   util.showError(e)
-    // }
   }),
 
 })

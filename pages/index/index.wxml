@@ -37,13 +37,17 @@
         <image src="/images/home/icon_voice.png" mode="widthFix"></image>
         <view>童音录制</view>
       </view>
-      <view class="tool-item" bindtap="toFunction">
+      <view class="tool-item" id="baobeicepin" bindtap="toFunction">
         <image src="/images/home/icon_test.png" mode="widthFix"></image>
         <view>宝贝测评</view>
       </view>
       <view class="tool-item" bindtap="toFunction">
         <image src="/images/home/icon_miaohong.png" mode="widthFix"></image>
         <view>幼儿描红</view>
+      </view>
+      <view class="tool-item" bindtap="toFunction" id="exerciseDay">
+        <image src="/images/home/icon_exercise_day.png" mode="widthFix"></image>
+        <view>每日一练</view>
       </view>
       <view class="tool-item">
       </view>
@@ -94,7 +98,7 @@
 
     <view class="content-list" wx:for="{{beforeSchoolContent}}" wx:key="beforeSchoolContent" id="{{item.key}}">
       <view class="home-title">{{item.name}}</view>
-      <image src="{{item.iconUrl}}" class="content-image" mode="widthFix" id="{{item.key}}"  bindtap="toContentList" data-name="{{item.name}}"/>
+      <image src="{{item.iconUrl}}" class="content-image" mode="widthFix" id="{{item.key}}"  bindtap="toContentList" data-name="{{item.name}}" data-has="{{item.hasCategory}}"/>
     </view>
     <view class="tips">
       <view>
@@ -117,11 +121,10 @@
         </image>
         <view>免费资源库</view>
       </view>
-      <!--没数据先注释着
       <view class="tool-item" bindtap="tokousuan">
         <image src="/images/home/icon_count.png" mode="widthFix"></image>
         <view>口算</view>
-      </view>-->
+      </view>
       <view class="tool-item" bindtap="toFunction" id="memoryWrite">
         <image src="/images/home/icon_write.png" mode="widthFix"></image>
         <view>默写</view>
@@ -144,7 +147,7 @@
       <image src="/images/home/subject_train.png" mode="widthFix" bind:tap="toFunction" id="weaknessExercise"  />
       <image src="/images/home/subject_report.png" mode="widthFix" bind:tap="toFunction" id="stageReporter"  />
     </view>
-    <!-- <view class="tips tips-sub">
+    <view class="tips tips-sub">
       <view>
         <image src="/images/home/icon_subject_book.png" mode="widthFix" />
         <view>什么是纸质学习法？</view>
@@ -153,7 +156,7 @@
         <image src="/images/home/icon_subject_teacher.png" mode="widthFix" />
         <view>小白老师是谁？</view>
       </view>
-    </view> -->
+    </view>
     <view class="study-center" bind:tap="toLearnCenter">
       <text>进入学习中心</text>
       <image src="/images/home/to_study_center.png" mode="widthFix" />
