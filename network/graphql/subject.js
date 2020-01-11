@@ -370,6 +370,12 @@ const graphqlApi = {
             answerImages{
               nameUrl
             }
+            answerPdf{
+              nameUrl
+            }
+            pdf{
+              nameUrl
+            }
             images{
               nameUrl
             }
@@ -1025,7 +1031,60 @@ const graphqlApi = {
       }
     })
   },
-  
+
+  /**
+   * 获取报告
+   * @param {String} sn 学科sn
+   *  @param {String} page 页数
+   *  @param {String} startAt 开始时间
+   *  @param {String} endAt 结束时间
+   *  @param {String} type 报告类型
+   */
+  getReporter: (sn, page, startAt, endAt, type) => {
+    return gql.query({
+      query: `query getReporter($sn:String!, $type: ReportTypeEnum!, $page:Int!, $per: Int!, $startAt: String, $endAt: String){
+        xuekewang{
+          reports(sn: $sn, type: $type, page: $page, per: $per, startAt: $startAt, endAt: $endAt){
+            exerciseName:name
+            sn
+            images{
+              id
+            }
+            dateTime: createdAt
+          }
+        }
+      }`,
+      variables: {
+        sn,
+        type,
+        page,
+        per: 10,
+        startAt,
+        endAt
+      }
+    })
+  },
+
+  /**
+   * 创建阶段报告
+   * @param {String} sn 学科sn
+   * @param {String} startAt 开始时间
+   * @param {String} endAt 结束时间
+   */
+  createStageeport: (input) => {
+    return gql.mutate({
+      mutation: `mutation createStageeport($input:CreateXuekewangReportInput!){
+        createXuekewangReport(input: $input){
+          state
+        }
+      }`,
+      variables: {
+        input
+      }
+    })
+  },
+
+
 }
 
 export default graphqlApi

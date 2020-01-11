@@ -8,7 +8,7 @@
       </view>
       <view class="effect-content">
         <image src="/images/doc_discover_pages.png" />
-        <view class="page-count">共{{item.pageSize}}页</view>
+        <view class="page-count">共{{item.pageSize || item.images.length}}页</view>
         <image src="../../images/time_icon.png" />
         <view class="create-date">{{item.dateTime}}</view>
       </view>

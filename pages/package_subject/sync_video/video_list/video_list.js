@@ -8,6 +8,7 @@ import {
   wxNav
 } from '../../../../utils/common_import'
 import graphql from '../../../../network/graphql/subject'
+import graphqlAll from '../../../../network/graphql_request'
 Page({
 
   /**
@@ -22,17 +23,34 @@ Page({
       image: 'https://cdn-h.gongfudou.com/LearningBox/subject/video_member_banner.png',
       slotBottom: true
     },
-    videoList: []
+    videoList: [],
+    isSchoolAgeMember: false,
   },
 
-  onLoad: function (options) {
+  onLoad: co.wrap(function * (options) {
     this.videoId = options.sn
     this.stageSn = options.stageSn
     this.subjectId = options.subjectId
     this.longToast = new app.weToast()
     this.page = 1
-    this.getVideoList()
-  },
+    yield this.getMember()
+    yield this.getVideoList()
+  }),
+
+
+  /**
+   * 判断是否是会员
+   */
+  getMember: co.wrap(function*(){
+    try {
+      var resp = yield graphqlAll.getUserMemberInfo()
+      this.setData({
+        isSchoolAgeMember: resp.currentUser.isSchoolAgeMember
+      })
+    } catch(err) {
+      util.showError(err)
+    }
+  }),
 
   /**
    * 获取视频列表
@@ -64,8 +82,11 @@ Page({
    * 跳转播放详情
    */
   toVideo: function ({currentTarget: {dataset: {item}}}) {
-    var member = this.selectComponent('#memberToast')
-    member.showToast()
+    if (!this.data.isSchoolAgeMember) {
+      var member = this.selectComponent('#memberToast')
+      return member.showToast()
+    }
+    
     wxNav.navigateTo("../video_detail/video_detail", {
       video: encodeURIComponent(JSON.stringify({
         name: item.name,

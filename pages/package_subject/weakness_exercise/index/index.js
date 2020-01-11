@@ -7,8 +7,8 @@ import {
   storage,
   wxNav
 } from '../../../../utils/common_import'
-import api from '../../../../network/restful_request'
 import graphql from '../../../../network/graphql/subject'
+import graphqlAll from '../../../../network/graphql_request'
 import getLoopsEvent from '../../../../utils/worker'
 Page({
 
@@ -51,6 +51,7 @@ Page({
     checkedPrint: null,
     checkedSubject: null,
     isExerciseEmpty: false,
+    isSchoolAgeMember: false,
   },
 
   /**
@@ -67,6 +68,7 @@ Page({
       },
       isFullScreen: app.isFullScreen
     })
+    yield this.getMember()
     yield this.getSubject()
     yield this.getExerciseList()
   }),
@@ -230,12 +232,27 @@ Page({
     }
   }),
 
+   /**
+   * 判断是否是会员
+   */
+  getMember: co.wrap(function*(){
+    try {
+      var resp = yield graphqlAll.getUserMemberInfo()
+      this.setData({
+        isSchoolAgeMember: resp.currentUser.isSchoolAgeMember
+      })
+    } catch(err) {
+      util.showError(err)
+    }
+  }),
   /**
    * 确认练习
    */
   confirmExercise: function(){
-    // var member = this.selectComponent('#memberToast')
-    // member.showToast()
+    if (!this.data.isSchoolAgeMember) {
+      var member = this.selectComponent('#memberToast')
+      return member.showToast()
+    }
     this.setData({
       showSubjectCheckbox: true
     })

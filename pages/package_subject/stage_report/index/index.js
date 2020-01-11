@@ -30,8 +30,9 @@ Page({
     reporterList: [], //报告列表
   },
 
-  onLoad: function (options) {
+  onLoad: co.wrap(function * (options) {
     this.longToast = new app.weToast()
+    this.page = 1
     let navBarHeight = app.navBarInfo.topBarHeight
     var { startDate, endDate } = computedTime.getCurrentDayToDayFn(7)
     this.setData({
@@ -40,8 +41,9 @@ Page({
       startDate: computedTime.replaceDate(startDate),
       endDate: computedTime.replaceDate(endDate)
     })
-    this.getSubject()
-  },
+    yield this.getSubject()
+    yield this.getReporter()
+  }),
 
   /**
    * 获取学科信息
@@ -79,9 +81,20 @@ Page({
       title: '请稍后...'
     })
     try {
-      console.log(this.data.subjectData, '==学科==', this.data.startDate, '==startDate==')
-      console.log('==createReporter==')
-      // yield this.getReporter()
+      var resp = yield graphql.createStageeport({
+        sn: this.data.subjectData.sn,
+        startAt: this.data.startDate,
+        endAt: this.data.endDate,
+      })
+      if (resp.createXuekewangReport.state) {
+        yield this.getReporter()
+      } else {
+        wx.showModal({
+          title: '提示',
+          content: '生成失败'
+        })
+      }
+
     } catch(err) {
       util.showError(err)
     } finally {
@@ -99,9 +112,10 @@ Page({
       title: '请稍后...'
     })
     try {
-      var resp = yield graphql.getReporter()
+      var resp = yield graphql.getReporter(this.data.subjectData.sn, this.page,  this.data.startDate, this.data.endDate, 'XuekewangSubjectReport')
       this.setData({
-        reporterList: resp.reporter
+        reporterList: resp.xuekewang.reports,
+        isReporterEmpty: resp.xuekewang && resp.xuekewang.reports.length ? false : true
       })
     } catch(err){
       util.showError(err)
@@ -126,8 +140,10 @@ Page({
     this.setData({
       subjectData: detail,
       showTimeForm: true,
-      showSubjectForm: false
+      showSubjectForm: false,
+      isUserSheetForm: false,
     })
+    
   },
   
   /**
@@ -139,6 +155,13 @@ Page({
       ...detail,
       showTimeForm: false
     })
+    /**
+     * 判断是否从筛选框进入 是则直接获取报告
+     */
+    if (this.data.isUserSheetForm) {
+      return this.getReporter()
+    }
+
     this.createReporter() //生成报告
   },
 
@@ -146,11 +169,13 @@ Page({
    * 通过sheet选择学科
    */
   useSheetCheckedSubject: function({currentTarget: {dataset: {index}}}){
-    // console.log(this.data.subjects[index],'===xxxxx====')
     this.setData({
-      subjectData: this.data.subjects[index]
+      subjectData: this.data.subjects[index],
+      isUserSheetForm: true,
+      isReporterEmpty: false,
     })
     this.cancelSubjectForm()
+    this.getReporter()
   },
 
   /**
@@ -159,6 +184,15 @@ Page({
   cancelSubjectForm: function() {
     this.setData({
       showSubjectSheet: false
+    })
+  },
+
+   /**
+   * 去打印
+   */
+  toPrint: function({currentTarget: {dataset: {sn}}}){
+    wxNav.navigateTo('../../report/index', {
+      sn
     })
   },
 

@@ -270,7 +270,7 @@ Component({
       }
     }) {
       var pathMapping = {
-        superErrorBook: '',
+        superErrorBook: '/pages/package_subject/super_errorbook/index/index',
         errorBook: '/pages/package_feature/error_book/index'
       }
       var path = pathMapping[key]
