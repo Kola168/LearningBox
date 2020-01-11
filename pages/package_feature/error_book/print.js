@@ -16,6 +16,7 @@ const downloadFile = util.promisify(wx.downloadFile)
 const getUserInfo = util.promisify(wx.getUserInfo)
 import router from '../../../utils/nav'
 import featureGql from '../../../network/graphql/feature'
+import gql from '../../../network/graphql_request'
 import Logger from '../../../utils/logger.js'
 const logger = new Logger.getLogger('pages/index/index')
 import getLoopsEvent from '../../../utils/worker'
@@ -517,7 +518,7 @@ Page({
 
         try {
 
-            const resp = yield featureGql.createResourceOrder(p)
+            const resp = yield gql.createResourceOrder(p)
             router.redirectTo('/pages/finish/index', {
                 type: 'mistake',
                 media_type: 'mistake',

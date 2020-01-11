@@ -1,0 +1,21 @@
+<nav-bar background="#fff" title="订单"></nav-bar>
+<image class="top-rule" src="https://cdn-h.gongfudou.com/LearningBox/member/menber_updata_rule.png" mode="widthFix">
+</image>
+<view class="member-title">
+    <view class="sign"></view>
+    <view>当前学龄前会员有效期至：19990年12月11日</view>
+</view>
+<view class="content">
+    <view class="first">可升级月份：9个月</view>
+    <view class="second">学龄前会员天数/31=可升级月份（取正整数）</view>
+    <view class="third">剩余时间超过15天的按一个月算，不足15天的不计数</view>
+    <view class="fourth">根据学科会员原价</view>
+    <view class="fifth">您需要支付一下金额后即可升级为学科会员：</view>
+    <view class="sixth">108元</view>
+    <view class="seventh">需支付金额=（学科会员每月价格-学龄会员每月价格）X 可升级月份</view>
+    <view class="payOrder">立即支付</view>
+</view>
+<import src="../../../lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />
+<modal modal="{{modalObj}}" bindcomfirm="updateConfirm">
+</modal>

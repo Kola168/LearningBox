@@ -16,6 +16,9 @@ const event = require('../../../lib/event/event')
 Page({
     data: {
         availableMember: false,
+        success:false,
+        device:null,
+        kid:null,
         modalObj: {
             isShow: false,
             hasCancel: false,
@@ -38,26 +41,14 @@ Page({
             this.getDevice()
         })
     }),
-
-    getMemberPaymentOrder: co.wrap(function* () {
-        this.longToast.toast({
-            type: 'loading'
-        })
-        try {
-            // let resp = yield memberGql.getMemberPaymentOrder(),
-            this.longToast.hide()
-        } catch (e) {
-            this.longToast.hide()
-            util.showError(e)
-        }
-    }),
+    
     accessMember: co.wrap(function* () {
         this.longToast.toast({
             type: "loading",
             duration: 0
         })
         try {
-            const resp = yield api.wechatDecryption(params)
+            const resp = yield api.accessMember()
             if (resp.code != 0) {
                 throw (resp)
             }
@@ -66,6 +57,7 @@ Page({
             })
             this.longToast.hide()
         } catch (error) {
+            util.showError(error)
             this.longToast.hide()
         }
 
@@ -81,7 +73,9 @@ Page({
         })
         try {
 
-            let resp = yield memberGql.getDevice()
+            let resp = yield memberGql.getDevice({
+                format:'ts'
+            })
             this.longToast.hide()
             this.setData({
                 device: resp.currentUser.selectedDevice
@@ -90,12 +84,13 @@ Page({
                 return
             }
             this.setData({
-                availableMember: this.data.device.lmAvailableMember.time != null && this.data.device.lmAvailableMember.time != 0 ? true : false
+                availableMember: this.data.device.lmAvailableMember.time != null && this.data.device.lmAvailableMember.time != 0 ? true : false,
+                kid: resp.currentUser.selectedKid
             })
 
             let unit = '天'
             if (this.data.device.lmAvailableMember.unit == 'month') {
-                unit = '月'
+                unit = '个月'
             }
             if (this.data.device.lmAvailableMember.unit == 'year') {
                 unit = '年'
