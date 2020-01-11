@@ -14,10 +14,12 @@
       <view class="text-tyle">
         <text>{{studyDay}}</text><text class="text-unit">天</text>
       </view>
-      <view class="text-line"></view>
-      <view class="text-tyle">
-        <text>{{studyUniy}}</text><text class="text-unit">Unit</text>
-      </view>
+      <block wx:if="{{studyNum!=null && studyUnit!=null}}">
+        <view class="text-line"></view>
+        <view class="text-tyle">
+          <text>{{studyNum}}</text><text class="text-unit">{{studyUnit}}</text>
+        </view>
+      </block>
     </view>
   </view>
 </image>
@@ -43,7 +45,7 @@
     {{save?'保存晒朋友圈':'返回首页'}}
   </view>
   <view class="button-right" bindtap="continuePrint">
-    <text>继续打印</text>
+    <text>{{continueText}}</text>
   </view>
 </view>
 <block wx:if="{{supply_types.length>0}}">

@@ -78,7 +78,7 @@ Page({
       this.subjectName = tempData.subject_name
       this.currentTopicId = currentTopic.ques_id
       this.setData({
-        title = tempData.title,
+        title : tempData.title,
         currentTopicType: formatResult.topicType,
         topicsResult: topicsResult,
         currentTopic: formatResult.currentTopic,

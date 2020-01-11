@@ -89,13 +89,15 @@ Page({
           settingData: encodeURIComponent(JSON.stringify({
             isPreview:true,
             file: {
-              name: '1111',
+              name: resp.wxFile.convertedUrl,
             },
             orderPms: {
               printType: 'PRINTDOC',
               pageCount: resp.wxFile.pages,
               featureKey: 'link',
-              originalUrl:resp.wxFile.convertedUrl,
+              attributes:{
+                originalUrl:resp.wxFile.convertedUrl,
+              },
               url:resp.wxFile.convertedUrl,
             },
             checkCapabilitys: {

@@ -5,6 +5,7 @@ const app = getApp()
 const regeneratorRuntime = require('../../lib/co/runtime')
 const co = require('../../lib/co/co')
 const util = require('../../utils/util')
+const _ = require('../../lib/underscore/we-underscore')
 const feature_route = require('../../utils/feature_index')
 
 const downloadFile = util.promisify(wx.downloadFile)
@@ -28,7 +29,6 @@ Page({
     activeDevice: null,
     showAdvertisement: true,
     studyDay: 0,
-    studyUniy: 0,
     save:false,
     studyNum:null,
     studyUnit:null,
@@ -42,33 +42,38 @@ Page({
     //    day:1   //学习天数
     //可选
     //    save:true    //是否保存朋友圈，没这功能不用传这字段
-    //    studyNum:1  //天数对应的多少单位
+    //    studyNum:1  //学习的单位数量
     //    studyUnit:Unit  //单位
-    //    continueText:'继续打印'  //继续打印的文案
+    //    continueText:'继续打印'  //继续打印的文案可不传
     // })
   onLoad: function(options) {
     this.longToast = new app.weToast()
     Loger('options=======', options)
     Loger(options.media_type)
     this.media_type = options.media_type
-
-    this.category_id = options.category_id
+    if(_.isNotEmpty(options.studyNum)&&_.isNotEmpty(options.studyUnit)){
+      this.setData({
+        studyNum:options.studyNum,
+        studyUnit:options.studyUnit
+      })
+    }
+    this.setData({
+      save:options.save,
+      studyDay:options.day,
+      continueText:options.continueText||'继续打印'
+    })
     this.setData({
       state: options.state
     })
     if (options.media_type) {
       wx.removeStorageSync(options.media_type)
     }
-    if (options.sticker_type) {
-      wx.removeStorageSync(options.sticker_type)
-    }
-
   },
+
   onShow() {
     this.setData({
       activeDevice: app.activeDevice
     })
-
   },
 
   localSave: co.wrap(function*() {
@@ -83,14 +88,22 @@ Page({
       context.setFillStyle('#ff9839')
       context.setTextAlign('right')
       context.setTextBaseline('top')
-      context.setFontSize(70)
-      context.fillText(this.data.studyDay, 213, 248)
-      context.fillText(this.data.studyUniy, 572, 248)
-      context.setFontSize(28)
-      context.fillText('天', 246, 285)
-      context.fillText('Unit', 636, 285)
-      context.setFontSize(40)
-      context.fillText('|', 352, 261)
+      if(_.isNotEmpty(this.data.studyNum)&&_.isNotEmpty(this.data.studyUnit)){
+        context.setFontSize(70)
+        context.fillText(this.data.studyDay, 213, 250)
+        context.fillText(this.data.studyNum, 572, 250)
+        context.setFontSize(28)
+        context.fillText('天', 246, 285)
+        context.fillText(this.data.studyUnit, 636, 285)
+        context.setFontSize(40)
+        context.fillText('|', 352, 261)
+      }else{
+        context.setFontSize(70)
+        context.fillText(this.data.studyDay, 342, 250)
+        context.setFontSize(28)
+        context.fillText('天', 405, 285)
+      }
+
       context.draw(false, function() {
         wx.canvasToTempFilePath({
           canvasId: 'myCanvas',
@@ -138,16 +151,13 @@ Page({
       }
     })
   },
+
   backToHome: function() {
     wxNav.switchTab('/pages/index/index')
   },
 
   continuePrint: function() {
-    if (this.media_type === 'memory_write') {
-      wxNav.backPage(feature_route.feature_route[this.printType])
-    } else {
-      wxNav.backPage(feature_route.feature_route[this.media_type])
-    }
+    wxNav.backPage(feature_route.feature_route[this.media_type])
   },
 
   onShareAppMessage: function() {
