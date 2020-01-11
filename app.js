@@ -10,6 +10,8 @@ import {
 	storage,
 	logger
 } from './utils/common_import'
+// import commonRequest from './utils/common_request.js'
+
 const getSystemInfo = util.promisify(wx.getSystemInfo)
 const login = util.promisify(wx.login)
 const request = util.promisify(wx.request)
@@ -53,6 +55,7 @@ App({
 	rpxPixel: 0.5,
 	deBug: false, //线上环境log调试
 	refreshing: false,  //这个变量切勿占用，刷新token用
+	userRequestFinish:false,//用户信息请求完毕
 
 	onLaunch: co.wrap(function* () {
 		yield this.getSystemInfo()
@@ -223,4 +226,6 @@ App({
 		const authToken = storage.get('authToken')
 		return authToken ? true : false
 	})
+
+
 })

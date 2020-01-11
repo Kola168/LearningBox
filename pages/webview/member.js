@@ -10,7 +10,8 @@ Page({
 		let userSn = storage.get('userSn'),
 			system = app.sysInfo.system.toLocaleLowerCase(),
 			isIos = system.indexOf('ios') > -1 ? '&ios=1' : ''
-		this.setData({
+			 console.log(`${app.apiServer}/customer/members?user_sn=${userSn}${isIos}`)
+			this.setData({
 			url: `${app.apiServer}/customer/members?user_sn=${userSn}${isIos}`
 		})
 	}

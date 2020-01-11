@@ -117,7 +117,15 @@ Page({
     } catch (e) {
       util.showError(e)
     }
-  }),
+	}),
+	
+	//获取用户会员信息
+	getMemeberInfo: co.wrap(function* () {
+		let resp = yield commonRequest.getMemberInfo()
+    console.log('会员信息==========',resp)
+	}),
+
+
   getUserInfo: co.wrap(function* () {
     try {
       let resp = yield gql.getUser()
@@ -127,7 +135,9 @@ Page({
         stageRoot: resp.currentUser.selectedKid.stageRoot
       })
       storage.put("userSn", resp.currentUser.sn)
-      storage.put("kidStage", resp.currentUser.selectedKid.stageRoot)
+			storage.put("kidStage", resp.currentUser.selectedKid.stageRoot)
+			storage.put("isPreschoolMember", resp.currentUser.isPreschoolMember)
+      storage.put("isSchoolAgeMember", resp.currentUser.isSchoolAgeMember)
 
       if (resp.currentUser.phone) {
         app.hasPhoneNum = true
