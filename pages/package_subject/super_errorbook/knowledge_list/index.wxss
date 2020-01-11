@@ -36,18 +36,7 @@
   top: 0;
   height: 100%;
   border-left: 2rpx dashed #CECECE;
-}
-
-.line-one {
-  left: 33.33%;
-}
-
-.line-two {
-  left: 66.66%;
-}
-
-.line-three {
-  left: 99.99%;
+  z-index: -1;
 }
 
 .list-item:not(:last-child) {

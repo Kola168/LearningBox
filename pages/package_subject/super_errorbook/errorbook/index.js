@@ -12,9 +12,19 @@ Page({
   data: {
     subjects: []
   },
-  onLoad() {
+  onLoad(query) {
+    this.isMember = query.isMember
+    this.expiresAt = query.expiresAt
     this.weToast = new app.weToast()
     this.getSubjectsErrorbook()
+  },
+  toErrorbookList(e){
+    let sn = e.currentTarget.id
+    wxNav.navigateTo('../errorbook/list',{
+      sn,
+      isMember,
+      expiresAt
+    })
   },
   getSubjectsErrorbook: co.wrap(function* () {
     this.weToast.toast({
@@ -22,7 +32,6 @@ Page({
     })
     try {
       let res = yield graphql.getSubjectsErrorbook()
-      console.log(res)
       this.setData({
         subjects: res.xuekewang.subjects
       })

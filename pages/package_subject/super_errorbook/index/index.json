@@ -1,3 +1,5 @@
 {
-  "usingComponents": {}
+  "usingComponents": {
+    "chart-bar": "../../components/chart-bar/index"
+  }
 }
