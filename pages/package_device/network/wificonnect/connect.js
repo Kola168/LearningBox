@@ -121,26 +121,17 @@ Page({
 				}
 				that.bindCode.time++
 				if (that.bindCode.time >= 30) {
+					this.naviagteToStep1('配网超时,请重试')
 					this.longToast.toast()
-					wx.showModal({
-						title: '提示',
-						content: '配网超时',
-					})
-					this.longToast.toast()
-					setTimeout(function(){
-						return wxNav.navigateTo('/pages/package_device/network/tips/step1')
-					},1000)
+
 				}else{
 					console.log('that.bindCode.time====',that.bindCode.time)
 					that.bindCode()
 				}
 			}else if(e.errMsg === "request:fail timeout" || e.errMsg === "request:fail"){
-				wx.showModal({
-					title: '提示',
-					content: '配网中断',
-				})
+				this.naviagteToStep1('配网中断，请检查你的网络')
 			}else{//其它未知错误
-				return wxNav.navigateTo('/pages/package_device/network/tips/step1')
+				this.naviagteToStep1('未知错误')
 			}
 		}
 	}),
@@ -179,7 +170,7 @@ Page({
 				})
 				setTimeout(function(){
 					wxNav.switchTab('/pages/index/index')
-				},1700)
+				},1500)
 			}
 		} catch (e) {
 			this.longToast.toast()
@@ -191,5 +182,16 @@ Page({
 
 	changeWifi:function(){
 		wxNav.navigateBack()
+	},
+
+
+	naviagteToStep1:function(error){
+		wx.showModal({
+			title: '提示',
+			content: error,
+		})
+		setTimeout(function () {
+			return wxNav.navigateTo('/pages/package_device/network/tips/step1')
+		}, 1000)
 	}
 })

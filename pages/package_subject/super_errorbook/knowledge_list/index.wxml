@@ -4,31 +4,17 @@
   <view class="knowledge">
     <view class="knowledge-title">知识点列表</view>
     <view class="knowledge-list">
-      <view class="list-line line-one"></view>
-      <view class="list-line line-two"></view>
-      <view class="list-line line-three"></view>
+      <view class="list-line" wx:for="{{[1,2,3]}}" wx:key="index" style="left:{{33.33*item}}%;"></view>
       <view class="final-precent">100%</view>
-      <view class="list-item">
-        <view class="item-title">有理数</view>
-        <view class="item-progress" style="width:100%;">
-          <!-- <view class="progress-bar" style="width:100%;"></view> -->
-          <view class="progress-text">100%</view>
-        </view>
-      </view>
-      <view class="list-item">
-        <view class="item-title">微积分</view>
-        <view class="item-progress" style="width:50%;">
-          <!-- <view class="progress-bar" style="width:50%;"></view> -->
-          <view class="progress-text">50%</view>
-        </view>
-      </view>
-      <view class="list-item">
-        <view class="item-title">函数</view>
-        <view class="item-progress" style="width:90%;">
-          <!-- <view class="progress-bar" style="width:90%;"></view> -->
-          <view class="progress-text">90%</view>
+      <view class="list-item" wx:for="{{knowledgeList}}" wx:key="kpId">
+        <view class="item-title">{{item.kpName}}</view>
+        <view class="item-progress" style="width:{{item.tureRate}}%;">
+          <view class="progress-text">{{item.tureRate}}%</view>
         </view>
       </view>
     </view>
   </view>
 </view>
+<!-- loading -->
+<import src="/lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />

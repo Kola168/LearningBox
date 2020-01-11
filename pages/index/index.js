@@ -117,17 +117,25 @@ Page({
     } catch (e) {
       util.showError(e)
     }
-  }),
+	}),
+	
+	//获取用户会员信息
+	getMemeberInfo: co.wrap(function* () {
+		let resp = yield commonRequest.getMemberInfo()
+    console.log('会员信息==========',resp)
+	}),
+
+
   getUserInfo: co.wrap(function* () {
     try {
-      let resp = yield gql.getUser()
+			let resp = yield gql.getUser()
       this.setData({
         phone: resp.currentUser.phone,
         selectedKid: resp.currentUser.selectedKid,
         stageRoot: resp.currentUser.selectedKid.stageRoot
       })
       storage.put("userSn", resp.currentUser.sn)
-      storage.put("kidStage", resp.currentUser.selectedKid.stageRoot)
+			storage.put("kidStage", resp.currentUser.selectedKid.stageRoot)
 
       if (resp.currentUser.phone) {
         app.hasPhoneNum = true

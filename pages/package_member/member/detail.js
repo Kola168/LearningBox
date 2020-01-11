@@ -85,6 +85,12 @@ Page({
             util.showError(e)
         }
     }),
+    toMemberH5() {
+        wxNav.navigateTo('/pages/webview/member')
+    },
+    toCaculate() {
+        wxNav.navigateTo('/pages/package_member/member/caculate')
+    },
     onUnload() {
         event.remove('Authorize', this)
     },

@@ -65,7 +65,7 @@ var GraphQL = function (obj, retObj) {
 			},
 
 			//自定义3秒网络请求短超时(query)
-			query: function (queryObj) {
+			queryCustomize: function (queryObj) {
 				var timer = undefined;
 				return Promise.race([new Promise(function (resolve, reject) {
 					timer = setTimeout(() => {

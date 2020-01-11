@@ -1,0 +1,11 @@
+<view class="atlas-bar">
+  <view class="bar-title">{{barData.title}}</view>
+  <view class="bar-main">
+    <view class="main-line" wx:for="{{[5,4,3,2,1,0]}}" style="bottom:{{item*20}}%;" wx:key="index">
+      <view class="line-rate">{{item*20}}</view>
+    </view>
+    <view class="main-item" wx:for="{{barData.data}}" style="height:{{item.rate}}%;" wx:key="index">
+      <view>{{item.title}}</view>
+    </view>
+  </view>
+</view>

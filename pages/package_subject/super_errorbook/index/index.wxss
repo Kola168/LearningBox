@@ -111,12 +111,6 @@ canvas {
   margin: 0 auto;
 }
 
-.bar-title {
-  color: #333;
-  font-size: 24rpx;
-  margin-bottom: 16rpx;
-}
-
 .no-atlas {
   padding: 80rpx 100rpx;
 }
@@ -126,7 +120,7 @@ canvas {
   margin: 0 auto;
 }
 
-.no-atlas-title{
+.no-atlas-title {
   color: #666;
   font-size: 32rpx;
   padding: 30rpx 0 20rpx;
