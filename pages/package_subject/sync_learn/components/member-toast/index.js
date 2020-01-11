@@ -1,4 +1,7 @@
 // pages/package_subject/sync_learn/components/member-toast/index.js
+import {
+  wxNav
+} from '../../../../../utils/common_import'
 Component({
   data: {
     showMemberToast: false
@@ -33,6 +36,7 @@ Component({
 
     toMember: function () {
       console.log('触发了开通会员')
+      wxNav.navigateTo('pages/package_member/member/index')
       this.hideToast()
     }
   }

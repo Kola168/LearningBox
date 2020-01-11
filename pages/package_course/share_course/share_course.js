@@ -27,13 +27,11 @@
 		},
 		onLoad: co.wrap(function* (options) {
 			var _this = this
-			var userSn = storage.get("userSn")
-
 			_this.longToast = new app.weToast()
 			_this.setData({
 				sn: options.sn,
 				share_user_id: options.share_user_id || '',
-				isAuth: !!userSn
+				isAuth: !!app.isScope()
 			})
 
 			event.on('Authorize', this, function (data) {
