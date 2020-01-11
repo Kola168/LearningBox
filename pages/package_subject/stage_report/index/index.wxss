@@ -168,3 +168,23 @@
 .choose-date-range {
   padding: 0 26rpx;
 }
+
+
+/* 暂无报告 */
+
+.empty-reporter {
+  padding: 160rpx  76rpx 0;
+}
+
+.empty-reporter image {
+  margin: 0 auto;
+  width: 240rpx;
+  height: 144rpx;
+}
+
+.empty-reporter .name {
+  padding-top: 36rpx;
+  text-align: center;
+  font-size: 32rpx;
+  color: #666666;
+}

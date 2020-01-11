@@ -6,6 +6,7 @@ import {
   wxNav,
   util
 } from '../../../../utils/common_import'
+import graphqlAll from '../../../../network/graphql_request'
 import graphql from '../../../../network/graphql/subject'
 Component({
 
@@ -19,6 +20,7 @@ Component({
       '../images/english_icon.png'
     ],
     subjects: [],
+    videoSubject: [], //同步视频学科列表
     searchObj: {
       isSearch: true,
       placeText: '请输入想要搜索的内容',
@@ -29,10 +31,23 @@ Component({
     selectedPaperIndex: 0, //选中的试卷分类索引
     selectedPaperTypes: [], //试卷分类
     banners: [],
+    syncList: [
+      {
+        name: "同步练习",
+      },
+      {
+        name: "同步视频",
+      }
+    ],
+    currentTabSyncIndex: 0,
+    stageSn: '',
+    moreNum: 0,
+    moreVideoNum: 0,
   },
   lifetimes: {
     attached: co.wrap(function*(){
       this.longToast = new app.weToast(this)
+      yield this.getUser()
       yield this.getBanners() //获取banner
       yield this.getLastLearn() // 获取同步练习学习人数
       yield this.getPaperCates() //获取试卷分类
@@ -41,6 +56,7 @@ Component({
   },
   pageLifetimes: {
     show: co.wrap(function *() {
+      yield this.getUser() //获取用户信息
       yield this.getBanners() //获取banner
       yield this.getLastLearn() // 获取同步练习学习人数
       yield this.getPaperCates() //获取试卷分类
@@ -48,6 +64,28 @@ Component({
     })
   },
   methods: {
+      /**
+   * 获取用户信息 
+   */
+    getUser: co.wrap(function * (){
+      this.longToast.toast({
+        type: 'loading',
+        title: '请稍后...'
+      })
+      try {
+        var resp = yield graphqlAll.getUser()
+        if (resp.currentUser && resp.currentUser.selectedKid) {
+          console.log(resp.currentUser.selectedKid,'==resp.currentUser.selectedKid==')
+          this.setData({
+            stageSn: resp.currentUser.selectedKid.stage.sn
+          })
+        }
+      } catch(err){
+        util.showError(err)
+      } finally {
+        this.longToast.hide()
+      }
+    }),
     /**
      * 获取banner
      */
@@ -79,16 +117,22 @@ Component({
       })
 
       try {
-        var resp = yield graphql.getLastLearn()
+        var resp = yield graphql.getLastLearn(this.data.stageSn)
         if (!resp.xuekewang.registered) {
           return this.registerSubject()
         }
         var moreSubject = resp.xuekewang.subjects.slice(3)
+        var moreVideoSubject = resp.xuekewangVideoSubject.subjects.slice(3)
         this.setData({
           subjects: resp.xuekewang.subjects.slice(0, 3),
+          videoSubject: resp.xuekewangVideoSubject.subjects.slice(0, 3),
+          previewVideoSum: resp.xuekewangVideoSubject.previewVideoSum,
           moreNum: moreSubject.reduce((total, subject) => {
             return total + Number(subject.currentUserNum)
-          }, 0)
+          }, 0),
+          moreVideoNum: moreVideoSubject.reduce((total, subject) => {
+            return total + Number(subject.currentUserNum)
+          }, 0),
         })
       } catch (err) {
         util.showError(err)
@@ -203,6 +247,18 @@ Component({
       })
     },
 
+    toVideoSubject({
+      currentTarget: {
+        dataset: {
+          index
+        }
+      }
+    }) {
+      wxNav.navigateTo('/pages/package_subject/sync_video/index/index', {
+        index
+      })
+    },
+
     /**
      * 跳转错题本
      */
@@ -258,5 +314,11 @@ Component({
         showCancel: false
       })
     }),
+
+    switchsyncContentTab: function({currentTarget: {dataset: {index}}}){
+      this.setData({
+        currentTabSyncIndex: index
+      })
+    }
   }
 })

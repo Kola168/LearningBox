@@ -434,9 +434,9 @@ const graphqlApi = {
   /**
    * 首页学科
    */
-  getLastLearn: () => {
+  getLastLearn: (stageSn) => {
     return gql.query({
-      query: `query Subject{
+      query: `query Subject($stageSn:String!,$sn: String!, $type: PayableItemTypeEnum!){
         xuekewang {
           registered
           subjects{
@@ -447,7 +447,23 @@ const graphqlApi = {
             }
           }
         }
-      }`
+        xuekewangVideoSubject(stageSn: $stageSn){
+          previewVideoSum
+          subjects{
+            currentUserNum
+            courseId
+            subjectId
+            subjectName
+            kidVideoCount(sn:$sn,type:$type)
+            vidoeTitle
+          }
+        }
+      }`,
+      variables: {
+        stageSn,
+        sn: stageSn,
+        type: 'stage'
+      }
     })
   },
 
@@ -606,6 +622,126 @@ const graphqlApi = {
       }
     })
   },
+
+  /**
+   * 获取学段列表
+   */
+  getStages: (stageSn) => {
+    return gql.query({
+      query: `query getStages($stageSn:String!){
+        xuekewangVideoSubject(stageSn: $stageSn){
+          stages{
+            sn
+            name
+          }
+        }
+        xuekewang{
+          registered
+        }
+      }`,
+      variables: {
+        stageSn,
+      }
+    })
+  },
+
+  /**
+   * 获取学科网视频学科列表
+   * @param {String} stageSn 学段sn
+   */
+  getvideoSubject: (stageSn) => {
+    return gql.query({
+      query: `query getvideoSubject($stageSn:String!,$sn: String!, $type: PayableItemTypeEnum!){
+        xuekewangVideoSubject(stageSn: $stageSn){
+          previewVideoSum
+          subjects{
+            courseId
+            subjectId
+            subjectName
+            kidVideoCount(sn:$sn,type:$type)
+            vidoeTitle
+          }
+        }
+      }`,
+      variables: {
+        stageSn,
+        sn: stageSn,
+        type: 'stage'
+      }
+    })
+  },
+
+
+  /**
+   * 获取学科网视频学科列表
+   * @param {String} stageSn 学段sn
+   * @param {String} courseId 课程id
+   */
+  getvideoList: (stageSn, courseId) => {
+    return gql.query({
+      query: `query getvideoSubject($stageSn:String!, $courseId:String!){
+        xuekewangVideos(stageSn: $stageSn, courseId: $courseId){
+          id
+          img
+          name
+          playCount
+          videoCount
+        }
+      }`,
+      variables: {
+        stageSn,
+        courseId
+      }
+    })
+  },
+
+    /**
+   * 获取学科网详情视频学科列表
+   * @param {Int} videoId 视频id
+   * @param {Int} page 
+   * @param {Int} perPage  每页数量
+   */
+  getvideoDetailList: (videoId, page, perPage) => {
+    return gql.query({
+      query: `query getvideoDetailList($videoId:Int!, $page:Int!, $perPage: Int!){
+        xuekewangVideoList(videoId: $videoId, page: $page, perPage: $perPage){
+          id
+          img
+          name
+          isPlay
+          likes
+          payCount
+          videoPath
+        }
+      }`,
+      variables: {
+        videoId,
+        page,
+        perPage
+      }
+    })
+  },
+
+  /**
+   * 创建视频点击记录
+   * @param {Int} videoId
+   * @param {String} videoName
+   * @param {String} subjectId
+   * @param {Int} stageSn
+   */
+  createVideoRecord: (input) => {
+    return gql.mutate({
+      mutation: `mutation createVideoRecord($input:CreateXuekewangVideoRelationInput!){
+        createXuekewangVideo(input: $input){
+          state
+        }
+      }`,
+      variables: {
+        input
+      }
+    })
+  },
+  
 }
 
 export default graphqlApi

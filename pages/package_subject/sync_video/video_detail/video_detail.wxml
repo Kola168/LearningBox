@@ -2,7 +2,7 @@
 <view class="video-main">
   <view class="nav">
     <view class="nav-line"></view>
-    <view class="video-name">有理数的含义与表示</view>
+    <view class="video-name">{{video.name}}</view>
   </view>
-  <video src="https://v-cdn.zjol.com.cn/276985.mp4" controls></video>
+  <video src="{{video.videoPath}}" controls bindplay="bindplay" bindended="bindended"></video>
 </view>
