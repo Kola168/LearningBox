@@ -8,6 +8,7 @@ import {
   util,
   wxNav
 } from '../../../../utils/common_import'
+import graphqlAll from '../../../../network/graphql_request'
 import graphql from '../../../../network/graphql/preschool'
 Page({
 
@@ -18,16 +19,38 @@ Page({
     isShowModal: false,
     babyName: '',
     testimonials: null, //奖状列表
+    user: null, //用户信息
   },
 
   onLoad: function (options) {
     this.longtoast = new app.weToast()
     this.getCertifacate()
+    this.getUser()
   },
 
   onShow: function () {
 
   },
+
+  /**
+   * 获取用户信息
+   */
+  getUser: co.wrap(function*(){
+    this.longtoast.toast({
+      type: 'loading',
+      title: '请稍后...'
+    })
+    try {
+      var resp = yield graphqlAll.getUser()
+      this.setData({
+        user: resp.currentUser
+      })
+    }catch(err) {
+      util.showError(err)
+    } finally {
+      this.longtoast.hide()
+    }
+  }),
 
   /**
    * 获取奖状
@@ -63,9 +86,12 @@ Page({
    * 去打印
    */
   toPrint: co.wrap(function *({currentTarget: {dataset: {item}}}) {
-    // this.setData({
-    //   isShowModal: true
-    // })
+    console.log(this.data.user)
+    if (this.data.user && this.data.user.selectedKid.name =='未命名') {
+      return this.setData({
+        isShowModal: true
+      })
+    }
     try {
       wxNav.navigateTo('/pages/package_common/setting/setting', {
         settingData: encodeURIComponent(JSON.stringify({
@@ -92,7 +118,7 @@ Page({
             resourceOrderType: 'Testimonial',
             resourceAttribute: {
               sn: item.sn,
-              resourceType: 'Content'
+              resourceType: 'Testimonial'
             }
           },
           checkCapabilitys: {
@@ -117,15 +143,31 @@ Page({
   },
 
   submit: co.wrap(function *() {
-    console.log(this.data.babyName,'babyName')  
     if (this.data.babyName == '') {
       return wx.showModal({
         title: '提示',
         content: '请输入宝宝姓名'
       })
     }
-    this.data.babyName =  ''
     this.cancelModal()
+    yield this.updateKidName()
+  }),
+
+  /**
+   * 更新孩子姓名
+   */
+  updateKidName: co.wrap(function*(){
+    try {
+      yield graphqlAll.changeStage({
+        kidAttributes: {
+          name: this.data.babyName
+        }
+      })
+      this.data.babyName =  ''
+      yield this.getUser()
+    } catch(err) {
+      util.showError(err)
+    }
   }),
 
   onPullDownRefresh: function () {

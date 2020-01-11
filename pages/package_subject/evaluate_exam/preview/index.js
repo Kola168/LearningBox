@@ -5,6 +5,7 @@ import {
   util,
   wxNav
 } from '../../../../utils/common_import'
+import subjectGql from '../../../../network/graphql/subject'
 import getLoopsEvent from '../../../../utils/worker'
 
 Page({
@@ -18,11 +19,11 @@ Page({
       isShow: false,
       slotBottom: true,
       title: '开通学科会员 可使用海量优质试卷',
-      image: 'https://micro.obs.cn-east-2.myhuaweicloud.com/LearningBox/subject/toast_testpaper.png'
+      image: 'https://cdn-h.gongfudou.com/LearningBox/subject/toast_testpaper.png'
     }
   },
 
-  onLoad: function (query) {
+  onLoad: co.wrap(function* (query) {
     this.weToast = new app.weToast()
     this.paperId = query.id
     this.subjectSn = query.sn
@@ -31,8 +32,8 @@ Page({
       name: query.name,
       isFullScreen: app.isFullScreen
     })
-    this.getPaperDetail()
-  },
+    yield this.getSubjectMemberInfo()
+  }),
 
   changeImg: function ({
     detail: {
@@ -49,23 +50,44 @@ Page({
       printAnswer: !this.data.printAnswer
     })
   },
-  checkMember() {
-    this.setData({
-      ['modalObj.isShow']: true
-    })
-  },
-  toPrint: co.wrap(function* () {
-    let postData = {
-      featureKey: 'xuekewang_paper',
-      sn: this.paperId,
-      name: this.data.name,
-      isPrintAnswer: this.data.printAnswer,
-      pageCount: this.data.imgList.length
+
+  prePrint() {
+    if (this.isMember) {
+      let postData = {
+        featureKey: 'xuekewang_paper',
+        sn: this.sn,
+        name: this.data.name,
+        isPrintAnswer: this.data.printAnswer,
+        pageCount: this.data.imgList.length
+      }
+      wxNav.navigateTo('../../setting/setting', {
+        postData: encodeURIComponent(JSON.stringify(postData))
+      })
+    } else {
+      this.setData({
+        ['modalObj.isShow']: true
+      })
     }
-    wxNav.navigateTo('../../setting/setting', {
-      postData: encodeURIComponent(JSON.stringify(postData))
-    })
+  },
+
+  confirmModal: co.wrap(function* () {
+    wxNav.navigateTo('/pages/package_member/member/index')
   }),
+
+  getSubjectMemberInfo: co.wrap(function* () {
+    this.weToast.toast({
+      type: 'loading'
+    })
+    try {
+      let res = yield subjectGql.getSubjectMemberInfo()
+      this.isMember = res.currentUser.isSchoolAgeMember
+      this.getPaperDetail()
+    } catch (e) {
+      this.weToast.hide()
+      util.showError(e)
+    }
+  }),
+  // 试卷预览
   getPaperDetail: co.wrap(function* () {
     this.weToast.toast({
       type: 'loading'
@@ -85,7 +107,7 @@ Page({
           this.sn = res.data.sn
           this.weToast.hide()
         }
-      },(error)=>{
+      }, (error) => {
         this.weToast.hide()
         util.showError(error)
       })

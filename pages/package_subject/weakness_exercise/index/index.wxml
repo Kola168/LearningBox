@@ -1,5 +1,6 @@
-<nav-bar background="#fff" title="同步练习"/>
-<view class="weakness-main">
+<nav-bar background="#fff" title="薄弱项练习"/>
+<import src="../../common/template/exercise_list.wxml"/>
+<view class="weakness-main" wx:if="{{!showSubjectCheckbox && !showTimeCheckbox && !showKnowledgeCheckbox}}">
   <view class="head-remind">
     <image src="" />
     <view class="name">开通学科会员享有专属错题本，新用户免费体验！</view>
@@ -7,5 +8,68 @@
   <image class="nav-card" src="../../images/nav_figure_card.png" mode="widthFix">
     <view class="content">小白老师根据错题本分析你的薄弱项，给你推荐你的专属练习～</view>
   </image>
-  <view class="btn-setTopic">生成练习</view>
+  <view class="btn-setTopic" bind:tap="confirmExercise">生成练习</view>
+  <view class="exercise-main">
+    <view class="exercise-search">
+      <view class="search-item" bind:tap="searchCategory" data-key="subject">
+        <view class="search-category-name">{{checkedSubject.subjectName}}</view>
+        <view class="arrow-icon"></view>
+      </view>
+      <view class="search-item" bind:tap="searchCategory" data-key="print">
+        <view class="search-category-name">{{checkedPrint.name}}</view>
+        <view class="arrow-icon"></view>
+      </view>
+    </view>
+    <!-- 练习题列表 -->
+    <view class="exercise-content">
+      <view wx:for="{{exerciseList}}" wx:key="sn"> 
+        <template is="exerciseList" data="{{item}}"/>
+      </view>
+    </view>
+  </view>
+  <!-- 暂无错题 -->
+  <view class="empty-exercise" wx:if="{{isExerciseEmpty}}">
+    <image class="empty-icon" src="https://cdn-h.gongfudou.com/LearningBox/subject/empty_icon.png"/>
+    <view class="name">还没有生成练习哦，点击上方按钮添加练习</view>
+  </view>
 </view>
+
+<!-- 选择学科 -->
+<view class="choose-subject" wx:if="{{showSubjectCheckbox}}">
+  <choose-subject bind:chooseSubject="chooseSubject"/>
+</view>
+
+<!-- 选择时间 -->
+<view class="choose-date-range" wx:if="{{showTimeCheckbox}}">
+  <choose-time-range timeRange="{{timeRange}}" bind:chooseDate="chooseDate"/>
+</view>
+
+<!-- 知识点选择 -->
+<view class="knowledge-main" wx:if="{{showKnowledgeCheckbox}}">
+  <view class="title">请选择知识点</view>
+  <view class="knowledge-content">
+    <view class="knowledge-item" wx:for="{{knowledgeList}}" bind:tap="switchKnowledge" data-index="{{index}}">
+      <image class="check-box" mode="widthFix" src="{{item.checked ? '/images/doc_selected_check.png' : '/images/device_share_not_select.png'}}"></image>
+      <view class="name">{{item.name}}</view>
+      <view class="know-card">包含{{item.errorBookCount}}道错题</view>
+    </view>
+  </view>
+  <view class="btn-convert {{isFullScreen ? 'is-full-screen' : ''}}" bind:tap="createExercise">生成练习</view>
+</view>
+
+
+<!-- actionsheet -->
+<view class="action-sheet" style="top:{{navBarHeight}}px" wx:if="{{showSubjectForm}}" bind:tap="cancelActionsheet">
+  <view class="current-subject">
+    <view class="subject-name">{{isSubjectCategory ? checkedSubject.subjectName : checkedPrint.name}}</view>
+    <view class="arrow-icon"></view>
+  </view>
+  <view class="subject-main">
+    <view class="subject-item" wx:for="{{isSubjectCategory ? subjects : printStaList}}" wx:key="sn" data-index="{{index}}" catch:tap="chooseCategory">{{isSubjectCategory ?item.subjectName : item.name}}</view>
+  </view>
+</view>
+
+<member-toast id="memberToast" modal="{{modal}}"/>
+
+<import src="../../../../lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />

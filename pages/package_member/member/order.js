@@ -28,7 +28,7 @@ Page({
 		let stage = storage.get("kidStage")
 		this.setData({
 			stage: stage,
-			memberTipUrl: stage === 'preschool' ? '../images/member_order_preschool_tip.png' : '../images/member_order_subject_tip.png',
+			memberTipUrl: stage.rootKey === 'preschool' ? '../images/member_order_preschool_tip.png' : '../images/member_order_subject_tip.png',
 		})
 	}),
 

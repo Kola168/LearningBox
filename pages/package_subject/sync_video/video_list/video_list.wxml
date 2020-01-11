@@ -1,0 +1,16 @@
+<nav-bar background="#fff" title="同步视频" />
+
+<view class="video-list">
+  <view class="video-item" bind:tap="toVideo" data-sn="11111">
+    <image class="video-cover-icon">
+      <image class="btn-player" src="https://cdn-h.gongfudou.com/LearningBox/subject/btn_player.png" />
+      <view class="video-in-box">
+        <view class="progress">已观看</view>
+        <view class="video-num">2934次播放</view>
+      </view>
+    </image>
+    <view class="video-name">集合的含义与表示</view>
+  </view>
+</view>
+
+<member-toast id="memberToast" modal="{{modal}}"/>

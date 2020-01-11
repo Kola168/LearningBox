@@ -1,0 +1,66 @@
+/* pages/package_subject/components/choose-subject/index.wxss */
+
+.choose-main {
+  width: 100%;
+}
+
+.choose-main .title {
+  margin-bottom: 30rpx;
+  text-align: center;
+  font-size: 36rpx;
+  color: #333333;
+  font-weight: 500;
+}
+
+.subject-list {
+  width: 100%;
+  margin-bottom: 70rpx;
+}
+
+.subject-list .subject-item {
+  margin-bottom: 10rpx;
+  margin-right: 40rpx;
+  padding: 32rpx 0;
+  display: inline-block;
+  width: calc( ( 100% - 80rpx ) / 3 );
+  box-sizing: border-box;
+  text-align: center;
+  border-radius: 16rpx;
+  border: 2rpx solid #fff;
+}
+
+.subject-list .subject-item:nth-child(3n) {
+  margin-right: 0;
+}
+
+.subject-list .subject-item:first-child {
+  margin-right: 40rpx;
+}
+
+.subject-icon {
+  margin: 0 auto 24rpx;
+  width: 86rpx;
+  height: 86rpx;
+}
+
+.subject-name {
+  text-align: center;
+  font-size: 30rpx;
+  color: #333333;
+}
+
+.btn {
+  width: 600rpx;
+  height: 98rpx;
+  line-height: 98rpx;
+  border-radius: 49rpx;
+  text-align: center;
+  font-size: 36rpx;
+  color: #454545;
+  background-color: #FFDC5E;
+}
+
+.subject-list .item-active {
+  background-color:#FFF8E0;
+  border-color: #FFDC5E;
+}

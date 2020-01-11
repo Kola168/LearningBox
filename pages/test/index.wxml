@@ -1,8 +1,19 @@
+<!--
+ * @Author: your name
+ * @Date: 2020-01-06 19:14:42
+ * @LastEditTime : 2020-01-09 18:55:15
+ * @LastEditors  : Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: /LearningBox/pages/test/index.wxml
+ -->
 <!-- <navigator target="miniProgram" open-type="exit">
 	<button class="exit">打开绑定的小程序</button>
 	</navigator> -->
 
 
 
+  <navigator open-type="exit" target="miniProgram" >
+		<image src="https://micro.obs.cn-east-2.myhuaweicloud.com/LearningBox/feature/folder_share_img.jpg" mode="widthFix" class="equip-img"></image>
+	</navigator>
 
-	<image src="https://micro.obs.cn-east-2.myhuaweicloud.com/LearningBox/feature/folder_share_img.jpg" mode="widthFix" class="equip-img" bindtap="tobox"></image>
+

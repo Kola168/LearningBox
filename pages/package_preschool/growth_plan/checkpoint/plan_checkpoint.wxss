@@ -8,6 +8,7 @@ page{
     background-clip: border-box;
     background-attachment: fixed;
     background-size: cover;
+    /* height:100%; */
 }
 .checkpoint-img-bg{
     width:270rpx;

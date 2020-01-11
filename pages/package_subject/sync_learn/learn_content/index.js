@@ -209,13 +209,31 @@ Page({
     try {
       var resp = yield graphql.getSubject()
       if (!resp.xuekewang.registered) {
-        return 
+        return yield this.registerSubject()
       }
       this.setData({
         subjectList: resp.xuekewang.subjects,
       })
     } catch(err) {
       util.showError(err)
+    }
+  }),
+
+  /**
+   * 去注册学科网
+   */
+  registerSubject: co.wrap(function*() {
+    try {
+      let res = yield graphql.register()
+      if (res.register.state) {
+        this.getSubjectList()
+      } else {
+        throw (res)
+      }
+      this.longToast.hide()
+    } catch (error) {
+      this.longToast.hide()
+      util.showError(error)
     }
   }),
 

@@ -56,3 +56,189 @@
   text-align: center;
   color: #454545;
 }
+
+
+/* 暂无练习题 */
+
+.empty-exercise {
+  padding: 160rpx  76rpx 0;
+}
+
+.empty-exercise image {
+  margin: 0 auto;
+  width: 240rpx;
+  height: 144rpx;
+}
+
+.empty-exercise .name {
+  padding-top: 36rpx;
+  text-align: center;
+  font-size: 32rpx;
+  color: #666666;
+}
+
+.choose-subject {
+  margin: 76rpx 52rpx;
+}
+
+.choose-date-range {
+  padding: 0 26rpx;
+}
+
+
+/* 知识点 */
+
+.knowledge-main {
+  width: 100%;
+}
+
+.knowledge-main .title {
+  margin: 60rpx 0 40rpx;
+  text-align: center;
+  font-size: 36rpx;
+  color: #333333;
+}
+
+.knowledge-content {
+  padding: 0 24rpx;
+}
+
+.knowledge-content .knowledge-item {
+  margin-bottom: 50rpx;
+  display: flex;
+  align-items: center;
+}
+
+.knowledge-content image{
+  margin-right: 20rpx;
+  width: 40rpx;
+}
+
+.knowledge-content .name{
+  margin-right: 36rpx;
+  width: 70%;
+  height: 40rpx;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  word-break: break-all;
+  font-size: 28rpx;
+  color: #333333;
+}
+
+.know-card {
+  width: 160rpx;
+  height: 36rpx;
+  line-height: 36rpx;
+  font-size: 20rpx;
+  text-align: center;
+  border-radius: 18rpx;
+  color: #FB5130;
+  background: #FFEBE7;
+}
+
+
+/* 生成练习 */
+
+.btn-convert {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 98rpx;
+  line-height: 98rpx;
+  text-align: center;
+  font-size: 36rpx;
+  color: #333333;
+  background-color: #FFDC5E;
+}
+
+/* 搜索 */
+
+.exercise-search {
+  margin-top: 30rpx;
+  padding: 0 24rpx;
+  display: flex;
+  align-items: center;
+}
+
+.exercise-search .search-item {
+  margin-right: 20rpx;
+  display: flex;
+  align-items: center;
+}
+
+.exercise-search .search-category-name {
+  margin-right: 16rpx;
+  font-size: 26rpx;
+  color: #666666;
+}
+
+.exercise-search .arrow-icon{
+  margin-top: 10rpx;
+  width: 0;
+  height: 0;
+  border-right: 10rpx solid transparent;
+  border-left: 10rpx solid transparent;
+  border-top: 10rpx solid #999999;
+  border-bottom: 10rpx solid transparent;
+}
+
+
+/* 练习列表 */
+
+.exercise-content {
+  width: 100%;
+}
+
+@import '../../common//wxss//exercise_list.wxss';
+
+/* 分类筛选器 */
+
+.action-sheet {
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  z-index: 100;
+  width: 100%;
+  height: calc( 100vh - 128rpx );
+  background-color: rgba(0,0,0,0.60);
+}
+
+.current-subject {
+  padding-left: 24rpx;
+  display: flex;
+  align-items: center;
+  height: 90rpx;
+  color: #FFA200;
+  font-size: 26rpx;
+  background-color: #fff;
+}
+
+.current-subject .arrow-icon {
+  margin: 0 0 10rpx 24rpx;
+  width: 0;
+  height: 0;
+  border-right: 10rpx solid transparent;
+  border-left: 10rpx solid transparent;
+  border-top: 10rpx solid transparent;
+  border-bottom: 10rpx solid #FFA200;
+}
+
+
+.subject-main {
+  background-color: #fff;
+  padding-left: 24rpx;
+  font-size: 30rpx;
+  color: #333333;
+  height: 500rpx;
+  overflow: scroll;
+}
+
+.subject-main .subject-item {
+  height: 100rpx;
+  line-height: 100rpx;
+}

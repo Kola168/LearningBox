@@ -1,5 +1,5 @@
 <!--pages/package_common/common_content/preview.wxml-->
-<nav-bar background="#fff" title="在家上早教"></nav-bar>
+<nav-bar background="#fff" title="{{name}}"></nav-bar>
 <block wx:if="{{!showSetting}}">
     <view class="wrap-fun">
         <swiper class="swiper-box" duration="500" current="{{num}}" bindchange="tab_slide" circular="{{circular}}"

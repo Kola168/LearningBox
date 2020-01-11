@@ -496,6 +496,8 @@ const graphqlApi = {
     return gql.query({
       query: `query{
         currentUser{
+					isPreschoolMember
+			  	isSchoolAgeMember
           phone
           sn
           selectedDevice{
@@ -531,6 +533,22 @@ const graphqlApi = {
               name
             }
           }
+        }
+      }`
+    })
+  },
+
+ /**
+   * 获取当前用户信息
+   *
+   * @returns
+   */
+  getUserMemberInfo: () => {
+    return gql.query({
+      query: `query{
+        currentUser{
+					isPreschoolMember
+			  	isSchoolAgeMember
         }
       }`
     })
@@ -662,6 +680,11 @@ const graphqlApi = {
       mutation: `mutation createResourceOrder($input: CreateResourceOrderInput!) {
         createResourceOrder(input: $input){
           state
+          statistic{
+            ... on DailyPractice{
+              keepDays
+            }
+          }
         }
       }`,
       variables: {
@@ -848,6 +871,39 @@ const graphqlApi = {
         sn,
         period
       }
+    })
+  },
+  /**
+   * 
+   *获取家庭信息
+   * @returns
+   */
+  getFamilyUser: () => {
+    return gql.query({
+      query: `query{
+        currentUser{
+          currentGroup{
+            currentUserIsCreator
+            sn
+            kid{
+              avatar
+              name
+              sn
+              stage{
+                name
+              rootName
+              sn 
+              }
+            }
+            users{
+              avatar
+              name
+              sn
+              userIsCreator
+            }
+          }
+        }
+      }`
     })
   },
 
@@ -1090,6 +1146,26 @@ const graphqlApi = {
       }
     })
   },
+
+ /**
+  * 取消打印订单
+  * @param { String } sn 打印订单sn
+  */
+ cancalPrintOrder: (sn) => {
+   return gql.mutate({
+     mutation: `mutation destroyOrder($input: DestroyOrderInput!) {
+      destroyOrder(input: $input){
+         state
+       }
+     }`,
+     variables: {
+       input: {
+         sn
+       }
+     }
+   })
+ },
+
   //查询模板列表
   searchTemplate: (type) => {
     return gql.query({
@@ -1716,151 +1792,7 @@ const graphqlApi = {
       }
     })
   },
-  /**
-   * 获取错题科目列表
-   *
-   * @returns
-   */
-  getErrorSubjects: () => {
-    return gql.query({
-      query: `query{
-        mistakes{
-          count
-          object:course
-        }
-        }`
-    })
-  },
-
-  /**
-   * 获取错题列表
-   *
-   */
-  getMistakes: (params) => {
-    return gql.query({
-      query: `query($course: String,$printCount: Int,$startAt: String,$endAt: String,$answer: MistakeAnswerEnum) {
-        mistakeCourse(course:$course,printCount:$printCount,startAt:$startAt,endAt:$endAt,answer:$answer){
-          created_at:createDay
-          content:mistakes{
-            answer_urls:answerUrls
-            course
-            level
-            print_count:printerOrdersCount
-            reason
-            urls
-            id
-            sn
-            }
-          }
-        }`,
-      variables: {
-        ...params
-      }
-    })
-  },
-  /**
-   * 保存错题
-   *
-   */
-  saveMistakes: (input) => {
-    return gql.mutate({
-      mutation: `mutation($input:CreateMistakeInput!) {
-        createMistake(input:$input){
-          state
-          mistake
-        }
-        }`,
-      variables: {
-        input: input
-      }
-    })
-  },
-  /**
-   * 删除错题
-   *
-   * @param {*} input
-   * @returns
-   */
-  deleteMistakes: (input) => {
-    return gql.mutate({
-      mutation: `mutation($input:DeleteMistakeInput!) {
-        deleteMistake(input:$input){
-         code
-        }
-        }`,
-      variables: {
-        input: input
-      }
-    })
-  },
-  /**
-   * 获取错题模板
-   *
-   * @returns
-   */
-  mistakeTemplates: () => {
-    return gql.query({
-      query: `query{
-        mistakeTemplates{
-          cateType
-          id
-          imageUrl
-          name
-          }
-        }`
-    })
-  },
-  /**
-   * 拍照搜题
-   *
-   * @returns
-   */
-  getPhotoAnswer: (input) => {
-    return gql.mutate({
-      mutation: `mutation($input:MistakeSearchInput!) {
-        mistakeSearch(input:$input){
-          answerUrls
-          questionUrl
-        } 
-        }`,
-      variables: {
-        input: input
-      }
-    })
-  },
-  /**
-   * 
-   *获取家庭信息
-   * @returns
-   */
-  getFamilyUser: () => {
-    return gql.query({
-      query: `query{
-        currentUser{
-          currentGroup{
-            currentUserIsCreator
-            sn
-            kid{
-              avatar
-              name
-              sn
-              stage{
-                name
-              rootName
-              sn 
-              }
-            }
-            users{
-              avatar
-              name
-              sn
-              userIsCreator
-            }
-          }
-        }
-      }`
-    })
-  },
+  
   /**
    * 加入/退出家庭组
    *
@@ -1897,7 +1829,6 @@ const graphqlApi = {
       }
     })
   },
-
   /**
    * 获取首页学前feature
    *
@@ -1915,8 +1846,9 @@ const graphqlApi = {
         }`
     })
   },
+
   /**
-   * 获取内容首页大分类
+   * 获取学前内容首页大分类
    *
    * @returns
    */
@@ -1940,6 +1872,7 @@ const graphqlApi = {
       }
     })
   },
+
   /**
    * 获取内容列表页
    *
@@ -1964,6 +1897,47 @@ const graphqlApi = {
       variables: {
         sn: sn
       }
+    })
+  },
+
+  /**
+   * 获取学前可订阅列表
+   *
+   * @returns
+   */
+  customizeFeaturePlans: (featureKey) => {
+    return gql.query({
+      query: `query($featureKey:String!){
+        customizeFeaturePlans(featureKey:$featureKey){
+          categoryName
+          iconUrl
+          name
+          planSize
+          sn
+          subTitle
+          subscription
+          }
+        }`,
+        variables: {
+          featureKey
+        }
+    })
+  },
+  /**
+   * 订阅内容
+   *
+   * @returns
+   */
+  joinPlan: (input) => {
+    return gql.query({
+      query: `mutation($input: JoinPlanInput!){
+        joinPlan(input:$input){
+          state
+          }
+        }`,
+        variables: {
+         input
+        }
     })
   },
   /**

@@ -1,0 +1,11 @@
+<nav-bar title="错题本列表"></nav-bar>
+<view class="container">
+  <view class="subject-item" wx:for="{{subjects}}" wx:key="sn" bindtap="toErrorbookList" id="{{item.sn}}">
+    <image src="{{item.iconUrl}}" mode="widthFix" />
+    <view class="item-name">{{item.subjectName}}</view>
+    <view class="item-error-count">共错{{item.errorBooksNum}}题</view>
+  </view>
+</view>
+<!-- loading -->
+<import src="/lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />

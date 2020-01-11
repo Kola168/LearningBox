@@ -1,0 +1,133 @@
+page {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.title-image {
+    width: 75%;
+    margin: 0 auto;
+    display: block;
+    margin-top: 60rpx;
+}
+
+.back {
+    position: relative;
+    width: 85%;
+    margin: 0 auto;
+    display: block;
+    margin-top: 54rpx;
+}
+
+.tip {
+    position: absolute;
+    bottom: 98rpx;
+    left: 0;
+    font-family: PingFangSC-Regular;
+    font-size: 28rpx;
+    color: #999999;
+    text-align: left;
+    padding: 0 40rpx;
+}
+
+.content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    padding: 60rpx 40rpx;
+    box-sizing: border-box;
+    font-family: PingFangSC-Regular;
+    font-size: 28rpx;
+    color: #333333;
+    letter-spacing: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.content view {
+    margin-bottom: 30rpx;
+}
+
+.content .button {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    font-family: PingFangSC-Regular;
+    font-size: 36rpx;
+    color: #333333;
+    letter-spacing: 0;
+    margin-bottom: 0;
+}
+
+.content .button view:nth-child(2) {
+    background: #FFDC5E;
+    border-radius: 60rpx;
+    width: 400rpx;
+    height: 98rpx;
+    font-size: 36rpx;
+    letter-spacing: -0.86rpx;
+    line-height: 98rpx;
+    text-align: center;
+    margin-bottom: 20rpx;
+}
+
+.back-no {
+    width: 35%;
+    margin: 0 auto;
+    margin-top: 320rpx;
+    display: block;
+}
+
+.back-no-content {
+    margin-top: 36rpx;
+    font-family: PingFangSC-Regular;
+    font-size: 32rpx;
+    color: #666666;
+    letter-spacing: -0.72rpx;
+    text-align: center;
+}
+
+.modal {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.60);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.modal image {
+    width: 90%;
+    border-top-left-radius: 16rpx;
+    border-top-right-radius: 16rpx;
+}
+
+.modal-content {
+    width: 90%;
+    background: #fff;
+    padding: 34rpx 50rpx;
+    box-sizing: border-box;
+    border-bottom-left-radius: 16rpx;
+    border-bottom-right-radius: 16rpx;
+}
+
+.modal-content view {
+    width: 100%;
+    height: 98rpx;
+    background: #FFDC5E;
+    border-radius: 60rpx;
+    font-family: PingFangSC-Regular;
+    font-size: 36rpx;
+    color: #454545;
+    letter-spacing: -0.98rpx;
+    line-height: 98rpx;
+    text-align: center;
+}

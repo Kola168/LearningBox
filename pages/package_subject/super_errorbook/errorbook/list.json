@@ -1,0 +1,6 @@
+{
+  "usingComponents": {
+    "modal": "../../../../components/modal",
+    "choose-time-range": "../../components/choose-time-range/index"
+  }
+}

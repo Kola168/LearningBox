@@ -18,6 +18,18 @@ const api = {
     baseURL: `${app.apiServer}/api/v1/`
   }),
 
+
+  /**
+   *刷新auth_token
+   *
+   * @param {*} params
+   */
+  refreshAuthToken: (token) => request.post(`users/sessions/refresh_token`, {
+    token: token
+  }, {
+    baseURL: `${app.apiServer}/api/v1/`
+  }),
+
   /**
    *证件照合成
    *
@@ -38,15 +50,14 @@ const api = {
     baseURL: `${app.apiServer}/api/v1/`
   }),
 
-	wechatDecryption: (params) => request.post(`users/sessions/wechat_decryption`, params, {
+  wechatDecryption: (params) => request.post(`users/sessions/wechat_decryption`, params, {
     baseURL: `${app.apiServer}/api/v1/`
   }),
-   //资源分享签到
-  shareResource: () => request.post(`users/share_resource`, {
-  }, {
+  //资源分享签到
+  shareResource: () => request.post(`users/share_resource`, {}, {
     baseURL: `${app.apiServer}/boxapi/v2/`
   }),
-   //convert invoice to pdf
+  //convert invoice to pdf
   covertInvoiceToPdf: (convertUrls) => request.post(`orders/invoice_url_convert`, {
     pdf_urls: convertUrls
   }, {
@@ -82,7 +93,7 @@ const api = {
     baseURL: `${app.apiServer}/api/v1/`
   }),
   // 复印合成图片
-  multiConvert: (params)=> request.post(`processes`, {
+  multiConvert: (params) => request.post(`processes`, {
     is_async: false,
     feature_key: 'reprography',
     ...params
@@ -90,17 +101,17 @@ const api = {
     baseURL: `${app.apiServer}/api/v1/`
   }),
   copyConvert: (params) => request.post(`reprographics/point_edit`, params, {
-      baseURL: `${app.apiServer}/api/v1/`
+    baseURL: `${app.apiServer}/api/v1/`
   }),
-  processes:(params)=>request.post(`processes`,params, {
+  processes: (params) => request.post(`processes`, params, {
     baseURL: `${app.apiServer}/api/v1/`
   }),
   /**
    * 获取百度文件sn
    * @param { Array } ids 文件id数组
    */
-  getBdFilesSn:(ids)=>request.post(`baidu`,{
-    ids:ids
+  getBdFilesSn: (ids) => request.post(`baidu`, {
+    ids: ids
   }, {
     baseURL: `${app.apiServer}/api/v1/`
   }),
@@ -109,7 +120,7 @@ const api = {
    * 轮询上传百度文件到cdn
    * @param { sn } sn 百度文件sn
    */
-  uploadBdFileToCdn:(sn)=>request.get(`baidu/${sn}`,{}, {
+  uploadBdFileToCdn: (sn) => request.get(`baidu/${sn}`, {}, {
     baseURL: `${app.apiServer}/api/v1/`
   }),
 
@@ -117,7 +128,7 @@ const api = {
    * 获取分享打印机二维码信息
    * @param { String } id 二维码解析id
    */
-  getShareDeviceInfo:(id)=>request.get(`short_urls/${id}`,{}, {
+  getShareDeviceInfo: (id) => request.get(`short_urls/${id}`, {}, {
     baseURL: `${app.apiServer}/api/v1/`
   }),
 
@@ -126,12 +137,29 @@ const api = {
    * @param { String } id required
    * @param { String } type required 'XuekewangExercise'
    */
-  getCorrectPaper:(id,type)=>request.get(`xuekewang_papers`,{
+  getCorrectPaper: (id, type) => request.get(`xuekewang_papers`, {
     id: id,
     type: type
   }, {
     baseURL: `${app.apiServer}/api/v1/`
   }),
+  /**
+   * 激活会员
+   * 
+   */
+  accessMember: () => request.post(`users/members`, {}, {
+    baseURL: `${app.apiServer}/api/v1/ `
+  }),
+
+  /**
+   *
+   *
+   * @param {*} id
+   */
+  printMemberCode: (id) => request.post(`users/members/print_member_qrcode`, {}, {
+    baseURL: `${app.apiServer}/api/v1/ `
+  }),
+
 
 }
 
