@@ -8,12 +8,23 @@
   </form>
   <image src='/images/arrow-right-gray.png' class='top-right'></image>
 </view>
+<image class="image" mode="widthFix" src="https://cdn-h.gongfudou.com/LearningBox/main/finish_course_date.jpg">
+  <view class="day-box">
+    <view class="text-box">
+      <view class="text-tyle">
+        <text>{{studyDay}}</text><text class="text-unit">天</text>
+      </view>
+      <view class="text-line"></view>
+      <view class="text-tyle">
+        <text>{{studyUniy}}</text><text class="text-unit">Unit</text>
+      </view>
+    </view>
+  </view>
+</image>
 <block wx:if="{{state!='verifying'}}">
-  <image class="image" mode="widthFix" src="/images/finish_print_finish.png"></image>
   <view class="wait-view">任务已发送，使用其他功能或继续打印</view>
 </block>
 <block wx:else>
-  <image class="image" mode="widthFix" src="/images/finish_print_wait.png"></image>
   <view class="wait-view">任务已提交，快通知管理员审核</view>
   <view class="tips-box">
     <text class='question' bindtap='toDetail'>什么是管理员审核？</text>
@@ -28,12 +39,11 @@
   </view>
 </block>
 <view class="button">
-  <view class="button-left" bindtap="backToHome">
-    {{printType==='course'?'返回课程首页':'返回首页'}}
+  <view class="button-left" bindtap="{{save?'checkScope':'backToHome'}}">
+    {{save?'保存晒朋友圈':'返回首页'}}
   </view>
   <view class="button-right" bindtap="continuePrint">
-    <text wx:if="{{printType==='course'}}">继续学习</text>
-    <text wx:else>{{printType==='photo_answer'?'继续搜题':'继续打印'}}</text>
+    <text>继续打印</text>
   </view>
 </view>
 <block wx:if="{{supply_types.length>0}}">
@@ -47,5 +57,8 @@
     </view>
   </view>
 </block>
+<image src="{{canvasImg}}" mode="widthFix" binderror="" bindload=""></image>
+<canvas class="canvas-box" canvas-id="myCanvas"></canvas>
+
 <import src="../../lib/toast/wetoast.wxml" />
 <template is="wetoast" data="{{...__wetoast__}}" />

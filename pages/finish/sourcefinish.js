@@ -5,7 +5,9 @@ const app = getApp()
 const regeneratorRuntime = require('../../lib/co/runtime')
 const co = require('../../lib/co/co')
 const util = require('../../utils/util')
-const feature_route=require('../../utils/feature_index')
+const feature_route = require('../../utils/feature_index')
+
+const downloadFile = util.promisify(wx.downloadFile)
 
 import wxNav from '../../utils/nav.js'
 import storage from '../../utils/storage.js'
@@ -15,133 +17,152 @@ import commonRequest from '../../utils/common_request'
 let Loger = (app.apiServer != 'https://epbox.gongfudou.com' || app.deBug) ? console.log : function() {}
 
 Page({
-	data: {
-		owner: false,
-		audit_free: false,
-		state: '',
-		supply_types: '',
-		// subscribe: false,
-		describe: false,
-		openId: '',
-		activeDevice: null,
-		printType: '',
-		showAdvertisement: true,
-	},
-	media_type: '',
-	onLoad: function (options) {
-		this.longToast = new app.weToast()
-		Loger('options=======', options)
-		Loger(options.media_type)
-		this.media_type = options.media_type
-		this.printType = options.type
-		if (this.printType) {
-			this.setData({
-				printType: this.printType
-			})
-		}
-		this.category_id = options.category_id
-		this.setData({
-			state: options.state
-		})
-		if (options.media_type) {
-			wx.removeStorageSync(options.media_type)
-		}
-		if (options.sticker_type) {
-			wx.removeStorageSync(options.sticker_type)
-		}
+  data: {
+    owner: false,
+    audit_free: false,
+    state: '',
+    supply_types: '',
+    // subscribe: false,
+    describe: false,
+    openId: '',
+    activeDevice: null,
+    showAdvertisement: true,
+    studyDay: 0,
+    studyUniy: 0,
+    save:false,
+    studyNum:null,
+    studyUnit:null,
+    continueText:'继续打印'
+  },
+  media_type: '',
+  //  wxNav.navigateTo(`pages/finish/sourcefinish`, {
+    //必传
+    //    media_type: this.mediaType,
+    //    state:resp.createOrder.state
+    //    day:1   //学习天数
+    //可选
+    //    save:true    //是否保存朋友圈，没这功能不用传这字段
+    //    studyNum:1  //天数对应的多少单位
+    //    studyUnit:Unit  //单位
+    //    continueText:'继续打印'  //继续打印的文案
+    // })
+  onLoad: function(options) {
+    this.longToast = new app.weToast()
+    Loger('options=======', options)
+    Loger(options.media_type)
+    this.media_type = options.media_type
 
-		// this.getAccounts()
-		// let getSupplyAfter = commonRequest.getSupplyAfter()
-		// let that = this
-		// getSupplyAfter.then(function (res) {
-		// 	const supply_types = res.supply_types
-		// 	Loger(supply_types)
-		// 	that.setData({
-		// 		supply_types: supply_types
-		// 	})
-		// })
-		// try {
-		// 	app.gio('track', 'onLoadFinsih', {})
-		// } catch (e) {}
+    this.category_id = options.category_id
+    this.setData({
+      state: options.state
+    })
+    if (options.media_type) {
+      wx.removeStorageSync(options.media_type)
+    }
+    if (options.sticker_type) {
+      wx.removeStorageSync(options.sticker_type)
+    }
 
-	},
-	onShow() {
-		this.setData({
-			activeDevice: app.activeDevice
-		})
+  },
+  onShow() {
+    this.setData({
+      activeDevice: app.activeDevice
+    })
 
-	},
+  },
 
-	// getAccounts: co.wrap(function* () {
-	// 	this.longToast.toast({
-	// 		img: '../../images/loading.gif',
-	// 		title: '请稍候',
-	// 		duration: 0
-	// 	})
-	// 	try {
-	// 		const resp = yield request({
-	// 			url: app.apiServer + `/ec/v2/users/user?openid=${app.openId}`,
-	// 			header: {
-	// 				'G-Auth': app.authAppKey
-	// 			},
-	// 			method: 'GET',
-	// 			dataType: 'json',
-	// 			data: {
-	// 				openid: app.openId
-	// 			}
-	// 		})
-	// 		if (resp.data.code != 0) {
-	// 			throw (resp.data)
-	// 		}
-	// 		this.longToast.toast()
-	// 		Loger('用户是否关注公众号', resp.data)
-	// 		this.setData({
-	// 			subscribe: resp.data.user.subscribe
-	// 		})
-	//
-	// 	} catch (e) {
-	// 		util.showErr(e)
-	// 		this.longToast.toast()
-	// 	}
-	// }),
-	backToHome: function () {
-		wxNav.switchTab('/pages/index/index')
-	},
+  localSave: co.wrap(function*() {
+    this.longToast.toast({
+      type: 'loading'
+    })
+    let that = this
+    try {
+      let context = wx.createCanvasContext('myCanvas')
+      let imgDunload = yield downloadFile({ url: 'https://cdn-h.gongfudou.com/LearningBox/main/finish_course_date.jpg' })
+      context.drawImage(imgDunload.tempFilePath, 0, 0)
+      context.setFillStyle('#ff9839')
+      context.setTextAlign('right')
+      context.setTextBaseline('top')
+      context.setFontSize(70)
+      context.fillText(this.data.studyDay, 213, 248)
+      context.fillText(this.data.studyUniy, 572, 248)
+      context.setFontSize(28)
+      context.fillText('天', 246, 285)
+      context.fillText('Unit', 636, 285)
+      context.setFontSize(40)
+      context.fillText('|', 352, 261)
+      context.draw(false, function() {
+        wx.canvasToTempFilePath({
+          canvasId: 'myCanvas',
+          success(res) {
+            wx.saveImageToPhotosAlbum({
+              filePath: res.tempFilePath
+            })
+            that.longToast.toast()
+          }
+        })
+      })
+    } catch (e) {
+      Loger(e)
+    }
 
-	continuePrint: function () {
-		if(this.media_type==='memory_write'){
-			wxNav.backPage(feature_route.feature_route[this.printType])
-		} else {
-			wxNav.backPage(feature_route.feature_route[this.media_type])
-		}
-	},
+  }),
+  checkScope: function(tips) {
+    let scope = 'scope.writePhotosAlbum'
+    let that = this
+    wx.getSetting({
+      success(res) {
+        if (res.authSetting[scope]) {
+          that.localSave()
+        } else {
+          wx.authorize({
+            scope: scope,
+            success() {
+              console.log('授权成功')
+              that.localSave()
+            },
+            fail() {
+              console.log(`authorize ${scope} fail==========!`)
+              wx.showModal({
+                title: '提示',
+                content: '需要授权保存相册才能正常使用',
+                success: function(res) {
+                  if (res.confirm) {
+                    wx.openSetting()
+                  }
+                }
+              })
+            }
+          })
+        }
+      }
+    })
+  },
+  backToHome: function() {
+    wxNav.switchTab('/pages/index/index')
+  },
 
-	onShareAppMessage: function () {
-		return app.share
-	},
+  continuePrint: function() {
+    if (this.media_type === 'memory_write') {
+      wxNav.backPage(feature_route.feature_route[this.printType])
+    } else {
+      wxNav.backPage(feature_route.feature_route[this.media_type])
+    }
+  },
 
-	toDetail: function () {
-		this.setData({
-			describe: !this.data.describe
-		})
-	},
+  onShareAppMessage: function() {
+    return app.share
+  },
 
-	order: function (e) {
-		let id = e.currentTarget.id
-		let alias = this.data.supply_types[id].alias
-		// Loger(alias, this.data.shopId, this.data.appId, this.data.openId)
-		// let unionId = wx.getStorageSync('unionId')
-		// Loger('商城授权')
-		// if (!unionId) {
-		// 	let url = `/pages/authorize/index`
-		// 	wx.navigateTo({
-		// 		url: url,
-		// 	})
-		// } else {
-		// 	wx.navigateTo({
-		// 		url: `/pages/cart/transit/transit?pageType=goodsDetail&goodsId=${alias}&openId=${this.data.openId}&shopId=${this.data.shopId}&appId=${this.data.appId}`
-		// 	})
-		// }
-	},
+  toDetail: function() {
+    this.setData({
+      describe: !this.data.describe
+    })
+  },
+
+  order: function(e) {
+    let id = e.currentTarget.id
+    let alias = this.data.supply_types[id].alias
+  },
 
 })

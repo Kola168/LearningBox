@@ -45,6 +45,7 @@
     "pages/index/grade",
     "pages/account/index",
     "pages/finish/index",
+    "pages/finish/sourcefinish",
     "pages/mall/index",
     "pages/webview/index",
     "pages/webview/member",
