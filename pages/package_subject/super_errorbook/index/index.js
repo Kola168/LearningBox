@@ -147,6 +147,6 @@ Page({
         url = '../../weakness_exercise/index/index'
         break;
     }
-    wxNav.navigateTo(url)
+    wxNav.navigateTo(url,params)
   }
 })
