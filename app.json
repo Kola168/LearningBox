@@ -47,7 +47,7 @@
     "pages/finish/index",
     "pages/mall/index",
     "pages/webview/index",
-		"pages/webview/member",
+    "pages/webview/member",
 		"pages/member/authorize",
 		"pages/exit/index",
 		"pages/account/collection/index"
@@ -228,7 +228,9 @@
         "weakness_exercise/index/index",
         "stage_report/index/index",
         "exam_paper_report/index/index",
-        "sync_video/index/index"
+        "sync_video/index/index",
+        "sync_video/video_list/video_list",
+        "sync_video/video_detail/video_detail"
       ]
     },
     {

@@ -1,4 +1,12 @@
 // pages/package_subject/sync_video/index/index.js
+var app = getApp()
+import {
+  regeneratorRuntime,
+  co,
+  util,
+  storage,
+  wxNav
+} from '../../../../utils/common_import'
 Page({
 
   /**
@@ -30,43 +38,20 @@ Page({
   },
 
   /**
-   * 生命周期函数--监听页面初次渲染完成
+   * 选择科目
    */
-  onReady: function () {
+  chooseSubject: co.wrap(function*({currentTarget: {dataset: {index}}}){
+    this.setData({
+      currentTabIndex: index
+    })
+  }),
 
+  toVideo: function({currentTarget: {dataset: {sn}}}) {
+    wxNav.navigateTo("../video_list/video_list", {
+      sn
+    })
   },
 
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
   onReachBottom: function () {
 
   },

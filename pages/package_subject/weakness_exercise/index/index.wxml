@@ -12,24 +12,26 @@
   <view class="exercise-main">
     <view class="exercise-search">
       <view class="search-item" bind:tap="searchCategory" data-key="subject">
-        <view class="search-category-name">语文</view>
+        <view class="search-category-name">{{checkedSubject.subjectName}}</view>
         <view class="arrow-icon"></view>
       </view>
-      <view class="search-item">
-        <view class="search-category-name">已打印</view>
+      <view class="search-item" bind:tap="searchCategory" data-key="print">
+        <view class="search-category-name">{{checkedPrint.name}}</view>
         <view class="arrow-icon"></view>
       </view>
     </view>
+    <!-- 练习题列表 -->
     <view class="exercise-content">
       <view wx:for="{{exerciseList}}" wx:key="sn"> 
         <template is="exerciseList" data="{{item}}"/>
       </view>
     </view>
   </view>
-  <!-- <view class="empty-exercise">
+  <!-- 暂无错题 -->
+  <view class="empty-exercise" wx:if="{{isExerciseEmpty}}">
     <image class="empty-icon" src="https://cdn-h.gongfudou.com/LearningBox/subject/empty_icon.png"/>
     <view class="name">还没有生成练习哦，点击上方按钮添加练习</view>
-  </view> -->
+  </view>
 </view>
 
 <!-- 选择学科 -->
@@ -57,18 +59,17 @@
 
 
 <!-- actionsheet -->
-<view class="action-sheet" style="top:{{navBarHeight}}px" wx:if="{{showSubjectForm}}">
+<view class="action-sheet" style="top:{{navBarHeight}}px" wx:if="{{showSubjectForm}}" bind:tap="cancelActionsheet">
   <view class="current-subject">
-    <view class="subject-name">{{currentSubject.subjectName}}</view>
+    <view class="subject-name">{{isSubjectCategory ? checkedSubject.subjectName : checkedPrint.name}}</view>
     <view class="arrow-icon"></view>
   </view>
   <view class="subject-main">
-    <view class="subject-item" wx:for="{{subjects}}" wx:key="sn">{{item.subjectName}}</view>
+    <view class="subject-item" wx:for="{{isSubjectCategory ? subjects : printStaList}}" wx:key="sn" data-index="{{index}}" catch:tap="chooseCategory">{{isSubjectCategory ?item.subjectName : item.name}}</view>
   </view>
 </view>
 
 <member-toast id="memberToast" modal="{{modal}}"/>
-
 
 <import src="../../../../lib/toast/wetoast.wxml" />
 <template is="wetoast" data="{{...__wetoast__}}" />

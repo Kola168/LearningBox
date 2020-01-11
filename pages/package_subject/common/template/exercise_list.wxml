@@ -13,6 +13,6 @@
         <view class="create-date">{{item.dateTime}}</view>
       </view>
     </view>
-    <view class="btn-print" bind:tap="toPrint" data-item="{{item}}">打印练习</view>
+    <view class="btn-print" bind:tap="toPrint" data-sn="{{item.sn}}">打印练习</view>
   </view>
 </template>

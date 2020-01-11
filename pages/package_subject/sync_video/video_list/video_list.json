@@ -1,0 +1,5 @@
+{
+  "usingComponents": {
+    "member-toast": "../../sync_learn/components/member-toast/index"
+  }
+}

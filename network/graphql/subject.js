@@ -596,6 +596,7 @@ const graphqlApi = {
             pageSize
             exerciseName
           }
+          exerciseCount(subjectSn:$subjectSn, exerciseType: $exerciseType, isPrint: $isPrint)
         }
       }`,
       variables: {

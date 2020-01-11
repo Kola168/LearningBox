@@ -208,7 +208,7 @@ function promisify(fn) {
   }
 }
 
-function showError(e) {
+function showError(e, callback){
 	let title, content
 	
   if (e && e.message) {
@@ -227,7 +227,10 @@ function showError(e) {
     title: title || '提示',
     content: content || '网络异常',
     showCancel: false,
-    confirmColor: '#2086ee'
+    confirmColor: '#2086ee',
+    success: function(res){
+      callback && callback(res)
+    },
   })
 }
 

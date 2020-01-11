@@ -13,4 +13,35 @@
     </block>
     </view>
   </image>
+  <view class="form">
+  </view>
+  <view class="video-list">
+    <view class="video-item" bind:tap="toVideo" data-sn="11111">
+      <image class="video-cover-icon">
+        <view class="video-in-box">
+          <view class="progress">共7讲</view>
+          <view class="video-num">2934次播放</view>
+        </view>
+      </image>
+      <view class="video-name">集合的含义与表示</view>
+    </view>
+    <view class="video-item">
+      <image class="video-cover-icon">
+        <view class="video-in-box">
+          <view class="progress">共7讲</view>
+          <view class="video-num">2934次播放</view>
+        </view>
+      </image>
+      <view class="video-name">集合的含义与表示</view>
+    </view>
+    <view class="video-item">
+      <image class="video-cover-icon">
+        <view class="video-in-box">
+          <view class="progress">共7讲</view>
+          <view class="video-num">2934次播放</view>
+        </view>
+      </image>
+      <view class="video-name">集合的含义与表示集合的含义与表示</view>
+    </view>
+  </view>
 </view>
