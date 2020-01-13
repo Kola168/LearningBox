@@ -1,2 +1,53 @@
-<!--pages/package_subject/exam_paper_report/index/index.wxml-->
-<text>pages/package_subject/exam_paper_report/index/index.wxml</text>
+<nav-bar background="#fff" title="试卷报告"/>
+<import src="../../common/template/exercise_list.wxml"/>
+<view class="stage-report-main" wx:if="{{!showTimeForm}}">
+  <image class="nav-card" src="../../images/nav_figure_card.png" mode="widthFix">
+    <view class="content">这里是老师给你批改试卷报告存档的地方哦</view>
+  </image>
+  <view class="notice-text">每月1日生成上个月的学习报告，期中期末前生成本学期报告</view>
+  <view class="exercise-search">
+    <view class="search-item" bind:tap="openForm" data-key="showSubjectSheet">
+      <view class="search-category-name">{{subjectData.subjectName}}</view>
+      <view class="arrow-icon"></view>
+    </view>
+    <view class="search-item" bind:tap="openForm" data-key="showTimeForm">
+      <view class="search-time">
+        <image src="../../images/date_icon.png" />
+        <view class="date-content">{{startDate}}-{{endDate}}</view>
+        <view class="arrow"></view>
+      </view>
+    </view>
+  </view>
+  <view class="exercise-content">
+    <view wx:for="{{reporterList}}" wx:key="sn"> 
+      <template is="exerciseList" data="{{item, index}}"/>
+    </view>
+  </view>
+   <!-- 暂无错题 -->
+  <view class="empty-reporter" wx:if="{{isReporterEmpty}}">
+    <image class="empty-icon" src="https://cdn-h.gongfudou.com/LearningBox/subject/empty_icon.png"/>
+    <view class="name">还没有报告哦</view>
+  </view>
+  <!-- <view class="btn-convert {{isFullScreen ? 'is-full-screen' : ''}}" bind:tap="chooseReportForm">生成报告</view> -->
+</view>
+
+
+<!-- 学科选择 -->
+<view class="action-sheet" style="top:{{navBarHeight}}px" wx:if="{{showSubjectSheet}}" bind:tap="cancelSubjectForm">
+  <view class="current-subject">
+    <view class="subject-name">{{subjectData.subjectName}}</view>
+    <view class="arrow-icon"></view>
+  </view>
+  <view class="subject-main">
+    <view class="subject-item" bind:tap="useSheetCheckedSubject" data-index="{{index}}" wx:for="{{subjects}}" wx:key="sn">{{item.subjectName}}</view>
+  </view>
+</view>
+
+<!-- 选择日期 -->
+<view class="choose-date-range" wx:if="{{showTimeForm}}">
+  <choose-time-range timeRange="{{timeRange}}" bind:chooseDate="chooseDate"/>
+</view>
+
+
+<import src="../../../../lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />

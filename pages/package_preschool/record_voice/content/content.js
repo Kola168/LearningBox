@@ -31,8 +31,7 @@ Page({
       isAndroid: systemInfo.system.indexOf('iOS') > -1 ? false : true,
       top: app.navBarInfo.topBarHeight,
     })
-    let userSn = storage.get('userSn')
-    if (userSn) {
+    if (app.isScope()) {
       yield this.getCategory()
     }
   }),

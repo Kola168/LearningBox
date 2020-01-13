@@ -1,3 +1,4 @@
+var app = getApp()
 import {
   co,
   regeneratorRuntime,
@@ -27,7 +28,7 @@ Page({
   getUserInfo: co.wrap(function*() {
 		let userSn = storage.get('userSn')
 		this.userSn = userSn
-		if(this.userSn){
+		if(app.isScope()){
 			try {
 				let resp = yield gql.getUser()
 				storage.put("userSn", resp.currentUser.sn)

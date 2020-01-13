@@ -6,7 +6,7 @@
   </image>
   <view class="notice-text">每月1日生成上个月的学习报告，期中期末前生成本学期报告</view>
   <view class="exercise-search">
-    <view class="search-item" bind:tap="openForm" data-key="showSubjectForm">
+    <view class="search-item" bind:tap="openForm" data-key="showSubjectSheet">
       <view class="search-category-name">{{subjectData.subjectName}}</view>
       <view class="arrow-icon"></view>
     </view>
@@ -19,26 +19,28 @@
     </view>
   </view>
   <view class="exercise-content">
-      <template is="exerciseList" />
-      <view class="action-sheet" style="top:{{navBarHeight}}px">
-        <view class="current-subject">
-          <view class="subject-name">语文</view>
-          <view class="arrow-icon"></view>
-        </view>
-        <view class="subject-main">
-          <view class="subject-item">数学（16）</view>
-          <view class="subject-item">数学（16）</view>
-          <view class="subject-item">数学（16）</view>
-          <view class="subject-item">数学（16）</view>
-          <view class="subject-item">数学（16）</view>
-          <view class="subject-item">数学（16）</view>
-          <view class="subject-item">数学（16）</view>
-          <view class="subject-item">数学（16）</view>
-        </view>
-      </view>
+    <view wx:for="{{reporterList}}" wx:key="sn"> 
+      <template is="exerciseList" data="{{item, index}}"/>
     </view>
-    
-    <view class="btn-convert {{isFullScreen ? 'is-full-screen' : ''}}" bind:tap="createExercise">生成练习</view>
+  </view>
+   <!-- 暂无错题 -->
+  <view class="empty-reporter" wx:if="{{isReporterEmpty}}">
+    <image class="empty-icon" src="https://cdn-h.gongfudou.com/LearningBox/subject/empty_icon.png"/>
+    <view class="name">还没有生成报告哦，点击下方按钮添加报告</view>
+  </view>
+  <view class="btn-convert {{isFullScreen ? 'is-full-screen' : ''}}" bind:tap="chooseReportForm">生成报告</view>
+</view>
+
+
+<!-- 学科选择 -->
+<view class="action-sheet" style="top:{{navBarHeight}}px" wx:if="{{showSubjectSheet}}" bind:tap="cancelSubjectForm">
+  <view class="current-subject">
+    <view class="subject-name">{{subjectData.subjectName}}</view>
+    <view class="arrow-icon"></view>
+  </view>
+  <view class="subject-main">
+    <view class="subject-item" bind:tap="useSheetCheckedSubject" data-index="{{index}}" wx:for="{{subjects}}" wx:key="sn">{{item.subjectName}}</view>
+  </view>
 </view>
 
 <!-- 选择学科 -->
