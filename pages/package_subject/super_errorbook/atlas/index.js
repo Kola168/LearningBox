@@ -10,8 +10,9 @@ const FundCharts = require('../../charts.min.js')
 const RadarChart = FundCharts.radar
 Page({
   data: {
+    loadReady: false,
     isMember: true,
-    barData: [],
+    barData: {},
     atlasType: 'none',
     emptySubjects: [],
     bottomSubjects: [],
@@ -21,7 +22,7 @@ Page({
   onLoad() {
     this.weToast = new app.weToast()
     this.setData({
-      canvasWidth: app.sysInfo.screenWidth - 40
+      canvasWidth: app.sysInfo.screenWidth
     })
     this.getSubjectsAtlas()
   },
@@ -59,6 +60,7 @@ Page({
           emptySubjects.push(rates[i])
         }
       }
+      dataObj.loadReady = true
       dataObj.topSubjects = topSubjects
       dataObj.middleSubjects = middleSubjects
       dataObj.bottomSubjects = bottomSubjects

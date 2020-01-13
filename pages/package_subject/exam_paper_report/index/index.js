@@ -1,5 +1,6 @@
 // pages/package_subject/stage_report/index/index.js
 var app = getApp()
+const event = require('../../../../lib/event/event')
 import {
   regeneratorRuntime,
   co,
@@ -40,6 +41,22 @@ Page({
       startDate: computedTime.replaceDate(startDate),
       endDate: computedTime.replaceDate(endDate)
     })
+
+    event.on('Authorize', this, ()=>{
+      this.initData()
+    })
+    
+    if (!app.isScope()) {
+      return wxNav.navigateTo("/pages/authorize/index")
+    }
+    this.initData()
+
+  }),
+
+    /**
+   * 初始化数据
+   */
+  initData: co.wrap(function * (){
     yield this.getSubject()
     yield this.getReporter()
   }),
@@ -181,7 +198,8 @@ Page({
    */
   toPrint: function({currentTarget: {dataset: {sn}}}){
     wxNav.navigateTo('../../report/index', {
-      sn
+      sn,
+      mediaType: 'exam_paper_report'
     })
   },
 

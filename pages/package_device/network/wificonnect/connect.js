@@ -79,7 +79,6 @@ Page({
 				console.log('网络似乎不太顺畅');
 				return false
 			} else {
-				//在网络通的情况下，并且1500毫秒还是有网
 				wx.offNetworkStatusChange()
 				that.bindCode()
 			}

@@ -90,7 +90,7 @@ Page({
         })
         try {
             const resp = yield api.accessMember()
-            if (resp.code != 0) {
+            if (resp.data.code != 0) {
                 throw (resp)
             }
             let modalObj = {
@@ -121,9 +121,10 @@ Page({
             this.setData({
                 device: resp.currentUser.selectedDevice
             })
-            if (this.data.device == null) {
+            if (this.data.device == null||this.data.device.lmAvailableMember == null) {
                 return
             }
+        
             this.setData({
                 availableMember: this.data.device.lmAvailableMember.time != null && this.data.device.lmAvailableMember.time != 0 ? true : false,
                 availableMemberModal: this.data.device.lmAvailableMember.time != null && this.data.device.lmAvailableMember.time != 0 ? true : false

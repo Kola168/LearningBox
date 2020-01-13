@@ -71,10 +71,7 @@ Page({
             })
         }
     }),
-    toConfirm: co.wrap(function* (e) {
-        logger.info('证件照打印时form发生了submit事件，携带数据为：', e.detail.formId, `print${this.data.mode}`)
-
-
+    toConfirm: co.wrap(function* () {
         let hideConfirmPrintBox = Boolean(wx.getStorageSync("hideConfirmPrintBox"))
         if (hideConfirmPrintBox) {
             this.print()
@@ -98,11 +95,10 @@ Page({
                 copies: this.data.num, // 打印份数
                 grayscale: false, // 是否使用灰度打印
             }]
-            const resp = commonRequest.createOrder('normal_id', param)
-            logger.info(resp)
+            const resp = yield commonRequest.createOrder('normal_id', param)
             router.redirectTo('/pages/finish/index', {
               type: 'normal_id',
-              media_type: 'invoice',
+              media_type: 'normal_id',
               state: resp.createOrder.state
             })
         } catch (e) {

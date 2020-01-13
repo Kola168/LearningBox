@@ -49,7 +49,7 @@ Page({
         })
         try {
             const resp = yield api.accessMember()
-            if (resp.code != 0) {
+            if (resp.data.code != 0) {
                 throw (resp)
             }
             this.setData({
@@ -80,7 +80,7 @@ Page({
             this.setData({
                 device: resp.currentUser.selectedDevice
             })
-            if (this.data.device == null) {
+            if (this.data.device == null||this.data.device.lmAvailableMember == null) {
                 return
             }
             this.setData({

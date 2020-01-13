@@ -41,7 +41,7 @@ Page({
       })
       this.getCorrectPaper()
     })
-    let isAuth = yield app.isScope()
+    let isAuth = app.isScope()
     if (!isAuth) {
       return wxNav.navigateTo("/pages/authorize/index")
     }
@@ -57,8 +57,8 @@ Page({
     })
     this.weToast = new app.weToast()
     let scene = query.scene
-    this.paperId = Number(scene.split('_')[1])
-    this.correctType = scene.split('_')[2] === 'paper' ? 'XuekewangPaper' : 'XuekewangExercise' //批改类型
+    this.correctId = Number(scene.split('_')[1])
+    this.correctType = scene.split('_')[2] === 'paper' ? 'XuekewangUserPaper' : 'XuekewangExercise' //批改类型
     this.singleTopicIds = new Set()
     this.getUserMemberInfo()
   }),
@@ -91,11 +91,12 @@ Page({
       type: 'loading'
     })
     try {
-      let resp = yield api.getCorrectPaper(this.paperId, this.correctType)
+      let resp = yield api.getCorrectPaper(this.correctId, this.correctType)
       if (resp.code != 0) {
         throw (resp)
       }
       let tempData = resp.res
+      this.paperId = tempData.paper_id
       this.topics = tempData.questions
       let currentTopic = this.topics[0],
         formatResult = this.formatTopic(currentTopic),
@@ -108,7 +109,7 @@ Page({
         currentTopicType: formatResult.topicType,
         topicsResult: topicsResult,
         currentTopic: formatResult.currentTopic,
-        ['modalObj.isShow']: false
+        ['modalObj.isShow']: tempData.corrected
       })
       this.weToast.hide()
     } catch (error) {
@@ -220,14 +221,14 @@ Page({
           point: this.data.currentResult,
           questionId: this.currentTopicId,
           parent
-        },
-        currentResult: null
+        }
       }
       if (nextTopicIndex === this.data.topicsResult.length) { //最后一题
         this.setData(dataObj)
         this.preSubmit()
       } else {
         let formatResult = this.formatTopic(this.topics[nextTopicIndex])
+        dataObj.currentResult = null
         dataObj.topicIndex = nextTopicIndex
         dataObj.currentTopic = formatResult.currentTopic
         dataObj.currentTopicType = formatResult.topicType
@@ -263,7 +264,7 @@ Page({
         } else {
           this.workerId = res.submitXuekewangWrongQuestion.workerSn
           this.setData({
-            progress: this.data.progress + 30
+            progress: this.data.progress + 10
           })
           this.getWorkerSn()
         }
@@ -279,15 +280,22 @@ Page({
   getWorkerSn: co.wrap(function* () {
     try {
       let resp = yield api.synthesisSnResult(this.workerId)
+      if (resp.code !== 0) {
+        this.setData({
+          progress: 0,
+          showProgessModal: false
+        })
+        throw (resp)
+      }
       if (resp.res.state === 'send') {
         setTimeout(() => {
           if (this.data.progress < 90) {
             this.setData({
-              progress: this.data.progress + 30
+              progress: this.data.progress + 20
             })
           }
           this.getWorkerSn()
-        }, 3000)
+        }, 2000)
         return
       } else if (resp.res.state === 'finished') {
         this.setData({
@@ -296,19 +304,20 @@ Page({
         }, () => {
           wxNav.navigateTo('../report/index', {
             sn: resp.res.sn,
-            from: 'correct'
+            from: 'correct',
+            mediaType: 'exam_paper_report'
           })
         })
       }
     } catch (e) {
-      util.showError(error)
+      util.showError(e)
     }
   }),
 
   // 学科会员介绍
   toMemberIntro(e) {
     if (app.preventMoreTap(e)) return
-    wxNav.navigateTo("../member_intro/index")
+    wxNav.navigateTo("/pages/package_member/member/index")
   },
 
   // 授权

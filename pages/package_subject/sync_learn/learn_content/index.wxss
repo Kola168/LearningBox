@@ -5,7 +5,7 @@
   overflow: hidden;
 }
 
-.content-main scroll-view {
+.content-main .tab-main {
   height: 74rpx;
   white-space: nowrap;
   padding-left: 36rpx;
@@ -126,6 +126,8 @@
   width: 256rpx;
   height: 400rpx;
   overflow: scroll;
+  padding: 0!important;
+  -webkit-overflow-scrolling: touch;
 }
 
 .select-bar .select-item {
