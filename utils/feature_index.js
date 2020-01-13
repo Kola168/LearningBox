@@ -7,7 +7,6 @@
   doc_a4: '/pages/print_doc/index/index',
   id_card: '/pages/print_doc/duplicate/index',
   invoice: '/pages/print_doc/print_invoice/print_invoice',
-  doc_a4: '/pages/package_feature/share_folder/index',
   _id1in: '/pages/print_id/index',
   _id2in: '/pages/print_id/index',
   _id1ins: '/pages/print_id/index',
