@@ -48,13 +48,6 @@ Page({
             this.getDevice()
         })
     }),
-    toPrint: co.wrap(function* () {
-        if (this.data.device == null) {
-         this.setData({
-            'modalObj.content':'设备列表为空，暂无法获取指南，请先绑定打印机'
-         })
-        }
-    }),
     toMemberH5() {
         wxNav.navigateTo('/pages/webview/member')
     },
@@ -68,13 +61,35 @@ Page({
             availableMemberModal: true
         })
     },
-    accessMember: co.wrap(function* () {
+    printMemberCode: co.wrap(function* () {
+        if (this.data.device == null) {
+            this.setData({
+                'modalObj.content': '设备列表为空，暂无法获取会员，请先绑定打印机'
+            })
+        }
         this.longToast.toast({
             type: "loading",
             duration: 0
         })
         try {
-            const resp = yield api.wechatDecryption(params)
+            const resp = yield api.printMemberCode()
+            if (resp.code != 0) {
+                throw (resp)
+            }
+            this.longToast.hide()
+        } catch (error) {
+            util.showError(error)
+            this.longToast.hide()
+        }
+
+    }),
+    toAccessMember: co.wrap(function* () {
+        this.longToast.toast({
+            type: "loading",
+            duration: 0
+        })
+        try {
+            const resp = yield api.accessMember()
             if (resp.code != 0) {
                 throw (resp)
             }
@@ -82,7 +97,7 @@ Page({
                 isShow: false,
                 hasCancel: false,
                 title: '',
-                content: `${this.data.unit}的会员已激活成功，祝您使用愉快`,
+                content: `${this.data.device.lmAvailableMember.time}${this.data.device.lmAvailableMember.time}的会员已激活成功，祝您使用愉快`,
                 confirmText: '确认'
             }
             this.setData({
@@ -90,6 +105,7 @@ Page({
             })
             this.longToast.hide()
         } catch (error) {
+            util.showError(error)
             this.longToast.hide()
         }
 
@@ -129,8 +145,13 @@ Page({
             util.showError(e)
         }
     }),
-    toNext(){
-     wxNav.navigateTo('/pages/package_member/member/active')
+    close() {
+        this.setData({
+            availableMemberModal: false
+        })
+    },
+    toNext() {
+        wxNav.navigateTo('/pages/package_member/member/active')
     },
     onUnload() {
         event.remove('Authorize', this)

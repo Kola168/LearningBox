@@ -5,7 +5,7 @@ const regeneratorRuntime = require('../../lib/co/runtime')
 const co = require('../../lib/co/co')
 const util = require('../../utils/util')
 const _ = require('../../lib/underscore/we-underscore')
-const imginit=require('../../utils/imginit')
+const imginit = require('../../utils/imginit')
 import api from '../../network/restful_request.js'
 import router from '../../utils/nav'
 import Logger from '../../utils/logger.js'
@@ -20,6 +20,8 @@ const requestPayment = util.promisify(wx.requestPayment)
 Page({
   data: {
     singleImg: '',
+    print_wm_url: '',
+    payImage: '',
     idPrint: true,
     number: 1,
     pay: false,
@@ -43,10 +45,11 @@ Page({
     //下面的是worker sn
     this.query = JSON.parse(options.confirm)
     this.info = JSON.parse(options.info)
-  
+
     logger.info('预览页参数', this.info, this.query)
     this.setData({
       singleImg: this.query.wm_url,
+      print_wm_url: this.query.print_wm_url ? imginit.addProcess(this.query.print_wm_url, '/rotate,90') : ''
       // price_count: this.query.price,
       // price: this.query.price,
       // can_free_print: this.query.can_free_print ? this.query.can_free_print : false
@@ -75,9 +78,6 @@ Page({
   },
   //打印为纸质版
   toPrint: co.wrap(function* (e) {
-    if (!this.hasAuthPhoneNum && !app.hasPhoneNum) {
-      return
-    }
     if (!this.data.idPrint) {
       yield showModal({
         content: '当前类型只支持电子照保存哦',
@@ -87,7 +87,6 @@ Page({
       return
     }
     this.setData({
-      singleImg: imginit.addProcess(this.query.url_print_wm , '/rotate,90'),
       pay: true,
       type: e.currentTarget.id
     })
@@ -105,7 +104,7 @@ Page({
   toSavePay: function (e) {
     this.setData({
       pay: true,
-      type: e.currentTarget.id
+      type: e.currentTarget.id,
     })
   },
   tapMin: co.wrap(function* () {
@@ -126,7 +125,7 @@ Page({
   }),
   //提交订单
   submit: co.wrap(function* (e) {
-		if (app.preventMoreTap(e)) {
+    if (app.preventMoreTap(e)) {
       return
     }
     let brand
@@ -164,7 +163,7 @@ Page({
         this.longToast.hide()
         // 其他错误
         util.showError({
-          message:resp.message
+          message: resp.message
         })
         return
       }
@@ -218,4 +217,18 @@ Page({
       })
     }
   },
+  toPay(e) {
+    try {
+      let url = ''
+      let type = e.currentTarget.id
+      router.navigateTo('/pages/print_id/pay', {
+        confirm: JSON.stringify(this.query),
+        info: JSON.stringify(this.info),
+        type: type
+      })
+    } catch (error) {
+      console.log(error)
+    }
+
+  }
 })

@@ -7,12 +7,6 @@ canvas {
   margin-bottom: 80rpx;
 }
 
-.bar-title {
-  color: #333;
-  font-size: 24rpx;
-  margin-bottom: 20rpx;
-}
-
 .subject-type {
   background: #FFFFFF;
   box-shadow: 0 2px 8px 0 rgba(131, 182, 242, 0.40);
@@ -21,7 +15,7 @@ canvas {
   padding: 44rpx 24rpx 0 24rpx;
   position: relative;
   box-sizing: border-box;
-  margin: 0 auto;
+  margin: 120rpx auto 60rpx;
 }
 
 .type-header {
@@ -66,4 +60,9 @@ canvas {
 
 .type-bottom text {
   color: #FB5130;
+}
+
+.type-empty text {
+  color: #999;
+  text-decoration: none;
 }

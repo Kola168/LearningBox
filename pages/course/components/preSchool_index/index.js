@@ -20,31 +20,32 @@ Component({
     selectCategories: [],
     isAndroid: false,
     isMember: false,
-    __wetoast__: null
+    __wetoast__: null,
+    auth: false,
   },
 
   lifetimes: {
     attached: co.wrap(function *(){
       var _this = this
       this.activeDevice = app.activeDevice
-      let userSn = storage.get('userSn')
-      this.userSn = userSn
       this.longToast = new app.weToast()
       yield this.getCourseIndex()
       let isAndroid = app.sysInfo.system.toLocaleLowerCase().indexOf('android') > -1
       this.setData({
         isAndroid: isAndroid,
-        userSn: userSn
+        auth: app.isScope()
       })
 
       event.on('Authorize', this, () => {
-        this.userSn = storage.get('userSn')
+        this.setData({
+          auth: app.isScope()
+        })
         this.getCourseIndex()
       })
 
       event.on('LearnRefresh', this, co.wrap(function*() {
         yield _this.getCourseIndex()
-        _this.userSn && _this.getLastCourseInfo()
+        app.isScope() && _this.getLastCourseInfo()
         wx.stopPullDownRefresh()
       }))
       this.init()
@@ -68,12 +69,10 @@ Component({
 
   methods: {
     init: co.wrap(function *() {
-      let userSn = storage.get('userSn')
-      this.userSn = userSn
-      if (userSn) {
+      if (app.isScope()) {
         this.getLastCourseInfo()
         this.setData({
-          userSn
+          auth: true
         })
         if (app.activeDevice) {
           let isMember = app.activeDevice.is_member
@@ -167,7 +166,7 @@ Component({
     }),
   
     authCheck: co.wrap(function* () {
-      if (!this.userSn) {
+      if (!app.isScope()) {
         wxNav.navigateTo('/pages/authorize/index')
         return false
       } else {

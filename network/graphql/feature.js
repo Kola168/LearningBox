@@ -351,6 +351,7 @@ const graphqlApi = {
     })
   },
 
+  //链接转pdf
   wxFile:(input)=>{
     return gql.mutate({
       mutation: `mutation ($input: WxFileInput!){

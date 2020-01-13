@@ -1,6 +1,6 @@
 <nav-bar background="#fff" title="证件照"></nav-bar>
 <!--pages/print_id/sort.wxml-->
-<!-- <view class="title">智能证件照</view>
+<view class="title">智能证件照</view>
 <view class="zhineng" bindtap="toZhineng">
     <image src="https://cdn-h.gongfudou.com/LearningBox/main/icon_zhineng.png" mode="widthFix"></image>
     <view>
@@ -12,7 +12,7 @@
             <image src="../../images/id/zhineng_trangle.png" mode="widthFix"></image>
         </view>
     </view>
-</view> -->
+</view>
 
 <view class="title">证件照分类<text>(已有电子照请选我)</text>
 </view>

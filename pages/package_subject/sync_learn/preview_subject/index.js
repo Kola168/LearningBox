@@ -8,6 +8,7 @@ import {
   wxNav
 } from '../../../../utils/common_import'
 import busFactory from '../busFactory'
+import graphqlAll from '../../../../network/graphql_request'
 import graphql from '../../../../network/graphql/subject'
 Page({
 
@@ -17,11 +18,12 @@ Page({
     exercise: null,
   },
 
-  onLoad: function (options) {
+  onLoad: co.wrap(function *(options) {
     this.longToast = new app.weToast()
     this.sn = options.sn
-    this.getExercisesDetail()
-  },
+    yield this.getMember()
+    yield this.getExercisesDetail()
+  }),
 
   changeImg: function ({
     detail: {
@@ -32,6 +34,20 @@ Page({
       currentIndex: current + 1
     })
   },
+
+     /**
+   * 判断是否是会员
+   */
+  getMember: co.wrap(function*(){
+    try {
+      var resp = yield graphqlAll.getUserMemberInfo()
+      this.setData({
+        isSchoolAgeMember: resp.currentUser.isSchoolAgeMember
+      })
+    } catch(err) {
+      util.showError(err)
+    }
+  }),
 
   /**
    * 获取练习详情
@@ -57,8 +73,10 @@ Page({
    * @methods 确认
    */
   confirm: co.wrap(function* (e) {
-    var memberToast = this.selectComponent('#memberToast')
-    // memberToast.showToast()
+    if (!this.data.isSchoolAgeMember) {
+      var member = this.selectComponent('#memberToast')
+      return member.showToast()
+    }
     // 开通会员
     this.print()
   }),
@@ -72,13 +90,12 @@ Page({
 
   print: co.wrap(function* () {
     try {
-
-
       var postData = {
         name: this.data.exercise.exerciseName,
         isPrintAnswer: this.data.isPrintAnswer,
         pageCount: this.data.isPrintAnswer ? this.data.exercise.answerImages.length : this.data.exercise.images.length,
         sn: this.sn,
+        originalUrl: this.data.isPrintAnswer ? this.data.exercise.answerPdf.nameUrl : this.data.exercise.pdf.nameUrl,
         featureKey: 'xuekewang_exercise',
       }
       wxNav.navigateTo('/pages/package_subject/setting/setting', {

@@ -1,0 +1,18 @@
+<nav-bar title="{{name}}"></nav-bar>
+<view class="report" style="height:{{areaHeight}}px;">
+  <swiper class="swpier-box" bindchange="changeImg">
+    <swiper-item wx:for="{{imgList}}" wx:key="index">
+      <image class="img-item" src="{{item.nameUrl}}" mode="widthFix"></image>
+    </swiper-item>
+  </swiper>
+  <view class="report-btns {{isFullScreen?'is-full-screen':''}}">
+    <view class="more-report" wx:if="{{from==='correct'}}" bindtap="toMoreReport">
+      <image src="../images/more_report.png" mode="widthFix" />
+      <view>更多报告</view>
+    </view>
+    <view class="print-report">前往打印</view>
+  </view>
+</view>
+<!-- loading -->
+<import src="/lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />

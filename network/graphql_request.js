@@ -496,6 +496,8 @@ const graphqlApi = {
     return gql.query({
       query: `query{
         currentUser{
+					isPreschoolMember
+			  	isSchoolAgeMember
           phone
           sn
           selectedDevice{
@@ -531,6 +533,22 @@ const graphqlApi = {
               name
             }
           }
+        }
+      }`
+    })
+  },
+
+ /**
+   * 获取当前用户信息
+   *
+   * @returns
+   */
+  getUserMemberInfo: () => {
+    return gql.query({
+      query: `query{
+        currentUser{
+					isPreschoolMember
+			  	isSchoolAgeMember
         }
       }`
     })

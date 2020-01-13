@@ -1,0 +1,57 @@
+.content-topic {
+  font-size: 26rpx;
+  padding: 40rpx 32rpx;
+  width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.topic-body {
+  padding-bottom: 46rpx;
+  overflow: hidden;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.topic-question {
+  padding: 0 20rpx 46rpx;
+}
+
+.child-box {
+  padding-top: 20rpx;
+}
+
+.body-options {
+  padding-top: 40rpx;
+}
+
+.child-body-options {
+  padding: 24rpx 0;
+}
+
+.option-item {
+  display: flex;
+}
+
+.option-item>view {
+  margin-right: 6rpx;
+}
+
+.topic-answer {
+  padding: 24rpx 0 32rpx;
+  overflow: hidden;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.answer-title {
+  font-size: 28rpx;
+  color: #333;
+  padding: 14rpx 0;
+  font-weight: bold;
+}
+
+.answer-main {
+  display: flex;
+  align-items: center;
+}

@@ -1,18 +1,7 @@
 <nav-bar title="超级错题本"></nav-bar>
-<view class="container" style="background:{{isMember?'#f7f7f7':'#fff'}};">
-  <block wx:if="{{false}}">
-    <view class="not-member-tip">
-      <image src="../../images/diamond.png" mode="widthFix" />
-      <view>开通学科会员，升级专属错题本，新用户免费体验！</view>
-    </view>
-    <view class="not-member-content">
-      <image src="../../images/no_errorbook.png" mode="widthFix" />
-      <view class="content-text">当前科目还没有录入错题呢，点击下方添加</view>
-      <view class="not-member-btn">添加错题</view>
-    </view>
-  </block>
-  <block wx:else>
-    <view class="empty" wx:if="{{false}}">
+<view class="container" wx:if="{{loadReady}}" style="background:{{isMember?'#f7f7f7':'#fff'}};min-height:{{areaHeight-navBarHeight}}px;">
+  <block wx:if="{{isMember||(!isMember&&expiresAt)}}">
+    <view class="empty" wx:if="{{errorbookList.length===0}}">
       <image src="../../images/no_errorbook.png" mode="widthFix" />
       <view class="empty-tip">您还没有录入错题哦！</view>
       <view class="empty-content">
@@ -24,139 +13,120 @@
     </view>
     <block wx:else>
       <view class="tab-bar" style="top:{{navBarHeight}}px;">
-        <view class="bar-item" bindtap="showFilter" id="knowledge">
-          <view>知识点</view>
-          <image src="../../images/arrow_bottom.png" mode="widthFix" />
+        <view class="bar-tip" bindtap="buyMember" wx:if="{{!isMember&&expiresAt}}">
+          <image src="../../images/diamond.png" mode="widthFix" />
+          <view>会员已过期错题整理不能断哦！点击立即开通</view>
         </view>
-        <view class="bar-item" bindtap="showFilter" id="type">
-          <view>题型</view>
-          <image src="../../images/arrow_bottom.png" mode="widthFix" />
-        </view>
-        <view class="bar-item" bindtap="showFilter" id="case">
-          <view>已学会</view>
-          <image src="../../images/arrow_bottom.png" mode="widthFix" />
-        </view>
-        <view class="bar-item bar-date-item" bindtap="showFilter" id="date">
-          <view class="date-item-box">
-            <image src="../../images/date_icon.png" mode="widthFix" />
-            <view>七天内</view>
-            <image src="../../images/arrow.png" mode="widthFix" />
+        <view class="bar-box">
+          <view class="bar-item {{filterType==='knowledge'?'bar-item-active':''}}" bindtap="showFilter" id="knowledge">
+            <view class="text-overflow-points">{{activeKnowledge!==''?activeKnowledge:'知识点'}}</view>
+            <image src="../../images/arrow_{{filterType==='knowledge'?'top':'bottom'}}.png" mode="widthFix" />
+          </view>
+          <view class="bar-item {{filterType==='type'?'bar-item-active':''}}" bindtap="showFilter" id="type">
+            <view class="text-overflow-points">{{activeType!==''?activeType:'题型'}}</view>
+            <image src="../../images/arrow_{{filterType==='type'?'top':'bottom'}}.png" mode="widthFix" />
+          </view>
+          <view class="bar-item {{filterType==='learnCase'?'bar-item-active':''}}" bindtap="showFilter" id="learnCase">
+            <view class="text-overflow-points">
+              {{activeLearnCase!==''?activeLearnCase:'学会情况'}}
+            </view>
+            <image src="../../images/arrow_{{filterType==='learnCase'?'top':'bottom'}}.png" mode="widthFix" />
+          </view>
+          <view class="bar-item bar-date-item" bindtap="showFilter" id="date">
+            <view class="date-item-box">
+              <image src="../../images/date_icon.png" mode="widthFix" />
+              <view wx:if="{{hasChooseDate}}">
+                {{dateRange.displayStartAt}}-{{dateRange.displayEndAt}}
+              </view>
+              <view wx:else>七天内</view>
+              <image src="../../images/arrow.png" mode="widthFix" />
+            </view>
           </view>
         </view>
       </view>
-      <view class="filter" style="top:{{navBarHeight+50}}px;" catchtouchmove="true" wx:if="{{showFilter}}" bindtap="hideFilter">
+      <view class="filter" style="top:{{navBarHeight+noticeHeight+50}}px;" catchtouchmove="true" wx:if="{{showFilter}}" bindtap="hideFilter">
         <view class="filter-box">
-          <view class="filter-item" catchtap="checkFilter">一元一次方程（24）</view>
-          <view class="filter-item" catchtap="checkFilter">一元一次方程（24）</view>
-          <view class="filter-item" catchtap="checkFilter">一元一次方程（24）</view>
-          <view class="filter-item" catchtap="checkFilter">一元一次方程（24）</view>
-          <view class="filter-item" catchtap="checkFilter">一元一次方程（24）</view>
-          <view class="filter-item" catchtap="checkFilter">一元一次方程（24）</view>
-          <view class="filter-item" catchtap="checkFilter">一元一次方程（24）</view>
-          <view class="filter-item" catchtap="checkFilter">一元一次方程（24）</view>
-          <view class="filter-item" catchtap="checkFilter">一元一次方程（24）</view>
+          <view class="filter-item {{item.key===activeFilter?'bar-item-active':''}}" catchtap="checkFilter" wx:for="{{activeFilterList}}" wx:key="index" data-key="{{item.key}}">
+            {{item.key}}{{item.docCount?'('+item.docCount+')':''}}
+          </view>
         </view>
       </view>
-      <view class="list-content">
+      <view class="list-content" style="padding-top:{{noticeHeight+50}}px;">
         <view class="content-title">
-          <view>共8道错题</view>
-          <!-- <view class="title-select">
+          <view class="title-left">共{{totalCount}}道错题</view>
+          <view class="title-select" wx:if="{{!showHandleBar}}" bindtap="showHandleBar">
             <image src="../../images/select_icon.png" mode="widthFix" />
             <view>选择</view>
-          </view> -->
-          <view class="select-btn">
-            <view>全选</view>
-            <view>取消</view>
           </view>
+          <view class="select-btn" wx:if="{{showHandleBar}}" bindtap="showHandleBar">完成</view>
         </view>
-        <view class="content-item">
+        <view class="content-item" wx:for="{{errorbookList}}" wx:key="sn">
           <view class="item-top">
-            <image src="../../images/check_yes.png" mode="widthFix" />
-            <view>
-              <!-- <rich-text></rich-text> -->
-              如何生成我的知识图谱？1.打印同步练习或试卷2.扫描打印出的试卷上方二维码3.进行批改，批改后小白老师会根据您的做题情况制作知识图谱哦
+            <image wx:if="{{showHandleBar}}" bindtap="checkItem" data-index="{{index}}" src="../../images/check_{{item.isCheck||checkAll?'yes':'no'}}.png" mode="widthFix" />
+            <view bindtap="toDetail" data-id="{{item.xuekewangQuestion.quesId}}">
+              <rich-text nodes="{{item.xuekewangQuestion.quesBody}}"></rich-text>
             </view>
+            <view class="top-marker" wx:if="{{item.deletedAt}}">我已学会</view>
           </view>
           <view class="item-bottom">
-            <view class="item-knowledge">
+            <view class="item-knowledge" bindtap="showKnowledgeModal" data-index="{{index}}">
               <view class="knowledge-left">
                 <view>知识点:</view>
                 <view class="knowledge-list text-overflow-points">
-                  <text class="list-item">一元一次方程</text>
-                  <text class="list-item">集合</text>
+                  <text class="list-item" wx:for="{{item.xuekewangQuestion.xuekewangKnowledges}}" wx:for-item="knowItem" wx:key="index">{{knowItem.title}}
+                  </text>
                 </view>
               </view>
               <image src="../../images/arrow.png" mode="widthFix" />
             </view>
             <view class="item-type">
-              <view class="type-text">选择题</view>
-              <view class="item-date">2019-09-09 13:23</view>
-            </view>
-          </view>
-        </view>
-        <view class="content-item">
-          <view class="item-top">
-            <image src="../../images/check_yes.png" mode="widthFix" />
-            <view>
-              <!-- <rich-text></rich-text> -->
-              如何生成我的知识图谱？1.打印同步练习或试卷2.扫描打印出的试卷上方二维码3.进行批改，批改后小白老师会根据您的做题情况制作知识图谱哦
-            </view>
-          </view>
-          <view class="item-bottom">
-            <view class="item-knowledge">
-              <view class="knowledge-left">
-                <view>知识点:</view>
-                <view class="knowledge-list text-overflow-points">
-                  <text class="list-item">一元一次方程</text>
-                  <text class="list-item">集合</text>
-                </view>
-              </view>
-              <image src="../../images/arrow.png" mode="widthFix" />
-            </view>
-            <view class="item-type">
-              <view class="type-text">选择题</view>
-              <view class="item-date">2019-09-09 13:23</view>
-            </view>
-          </view>
-        </view>
-        <view class="content-item">
-          <view class="item-top">
-            <image src="../../images/check_yes.png" mode="widthFix" />
-            <view>
-              <!-- <rich-text></rich-text> -->
-              如何生成我的知识图谱？1.打印同步练习或试卷2.扫描打印出的试卷上方二维码3.进行批改，批改后小白老师会根据您的做题情况制作知识图谱哦
-            </view>
-          </view>
-          <view class="item-bottom">
-            <view class="item-knowledge">
-              <view class="knowledge-left">
-                <view>知识点:</view>
-                <view class="knowledge-list text-overflow-points">
-                  <text class="list-item">一元一次方程</text>
-                  <text class="list-item">集合</text>
-                </view>
-              </view>
-              <image src="../../images/arrow.png" mode="widthFix" />
-            </view>
-            <view class="item-type">
-              <view class="type-text">选择题</view>
-              <view class="item-date">2019-09-09 13:23</view>
+              <view class="type-text">{{item.xuekewangQuestion.typeName}}</view>
+              <view class="item-date">{{item.updatedAt}}</view>
             </view>
           </view>
         </view>
       </view>
-      <view class="handle-btns">
-        <view>标记为已学会</view>
-        <view>打印平行题</view>
-        <view>打印原题</view>
+      <view class="handle-btns {{showHandleBar?'handle-btns-active':''}}">
+        <view bindtap="handleBtnClick" class="{{checkSomeone?'':'forbid-btn'}}" id="mark">
+          标记为{{markLearnFlag?'未':'已'}}学会
+        </view>
+        <view bindtap="handleBtnClick" class="{{checkSomeone?'':'forbid-btn'}}" id="parallel">
+          打印平行题
+        </view>
+        <view bindtap="handleBtnClick" class="{{checkSomeone?'':'forbid-btn'}}" id="origin">
+          打印原题
+        </view>
       </view>
     </block>
+  </block>
+  <block wx:else>
+    <view class="not-member-tip">
+      <image src="../../images/diamond.png" mode="widthFix" />
+      <view>开通学科会员，升级专属错题本，新用户免费体验！</view>
+    </view>
+    <view class="not-member-content">
+      <image src="../../images/no_errorbook.png" mode="widthFix" />
+      <view class="content-text">当前科目还没有录入错题呢，点击下方添加</view>
+      <view class="not-member-btn" bindtap="showModal" data-type="member">添加错题</view>
+    </view>
   </block>
 </view>
 <!-- modal -->
 <modal modal="{{modalObj}}" bindconfirm="confirmModal">
-  <view slot="bottom" class="member-btn" catchtap="toPrint">
+  <view slot="bottom" class="member-btn" catchtap="buyMember" wx:if="{{modalType==='member'}}">
     <image src="../../images/diamond.png" mode="widthFix" />
     <view>开通会员可免费使用</view>
   </view>
+  <block wx:if="{{modalType==='knowledge'}}">
+    <view slot="content" class="knowledge-list-tag">
+      <view wx:for="{{modalKnowledgeList}}" wx:key="index">{{item.title}}</view>
+    </view>
+  </block>
 </modal>
+<!-- 时间选择 -->
+<view class="time-range-wrap" catchtouchmove="true" wx:if="{{showDatePicker}}">
+  <choose-time-range timeRange="{{timeRange}}" bind:chooseDate="chooseDate"></choose-time-range>
+</view>
+<!-- loading -->
+<import src="/lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />

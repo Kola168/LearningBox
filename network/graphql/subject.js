@@ -108,6 +108,7 @@ const graphqlApi = {
             isReport
             printCount
             title
+            sn
           }
         }
       }`,
@@ -370,6 +371,12 @@ const graphqlApi = {
             answerImages{
               nameUrl
             }
+            answerPdf{
+              nameUrl
+            }
+            pdf{
+              nameUrl
+            }
             images{
               nameUrl
             }
@@ -434,9 +441,9 @@ const graphqlApi = {
   /**
    * 首页学科
    */
-  getLastLearn: () => {
+  getLastLearn: (stageSn) => {
     return gql.query({
-      query: `query Subject{
+      query: `query Subject($stageSn:String!,$sn: String!, $type: PayableItemTypeEnum!){
         xuekewang {
           registered
           subjects{
@@ -447,7 +454,23 @@ const graphqlApi = {
             }
           }
         }
-      }`
+        xuekewangVideoSubject(stageSn: $stageSn){
+          previewVideoSum
+          subjects{
+            currentUserNum
+            courseId
+            subjectId
+            subjectName
+            kidVideoCount(sn:$sn,type:$type)
+            vidoeTitle
+          }
+        }
+      }`,
+      variables: {
+        stageSn,
+        sn: stageSn,
+        type: 'stage'
+      }
     })
   },
 
@@ -488,6 +511,7 @@ const graphqlApi = {
       mutation: `mutation ($input: SubmitWrongQuestionInput!){
         submitXuekewangWrongQuestion(input:$input){
           state
+          workerSn
         }
       }`,
       variables: {
@@ -577,12 +601,12 @@ const graphqlApi = {
         }
       }`,
       variables: {
-       ...pms
+        ...pms
       }
     })
   },
 
-    /**
+  /**
    * 获取练习列表
    */
   getKnowledgeExercises: (subjectSn, isPrint = 0) => {
@@ -596,12 +620,318 @@ const graphqlApi = {
             pageSize
             exerciseName
           }
+          exerciseCount(subjectSn:$subjectSn, exerciseType: $exerciseType, isPrint: $isPrint)
         }
       }`,
       variables: {
         subjectSn,
         exerciseType: 'kpoint',
         isPrint
+      }
+    })
+  },
+
+  /**
+   * 获取学段列表
+   */
+  getStages: (stageSn) => {
+    return gql.query({
+      query: `query getStages($stageSn:String!){
+        xuekewangVideoSubject(stageSn: $stageSn){
+          stages{
+            sn
+            name
+          }
+        }
+        xuekewang{
+          registered
+        }
+      }`,
+      variables: {
+        stageSn,
+      }
+    })
+  },
+  
+  /*
+   * 获取学科错题列表
+   */
+  getSubjectsErrorbook: () => {
+    return gql.query({
+      query: `query {
+        xuekewang {
+          subjects {
+            iconUrl
+            subjectId
+            subjectName
+            sn
+            errorBooksNum
+          }
+        }
+      }`
+    })
+  },
+
+  /**
+   * 获取学科错题筛选项
+   * @param { String } sn 科目sn
+   * @param { String } startAt 开始时间
+   * @param { String } endAt 结束时间
+   */
+  getErrorbookFilters: (sn, startAt, endAt) => {
+    return gql.query({
+      query: `query($sn: String!,$startAt: String!,$endAt: String!) {
+        xuekewang {
+          errorBookKnowledges(sn:$sn,startAt:$startAt,endAt:$endAt) {
+            docCount
+            key
+          }
+          errorBookTypeNames(sn:$sn,startAt:$startAt,endAt:$endAt) {
+            docCount
+            key
+          }
+        }
+      }`,
+      variables: {
+        sn,
+        startAt,
+        endAt
+      }
+    })
+  },
+
+  /**
+   * 获取学科错题筛选项
+   * @param { String } sn 科目sn
+   * @param { String } startAt 开始时间
+   * @param { String } endAt 结束时间
+   */
+  getErrorbookFilters: (sn, startAt, endAt) => {
+    return gql.query({
+      query: `query($sn: String!,$startAt: String!,$endAt: String!) {
+        xuekewang {
+          errorBookKnowledges(sn:$sn,startAt:$startAt,endAt:$endAt) {
+            docCount
+            key
+          }
+          errorBookTypeNames(sn:$sn,startAt:$startAt,endAt:$endAt) {
+            docCount
+            key
+          }
+        }
+      }`,
+      variables: {
+        sn,
+        startAt,
+        endAt
+      }
+    })
+  },
+
+  /**
+   * 获取错题列表
+   * @param { String } sn 科目sn
+   * @param { String } startAt 开始时间
+   * @param { String } endAt 结束时间
+   * @param { String } knowledge 知识点
+   * @param { String } typeName 题型
+   * @param { String } state 是否学会
+   */
+  getErrorbookList: (sn, startAt, endAt, knowledge, typeName, state, page) => {
+    return gql.query({
+      query: `query($sn: String!,$startAt: String!,$endAt: String!,$knowledge: String!,$typeName: String!,$state: Int!,$page:Int!,$per:Int!){
+        xuekewang {
+          errorBooks(sn: $sn,startAt: $startAt,endAt: $endAt,knowledge: $knowledge,typeName: $typeName,state: $state,page:$page,per:$per) {
+            totalCount
+            books{
+              deletedAt
+              updatedAt
+              xuekewangQuestion {
+                quesBody
+                quesId
+                typeName
+                xuekewangKnowledges {
+                  originalId
+                  title
+                }
+              }
+            }
+          }
+        }
+      }`,
+      variables: {
+        sn,
+        startAt,
+        endAt,
+        knowledge,
+        typeName,
+        state,
+        page,
+        per: 5
+      }
+    })
+  },
+  /**
+   * 标记是否已学会
+   * @param { Array } quesIds 题目ids
+   * @param { String } action 标记类型 create/destroy
+   */
+  markErrorbook: (quesIds, action) => {
+    return gql.mutate({
+      mutation: `mutation ($input:MarkWrongQuestionInput!){
+        markXuekewangWrongQuestion(input:$input){
+         state
+       }
+     }`,
+      variables: {
+        input: {
+          quesIds,
+          action
+        }
+      }
+    })
+  },
+
+  /**
+   * 获取学科知识图谱
+   */
+  getSubjectsAtlas: () => {
+    return gql.query({
+      query: `query {
+        xuekewang {
+          subjectRate {
+            subjectName
+            subjectId
+            scoringRate
+            questionNum
+          }
+          totalErrorBooksNum
+        }
+      }`
+    })
+  },
+
+  /**
+   * 获取知识点列表
+   * @param { string } subjectId 科目id
+   */
+  getKnowledgesAtlas: (subjectId) => {
+    return gql.query({
+      query: `query($subjectId:Int) {
+        xuekewang {
+          kpointRate(subjectId:$subjectId) {
+            kpName
+            tureRate
+          }
+        }
+      }`,
+      variables: {
+        subjectId
+      }
+    })
+  },
+
+  /**
+   * 获取错题详情
+   * @param { string } id 题目id
+   */
+  getErrorbookDetail: (id) => {
+    return gql.query({
+      query: `query($id:String) {
+        xuekewang {
+          question(id:$id) {
+            children{
+              option {
+                name
+                value
+              }
+              quesAnswer
+              quesBody
+              quesParse
+            }
+            option {
+              name
+              value
+            }
+            quesAnswer
+            quesBody
+            quesParse
+          }
+        }
+      }`,
+      variables: {
+        id
+      }
+    })
+  },
+
+  /**
+   * 获取学科会员信息
+   */
+  getSubjectMemberInfo: () => {
+    return gql.query({
+      query: `query {
+        currentUser {
+          isSchoolAgeMember
+          selectedKid{
+            schoolAgeMember{
+              expiresAt
+            }
+          }
+        }
+      }`
+    })
+  },
+
+  /**
+   * 获取试卷详情
+   * @param { string } sn
+   */
+  getPaperDetail: (sn) => {
+    return gql.query({
+      query: `query($sn:String) {
+        xuekewang {
+          paper(sn:$sn){
+            answerImages{
+              nameUrl
+            }
+            title
+            images{
+              nameUrl
+            }
+            answerPdf{
+              nameUrl
+            }
+            pdf{
+              nameUrl
+            }
+          }
+        }
+      }`,
+      variables: {
+        sn
+      }
+    })
+  },
+
+  /**
+   * 获取报告详情
+   * @param { string } sn
+   */
+  getReportDetail: (sn) => {
+    return gql.query({
+      query: `query($sn:String) {
+        xuekewang {
+          report(sn:$sn){
+            images{
+              nameUrl
+            }
+            name
+          }
+        }
+      }`,
+      variables: {
+        sn
       }
     })
   },

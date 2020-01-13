@@ -63,29 +63,48 @@
     <view class="nav-title">同步课堂</view>
     <view class="nav-m-content">
       <image class="desc-icon" src="../images/theme_banner.png">
-        <view class="desc-content">已学习10个章节，超越45%的同学</view>
+        <view class="desc-content">
+          <block wx:if="{{!currentTabSyncIndex}}">
+            已学习10个章节，超越45%的同学
+          </block>
+          <block wx:else>
+            共观看{{previewVideoSum}}个视频
+          </block>
+        </view>
       </image>
     </view>
     <view class="switch-bar">
-      <view class="switch-item">
-        <view class="switch-text active">同步练习</view>
-        <view class="switch-line active-line"></view>
+      <view class="switch-item" wx:for="{{syncList}}" wx:key="id" bind:tap="switchsyncContentTab" data-index="{{index}}">
+        <view class="switch-text {{index == currentTabSyncIndex ? 'active' : ''}}">{{item.name}}</view>
+        <view class="switch-line {{index == currentTabSyncIndex ? 'active-line' : ''}}"></view>
       </view>
-      <view class="switch-item">
+      <!-- <view class="switch-item">
         <view class="switch-text">同步视频</view>
         <view class="switch-line"></view>
+      </view> -->
+    </view>
+    <block>
+      <view class="subject-list" wx:if="{{!currentTabSyncIndex}}">
+        <image class="subject-item" src="{{navIcon[index]}}" wx:for="{{subjects}}" wx:key="sn" data-index="{{index}}" bind:tap="toSubject">
+          <view class="last-learn-title">{{item.lastNode.name}}</view>
+          <view class="learn-num">{{item.currentUserNum}}位同学正在学</view>
+        </image>
+        <image class="subject-item" src="../images/more_subject_icon.png" data-index="3" bind:tap="toSubject">
+          <view class="last-learn-title"></view>
+          <view class="learn-num">{{moreNum}}位同学正在学</view>
+        </image>
       </view>
-    </view>
-    <view class="subject-list">
-      <image class="subject-item" src="{{navIcon[index]}}" wx:for="{{subjects}}" wx:key="sn" data-index="{{index}}" bind:tap="toSubject">
-        <view class="last-learn-title">{{item.lastNode.name}}</view>
-        <view class="learn-num">{{item.currentUserNum}}位同学正在学</view>
-      </image>
-      <image class="subject-item" src="../images/more_subject_icon.png" data-index="3" bind:tap="toSubject">
-        <view class="last-learn-title"></view>
-        <view class="learn-num">{{moreNum}}位同学正在学</view>
-      </image>
-    </view>
+      <view class="subject-list" wx:else>
+        <image class="subject-item" src="{{navIcon[index]}}" wx:for="{{videoSubject}}" wx:key="subjectId" data-index="{{index}}" bind:tap="toVideoSubject">
+          <view class="last-learn-title" wx:if="{{item.vidoeTitle !=null}}">{{item.vidoeTitle}}</view>
+          <view class="learn-num" wx:if="{{item.currentUserNum !=null}}">{{item.currentUserNum}}位同学正在学</view>
+        </image>
+        <image class="subject-item" src="../images/more_subject_icon.png" data-index="3" bind:tap="toSubject">
+          <view class="last-learn-title"></view>
+          <view class="learn-num">{{moreVideoNum}}位同学正在看</view>
+        </image>
+      </view>
+    </block>
   </view>
   <!-- 考试与测评 -->
   <view class="nav-content">

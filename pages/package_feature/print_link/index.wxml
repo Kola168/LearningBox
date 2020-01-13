@@ -6,9 +6,9 @@
 </view>
 <view class="input-box">
   <view class="input-item-box">
-    <input class="input-item" placeholder="请将已复制的链接粘贴在此处" placeholder-class="input-holder" value="{{linkVal}}" />
+    <input class="input-item" placeholder="请将已复制的链接粘贴在此处" maxlength="-1" bindinput="inputValue" placeholder-class="input-holder" value="{{linkVal}}" />
   </view>
-  <view class="input-button">
+  <view class="input-button" bindtap="checkLink">
     获取文章
   </view>
 </view>
@@ -33,3 +33,6 @@
     <text>学习强国链接</text>
   </view>
 </view>
+<showModal id="modal" bindconfirmBut="modelConfirm" bindcalcelBut="modelCancel"/>
+<import src="/lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />

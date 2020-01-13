@@ -53,6 +53,13 @@ const graphqlApi = {
               unit
             }
           }
+          selectedKid{
+            name
+            stage{
+              name
+              rootName
+            }
+          }
         }
       }`
     })
@@ -62,23 +69,26 @@ const graphqlApi = {
    *
    * @returns
    */
-  hasMember: () => {
+  hasMember: (format) => {
     return gql.query({
-      query: `query{
+      query: `query($format:DatetimeFormatEnum){
         currentUser{
           sn
           selectedKid{
             preschoolMember{
-              expiresAt
+              expiresAt(format:$format)
               upgradeableAmount
               upgradeablePrice
             }
             schoolAgeMember{
-              expiresAt
+              expiresAt(format:$format)
             }
           }
         }
-      }`
+      }`,
+      variables: {
+        format
+      }
     })
   },
 }
