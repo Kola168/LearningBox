@@ -12,7 +12,7 @@
         </view>
     </view>
 </view>
-<view class="footer" bindtap="btnClick">
+<view class="footer" bindtap="btnClick" wx:if="{{isShowBtnCont}}">
     <image src="{{btnImgUrl}}"></image>
 </view>
 <view class="auto-print" wx:if="{{autoPrintBtn}}">

@@ -8,6 +8,7 @@ import {
 } from '../../../../utils/common_import'
 const showModal = util.promisify(wx.showModal)
 import gql from '../../../../network/graphql/preschool'
+import gragql from '../../../../network/graphql_request'
 import Logger from '../../../../utils/logger.js'
 const logger = new Logger.getLogger('pages/package_preschool/growth_plan/checkpoint/plan_detail')
 
@@ -25,7 +26,8 @@ Page({
     showArrow: true, //预览图片左右箭头
     member: false,
     subscription: false,
-    btnText: ''
+    btnText: '',
+    isAndroid: false
   },
 
   /**
@@ -34,7 +36,10 @@ Page({
   onLoad: co.wrap(function* (options) {
     this.longToast = new app.weToast()
     // let currentImage=this.data.imgUrls[1].image
+    let systemInfo = wx.getSystemInfoSync()
+    let isAndroid = systemInfo.system.indexOf('iOS') > -1 ? false : true
     this.setData({
+      isAndroid: isAndroid,
       currentImage: this.data.currentImage,
       isFullScreen: app.isFullScreen
     })
@@ -42,6 +47,7 @@ Page({
     this.userPlanSn = this.options.userPlanSn
     this.sn = this.options.sn
     this.name = this.options.name
+    this.subscribe = this.options.subscribe
 
     try {
       const resp = yield gql.getPreviewContent(this.sn)
@@ -57,6 +63,22 @@ Page({
       if (this.data.allPage == 1) {
         this.setData({
           showArrow: false
+        })
+      }
+
+      const respMember = yield gragql.getUserMemberInfo()
+      this.setData({
+        isMember:respMember.currentUser.isPreschoolMember
+      })
+      console.log('232333',respMember)
+      console.log('this.data.isSuscribe',this.data.isSuscribe)
+      if(this.subscribe == 'noSubscript'){
+        this.setData({
+          subscription:false
+        })
+      }else{
+        this.setData({
+          subscription:true
         })
       }
 
@@ -150,7 +172,10 @@ Page({
 
   btnClick() {
     if (this.btnType === 'buy') {
-      wxNav.navigateTo(`/pages/package_member/member/order`)
+      // wxNav.navigateTo(`/pages/package_member/member/index`,{
+      //   planSn:this.planSn
+      // })
+      wxNav.navigateTo(`/pages/package_member/member/index`)
     } else {
       this.beginPrint()
     }
@@ -169,11 +194,11 @@ Page({
           printType: 'RESOURCE',
           pageCount: this.contentImagesLength,
           featureKey: this.featureKey,
-          resourceOrderType: 'plan',
+          resourceOrderType: 'Plan',
           resourceAttribute: {
             userPlanSn: this.userPlanSn,
             sn: this.sn,
-            resourceType: 'plan',
+            resourceType: 'Plan',
           }
         },
         checkCapabilitys: {

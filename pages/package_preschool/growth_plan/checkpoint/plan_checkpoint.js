@@ -9,6 +9,7 @@ import {
 const showModal = util.promisify(wx.showModal)
 const event = require('../../../../lib/event/event')
 import gql from '../../../../network/graphql/preschool'
+import gragql from '../../../../network/graphql_request'
 import Logger from '../../../../utils/logger.js'
 const logger = new Logger.getLogger('pages/package_preschool/growth_plan/checkpoint/plan_checkpoint')
 
@@ -28,7 +29,9 @@ Page({
     checkpointBg: 'https://cdn-h.gongfudou.com/LearningBox/preschool/growth_plan_step_bg.png', //背景图
     shadowOpcityImg: '../../images/growth_plan_lock.png', //透明遮罩层上的图片
     btnImgUrl:'',
-    autoPrintBtn:false
+    autoPrintBtn:false,
+    isAndroid: false,
+    isShowBtnCont:true
   },
 
   /**
@@ -36,6 +39,11 @@ Page({
    */
   onLoad: co.wrap(function* (options) {
     this.longToast = new app.weToast()
+    let systemInfo = wx.getSystemInfoSync()
+    let isAndroid = systemInfo.system.indexOf('iOS') > -1 ? false : true
+    this.setData({
+      isAndroid: isAndroid
+    })
     try {
       this.options = options
       this.planSn = this.options.planSn
@@ -47,6 +55,15 @@ Page({
       //   isSuscribe:this.data.isSuscribe,
       //   isMember:this.data.isMember
       // })
+
+      console.log('subscribe',this.subscribe)
+
+    const respMember = yield gragql.getUserMemberInfo()
+    this.setData({
+      isMember:respMember.currentUser.isPreschoolMember
+    })
+    console.log('232333',respMember)
+    console.log('this.data.isSuscribe',this.data.isSuscribe)
       if(this.data.isSuscribe){
         this.setData({
           autoPrintBtn:true
@@ -54,7 +71,6 @@ Page({
       }else{
         this.toFunc()
       }
-
       this.longToast.hide()
     } catch (error) {
       this.longToast.toast()
@@ -102,6 +118,10 @@ Page({
       })
       if (this.subscribe == 'noSubscript') {
         this.setData({
+          isSuscribe: false
+        })
+      }else{
+        this.setData({
           isSuscribe: true
         })
       }
@@ -114,6 +134,11 @@ Page({
 
   /** 购买会员 */
   BuyMember: co.wrap(function* () {
+    // if(this.data.isAndroid){
+    //   wxNav.navigateTo(`/pages/package_member/member/index`,{
+    //     planSn:this.planSn
+    //   })
+    // }
     wxNav.navigateTo(`/pages/package_member/member/index`)
   }),
 
@@ -123,14 +148,17 @@ Page({
       yield gql.joinPlan(this.planSn)
       // wxNav.navigateBack()
       event.emit('subscribeList')
-      yield gql.getPlanContents(this.planSn)
+      // yield gql.getPlanContents(this.planSn)
 
       this.longToast.toast({
         type:'loading',
         duration:6000,
         title:'已订阅！'
       })
-      this.longToast.hide()
+      this.setData({
+        isSuscribe:true,
+        isShowBtnCont:true
+      })
       this.toSetAuto()
       this.longToast.hide()
     } catch (e) {
@@ -143,7 +171,9 @@ Page({
   toSetAuto:co.wrap(function *(){
     try {
       this.setData({
-        isSuscribe:false
+        // isSuscribe:true,
+        autoPrintBtn:true,
+        isShowBtnCont:false
       })
       this.longToast.hide()
     } catch (e) {
@@ -181,7 +211,8 @@ Page({
         wxNav.navigateTo(`/pages/package_preschool/growth_plan/checkpoint/plan_detail`, {
           sn:e.currentTarget.dataset.sn,
           userPlanSn: this.userPlanSn,
-          name:this.data.checkpoints[e.currentTarget.dataset.index].name
+          name:this.data.checkpoints[e.currentTarget.dataset.index].name,
+          subscribe:this.subscribe
         })
       }else{
         return
