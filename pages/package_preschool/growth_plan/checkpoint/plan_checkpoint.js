@@ -56,14 +56,10 @@ Page({
       //   isMember:this.data.isMember
       // })
 
-      console.log('subscribe',this.subscribe)
-
     const respMember = yield gragql.getUserMemberInfo()
     this.setData({
       isMember:respMember.currentUser.isPreschoolMember
     })
-    console.log('232333',respMember)
-    console.log('this.data.isSuscribe',this.data.isSuscribe)
       if(this.data.isSuscribe){
         this.setData({
           autoPrintBtn:true
@@ -113,9 +109,9 @@ Page({
     try {
       const resp = yield gql.getPlanContents(planSn)
       this.setData({
-        checkpoints: resp.planContents,
-        isShadowOpcity: this.data.isShow
+        checkpoints: resp.planContents
       })
+      console.log('resp',resp.planContents)
       if (this.subscribe == 'noSubscript') {
         this.setData({
           isSuscribe: false

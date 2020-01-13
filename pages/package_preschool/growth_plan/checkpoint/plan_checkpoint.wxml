@@ -7,7 +7,7 @@
             <image src="{{item.iconUrl}}"></image>
             <text>{{item.name}}</text>
         </view>
-        <view class="shadow-opcity-bg" wx:if="{{index == 0 ? isShadowOpcity : 'true'}}">
+        <view class="shadow-opcity-bg" wx:if="{{!item.isShow}}">
             <view class="lock-icon"><image src="{{shadowOpcityImg}}"></image></view>
         </view>
     </view>
