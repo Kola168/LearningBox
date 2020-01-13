@@ -105,7 +105,7 @@ Page({
 					that.bindCode.time = 0
 				}
 				that.bindCode.time++
-				if (that.bindCode.time >= 30) {
+				if (that.bindCode.time >= 20) {
 					this.longToast.toast()
 					this.naviagteToStep1('配网超时,请重试')
 				} else {
@@ -135,7 +135,7 @@ Page({
 					that.checkEquipment.time = 0
 				}
 				that.checkEquipment.time++
-				if (that.checkEquipment.time >= 30) {
+				if (that.checkEquipment.time >= 20) {
 					this.longToast.toast()
 					const res = yield showModal({
 						title: '提示',
