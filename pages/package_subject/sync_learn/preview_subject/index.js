@@ -95,7 +95,7 @@ Page({
         isPrintAnswer: this.data.isPrintAnswer,
         pageCount: this.data.isPrintAnswer ? this.data.exercise.answerImages.length : this.data.exercise.images.length,
         sn: this.sn,
-        originalUrl: this.data.isPrintAnswer ? this.data.exercise.answerPdf.nameUrl : this.data.exercise.pdf.nameUrl,
+        printPdf: this.data.isPrintAnswer ? this.data.exercise.answerPdf.nameUrl : this.data.exercise.pdf.nameUrl,
         featureKey: 'xuekewang_exercise',
       }
       wxNav.navigateTo('/pages/package_subject/setting/setting', {
