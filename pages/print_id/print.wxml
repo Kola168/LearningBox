@@ -16,12 +16,12 @@
             </view>
         </view>
     </view>
-    <view class="tips after-pay">
+    <view class="tips">
         <view class="tips-1">温馨提示</view>
         <view>仅手机预览时由红色水印，打印或保存至本地水印消失</view>
     </view>
-<view class="bottom fs-32">
-    <view class="flex-center right width" bindtap="print">
+<view class="bottom">
+    <view bindtap="print">
         <text>打印证件照</text>
     </view>
 

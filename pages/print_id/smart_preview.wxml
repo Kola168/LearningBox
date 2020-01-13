@@ -6,29 +6,27 @@
     <view class="tips-1">温馨提示</view>
     <view>仅手机预览时由红色水印，打印或保存至本地水印消失</view>
 </view>
-<view class="{{type=='paper'?'print':'image'}}">
+<view class="image">
     <view class="singleImg" wx:if="{{singleImg}}">
         <view>单张效果</view>
         <image class="bg-white" mode='widthFix' bindtap="preview" src='{{singleImg}}'></image>
     </view>
-    <view class="print_wm_url" wx:if="{{print_wm_url}}">
+    <view class="print-url" wx:if="{{print_wm_url}}">
         <view>整版效果（6寸）</view>
         <image class="bg-white" mode='widthFix' bindtap="" src='{{print_wm_url}}'></image>
     </view>
 
 </view>
-<!-- 非付款页面 end-->
-<!-- 保存 -->
-<view class="bottom fs-32">
-    <block wx:if="{{!pay}}">
-        <view class='flex-center left conf-button' bindtap='toPay' id="digital">
-            <text>保存电子版</text>
-        </view>
-        <view class="flex-center +{{idPrint?'':'forbid'}} right conf-button" bindtap="toPay" id="paper">
-            打印证件照
-        </view>
-    </block>
+
+<view class="bottom">
+    <view bindtap='toPay' id="digital">
+        <text>保存电子版</text>
+    </view>
+    <view bindtap="toPay" id="paper">
+        打印证件照
+    </view>
 </view>
+<image class="save-tip" mode='widthFix' bindtap="" src='../../images/id/id_save_tip.png'></image>
 
 <import src="../../lib/toast/wetoast.wxml" />
 <template is="wetoast" data="{{...__wetoast__}}" />

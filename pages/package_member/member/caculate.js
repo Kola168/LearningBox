@@ -15,11 +15,7 @@ const event = require('../../../lib/event/event')
 
 Page({
     data: {
-        kidInfo: null,
-        memberTipUrl: '',
-        checked: false,
-        expiration: '',
-        price: '',
+        preSchool:null,
         modalObj: {
             isShow: false,
             hasCancel: false,
@@ -35,10 +31,30 @@ Page({
         if (!this.userSn) {
             return router.navigateTo('/pages/authorize/index')
         }
+        yield this.getMember()
 
         event.on('Authorize', this, () => {
             this.userSn = storage.get('userSn')
+            this.getMember()
         })
+    }),
+
+    getMember: co.wrap(function* () {
+        this.longToast.toast({
+            type: 'loading'
+        })
+        try {
+            let resp = yield memberGql.hasMember('cn')
+            this.longToast.hide()
+            this.preSchool = resp.currentUser.selectedKid.preschoolMember
+    
+            this.setData({
+                preSchool:this.preSchool
+            })
+        } catch (e) {
+            this.longToast.hide()
+            util.showError(e)
+        }
     }),
     payOrder: co.wrap(function* (params) {
         this.longToast.toast({

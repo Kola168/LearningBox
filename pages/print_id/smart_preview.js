@@ -219,7 +219,6 @@ Page({
   },
   toPay(e) {
     try {
-      let url = ''
       let type = e.currentTarget.id
       router.navigateTo('/pages/print_id/pay', {
         confirm: JSON.stringify(this.query),
