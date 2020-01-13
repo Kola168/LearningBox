@@ -1,7 +1,7 @@
 <nav-bar background="#fff" title="同步视频" />
 <view class="main-box">
   <view class="fixed-main" style="top:{{navBarHeight}}px"> 
-    <scroll-view scroll-x="true"  scroll-with-animation scroll-into-view="to_{{currentSubjectIndex}}">
+    <scroll-view class="tab-main" scroll-x="true"  scroll-with-animation scroll-into-view="to_{{currentSubjectIndex}}">
       <view class="tab-item"  id="to_{{index}}" wx:for="{{subjectList}}" wx:key="courseId"  bindtap="chooseSubject" data-index="{{index}}">
         <view class="tab-name {{currentSubjectIndex == index ? 'active' : ''}}">{{item.subjectName}}</view>
         <view class="tab-line {{currentSubjectIndex == index ? 'active-line' : ''}}"></view>
@@ -21,9 +21,9 @@
         <view class="arrow-top"></view>
       </view>
       <view class="form-main" wx:if="{{showStageForm}}" bind:tap="closeStageForm">
-        <view class="subject-content">
+        <scroll-view scroll-y class="subject-content">
           <view class="subject-item {{currentStageIndex == index ? 'active-subject' : ''}}" wx:for="{{stages}}" wx:key="sn" catch:tap="chooseStage" data-index="{{index}}">{{item.name}}</view>
-        </view>
+        </scroll-view>
       </view>
     </view>
   </view>

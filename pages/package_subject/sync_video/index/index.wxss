@@ -1,7 +1,7 @@
 /* pages/package_subject/sync_video/index/index.wxss */
 
 
-.main-box scroll-view {
+.main-box .tab-main {
   height: 74rpx;
   white-space: nowrap;
   padding-left: 36rpx;
@@ -109,6 +109,7 @@
   box-sizing: border-box;
   background-color: #fff;
   overflow: scroll;
+  -webkit-overflow-scrolling: touch;
 }
 
 .subject-content .subject-item {

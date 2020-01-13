@@ -305,7 +305,7 @@ Page({
         url = '/pages/package_subject/evaluate_exam/index/index'
         break;
       case 'errorBook':
-        url = '/pages/package_feature/error_book/index'
+        url = '/pages/package_subject/super_errorbook/index/index'
         break;
       case 'exerciseDay':
 				url = '/pages/package_preschool/exercise_day/exercises/exercises'

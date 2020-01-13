@@ -290,6 +290,7 @@ Component({
      try {
       wxNav.navigateTo('/pages/package_subject/evaluate_exam/preview/index', {
         id: item.paperId,
+        sn: item.sn || '',
         hasReport: item.isReport ? 1 : 0,
         name:item.title
       })

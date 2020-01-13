@@ -71,9 +71,9 @@
     <view class="subject-name">{{isSubjectCategory ? checkedSubject.subjectName : checkedPrint.name}}</view>
     <view class="arrow-icon"></view>
   </view>
-  <view class="subject-main">
+  <scroll-view scroll-y class="subject-main">
     <view class="subject-item" wx:for="{{isSubjectCategory ? subjects : printStaList}}" wx:key="sn" data-index="{{index}}" catch:tap="chooseCategory">{{isSubjectCategory ?item.subjectName : item.name}}</view>
-  </view>
+  </scroll-view>
 </view>
 
 <member-toast id="memberToast" modal="{{modal}}"/>
