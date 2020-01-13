@@ -45,12 +45,16 @@
     "pages/index/grade",
     "pages/account/index",
     "pages/finish/index",
+    "pages/finish/sourcefinish",
     "pages/mall/index",
     "pages/webview/index",
     "pages/webview/member",
-		"pages/member/authorize",
-		"pages/exit/index",
-		"pages/account/collection/index"
+    "pages/member/authorize",
+    "pages/exit/index",
+    "pages/account/collection/index",	
+    "pages/print_id/pay",
+    "pages/print_id/print",
+    "pages/print_id/smart_save"
   ],
   "subPackages": [
     {
@@ -74,7 +78,8 @@
         "common_content/setting",
         "order_record/index/index",
         "order_record/order/order",
-        "setting/setting"
+        "setting/setting",
+        "instructions/index"
       ]
     },
     {
@@ -232,8 +237,8 @@
         "sync_video/video_list/video_list",
         "sync_video/video_detail/video_detail",
         "correct/index",
-				"report/index"
-			]
+        "report/index"
+      ]
     },
     {
       "root": "pages/package_device",

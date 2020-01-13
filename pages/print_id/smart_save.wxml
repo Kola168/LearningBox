@@ -1,0 +1,32 @@
+<!--pages/print_id/smart_save.wxml-->
+<!--pages/idprint/preview.wxml-->
+<nav-bar background="#fff" title="预览证件照"></nav-bar>
+
+<!-- 非付款页面 -->
+<view class="tips">
+    <view class="tips-1">温馨提示</view>
+    <view>仅手机预览时由红色水印，打印或保存至本地水印消失</view>
+</view>
+<view class="image">
+    <view class="singleImg">
+        <view>单张效果</view>
+        <image class="bg-white" mode='widthFix' bindtap="preview" src='{{singleImg}}'></image>
+    </view>
+    <view class="print_wm_url" wx:if="{{print_wm_url}}">
+        <view>整版效果（6寸）</view>
+        <image class="bg-white" mode='widthFix' bindtap="" src='{{print_wm_url}}'></image>
+    </view>
+
+</view>
+<view class="bottom">
+    <view class="left" bindtap="">
+        <text>保存单张</text>
+    </view>
+    <view class="right" bindtap="">
+        <text>保存完整</text>
+    </view>
+
+</view>
+
+<import src="../../lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />

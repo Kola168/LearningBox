@@ -1,1 +1,10 @@
 /* pages/package_feature/print_link/desc.wxss */
+page{
+  width:100%;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+.desc-img{
+  width:100%;
+}

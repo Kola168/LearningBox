@@ -1,8 +1,8 @@
-<nav-bar background="#fff" title="{{name}}" />
+<nav-bar background="#fff" title="{{title}}" />
 <view class="preview-main">
   <swiper class="swpier-box" bindchange="changeImg">
     <swiper-item class="" item-id="" wx:for="{{imgList}}" wx:key="*this">
-      <image class="img-item" src="{{item}}" mode="widthFix"></image>
+      <image class="img-item" src="{{item.nameUrl}}" mode="widthFix"></image>
     </swiper-item>
   </swiper>
   <view class="precent">{{currentIndex}}/{{imgList.length}}</view>

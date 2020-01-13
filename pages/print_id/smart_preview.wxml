@@ -1,56 +1,34 @@
 <!--pages/idprint/preview.wxml-->
 <nav-bar background="#fff" title="预览证件照"></nav-bar>
+
+<!-- 非付款页面 -->
+<view class="tips">
+    <view class="tips-1">温馨提示</view>
+    <view>仅手机预览时由红色水印，打印或保存至本地水印消失</view>
+</view>
 <view class="{{type=='paper'?'print':'image'}}">
-    <image class="bg-white" mode='widthFix' bindtap="preview" src='{{singleImg}}'></image>
-    <text wx:if="{{!pay}}">实际照片效果</text>
-    <view wx:if="{{pay}}" class="wrap-price">
-        <view class="number" wx:if="{{type=='paper'}}">
-            <view>打印份数</view>
-            <view class="count">
-                <image ontap="tapMin" class="btn-c" mode="widthFix"
-                    src="{{number > 1 ? '../../images/id/decrease_yellow.png' :'../../images/id/decrease_gray.png'}}"></image>
-                <text>{{number}}</text>
-                <image ontap="tapPlus" class="btn-c" mode="widthFix"
-                    src="../../images/id/increase_{{number > 49?'gray':'yellow'}}.png"></image>
-            </view>
-        </view>
-        <view class="line" wx:if="{{type=='paper'}}"></view>
-        <view class="price">
-
-            <view>价格</view>
-            <view class='price-right'>
-                <image class="specials" mode='widthFix' src='/images/id/print_id_specials.png' wx:if="{{!can_free_print}}">
-                </image>
-                <view class="after">{{can_free_print?0:price}} 元
-                        <image class="member_tip" mode="widthFix" src="../../images/id/id_member.png" wx:if="{{can_free_print && isMember}}"></image>
-                </view>
-            </view>
-        </view>
-        <view class="line" wx:if="{{type=='digital'}}"></view>
+    <view class="singleImg" wx:if="{{singleImg}}">
+        <view>单张效果</view>
+        <image class="bg-white" mode='widthFix' bindtap="preview" src='{{singleImg}}'></image>
     </view>
+    <view class="print_wm_url" wx:if="{{print_wm_url}}">
+        <view>整版效果（6寸）</view>
+        <image class="bg-white" mode='widthFix' bindtap="" src='{{print_wm_url}}'></image>
+    </view>
+
 </view>
-<image class="download_tip" mode="widthFix" src="../../images/id/id_download_tip.png" wx:if="{{pay}}"></image>
-<view class='bottom fs-32' style="{{pay?'border-top:none':''}}">
+<!-- 非付款页面 end-->
+<!-- 保存 -->
+<view class="bottom fs-32">
     <block wx:if="{{!pay}}">
-        <view class='flex-center left conf-button' bindtap='toSavePay' id="digital">
-            <text>保存图片</text>
+        <view class='flex-center left conf-button' bindtap='toPay' id="digital">
+            <text>保存电子版</text>
         </view>
-        <view class="flex-center +{{idPrint?'':'forbid'}} right conf-button">
-          确认打印
-          <bottom-button class="bottom-button-box" text-right="确认打印" id="paper" bindrighttap="toPrint" get-phone="{{true}}"></bottom-button>
-        </view>
-
-    </block>
-    <block wx:if="{{pay}}">
-        <view class="flex-center right width" bindtap="{{type=='paper'?'print':'submit'}}">
-            <text wx:if="{{can_free_print}}">{{type=='paper'?'我要打印':'我要保存'}}</text>
-            <text wx:if="{{!can_free_print}}">去支付</text>
+        <view class="flex-center +{{idPrint?'':'forbid'}} right conf-button" bindtap="toPay" id="paper">
+            打印证件照
         </view>
     </block>
-
 </view>
-<!-- 打印确认框 -->
-<confirm-print bindconfirm="submit" modal="{{confirmModal}}"></confirm-print>
 
 <import src="../../lib/toast/wetoast.wxml" />
 <template is="wetoast" data="{{...__wetoast__}}" />

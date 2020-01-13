@@ -1,0 +1,43 @@
+<!--pages/idprint/preview.wxml-->
+<nav-bar background="#fff" title="预览证件照"></nav-bar>
+<!-- 保存 -->
+<!-- 付款 -->
+<view class="pay-info">
+    <view class="pay-title">
+        <image mode='aspactFill' src="{{url}}">
+        </image>
+        <view>
+            <view>二寸蓝底</view>
+            <view class="size">
+                88*88mm
+            </view>
+        </view>
+        <view class="price">
+            ￥100
+        </view>
+    </view>
+    <view class="pay-way">
+        <view>支付方式</view>
+        <view>
+            <image mode='aspactFill' src="../../images/id/wx_pay.png" class="pay-image">
+            </image>
+            <view>微信支付</view>
+        </view>
+    </view>
+    <view class="pay-way member">
+        <view>会员专享</view>
+        <view>
+            <image mode='aspactFill' src="../../images/id/member_free.png" class="free-image">
+            </image>
+        </view>
+    </view>
+</view>
+
+<image class="download_tip" mode="widthFix" src="../../images/id/id_download_tip.png"></image>
+<view class="bottom" bindtap="pay">
+    <text>确认支付</text>
+</view>
+
+
+<import src="../../lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />
