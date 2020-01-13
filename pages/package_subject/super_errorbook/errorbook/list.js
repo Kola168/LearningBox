@@ -257,6 +257,7 @@ Page({
     } else {
       dataObj.modalObj.slotBottom = true
       dataObj.modalObj.slotContent = false
+      dataObj.modalObj.image = 'https://cdn-h.gongfudou.com/LearningBox/subject/toast_super_errorbook.png'
       dataObj.modalObj.title = "开通学科会员 小白帮你消灭错题"
     }
     this.setData(dataObj)

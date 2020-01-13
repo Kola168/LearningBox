@@ -316,7 +316,7 @@ Page({
   // 学科会员介绍
   toMemberIntro(e) {
     if (app.preventMoreTap(e)) return
-    wxNav.navigateTo("../member_intro/index")
+    wxNav.navigateTo("/pages/package_member/member/index")
   },
 
   // 授权
