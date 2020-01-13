@@ -68,7 +68,7 @@ Page({
             featureKey: 'xuekewang_paper',
             mediaType: 'xuekewang_paper',
             attributes: {
-              resourceType: 'XuekewangExercise',
+              resourceType: 'XuekewangPaper',
               sn: this.sn,
               originalUrl: this.data.printAnswer ? this.pdf : this.answerPdf,
             }

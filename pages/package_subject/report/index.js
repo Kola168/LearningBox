@@ -16,6 +16,7 @@ Page({
     name: ''
   },
   onLoad(query) {
+    this.mediaType = query.mediaType
     this.weToast = new app.weToast()
     let isFullScreen = app.isFullScreen
     this.sn = query.sn
@@ -58,9 +59,9 @@ Page({
           printType: 'PRINTSUBJECT',
           pageCount: this.data.imgList.length,
           featureKey: 'xuekewang_report',
-          mediaType: 'xuekewang_report',
+          mediaType: this.mediaType,
           attributes: {
-            resourceType: 'XuekewangExercise',
+            resourceType: 'XuekewangReport',
             sn: this.sn,
             originalUrl: this.printPdf,
           }

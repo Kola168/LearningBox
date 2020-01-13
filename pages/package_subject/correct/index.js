@@ -304,7 +304,8 @@ Page({
         }, () => {
           wxNav.navigateTo('../report/index', {
             sn: resp.res.sn,
-            from: 'correct'
+            from: 'correct',
+            mediaType: 'exam_paper_report'
           })
         })
       }
