@@ -1,2 +1,4 @@
 <!--pages/package_feature/print_link/desc.wxml-->
-<text>pages/package_feature/print_link/desc.wxml</text>
+<nav-bar title="{{title}}"></nav-bar>
+
+<image wx:for="{{imgArr}}" wx:key="imgArr" src="{{item}}" mode="widthFix" class="desc-img"></image>

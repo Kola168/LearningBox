@@ -1,13 +1,45 @@
 /* pages/package_feature/print_link/typeList.wxss */
+@import "../../../common/icon/icon.wxss";
 page{
   width:100%;
   display:flex;
   flex-direction:column;
+  box-sizing:border-box;
+  align-items:center;
+}
 
+view{
+  box-sizing:border-box;
 }
 
 .content-item-box{
   width:700rpx;
   margin-top:30rpx;
   padding:44rpx 24rpx;
+  display:flex;
+  background: #FFFFFF;
+  box-shadow: 0 -2rpx 8rpx 0 rgba(204,204,204,0.13), 4rpx 4rpx 6rpx 0 rgba(204,204,204,0.33);
+  border-radius: 20rpx;
+  align-items:center;
+}
+
+.content-img{
+  width:120rpx;
+  height:80rpx;
+}
+
+.content-text-box{
+  flex:1;
+  margin-left:24rpx;
+}
+
+.content-text-name{
+  font-size: 32rpx;
+  color: #333333;
+}
+
+.content-text-desc{
+  font-size: 24rpx;
+  color: #666666;
+  margin-top:6rpx;
 }
