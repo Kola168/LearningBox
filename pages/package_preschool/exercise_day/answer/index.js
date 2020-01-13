@@ -65,6 +65,7 @@ Page({
             printType: 'RESOURCE',
             pageCount: this.data.practiceAnswerImages.length,
             featureKey: 'daily_practice',
+            mediaType: 'daily_practice',
             resourceOrderType: 'DailyPractice',
             resourceAttribute: {
               sn: this.printSn,

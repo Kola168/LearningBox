@@ -305,13 +305,19 @@ Page({
         url = '/pages/package_subject/evaluate_exam/index/index'
         break;
       case 'errorBook':
-        url = '/pages/package_feature/error_book/index'
+        url = '/pages/package_subject/super_errorbook/index/index'
         break;
       case 'exerciseDay':
 				url = '/pages/package_preschool/exercise_day/exercises/exercises'
 				break;
       case 'baobeicepin':
         url = '/pages/package_preschool/evaluation/index'
+        break;
+      case 'weaknessExercise':
+        url = '/pages/package_subject/weakness_exercise/index/index'
+        break;
+      case 'stageReporter':
+        url = '/pages/package_subject/stage_report/index/index'
         break;
     }
     if (!url) {
