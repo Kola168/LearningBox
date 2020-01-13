@@ -30,13 +30,15 @@ Page({
             spec: JSON.parse(options.item)
         })
     },
-    uploadImage: co.wrap(function* () {
+    uploadImage: co.wrap(function* (e) {
         this.longToast.toast({
             type: 'loading',
             duration: 0
         })
+        this.path = e.detail.tempFilePaths[0]
         try {
             this.imageURL = yield upload.uploadFile(this.path)
+            yield this.confirm()
         } catch (e) {
             this.longToast.hide()
             util.showError({
@@ -78,15 +80,6 @@ Page({
     }),
     changeImage: co.wrap(function* () {
         this.selectComponent("#checkComponent").showPop()
-    }),
-    takePhoto: co.wrap(function* (e) {
-        this.path = e.detail.tempFilePaths[0]
-        try {
-            yield this.uploadImage()
-            yield this.confirm()
-        } catch (err) {
-            util.showError(err)
-        }
     }),
     baiduprint: co.wrap(function* (e) {
         this.imageURL = e.detail[0].url

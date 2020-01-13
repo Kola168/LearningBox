@@ -34,7 +34,6 @@ Page({
 		duplexCheck: false,
 		isColorPrinter: true,
 		isDuplex: true,
-		userSn: '',
 		userAuthorize: false,
 		confirmModal: {
 			isShow: false,
@@ -65,8 +64,7 @@ Page({
 			title: this.title
 		})
 		this.longToast = new app.weToast()
-		let userSn = storage.get('userSn')
-		if (userSn) {
+		if (app.isScope()) {
 			yield this.getRecordSource()
 			yield this.getConsumables()
 			yield this.getUserInfo()
@@ -203,8 +201,7 @@ Page({
 	}),
 
   authCheck: co.wrap(function *(){
-    var userSn = storage.get('userSn')
-		if (!userSn) {
+		if (!app.isScope()) {
 			let url = `/pages/authorize/index`
 			router.navigateTo(url)
       return false

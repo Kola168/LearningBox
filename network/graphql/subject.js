@@ -371,6 +371,12 @@ const graphqlApi = {
             answerImages{
               nameUrl
             }
+            answerPdf{
+              nameUrl
+            }
+            pdf{
+              nameUrl
+            }
             images{
               nameUrl
             }
@@ -435,9 +441,9 @@ const graphqlApi = {
   /**
    * 首页学科
    */
-  getLastLearn: () => {
+  getLastLearn: (stageSn) => {
     return gql.query({
-      query: `query Subject{
+      query: `query Subject($stageSn:String!,$sn: String!, $type: PayableItemTypeEnum!){
         xuekewang {
           registered
           subjects{
@@ -448,7 +454,23 @@ const graphqlApi = {
             }
           }
         }
-      }`
+        xuekewangVideoSubject(stageSn: $stageSn){
+          previewVideoSum
+          subjects{
+            currentUserNum
+            courseId
+            subjectId
+            subjectName
+            kidVideoCount(sn:$sn,type:$type)
+            vidoeTitle
+          }
+        }
+      }`,
+      variables: {
+        stageSn,
+        sn: stageSn,
+        type: 'stage'
+      }
     })
   },
 
@@ -598,6 +620,7 @@ const graphqlApi = {
             pageSize
             exerciseName
           }
+          exerciseCount(subjectSn:$subjectSn, exerciseType: $exerciseType, isPrint: $isPrint)
         }
       }`,
       variables: {
@@ -609,6 +632,28 @@ const graphqlApi = {
   },
 
   /**
+   * 获取学段列表
+   */
+  getStages: (stageSn) => {
+    return gql.query({
+      query: `query getStages($stageSn:String!){
+        xuekewangVideoSubject(stageSn: $stageSn){
+          stages{
+            sn
+            name
+          }
+        }
+        xuekewang{
+          registered
+        }
+      }`,
+      variables: {
+        stageSn,
+      }
+    })
+  },
+  
+  /*
    * 获取学科错题列表
    */
   getSubjectsErrorbook: () => {
@@ -624,6 +669,34 @@ const graphqlApi = {
           }
         }
       }`
+    })
+  },
+
+  /**
+   * 获取学科错题筛选项
+   * @param { String } sn 科目sn
+   * @param { String } startAt 开始时间
+   * @param { String } endAt 结束时间
+   */
+  getErrorbookFilters: (sn, startAt, endAt) => {
+    return gql.query({
+      query: `query($sn: String!,$startAt: String!,$endAt: String!) {
+        xuekewang {
+          errorBookKnowledges(sn:$sn,startAt:$startAt,endAt:$endAt) {
+            docCount
+            key
+          }
+          errorBookTypeNames(sn:$sn,startAt:$startAt,endAt:$endAt) {
+            docCount
+            key
+          }
+        }
+      }`,
+      variables: {
+        sn,
+        startAt,
+        endAt
+      }
     })
   },
 

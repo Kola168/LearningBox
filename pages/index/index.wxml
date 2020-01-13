@@ -54,7 +54,7 @@
     </view>
     <view class="home-title">
       <view>宝贝学习计划</view>
-      <view>
+      <view bindtap="moreLearingPlan">
         <text>更多</text>
         <image src="/images/doc_item_arrow.png" mode="widthFix"></image>
       </view>
@@ -90,7 +90,7 @@
       <image src="/images/home/study_plan_none.png" mode="widthFix" class="study-plan-image"></image>
       <view>
         <view>快去定制宝宝的学习计划吧~</view>
-        <view class="add-plan">
+        <view class="add-plan" bindtap="addPlan">
           <view>新增计划</view>
         </view>
       </view>

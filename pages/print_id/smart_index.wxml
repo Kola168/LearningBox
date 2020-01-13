@@ -27,7 +27,7 @@
     </view>
 
     <view class='result bg-gray fs-32' wx:else>
-        <view class='item bg-white' wx:for='{{searchList}}' wx:key='{{spec_id}}' id='{{index}}' bindtap='toRules'>
+        <view class='item bg-white' wx:for='{{searchList}}' wx:key='spec_id' id='{{index}}' bindtap='toRules'>
             <view>
                 <text>{{item.name}}</text>
             </view>

@@ -11,6 +11,8 @@ import gql from '../../network/graphql_request.js'
 
 import { regeneratorRuntime, co, wxNav, util, storage } from '../../utils/common_import'
 
+var event = require('../../lib/event/event.js')
+
 Page({
 	data: {
 	},
@@ -31,7 +33,6 @@ Page({
   }),
 
 	authorize: co.wrap(function* (e) {
-		console.log('执行到这里=========')
 		logger.info('********** userInfoHandler', e)
     if (!e.detail.userInfo || !e.detail.encryptedData) {
       return
@@ -45,8 +46,6 @@ Page({
     if (!session) {
       yield app.login()
 		}
-		
-		console.log('执行到这里=====111111====')
 
     try {
       let params = {
@@ -66,8 +65,6 @@ Page({
         decr_type: 'login'
 			}
 			
-			console.log('执行到这里=====2222====')
-
       const resp = yield api.wechatDecryption(params)
       if (resp.code != 0) {
         throw (resp)
@@ -75,13 +72,14 @@ Page({
       storage.put('authToken', resp.res.auth_token)
       storage.put('unionId', resp.res.unionid)
 			storage.put('refreshToken', resp.res.refresh_token)
-
+			storage.put("userSn", resp.res.sn)
+			if(resp.res.phone){
+				storage.put("phoneNum", resp.res.sn)
+			}
+			event.emit('Authorize', 'Authorize Success')
       app.authToken = resp.res.auth_token
-    
       yield this.afterUnion()
-   
 
-      this.longToast.toast()
     } catch (e) {
       yield app.login()
       this.longToast.toast()
@@ -99,23 +97,15 @@ Page({
 
 	getUserInfo: co.wrap(function*() {
     try {
-      let resp = yield gql.getUser()
-			storage.put("userSn", resp.currentUser.sn)
-			if(resp.currentUser.selectedKid.stageRoot){
-				storage.put("kidStage", resp.currentUser.selectedKid.stageRoot)
-			}
-		
-      if (resp.currentUser.phone) {
-        app.hasPhoneNum = true
-        app.globalPhoneNum = resp.currentUser.phone
-        wx.setStorageSync("phoneNum", resp.currentUser.phone)
-      }
+			let resp = yield gql.getUser()
+			this.longToast.toast()
       if (!resp.currentUser.selectedKid.stageRoot) {
         wxNav.redirectTo('/pages/index/grade')
       }else{
-				wx.navigateBack()
+				wxNav.navigateBack()
 			}
     } catch (e) {
+			this.longToast.toast()
       util.showError(e)
     }
   }),

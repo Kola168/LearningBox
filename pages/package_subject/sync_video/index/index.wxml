@@ -1,16 +1,45 @@
 <nav-bar background="#fff" title="同步视频" />
 <view class="main-box">
-  <scroll-view scroll-x="true"  scroll-with-animation scroll-into-view="to_{{currentTabIndex}}">
-    <view class="tab-item"  id="to_{{index}}" wx:for="{{subjectList}}" wx:key="sn"  bindtap="chooseSubject" data-index="{{index}}">
-      <view class="tab-name {{currentTabIndex == index ? 'active' : ''}}">{{item.subjectName}}</view>
-      <view class="tab-line {{currentTabIndex == index ? 'active-line' : ''}}"></view>
+  <view class="fixed-main" style="top:{{navBarHeight}}px"> 
+    <scroll-view scroll-x="true"  scroll-with-animation scroll-into-view="to_{{currentTabIndex}}">
+      <view class="tab-item"  id="to_{{index}}" wx:for="{{stages}}" wx:key="sn"  bindtap="chooseStage" data-index="{{index}}">
+        <view class="tab-name {{currentTabIndex == index ? 'active' : ''}}">{{item.name}}</view>
+        <view class="tab-line {{currentTabIndex == index ? 'active-line' : ''}}"></view>
+      </view>
+    </scroll-view>
+    <image class="notice-card" src="../../images/nav_figure_card.png">
+      <view class="nav-text">
+        <block>
+        已看完{{kidVideoCount}}个视频
+        <!-- 已看完{{kidVideoCount}}个视频，超越90%的同学 -->
+        </block>
+      </view>
+    </image>
+    <view class="form">
+      <view class="selected-main" bind:tap="openSubjectForm">
+        <view class="name">{{checkedSubject.subjectName}}</view>
+        <view class="arrow-top"></view>
+      </view>
+      <view class="form-main" wx:if="{{showSubjectForm}}" bind:tap="closeSubjectForm">
+        <view class="subject-content">
+          <view class="subject-item {{currentSubjectIndex == index ? 'active-subject' : ''}}" wx:for="{{subjectList}}" wx:key="courseId" catch:tap="chooseSubject" data-index="{{index}}">{{item.subjectName}}</view>
+        </view>
+      </view>
     </view>
-  </scroll-view>
-  <image class="notice-card" src="../../images/nav_figure_card.png">
-  <view class="nav-text">
-    <block>
-     已看完10个视频，超越90%的同学
-    </block>
+  </view>
+  <view class="video-list">
+    <view class="video-item" wx:for="{{videoList}}" wx:key="id" bind:tap="toVideo" data-sn="{{item.id}}">
+      <image class="video-cover-icon" src="{{item.img}}">
+        <view class="video-in-box">
+          <view class="progress">共{{item.videoCount}}讲</view>
+          <view class="video-num">{{item.playCount}}次播放</view>
+        </view>
+      </image>
+      <view class="video-name">{{item.name}}</view>
     </view>
-  </image>
+  </view>
 </view>
+
+
+<import src="../../../../lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />
