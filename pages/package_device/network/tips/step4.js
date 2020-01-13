@@ -74,7 +74,7 @@ Page({
 					that.bindCode.time = 0
 				}
 				that.bindCode.time++
-				if (that.bindCode.time >= 30) {
+				if (that.bindCode.time >= 20) {
 					this.longToast.toast()
 					this.naviagteToStep1('配网超时,请重试')
 				} else {
@@ -96,7 +96,7 @@ Page({
 			title: '提示',
 			content: error,
 			showCancel: false,
-			confirmColor: '#ff9999'
+			confirmColor: '#ffdc5e'
 		})
 		if (res.confirm) {
 			return wxNav.navigateTo('/pages/package_device/network/tips/step1')

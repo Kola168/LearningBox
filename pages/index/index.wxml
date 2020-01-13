@@ -52,7 +52,7 @@
       <view class="tool-item">
       </view>
     </view>
-    <view class="home-title">
+    <!-- <view class="home-title">
       <view>宝贝学习计划</view>
       <view bindtap="moreLearingPlan">
         <text>更多</text>
@@ -99,8 +99,8 @@
     <view class="content-list" wx:for="{{beforeSchoolContent}}" wx:key="beforeSchoolContent" id="{{item.key}}">
       <view class="home-title">{{item.name}}</view>
       <image src="{{item.iconUrl}}" class="content-image" mode="widthFix" id="{{item.key}}"  bindtap="toContentList" data-name="{{item.name}}" data-has="{{item.hasCategory}}"/>
-    </view>
-    <view class="tips">
+    </view> -->
+    <!-- <view class="tips">
       <view>
         <image src="/images/home/icon_book.png" mode="widthFix" />
         <view>什么是纸质学习法？</view>
@@ -109,7 +109,7 @@
         <image src="/images/home/icon_teacher.png" mode="widthFix" />
         <view>小白老师是谁？</view>
       </view>
-    </view>
+    </view> -->
   </block>
   <!-- 学科 ui -->
   <block wx:if="{{homeType=='学科'}}">
