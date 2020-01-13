@@ -19,7 +19,7 @@ Page({
   onLoad() {
     this.weToast = new app.weToast()
     this.setData({
-      canvasWidth: app.sysInfo.screenWidth-30
+      canvasWidth: app.sysInfo.screenWidth - 30
     })
     this.getSubjectMemberInfo()
   },
@@ -28,10 +28,11 @@ Page({
       type: 'loading'
     })
     try {
-      let res = yield subjectGql.getSubjectMemberInfo()
+      let res = yield subjectGql.getSubjectMemberInfo(),
+        subjectMember = res.currentUser.selectedKid.schoolAgeMember
       this.weToast.hide()
       let isMember = res.currentUser.isSchoolAgeMember,
-        expiresAt = res.currentUser.selectedKid.schoolAgeMember.expiresAt
+        expiresAt = subjectMember ? subjectMember.expiresAt : ''
       this.setData({
         isMember: res.currentUser.isSchoolAgeMember,
         expiresAt: expiresAt
