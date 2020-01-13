@@ -1,3 +1,4 @@
+<!--pages/print_id/smart_save.wxml-->
 <!--pages/idprint/preview.wxml-->
 <nav-bar background="#fff" title="预览证件照"></nav-bar>
 
@@ -6,8 +7,8 @@
     <view class="tips-1">温馨提示</view>
     <view>仅手机预览时由红色水印，打印或保存至本地水印消失</view>
 </view>
-<view class="{{type=='paper'?'print':'image'}}">
-    <view class="singleImg" wx:if="{{singleImg}}">
+<view class="image">
+    <view class="singleImg">
         <view>单张效果</view>
         <image class="bg-white" mode='widthFix' bindtap="preview" src='{{singleImg}}'></image>
     </view>
@@ -17,17 +18,14 @@
     </view>
 
 </view>
-<!-- 非付款页面 end-->
-<!-- 保存 -->
-<view class="bottom fs-32">
-    <block wx:if="{{!pay}}">
-        <view class='flex-center left conf-button' bindtap='toPay' id="digital">
-            <text>保存电子版</text>
-        </view>
-        <view class="flex-center +{{idPrint?'':'forbid'}} right conf-button" bindtap="toPay" id="paper">
-            打印证件照
-        </view>
-    </block>
+<view class="bottom">
+    <view class="left" bindtap="">
+        <text>保存单张</text>
+    </view>
+    <view class="right" bindtap="">
+        <text>保存完整</text>
+    </view>
+
 </view>
 
 <import src="../../lib/toast/wetoast.wxml" />

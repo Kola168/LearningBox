@@ -32,11 +32,11 @@ Page({
       isShow: false,
       title: '请正确放置A4打印纸',
       image: 'https://cdn.gongfudou.com/miniapp/ec/confirm_print_a4_new.png'
-  }
+    }
   },
   onLoad: co.wrap(function* (options) {
     this.setData({
-      naem:options.name
+      naem: options.name
     })
     this.options = options
     console.log(options)
@@ -308,13 +308,13 @@ Page({
           copies: that.data.documentPrintNum,
           startPage: that.data.startPrintPage,
           endPage: that.data.endPrintPage,
-          duplex:that.data.duplexcheck
+          duplex: that.data.duplexcheck
         }
       }
 
       try {
 
-        const resp = gql.createResourceOrder(p)
+        const resp = yield gql.createResourceOrder(p)
 
         console.log(resp)
         router.redirectTo('/pages/finish/index', {

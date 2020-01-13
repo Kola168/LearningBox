@@ -1,0 +1,2 @@
+/* pages/print_id/print.wxss */
+@import 'smart_preview.wxss'
