@@ -49,15 +49,27 @@ Page({
     wxNav.navigateTo('../exam_paper_report/index/index')
   },
   toPrint() {
-    let postData = {
-      featureKey: 'xuekewang_report',
-      sn: this.sn,
-      name: this.data.name,
-      printPdf: this.printPdf,
-      pageCount: this.data.imgList.length
-    }
-    wxNav.navigateTo('../setting/setting', {
-      postData: encodeURIComponent(JSON.stringify(postData))
+    wxNav.navigateTo('/pages/package_common/setting/setting', {
+      settingData: encodeURIComponent(JSON.stringify({
+        file: {
+          name: this.data.name,
+        },
+        orderPms: {
+          printType: 'PRINTSUBJECT',
+          pageCount: this.data.imgList.length,
+          featureKey: 'xuekewang_report',
+          mediaType: 'xuekewang_report',
+          attributes: {
+            resourceType: 'XuekewangExercise',
+            sn: this.sn,
+            originalUrl: this.printPdf,
+          }
+        },
+        checkCapabilitys: {
+          isSettingDuplex: true,
+          isSettingColor: true,
+        }
+      }))
     })
   }
 })

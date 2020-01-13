@@ -57,15 +57,27 @@ Page({
 
   prePrint() {
     if (this.isMember) {
-      let postData = {
-        featureKey: 'xuekewang_paper',
-        sn: this.sn,
-        name: this.data.title,
-        pageCount: this.data.imgList.length,
-        printPdf: this.data.printAnswer ? this.pdf : this.answerPdf
-      }
-      wxNav.navigateTo('../../setting/setting', {
-        postData: encodeURIComponent(JSON.stringify(postData))
+      wxNav.navigateTo('/pages/package_common/setting/setting', {
+        settingData: encodeURIComponent(JSON.stringify({
+          file: {
+            name: this.data.title,
+          },
+          orderPms: {
+            printType: 'PRINTSUBJECT',
+            pageCount: this.data.isPrintAnswer ? this.answerImages.length : this.originalImages.length,
+            featureKey: 'xuekewang_paper',
+            mediaType: 'xuekewang_paper',
+            attributes: {
+              resourceType: 'XuekewangExercise',
+              sn: this.sn,
+              originalUrl: this.data.printAnswer ? this.pdf : this.answerPdf,
+            }
+          },
+          checkCapabilitys: {
+            isSettingDuplex: true,
+            isSettingColor: true,
+          }
+        }))
       })
     } else {
       this.setData({
