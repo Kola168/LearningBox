@@ -34,14 +34,14 @@ Page({
       confirmText: '无所谓'
     }
   },
-  onLoad: co.wrap(function* (query) {
+  onLoad(query) {
     event.on('authorize', this, () => {
       this.setData({
         isAuth: app.isScope()
       })
       this.getCorrectPaper()
     })
-    let isAuth = yield app.isScope()
+    let isAuth = app.isScope()
     if (!isAuth) {
       return wxNav.navigateTo("/pages/authorize/index")
     }
@@ -61,7 +61,7 @@ Page({
     this.correctType = scene.split('_')[2] === 'paper' ? 'XuekewangPaper' : 'XuekewangExercise' //批改类型
     this.singleTopicIds = new Set()
     this.getUserMemberInfo()
-  }),
+  },
 
   getUserMemberInfo: co.wrap(function* () {
     this.weToast.toast({
