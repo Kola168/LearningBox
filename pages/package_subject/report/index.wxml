@@ -10,7 +10,7 @@
       <image src="../images/more_report.png" mode="widthFix" />
       <view>更多报告</view>
     </view>
-    <view class="print-report">前往打印</view>
+    <view class="print-report" bindtap="toPrint">前往打印</view>
   </view>
 </view>
 <!-- loading -->

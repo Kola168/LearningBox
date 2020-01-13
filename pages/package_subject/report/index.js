@@ -3,7 +3,8 @@ import api from '../../../network/restful_request'
 import {
   regeneratorRuntime,
   co,
-  util
+  util,
+  wxNav
 } from '../../../utils/common_import'
 import subjectGql from '../../../network/graphql/subject'
 Page({
@@ -15,6 +16,7 @@ Page({
     name: ''
   },
   onLoad(query) {
+    this.mediaType = query.mediaType
     this.weToast = new app.weToast()
     let isFullScreen = app.isFullScreen
     this.mediaType = query.mediaType
@@ -31,11 +33,13 @@ Page({
       type: 'loading'
     })
     try {
-      let res = yield subjectGql.getReportDetail(this.sn)
+      let res = yield subjectGql.getReportDetail(this.sn),
+        report = res.xuekewang.report
       this.setData({
-        imgList: res.xuekewang.report.images,
-        name: res.xuekewang.report.name
+        imgList: report.images,
+        name: report.name
       })
+      this.printPdf = report.pdf.nameUrl
       this.weToast.hide()
     } catch (error) {
       this.weToast.hide()
@@ -44,18 +48,30 @@ Page({
   }),
   toMoreReport(e) {
     if (app.preventMoreTap(e)) return
-    wxNav.navigateTo('../exam_paper_report/index')
+    wxNav.navigateTo('../exam_paper_report/index/index')
   },
   toPrint() {
-    let postData = {
-      featureKey: 'xuekewang_report',
-      media_type: this.mediaType,
-      sn: this.sn,
-      name: '报告',
-      pageCount: this.data.imgList.length
-    }
-    wxNav.navigateTo('../setting/setting', {
-      postData: encodeURIComponent(JSON.stringify(postData))
+    wxNav.navigateTo('/pages/package_common/setting/setting', {
+      settingData: encodeURIComponent(JSON.stringify({
+        file: {
+          name: this.data.name,
+        },
+        orderPms: {
+          printType: 'PRINTSUBJECT',
+          pageCount: this.data.imgList.length,
+          featureKey: 'xuekewang_report',
+          mediaType: this.mediaType,
+          attributes: {
+            resourceType: 'XuekewangReport',
+            sn: this.sn,
+            originalUrl: this.printPdf,
+          }
+        },
+        checkCapabilitys: {
+          isSettingDuplex: true,
+          isSettingColor: true,
+        }
+      }))
     })
   }
 })
