@@ -46,7 +46,7 @@
     </view>
 </view>
 <view class="phone-number">商务合作：89894940</view>
-<view class="article">《隐私条款》</view>
+<view class="article" bindtap="toRules">《隐私条款》</view>
 
 <import src="/lib/toast/wetoast.wxml" />
 <template is="wetoast" data="{{...__wetoast__}}" />

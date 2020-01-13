@@ -137,14 +137,14 @@ module.exports = {
     <view>收藏</view>
   </view>
   <view>
-    <view class="share-tip" hidden="{{hiddenShareTip || !canShare || !userSn}}">
+    <view class="share-tip" hidden="{{hiddenShareTip || !canShare || !auth}}">
       <image src="../images/share_clock.png" mode="widthFix" bindtap="closeShareTip"/>
     </view>
 
     <form report-submit="{{true}}" bindsubmit="uploadFormId">
       <button open-type="share" form-type="submit" hover-class="none" class="{{course.payed ? 'has-buy' : ''}}">
         <image class="btn-action" src="/images/doc_gfd_share_gray.png" wx:if="{{!course.payed}}"></image>
-        <text>{{canShare && userSn ? '助力' : '分享'}}</text>
+        <text>{{canShare && auth ? '助力' : '分享'}}</text>
       </button>
     </form>
   </view>

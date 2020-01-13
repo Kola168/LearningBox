@@ -313,7 +313,7 @@ Page({
 				grayscale: print_capability.grayscale,
 				duplex: print_capability.duplex,
 				colorCheck: print_capability.color ? true : false,
-				duplexCheck: currentFile.duplex,
+				duplexCheck: false,
 				isSetting: currentFile.isSetting,
 				url: currentFile.originalUrl,
 				skipGs: true

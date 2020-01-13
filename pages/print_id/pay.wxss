@@ -1,0 +1,20 @@
+/* pages/print_id/pay.wxss */
+@import 'smart_preview.wxss';
+
+.bottom {
+    position: absolute;
+    bottom: 80rpx;
+    width: calc(100% - 48rpx);
+    left: 24rpx;
+    border-radius: 60rpx;
+    border: none;
+    background: #FFDC5E;
+    font-family: PingFangSC-Regular;
+    font-size: 36rpx;
+    color: #333333;
+    letter-spacing: 0;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

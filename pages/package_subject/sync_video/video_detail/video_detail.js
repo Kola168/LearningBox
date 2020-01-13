@@ -1,65 +1,64 @@
 // pages/package_subject/sync_video/video_detail/video_detail.js
+
+var app = getApp()
+import {
+  regeneratorRuntime,
+  co,
+  util,
+  storage,
+  wxNav
+} from '../../../../utils/common_import'
+import graphql from '../../../../network/graphql/subject'
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-
+    video: null
   },
 
-  /**
-   * 生命周期函数--监听页面加载
-   */
   onLoad: function (options) {
-
+    var video = JSON.parse(decodeURIComponent(options.video))
+    console.log(video,'==video==')
+    this.setData({
+      video
+    })
+    this.isPlay = false //是否播放
   },
 
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
+  createVideoRecord: co.wrap(function*(){
+    try {
+      var resp = yield graphql.createVideoRecord({
+        videoId: this.data.video.sn,
+        videoName: this.data.video.name,
+        subjectId: +this.data.video.subjectId,
+        stageSn: this.data.video.stageSn
+      })
+    } catch(err) {
+      console.log(err)
+    }
+  }),
 
+  bindplay: function() {
+    if(!this.isPlay) {
+      this.createVideoRecord()
+    }
+    this.isPlay = true
   },
 
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-
+  bindended: function() {
+    this.isPlay = false
   },
 
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
   onHide: function () {
 
   },
 
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
   onReachBottom: function () {
 
   },
 
-  /**
-   * 用户点击右上角分享
-   */
   onShareAppMessage: function () {
 
   }

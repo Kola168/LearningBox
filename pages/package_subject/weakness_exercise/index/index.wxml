@@ -23,7 +23,7 @@
     <!-- 练习题列表 -->
     <view class="exercise-content">
       <view wx:for="{{exerciseList}}" wx:key="sn"> 
-        <template is="exerciseList" data="{{item}}"/>
+        <template is="exerciseList" data="{{item, index}}"/>
       </view>
     </view>
   </view>

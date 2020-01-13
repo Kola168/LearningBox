@@ -8,9 +8,11 @@ import {
 } from "../../../utils/common_import"
 const event = require('../../../lib/event/event')
 import api from '../../../network/restful_request'
+import gql from '../../../network/graphql_request'
 import subjectGql from '../../../network/graphql/subject'
 Page({
   data: {
+    isMember: false,
     areaHeight: 0,
     showSerial: false,
     isFullScreen: false,
@@ -33,13 +35,22 @@ Page({
     }
   },
   onLoad: co.wrap(function* (query) {
+    event.on('authorize', this, () => {
+      this.setData({
+        isAuth: app.isScope()
+      })
+      this.getCorrectPaper()
+    })
+    let isAuth = yield app.isScope()
+    if (!isAuth) {
+      return wxNav.navigateTo("/pages/authorize/index")
+    }
     let areaHeight = 0
     if (app.navBarInfo) {
       areaHeight = app.sysInfo.screenHeight - app.navBarInfo.topBarHeight
     } else {
       areaHeight = app.sysInfo.screenHeight - app.getNavBarInfo().topBarHeight
     }
-    let isAuth = Boolean(storage.get('authToken'))
     this.setData({
       areaHeight,
       isFullScreen: app.isFullScreen
@@ -49,15 +60,29 @@ Page({
     this.paperId = Number(scene.split('_')[1])
     this.correctType = scene.split('_')[2] === 'paper' ? 'XuekewangPaper' : 'XuekewangExercise' //批改类型
     this.singleTopicIds = new Set()
-    if (isAuth) {
-      // this.getCorrectPaper()
-    }
-    event.on('authorize', this, () => {
-      this.setData({
-        isAuth: Boolean(storage.get('authToken'))
-      })
-      this.getCorrectPaper()
+    this.getUserMemberInfo()
+  }),
+
+  getUserMemberInfo: co.wrap(function* () {
+    this.weToast.toast({
+      type: 'loading'
     })
+    try {
+      let res = yield gql.getUserMemberInfo()
+      let isMember = res.currentUser.isSchoolAgeMember
+      this.setData({
+        isMember: isMember,
+        loadReady: isMember ? false : true
+      })
+      if (isMember) {
+        this.getCorrectPaper()
+      } else {
+        this.weToast.hide()
+      }
+    } catch (e) {
+      this.weToast.hide()
+      util.showError(e)
+    }
   }),
 
   // 获取试卷内容
@@ -78,7 +103,8 @@ Page({
       this.subjectName = tempData.subject_name
       this.currentTopicId = currentTopic.ques_id
       this.setData({
-        title : tempData.title,
+        loadReady: true,
+        title: tempData.title,
         currentTopicType: formatResult.topicType,
         topicsResult: topicsResult,
         currentTopic: formatResult.currentTopic,
@@ -214,8 +240,9 @@ Page({
 
   // 提交答案
   preSubmit: co.wrap(function* () {
-    this.weToast.toast({
-      type: 'loading'
+    this.setData({
+      showProgessModal: true,
+      progress: 0
     })
     try {
       let topicsResult = this.data.topicsResult,
@@ -230,39 +257,49 @@ Page({
       }
       topicsResult = topicsResult.concat(tempSingleTopicIds)
       let res = yield subjectGql.submitCorrect(topicsResult, this.correctType, this.paperId)
-      this.weToast.hide()
       if (res.submitXuekewangWrongQuestion.state) {
         if (this.correctType === 'XuekewangExercise') {
           wxNav.navigateTo()
         } else {
+          this.workerId = res.submitXuekewangWrongQuestion.workerSn
           this.setData({
-            showProgessModal: true
+            progress: this.data.progress + 30
           })
-          this.workId = res.submitXuekewangWrongQuestion.id
           this.getWorkerSn()
         }
       }
     } catch (e) {
-      this.weToast.hide()
+      this.setData({
+        showProgessModal: false
+      })
       util.showError(e)
     }
   }),
 
   getWorkerSn: co.wrap(function* () {
     try {
-      let resp = yield api.synthesisSnResult(this.workId)
-      console.log(resp)
+      let resp = yield api.synthesisSnResult(this.workerId)
       if (resp.res.state === 'send') {
         setTimeout(() => {
+          if (this.data.progress < 90) {
+            this.setData({
+              progress: this.data.progress + 30
+            })
+          }
           this.getWorkerSn()
         }, 3000)
         return
+      } else if (resp.res.state === 'finished') {
+        this.setData({
+          progress: 100,
+          showProgessModal: false
+        }, () => {
+          wxNav.navigateTo('../report/index', {
+            sn: resp.res.sn,
+            from: 'correct'
+          })
+        })
       }
-      console.log(resp)
-      wxNav.navigateTo('../report/index', {
-        sn: resp.res.sn,
-        from: 'correct'
-      })
     } catch (e) {
       util.showError(error)
     }
