@@ -237,14 +237,19 @@ Page({
    */
   getMember: co.wrap(function*(){
     try {
-      var resp = yield graphqlAll.getUserMemberInfo()
-      this.setData({
-        isSchoolAgeMember: resp.currentUser.isSchoolAgeMember
-      })
+      var resp = yield graphqlAll.getSubjectMemberInfo()
+      if (resp.currentUser && resp.currentUser) {
+        var isExpires = resp.currentUser.selectedKid && resp.currentUser.selectedKid.schoolAgeMember.expiresAt
+        this.setData({
+          isSchoolAgeMember: resp.currentUser.isSchoolAgeMember,
+          isExpires: isExpires
+        })
+      }
     } catch(err) {
       util.showError(err)
     }
   }),
+
   /**
    * 确认练习
    */

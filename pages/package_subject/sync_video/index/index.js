@@ -15,9 +15,9 @@ Page({
    * 页面的初始数据
    */
   data: {
-    currentTabIndex: 0,
+    currentStageIndex: 0,
     currentSubjectIndex: 0,
-    showSubjectForm: false, //是否显示学科表单
+    showStageForm: false, //是否显示学科表单
     subjectList: [], //学科列表
     stages: [], // 学段列表
     stage: null, //学段信息
@@ -35,7 +35,7 @@ Page({
     let navBarHeight = app.navBarInfo.topBarHeight
     this.setData({
       navBarHeight,
-      currentSubjectIndex: options.index ? options.index : 0
+      currentStageIndex: options.index ? options.index : 0
     })
     this.longToast = new app.weToast()
     yield this.getUser()
@@ -49,11 +49,11 @@ Page({
    */
   chooseStage: co.wrap(function*({currentTarget: {dataset: {index}}}){
     this.setData({
-      currentTabIndex: index,
-      currentSubjectIndex: 0,
+      currentStageIndex: index,
       videoList: [],
       stage: this.data.stages[index]
     })
+    this.closeStageForm()
     yield this.getvideoSubject()
     yield this.getvideoList()
   }),
@@ -62,7 +62,7 @@ Page({
     wxNav.navigateTo("../video_list/video_list", {
       sn,
       stageSn: this.data.stage.sn,
-      subjectId: this.data.checkedSubject.subjectId
+      subjectId: this.data.subjectList[this.data.currentSubjectIndex]
     })
   },
 
@@ -124,13 +124,13 @@ Page({
       }
       var [stage] = stages.filter((item, index)=>{
         if (item.sn == this.data.stageSn) {
-          this.data.currentTabIndex = index
+          this.data.currentStageIndex = index
           return item
         }
       })
       this.setData({
         stages,
-        currentTabIndex: this.data.currentTabIndex,
+        currentStageIndex: this.data.currentStageIndex,
         stage
       })
     } catch(err){
@@ -154,7 +154,6 @@ Page({
         this.setData({
           kidVideoCount: resp.xuekewangVideoSubject.subjects[this.data.currentSubjectIndex].kidVideoCount,
           subjectList: resp.xuekewangVideoSubject.subjects,
-          checkedSubject: resp.xuekewangVideoSubject.subjects[this.data.currentSubjectIndex]
         })
       }
       
@@ -173,8 +172,9 @@ Page({
       type: 'loading',
       title: '请稍后...'
     })
+
     try {
-      var resp = yield graphql.getvideoList(this.data.stage.sn, this.data.checkedSubject.courseId)
+      var resp = yield graphql.getvideoList(this.data.stage.sn, this.data.subjectList[this.data.currentSubjectIndex].courseId)
       this.setData({
         videoList: resp.xuekewangVideos
       })
@@ -193,11 +193,10 @@ Page({
       this.setData({
         kidVideoCount: this.data.subjectList[index].kidVideoCount,
         currentSubjectIndex: index,
-        showSubjectForm: false,
+        showStageForm: false,
         videoList: [],
         checkedSubject: this.data.subjectList[index]
       })
-      this.closeSubjectForm()
       this.getvideoList()
     } catch(err) {
       console.log(err)
@@ -207,18 +206,18 @@ Page({
   /**
    * 关闭学科选择器
    */
-  closeSubjectForm: function() {
+  closeStageForm: function() {
     this.setData({
-      showSubjectForm: false
+      showStageForm: false
     })
   },
 
   /**
    * 弹出学科选择器
    */
-  openSubjectForm: function() {
+  openStageForm: function() {
     this.setData({
-      showSubjectForm: true
+      showStageForm: true
     })
   },
 
