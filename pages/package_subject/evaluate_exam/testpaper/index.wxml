@@ -33,7 +33,7 @@
         </view>
       </view>
     </scroll-view>
-    <view class="papers-list">
+    <view class="papers-list" wx:if="{{paperList.length>0&&loadReady}}">
       <view class="list-item" wx:for="{{paperList}}" wx:key="paperId" bindtap="toDetail" data-index="{{index}}">
         <view class="item-img">
           <image src="../../images/pdf.png" class="img-main" mode="widthFix" />
@@ -48,6 +48,10 @@
           </view>
         </view>
       </view>
+    </view>
+    <view wx:if="{{paperList.length===0&&loadReady}}" class="empty">
+      <image src="../../images/no_errorbook.png" mode="widthFix" />
+      <view>暂无试卷</view>
     </view>
   </view>
 </view>

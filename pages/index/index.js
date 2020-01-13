@@ -174,7 +174,7 @@ Page({
     try {
       yield this.getUserInfo()
 			yield this.getBanners()
-			yield this.getUserPlans() //宝贝学习计划
+			// yield this.getUserPlans() //宝贝学习计划
       yield this.customizeFeatures()
     } catch (error) {
       console.log(error)

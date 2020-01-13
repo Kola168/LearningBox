@@ -28,7 +28,10 @@
   left: 0;
   width: 100%;
   border-top: 2rpx dashed #E7E7E7;
+}
 
+.line-last {
+  border-top: 2rpx solid #E7E7E7;
 }
 
 .line-rate {
