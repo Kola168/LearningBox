@@ -94,7 +94,7 @@
 
 .form-main {
   position: absolute;
-  top: 70rpx;
+  top: 68rpx;
   left: 0;
   z-index: 10;
   width: 100%;

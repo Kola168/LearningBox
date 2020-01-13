@@ -2,7 +2,7 @@
 <view class="learn-main">
   <image class="banner" src="https://cdn-h.gongfudou.com/LearningBox/subject/sync_banner.png"></image>
   <view class="entry">
-    <view class="entry-item" wx:for="{{entryList}}" wx:key="key" bind:tap="toUse" data-key="{{item.key}}">
+    <view class="entry-item" wx:for="{{entryList}}" wx:key="key" bind:tap="toUse" data-url="{{item.url}}">
       <image class="nav-icon" src="{{item.icon}}"></image>
       <view class="content">
         <view class="title">{{item.title}}</view>
