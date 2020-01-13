@@ -41,7 +41,7 @@ Page({
       })
       this.getCorrectPaper()
     })
-    let isAuth = yield app.isScope()
+    let isAuth = app.isScope()
     if (!isAuth) {
       return wxNav.navigateTo("/pages/authorize/index")
     }

@@ -926,6 +926,9 @@ const graphqlApi = {
             images{
               nameUrl
             }
+            pdf{
+              nameUrl
+            }
             name
           }
         }

@@ -62,7 +62,7 @@ Page({
         sn: this.sn,
         name: this.data.title,
         pageCount: this.data.imgList.length,
-        printPdf: this.data.printAnswer ? this.Pdf : this.answerPdf
+        printPdf: this.data.printAnswer ? this.pdf : this.answerPdf
       }
       wxNav.navigateTo('../../setting/setting', {
         postData: encodeURIComponent(JSON.stringify(postData))

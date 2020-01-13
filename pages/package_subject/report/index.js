@@ -3,7 +3,8 @@ import api from '../../../network/restful_request'
 import {
   regeneratorRuntime,
   co,
-  util
+  util,
+  wxNav
 } from '../../../utils/common_import'
 import subjectGql from '../../../network/graphql/subject'
 Page({
@@ -30,11 +31,13 @@ Page({
       type: 'loading'
     })
     try {
-      let res = yield subjectGql.getReportDetail(this.sn)
+      let res = yield subjectGql.getReportDetail(this.sn),
+        report = res.xuekewang.report
       this.setData({
-        imgList: res.xuekewang.report.images,
-        name: res.xuekewang.report.name
+        imgList: report.images,
+        name: report.name
       })
+      this.printPdf = report.pdf.nameUrl
       this.weToast.hide()
     } catch (error) {
       this.weToast.hide()
@@ -43,13 +46,14 @@ Page({
   }),
   toMoreReport(e) {
     if (app.preventMoreTap(e)) return
-    wxNav.navigateTo('../exam_paper_report/index')
+    wxNav.navigateTo('../exam_paper_report/index/index')
   },
   toPrint() {
     let postData = {
       featureKey: 'xuekewang_report',
       sn: this.sn,
-      name: '报告',
+      name: this.data.name,
+      printPdf: this.printPdf,
       pageCount: this.data.imgList.length
     }
     wxNav.navigateTo('../setting/setting', {
