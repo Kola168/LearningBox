@@ -75,7 +75,7 @@ Page({
           printUrl:value,
           originalUrl:value,
           copies:this.data.printNum,
-          color:this.data.colorType=='color'?true:false
+          color:this.data.colorType=='color'?true:false,
         })
       })
       let orderSn = yield commonRequest.createOrder(this.type, imgs)

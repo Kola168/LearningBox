@@ -1,8 +1,26 @@
 <!--pages/package_common/instructions/index.wxml-->
 <nav-bar title="使用说明"></nav-bar>
-<image src="../images/arrow_down.png" mode="aspectFit" class="search-tip-img"></image>
+<view class="search-box" bindtap="toSearch">
+  <text class="iconfont icon-search"></text>
+  <text class="search-tip-text">输入关键字</text>
+</view>
 <view class="content-box">
   <view class="content-top-type">
-
+    <view class="content-type-box">
+      <view class="content-type-name">
+        {{equipmentBrand[equipmentIndex].name}}
+      </view>
+      <text class="iconfont icon-show-more"></text>
+    </view>
+    <view class="content-type-box">
+      <view class="content-type-name">
+        {{equipmentBrand[equipmentIndex].children[brandIndex].name}}
+      </view>
+      <text class="iconfont icon-show-more"></text>
+    </view>
   </view>
+</view>
+<view wx:for="{{questionList}}" wx:key="questionList" class="content-list" data-index="{{index}}" bindtap="toPreview">
+  <text>{{item.question}}</text>
+  <text class="iconfont icon-next"></text>
 </view>

@@ -76,7 +76,8 @@
         "order_record/index/index",
         "order_record/order/order",
         "setting/setting",
-        "instructions/index"
+        "instructions/index",
+        "instructions/search"
       ]
     },
     {
