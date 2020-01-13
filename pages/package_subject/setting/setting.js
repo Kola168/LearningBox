@@ -82,7 +82,7 @@ Page({
         totalPage: query.pageCount,
         sn: query.sn,
         pageCount: query.pageCount,
-        originalUrl: query.originalUrl,
+        originalUrl: query.printPdf,
         startPrintPage: 1,
         endPrintPage: query.pageCount,
         startPage: 1,

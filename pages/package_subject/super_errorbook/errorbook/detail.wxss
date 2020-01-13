@@ -1,10 +1,16 @@
 .content-topic {
   font-size: 26rpx;
-  padding: 40rpx 68rpx;
+  padding: 40rpx 32rpx;
+  width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 .topic-body {
-  padding: 0 20rpx 46rpx;
+  padding-bottom: 46rpx;
+  overflow: hidden;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .topic-question {
@@ -32,7 +38,10 @@
 }
 
 .topic-answer {
-  padding: 24rpx 20rpx 32rpx;
+  padding: 24rpx 0 32rpx;
+  overflow: hidden;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .answer-title {

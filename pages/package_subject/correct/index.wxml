@@ -1,6 +1,5 @@
 <nav-bar title="批改"></nav-bar>
 <view class="container" wx:if="{{loadReady}}" style="background:{{isMember?'#F7F7F7':'#fff'}};height:{{areaHeight}}px;">
-  <!-- <view class="auth-cover" wx:if="{{!isAuth}}" bindtap="toAuth"></view> -->
   <view class="is-subject-member" wx:if="{{isMember}}">
     <view class="paper-header flex align-center">
       <view class="header-title text-overflow-points">{{title}}</view>
