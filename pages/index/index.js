@@ -158,7 +158,7 @@ Page({
   }),
   //获取学前模块
   customizeFeatures: co.wrap(function* () {
-    if (this.data.selectedKid.stageRoot == null) {
+    if (this.data.homeType!='学前') {
       return
     }
     try {
