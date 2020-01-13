@@ -27,7 +27,7 @@ Page({
   onLoad: co.wrap(function* (query) {
     this.weToast = new app.weToast()
     this.paperId = query.id
-    this.subjectSn = query.subjectSn
+    this.subjectId = query.subjectId
     this.sn = query.sn != 'null' ? query.sn : ''
     this.setData({
       hasReport: Boolean(Number(query.hasReport)),
@@ -127,7 +127,7 @@ Page({
       feature_key: 'xuekewang_paper',
       worker_data: {
         paper_id: this.paperId,
-        subject_sn: this.subjectSn
+        subject_id: this.subjectId
       }
     }, (res) => {
       if (res.status === 'finished') {

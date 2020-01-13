@@ -171,3 +171,15 @@
   width: 140rpx;
   margin-left: 32rpx;
 }
+
+.empty {
+  font-size: 28rpx;
+  color: #666;
+  padding-top: 160rpx;
+  text-align: center;
+}
+
+.empty image {
+  width: 240rpx;
+  margin: 0 auto 32rpx;
+}
