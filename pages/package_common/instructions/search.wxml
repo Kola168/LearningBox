@@ -5,20 +5,20 @@
     <input class="input-item" bindinput="inputChange" value="{{inputVal}}"/>
     <text wx:if="{{inputVal}}" class="iconfont icon-close-filld" bindtap="clearSearchVal"></text>
   </view>
-  <text class="search-text">搜索</text>
+  <text class="search-text" bindtap="searchVal">搜索</text>
 </view>
 <block wx:if="{{!inputVal}}">
   <view class="no-value-tip">
     猜你想搜
   </view>
   <view wx:for="{{searchList}}" wx:key="questionList" class="content-list" data-index="{{index}}" bindtap="toPreview">
-    <text>{{item.name}}</text>
+    <text>{{item.title}}</text>
   </view>
 </block>
 <block wx:elif="{{searchList.length>0}}">
   <view wx:for="{{searchList}}" wx:key="questionList" class="content-list" data-index="{{index}}" bindtap="toPreview">
-    <text>{{item.name}}
-      <text class="equip-tip">{{1111}}</text>
+    <text>{{item.title}}
+      <text class="equip-tip">{{item.printerModelMaker}} {{item.printerModelName}}</text>
     </text>
       <text class="iconfont icon-next"></text>
   </view>
@@ -27,11 +27,14 @@
   <image src="../images/search_empty.png" mode="widthFix" class="empty-img"></image>
   <text class="empty-text">哎呀没有相关结果，反馈小白，小白尽快给您处理</text>
   <view class="empty-button-box">
-    <view class="empty-button-style empty-left-button">
+    <view class="empty-button-style empty-left-button" bindtap="feedback">
       立即反馈
     </view>
-    <view class="empty-button-style empty-right-button">
+    <view class="empty-button-style empty-right-button" bindtap="toKefu">
       智能客服
     </view>
   </view>
 </block>
+
+<import src="/lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />

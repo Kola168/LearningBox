@@ -296,7 +296,7 @@ const graphqlApi = {
         mistakeSearch(input:$input){
           answerUrls
           questionUrl
-        } 
+        }
         }`,
       variables: {
         input: input
@@ -364,7 +364,26 @@ const graphqlApi = {
         input: input
       }
     })
-  }
+  },
+
+  //字帖查询字帖列表
+  getCopyBookList:(key)=>{
+    return gql.query({
+      query: `query($key:String!){
+        feature(key:$key){
+          categories{
+              name
+              sn
+          }
+        }
+      }`,
+      variables: {
+        key:key
+      }
+    })
+  },
+
+  //
 }
 
 export default graphqlApi

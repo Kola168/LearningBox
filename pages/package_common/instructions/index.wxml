@@ -6,21 +6,33 @@
 </view>
 <view class="content-box">
   <view class="content-top-type">
-    <view class="content-type-box">
+    <view class="content-type-box" data-type="maker" bindtap="checkType">
       <view class="content-type-name">
-        {{equipmentBrand[equipmentIndex].name}}
+        {{equipmentBrand[equipmentIndex].maker}}
       </view>
       <text class="iconfont icon-show-more"></text>
     </view>
-    <view class="content-type-box">
+    <view class="content-type-box" data-type="printerModel" bindtap="checkType">
       <view class="content-type-name">
-        {{equipmentBrand[equipmentIndex].children[brandIndex].name}}
+        {{equipmentBrand[equipmentIndex].printerModels[brandIndex].name}}
       </view>
       <text class="iconfont icon-show-more"></text>
     </view>
   </view>
 </view>
-<view wx:for="{{questionList}}" wx:key="questionList" class="content-list" data-index="{{index}}" bindtap="toPreview">
-  <text>{{item.question}}</text>
-  <text class="iconfont icon-next"></text>
+<view class="rest-box">
+  <view wx:for="{{questionList}}" wx:key="questionList" class="content-list" data-index="{{index}}" bindtap="toPreview">
+    <text>{{item.title}}</text>
+    <text class="iconfont icon-next {{pickType?'icon-checked':''}}"></text>
+  </view>
+  <view wx:if="{{pickType}}" class="check-box" bindtap="hidePicker">
+    <view class="picker-box">
+      <view wx:for="{{pickType=='maker'?equipmentBrand:equipmentBrand[equipmentIndex].printerModels}}" wx:key="pickType" class="picker-list" data-index="{{index}}" catchtap="changePick">
+        {{pickType=='maker'?item.maker:item.name}}
+      </view>
+    </view>
+  </view>
 </view>
+
+<import src="/lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />

@@ -6,13 +6,14 @@ import {
   co,
   util,
   _,
-  uploadFormId,
   common_util
 } from '../../../utils/common_import'
 
 const showModal = util.promisify(wx.showModal)
 const request = util.promisify(wx.request)
 const requestPayment = util.promisify(wx.requestPayment)
+import wxNav from '../../../utils/nav.js'
+import graphql from '../../../network/graphql/feature'
 
 Page({
   data: {
@@ -24,17 +25,15 @@ Page({
     this.longToast = new app.WeToast()
     mta.Page.init()
     console.log(options)
-    wx.setNavigationBarTitle({
+    this.setData({
       title: options.title,
     })
 
     this.setData({
-      user_share_qrcode: common_util.decodeLongParams(options.user_share_qrcode),
+      // user_share_qrcode: common_util.decodeLongParams(options.user_share_qrcode),
       title: options.title,
       sn: options.sn,
-      choose_grade: options.choose_grade,
-      price: options.price,
-      highScreen: app.sysInfo.screenHeight > 750 ? true : false
+      highScreen: app.isFullScreen
     })
     yield this.getcopybookSets()
   }),
@@ -49,9 +48,7 @@ Page({
 
   getcopybookSets: co.wrap(function*(e) {
     this.longToast.toast({
-      img: '/images/loading.gif',
-      title: '请稍候',
-      duration: 0
+      type:'loading'
     })
     try {
       const resp = yield api.copybooksetsDetail(app.openId, this.data.sn)
@@ -61,8 +58,6 @@ Page({
       console.log('获取字帖集详情', resp)
       this.setData({
         copyBooks: resp.res.copy_books,
-        user_paid: resp.res.user_paid,
-        free: resp.res.free
       })
       this.longToast.toast()
     } catch (e) {
@@ -74,44 +69,6 @@ Page({
   cancel: co.wrap(function*(e) {
     this.setData({
       showConfirmModal: false
-    })
-  }),
-
-  confirm: co.wrap(function*(e) {
-    let sn = this.data.sn
-    mta.Event.stat("zitie_pay_confirm", sn)
-    this.longToast.toast({
-      img: '/images/loading.gif',
-      title: '请稍候',
-      duration: 0
-    })
-    this.setData({
-      showConfirmModal: false
-    })
-    let brand
-    try {
-      const resp = yield api.payCopybook(app.openId, 'copy_book_set', this.data.sn)
-      if (resp.code != 0) {
-        throw (resp)
-      }
-      brand = resp.res
-      console.log('brand-----', resp.res)
-      console.log('购买成功', resp)
-      this.longToast.toast()
-    } catch (e) {
-      this.longToast.toast()
-      util.showErr(e)
-    }
-    const payment = yield requestPayment({
-      timeStamp: brand.timeStamp,
-      nonceStr: brand.nonceStr,
-      package: brand.package,
-      signType: brand.signType,
-      paySign: brand.paySign
-    })
-    console.log('支付信息=========', payment)
-    this.setData({
-      user_paid: true,
     })
   }),
 

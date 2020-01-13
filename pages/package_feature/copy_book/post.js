@@ -38,13 +38,6 @@ Page({
     })
     console.log("屏幕宽高", this.data.width, this.data.height)
     this.canvas()
-    let userId = wx.getStorageSync('userId')
-    if (userId == undefined || userId == ''){
-      yield this.loopOpenId()
-    }else{
-      this.user_id = userId
-    }
-
   }),
   canvas: co.wrap(function*() {
     this.setData({
@@ -194,46 +187,6 @@ Page({
         })
       }
     })
-  }),
-
-  loopOpenId: co.wrap(function* () {
-    let loopCount = 0
-    let _this = this
-    if (app.openId) {
-      console.log('openId++++++++++++----', app.openId)
-      _this.getUserId()
-    } else {
-      setTimeout(function () {
-        loopCount++
-        if (loopCount <= 100) {
-          console.log('openId not found loop getting...')
-          _this.loopOpenId()
-        } else {
-          console.log('loop too long, stop')
-        }
-      }, 1000)
-    }
-  }),
-
-  getUserId: co.wrap(function* () {
-    try {
-      const resp = yield request({
-        url: app.apiServer + `/ec/v2/users/user_id`,
-        method: 'GET',
-        dataType: 'json',
-        data: {
-          openid: app.openId
-        }
-      })
-      if (resp.data.code != 0) {
-        throw (resp.data)
-      }
-      console.log('获取user_id', resp.data)
-      this.user_id = resp.data.user_id
-      wx.setStorageSync('userId', this.user_id)
-    } catch (e) {
-      // util.showErr(e)
-    }
   }),
 
   onShareAppMessage: function (res) {

@@ -1,9 +1,10 @@
+<nav-bar title="{{title}}"></nav-bar>
+
 <view wx:for="{{copyBooks}}" wx:key="{{index}}" id="{{index}}" class='list' bindtap="{{item.free_trial==false&&!user_paid?'toPay':'toDetail'}}">
   <image src='{{item.icon_url}}' class='url' mode='widthFix'></image>
   <view style='position:relative'>
     <view class='title'>
       <view style='position:relative'>{{item.name}}
-        <view class='free' wx:if="{{item.free_trial==true&&!free}}">免费</view>
       </view>
     </view>
     <view class='content'>{{item.content}}</view>
@@ -11,23 +12,5 @@
   </view>
 </view>
 
-<view wx:if="{{!user_paid&&!free}}" class='bottom-nopay' bindtap='toPay'>
-  <view>￥{{price}} 购买《{{title}}》字帖集</view>
-</view>
-<view wx:if="{{user_paid&&!free}}" class="bottom-pay wx:if={{highScreen?'high-screen-bottom':''}}">
-  <view>您已购买《{{title}}》字帖集</view>
-</view>
-
-<view class="modal-wrap" wx:if="{{showConfirmModal}}" catchtap="cancel">
-    <view class="confirm-modal">
-        <view>提示</view>
-        <view class='confirm-modal-content'>是否现在购买《{{title}}》字帖集？</view>
-        <view style='display:flex'>
-            <button class="cancel" >取消</button>
-            <button class="confirm" bindtap='confirm'>确定</button>
-        </view>
-    </view>
-</view>
-
-<import src="../../../../lib/toast/wetoast.wxml" />
+<import src="/lib/toast/wetoast.wxml" />
 <template is="wetoast" data="{{...__wetoast__}}" />

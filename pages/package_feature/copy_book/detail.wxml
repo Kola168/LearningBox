@@ -1,3 +1,5 @@
+<nav-bar title="{{title}}"></nav-bar>
+
 <view class="bottom-tip" wx:if="{{from_temp}}" bindtap="backToHome">返回首页</view>
 <view class="{{!custom?'top':'right'}}" wx:if="{{!from_temp}}">
     <view wx:if="{{!custom}}">篇章：{{name}}</view>
