@@ -17,6 +17,7 @@ Page({
   onLoad(query) {
     this.weToast = new app.weToast()
     let isFullScreen = app.isFullScreen
+    this.mediaType = query.mediaType
     this.sn = query.sn
     this.setData({
       isFullScreen,
@@ -48,6 +49,7 @@ Page({
   toPrint() {
     let postData = {
       featureKey: 'xuekewang_report',
+      media_type: this.mediaType,
       sn: this.sn,
       name: '报告',
       pageCount: this.data.imgList.length

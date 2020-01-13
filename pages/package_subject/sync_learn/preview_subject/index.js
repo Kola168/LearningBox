@@ -21,6 +21,7 @@ Page({
   onLoad: co.wrap(function *(options) {
     this.longToast = new app.weToast()
     this.sn = options.sn
+    this.mediaType = options.mediaType
     yield this.getMember()
     yield this.getExercisesDetail()
   }),
@@ -40,7 +41,7 @@ Page({
    */
   getMember: co.wrap(function*(){
     try {
-      var resp = yield graphqlAll.getUserMemberInfo()
+      var resp = yield graphql.getSubjectMemberInfo()
       this.setData({
         isSchoolAgeMember: resp.currentUser.isSchoolAgeMember
       })
@@ -97,6 +98,7 @@ Page({
         sn: this.sn,
         printPdf: this.data.isPrintAnswer ? this.data.exercise.answerPdf.nameUrl : this.data.exercise.pdf.nameUrl,
         featureKey: 'xuekewang_exercise',
+        media_type: this.mediaType,
       }
       wxNav.navigateTo('/pages/package_subject/setting/setting', {
         postData: encodeURIComponent(JSON.stringify(postData)),

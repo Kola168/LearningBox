@@ -1,5 +1,6 @@
 // pages/package_subject/weakness_exercise/index/index.js
 var app = getApp()
+const event = require('../../../../lib/event/event')
 import {
   regeneratorRuntime,
   co,
@@ -68,10 +69,26 @@ Page({
       },
       isFullScreen: app.isFullScreen
     })
+    
+    event.on('Authorize', this, ()=>{
+      this.initData()
+    })
+
+    if (!app.isScope()) {
+      return wxNav.navigateTo("/pages/authorize/index")
+    }
+    this.initData()
+  }),
+
+    /**
+   * 初始化数据
+   */
+  initData: co.wrap(function * (){
     yield this.getMember()
     yield this.getSubject()
     yield this.getExerciseList()
   }),
+
 
    /**
    * 获取学科信息
@@ -237,9 +254,9 @@ Page({
    */
   getMember: co.wrap(function*(){
     try {
-      var resp = yield graphqlAll.getSubjectMemberInfo()
+      var resp = yield graphql.getSubjectMemberInfo()
       if (resp.currentUser && resp.currentUser) {
-        var isExpires = resp.currentUser.selectedKid && resp.currentUser.selectedKid.schoolAgeMember.expiresAt
+        var isExpires = resp.currentUser.selectedKid && resp.currentUser.selectedKid.schoolAgeMember && resp.currentUser.selectedKid.schoolAgeMember.expiresAt
         this.setData({
           isSchoolAgeMember: resp.currentUser.isSchoolAgeMember,
           isExpires: isExpires
@@ -384,7 +401,8 @@ Page({
    */
   toPrint: function({currentTarget: {dataset: {sn}}}){
     wxNav.navigateTo('../../sync_learn/preview_subject/index', {
-      sn
+      sn,
+      mediaType: 'weakness_exercise'
     })
   },
 

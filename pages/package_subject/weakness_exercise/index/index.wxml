@@ -1,13 +1,13 @@
 <nav-bar background="#fff" title="薄弱项练习"/>
 <import src="../../common/template/exercise_list.wxml"/>
 <view class="weakness-main" wx:if="{{!showSubjectCheckbox && !showTimeCheckbox && !showKnowledgeCheckbox}}">
-  <view class="head-remind">
-    <image src="../../images/diamond.png" mode="widthFix" wx:if="{{!isSchoolAgeMember}}"/>
+  <view class="head-remind"  wx:if="{{!isSchoolAgeMember}}">
+    <image src="../../images/diamond.png" mode="widthFix"/>
     <view class="name">
-      <block wx:if="{{!isExpires && !isSchoolAgeMember}}">
+      <block wx:if="{{!isExpires}}">
         开通学科会员享有专属错题本，新用户免费体验！
       </block>
-      <block wx:if="{{isExpires && !isSchoolAgeMember}}">
+      <block wx:if="{{isExpires}}">
         开通学科会员享有专属错题本
       </block>
     </view>

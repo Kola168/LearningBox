@@ -37,7 +37,11 @@
   chinese_memory_write: '/pages/package_feature/memory_write/chinese/index',
   kousuan:'/pages/package_feature/kousuan/index',
   baobeicepin:'/pages/package_preschool/evaluation/index',
-  link:'/pages/package_feature/print_link/index'
+  link:'/pages/package_feature/print_link/index',
+  stage_report: '/pages/package_subject/stage_report/index/index',
+  exam_paper_report: '/pages/package_subject/exam_paper_report/index/index',
+  weakness_exercise: '/pages/package_subject/weakness_exercise/index/index',
+  sync_learn: '/pages/package_subject/sync_learn/learn_content/index',
 }
 module.exports = {
   feature_route: feature_route,

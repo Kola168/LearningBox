@@ -1,5 +1,6 @@
 // pages/package_subject/sync_video/index/index.js
 var app = getApp()
+const event = require('../../../../lib/event/event')
 import {
   regeneratorRuntime,
   co,
@@ -38,6 +39,23 @@ Page({
       currentStageIndex: options.index ? options.index : 0
     })
     this.longToast = new app.weToast()
+
+    event.on('Authorize', this, ()=>{
+      this.initData()
+    })
+
+    if (!app.isScope()) {
+      return wxNav.navigateTo("/pages/authorize/index")
+    }
+
+    
+    this.initData()
+  }),
+
+  /**
+   * 初始化数据
+   */
+  initData: co.wrap(function * (){
     yield this.getUser()
     yield this.getStages()
     yield this.getvideoSubject()
