@@ -13,16 +13,14 @@ Page({
     isMember: true,
     expiresAt: null,
     totalErrorBooksNum: 0,
-    barData: [],
+    barData: {},
     atlasType: ''
   },
   onLoad() {
     this.weToast = new app.weToast()
-    setTimeout(() => {
-      this.setData({
-        canvasWidth: app.sysInfo.screenWidth - 40
-      })
-    }, 300)
+    this.setData({
+      canvasWidth: app.sysInfo.screenWidth-30
+    })
     this.getSubjectMemberInfo()
   },
   getSubjectMemberInfo: co.wrap(function* () {
@@ -99,7 +97,7 @@ Page({
     const radar = new RadarChart({
       id: 'radar',
       colors: ['#4D98EC'],
-      radius: center - 60,
+      radius: center - 40,
       gridNumber: 5,
       origin: {
         x: center,
@@ -147,6 +145,6 @@ Page({
         url = '../../weakness_exercise/index/index'
         break;
     }
-    wxNav.navigateTo(url,params)
+    wxNav.navigateTo(url, params)
   }
 })
