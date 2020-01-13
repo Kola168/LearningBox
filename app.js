@@ -222,10 +222,9 @@ App({
 	}),
 
 	//全局通判是否授权
-	isScope: co.wrap(function* () {
+	isScope:function(){
 		const authToken = storage.get('authToken')
 		return authToken ? true : false
-	})
-
+	}
 
 })

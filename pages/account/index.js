@@ -122,5 +122,20 @@ Page({
 
 	member() {
 		wxNav.navigateTo('/pages/package_member/member/index')
-	}
+	},
+
+	toRules: function() {
+    wx.downloadFile({
+      url: 'https://cdn.gongfudou.com/wps3rd/954d6cd0-7309-11e9-909b-111c9c8398c0.pdf',
+      success: function(res) {
+        const filePath = res.tempFilePath
+        wx.openDocument({
+          filePath: filePath,
+          success: function(res) {
+            console.log('打开文档成功')
+          }
+        })
+      }
+    })
+  },
 })
