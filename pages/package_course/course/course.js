@@ -28,12 +28,12 @@ Page({
     showCodeCourseModal: false,
     checkboxFlag: false,
     navBarTop: 0,
+    auth: false,
   },
 
   onLoad: co.wrap(function*(query) {
    try {
     this.shareSn = ''
-    this.userSn = storage.get('userSn')
     this.longToast = new app.weToast()
       // 继续学习
     this.isContinue = query.isContinue ? Number(query.isContinue) : 0
@@ -50,12 +50,14 @@ Page({
       viewHeight: systemInfo.windowHeight - 50,
       navBarTop: app.navBarInfo && app.navBarInfo.topBarHeight,
       hiddenShareTip: !!hiddenShareTip,
-      userSn: this.userSn,
+      auth: app.isScope(),
       isAndroid: isAndroid
     })
     // 分享
     event.on('Authorize', this, () => {
-      this.userSn = storage.get('userSn')
+      this.setData({
+        auth: app.isScope()
+      })
     })
    } catch(err) {
      logger.info(err)
@@ -68,7 +70,7 @@ Page({
 
   // 课程分享，用户打开无userSn，跳转授权
   authCheck: co.wrap(function*() {
-    if (!this.userSn) {
+    if (!app.isScope()) {
       router.navigateTo('/pages/authorize/index')
       return false
     } else {
@@ -258,7 +260,7 @@ Page({
           title: '你好，我想学这个，帮帮我！',
           path: `/pages/package_course/share_course/share_course?sn=${this.shareSn}`
         }
-      } else if (this.userSn) {
+      } else if (app.isScope()) {
         return {
           title: '这个课程好棒啊 快来看看吧',
           path: `/pages/package_course/course/course?sn=${this.sn}`

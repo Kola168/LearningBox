@@ -7,8 +7,8 @@ import {
   storage,
   wxNav
 } from '../../../../utils/common_import'
-import api from '../../../../network/restful_request'
 import graphql from '../../../../network/graphql/subject'
+import graphqlAll from '../../../../network/graphql_request'
 import getLoopsEvent from '../../../../utils/worker'
 Page({
 
@@ -47,9 +47,11 @@ Page({
         sn: 0
       }
     ],
+    exerciseList: [],
     checkedPrint: null,
     checkedSubject: null,
     isExerciseEmpty: false,
+    isSchoolAgeMember: false,
   },
 
   /**
@@ -66,6 +68,7 @@ Page({
       },
       isFullScreen: app.isFullScreen
     })
+    yield this.getMember()
     yield this.getSubject()
     yield this.getExerciseList()
   }),
@@ -140,6 +143,7 @@ Page({
         wx.showModal({
           title: '提示',
           content: '暂无知识点，请重新选择',
+          showCancel: false,
           success: (res)=>{
             if (res.confirm) {
               this.closeKnowledgesBox()
@@ -217,7 +221,6 @@ Page({
         title: '请稍后...'
       })
       var resp = yield graphql.getKnowledgeExercises(this.data.checkedSubject.sn, this.data.checkedPrint.sn)
-      
       this.setData({
         exerciseList: resp.xuekewang.exercises,
         isExerciseEmpty: resp.xuekewang && resp.xuekewang.exercises.length ? false : true
@@ -229,12 +232,27 @@ Page({
     }
   }),
 
+   /**
+   * 判断是否是会员
+   */
+  getMember: co.wrap(function*(){
+    try {
+      var resp = yield graphqlAll.getUserMemberInfo()
+      this.setData({
+        isSchoolAgeMember: resp.currentUser.isSchoolAgeMember
+      })
+    } catch(err) {
+      util.showError(err)
+    }
+  }),
   /**
    * 确认练习
    */
   confirmExercise: function(){
-    // var member = this.selectComponent('#memberToast')
-    // member.showToast()
+    if (!this.data.isSchoolAgeMember) {
+      var member = this.selectComponent('#memberToast')
+      return member.showToast()
+    }
     this.setData({
       showSubjectCheckbox: true
     })
@@ -246,23 +264,22 @@ Page({
   createExercise: co.wrap(function * (){
     try {
       var ids = yield this.knowedgeIds()
-      console.log(ids, '==ids==')
       if (!ids) return
       
-      api.synthesisWorker({
-        feature_key: 'xuekewang_exercise',
-        is_async: false,
-        exercise_type: 'kpoint',
-        subject_sn: this.data.checkedSubject.sn,
-        end_time: this.data.checkedDate.endDate,
-        start_time: this.data.checkedDate.startDate,
-        ids: ids
-        // subject_sn: 2091261782649911,
-        // end_time: '2020-01-23',
-        // start_time: '2019-06-17',
-        // ids: '10418'
-      })
-      return
+      // api.synthesisWorker({
+      //   feature_key: 'xuekewang_exercise',
+      //   is_async: false,
+      //   exercise_type: 'kpoint',
+      //   subject_sn: this.data.checkedSubject.sn,
+      //   end_time: this.data.checkedDate.endDate,
+      //   start_time: this.data.checkedDate.startDate,
+      //   ids: ids
+      //   // subject_sn: 2091261782649911,
+      //   // end_time: '2020-01-23',
+      //   // start_time: '2019-06-17',
+      //   // ids: '10418'
+      // })
+      // return
 
       this.longToast.toast({
         type: 'loading',
@@ -272,14 +289,10 @@ Page({
         feature_key: 'xuekewang_exercise',
         worker_data: {
           exercise_type: 'kpoint',
-          // subject_sn: this.data.checkedSubject.sn,
-          // end_time: this.data.checkedDate.endDate,
-          // start_time: this.data.checkedDate.startDate,
-          // ids: ids
-          subject_sn: 2091261782649911,
-          end_time: '2020-01-23',
-          start_time: '2019-06-17',
-          ids: '10418'
+          subject_sn: this.data.checkedSubject.sn,
+          end_time: this.data.checkedDate.endDate,
+          start_time: this.data.checkedDate.startDate,
+          ids: ids
         }
       }, (resp) => {
         if (resp.status == 'finished') {
@@ -310,19 +323,21 @@ Page({
    * 匹配知识点ids
    */
   knowedgeIds: co.wrap(function*() {
-    var knowedges = this.data.knowledgeList.filter(item=>item.checked)
-    if (!knowedges.length) {
-       wx.showModal({
-        title: '提示',
-        content: '至少选择一个知识点',
-        showCancel: false
-      })
-      return false
+    try {
+      var knowedges = this.data.knowledgeList.filter(item=>item.checked)
+      if (!knowedges.length) {
+        wx.showModal({
+          title: '提示',
+          content: '至少选择一个知识点',
+          showCancel: false
+        })
+        return false
+      }
+      var ids = knowedges.reduce((pre, cur)=>(pre.concat('' + cur.id)), [])
+      return ids.join(',')
+    } catch(err) {
+      util.showError(err)
     }
-    console.log(knowedges, '===knowedges==')
-
-    var ids = knowedges.reduce((pre,cur)=>pre.concat('' + cur.id))
-    return ids.join(',')
   }),
 
   /**

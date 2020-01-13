@@ -108,6 +108,7 @@ const graphqlApi = {
             isReport
             printCount
             title
+            sn
           }
         }
       }`,
@@ -370,6 +371,12 @@ const graphqlApi = {
             answerImages{
               nameUrl
             }
+            answerPdf{
+              nameUrl
+            }
+            pdf{
+              nameUrl
+            }
             images{
               nameUrl
             }
@@ -434,9 +441,9 @@ const graphqlApi = {
   /**
    * 首页学科
    */
-  getLastLearn: () => {
+  getLastLearn: (stageSn) => {
     return gql.query({
-      query: `query Subject{
+      query: `query Subject($stageSn:String!,$sn: String!, $type: PayableItemTypeEnum!){
         xuekewang {
           registered
           subjects{
@@ -447,7 +454,23 @@ const graphqlApi = {
             }
           }
         }
-      }`
+        xuekewangVideoSubject(stageSn: $stageSn){
+          previewVideoSum
+          subjects{
+            currentUserNum
+            courseId
+            subjectId
+            subjectName
+            kidVideoCount(sn:$sn,type:$type)
+            vidoeTitle
+          }
+        }
+      }`,
+      variables: {
+        stageSn,
+        sn: stageSn,
+        type: 'stage'
+      }
     })
   },
 
@@ -488,7 +511,7 @@ const graphqlApi = {
       mutation: `mutation ($input: SubmitWrongQuestionInput!){
         submitXuekewangWrongQuestion(input:$input){
           state
-          id
+          workerSn
         }
       }`,
       variables: {
@@ -609,6 +632,28 @@ const graphqlApi = {
   },
 
   /**
+   * 获取学段列表
+   */
+  getStages: (stageSn) => {
+    return gql.query({
+      query: `query getStages($stageSn:String!){
+        xuekewangVideoSubject(stageSn: $stageSn){
+          stages{
+            sn
+            name
+          }
+        }
+        xuekewang{
+          registered
+        }
+      }`,
+      variables: {
+        stageSn,
+      }
+    })
+  },
+  
+  /*
    * 获取学科错题列表
    */
   getSubjectsErrorbook: () => {
@@ -624,6 +669,34 @@ const graphqlApi = {
           }
         }
       }`
+    })
+  },
+
+  /**
+   * 获取学科错题筛选项
+   * @param { String } sn 科目sn
+   * @param { String } startAt 开始时间
+   * @param { String } endAt 结束时间
+   */
+  getErrorbookFilters: (sn, startAt, endAt) => {
+    return gql.query({
+      query: `query($sn: String!,$startAt: String!,$endAt: String!) {
+        xuekewang {
+          errorBookKnowledges(sn:$sn,startAt:$startAt,endAt:$endAt) {
+            docCount
+            key
+          }
+          errorBookTypeNames(sn:$sn,startAt:$startAt,endAt:$endAt) {
+            docCount
+            key
+          }
+        }
+      }`,
+      variables: {
+        sn,
+        startAt,
+        endAt
+      }
     })
   },
 
@@ -788,6 +861,77 @@ const graphqlApi = {
       }`,
       variables: {
         id
+      }
+    })
+  },
+
+  /**
+   * 获取学科会员信息
+   */
+  getSubjectMemberInfo: () => {
+    return gql.query({
+      query: `query {
+        currentUser {
+          isSchoolAgeMember
+          selectedKid{
+            schoolAgeMember{
+              expiresAt
+            }
+          }
+        }
+      }`
+    })
+  },
+
+  /**
+   * 获取试卷详情
+   * @param { string } sn
+   */
+  getPaperDetail: (sn) => {
+    return gql.query({
+      query: `query($sn:String) {
+        xuekewang {
+          paper(sn:$sn){
+            answerImages{
+              nameUrl
+            }
+            title
+            images{
+              nameUrl
+            }
+            answerPdf{
+              nameUrl
+            }
+            pdf{
+              nameUrl
+            }
+          }
+        }
+      }`,
+      variables: {
+        sn
+      }
+    })
+  },
+
+  /**
+   * 获取报告详情
+   * @param { string } sn
+   */
+  getReportDetail: (sn) => {
+    return gql.query({
+      query: `query($sn:String) {
+        xuekewang {
+          report(sn:$sn){
+            images{
+              nameUrl
+            }
+            name
+          }
+        }
+      }`,
+      variables: {
+        sn
       }
     })
   },

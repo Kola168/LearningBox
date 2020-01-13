@@ -1,0 +1,19 @@
+<!--components/showModal/index.wxml-->
+<view wx:if="{{modalInfo}}" class="modal-bg">
+  <view class="modal-box">
+    <view wx:if="{{modalInfo.title}}" class="modal-title">
+      {{modalInfo.title}}
+    </view>
+    <view wx:if="{{modalInfo.content}}" class="modal-content">
+      {{modalInfo.content}}
+    </view>
+    <view class="bottom-button">
+      <view class="bottom-button-style bottom-button-left" wx:if="{{modalInfo.showCancel==undefined||modalInfo.showCancel}}" style="color:{{modalInfo.cancelColor||'#666'}};background:{{modalInfo.cancelBg||'#fff'}}" bindtap="bindCalcel">
+        {{modalInfo.cancelText||'取消'}}
+      </view>
+      <view class="bottom-button-style bottom-button-right" style="color:{{modalInfo.confirmColor||'#333'}};background:{{modalInfo.confirmBg||'#fff'}}" bindtap="bindConfirm">
+        {{modalInfo.confirmText||'确认'}}
+      </view>
+    </view>
+  </view>
+</view>

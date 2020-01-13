@@ -18,12 +18,12 @@ Page({
     this.weToast = new app.weToast()
     this.getSubjectsErrorbook()
   },
-  toErrorbookList(e){
+  toErrorbookList(e) {
     let sn = e.currentTarget.id
-    wxNav.navigateTo('../errorbook/list',{
+    wxNav.navigateTo('../errorbook/list', {
       sn,
-      isMember,
-      expiresAt
+      isMember: this.isMember ? 1 : 0,
+      expiresAt: this.expiresAt
     })
   },
   getSubjectsErrorbook: co.wrap(function* () {
