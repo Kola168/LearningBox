@@ -198,7 +198,6 @@ Page({
           resourceAttribute: {
             userPlanSn: this.userPlanSn,
             sn: this.sn,
-            resourceType: 'Plan',
           }
         },
         checkCapabilitys: {
