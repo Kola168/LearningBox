@@ -132,11 +132,11 @@ Page({
   getUserInfo: co.wrap(function* () {
     try {
 			let resp = yield gql.getUser()
-      // this.setData({
-      //   phone: resp.currentUser.phone,
-      //   selectedKid: resp.currentUser.selectedKid,
-      //   stageRoot: resp.currentUser.selectedKid.stageRoot
-      // })
+      this.setData({
+        phone: resp.currentUser.phone,
+        selectedKid: resp.currentUser.selectedKid,
+        stageRoot: resp.currentUser.selectedKid.stageRoot
+      })
       // storage.put("userSn", resp.currentUser.sn)
 			// storage.put("kidStage", resp.currentUser.selectedKid.stageRoot)
 
