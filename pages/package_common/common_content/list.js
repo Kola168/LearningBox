@@ -23,6 +23,7 @@ Page({
       name: options.name
     })
     this.options = options
+    console.log(options)
     this.longToast = new app.weToast()
     this.userSn = storage.get('userSn')
     if (!this.userSn) {
@@ -67,11 +68,10 @@ Page({
     })
     try {
       const resp = yield gql.customizeCategory(this.options.sn)
-      logger.info(resp)
+      this.longToast.hide()
       this.setData({
         typeList: resp.customizeCategory
       })
-      this.longToast.hide()
       yield this.changeTab({
         currentTarget: {
           id: '_0'
@@ -84,9 +84,13 @@ Page({
     }
   }),
   getFeatureList: co.wrap(function* () {
+    if (this.data.typeList.length == 0) {
+      return
+    }
     this.longToast.toast({
       type: "loading"
     })
+    this.longToast.hide()
     if (this.page == 1) {
       this.setData({
         playList: []
@@ -107,7 +111,6 @@ Page({
         playList: resp.customizeContents
       })
       this.page++
-      this.longToast.hide()
     } catch (error) {
       this.longToast.hide()
       util.showError(error)
@@ -119,8 +122,17 @@ Page({
       name: e.currentTarget.dataset.name
     })
   },
-  onShareAppMessage: function () {
-
+  onShareAppMessage: function (res) {
+    console.log('paly preview res====', res, res[0])
+		res = res[0]
+		if (res.from === 'button') {
+			return {
+				title: this.title,
+				path: `/pages/package_common/common_content/preview?sn=${this.options.sn}&userSn=${this.userSn}&name=${this.data.name}&type_id=${this.type_id}`
+			}
+		} else {
+			return app.share
+		}
   },
   onUnload() {
     event.remove('Authorize', this)

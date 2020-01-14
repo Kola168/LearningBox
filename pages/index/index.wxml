@@ -113,13 +113,13 @@
   </block>
   <!-- 学科 ui -->
   <block wx:if="{{homeType=='学科'}}">
-    <view class="home-title">智能学习工具</view>
-    <view class="tool-wrap">
+    <view class="home-title" style="margin-bottom:0">智能学习工具</view>
+    <scroll-view class="tool-wrap" scroll-x>
       <view class="tool-item" bindtap="toFunction" id="freeResources">
         <image src="/images/home/icon_free_database.png" mode="widthFix">
           <image src="/images/home/icon_subject_free.png" mode="widthFix" class="subject-free"></image>
         </image>
-        <view>免费资源库</view>
+        <view>精品资源库</view>
       </view>
       <view class="tool-item" bindtap="tokousuan">
         <image src="/images/home/icon_count.png" mode="widthFix"></image>
@@ -137,7 +137,11 @@
         <image src="/images/home/icon_word.png" mode="widthFix" bind:tap="toFunction" id="exerciseWords"></image>
         <view>练好字</view>
       </view>
-    </view>
+      <view class="tool-item">
+        <image src="/images/home/icon_mistake.png" mode="widthFix" bind:tap="toFunction" id="mistake"></image>
+        <view>错题本</view>
+      </view>
+    </scroll-view>
     <view class="home-title">智能辅导</view>
     <view class="subject-aptitude">
       <image src="/images/home/subject_follow.png" mode="widthFix"  />

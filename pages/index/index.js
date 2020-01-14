@@ -313,6 +313,8 @@ Page({
       case 'baobeicepin':
         url = '/pages/package_preschool/evaluation/index'
         break;
+      case 'mistake':
+        url ='/pages/package_feature/error_book/index' 
     }
     if (!url) {
       return wx.showModal({

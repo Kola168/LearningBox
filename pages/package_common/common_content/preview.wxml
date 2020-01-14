@@ -40,8 +40,7 @@
                 </view>
             </view>
             <view class="share">
-                <button class="share-button" open-type="{{userAuthorize?'share':''}}"
-                    bindtap="{{userAuthorize?'':'linktoauthorize'}}" hover-class="none">
+                <button class="share-button" open-type="share" hover-class="none">
                     <image mode="widthFix" src="/images/gfd-share_gray.png" class='bottom-image'></image>
                     <text class="font-content">分享</text>
                 </button>
