@@ -24,7 +24,7 @@ Page({
     currentImage: '',
     isFullScreen: false, //iphoneX底部button兼容性
     showArrow: true, //预览图片左右箭头
-    member: false,
+    isMember: false,
     subscription: false,
     btnText: '',
     isAndroid: false
@@ -36,13 +36,7 @@ Page({
   onLoad: co.wrap(function* (options) {
     this.longToast = new app.weToast()
     // let currentImage=this.data.imgUrls[1].image
-    let systemInfo = wx.getSystemInfoSync()
-    let isAndroid = systemInfo.system.indexOf('iOS') > -1 ? false : true
-    this.setData({
-      isAndroid: isAndroid,
-      currentImage: this.data.currentImage,
-      isFullScreen: app.isFullScreen
-    })
+    // let systemInfo = wx.getSystemInfoSync()
 
     this.userPlanSn = this.options.userPlanSn
     this.sn = this.options.sn
@@ -50,14 +44,20 @@ Page({
     this.subscribe = this.options.subscribe
 
     try {
+      const respMember = yield gragql.getUserMemberInfo()
+      console.log('232333',respMember)
       const resp = yield gql.getPreviewContent(this.sn)
       this.featureKey = resp.content.featureKey
       this.contentImagesLength = resp.content.contentImages.length
       this.data.imgUrls = resp.content.contentImages
       this.setData({
+        isAndroid: isAndroid,
+        currentImage: this.data.currentImage,
+        isFullScreen: app.isFullScreen,
         imgUrls: this.data.imgUrls,
         allPage: resp.content.pageCount,
         // currentPage:this.data.currentPage
+        isMember:respMember.currentUser.isPreschoolMember
       })
 
       if (this.data.allPage == 1) {
@@ -65,12 +65,6 @@ Page({
           showArrow: false
         })
       }
-
-      const respMember = yield gragql.getUserMemberInfo()
-      this.setData({
-        isMember:respMember.currentUser.isPreschoolMember
-      })
-      console.log('232333',respMember)
       console.log('this.data.isSuscribe',this.data.isSuscribe)
       if(this.subscribe == 'noSubscript'){
         this.setData({
@@ -81,6 +75,7 @@ Page({
           subscription:true
         })
       }
+      console.log('this.data.subscription',this.data.subscription)
 
       this.toFunc()
 
@@ -92,21 +87,20 @@ Page({
 
   toFunc: co.wrap(function* (e) {
     try {
-      if (this.data.subscription) {
+      if (this.data.isMember) {
+        this.btnType = 'subscription'
+        this.setData({
+          btnText: '立即订阅'
+        })
+      } else if(this.data.subscription) {
         this.btnType = 'print'
         this.setData({
           btnText: '开始打印'
         })
-
-      } else if (!this.data.member) {
+      } else {
         this.btnType = 'buy'
         this.setData({
           btnText: '购买会员'
-        })
-      } else {
-        this.btnType = 'subscription'
-        this.setData({
-          btnText: '立即订阅'
         })
       }
     } catch (error) {

@@ -62,12 +62,16 @@ Page({
           currentTime: resp.userPlan.subscription.timing,
         })
       }
+      this.longToast.toast()
     } catch (e) {
       this.longToast.toast()
       util.showError(e)
     }
   }),
   onShow:co.wrap(function*(){
+    this.longToast.toast({
+      type:'loading'
+    })
     try {
       let resp = yield graphql.getUser()
       if (resp.currentUser.selectedKid.name == '未命名') {
@@ -76,6 +80,7 @@ Page({
       this.setData({
         name: resp.currentUser.selectedKid.name
       })
+      this.longToast.hide()
     } catch (e) {
       this.longToast.toast()
       util.showError(e)

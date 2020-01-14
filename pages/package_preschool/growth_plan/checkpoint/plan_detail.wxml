@@ -3,7 +3,7 @@
 <swiper class="detail-images" indicator-dots="{{indicatorDots}}" autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">
     <block wx:for="{{imgUrls}}" wx:key="index" id="{{index}}">
         <swiper-item class="detail-item">
-            <image src="{{item.nameUrl}}" class="slide-image" />
+            <image src="{{item.nameUrl}}" class="slide-image" mode="widthFix" />
         </swiper-item>
     </block>
 </swiper>

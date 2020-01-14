@@ -22,7 +22,7 @@ Page({
     checkpoints: '',
     isShow: false, //是否显示锁图
     isMember: false, //是否会员
-    isSuscribe: false, //是否订阅
+    isSuscribe: true, //是否订阅
     isShowPrint: true, //自动打印按钮是否显示
     isShadowOpcity: false, //是否显示透明层
     isShowBottomBtn: true, //是否显示底部按钮
@@ -60,6 +60,7 @@ Page({
     this.setData({
       isMember:respMember.currentUser.isPreschoolMember
     })
+    console.log('thisadatasuscriobe',this.data.isSuscribe)
       if(this.data.isSuscribe){
         this.setData({
           autoPrintBtn:true
@@ -106,6 +107,9 @@ Page({
   },
 
   getDetail: co.wrap(function* (planSn) {
+    this.longToast.toast({
+      type:'loading'
+    })
     try {
       const resp = yield gql.getPlanContents(planSn)
       this.setData({
@@ -140,6 +144,9 @@ Page({
 
   /* 去订阅 */
   toSubscribe: co.wrap(function* () {
+    this.longToast.toast({
+      type:'loading'
+    })
     try {
       yield gql.joinPlan(this.planSn)
       // wxNav.navigateBack()
@@ -165,6 +172,9 @@ Page({
   }),
 
   toSetAuto:co.wrap(function *(){
+    this.longToast.toast({
+      type:'loading'
+    })
     try {
       this.setData({
         // isSuscribe:true,
@@ -173,7 +183,8 @@ Page({
       })
       this.longToast.hide()
     } catch (e) {
-    console.log(e)  
+      this.longToast.toast()
+      util.showError(e) 
     }
   }),
 
@@ -198,10 +209,6 @@ Page({
   /**打印详情 */
   toPrintDetail: co.wrap(function* (e) {
     try {
-      this.longToast.toast({
-        type:'loading'
-      })
-
       let clickable = this.data.checkpoints[e.currentTarget.dataset.index].isShow
       if(clickable){
         wxNav.navigateTo(`/pages/package_preschool/growth_plan/checkpoint/plan_detail`, {
@@ -213,7 +220,6 @@ Page({
       }else{
         return
       }
-      this.longToast.hide()
     } catch (e) {
       this.longToast.toast()
       util.showError(encodeURIComponent)
