@@ -35,16 +35,12 @@ Page({
     }
   },
   onLoad: co.wrap(function* (query) {
-    event.on('authorize', this, () => {
+    event.on('Authorize', this, () => {
       this.setData({
         isAuth: app.isScope()
       })
       this.getCorrectPaper()
     })
-    let isAuth = app.isScope()
-    if (!isAuth) {
-      return wxNav.navigateTo("/pages/authorize/index")
-    }
     let areaHeight = 0
     if (app.navBarInfo) {
       areaHeight = app.sysInfo.screenHeight - app.navBarInfo.topBarHeight
@@ -58,8 +54,12 @@ Page({
     this.weToast = new app.weToast()
     let scene = query.scene
     this.correctId = Number(scene.split('_')[1])
-    this.correctType = scene.split('_')[2] === 'paper' ? 'XuekewangUserPaper' : 'XuekewangExercise' //批改类型
+    this.correctType = scene.split('_')[2] === 'paper' ? 'XuekewangPaper' : 'XuekewangExercise' //批改类型
     this.singleTopicIds = new Set()
+    let isAuth = app.isScope()
+    if (!isAuth) {
+      return wxNav.navigateTo("/pages/authorize/index")
+    }
     this.getUserMemberInfo()
   }),
 
@@ -370,6 +370,6 @@ Page({
     }
   },
   onUnload() {
-    event.remove('authorize', this)
+    event.remove('Authorize', this)
   }
 })

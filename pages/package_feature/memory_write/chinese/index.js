@@ -1,7 +1,13 @@
 "use strict"
 
 const app = getApp()
-import { regeneratorRuntime, co, util, storage, wxNav } from '../../../../utils/common_import'
+import {
+  regeneratorRuntime,
+  co,
+  util,
+  storage,
+  wxNav
+} from '../../../../utils/common_import'
 import graphql from '../../../../network/graphql/feature'
 Page({
   data: {
@@ -9,6 +15,7 @@ Page({
     writeList: [],
     grades: [],
     currentGrade: null,
+    areaHeight: 0,
     topBarHeight: 0,
     checkCount: 0,
     allCheck: false,
@@ -16,21 +23,22 @@ Page({
     isEmpty: false,
     isFullScreen: false
   },
-  onLoad: co.wrap(function*(query) {
+  onLoad: co.wrap(function* (query) {
     this.weToast = new app.weToast()
     this.sn = query.sn
     let showIntro = storage.get('hasViewCnWrite')
     this.setData({
       isFullScreen: app.isFullScreen,
       showIntro: showIntro ? false : true,
-      topBarHeight: app.navBarInfo.topBarHeight
+      topBarHeight: app.navBarInfo.topBarHeight,
+      areaHeight: app.sysInfo.screenHeight - app.navBarInfo.topBarHeight
     })
     if (showIntro) {
       yield this.getGrades()
       yield this.getWriteList()
     }
   }),
-  startWrite: co.wrap(function*() {
+  startWrite: co.wrap(function* () {
     storage.put('hasViewCnWrite', true)
     this.setData({
       showIntro: false
@@ -42,8 +50,8 @@ Page({
     let index = e.currentTarget.id,
       currentGrade = this.data.grades[index]
     this.setData({
-        currentGrade
-      })
+      currentGrade
+    })
     this.resetData()
   },
   resetData() {
@@ -109,7 +117,7 @@ Page({
       sns: encodeURIComponent(JSON.stringify(sns))
     })
   },
-  getGrades: co.wrap(function*() {
+  getGrades: co.wrap(function* () {
     this.weToast.toast({
       type: 'loading'
     })
@@ -127,7 +135,7 @@ Page({
       util.showError(error)
     }
   }),
-  getWriteList: co.wrap(function*() {
+  getWriteList: co.wrap(function* () {
     this.weToast.toast({
       type: 'loading'
     })

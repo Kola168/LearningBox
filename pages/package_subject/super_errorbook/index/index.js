@@ -70,6 +70,7 @@ Page({
         dataObj.atlasType = 'radar'
         this.setData(dataObj)
         this.drawRadar()
+        return
       } else if (this.atlasData.title.length > 0) {
         dataObj.atlasType = 'bar'
         let tempArr = []
@@ -84,7 +85,9 @@ Page({
           title: "得分率"
         }
         this.setData(dataObj)
+        return
       }
+      this.setData(dataObj)
       this.weToast.hide()
     } catch (e) {
       this.weToast.hide()

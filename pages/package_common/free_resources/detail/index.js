@@ -1,26 +1,22 @@
 "use strict"
 const app = getApp()
-import { regeneratorRuntime, co, util, wxNav, storage } from '../../../../utils/common_import'
+import {
+  regeneratorRuntime,
+  co,
+  util,
+  wxNav,
+  storage
+} from '../../../../utils/common_import'
+const event = require('../../../../lib/event/event')
 import graphql from '../../../../network/graphql_request'
-const PRINT_LIMIT = 30
+// const PRINT_LIMIT = 30
 Page({
   data: {
     isFullScreen: false,
     windowHeight: 0,
     current: 0,
     sources: [],
-    showPrintSetting: false,
-    printCount: 1,
-    pageCount: 1,
-    startPage: 1,
-    endPage: 1,
-    title: '',
-    grayscale: false, //是否灰度打印
-    confirmModal: {
-      isShow: false,
-      title: '请正确放置A4打印纸',
-      image: 'https://cdn-h.gongfudou.com/LearningBox/main/doc_confirm_print_a4_new.png'
-    }
+    title: ''
   },
 
   onLoad(query) {
@@ -31,9 +27,20 @@ Page({
       isFullScreen,
       windowHeight: app.sysInfo.screenHeight - app.navBarInfo.topBarHeight - (isFullScreen ? 30 : 0)
     })
-    this.getFreeSourcesDetail()
+    event.on('Authorize', this, () => {
+      this.setData({
+        isAuth: app.isScope()
+      })
+      this.getFreeSourcesDetail()
+    })
+    let isAuth = app.isScope()
+    if (!isAuth) {
+      return wxNav.navigateTo("/pages/authorize/index")
+    } else {
+      this.getFreeSourcesDetail()
+    }
   },
-  getFreeSourcesDetail: co.wrap(function*() {
+  getFreeSourcesDetail: co.wrap(function* () {
     this.weToast.toast({
       type: 'loading'
     })
@@ -42,8 +49,6 @@ Page({
         content = res.content
       this.setData({
         sources: content.contentImages,
-        pageCount: content.pageCount,
-        endPage: content.pageCount,
         title: content.name,
         isCollect: false
       })
@@ -80,124 +85,40 @@ Page({
       }
     }
   },
-  // 改变份数
-  changeCount(e) {
-    if (app.preventMoreTap(e)) return
-    let type = e.currentTarget.id,
-      printCount = this.data.printCount
-    if (type === 'plus') {
-      if (printCount >= PRINT_LIMIT) {
-        wx.toast({
-          title: '一次最多打印30份',
-          icon: 'none'
-        })
-      } else {
-        this.setData({
-          printCount: printCount + 1
-        })
-      }
-    } else {
-      if (printCount > 1) {
-        this.setData({
-          printCount: printCount - 1
-        })
-      }
-    }
-  },
-  // 获取打印范围
-  getStartPage(e) {
-    this.startPage = Number(e.detail.value)
-  },
-  judeStartPage() {
-    let startPage = this.startPage
-    if (this.startPage === 0 || this.startPage > this.data.endPage) {
-      wx.showToast({
-        title: '请输入正确的开始页',
-        icon: 'none'
-      })
-      startPage = 1
-    }
-    this.setData({
-      startPage
-    })
-  },
-  getEndPage(e) {
-    console.log(e)
-    this.endPage = Number(e.detail.value)
-  },
-  judeEndPage() {
-    let endPage = this.endPage
-    if (this.endPage < this.data.startPage || this.endPage > this.data.pageCount) {
-      wx.showToast({
-        title: '请输入正确的结束页',
-        icon: 'none'
-      })
-      endPage = this.data.pageCount
-    }
-    this.setData({
-      endPage
-    })
-  },
-  // 色彩选择
-  changePrintColor(e) {
-    let grayscale = Boolean(Number(e.currentTarget.dataset.flag))
-    this.setData({
-      grayscale
-    })
-  },
-  // 是否显示打印设置
-  showPrintSetting() {
-    this.setData({
-      showPrintSetting: !this.data.showPrintSetting
-    })
-  },
   // 打印
-  print() {
-    let hideConfirmPrintBox = Boolean(storage.get("hideConfirmPrintBox"))
-    if (hideConfirmPrintBox) {
-      this.userConfirm()
-    } else {
-      this.setData({
-        ['confirmModal.isShow']: true
-      })
-    }
-  },
-  // 确认打印
-  userConfirm: co.wrap(function*() {
-    this.weToast.toast({
-      type: 'loading'
-    })
-    try {
-      let params = {
-        featureKey: this.featureKey,
-        resourceAttribute: {
-          sn: this.sn,
-          copies: this.data.printCount,
-          startPage: this.data.pageCount === 1 ? 1 : this.data.startPage,
-          endPage: this.data.pageCount === 1 ? 1 : this.data.endPage,
-          grayscale: this.data.grayscale,
-          resourceType: 'Content'
+  toSetting() {
+    wxNav.navigateTo('/pages/package_common/setting/setting', {
+      settingData: encodeURIComponent(JSON.stringify({
+        file: {
+          name: this.data.title,
+        },
+        orderPms: {
+          printType: 'RESOURCE',
+          pageCount: this.data.sources.length,
+          featureKey: this.featureKey,
+          mediaType: this.featureKey,
+          resourceAttribute: {
+            resourceType: 'Content',
+            sn: this.sn
+          }
+        },
+        checkCapabilitys: {
+          isSettingDuplex: true,
+          isSettingColor: true,
         }
-      }
-      let res = yield graphql.createResourceOrder(params)
-      // if (res.createResourceOrder.state === 'finished') {
-        wxNav.redirectTo(`/pages/finish/index`)
-      // }
-      this.weToast.hide()
-    } catch (error) {
-      this.weToast.hide()
-      util.showError(error)
-    }
-  }),
+      }))
+    })
+  },
   // 收藏
-  collect: co.wrap(function*(e) {
-    if(app.preventMoreTap(e)) return
+  collect: co.wrap(function* (e) {
+    if (app.preventMoreTap(e)) return
     this.weToast.toast({
       type: 'loading'
     })
     try {
       let action = this.data.isCollect ? 'destroy' : 'create'
       yield graphql.collect(this.sn, 'content', action)
+      this.weToast.hide()
       let tipText = this.data.isCollect ? '取消收藏成功' : '收藏成功'
       wx.showToast({
         icon: 'none',
@@ -210,5 +131,18 @@ Page({
       this.weToast.hide()
       util.showError(error)
     }
-  })
+  }),
+  onShareAppMessage(res) {
+    if (res.from === 'button' || res[0].from === 'button') {
+      return {
+        title: this.data.title,
+        path: `/pages/package_common/free_resources/index/index?sn=${this.sn}`
+      }
+    } else {
+      return app.share
+    }
+  },
+  onUnload() {
+    event.remove('Authorize', this)
+  }
 })

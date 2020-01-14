@@ -74,13 +74,18 @@ Page({
     let index = e.currentTarget.dataset.index
     this.page = 1
     this.setData({
-      showDeviceList: false,
       showRemind: false,
       loadReady: false,
       orders: [],
       activeDevice: this.data.devices[index]
     })
+    this.hideDeviceFilter()
     this.getPrinterRecords()
+  },
+  hideDeviceFilter(){
+    this.setData({
+      showDeviceList: false
+    })
   },
   // 获取打印记录
   getPrinterRecords: co.wrap(function* () {

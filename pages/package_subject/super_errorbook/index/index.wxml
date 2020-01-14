@@ -33,7 +33,7 @@
         <view>知识图谱</view>
         <image src="../../images/hot_icon.png" mode="widthFix" />
       </view>
-      <view class="header-right" bindtap="toNext" id="atlas" wx:if="{{atlasType!=='none'}}">
+      <view class="header-right" bindtap="toNext" id="atlas" wx:if="{{isMember&&atlasType!=='none'}}">
         <view>查看详情</view>
         <image src="../../images/arrow.png" mode="widthFix" />
       </view>
