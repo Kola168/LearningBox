@@ -11,6 +11,7 @@ import router from '../../../utils/nav'
 import storage from '../../../utils/storage'
 import { uploadDocs } from '../../../utils/upload'
 import event from '../../../lib/event/event'
+import getLoopsEvent from '../../../utils/worker'
 Page({
 	data: {
 		isFullScreen: false,
@@ -130,11 +131,11 @@ Page({
       yield uploadDocs(urls, function(url, name) {
         var file = {
 					originalUrl: url,
-          filename: name,
-					grayscale: _this.initPms.grayscale,
+					filename: name,
+					grayscale: _this.initPms.grayscale || false,
 					colorCheck:  _this.initPms.color ? true : false,
-					color: _this.initPms.color,
-          duplex: _this.initPms.duplex,
+					color: _this.initPms.color || false,
+          duplex: _this.initPms.duplex || false,
           copies: 1,
           isSetting: false,
           skipGs: true,
@@ -210,7 +211,6 @@ Page({
 	 */
 	confirm: co.wrap(function*(e) {
 		// 判断是否授权手机号
-
 		// 判断是否选择文档
     if (this.data.allCount == 0) {
        return wx.showModal({
@@ -241,7 +241,6 @@ Page({
 				duration: 0
 			})
 			var urls = this.data.files.map(file => util.removeKeysToNewObj(file, ['isSetting', 'colorCheck']))
-			console.log(urls,'==urls==')
 			const resp = yield commonRequest.createOrder('doc_a4', urls)
 			router.navigateTo('/pages/finish/index',
 				{
@@ -263,18 +262,34 @@ Page({
 			if (app.preventMoreTap(e)) {
 				return
 			}
-			var { originalUrl,  singlePageLayoutsCount, skipGs, extract } = this.data.files[parseInt(e.currentTarget.id)]
+			var { originalUrl,  singlePageLayoutsCount, skipGs, extract, previewUrl } = this.data.files[parseInt(e.currentTarget.id)]
+			
+			
 			this.longToast.toast({
 				type:'loading',
 				title: '正在开启预览',
 				duration: 0
 			})
-			commonRequest.previewDocument({
-				feature_key: 'doc_a4',
-				worker_data: {url: originalUrl, display: singlePageLayoutsCount, skip_gs: skipGs, extract: (extract || 'all')}
-			}, ()=>{
-				this.longToast.hide()
-			})
+
+			if (previewUrl) {
+				wx.downloadFile({
+					url: previewUrl,
+					success: (res) => {
+						this.longToast.hide()
+						wx.openDocument({
+							filePath: res.tempFilePath
+						})
+					}
+				})
+			} else {
+				commonRequest.previewDocument({
+					feature_key: 'doc_a4',
+					worker_data: {url: originalUrl, display: singlePageLayoutsCount, skip_gs: skipGs, extract: (extract || 'all')}
+				}, ()=>{
+					this.longToast.hide()
+				})
+			}
+			
 		} catch(err) {
 			this.longToast.hide()
 		}
@@ -298,22 +313,64 @@ Page({
 		try {
 			if (app.preventMoreTap(e)) {
 				return
-			}
-
-			var currentFile = this.data.files[e.currentTarget.id]
-			var print_capability = yield commonRequest.getPrinterCapacity('doc_a4', currentFile.originalUrl) //获取打印能力
+			}			
+			this.currentFileIndex = e.currentTarget.id
+			var currentFile = this.data.files[this.currentFileIndex]
+			var print_capability = yield commonRequest.getPrinterCapacity('doc_a4', currentFile.pageCount ? '' : currentFile.originalUrl) //获取打印能力
 			if (!print_capability) {
 				return
 			}
+
+			this.longToast.toast({
+				type:'loading',
+				title: '正在跳转'
+			})
+
+			if (currentFile.pageCount) {
+				return this.resetNavData(currentFile, currentFile.pageCount)
+			}
+
+			getLoopsEvent({
+				feature_key: 'doc_a4',
+				worker_data: {
+					url: currentFile.originalUrl,
+				}
+			}, (resp) => {
+				if (resp.status == 'finished') {
+					this.longToast.hide()
+					var res = resp.data
+					this.setData({
+						[`files[${this.currentFileIndex}].pageCount`]: res.pages,
+						[`files[${this.currentFileIndex}].previewUrl`]: res.converted_url
+					})
+					this.resetNavData(currentFile, res.pages)
+				}
+			}, (err) => {
+				this.longToast.hide()
+				util.showError(err)
+			})
+			
+		} catch (e) {
+			this.longToast.hide()
+			util.showError(e)
+		}
+	}),
+
+	/**
+	 * 处理跳转
+	 */
+	resetNavData: co.wrap(function*(currentFile, pageCount){
+		try {
 			var postData = {
-				page_count: print_capability.pageCount,
+				pageCount: pageCount, //兼容打印能力请求失败
 				name: currentFile.filename,
-				fileIndex: e.currentTarget.id,
-				color: print_capability.color,
-				grayscale: print_capability.grayscale,
-				duplex: print_capability.duplex,
-				colorCheck: print_capability.color ? true : false,
+				fileIndex: this.currentFileIndex,
+				color: currentFile.color|| false,
+				grayscale: currentFile.grayscale || false,
+				duplex: currentFile.duplex || false,
+				colorCheck: currentFile.color ? true : false,
 				duplexCheck: false,
+				previewUrl: currentFile.previewUrl,
 				isSetting: currentFile.isSetting,
 				url: currentFile.originalUrl,
 				skipGs: true
@@ -328,12 +385,11 @@ Page({
 				postData.extract = currentFile.extract
 			}
 			router.navigateTo('/pages/print_doc/doc_setting/doc_setting',
-				{
-					postData: encodeURIComponent(JSON.stringify(postData)),
+			{
+				postData: encodeURIComponent(JSON.stringify(postData)),
 			})
-		} catch (e) {
-			this.longToast.hide()
-			util.showError(e)
+		} catch(err) {
+			util.showError(err)
 		}
 	}),
 	/**
@@ -351,6 +407,7 @@ Page({
 		tempFiles[postData.fileIndex].color = postData.colorCheck
 		tempFiles[postData.fileIndex].colorCheck = postData.colorCheck
 		tempFiles[postData.fileIndex].duplex = postData.duplex
+		tempFiles[postData.fileIndex].pageCount = postData.pageCount
 		tempFiles[postData.fileIndex].singlePageLayoutsCount = postData.singlePageLayoutsCount
 		tempFiles[postData.fileIndex].isSetting = true
 		this.setData({

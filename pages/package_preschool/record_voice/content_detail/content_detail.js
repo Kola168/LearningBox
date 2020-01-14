@@ -231,7 +231,7 @@ Page({
 					copies: _this.data.documentPrintNum,
 					startPage: _this.data.startPrintPage,
 					endPage: _this.data.endPrintPage,
-					grayscale: _this.data.colorCheck == 'Color' ? false : true,
+					color: _this.data.colorCheck == 'Color',
         },
         featureKey: "kid_record"
       }

@@ -28,7 +28,7 @@ Page({
     showToast: false, //通知弹窗
     showTips: false,
     userContentAudio: null, //用户录制者信息
-    isRecording:true,
+    isRecording: false,
   },
 
   onLoad: co.wrap(function *(options) {
@@ -115,7 +115,7 @@ Page({
             isPause: false,
             audioCtx: null,
             currentProgressWidth: 0,
-            src: userAudio
+            src: userAudio || resp.content.audioUrl
           },
           source: {
             isPlaying: false,
@@ -123,7 +123,7 @@ Page({
             count: 0,
             audioCtx: null,
             currentProgressWidth: 0,
-            src: resp.content.audio || ''
+            src: resp.content.audioUrl || ''
           }
         }
       })
