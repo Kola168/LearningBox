@@ -1,0 +1,11 @@
+<!-- 会员开通弹窗 -->
+<view class="member-toast" wx:if="{{showMemberToast}}" bind:tap="hideToast" bind:touchmove="true">
+  <image src="../../images/preschool_member_toast.png" mode="widthFix"/>
+  <view class="member-main">
+    <view class="member-type">开通学龄前会员</view>
+    <view class="member-module-name">{{modal.title}}</view>
+    <view class="member-desc">{{modal.desc}}</view>
+    <view class="btn-sure" catchtap="toMember" >开通会员</view>
+  </view>
+
+</view>
