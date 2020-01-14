@@ -167,6 +167,19 @@
     color: #7c7c7c;
 }
 
+.pay-button{
+  position:relative;
+}
+
+.bottom-bnutton{
+  width:100%;
+  height:100%;
+  opacity:0;
+  position:absolute;
+  top:0;
+  left:0;
+}
+
 .saveimg-icon {
     width: 44rpx;
     margin-right: 14rpx;

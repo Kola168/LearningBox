@@ -20,7 +20,7 @@ App({
 	weToast: weToast,
 	version: '0.0.2',
 	//线上地址
-	apiServer: 'https://api.xbxxhz.com',
+	// apiServer: 'https://api.xbxxhz.com',
 	apiWbviewServer: 'https://api.xbxxhz.com',
 
 	//staging
@@ -28,7 +28,7 @@ App({
 	// apiWbviewServer: 'https://lb-stg.gongfudou.com',
 
 	//王析理本地地址
-	// apiServer: 'http://epbox.natapp1.cc',
+	apiServer: 'http://epbox.natapp1.cc',
 	// apiWbviewServer: 'http://epbox.natapp1.cc',
 
 	// 袁小飞接口

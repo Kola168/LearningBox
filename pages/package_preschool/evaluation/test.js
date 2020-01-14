@@ -102,7 +102,7 @@ Page({
     this.setData({
       selectIndex: index
     })
-    this.data.remainingTime = this.data.remainingTime <= 3 ? this.data.remainingTime : 3
+    this.data.remainingTime = this.data.remainingTime <= 2 ? this.data.remainingTime : 2
     this.is_right = this.data.subjectList[this.data.nowIndex].answers[index].isRight
   },
 

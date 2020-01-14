@@ -2,8 +2,5 @@
   "disableScroll": false,
   "enablePullDownRefresh": false,
   "navigationBarTitleText": "字帖",
-  "usingComponents": {
-    "consumables": "../../../components/consumables/index",
-    "ios-tip": "../../../../components/ios_tip/index"
-  }
+  "usingComponents": {}
 }
