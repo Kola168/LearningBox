@@ -1,6 +1,6 @@
 <nav-bar background="#fff" title="同步练习"/>
 <view class="content-main">
-  <scroll-view scroll-x="true"  scroll-with-animation scroll-into-view="to_{{currentTabIndex}}">
+  <scroll-view scroll-x="true" class="tab-main" scroll-with-animation scroll-into-view="to_{{currentTabIndex}}">
     <view class="tab-item"  id="to_{{index}}" wx:for="{{subjectList}}" wx:key="sn"  bindtap="chooseSubject" data-index="{{index}}">
       <view class="tab-name {{currentTabIndex == index ? 'active' : ''}}">{{item.subjectName}}</view>
       <view class="tab-line {{currentTabIndex == index ? 'active-line' : ''}}"></view>
@@ -25,12 +25,12 @@
     </view>
     <view class="choose-box {{showSelectedText ? 'choose-box-show' : ''}}" catchtouchmove="true" catch:tap="touchShowText">
       <view class="select-bar" wx:if="{{showSelectedText}}">
-        <view class="left-select-content">
+        <scroll-view scroll-y  class="left-select-content">
           <view class="select-item {{textbookIndex == selectedBookVersionIndex ? 'select-active' : ''}}" wx:for="{{textbookVersion}}" wx:for-index="textbookIndex" data-index="{{textbookIndex}}" wx:key="versionId" catchtap="chooseTextbooVersion">{{item.name}}</view>
-        </view>
-        <view class="right-select-content">
+        </scroll-view>
+        <scroll-view scroll-y class="right-select-content">
           <view class="content-item {{teachIndex ==selectedTeachIndex ? 'active-text' : ''}}" wx:for="{{teachBook}}" wx:for-index="teachIndex" data-index="{{teachIndex}}" wx:key="textbookId" catchtap="chooseTextbook">{{item.volume}}</view>
-        </view>
+        </scroll-view>
       </view>
     </view>
   </block>

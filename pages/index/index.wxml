@@ -84,7 +84,7 @@
           </view>
         </view>
       </view>
-    </scroll-view>
+    </scroll-view> 
 
     <view class="study-plan">
       <image src="/images/home/study_plan_none.png" mode="widthFix" class="study-plan-image"></image>
@@ -94,12 +94,12 @@
           <view>新增计划</view>
         </view>
       </view>
-    </view>
+    </view> 
 
     <view class="content-list" wx:for="{{beforeSchoolContent}}" wx:key="beforeSchoolContent" id="{{item.key}}">
       <view class="home-title">{{item.name}}</view>
       <image src="{{item.iconUrl}}" class="content-image" mode="widthFix" id="{{item.key}}"  bindtap="toContentList" data-name="{{item.name}}" data-has="{{item.hasCategory}}"/>
-    </view>
+    </view> 
     <view class="tips">
       <view>
         <image src="/images/home/icon_book.png" mode="widthFix" />
@@ -165,7 +165,7 @@
       <text>进入学习中心</text>
       <image src="/images/home/to_study_center.png" mode="widthFix" />
     </view>
-    <!-- <view class="home-title">
+    <view class="home-title">
       <view>升学专题</view>
       <view>
         <text>更多</text>
@@ -197,7 +197,7 @@
           <view class="small-title">{{item.total_lessons}}课时</view>
         </view>
       </block>
-    </scroll-view> -->
+    </scroll-view>
   </block>
 
 </block>

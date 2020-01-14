@@ -1,4 +1,4 @@
-import { regeneratorRuntime, co } from './common_import'
+import { regeneratorRuntime, co, util } from './common_import'
 import getLoopsEvent from './worker'
 import graphql from '../network/graphql_config'
 import api from '../network/restful_request'
@@ -38,23 +38,35 @@ const createOrder = function(featureKey, fileAttributes) {
   })
 }
 
+/**
+ * 文档预览
+ * @param {Object} data 生成文档预览的参数
+ * @param {Function} callback 生成文档预览的参数
+ * @
+ */
 const previewDocument = co.wrap(function*(data, callback) {
+  var previewDoc = function(converted_url, callback) {
+    wx.downloadFile({
+      url: converted_url,
+      success: (res) => {
+        callback()
+        wx.openDocument({
+          filePath: res.tempFilePath
+        })
+      }
+    })
+  }
+  
   getLoopsEvent(data, (result) => {
     if (result.status == 'finished') {
       var converted_url = result.data.converted_url
-      wx.downloadFile({
-        url: converted_url,
-        success: (res) => {
-          callback()
-          wx.openDocument({
-            filePath: res.tempFilePath
-          })
-        }
-      })
+      previewDoc(converted_url, callback)
     }
   }, ()=>{
     callback()
   })
+
+  
 })
 
 /**
@@ -89,20 +101,27 @@ const getPrinterCapacity = co.wrap(function*(featureKey, fileUrl) {
   })
   capacity = capacity.currentUser && capacity.currentUser.selectedDevice && capacity.currentUser.selectedDevice.capability || {}
   capacity.grayscale = true
+
   if (fileUrl) {
-    let fileObj = yield api.synthesisWorker({
-      feature_key: featureKey,
-      url: fileUrl,
-      is_async: false
-    })
-    if (fileObj.res && fileObj.res.pages) {
-      capacity = Object.assign({
-        pageCount: fileObj.res.pages
-      }, capacity)
+    try {
+      let fileObj = yield api.synthesisWorker({
+        feature_key: featureKey,
+        url: fileUrl,
+        is_async: false
+      })
+      if (fileObj.res && fileObj.res.pages) {
+        capacity = Object.assign({
+          pageCount: fileObj.res.pages
+        }, capacity)
+      }
+
+    } catch(err){
+      util.showError(err)
     }
     
   }
   return capacity
+
 })
 
 /**

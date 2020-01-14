@@ -7,13 +7,11 @@ import {
   storage,
   wxNav
 } from '../../../../utils/common_import'
-import busFactory from '../busFactory'
-import graphqlAll from '../../../../network/graphql_request'
 import graphql from '../../../../network/graphql/subject'
 Page({
 
   data: {
-    isPrintAnswer: true,
+    isPrintAnswer: false,
     currentIndex: 1,
     exercise: null,
   },
@@ -21,6 +19,7 @@ Page({
   onLoad: co.wrap(function *(options) {
     this.longToast = new app.weToast()
     this.sn = options.sn
+    this.mediaType = options.mediaType
     yield this.getMember()
     yield this.getExercisesDetail()
   }),
@@ -40,7 +39,7 @@ Page({
    */
   getMember: co.wrap(function*(){
     try {
-      var resp = yield graphqlAll.getUserMemberInfo()
+      var resp = yield graphql.getSubjectMemberInfo()
       this.setData({
         isSchoolAgeMember: resp.currentUser.isSchoolAgeMember
       })
@@ -90,16 +89,28 @@ Page({
 
   print: co.wrap(function* () {
     try {
-      var postData = {
-        name: this.data.exercise.exerciseName,
-        isPrintAnswer: this.data.isPrintAnswer,
-        pageCount: this.data.isPrintAnswer ? this.data.exercise.answerImages.length : this.data.exercise.images.length,
-        sn: this.sn,
-        originalUrl: this.data.isPrintAnswer ? this.data.exercise.answerPdf.nameUrl : this.data.exercise.pdf.nameUrl,
-        featureKey: 'xuekewang_exercise',
-      }
-      wxNav.navigateTo('/pages/package_subject/setting/setting', {
-        postData: encodeURIComponent(JSON.stringify(postData)),
+
+      wxNav.navigateTo('/pages/package_common/setting/setting', {
+        settingData: encodeURIComponent(JSON.stringify({
+          file: {
+            name: this.data.exercise.exerciseName,
+          },
+          orderPms: {
+            printType: 'PRINTSUBJECT',
+            pageCount: this.data.isPrintAnswer ? this.data.exercise.answerImages.length : this.data.exercise.images.length,
+            featureKey: 'xuekewang_exercise',
+            mediaType: this.mediaType,
+            attributes: {
+              resourceType: 'XuekewangExercise',
+              sn: this.sn,
+              originalUrl: this.data.isPrintAnswer ? this.data.exercise.answerPdf.nameUrl : this.data.exercise.pdf.nameUrl,
+            }
+          },
+          checkCapabilitys: {
+            isSettingDuplex: true,
+            isSettingColor: true,
+          }
+       }))
       })
     } catch (err) {
       util.showError(err)

@@ -6,14 +6,14 @@
 <view class="bottom">
   <!--打印-->
   <button class="pay-button2" open-type="share" hover-class="none">
-    <image src="/images/gfd-share_gray.png" mode="widthFix" class="saveimg-icon"></image>
+    <image src="../resource_images/gfd-share_gray.png" mode="widthFix" class="saveimg-icon"></image>
     <view>晒一晒</view>
   </button>
   <view class="pay-button"  bindtap="savePhoto">
-      <image src="/images/save_img_yellow.png" mode="widthFix" class="saveimg-icon"></image>
+      <image src="../resource_images/save_img_yellow.png" mode="widthFix" class="saveimg-icon"></image>
     <view>保存并分享至朋友圈</view>
   </view>
 </view>
 
-<import src="../../../../lib/toast/wetoast.wxml" />
+<import src="/lib/toast/wetoast.wxml" />
 <template is="wetoast" data="{{...__wetoast__}}" />

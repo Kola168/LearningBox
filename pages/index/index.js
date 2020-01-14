@@ -120,25 +120,25 @@ Page({
     } catch (e) {
       util.showError(e)
     }
-	}),
-	
-	//获取用户会员信息
-	getMemeberInfo: co.wrap(function* () {
-		let resp = yield commonRequest.getMemberInfo()
-    console.log('会员信息==========',resp)
-	}),
+  }),
+
+  //获取用户会员信息
+  getMemeberInfo: co.wrap(function* () {
+    let resp = yield commonRequest.getMemberInfo()
+    console.log('会员信息==========', resp)
+  }),
 
 
   getUserInfo: co.wrap(function* () {
     try {
-			let resp = yield gql.getUser()
-      // this.setData({
-      //   phone: resp.currentUser.phone,
-      //   selectedKid: resp.currentUser.selectedKid,
-      //   stageRoot: resp.currentUser.selectedKid.stageRoot
-      // })
+      let resp = yield gql.getUser()
+      this.setData({
+        phone: resp.currentUser.phone,
+        selectedKid: resp.currentUser.selectedKid,
+        stageRoot: resp.currentUser.selectedKid.stageRoot
+      })
       // storage.put("userSn", resp.currentUser.sn)
-			// storage.put("kidStage", resp.currentUser.selectedKid.stageRoot)
+      // storage.put("kidStage", resp.currentUser.selectedKid.stageRoot)
 
       if (!resp.currentUser.selectedKid || !resp.currentUser.selectedKid.stageRoot) {
         wxNav.navigateTo('/pages/index/grade')
@@ -158,7 +158,7 @@ Page({
   }),
   //获取学前模块
   customizeFeatures: co.wrap(function* () {
-    if (this.data.homeType!='学前') {
+    if (this.data.homeType != '学前') {
       return
     }
     try {
@@ -173,24 +173,24 @@ Page({
   afterUnion: co.wrap(function* () {
     try {
       yield this.getUserInfo()
-			yield this.getBanners()
-			yield this.getUserPlans() //宝贝学习计划
+      yield this.getBanners()
+      // yield this.getUserPlans() //宝贝学习计划
       yield this.customizeFeatures()
     } catch (error) {
       console.log(error)
     }
-	}),
-	
-	getUserPlans:co.wrap(function* () {
-		try {
+  }),
+
+  getUserPlans: co.wrap(function* () {
+    try {
       let resp = yield preschoolGql.getUserPlans('subscription')
-      console.log('resp=====',resp)
+      console.log('resp=====', resp)
     } catch (error) {
       util.showError(error)
     }
-	}),
-	
-	userInfoHandler: co.wrap(function* (e) {
+  }),
+
+  userInfoHandler: co.wrap(function* (e) {
     logger.info('********** userInfoHandler', e)
     if (!e.detail.userInfo || !e.detail.encryptedData) {
       return
@@ -228,10 +228,10 @@ Page({
       storage.put('authToken', resp.res.auth_token)
       storage.put('unionId', resp.res.unionid)
       storage.put('refreshToken', resp.res.refresh_token)
-			storage.put("userSn", resp.res.sn)
-			if(resp.res.phone){
-				storage.put("phoneNum", resp.res.sn)
-			}
+      storage.put("userSn", resp.res.sn)
+      if (resp.res.phone) {
+        storage.put("phoneNum", resp.res.sn)
+      }
 
       app.authToken = resp.res.auth_token
       this.setData({
@@ -256,8 +256,8 @@ Page({
       util.showError(e)
     }
   }),
-	
-	toNomalPrint: function (e) {
+
+  toNomalPrint: function (e) {
     let url
     switch (e.currentTarget.id) {
       case 'photo':
@@ -268,6 +268,11 @@ Page({
         break
       case 'more':
         url = "/pages/print_funny/index"
+        // wx.showToast({
+        // 	title: '暂未开放，敬请期待',
+        // 	icon: 'none',
+        // 	duration: 2000
+        // })
         break
         defalt:
           url = ''
@@ -305,16 +310,23 @@ Page({
         url = '/pages/package_subject/evaluate_exam/index/index'
         break;
       case 'errorBook':
-        url = '/pages/package_feature/error_book/index'
+        url = '/pages/package_subject/super_errorbook/index/index'
         break;
       case 'exerciseDay':
-				url = '/pages/package_preschool/exercise_day/exercises/exercises'
-				break;
+        url = '/pages/package_preschool/exercise_day/exercises/exercises'
+        break;
       case 'baobeicepin':
         url = '/pages/package_preschool/evaluation/index'
         break;
+      case 'weaknessExercise':
+        url = '/pages/package_subject/weakness_exercise/index/index'
+        break;
+      case 'stageReporter':
+        url = '/pages/package_subject/stage_report/index/index'
+        break;
       case 'mistake':
-        url ='/pages/package_feature/error_book/index' 
+        url = '/pages/package_feature/error_book/index'
+        break;
     }
     if (!url) {
       return wx.showModal({
@@ -400,14 +412,14 @@ Page({
   },
   changeSwiper: co.wrap(function* (e) {
     this.data.current = e.detail.current
-	}),
-	
-	addPlan: co.wrap(function* (e) {
-		wxNav.navigateTo('/pages/package_preschool/growth_plan/list/index')
-	}),
+  }),
 
-	moreLearingPlan: co.wrap(function* (e) {
-		wxNav.navigateTo('/pages/package_preschool/growth_plan/list/index')
-	})
+  addPlan: co.wrap(function* (e) {
+    wxNav.navigateTo('/pages/package_preschool/growth_plan/list/index')
+  }),
+
+  moreLearingPlan: co.wrap(function* (e) {
+    wxNav.navigateTo('/pages/package_preschool/growth_plan/list/index')
+  })
 
 })

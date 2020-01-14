@@ -576,7 +576,7 @@ Page({
       // 
       resp && wxNav.navigateTo('/pages/finish/index', {
         type: this.data.setting.orderPms.featureKey,
-        media_type: this.data.setting.orderPms.featureKey,
+        media_type: this.data.setting.orderPms.mediaType || this.data.setting.orderPms.featureKey,
         state: resp.state
       })
 

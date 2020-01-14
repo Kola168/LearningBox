@@ -7,7 +7,6 @@
   doc_a4: '/pages/print_doc/index/index',
   id_card: '/pages/print_doc/duplicate/index',
   invoice: '/pages/print_doc/print_invoice/print_invoice',
-  doc_a4: '/pages/package_feature/share_folder/index',
   _id1in: '/pages/print_id/index',
   _id2in: '/pages/print_id/index',
   _id1ins: '/pages/print_id/index',
@@ -37,8 +36,16 @@
   chinese_memory_write: '/pages/package_feature/memory_write/chinese/index',
   kousuan:'/pages/package_feature/kousuan/index',
   baobeicepin:'/pages/package_preschool/evaluation/index',
-  link:'/pages/package_feature/print_link/index'
+  link:'/pages/package_feature/print_link/index',
+  stage_report: '/pages/package_subject/stage_report/index/index',
+  exam_paper_report: '/pages/package_subject/exam_paper_report/index/index',
+  weakness_exercise: '/pages/package_subject/weakness_exercise/index/index',
+  sync_learn: '/pages/package_subject/sync_learn/learn_content/index',
+  daily_practice: '/pages/package_preschool/exercise_day/exercises/exercises',
+  testimonial: '/pages/package_preschool/exercise_day/certificate/index',
+  copybook:'/pages/package_feature/copy_book/index'
 }
+
 module.exports = {
   feature_route: feature_route,
 }

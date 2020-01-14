@@ -737,6 +737,7 @@ const graphqlApi = {
             iconUrl
             sn
             pageCount
+            printerOrdersCount
           }
         }
       }`,

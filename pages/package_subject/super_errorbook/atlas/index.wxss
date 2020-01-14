@@ -1,10 +1,9 @@
-.container {
-  padding: 40rpx 64rpx;
+canvas {
+  margin: 0 auto -60rpx;
 }
 
-canvas {
-  margin: 0 auto;
-  margin-bottom: 80rpx;
+.chart-bar-box {
+  padding: 60rpx 48rpx 130rpx 24rpx;
 }
 
 .subject-type {
@@ -15,7 +14,8 @@ canvas {
   padding: 44rpx 24rpx 0 24rpx;
   position: relative;
   box-sizing: border-box;
-  margin: 120rpx auto 60rpx;
+  width: calc(100% - 128rpx);
+  margin: 0 auto 60rpx;
 }
 
 .type-header {

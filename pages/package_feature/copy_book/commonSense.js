@@ -27,7 +27,7 @@ Page({
     word_count: 0
   },
   onLoad: function(options) {
-    this.longToast = new app.WeToast()
+    this.longToast = new app.weToast()
   },
   onShow:function(){
       this.setData({
@@ -137,7 +137,7 @@ Page({
       })
     } catch (e) {
       util.hideToast(this.longToast)
-      util.showErr(e)
+      util.showError(e)
     }
   }),
 })

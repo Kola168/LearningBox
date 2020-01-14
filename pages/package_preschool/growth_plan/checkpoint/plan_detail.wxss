@@ -11,7 +11,10 @@
     height:980rpx;
 }
 .detail-item{
-    display: inline-block;
+    /* display: inline-block; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .turn-page{
@@ -23,7 +26,7 @@
 }
 .fixed-bottom{
     position: fixed;
-    bottom: 180rpx;
+    bottom: 105rpx;
     width:100%;
 }
 .turn-page view{

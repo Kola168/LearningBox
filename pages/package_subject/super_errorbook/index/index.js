@@ -13,16 +13,14 @@ Page({
     isMember: true,
     expiresAt: null,
     totalErrorBooksNum: 0,
-    barData: [],
-    atlasType: ''
+    barData: {},
+    atlasType: 'none'
   },
   onLoad() {
     this.weToast = new app.weToast()
-    setTimeout(() => {
-      this.setData({
-        canvasWidth: app.sysInfo.screenWidth - 40
-      })
-    }, 300)
+    this.setData({
+      canvasWidth: app.sysInfo.screenWidth - 30
+    })
     this.getSubjectMemberInfo()
   },
   getSubjectMemberInfo: co.wrap(function* () {
@@ -30,10 +28,11 @@ Page({
       type: 'loading'
     })
     try {
-      let res = yield subjectGql.getSubjectMemberInfo()
+      let res = yield subjectGql.getSubjectMemberInfo(),
+        subjectMember = res.currentUser.selectedKid.schoolAgeMember
       this.weToast.hide()
       let isMember = res.currentUser.isSchoolAgeMember,
-        expiresAt = res.currentUser.selectedKid.schoolAgeMember.expiresAt
+        expiresAt = subjectMember ? subjectMember.expiresAt : ''
       this.setData({
         isMember: res.currentUser.isSchoolAgeMember,
         expiresAt: expiresAt
@@ -71,6 +70,7 @@ Page({
         dataObj.atlasType = 'radar'
         this.setData(dataObj)
         this.drawRadar()
+        return
       } else if (this.atlasData.title.length > 0) {
         dataObj.atlasType = 'bar'
         let tempArr = []
@@ -85,7 +85,9 @@ Page({
           title: "得分率"
         }
         this.setData(dataObj)
+        return
       }
+      this.setData(dataObj)
       this.weToast.hide()
     } catch (e) {
       this.weToast.hide()
@@ -99,7 +101,7 @@ Page({
     const radar = new RadarChart({
       id: 'radar',
       colors: ['#4D98EC'],
-      radius: center - 60,
+      radius: center - 40,
       gridNumber: 5,
       origin: {
         x: center,
@@ -147,6 +149,6 @@ Page({
         url = '../../weakness_exercise/index/index'
         break;
     }
-    wxNav.navigateTo(url,params)
+    wxNav.navigateTo(url, params)
   }
 })

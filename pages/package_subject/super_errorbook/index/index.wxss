@@ -108,6 +108,15 @@
 }
 
 canvas {
+  margin: 0 auto -120rpx;
+}
+
+.chart-bar-box {
+  padding: 30rpx 24rpx 110rpx 0;
+}
+
+image.atlas-tip {
+  width: 92%;
   margin: 0 auto;
 }
 

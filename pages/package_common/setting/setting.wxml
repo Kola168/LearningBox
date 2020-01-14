@@ -1,4 +1,4 @@
-<nav-bar background="#fff" title="文档打印" />
+<nav-bar background="#fff" title="打印设置" />
 <view class="document-title">
 	<view class="title-text">
 		<view class="text-name">{{setting.name}}</view>

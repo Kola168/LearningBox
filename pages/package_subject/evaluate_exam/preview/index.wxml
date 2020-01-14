@@ -1,13 +1,13 @@
 <nav-bar background="#fff" title="{{title}}" />
 <view class="preview-main">
   <swiper class="swpier-box" bindchange="changeImg">
-    <swiper-item class="" item-id="" wx:for="{{imgList}}" wx:key="*this">
-      <image class="img-item" src="{{item.nameUrl}}" mode="widthFix"></image>
+    <swiper-item current="{{currentIndex - 1}}" wx:for="{{imgList}}" wx:key="*this">
+      <image class="img-item" src="{{item.nameUrl}}?x-image-process=image/watermark,image_L21pY3JvL0xldmlhdGhhbi9iYWNrZW5kL3dhdGVybWFya2VyLnBuZw==,g_center/resize,w_700" mode="widthFix"></image>
     </swiper-item>
   </swiper>
   <view class="precent">{{currentIndex}}/{{imgList.length}}</view>
   <image src="../../images/look_report.png" wx:if="{{hasReport}}" class="look-report" mode="widthFix" />
-  <view class="btn-bottom">
+  <view class="btn-bottom {{isFullScreen?'is-full-screen':''}}">
     <view class="print-answer" bindtap="checkAnswer">
       <image class="check-on" src="../../images/check_{{printAnswer?'on':'off'}}.png"></image>
       <view class="title">打印答案</view>

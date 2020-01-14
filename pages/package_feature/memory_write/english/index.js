@@ -1,7 +1,13 @@
 "use strict"
 
 const app = getApp()
-import { regeneratorRuntime, co, util, wxNav, storage } from '../../../../utils/common_import'
+import {
+  regeneratorRuntime,
+  co,
+  util,
+  wxNav,
+  storage
+} from '../../../../utils/common_import'
 import graphql from '../../../../network/graphql/feature'
 Page({
   data: {
@@ -17,31 +23,33 @@ Page({
     showIntro: false,
     isEmpty: false,
     topBarHeight: 0,
-    isFullScreen: false
+    isFullScreen: false,
+    areaHeight: 0
   },
-  onLoad: co.wrap(function*(query) {
+  onLoad: co.wrap(function* (query) {
     this.weToast = new app.weToast()
     this.sn = query.sn
     let showIntro = storage.get('hasViewCnWrite')
     this.setData({
       isFullScreen: app.isFullScreen,
       showIntro: showIntro ? false : true,
-      topBarHeight: app.navBarInfo.topBarHeight
+      topBarHeight: app.navBarInfo.topBarHeight,
+      areaHeight: app.sysInfo.screenHeight - app.navBarInfo.topBarHeight
     })
     if (showIntro) {
       yield this.getFilters()
-      if(this.materials.length>0){
+      if (this.materials.length > 0) {
         this.getWriteList()
       }
     }
   }),
-  startWrite: co.wrap(function*() {
+  startWrite: co.wrap(function* () {
     storage.put('hasViewEnWrite', true)
     this.setData({
       showIntro: false
     })
     yield this.getFilters()
-    if(this.materials.length>0){
+    if (this.materials.length > 0) {
       this.getWriteList()
     }
   }),
@@ -64,7 +72,7 @@ Page({
     }
     this.setData(dataObj)
   },
-  selectorItemCheck: co.wrap(function*(e) {
+  selectorItemCheck: co.wrap(function* (e) {
     let index = e.currentTarget.id
     let dataObj = {
       writeList: [],
@@ -127,7 +135,7 @@ Page({
       sns: encodeURIComponent(JSON.stringify(sns))
     })
   },
-  getFilters: co.wrap(function*() {
+  getFilters: co.wrap(function* () {
     this.weToast.toast({
       type: 'loading'
     })
@@ -149,7 +157,7 @@ Page({
       util.showError(error)
     }
   }),
-  getWriteList: co.wrap(function*() {
+  getWriteList: co.wrap(function* () {
     this.weToast.toast({
       type: 'loading'
     })

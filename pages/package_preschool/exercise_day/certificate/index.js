@@ -16,6 +16,8 @@ Page({
    * 页面的初始数据
    */
   data: {
+    topBarHeight: 0,
+    certOwnerNum: 0, //拥有奖状数量
     isShowModal: false,
     babyName: '',
     testimonials: null, //奖状列表
@@ -24,6 +26,9 @@ Page({
 
   onLoad: function (options) {
     this.longtoast = new app.weToast()
+    this.setData({
+      topBarHeight: app.navBarInfo.topBarHeight
+    })
     this.getCertifacate()
     this.getUser()
   },
@@ -63,9 +68,14 @@ Page({
     try {
       var resp = yield graphql.getCertifacate()
       console.log(resp)
-      this.setData({
-        testimonials: resp.testimonials
-      })
+      if (resp && resp.testimonials) {
+        var ownerCerts = resp.testimonials.filter(item=>item.isGet)
+        this.setData({
+          certOwnerNum: ownerCerts.length,
+          testimonials: resp.testimonials
+        })
+      }
+      
     }catch(err) {
       util.showError(err)
     } finally {
