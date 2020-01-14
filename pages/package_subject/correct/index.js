@@ -58,7 +58,7 @@ Page({
     this.weToast = new app.weToast()
     let scene = query.scene
     this.correctId = Number(scene.split('_')[1])
-    this.correctType = scene.split('_')[2] === 'paper' ? 'XuekewangUserPaper' : 'XuekewangExercise' //批改类型
+    this.correctType = scene.split('_')[2] === 'paper' ? 'XuekewangPaper' : 'XuekewangExercise' //批改类型
     this.singleTopicIds = new Set()
     this.getUserMemberInfo()
   }),
