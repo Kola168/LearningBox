@@ -57,7 +57,7 @@
                     <view class="item-right-bottom">
                         <view class="bottom-left"></view>
                         <view class="bottom-right">
-                            <view class="btn-primary" bindtap="toSubscribe" id="{{index}}">订阅</view>
+                            <view class="btn-primary" catchtap="toSubscribe" id="{{index}}" data-planSn="{{item.sn}}" data-userPlanSn="" data-subscript='noSubscript'>订阅</view>
                         </view>
                     </view>
                 </view>
@@ -97,3 +97,5 @@
 
 <!-- modal -->
 <modal modal="{{modalObj}}" bindconfirm="confirmModal"></modal>
+<import src="/lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />
