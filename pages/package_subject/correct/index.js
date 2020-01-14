@@ -35,7 +35,7 @@ Page({
     }
   },
   onLoad: co.wrap(function* (query) {
-    event.on('authorize', this, () => {
+    event.on('Authorize', this, () => {
       this.setData({
         isAuth: app.isScope()
       })
@@ -370,6 +370,6 @@ Page({
     }
   },
   onUnload() {
-    event.remove('authorize', this)
+    event.remove('Authorize', this)
   }
 })

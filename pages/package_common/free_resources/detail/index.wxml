@@ -19,19 +19,23 @@
       <view class="bar-btn">
         <image src="/images/doc_gfd_share_gray.png" />
         <view>分享</view>
+        <button open-type="share" hover-class="none"></button>
       </view>
       <view class="bar-btns">
         <view class="btns-consumable">适配耗材</view>
-        <view class="btns-print">
+        <view class="btns-print" bindtap="toSetting">
           打印
-          <bottom-button class="cover-but" text-right="打印" bindrighttap="showPrintSetting" get-phone="{{true}}"></bottom-button>
+          <!-- <bottom-button class="cover-but" text-right="打印" bindrighttap="showPrintSetting" get-phone="{{true}}"></bottom-button> -->
         </view>
       </view>
     </view>
   </view>
 </view>
+<!-- loading -->
+<import src="/lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />
 <!-- 打印设置 -->
-<view class="setting-container" style="height:{{windowHeight}}px;" wx:else>
+<!-- <view class="setting-container" style="height:{{windowHeight}}px;" wx:else>
   <view class="source-title">{{title}}</view>
   <view class="setting-box">
     <view class="box-item">
@@ -69,6 +73,6 @@
     <view class="bar-left" bindtap="showPrintSetting">取消</view>
     <view class="bar-right" bindtap="print">确定</view>
   </view>
-</view>
+</view> -->
 <!-- 打印确认框 -->
-<confirm-print bindconfirm="userConfirm" modal="{{confirmModal}}"></confirm-print>
+<!-- <confirm-print bindconfirm="userConfirm" modal="{{confirmModal}}"></confirm-print> -->
