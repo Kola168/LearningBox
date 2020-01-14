@@ -22,7 +22,8 @@ Page({
     lists: [],
     subscriptList: [],
     completeList: [],
-    subscription: false,
+    isSuscribe: false,
+    // subscription: false,
     tabToContent: 1,
     modalObj: {
       isShow: false, //是否显示
@@ -59,13 +60,12 @@ Page({
       this.setData({
         lists: resp.plans
       })
+
       this.longToast.hide()
     } catch (e) {
       this.longToast.toast()
       util.showError(e)
     }
-    
-
   }),
 
   getUserPlans: co.wrap(function* () {
@@ -98,44 +98,49 @@ Page({
   },
 
   /* 去订阅 */
-  toSubscribe: co.wrap(function* (e) {
-    var idx = e.currentTarget.id
-    logger.info('idx', idx)
-    let sn = this.data.lists[idx].sn
-    console.log('this.data.isMember',this.data.isMember)
+  toSubscribe: co.wrap(function *(e){
     try {
+      var idx = e.currentTarget.id
+      logger.info('idx', idx)
+      let sn = this.data.lists[idx].sn
       if(this.data.isMember){
-        yield gql.joinPlan(sn)
-        let resp = yield gql.getPlans()
-        logger.info('=====', resp)
-        this.setData({
-          lists: resp.plans
-        })
+        this.toSubscribeDetail(sn)
       }else{
-        // var planSn = e.currentTarget.dataset.plansn
-        // var userPlanSn = e.currentTarget.dataset.userplansn
-        // var subscribe = e.currentTarget.dataset.subscript
-        // wxNav.navigateTo(
-        //   `/pages/package_preschool/growth_plan/checkpoint/plan_checkpoint`,{
-        //     planSn,
-        //     userPlanSn,
-        //     subscribe
-        //   }
-        // )
-        console.log('before   toprogeress',11111)
-        this.toProgress()
-
-
-
+        this.toProgress(e)
       }
-      
     } catch (e) {
       this.longToast.toast()
       util.showError(e)
     }
   }),
 
+  toSubscribeDetail: co.wrap(function* (sn) {
+    try {
+        yield gql.joinPlan(sn)
+        let resp = yield gql.getPlans()
+        logger.info('=====', resp)
+        this.setData({
+          lists: resp.plans
+        })
+    } catch (e) {
+      this.longToast.toast()
+      util.showError(e)
+    }
+  }),
 
+  /**闯关 */
+  toProgress: co.wrap(function* (e) {
+    var planSn = e.currentTarget.dataset.plansn
+    var userPlanSn = e.currentTarget.dataset.userplansn
+    var subscribe = e.currentTarget.dataset.subscript
+    wxNav.navigateTo(
+      `/pages/package_preschool/growth_plan/checkpoint/plan_checkpoint`,{
+        planSn,
+        userPlanSn,
+        subscribe
+      }
+    )
+  }),
 
   /*** 取消订阅 ***/
   handleSubscribe: co.wrap(function* (e) {
@@ -185,20 +190,6 @@ Page({
         lists: resp.plans
       })
     }
-  }),
-
-  /**闯关 */
-  toProgress: co.wrap(function* (e) {
-    var planSn = e.currentTarget.dataset.plansn
-    var userPlanSn = e.currentTarget.dataset.userplansn
-    var subscribe = e.currentTarget.dataset.subscript
-    wxNav.navigateTo(
-      `/pages/package_preschool/growth_plan/checkpoint/plan_checkpoint`,{
-        planSn,
-        userPlanSn,
-        subscribe
-      }
-    )
   }),
 
   onUnload(){
