@@ -11,7 +11,7 @@
   width: calc( ( 100% - 30rpx ) / 2 );
   height: 280rpx;
   border-radius: 20rpx;
-  box-shadow: 0 0 13rpx #CCCCCC;
+  box-shadow: 0 2px 8px 0 rgba(204, 204, 204, 0.40);
   text-align: center;
 }
 
@@ -41,7 +41,7 @@
   width: calc( ( 100% - 60rpx ) / 3 );
   height: 260rpx;
   border-radius: 20rpx;
-  box-shadow: 0 0 13rpx #CCCCCC;
+  box-shadow: 0 2px 8px 0 rgba(204, 204, 204, 0.40);
   text-align: center;
 }
 
