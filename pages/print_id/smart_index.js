@@ -74,9 +74,9 @@ Page({
             type: 'loading',
             duration: 0
         })
-
         try {
-            const resp = yield api.searchId(this.data.inputValue)
+            let param=encodeURIComponent(this.data.inputValue)
+            const resp = yield api.searchId(param)
             if (resp.code == 0) {
                 this.longToast.hide()
 
@@ -102,6 +102,12 @@ Page({
             return
         }
     }),
+    resetInput: function() {
+        this.setData({
+            inputValue: '',
+            placehoder: ''
+        })
+    },
     toRules: co.wrap(function* (e) {
         let item = JSON.stringify(this.data.searchList[e.currentTarget.id])
         router.redirectTo(`/pages/print_id/smart_rules`, {

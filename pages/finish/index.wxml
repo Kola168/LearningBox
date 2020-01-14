@@ -1,4 +1,3 @@
-
 <!-- pages/finish/index.wxml -->
 <nav-bar background="#fff" title="提交成功"></nav-bar>
 
@@ -11,7 +10,8 @@
 </view>
 <block wx:if="{{state!='verifying'}}">
   <!-- 是否练习相关 -->
-  <image class="baby-exercise" wx:if="{{isExercise}}" mode="widthFix" src="http://cdn-h.gongfudou.com/LearningBox/preschool/preSchool_success_new_banner.jpg">
+  <image class="baby-exercise" wx:if="{{isExercise}}" mode="widthFix"
+    src="http://cdn-h.gongfudou.com/LearningBox/preschool/preSchool_success_new_banner.jpg">
     <view class="success-main">
       <view class="day-content">{{exerciseDay}}</view>
       <view class="day-name">天</view>
@@ -40,10 +40,14 @@
   <view class="button-left" bindtap="backToHome">
     {{printType==='course'?'返回课程首页':'返回首页'}}
   </view>
-  <view class="button-right" bindtap="continuePrint">
+  <view class="button-right" bindtap="continuePrint" wx:if="{{printType!='cert_id'}}">
     <text wx:if="{{printType==='course'}}">继续学习</text>
     <text wx:else>{{printType==='photo_answer'?'继续搜题':(continueText?continueText:'继续打印')}}</text>
   </view>
+  <button class="button-right" bindtap="savePhoto" open-type="{{allowCamera==1?'openSetting':''}}"
+    bindopensetting="{{allowCamera==1 ?'authBack' : ''}}" id="single" hover-class="none">
+    <text>保存证件照</text>
+  </button>
 </view>
 <block wx:if="{{supply_types.length>0}}">
   <view class='title'>—— 适用耗材推荐 ——</view>

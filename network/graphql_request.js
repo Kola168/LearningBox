@@ -538,7 +538,7 @@ const graphqlApi = {
     })
   },
 
- /**
+  /**
    * 获取当前用户信息
    *
    * @returns
@@ -638,6 +638,32 @@ const graphqlApi = {
           paymentOrder{
             sn
             state
+            amountYuan
+          }
+        }
+      }`,
+      variables: {
+        input: pms
+      }
+    })
+  },
+  /**
+   * 创建智能证件照支付订单
+   */
+  createCertPaymentOrder: (pms) => {
+    return gql.mutate({
+      mutation: `mutation createPaymentOrder($input: CreatePaymentOrderInput!){
+        createPaymentOrder(input: $input){
+          paymentOrder{
+            sn
+            state
+            amountYuan
+            payable{
+            ...on CertService{
+                featureKey
+                discountInfo
+              }
+            }
           }
         }
       }`,
@@ -1148,24 +1174,24 @@ const graphqlApi = {
     })
   },
 
- /**
-  * 取消打印订单
-  * @param { String } sn 打印订单sn
-  */
- cancalPrintOrder: (sn) => {
-   return gql.mutate({
-     mutation: `mutation destroyOrder($input: DestroyOrderInput!) {
+  /**
+   * 取消打印订单
+   * @param { String } sn 打印订单sn
+   */
+  cancalPrintOrder: (sn) => {
+    return gql.mutate({
+      mutation: `mutation destroyOrder($input: DestroyOrderInput!) {
       destroyOrder(input: $input){
          state
        }
      }`,
-     variables: {
-       input: {
-         sn
-       }
-     }
-   })
- },
+      variables: {
+        input: {
+          sn
+        }
+      }
+    })
+  },
 
   //查询模板列表
   searchTemplate: (type) => {
@@ -1793,7 +1819,7 @@ const graphqlApi = {
       }
     })
   },
-  
+
   /**
    * 加入/退出家庭组
    *
@@ -1919,9 +1945,9 @@ const graphqlApi = {
           subscription
           }
         }`,
-        variables: {
-          featureKey
-        }
+      variables: {
+        featureKey
+      }
     })
   },
   /**
@@ -1936,9 +1962,9 @@ const graphqlApi = {
           state
           }
         }`,
-        variables: {
-         input
-        }
+      variables: {
+        input
+      }
     })
   },
   /**
@@ -2009,7 +2035,26 @@ const graphqlApi = {
       }
     })
   },
-  
+  /**
+   * 智能证件照去水印
+   *
+   * @returns
+   */
+  certService: (redisOrderSn) => {
+    return gql.query({
+      query: `query($redisOrderSn:String!) {
+        certService(redisOrderSn:$redisOrderSn){
+          singleUrl
+          url
+          state
+          }
+        }`,
+      variables: {
+        redisOrderSn
+      }
+    })
+  },
+
 }
 
 export default graphqlApi

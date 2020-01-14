@@ -10,6 +10,7 @@ import api from '../../../network/restful_request.js'
 import commonRequest from '../../../utils/common_request'
 import memberGql from '../../../network/graphql/member'
 import Logger from '../../../utils/logger.js'
+import gql from '../../../network/graphql_request.js'
 const logger = new Logger.getLogger('pages/index/index')
 const event = require('../../../lib/event/event')
 
@@ -65,7 +66,8 @@ Page({
             var resp = yield gql.createPaymentOrder({
                 type: 'member_upgrade'
             })
-            this.orderSn = resp.createPaymentOrder.sn
+            this.orderSn = resp.createPaymentOrder.paymentOrder.sn
+            console.log(resp)
             this.longToast.hide()
             yield this.pay()
 
@@ -75,7 +77,6 @@ Page({
         }
     }),
     pay() {
-        if (app.preventMoreTap(e)) return
         commonRequest.createPayment(this.orderSn, () => {
             this.longToast.hide()
             wx.showToast({
@@ -84,7 +85,10 @@ Page({
                 mask: true
             })
             setTimeout(() => {
-                wxNav.switchTab('/pages/account/index')
+                var pages = getCurrentPages()
+                var prepage = pages[pages.length - 2]
+                prepage.getMember()
+                wxNav.navigateBack()
             }, 1500)
         }, (e) => {
             this.longToast.hide()
@@ -93,19 +97,6 @@ Page({
             }
         })
     },
-
-    getMemberPaymentOrder: co.wrap(function* () {
-        this.longToast.toast({
-            type: 'loading'
-        })
-        try {
-            // let resp = yield memberGql.getMemberPaymentOrder(),
-            this.longToast.hide()
-        } catch (e) {
-            this.longToast.hide()
-            util.showError(e)
-        }
-    }),
     onUnload() {
         event.remove('Authorize', this)
     },
