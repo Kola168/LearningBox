@@ -47,6 +47,7 @@ Page({
     try {
       var resp = yield graphql.getPracticeCategory(this.yearSn)
       var currentMonth = this.resetMonthData(resp.category.children)
+      
       this.setData({
         currentMonth
       })
@@ -89,7 +90,7 @@ Page({
           itemArr = []
         }
       })
-      return arr
+      return arr.length <= 1 ? [...arr, [], []] : arr
     }catch(err) {
       
     }

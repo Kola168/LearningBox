@@ -18,7 +18,7 @@ Page({
     endPrintPage: 1,
     colorCheck: true, //默认彩色
     duplexCheck: false,
-    previewUrl: '',
+    url: '',
     endMaxPage: 1, //最大页数
     totalPage: 1,
     showSelect: false,
@@ -66,9 +66,11 @@ Page({
         duplex: query.duplex,
         colorCheck: query.color,
         duplexCheck: query.duplexCheck,
-        previewUrl: query.url,
-        endMaxPage: query.page_count,
-        totalPage: query.page_count,
+        url: query.url,
+        endMaxPage: query.pageCount,
+        pageCount: query.pageCount,
+        totalPage: query.pageCount,
+        previewUrl: query.previewUrl,
       }
       if (query.isSetting) {
         tempData.colorCheck = query.colorCheck
@@ -83,15 +85,15 @@ Page({
         tempData.extract = query.extract
         if (query.extract !== 'all') {
           tempData.startPrintPage = 1
-          tempData.endPrintPage = query.page_count
+          tempData.endPrintPage = query.pageCount
           tempData.startPage = 1
-          tempData.endPage = query.page_count
+          tempData.endPage = query.pageCount
         }
       } else {
         tempData.startPrintPage = 1
-        tempData.endPrintPage = query.page_count
+        tempData.endPrintPage = query.pageCount
         tempData.startPage = 1
-        tempData.endPage = query.page_count
+        tempData.endPage = query.pageCount
         tempData.extract = 'all'
       }
 
@@ -103,7 +105,7 @@ Page({
       logger.info(e)
       util.showError(e)
     }
-    if (parseInt(this.query.page_count) > 150) {
+    if (parseInt(this.query.pageCount) > 150) {
       yield showModal({
         title: '提示',
         content: '此文档的打印页数超过150张',
@@ -241,7 +243,6 @@ Page({
    * @param {Object} e 
    */
   colorCheck(e) {
-    console.log(e.currentTarget.dataset.style,'=xxx===')
     this.setData({
       colorCheck: Boolean(Number(e.currentTarget.dataset.style))
     })
@@ -300,7 +301,8 @@ Page({
       skipGs: this.data.checkOpen,
       extract: this.data.extract,
       startPage: this.data.startPage,
-      endPage: this.data.endPage
+      endPage: this.data.endPage,
+      pageCount: this.data.pageCount,
     }
     if (this.data.extract !== 'all') {
       postData.startPage = 0
@@ -326,7 +328,7 @@ Page({
   },
 
   preview: co.wrap(function*() {
-    let url = this.data.previewUrl
+    let url = this.data.url
     let  display = this.data.singlePageLayoutsCount
     let skip_gs = !this.data.checkOpen
     let extract = this.data.extract || 'all'
@@ -335,12 +337,26 @@ Page({
       title: '正在开启预览',
       duration: 0
     })
-    commonRequest.previewDocument({
-      feature_key: 'doc_a4',
-      worker_data: {url, display, skip_gs, extract}
-    }, ()=>{
-      this.longToast.hide()
-    })
+
+    if (this.data.previewUrl) {
+      wx.downloadFile({
+        url: this.data.previewUrl,
+        success: (res) => {
+          this.longToast.hide()
+          wx.openDocument({
+            filePath: res.tempFilePath
+          })
+        }
+      })
+    } else {
+      commonRequest.previewDocument({
+        feature_key: 'doc_a4',
+        worker_data: {url, display, skip_gs, extract}
+      }, ()=>{
+        this.longToast.hide()
+      })
+    }
+   
   }),
 
   operaRepair: function() {

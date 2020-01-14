@@ -631,6 +631,7 @@ page {
   width: 80rpx!important;
   color: #666;
   font-size: 24rpx;
+  line-height: inherit!important;
 }
 
 .bottom-main image {
