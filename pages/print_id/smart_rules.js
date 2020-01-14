@@ -60,6 +60,7 @@ Page({
                 feature_key: 'cert_id',
                 worker_data: params
             }, (resp) => {
+                console.log('34567******890',resp)
                 if (resp.status == 'finished') {
                     this.longToast.hide()
                     let confirm = JSON.stringify(resp.data)

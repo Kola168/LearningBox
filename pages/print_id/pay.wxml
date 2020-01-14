@@ -7,13 +7,13 @@
         <image mode='aspactFill' src="{{url}}">
         </image>
         <view>
-            <view>二寸蓝底</view>
+            <view>{{info.name}}</view>
             <view class="size">
-                88*88mm
+                {{info.size}}
             </view>
         </view>
         <view class="price">
-            ￥100
+            ￥{{paymentOrder.amountYuan}}
         </view>
     </view>
     <view class="pay-way">
@@ -24,7 +24,7 @@
             <view>微信支付</view>
         </view>
     </view>
-    <view class="pay-way member">
+    <view class="pay-way member" wx:if="{{payable.CertService.discountInfo==''}}">
         <view>会员专享</view>
         <view>
             <image mode='aspactFill' src="../../images/id/member_free.png" class="free-image">
@@ -34,7 +34,7 @@
 </view>
 
 <image class="download_tip" mode="widthFix" src="../../images/id/id_download_tip.png"></image>
-<view class="bottom" bindtap="pay">
+<view class="bottom" bindtap="submitOrder">
     <text>确认支付</text>
 </view>
 
