@@ -39,12 +39,12 @@
 </wxs>
 <nav-bar title="打印记录"></nav-bar>
 <view class="container">
-  <view class="modal-bg" wx:if="{{showDeviceList}}"></view>
+  <view class="modal-bg" wx:if="{{showDeviceList}}" catchtouchmove="true" bindtap="hideDeviceFilter"></view>
   <view class="container-top" style="top:{{navBarHeight}}px;">
     <view class="delete-tip">删除功能只适用于自己发送的打印任务</view>
     <view class="device-filter flex-align-center">
       <view class="device-item flex-align-center" bindtap="showDeviceList">
-        <image src="/images/{{activeDevice.model==='EP400'?'EP400':'L3115'}}.png" mode="widthFix" />
+        <image src="/images/{{activeDevice.model==='EP320'?'L3115':'EP400'}}.png" mode="widthFix" />
         <view class="item-name text-overflow-points item-name-active {{showDeviceList?'item-name-active__show':''}}">
           {{activeDevice.name}}
         </view>
@@ -52,7 +52,7 @@
       <image wx:if="{{devices.length>1}}" src="../../images/{{showDeviceList?'arrow_up_active':'arrow_down'}}.png" class="filter-arrow" mode="widthFix" />
       <view class="device-list" wx:if="{{showDeviceList}}">
         <view class="device-item flex-align-center" wx:for="{{devices}}" wx:key="sn" bindtap="changeDevice" data-index="{{index}}" id="{{item.sn}}">
-          <image src="/images/{{activeDevice.model==='EP400'?'EP400':'L3115'}}.png" mode="widthFix" />
+          <image src="/images/{{item.model==='EP320'?'L3115':'EP400'}}.png" mode="widthFix" />
           <view class="item-name text-overflow-points {{item.sn==activeDevice.sn?'item-name-active__show':''}}">
             {{item.name}}
           </view>

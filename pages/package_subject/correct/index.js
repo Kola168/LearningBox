@@ -41,10 +41,6 @@ Page({
       })
       this.getCorrectPaper()
     })
-    let isAuth = app.isScope()
-    if (!isAuth) {
-      return wxNav.navigateTo("/pages/authorize/index")
-    }
     let areaHeight = 0
     if (app.navBarInfo) {
       areaHeight = app.sysInfo.screenHeight - app.navBarInfo.topBarHeight
@@ -60,6 +56,10 @@ Page({
     this.correctId = Number(scene.split('_')[1])
     this.correctType = scene.split('_')[2] === 'paper' ? 'XuekewangPaper' : 'XuekewangExercise' //批改类型
     this.singleTopicIds = new Set()
+    let isAuth = app.isScope()
+    if (!isAuth) {
+      return wxNav.navigateTo("/pages/authorize/index")
+    }
     this.getUserMemberInfo()
   }),
 
