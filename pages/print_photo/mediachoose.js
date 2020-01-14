@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2019-12-05 21:00:18
- * @LastEditTime: 2019-12-06 10:26:04
- * @LastEditors: Please set LastEditors
+ * @LastEditTime : 2020-01-13 20:13:37
+ * @LastEditors  : Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /LearningBox/pages/print_photo/mediachoose.js
  */
@@ -86,6 +86,11 @@ Page({
 	},
 
 	printId:function(){
-		wxNav.navigateTo('/pages/print_id/index')
+		return wx.showModal({
+			title: '提示',
+			content: '暂未开放，敬请期待',
+			showCancel: false,
+		})
+		// wxNav.navigateTo('/pages/print_id/index')
 	}
 })

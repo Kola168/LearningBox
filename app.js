@@ -18,7 +18,7 @@ const request = util.promisify(wx.request)
 
 App({
 	weToast: weToast,
-	version: '0.0.1',
+	version: '0.0.2',
 	//线上地址
 	apiServer: 'https://api.xbxxhz.com',
 	apiWbviewServer: 'https://api.xbxxhz.com',
