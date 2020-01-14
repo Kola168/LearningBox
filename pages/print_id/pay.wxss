@@ -1,7 +1,100 @@
 /* pages/print_id/pay.wxss */
-@import 'smart_preview.wxss';
+page {
+    width: 100%;
+    height: 100%;
+    border-top: 2rpx solid rgba(0, 0, 0, 0.25);
+    box-sizing: border-box;
+    padding: 0 24rpx;
+
+}
+.pay-info {
+    position: relative;
+    margin-top: 30rpx;
+    display: flex;
+    height: 200rpx;
+    flex-direction: column;
+}
+
+.pay-info image {
+    width: 200rpx;
+    height: 200rpx;
+}
+
+.pay-info {
+    font-family: PingFangSC-Medium;
+    font-size: 28rpx;
+    color: #333333;
+    letter-spacing: -0.68rpx;
+}
+
+.pay-info .size {
+    font-family: PingFangSC-Regular;
+    font-size: 28rpx;
+    color: #666666;
+    letter-spacing: 0;
+}
+
+.pay-info .price {
+    position: absolute;
+    bottom: 6rpx;
+    right: 0;
+    font-family: PingFangSC-Medium;
+    font-size: 40rpx;
+    color: #FB5130;
+    letter-spacing: 0;
+    text-align: center;
+}
+.pay-title {
+    display: flex;
+    margin-bottom: 60rpx;
+}
+
+.pay-title image {
+    margin-right: 24rpx;
+}
+
+.pay-way {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: PingFangSC-Regular;
+    font-size: 28rpx;
+    color: #333333;
+    letter-spacing: 0;
+}
+
+.pay-way view {
+    display: flex;
+    align-items: center;
+}
+
+.pay-way .pay-image {
+    width: 40rpx;
+    height: 40rpx;
+    margin-right: 20rpx;
+}
+
+.pay-way .free-image {
+    width: 256rpx;
+    height: 50rpx;
+}
+
+.pay-way.member {
+    margin-top: 44rpx;
+}
+.download_tip {
+    position: absolute;
+    bottom: 240rpx;
+    left: 34rpx;
+    width: calc(100% - 68rpx);
+    height: 100rpx;
+}
 
 .bottom {
+    position: fixed;
+    width: 100%;
+    height: 100rpx;
+    box-sizing: border-box;
     position: absolute;
     bottom: 80rpx;
     width: calc(100% - 48rpx);

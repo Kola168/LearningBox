@@ -113,7 +113,7 @@ Page({
     })
     try {
       let imaPath = yield imgInit.imgInit(url, 'vertical')
-      _this.resetImage(imaPath.imageInfo, imaPath.imgNetPath);
+      _this.resetImage(imaPath.imageInfo, imaPath.imgNetPath, url);
     } catch (e) {
       wx.showModal({
         title: '照片上传失败',
@@ -131,8 +131,7 @@ Page({
   /**
    * @methods 图片处理 图片过滤 图片旋转
   */
-  resetImage: co.wrap(function* (imageInfo, url) {
-    let localUrl = url;
+  resetImage: co.wrap(function* (imageInfo, url, localUrl) {
     let _this = this;
     let noRotate = _this.data.media_size[_this.model_data.media_type].noRotateMin;
 
@@ -150,6 +149,7 @@ Page({
     _this.images = {
       url: imgInit.addProcess(url, noRotate), // 不做原始，可添加后缀
       localUrl: localUrl, // 原始默认图
+      fixUrl: url,
       width: imageInfo.width, // 图片宽度
       height: imageInfo.height, // 图片高度
       isSmallImage: (imageInfo.width < 600 || imageInfo.height < 600) ? true : false, // 小图标记
@@ -160,13 +160,10 @@ Page({
 
   initShowImg: co.wrap(function* (images) {
     this.options = {
-      url: images.localUrl,
+      fixUrl: images.fixUrl,
       mode: 'quadrectangle', //四点触点为圆形
       from: 'pic2doc',
     }
-    this.setData({
-      originalUrl: this.options.url
-    })
     this.selectTap(); //合成图片
   }),
 
@@ -285,7 +282,7 @@ Page({
         title: '图片处理中'
       })
       let _this = this;
-      let tempFilePath = _this.options.url;
+      let tempFilePath = _this.options.fixUrl;
       let mode = this.options.mode;
       let textObj = null;
       let imageInfo = yield getImageInfo({
@@ -359,7 +356,7 @@ Page({
    */
   cropImage: co.wrap(function*() {
     var _this = this
-    var tempFilePath = _this.options.url
+    var tempFilePath = _this.options.fixUrl
     _this.ctx.cropImage((res)=>{
       _this.getPic(res, tempFilePath)
     })
@@ -397,7 +394,7 @@ Page({
       event.emit('card_url_data', {
         url: img_src,
         originUrl: imgUrl,
-        localUrl: img_src
+        localUrl: _this.images.localUrl
       })
       _this.longToast.hide()
       router.navigateBack()

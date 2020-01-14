@@ -132,11 +132,11 @@ Page({
   getUserInfo: co.wrap(function* () {
     try {
 			let resp = yield gql.getUser()
-      // this.setData({
-      //   phone: resp.currentUser.phone,
-      //   selectedKid: resp.currentUser.selectedKid,
-      //   stageRoot: resp.currentUser.selectedKid.stageRoot
-      // })
+      this.setData({
+        phone: resp.currentUser.phone,
+        selectedKid: resp.currentUser.selectedKid,
+        stageRoot: resp.currentUser.selectedKid.stageRoot
+      })
       // storage.put("userSn", resp.currentUser.sn)
 			// storage.put("kidStage", resp.currentUser.selectedKid.stageRoot)
 
@@ -158,7 +158,7 @@ Page({
   }),
   //获取学前模块
   customizeFeatures: co.wrap(function* () {
-    if (this.data.selectedKid.stageRoot == null) {
+    if (this.data.homeType!='学前') {
       return
     }
     try {
@@ -174,7 +174,7 @@ Page({
     try {
       yield this.getUserInfo()
 			yield this.getBanners()
-			yield this.getUserPlans() //宝贝学习计划
+			// yield this.getUserPlans() //宝贝学习计划
       yield this.customizeFeatures()
     } catch (error) {
       console.log(error)
@@ -267,10 +267,15 @@ Page({
         url = "/pages/print_doc/index/index"
         break
       case 'more':
-        url = "/pages/print_funny/index"
+				// url = "/pages/print_funny/index"
+				wx.showToast({
+					title: '暂未开放，敬请期待',
+					icon: 'none',
+					duration: 2000
+				})
         break
-        defalt:
-          url = ''
+      defalt:
+        url = ''
     }
     wxNav.navigateTo(url)
   },
@@ -299,19 +304,25 @@ Page({
         url = '/pages/package_feature/error_book/photo_anwser_intro'
         break;
       case 'syncLearn':
-        url = '/pages/package_subject/sync_learn/index/index'
+        // url = '/pages/package_subject/sync_learn/index/index'
         break;
       case 'evaluate_exam':
-        url = '/pages/package_subject/evaluate_exam/index/index'
+        // url = '/pages/package_subject/evaluate_exam/index/index'
         break;
       case 'errorBook':
-        url = '/pages/package_feature/error_book/index'
+        url = '/pages/package_subject/super_errorbook/index/index'
         break;
       case 'exerciseDay':
-				url = '/pages/package_preschool/exercise_day/exercises/exercises'
+				// url = '/pages/package_preschool/exercise_day/exercises/exercises'
 				break;
       case 'baobeicepin':
-        url = '/pages/package_preschool/evaluation/index'
+        // url = '/pages/package_preschool/evaluation/index'
+        break;
+      case 'weaknessExercise':
+        url = '/pages/package_subject/weakness_exercise/index/index'
+        break;
+      case 'stageReporter':
+        url = '/pages/package_subject/stage_report/index/index'
         break;
     }
     if (!url) {

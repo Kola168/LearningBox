@@ -38,9 +38,9 @@
     <view class="subject-name">{{subjectData.subjectName}}</view>
     <view class="arrow-icon"></view>
   </view>
-  <view class="subject-main">
+  <scroll-view scroll-y class="subject-main">
     <view class="subject-item" bind:tap="useSheetCheckedSubject" data-index="{{index}}" wx:for="{{subjects}}" wx:key="sn">{{item.subjectName}}</view>
-  </view>
+  </scroll-view>
 </view>
 
 <!-- 选择学科 -->

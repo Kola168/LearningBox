@@ -1,9 +1,16 @@
 <nav-bar background="#fff" title="薄弱项练习"/>
 <import src="../../common/template/exercise_list.wxml"/>
 <view class="weakness-main" wx:if="{{!showSubjectCheckbox && !showTimeCheckbox && !showKnowledgeCheckbox}}">
-  <view class="head-remind">
-    <image src="" />
-    <view class="name">开通学科会员享有专属错题本，新用户免费体验！</view>
+  <view class="head-remind"  wx:if="{{!isSchoolAgeMember}}">
+    <image src="../../images/diamond.png" mode="widthFix"/>
+    <view class="name">
+      <block wx:if="{{!isExpires}}">
+        开通学科会员享有专属错题本，新用户免费体验！
+      </block>
+      <block wx:if="{{isExpires}}">
+        开通学科会员享有专属错题本
+      </block>
+    </view>
   </view>
   <image class="nav-card" src="../../images/nav_figure_card.png" mode="widthFix">
     <view class="content">小白老师根据错题本分析你的薄弱项，给你推荐你的专属练习～</view>
@@ -64,9 +71,9 @@
     <view class="subject-name">{{isSubjectCategory ? checkedSubject.subjectName : checkedPrint.name}}</view>
     <view class="arrow-icon"></view>
   </view>
-  <view class="subject-main">
+  <scroll-view scroll-y class="subject-main">
     <view class="subject-item" wx:for="{{isSubjectCategory ? subjects : printStaList}}" wx:key="sn" data-index="{{index}}" catch:tap="chooseCategory">{{isSubjectCategory ?item.subjectName : item.name}}</view>
-  </view>
+  </scroll-view>
 </view>
 
 <member-toast id="memberToast" modal="{{modal}}"/>
