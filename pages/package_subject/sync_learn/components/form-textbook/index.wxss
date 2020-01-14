@@ -68,6 +68,7 @@
   border: 2rpx solid #E7E7E7;
   border-top: none;
   overflow: scroll;
+  -webkit-overflow-scrolling: touch;
 }
 
 .select-item {

@@ -13,7 +13,7 @@ Page({
     subjects: []
   },
   onLoad(query) {
-    this.isMember = query.isMember
+    this.isMember = Number(query.isMember)
     this.expiresAt = query.expiresAt
     this.weToast = new app.weToast()
     this.getSubjectsErrorbook()

@@ -11,6 +11,7 @@ import graphql from '../../../../network/graphql/subject'
 Page({
 
   data: {
+    isSchoolAgeMember: false,
     currentIndex: 0,
     showMemberToast: false, //显示会员弹窗
     showAiToast: false, // 显示ai出题弹窗
@@ -25,6 +26,7 @@ Page({
     this.longToast = new app.weToast()
     this.sn = options.sn
     this.subjectSn = options.subjectSn
+    yield this.getMember()
     yield this.getDifficulty()
     yield this.getNodeDetails()
     yield this.getDefaultExercise()
@@ -38,21 +40,35 @@ Page({
    * 打开弹窗
    */
   openAiToast: function () {
-    var memberToast = this.selectComponent('#memberToast')
-    // memberToast.showToast()
-
-
     // 判断会员标示
-
+    if (!this.data.isSchoolAgeMember) {
+      var memberToast = this.selectComponent('#memberToast')
+      return memberToast.showToast()
+    }
     this.setData({
       showAiToast: true
     })
   },
 
+    /**
+   * 判断是否是会员
+   */
+  getMember: co.wrap(function*(){
+    try {
+      var resp = yield graphql.getSubjectMemberInfo()
+      this.setData({
+        isSchoolAgeMember: resp.currentUser.isSchoolAgeMember
+      })
+    } catch(err) {
+      util.showError(err)
+    }
+  }),
+
   /**
    * 智能出题
    */
   setTopic: co.wrap(function* () {
+
     this.cancelSet()
     this.longToast.toast({
       type: 'loading',
@@ -196,7 +212,8 @@ Page({
     }
   }) {
     wxNav.navigateTo('/pages/package_subject/sync_learn/preview_subject/index', {
-      sn
+      sn,
+      mediaType: 'sync_learn'
     })
   }
 })

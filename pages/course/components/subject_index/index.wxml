@@ -115,8 +115,8 @@
       </image>
     </view>
     <view class="scroll-list">
-      <scroll-view class="tab-list" scroll-x="{{true}}">
-        <view class="tab-item" wx:for="{{selectedPaperTypes}}" wx:key="id" bind:tap="changeTab" data-index="{{index}}">  
+      <scroll-view class="tab-list" scroll-x="{{true}}" scroll-into-view="to_{{selectedPaperIndex}}" scroll-with-animation>
+        <view class="tab-item" id="to_{{index}}" wx:for="{{selectedPaperTypes}}" wx:key="id" bind:tap="changeTab" data-index="{{index}}">  
           <view class="tab-text  {{selectedPaperIndex === index ? 'active' : ''}}">{{item.name}}</view>
           <view class="tab-line {{selectedPaperIndex === index ? 'active-line' : ''}}"></view>
         </view>

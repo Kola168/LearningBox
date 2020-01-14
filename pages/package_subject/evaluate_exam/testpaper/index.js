@@ -9,6 +9,7 @@ import {
 import gqlSubject from '../../../../network/graphql/subject'
 Page({
   data: {
+    loadReady: false,
     topBarHeight: 0,
     tabId: 'tab_0',
     typeId: '',
@@ -25,7 +26,6 @@ Page({
   onLoad: co.wrap(function* (query) {
     this.weToast = new app.weToast()
     this.subjectId = Number(query.id)
-    this.subjectSn = Number(query.sn)
     this.setData({
       topBarHeight: app.navBarInfo.topBarHeight + 50
     })
@@ -53,7 +53,9 @@ Page({
   // 切换过滤
   changeFilter(e) {
     let index = e.currentTarget.dataset.index,
-      dataObj = {}
+      dataObj = {
+        loadReady: false
+      }
     if (this.showFilterType === 'area') {
       dataObj.activeArea = this.data.areas[index]
     } else if (this.showFilterType === 'grade') {
@@ -70,7 +72,8 @@ Page({
       typeId = e.currentTarget.dataset.id
     this.setData({
       typeId: Number(typeId),
-      tabId
+      tabId,
+      loadReady: false
     })
     this.resetGetPapers()
   },
@@ -87,7 +90,7 @@ Page({
       id: id,
       hasReport: hasReport,
       name: name,
-      subjectSn: this.subjectSn,
+      subjectId: this.subjectId,
       sn: sn
     })
   },
@@ -180,6 +183,7 @@ Page({
         this.isEnd = true
       }
       this.setData({
+        loadReady: true,
         paperList: res.xuekewang.paperLists
       })
       this.weToast.hide()

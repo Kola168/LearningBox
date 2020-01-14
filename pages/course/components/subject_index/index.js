@@ -75,7 +75,6 @@ Component({
       try {
         var resp = yield graphqlAll.getUser()
         if (resp.currentUser && resp.currentUser.selectedKid) {
-          console.log(resp.currentUser.selectedKid,'==resp.currentUser.selectedKid==')
           this.setData({
             stageSn: resp.currentUser.selectedKid.stage.sn
           })
@@ -291,6 +290,8 @@ Component({
      try {
       wxNav.navigateTo('/pages/package_subject/evaluate_exam/preview/index', {
         id: item.paperId,
+        subjectId: this.subjectId,
+        sn: item.sn || '',
         hasReport: item.isReport ? 1 : 0,
         name:item.title
       })
@@ -300,19 +301,11 @@ Component({
     }),
 
     toExaminationReporter: co.wrap(function*(){
-      wx.showModal({
-        title: '提示',
-        content: '该功能暂未开放',
-        showCancel: false
-      })
+     wxNav.navigateTo('/pages/package_subject/exam_paper_report/index/index')
     }),
 
     toStageReporter: co.wrap(function*(){
-      wx.showModal({
-        title: '提示',
-        content: '该功能暂未开放',
-        showCancel: false
-      })
+      wxNav.navigateTo('/pages/package_subject/stage_report/index/index')
     }),
 
     switchsyncContentTab: function({currentTarget: {dataset: {index}}}){

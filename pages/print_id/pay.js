@@ -32,10 +32,6 @@ Page({
 
   onLoad: co.wrap(function* (options) {
     this.longToast = new app.weToast()
-    this.userSn = storage.get('userSn')
-    if (!this.userSn) {
-      return router.navigateTo('/pages/authorize/index')
-    }
     this.query = JSON.parse(options.confirm)
     this.info = JSON.parse(options.info)
     console.log('支付页参数', this.info, this.query)
@@ -49,23 +45,70 @@ Page({
       url: url,
       type: options.type
     })
-    
-    this.setData({
 
-      // price_count: this.query.price,
-      // price: this.query.price,
-      // can_free_print: this.query.can_free_print ? this.query.can_free_print : false
-    })
   }),
-  pay: co.wrap(function () {
-    if (this.data.type == 'paper') {
-      this.toPrint()
-    } else {
-      this.toSave()
+  //创建支付订单
+  payOrder: co.wrap(function* () {
+    this.longToast.toast({
+      type: 'loading',
+      title: '请稍后'
+    })
+    try {
+      var resp = yield commonRequest.createPaymentOrder(this.data.sn, 'course')
+      this.setData({
+        paymentOrder: resp.createPaymentOrder.paymentOrder
+      })
+    } catch (err) {
+      util.showError(err)
+      logger.info(err)
+    } finally {
+      this.longToast.hide()
+    }
+
+  }),
+  // 提交支付
+  submitOrder: co.wrap(function* (e) {
+    this.longToast.toast({
+      type: 'loading'
+    })
+    try {
+      commonRequest.createPayment(this.data.paymentOrder.sn, () => {
+        this.longToast.hide()
+        this.paySuccess()
+      }, (err) => {
+        this.longToast.hide()
+        util.showError(err)
+      })
+    } catch (err) {
+      logger.info(err)
     }
   }),
+  // 支付成功
+  paySuccess: co.wrap(function* () {
+    var _this = this
+    var obj = {
+      title: '支付成功',
+      icon: 'success',
+      duration: 1500,
+      mask: true,
+    }
+    _this.nextTick(wx.showToast.bind(wx, obj)).then(() => {
+
+      if (this.data.type == 'paper') {
+        this.toPrint()
+      } else {
+        this.toSave()
+      }
+    })
+  }),
+  nextTick: function (fn) {
+    return new Promise(function (resolve, reject) {
+      fn();
+      setTimeout(resolve, 1500)
+    })
+  },
   toPrint() {
-    wxNav.navigateTo('/pages/print_id/print', {
+    wxNav.redirectTo('/pages/print_id/print', {
       url: JSON.stringify(this.query.print_wm_url),
       sn: '10'
     })
@@ -87,7 +130,7 @@ Page({
 
   },
   toSave() {
-    wxNav.navigateTo('/pages/print_id/smart_save', {
+    wxNav.redirectTo('/pages/print_id/smart_save', {
       confirm: JSON.stringify(this.query),
       info: JSON.stringify(this.info),
       url: JSON.stringify(this.data.url),

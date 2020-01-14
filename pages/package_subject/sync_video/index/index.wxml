@@ -1,10 +1,10 @@
 <nav-bar background="#fff" title="同步视频" />
 <view class="main-box">
   <view class="fixed-main" style="top:{{navBarHeight}}px"> 
-    <scroll-view scroll-x="true"  scroll-with-animation scroll-into-view="to_{{currentTabIndex}}">
-      <view class="tab-item"  id="to_{{index}}" wx:for="{{stages}}" wx:key="sn"  bindtap="chooseStage" data-index="{{index}}">
-        <view class="tab-name {{currentTabIndex == index ? 'active' : ''}}">{{item.name}}</view>
-        <view class="tab-line {{currentTabIndex == index ? 'active-line' : ''}}"></view>
+    <scroll-view class="tab-main" scroll-x="true"  scroll-with-animation scroll-into-view="to_{{currentSubjectIndex}}">
+      <view class="tab-item"  id="to_{{index}}" wx:for="{{subjectList}}" wx:key="courseId"  bindtap="chooseSubject" data-index="{{index}}">
+        <view class="tab-name {{currentSubjectIndex == index ? 'active' : ''}}">{{item.subjectName}}</view>
+        <view class="tab-line {{currentSubjectIndex == index ? 'active-line' : ''}}"></view>
       </view>
     </scroll-view>
     <image class="notice-card" src="../../images/nav_figure_card.png">
@@ -16,14 +16,14 @@
       </view>
     </image>
     <view class="form">
-      <view class="selected-main" bind:tap="openSubjectForm">
-        <view class="name">{{checkedSubject.subjectName}}</view>
+      <view class="selected-main" bind:tap="openStageForm">
+        <view class="name">{{stage.name}}</view>
         <view class="arrow-top"></view>
       </view>
-      <view class="form-main" wx:if="{{showSubjectForm}}" bind:tap="closeSubjectForm">
-        <view class="subject-content">
-          <view class="subject-item {{currentSubjectIndex == index ? 'active-subject' : ''}}" wx:for="{{subjectList}}" wx:key="courseId" catch:tap="chooseSubject" data-index="{{index}}">{{item.subjectName}}</view>
-        </view>
+      <view class="form-main" wx:if="{{showStageForm}}" bind:tap="closeStageForm">
+        <scroll-view scroll-y class="subject-content">
+          <view class="subject-item {{currentStageIndex == index ? 'active-subject' : ''}}" wx:for="{{stages}}" wx:key="sn" catch:tap="chooseStage" data-index="{{index}}">{{item.name}}</view>
+        </scroll-view>
       </view>
     </view>
   </view>

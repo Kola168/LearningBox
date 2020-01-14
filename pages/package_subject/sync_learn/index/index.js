@@ -12,12 +12,14 @@ Page({
       title: '同步练习',
       desc: '五种难度智能出题',
       icon: '../../images/learn_icon.png',
-      key: 'subject'
+      key: 'subject',
+      url: '/pages/package_subject/sync_learn/learn_content/index'
     }, {
       title: '同步视频',
       desc: '五种难度智能出题',
       icon: '../../images/video_icon.png',
-      key: 'video'
+      key: 'video',
+      url: '/pages/package_subject/sync_video/index/index'
     }]
   },
 
@@ -28,21 +30,12 @@ Page({
   toUse: function ({
     currentTarget: {
       dataset: {
-        key
+        url
       }
     }
   }) {
-    if (key == 'video') {
-      return wx.showModal({
-        title: '提示',
-        content: '该功能暂未开放',
-        showCancel: false,
-      })
-    }
 
-    wxNav.navigateTo('/pages/package_subject/sync_learn/learn_content/index', {
-      key
-    })
+    wxNav.navigateTo(url)
 
   },
 

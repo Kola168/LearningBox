@@ -392,7 +392,7 @@ Page({
       })
       this.longToast.hide()
       wxNav.navigateTo('/pages/finish/index', {
-        media_type: this.query.featureKey,
+        media_type: this.query.media_type,
         state: resp.createXuekewangOrder.state
       })
     } catch (err) {

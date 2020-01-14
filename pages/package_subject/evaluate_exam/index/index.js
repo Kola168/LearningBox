@@ -56,8 +56,7 @@ Page({
   toSubject(e) {
     if (app.preventMoreTap(e)) return
     wxNav.navigateTo('../testpaper/index', {
-      id: e.currentTarget.dataset.id,
-      sn: e.currentTarget.id
+      id: e.currentTarget.dataset.id
     })
   }
 })

@@ -7,7 +7,7 @@
   </swiper>
   <view class="precent">{{currentIndex}}/{{imgList.length}}</view>
   <image src="../../images/look_report.png" wx:if="{{hasReport}}" class="look-report" mode="widthFix" />
-  <view class="btn-bottom">
+  <view class="btn-bottom {{isFullScreen?'is-full-screen':''}}">
     <view class="print-answer" bindtap="checkAnswer">
       <image class="check-on" src="../../images/check_{{printAnswer?'on':'off'}}.png"></image>
       <view class="title">打印答案</view>

@@ -27,7 +27,7 @@ Page({
   onLoad: co.wrap(function* (query) {
     this.weToast = new app.weToast()
     this.paperId = query.id
-    this.subjectSn = query.subjectSn
+    this.subjectId = query.subjectId
     this.sn = query.sn != 'null' ? query.sn : ''
     this.setData({
       hasReport: Boolean(Number(query.hasReport)),
@@ -57,15 +57,27 @@ Page({
 
   prePrint() {
     if (this.isMember) {
-      let postData = {
-        featureKey: 'xuekewang_paper',
-        sn: this.sn,
-        name: this.data.title,
-        pageCount: this.data.imgList.length,
-        printPdf: this.data.printAnswer ? this.Pdf : this.answerPdf
-      }
-      wxNav.navigateTo('../../setting/setting', {
-        postData: encodeURIComponent(JSON.stringify(postData))
+      wxNav.navigateTo('/pages/package_common/setting/setting', {
+        settingData: encodeURIComponent(JSON.stringify({
+          file: {
+            name: this.data.title,
+          },
+          orderPms: {
+            printType: 'PRINTSUBJECT',
+            pageCount: this.data.isPrintAnswer ? this.answerImages.length : this.originalImages.length,
+            featureKey: 'xuekewang_paper',
+            mediaType: 'xuekewang_paper',
+            attributes: {
+              resourceType: 'XuekewangPaper',
+              sn: this.sn,
+              originalUrl: this.data.printAnswer ? this.pdf : this.answerPdf,
+            }
+          },
+          checkCapabilitys: {
+            isSettingDuplex: true,
+            isSettingColor: true,
+          }
+        }))
       })
     } else {
       this.setData({
@@ -127,7 +139,7 @@ Page({
       feature_key: 'xuekewang_paper',
       worker_data: {
         paper_id: this.paperId,
-        subject_sn: this.subjectSn
+        subject_id: this.subjectId
       }
     }, (res) => {
       if (res.status === 'finished') {

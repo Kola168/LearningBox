@@ -10,13 +10,12 @@
 <view class="image">
     <view class="singleImg">
         <view>单张效果</view>
-        <image class="bg-white" mode='widthFix' bindtap="preview" src='{{singleImg}}'></image>
+        <image mode='widthFix' bindtap="preview" src='{{singleImg}}'></image>
     </view>
-    <view class="print_wm_url" wx:if="{{print_wm_url}}">
+    <view class="print-url" wx:if="{{print_wm_url}}">
         <view>整版效果（6寸）</view>
-        <image class="bg-white" mode='widthFix' bindtap="" src='{{print_wm_url}}'></image>
+        <image mode='widthFix' bindtap="" src='{{print_wm_url}}'></image>
     </view>
-
 </view>
 <view class="bottom">
     <view class="left" bindtap="">

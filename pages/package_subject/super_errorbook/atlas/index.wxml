@@ -1,9 +1,9 @@
 <nav-bar title="知识图谱"></nav-bar>
-<view class="container">
+<view class="container" wx:if="{{loadReady}}">
   <canvas style="width: {{canvasWidth}}px; height: {{canvasWidth}}px;" canvas-id="radar" wx:if="{{atlasType==='radar'}}"></canvas>
-  <block wx:if="{{atlasType==='bar'}}">
+  <view wx:if="{{atlasType==='bar'}}" class="chart-bar-box">
     <chart-bar barData="{{barData}}"></chart-bar>
-  </block>
+  </view>
   <view class="subject-type">
     <view class="type-header"></view>
     <view class="type-top type-item">
