@@ -374,6 +374,11 @@ const graphqlApi = {
           categories{
               name
               sn
+              image
+          }
+          statistics{
+            label
+            value
           }
         }
       }`,
@@ -383,7 +388,73 @@ const graphqlApi = {
     })
   },
 
-  //
+  //字帖查询列表
+  getCopyBookDetailList:(sn)=>{
+    return gql.query({
+      query: `query($sn:String!){
+        category(sn:$sn){
+          contents{
+              name
+              sn
+      	      iconUrl
+            	...on Copybook{
+                desc
+              }
+          }
+
+        }
+      }`,
+      variables: {
+        sn:sn
+      }
+    })
+  },
+
+  getCopyContentDetail:(sn)=>{
+    return gql.query({
+      query: `query($sn:String!){
+        content(sn:$sn){
+          ...on Copybook{
+            name
+            sn
+     	      iconUrl
+            normalCopybooks{
+              nameUrl
+            }
+            strokeCopybooks{
+              nameUrl
+            }
+          }
+
+        }
+      }`,
+      variables: {
+        sn:sn
+      }
+    })
+  },
+
+  //链接转pdf
+  createCopyOrder:(input)=>{
+    return gql.mutate({
+      mutation: `mutation ($input: CreateResourceOrderInput!){
+        createResourceOrder(input:$input){
+          state
+          statistic{
+            ... on NormalStatistic{
+              fields{
+                label
+                value
+              }
+            }
+          }
+        }
+      }`,
+      variables: {
+        input: input
+      }
+    })
+  },
 }
 
 export default graphqlApi

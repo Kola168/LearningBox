@@ -31,16 +31,12 @@ Page({
     showGetModal: false,
     normalImages: '',
     strokeImages: '',
-    hasAuthPhoneNum: false,
-    confirmModal: {
-      isShow: false,
-      title: '请正确放置A4打印纸',
-      image: 'https://cdn.gongfudou.com/miniapp/ec/confirm_print_a4_new.png'
-    }
+    confirmModal: {},
+
+    type:'copyboox',  // 生成订单的type
   },
   onLoad: co.wrap(function*(options) {
-    this.longToast = new app.WeToast()
-    mta.Page.init()
+    this.longToast = new app.weToast()
     console.log('options========', options)
 
     //分享链接进入
@@ -64,12 +60,11 @@ Page({
     this.setData({
       images: options.images ? common_util.decodeLongParams(options.images) : '',
       user_share_qrcode: options.user_share_qrcode ? common_util.decodeLongParams(options.user_share_qrcode) : '',
-      sn: options.sn,
       name: options.name ? options.name : '',
-      pdf_url: (options.pdf_url && options.pdf_url != 'undefined') ? common_util.decodeLongParams(options.pdf_url) : '',
-      word_count: options.word_count ? options.word_count : '',
       custom: options.custom ? options.custom : false,
-      tabId: 1
+      tabId: 1,
+      sn:options.sn,
+      type:options.type||'copybook'
     })
     console.log("22222222")
     if (options.title != '自定义练习') {
@@ -91,27 +86,20 @@ Page({
   },
   copybookDetails: co.wrap(function*(e) {
     this.longToast.toast({
-      img: '/images/loading.gif',
-      title: '请稍候',
-      duration: 0
+      type:'loading'
     })
     try {
-      console.log("copybookDetails", app.openId, this.data.custom, this.data.sn)
-      const resp = yield api.copy_booksDetail(app.openId, this.data.custom, this.data.sn)
-      if (resp.code != 0) {
-        throw (resp)
-      }
+      const resp = yield graphql.getCopyContentDetail(this.data.sn)
+
       console.log('字帖详情', resp)
       this.setData({
-        multiple_form: resp.res.multiple_form, //判断是否有笔顺
-        word_count: resp.res.word_count, //字数
-        practiceImages: resp.res.images
+        multiple_form: _.isNotEmpty(resp.content.strokeCopybooks), //判断是否有笔顺
       })
 
-      let normalImages = resp.res.images.normal_images
-      let strokeImages = resp.res.images.stroke_images
+      let normalImages = _.without(_.pluck(resp.content.normalCopybooks,'nameUrl'),undefined)
+      let strokeImages = _.pluck(resp.content.strokeCopybooks,'nameUrl')
       this.setData({
-        images: parseInt(this.data.tabId) === 0 || normalImages == null || normalImages == '' ? strokeImages : normalImages,
+        images: parseInt(this.data.tabId) === 0 || _.isEmpty(normalImages) ? strokeImages : normalImages,
         normalImages: normalImages,
         strokeImages: strokeImages
       })
@@ -119,7 +107,7 @@ Page({
       this.longToast.toast()
     } catch (e) {
       this.longToast.toast()
-      util.showErr(e)
+      util.showError(e)
     }
   }),
 
@@ -163,12 +151,11 @@ Page({
   }),
 
   onShareAppMessage: function(res) {
-    mta.Event.stat("zitie_datail_share", {})
     if (res.from === 'button' || res[0].from === 'button') {
-      console.log('c随时随地======', `/pages/error_book/pages/copy_book/detail?sn=${this.data.sn}&custom=${this.data.custom}&from=share`)
+      console.log('c随时随地======', `/pages/error_book/pages/copy_book/detail?custom=${this.data.custom}&from=share`)
       return {
         title: "分享一个好用又方便的字帖应用给你！",
-        path: `/pages/error_book/pages/copy_book/detail?sn=${this.data.sn}&custom=${this.data.custom}&from=share`
+        path: `/pages/error_book/pages/copy_book/detail?custom=${this.data.custom}&from=share`
       }
     } else {
       return app.share
@@ -177,7 +164,6 @@ Page({
 
   toSave: co.wrap(function*() {
     let sn = this.data.sn
-    mta.Event.stat("zitie_save", sn)
     wx.showLoading({
       title: '请稍后',
       mask: true
@@ -212,18 +198,7 @@ Page({
   }),
 
   toConfirm: co.wrap(function*(e) {
-    if (!this.hasAuthPhoneNum && !app.hasPhoneNum) {
-      return
-    }
-    if (this.data.custom) {
-      mta.Event.stat('zitie_print', {
-        'zidinyi': this.data.sn
-      })
-    } else {
-      mta.Event.stat('zitie_print', {
-        'common': this.data.sn
-      })
-    }
+
     let info
     try {
       info = yield getUserInfo()
@@ -235,67 +210,46 @@ Page({
       avatarUrl: info.userInfo.avatarUrl,
       nickName: info.userInfo.nickName
     })
-    let hideConfirmPrintBox = Boolean(wx.getStorageSync("hideConfirmPrintBox"))
-    if (hideConfirmPrintBox) {
-      this.print()
-    } else {
-      this.setData({
-        ['confirmModal.isShow']: true
-      })
-    }
-  }),
-  getPhoneNumber: co.wrap(function*(e) {
-    yield app.getPhoneNum(e)
-    wx.setStorageSync("hasAuthPhoneNum", true)
-    this.hasAuthPhoneNum = true
     this.setData({
-      hasAuthPhoneNum: true
+      confirmModal: {
+        isShow: true,
+        title: '请正确放置A4打印纸',
+        image: 'https://cdn-h.gongfudou.com/LearningBox/main/doc_confirm_print_a4_new.png'
+      },
     })
-    this.toConfirm(e)
+
   }),
 
   print: co.wrap(function*() {
     this.longToast.toast({
-      img: '/images/loading.gif',
-      title: '请稍候',
-      duration: 0
+      type:'loading'
     })
 
-    let link = []
-    if (this.data.custom) {
-      let obj = {}
-      obj.url = this.data.pdf_url
-      obj.color = "Color"
-      obj.number = "1"
-      link.push(obj)
-    } else {
-      for (let i = 0; i < this.data.images.length; i++) {
-        let obj = {}
-        obj.url = this.data.images[i]
-        obj.pre_convert_url = this.data.images[i]
-        obj.color = "Color"
-        obj.number = "1"
-        link.push(obj)
-      }
-    }
     let resp
     try {
-      if (this.data.custom) {
-        resp = yield api.printCopybook(app.openId, 'custom_copy_book', link, this.data.word_count)
-      } else {
-        resp = yield api.printCopybook(app.openId, 'copy_book', link, this.data.word_count)
+      let params={
+        resourceOrderType:this.data.type,
+        featureKey:this.data.custom?'custom_copybook':'copybook',
+        resourceAttribute:{
+          sn:this.data.sn,
+          copybookType:parseInt(this.data.tabId)==0?'stroke':'normal',
+        }
       }
-      if (resp.code != 0) {
-        throw (resp)
-      }
+      resp=yield graphql.createCopyOrder(params)
+
       console.log('提交打印成功', resp)
       this.longToast.toast()
-      wx.redirectTo({
-        url: `/pages/finish/oral_mistake_index?type=copy_book&media_type=copy_book&state=${resp.order.state}&day_count=${resp.statistics.day_count}&word_count=${resp.statistics.word_count}&print_count=${resp.statistics.print_count}&user_share_qrcode=${common_util.encodeLongParams(this.data.user_share_qrcode)}&avatarUrl=${this.data.avatarUrl}&nickName=${this.data.nickName}`
-      })
+       wxNav.navigateTo(`pages/finish/sourcefinish`, {
+           media_type:'copybook',
+           state:resp.createOrder.state,
+           day:1,   //学习天数
+           studyNum:1,  //学习的单位数量
+           studyUnit:Unit,  //单位
+           continueText:'继续打印'  //继续打印的文案可不传
+        })
     } catch (e) {
-      util.hideToast(this.longToast)
-      util.showErr(e)
+      this.longToast.toast()
+      util.showError(e)
     }
   }),
 
@@ -311,7 +265,6 @@ Page({
 
   //有用 试一试
   toCopybook: function(e) {
-    mta.Event.stat("zitie_try", {})
     wx.navigateTo({
       url: `index`,
     })

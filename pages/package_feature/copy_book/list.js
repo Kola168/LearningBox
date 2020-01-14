@@ -22,15 +22,14 @@ Page({
   },
 
   onLoad: co.wrap(function*(options) {
-    this.longToast = new app.WeToast()
-    mta.Page.init()
+    this.longToast = new app.weToast()
     console.log(options)
     this.setData({
       title: options.title,
     })
 
     this.setData({
-      // user_share_qrcode: common_util.decodeLongParams(options.user_share_qrcode),
+      user_share_qrcode: common_util.decodeLongParams(options.user_share_qrcode),
       title: options.title,
       sn: options.sn,
       highScreen: app.isFullScreen
@@ -40,7 +39,6 @@ Page({
 
   toPay: co.wrap(function*(e) {
     let sn = this.data.sn
-    mta.Event.stat("zitie_pay_button", sn)
     this.setData({
       showConfirmModal: true
     })
@@ -51,18 +49,16 @@ Page({
       type:'loading'
     })
     try {
-      const resp = yield api.copybooksetsDetail(app.openId, this.data.sn)
-      if (resp.code != 0) {
-        throw (resp)
-      }
+      const resp = yield graphql.getCopyBookDetailList(this.data.sn)
+
       console.log('获取字帖集详情', resp)
       this.setData({
-        copyBooks: resp.res.copy_books,
+        copyBooks: resp.category.contents,
       })
       this.longToast.toast()
     } catch (e) {
       this.longToast.toast()
-      util.showErr(e)
+      util.showError(e)
     }
   }),
 
@@ -76,7 +72,6 @@ Page({
     let id = e.currentTarget.id
     let name = this.data.copyBooks[id].name
     let sn = this.data.copyBooks[id].sn
-    mta.Event.stat("zitie_list_print", sn)
     wx.navigateTo({
       url: `detail?title=${this.data.title}&name=${name}&sn=${sn}&user_share_qrcode=${common_util.encodeLongParams(this.data.user_share_qrcode)}`,
     })

@@ -37,7 +37,8 @@
   chinese_memory_write: '/pages/package_feature/memory_write/chinese/index',
   kousuan:'/pages/package_feature/kousuan/index',
   baobeicepin:'/pages/package_preschool/evaluation/index',
-  link:'/pages/package_feature/print_link/index'
+  link:'/pages/package_feature/print_link/index',
+  copybook:'/pages/package_feature/copy_book/index'
 }
 module.exports = {
   feature_route: feature_route,

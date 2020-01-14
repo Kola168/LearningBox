@@ -13,18 +13,21 @@ const getUserInfo =util.promisify(wx.getUserInfo)
 import wxNav from '../../../utils/nav.js'
 const event = require('../../../lib/event/event')
 import graphql from '../../../network/graphql/feature'
+import api from '../../../network/restful_request'
+
 Page({
   data: {
     num: 0,
     content: '',
-    from_temp: false,
     mediumRecommend: '',
     fontType: 'kt',
     iosModal: false,
-    text: '当日智能字帖生成次数已经用完，升级会员可以畅享使用'
+    text: '当日智能字帖生成次数已经用完，升级会员可以畅享使用',
+    user_share_qrcode:'https://www.baicu.com'
+
   },
   onLoad: co.wrap(function* (options) {
-    this.longToast = new app.WeToast()
+    this.longToast = new app.weToast()
     console.log(options)
     if(app.isScope()){
       this.copybookSets()
@@ -50,34 +53,12 @@ Page({
       const resp = yield graphql.getCopyBookList('copybook')
       this.setData({
         copybookSets: resp.feature.categories,
-        // word_count: resp.res.statistics.word_count,
-        // day_count: resp.res.statistics.day_count,
-        // print_count: resp.res.statistics.print_count,
-        // user_share_qrcode: resp.res.user_share_qrcode,
+        statistics:resp.feature.statistics
       })
-
-      // if (this.data.word_count > 99999) {
-      //   let word = (this.data.word / 10000).toFixed(2)
-      //   this.setData({
-      //     word_count: word
-      //   })
-      // }
-      // if (this.data.day_count > 99999) {
-      //   let day = (this.data.day_count / 10000).toFixed(2)
-      //   this.setData({
-      //     day_count: day
-      //   })
-      // }
-      // if (this.data.print_count > 99999) {
-      //   let print = (this.data.print_count / 10000).toFixed(2)
-      //   this.setData({
-      //     print_count: print
-      //   })
-      // }
       this.longToast.toast()
     } catch (e) {
       this.longToast.toast()
-      util.showErr(e)
+      util.showError(e)
     }
   }),
 
@@ -98,7 +79,9 @@ Page({
   },
 
   toDetail: co.wrap(function* (e) {
+  try {
     let content = this.data.content.trim()
+    console.log(content)
     if (content == '') {
       wx.showModal({
         title: '提示',
@@ -108,22 +91,26 @@ Page({
       })
       return
     }
+    console.log(content)
     this.longToast.toast({
       type:'loading'
     })
+    console.log(1111)
     let type = e.currentTarget.id
-    try {
+    console.log(type)
+
       let params = {
-        openid: app.openId,
+        is_async:false,
         type: type,
         content: content,
-        version:true
+        version:true,
+        feature_key: 'custom_copybook'
       }
-      if (this.data.fontType === 'lmsxk') {
-        params.font = 'lmsxk'
+      if(this.data.fontType=='lmsxxk'){
+        params.font = this.data.fontType
       }
-
-      const resp = yield api.customCopybook(params)
+      console.log(params)
+      const resp = yield api.processes(params)
       if (resp.code == 80000) {
         this.longToast.toast()
         return this.setData({
@@ -132,33 +119,34 @@ Page({
       } else if (resp.code != 0) {
         throw (resp)
       }
-      let sn = resp.res.sn
-      let word_count = resp.res.word_count
       let images = resp.res.images
-      let pdf_url = resp.res.pdf_url
       this.longToast.toast()
-      wx.navigateTo({
-        url: `detail?title=自定义练习&sn=${sn}&word_count=${word_count}&images=${common_util.encodeLongParams(images)}&custom=true&user_share_qrcode=${common_util.encodeLongParams(this.data.user_share_qrcode)}&pdf_url=${common_util.encodeLongParams(pdf_url)}`,
+      wxNav.navigateTo('/pages/package_feature/copy_book/detail',{
+        title:'自定义练习',
+        sn:resp.res.sn,
+        type:resp.res.type,
+        images:common_util.encodeLongParams(images),
+        custom:true,
+        user_share_qrcode:common_util.encodeLongParams(this.data.user_share_qrcode)
       })
     } catch (e) {
       this.longToast.toast()
-      util.showErr(e)
+      util.showError(e)
     }
   }),
 
   toList: co.wrap(function* (e) {
     let title = this.data.copybookSets[e.currentTarget.id].name
     let sn = this.data.copybookSets[e.currentTarget.id].sn
-    wx.navigateTo({
-      url: `list?title=${title}&sn=${sn}&user_share_qrcode=${common_util.encodeLongParams(this.data.user_share_qrcode)}`,
+    wxNav.navigateTo('/pages/package_feature/copy_book/list',{
+      title:title,
+      sn:sn,
+      user_share_qrcode:common_util.encodeLongParams(this.data.user_share_qrcode)
     })
   }),
 
   toCommonSense: co.wrap(function* (e) {
-
-    wx.navigateTo({
-      url: `commonSense`,
-    })
+    wxNav.navigateTo(`/pages/package_feature/copy_book/commonSense`)
   }),
 
   toShare: co.wrap(function* (e) {
@@ -175,7 +163,7 @@ Page({
 
   backToHome: function () {
     try {
-      wx.switchTab({
+      wxNav.switchTab({
         url: '/pages/index/index'
       })
     } catch (e) {

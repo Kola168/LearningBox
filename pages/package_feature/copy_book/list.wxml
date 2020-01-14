@@ -1,13 +1,13 @@
 <nav-bar title="{{title}}"></nav-bar>
 
-<view wx:for="{{copyBooks}}" wx:key="{{index}}" id="{{index}}" class='list' bindtap="{{item.free_trial==false&&!user_paid?'toPay':'toDetail'}}">
-  <image src='{{item.icon_url}}' class='url' mode='widthFix'></image>
+<view wx:for="{{copyBooks}}" wx:key="copyBooks" id="{{index}}" class='list' bindtap="toDetail">
+  <image src='{{item.iconUrl}}' class='url' mode='widthFix'></image>
   <view style='position:relative'>
     <view class='title'>
       <view style='position:relative'>{{item.name}}
       </view>
     </view>
-    <view class='content'>{{item.content}}</view>
+    <view class='content'>{{item.desc}}</view>
     <view class='practice' wx:if="{{item.printed==true}}">已练习</view>
   </view>
 </view>

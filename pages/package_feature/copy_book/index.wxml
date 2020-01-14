@@ -11,26 +11,12 @@
 </view>
 
 <view class='number'>
-  <view class='num'>
+  <view wx:for="{{statistics}}" wx:key="statistics" class='num'>
     <view style='display:flex;align-items:center'>
-      <view>{{word_count}}</view>
-      <text style='font-size:30rpx' wx:if="{{word_count>99999}}">万</text>
+      <view>{{item.value>99999?(item.value-item.value%100)/10000:item.value}}</view>
+      <text style='font-size:30rpx' wx:if="{{item.value>99999}}">万</text>
     </view>
-    <view class='gray'>累计练习/字</view>
-  </view>
-  <view class='num'>
-    <view style='display:flex;align-items:center'>
-      <view>{{day_count}}</view>
-      <text style='font-size:30rpx' wx:if="{{day_count>99999}}">万</text>
-    </view>
-    <view class='gray'>累计练字/天</view>
-  </view>
-  <view class='num'>
-    <view style='display:flex;align-items:center'>
-      <view>{{print_count}}</view>
-      <text style='font-size:30rpx' wx:if="{{print_count>99999}}">万</text>
-    </view>
-    <view class='gray'>累计完成/篇</view>
+    <view class='gray'>{{item.label}}</view>
   </view>
 </view>
 <view class='line'></view>
@@ -44,13 +30,13 @@
             <image src="../resource_images/document_{{fontType==='kt'?'':'un'}}checked.png" />
             <view>楷体</view>
         </view>
-        <view class="font-item" bindtap="chooseFont" id="lmsxk">
-            <image src="../resource_images/document_{{fontType==='lmsxk'?'':'un'}}checked.png" />
+        <view class="font-item" bindtap="chooseFont" id="lmsxxk">
+            <image src="../resource_images/document_{{fontType==='lmsxxk'?'':'un'}}checked.png" />
             <view>黎明手写楷体</view>
         </view>
     </view>
     <view class="practice-type">
-        <view bindtap='toDetail' id='stroke' hidden="{{fontType==='lmsxk'}}">练笔顺</view>
+        <view bindtap='toDetail' id='stroke' hidden="{{fontType==='lmsxxk'}}">练笔顺</view>
         <view bindtap='toDetail' id='normal'>练字</view>
     </view>
 </view>
@@ -62,7 +48,7 @@
         <text>书写基本常识</text>
     </view>
     <view wx:for="{{copybookSets}}" wx:key="copybookSets" id="{{index}}" bindtap='toList'>
-        <image src='{{item.icon_url}}' class='url'></image>
+        <image src='{{item.image}}' class='url'></image>
         <text>{{item.name}}</text>
     </view>
 </view>

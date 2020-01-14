@@ -7,7 +7,6 @@ import {
   co,
   util,
   _,
-  uploadFormId,
   common_util
 } from '../../../utils/common_import'
 
@@ -20,8 +19,7 @@ Page({
     media_type: "copy_book"
   },
   onLoad: co.wrap(function* (options) {
-    this.longToast = new app.WeToast()
-    mta.Page.init()
+    this.longToast = new app.weToast()
     console.log(options)
     this.nickName = options.nickName
     this.avatarUrl = options.avatarUrl
@@ -168,7 +166,6 @@ Page({
   }),
 
   savePhoto: co.wrap(function*() {
-    mta.Event.stat('share_save', { 'zitiepostsave': 'true' })
     let that = this
     wx.saveImageToPhotosAlbum({
       filePath: that.data.prurl,
@@ -190,12 +187,11 @@ Page({
   }),
 
   onShareAppMessage: function (res) {
-    mta.Event.stat("zitie_post_share", {})
     console.log('userId==share===',this.user_id)
     if (res.from === 'button' || res[0].from === 'button') {
       return {
         title: "分享一个好用又方便的字帖应用给你！",
-        path: `/pages/error_book/pages/copy_book/index?share_user_id=${this.user_id}`
+        path: `/pages/error_book/pages/copy_book/index`
       }
     } else {
       return app.share
