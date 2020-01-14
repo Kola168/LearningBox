@@ -9,24 +9,24 @@
 <view class="image">
     <view class="singleImg" wx:if="{{singleImg}}">
         <view>单张效果</view>
-        <image class="bg-white" mode='widthFix' bindtap="preview" src='{{singleImg}}'></image>
+        <image mode='widthFix' bindtap="preview" src='{{singleImg}}' class=" {{!print_wm_url?'single-only':''}}"></image>
     </view>
     <view class="print-url" wx:if="{{print_wm_url}}">
         <view>整版效果（6寸）</view>
-        <image class="bg-white" mode='widthFix' bindtap="" src='{{print_wm_url}}'></image>
+        <image mode='widthFix' bindtap="" src='{{print_wm_url}}'></image>
     </view>
 
 </view>
 
 <view class="bottom">
-    <view bindtap='toPay' id="digital">
+    <view class="left {{!print_wm_url?'only':''}}" bindtap='toPay' id="digital">
         <text>保存电子版</text>
     </view>
-    <view bindtap="toPay" id="paper">
+    <view class="right" bindtap="toPay" id="paper" wx:if="{{print_wm_url}}">
         打印证件照
     </view>
 </view>
-<image class="save-tip" mode='widthFix' bindtap="" src='../../images/id/id_save_tip.png'></image>
+<image class="save-tip" mode='widthFix' bindtap="" src='../../images/id/id_save_tip.png' bindtap="closeTip" wx:if="{{saveTip}}"></image>
 
 <import src="../../lib/toast/wetoast.wxml" />
 <template is="wetoast" data="{{...__wetoast__}}" />

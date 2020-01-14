@@ -267,12 +267,12 @@ Page({
         url = "/pages/print_doc/index/index"
         break
       case 'more':
-				// url = "/pages/print_funny/index"
-				wx.showToast({
-					title: '暂未开放，敬请期待',
-					icon: 'none',
-					duration: 2000
-				})
+				url = "/pages/print_funny/index"
+				// wx.showToast({
+				// 	title: '暂未开放，敬请期待',
+				// 	icon: 'none',
+				// 	duration: 2000
+				// })
         break
       defalt:
         url = ''
@@ -304,19 +304,19 @@ Page({
         url = '/pages/package_feature/error_book/photo_anwser_intro'
         break;
       case 'syncLearn':
-        // url = '/pages/package_subject/sync_learn/index/index'
+        url = '/pages/package_subject/sync_learn/index/index'
         break;
       case 'evaluate_exam':
-        // url = '/pages/package_subject/evaluate_exam/index/index'
+        url = '/pages/package_subject/evaluate_exam/index/index'
         break;
       case 'errorBook':
         url = '/pages/package_subject/super_errorbook/index/index'
         break;
       case 'exerciseDay':
-				// url = '/pages/package_preschool/exercise_day/exercises/exercises'
+				url = '/pages/package_preschool/exercise_day/exercises/exercises'
 				break;
       case 'baobeicepin':
-        // url = '/pages/package_preschool/evaluation/index'
+        url = '/pages/package_preschool/evaluation/index'
         break;
       case 'weaknessExercise':
         url = '/pages/package_subject/weakness_exercise/index/index'

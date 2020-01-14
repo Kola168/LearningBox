@@ -18,12 +18,13 @@
     </view>
 </view>
 <view class="bottom">
-    <view class="left" bindtap="">
-        <text>保存单张</text>
-    </view>
-    <view class="right" bindtap="">
-        <text>保存完整</text>
-    </view>
+    <button class="left"  bindtap="savePhoto" open-type="{{allowCamera==1?'openSetting':''}}"  bindopensetting="{{allowCamera==1 ?'authBack' : ''}}" id="single" hover-class="none">
+        <view>保存证单张</view>
+      </button>
+
+      <button class="left" bindtap="savePhoto" open-type="{{allowCamera==1?'openSetting':''}}"  bindopensetting="{{allowCamera==1 ?'authBack' : ''}}" id="full" hover-class="none" wx:if="{{print_wm_url}}">
+        <view>保存完整</view>
+      </button>
 
 </view>
 

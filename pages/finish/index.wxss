@@ -3,10 +3,10 @@
 page {
     width: 100%;
     height: 100%;
-		display:flex;
-		flex-direction:column;
-		align-items:center;
-		padding-bottom: 70rpx 0 180rpx;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 70rpx 0 180rpx;
 }
 
 .top-tip {
@@ -31,12 +31,12 @@ page {
 .image {
     width: 214rpx;
     margin-bottom: 45rpx;
-    margin-top:82rpx;
+    margin-top: 82rpx;
 }
 
-.tips-box{
-	display:flex;
-	align-items:center;
+.tips-box {
+    display: flex;
+    align-items: center;
 }
 
 .question {
@@ -46,7 +46,7 @@ page {
 }
 
 .contact {
-  width: 710rpx;
+    width: 710rpx;
 }
 
 .describe {
@@ -62,11 +62,11 @@ page {
     width: 22rpx;
     height: 14rpx;
     margin-left: 10rpx;
-		transition:0.2s;
+    transition: 0.2s;
 }
 
-.trans-rotate{
-	transform:rotate(-180deg);
+.trans-rotate {
+    transform: rotate(-180deg);
 }
 
 .button {
@@ -79,12 +79,13 @@ page {
     font-size: 36rpx;
 }
 
-.button>view {
+.button>view,
+.button>button {
     width: 45%;
     height: 80rpx;
     line-height: 80rpx;
     border-radius: 44rpx;
-		text-align:center;
+    text-align: center;
 }
 
 .button-left {
@@ -184,7 +185,7 @@ page {
     color: #454545;
     line-height: 80rpx;
     margin: 36rpx 0 30rpx;
-		text-align:center;
+    text-align: center;
 }
 
 .content1 {
@@ -254,7 +255,7 @@ page {
 .baby-exercise {
     margin: 24rpx 24rpx 62rpx;
     position: relative;
-    width: calc( 100% - 48rpx );
+    width: calc(100% - 48rpx);
     border-radius: 15rpx;
 }
 
@@ -283,4 +284,3 @@ page {
     font-size: 28rpx;
     padding-top: 33rpx;
 }
-
