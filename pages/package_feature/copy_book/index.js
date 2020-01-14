@@ -146,9 +146,9 @@ Page({
     const info = yield getUserInfo()
     wxNav.navigateTo(`/pages/package_feature/copy_book/post`,{
       user_share_qrcode:common_util.encodeLongParams(this.data.user_share_qrcode),
-      word_count:this.data.word_count,
-      day_count:this.data.day_count,
-      print_count:this.data.print_count,
+      word_count:this.data.statistics[0].value,
+      day_count:this.data.statistics[1].value,
+      print_count:this.data.statistics[2].value,
       avatarUrl:info.userInfo.avatarUrl,
       nickName:info.userInfo.nickName,
     })

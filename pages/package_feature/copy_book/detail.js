@@ -152,10 +152,9 @@ Page({
 
   onShareAppMessage: function(res) {
     if (res.from === 'button' || res[0].from === 'button') {
-      console.log('c随时随地======', `/pages/error_book/pages/copy_book/detail?custom=${this.data.custom}&from=share`)
       return {
         title: "分享一个好用又方便的字帖应用给你！",
-        path: `/pages/error_book/pages/copy_book/detail?custom=${this.data.custom}&from=share`
+        path: `/pages/package_feature/copy_book/detail?custom=${this.data.custom}&from=share&title=${this.data.title}&name=${this.data.name}&sn=${this.data.sn}&user_share_qrcode=${common_util.encodeLongParams(this.data.user_share_qrcode)}`
       }
     } else {
       return app.share
@@ -255,8 +254,8 @@ Page({
 
   backToHome: function() {
     try {
-      wx.switchTab({
-        url: '../../../index/index'
+      wxNav.switchTab({
+        url: '/pages/index/index'
       })
     } catch (e) {
       console.log(e)
@@ -265,9 +264,7 @@ Page({
 
   //有用 试一试
   toCopybook: function(e) {
-    wx.navigateTo({
-      url: `index`,
-    })
+    wxNav.navigateTo(`/pages/package_feature/copy_book/index`)
   },
 
   onUnload: function() {
