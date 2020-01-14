@@ -40,8 +40,7 @@ view {
 }
 
 .points-img {
-  width: 200rpx;
-
+  width: 400rpx;
 }
 
 .point-num-box {
