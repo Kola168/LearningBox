@@ -50,6 +50,7 @@ Page({
   checkAnswer() {
     let images = this.data.printAnswer ? this.originalImages : this.answerImages
     this.setData({
+      currentIndex: 1,
       printAnswer: !this.data.printAnswer,
       imgList: images
     })
