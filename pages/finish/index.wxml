@@ -45,7 +45,7 @@
     <text wx:else>{{printType==='photo_answer'?'继续搜题':(continueText?continueText:'继续打印')}}</text>
   </view>
   <button class="button-right" bindtap="savePhoto" open-type="{{allowCamera==1?'openSetting':''}}"
-    bindopensetting="{{allowCamera==1 ?'authBack' : ''}}" id="single" hover-class="none">
+    bindopensetting="{{allowCamera==1 ?'authBack' : ''}}" id="single" hover-class="none" wx:if="{{printType==='cert_id'}}" >
     <text>保存证件照</text>
   </button>
 </view>
