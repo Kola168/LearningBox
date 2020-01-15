@@ -9,7 +9,6 @@ import {
   common_util
 } from '../../../utils/common_import'
 
-
 const getUserInfo =util.promisify(wx.getUserInfo)
 import wxNav from '../../../utils/nav.js'
 const event = require('../../../lib/event/event')
