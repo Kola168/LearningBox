@@ -38,7 +38,7 @@ App({
 	// apiServer: 'http://jran.nat300.top',
 
 	// 测试接口季慧新
-	// apiServer: 'http://jhx.nat300.top',
+	apiServer: 'http://jhx.nat300.top',
 
 	// 测试接口张伟
 	// apiServer: 'https://bboo.utools.club',
