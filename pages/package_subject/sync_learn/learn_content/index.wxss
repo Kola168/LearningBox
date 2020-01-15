@@ -93,11 +93,21 @@
 
 
 .current-input-value  .version {
-  margin-right: 20rpx;
+  width: 35%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  word-break: break-all;
+
 }
 
 .current-input-value .grade {
   margin-right: 16rpx;
+  width: 50%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  word-break: break-all;
 }
 
 .current-input-value .arrow-icon {
