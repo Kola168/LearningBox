@@ -61,13 +61,14 @@ Page({
       isMember:respMember.currentUser.isPreschoolMember
     })
     console.log('thisadatasuscriobe',this.data.isSuscribe)
-      if(this.data.isSuscribe){
-        this.setData({
-          autoPrintBtn:true
-        })
-      }else{
-        this.toFunc()
-      }
+      // if(this.data.isSuscribe){
+      //   this.setData({
+      //     autoPrintBtn:true
+      //   })
+      // }else{
+      //   this.toFunc()
+      // }
+      this.toFunc()
       this.longToast.hide()
     } catch (error) {
       this.longToast.toast()

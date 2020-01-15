@@ -36,7 +36,8 @@ Page({
   onLoad: co.wrap(function* (options) {
     this.longToast = new app.weToast()
     // let currentImage=this.data.imgUrls[1].image
-    // let systemInfo = wx.getSystemInfoSync()
+    let systemInfo = wx.getSystemInfoSync()
+    let isAndroid = systemInfo.system.indexOf('iOS') > -1 ? false : true
 
     this.userPlanSn = this.options.userPlanSn
     this.sn = this.options.sn
