@@ -16,7 +16,11 @@ Page({
    */
   data: {
     month: '',
-    exerciseContent: []
+    exerciseContent: [],
+    modal: {
+      title: '畅享月度合辑',
+      desc: '每日一练，每日涨知识',
+    }
   },
 
   onLoad: function (options) {
@@ -52,9 +56,14 @@ Page({
    * 跳转每日练习详情
    */
   toExerciseDetail: co.wrap(function*({currentTarget: {dataset: {sn}}}){
-    wxNav.navigateTo('../exercises/exercises', {
-      sn
+      // 判断会员标示
+    var memberToast = this.selectComponent('#memberToast')
+    memberToast.checkAuthMember(()=>{
+      wxNav.navigateTo('../exercises/exercises', {
+        sn
+      })
     })
+   
   }),
   
   onReachBottom: function () {
