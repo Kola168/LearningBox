@@ -51,6 +51,14 @@ Page({
     this.initData()
   }),
 
+
+  onShow: co.wrap(function*(){
+    if (this.toViewVideo) {
+      this.toViewVideo = false
+      yield this.initData()
+    }
+  }),
+
   /**
    * 初始化数据
    */
@@ -78,10 +86,11 @@ Page({
   }),
 
   toVideo: function({currentTarget: {dataset: {sn}}}) {
+    this.toViewVideo = true
     wxNav.navigateTo("../video_list/video_list", {
       sn,
-      stageSn: this.data.stage.sn,
-      subjectId: this.data.subjectList[this.data.currentSubjectIndex]
+      stageSn: this.data.stage && this.data.stage.sn || this.data.stageSn,
+      subjectId: this.data.subjectList[this.data.currentSubjectIndex].subjectId
     })
   },
 
