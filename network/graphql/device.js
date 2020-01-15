@@ -121,7 +121,8 @@ const graphqlApi = {
             onlineState,
             quality,
             printOrder,
-            shareQrcode
+						shareQrcode,
+						serviceSn
           }
         }
       }`,
