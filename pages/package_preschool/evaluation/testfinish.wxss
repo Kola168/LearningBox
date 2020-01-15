@@ -39,7 +39,7 @@ view {
 
 .achievement-name {
   width: 148rpx;
-  height: 64rpx;
+  
   text-align: center;
   line-height: 64rpx;
   background: #E3F4FF;

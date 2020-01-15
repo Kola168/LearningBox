@@ -23,7 +23,7 @@ Page({
     fontType: 'kt',
     iosModal: false,
     text: '当日智能字帖生成次数已经用完，升级会员可以畅享使用',
-    user_share_qrcode:'https://www.baicu.com'
+    user_share_qrcode:'https://cdn-h.gongfudou.com/Leviathan/backend/attachment/attachment/59601d4ad98c41e4b10b204c30150b04.png'
 
   },
   onLoad: co.wrap(function* (options) {

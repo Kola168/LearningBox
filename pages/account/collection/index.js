@@ -50,6 +50,10 @@ Page({
     }
   }),
 
+  backIndex:function(){
+    wxNav.switchTab('/pages/index/index')
+  },
+
   onPullDownRefresh: function() {
     this.page = 1
     this.stopPulldown = false
