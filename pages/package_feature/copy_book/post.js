@@ -191,7 +191,7 @@ Page({
     if (res.from === 'button' || res[0].from === 'button') {
       return {
         title: "分享一个好用又方便的字帖应用给你！",
-        path: `/pages/error_book/pages/copy_book/index`
+        path: `/pages/package_feature/copy_book/index`
       }
     } else {
       return app.share

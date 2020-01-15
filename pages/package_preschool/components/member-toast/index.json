@@ -1,0 +1,6 @@
+{
+  "component": true,
+  "usingComponents": {
+    "toast-modal": "../../../../../components/modal/index"
+  }
+}
