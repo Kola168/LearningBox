@@ -93,7 +93,8 @@
 
 
 .current-input-value  .version {
-  width: 35%;
+  margin-right: 16rpx;
+  max-width: 35%;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -103,7 +104,7 @@
 
 .current-input-value .grade {
   margin-right: 16rpx;
-  width: 50%;
+  max-width: 50%;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;

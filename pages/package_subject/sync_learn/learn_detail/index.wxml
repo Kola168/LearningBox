@@ -57,8 +57,8 @@
 			<view class="sub-content">
 				<view class="subject-title">{{item.exerciseName}}-{{currentDiff.name}}</view>
 				<view class="subject-info">
-					<image class="print-icon" mode="widthFix" src="/images/doc_print_icon.png" />
-					<view class="print-num">{{item.printCount}}位同学已学习</view>
+					<!-- <image class="print-icon" mode="widthFix" src="/images/doc_print_icon.png" />
+					<view class="print-num">{{item.printCount}}位同学已学习</view> -->
 				</view>
 			</view>
 			<view class="btn-print">打印练习</view>

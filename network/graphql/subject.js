@@ -956,6 +956,9 @@ const graphqlApi = {
             vidoeTitle
           }
         }
+        xuekewang{
+          registered
+        }
       }`,
       variables: {
         stageSn,
