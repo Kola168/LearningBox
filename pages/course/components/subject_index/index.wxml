@@ -99,7 +99,7 @@
           <view class="last-learn-title" wx:if="{{item.vidoeTitle !=null}}">{{item.vidoeTitle}}</view>
           <view class="learn-num" wx:if="{{item.currentUserNum !=null}}">{{item.currentUserNum}}位同学正在学</view>
         </image>
-        <image class="subject-item" src="../images/more_subject_icon.png" data-index="3" bind:tap="toSubject">
+        <image class="subject-item" src="../images/more_subject_icon.png" data-index="3" bind:tap="toVideoSubject">
           <view class="last-learn-title"></view>
           <view class="learn-num">{{moreVideoNum}}位同学正在看</view>
         </image>

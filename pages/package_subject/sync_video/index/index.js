@@ -36,7 +36,7 @@ Page({
     let navBarHeight = app.navBarInfo.topBarHeight
     this.setData({
       navBarHeight,
-      currentStageIndex: options.index ? options.index : 0
+      currentSubjectIndex: options.index ? options.index : 0
     })
     this.longToast = new app.weToast()
 
