@@ -25,9 +25,9 @@ Page({
   onLoad: function(options) {
     this.longToast = new app.weToast()
     this.sn = options.sn
-    this.getTestList()
     this.audioCtx = wx.createInnerAudioContext()
     this.audioCtx.obeyMuteSwitch = false
+    this.getTestList()
   },
 
   getTestList: co.wrap(function*() {
@@ -39,6 +39,9 @@ Page({
       this.setData({
         subjectList: resp.examination.questions
       })
+      if(this.data.subjectList[this.data.nowIndex].audioUrl){
+        this.audioCtx.src = this.data.subjectList[this.data.nowIndex].audioUrl
+      }
       this.longToast.toast()
       this.startAnswer()
     } catch (e) {
@@ -48,18 +51,41 @@ Page({
     }
   }),
 
+  onHide:function(){
+    this.stopVideo()
+  },
+
+  audioPlaying:false,
+
   playVideo: function(e) {
+    try{
+    if(this.audioPlaying){
+      this.stopVideo()
+      return
+    }
+    console.log(this.audioPlaying)
+    console.log(this.audioCtx.src)
     let that = this
     let index = e.currentTarget.dataset.index
-    this.audioCtx.src = this.data.subjectList[this.data.nowIndex].audioUrl
-    this.audioCtx.onCanplay(function() {
-      that.audioCtx.play()
-      that.audioCtx.offCanplay()
+    that.audioCtx.play()
+    that.audioCtx.onPlay(function(){
+      console.log(11111)
     })
+    that.audioPlaying=true
+    this.audioCtx.onEnded(function(){
+      that.audioCtx.stop()
+      that.audioPlaying=false
+    })
+    this.audioCtx.onStop(function(){
+      that.audioPlaying=false
+    })
+  }catch(e){
+    console.log(e)
+  }
   },
 
   stopVideo: function() {
-    this.audioCtx.pause()
+    this.audioCtx.stop()
   },
 
   //问题回答倒计时
@@ -89,6 +115,9 @@ Page({
     this.data.nowIndex += 1
     this.is_right = false
     this.stopVideo()
+    if(this.data.subjectList[this.data.nowIndex].audioUrl){
+      this.audioCtx.src = this.data.subjectList[this.data.nowIndex].audioUrl
+    }
     if (this.data.nowIndex > (this.data.subjectList.length - 1)) {
       return this.toSummary()
     }

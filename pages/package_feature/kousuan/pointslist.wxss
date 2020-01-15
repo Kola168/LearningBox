@@ -114,7 +114,7 @@ view {
   display:flex;
   align-items:center;
   justify-content:center;
-  border:1rpx solid #666;
+  border:2rpx solid #666;
 }
 
 .bottom-checked{
@@ -128,7 +128,7 @@ view {
   height:11rpx;
   border-left:3rpx solid #000;
   border-bottom:3rpx solid #000;
-  transform: rotate(-40deg);
+  transform: rotate(-50deg);
   position:relative;
-  top:-1rpx;
+  top:-2rpx;
 }
