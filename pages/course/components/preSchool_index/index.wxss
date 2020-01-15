@@ -163,7 +163,7 @@ progress {
 .user-btns {
   width: 25%;
   font-size: 24rpx;
-  justify-content: center;
+  justify-content: flex-end;
 }
 
 .user-btns>view {
