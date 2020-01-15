@@ -20,44 +20,44 @@ Page({
     if (query.scene) {
       let scene = decodeURIComponent(query.scene)
       this.answerId = scene.split('_')[1]
-      this.answerType = scene.split('_')[2]
+      this.answerType = scene.split('_')[2] === 'report' ? 'XuekewangReport' : 'XuekewangExercise'
     }
     this.weToast = new app.weToast()
     event.on('Authorize', this, () => {
-      this.setData({
-        isAuth: app.isScope()
-      })
       this.getAnswerInfo()
     })
     let isAuth = app.isScope()
     if (!isAuth) {
       return wxNav.navigateTo("/pages/authorize/index")
     }
-    this.getAnswerInfo()    
+    this.getAnswerInfo()
   },
 
   getAnswerInfo: co.wrap(function* () {
-    this.longToast.toast({
-      type: 'loading',
-      title: '请稍等'
+    this.weToast.toast({
+      type: 'loading'
     })
     try {
-      let resp = yield subjectGql.getSubjectAnswerInfo(this.answerId,this.answerType)
+      let resp = yield subjectGql.getSubjectAnswer(this.answerId, this.answerType)
       this.weToast.hide()
-      wx.downloadFile({
-        // url: 'https://cdn-h.gongfudou.com/Leviathan/backend/attachment/attachment/dd4adfefe3614e54a43401d2fa91f7be.pdf',
-        url: resp.res,
-        success(res) {
-          wx.openDocument({
-            filePath: res.tempFilePath
-          })
-        }
-      })
+      this.answerPdf = resp.xuekewang.previewAnswer
+      this.openDocument()
     } catch (error) {
       this.weToast.hide()
       util.showError(error)
     }
   }),
+
+  openDocument() {
+    wx.downloadFile({
+      url: this.answerPdf,
+      success(res) {
+        wx.openDocument({
+          filePath: res.tempFilePath
+        })
+      }
+    })
+  },
 
   backIndex() {
     wxNav.switchTab('/pages/index/index')

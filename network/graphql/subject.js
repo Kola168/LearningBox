@@ -1086,6 +1086,25 @@ const graphqlApi = {
       }
     })
   },
+
+  /**
+   * 获取答案
+   * @param {String} answeId 
+   * @param {String} type 
+   */
+  getSubjectAnswer: (id, type) => {
+    return gql.query({
+      query: `query previewAnswer($id: String,$type: ReportTypeEnum!){
+        xuekewang {
+          previewAnswer(id:$id,type:$type)
+        }
+      }`,
+      variables: {
+        id,
+        type
+      }
+    })
+  },
 }
 
 export default graphqlApi
