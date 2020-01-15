@@ -11,6 +11,10 @@ page {
   box-sizing: border-box;
 }
 
+view{
+  box-sizing:border-box;
+}
+
 .common_bg {
   width: 680rpx;
   position: relative;
@@ -46,8 +50,8 @@ page {
   color: #151515;
   letter-spacing: 0;
   line-height: 26px;
-  margin-top:68rpx;
-  margin-left:42rpx;
+  padding-top:68rpx;
+  padding-left:42rpx;
 }
 
 .head-text{
