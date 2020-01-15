@@ -7,7 +7,7 @@
   left: 0;
   bottom: 0;
   width: 100%;
-  background: #FFE27A;
+  background: #FFDC5E;
   font-size: 36rpx;
   color: #333;
   text-align: center;
