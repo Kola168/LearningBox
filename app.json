@@ -51,7 +51,7 @@
     "pages/webview/member",
     "pages/member/authorize",
     "pages/exit/index",
-    "pages/account/collection/index",	
+    "pages/account/collection/index",
     "pages/print_id/pay",
     "pages/print_id/print",
     "pages/print_id/smart_save"
@@ -80,7 +80,8 @@
         "order_record/order/order",
         "setting/setting",
         "instructions/index",
-        "instructions/search"
+        "instructions/search",
+        "heart_course/index"
       ]
     },
     {
