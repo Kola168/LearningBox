@@ -27,7 +27,7 @@
 <block wx:if="{{!showAuth}}">
   <!-- 学龄前ui -->
   <block wx:if="{{homeType!=='学科'}}">
-    <view class="home-title">智能学习工具</view>
+    <view class="home-title"  style="margin-bottom:0">智能学习工具</view>
     <view class="tool-wrap">
       <view class="tool-item" bindtap="toFunction" id="cognitionCard">
         <image src="/images/home/icon_shizika.png" mode="widthFix"></image>
