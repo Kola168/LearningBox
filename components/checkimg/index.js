@@ -136,15 +136,16 @@ Component({
     }),
     chooseImg: co.wrap(function*(type) {
       let sizeType = []
-      if (this.data.original) {
-        sizeType.push('original')
-      }
-      if (this.data.compressed) {
-        sizeType.push('compressed')
-      }
-      if (sizeType == []) {
-        sizeType = ['original', 'compressed']
-      }
+      // if (this.data.original) {
+      //   sizeType.push('original')
+      // }
+      // if (this.data.compressed) {
+      //   sizeType.push('compressed')
+      // }
+      // if (sizeType == []) {
+      //   sizeType = ['original', 'compressed']
+      // }
+      sizeType.push('original')
       let imageUrl
       if (type == 'chooseMessageFile') {
         imageUrl = yield chooseMessageFile({

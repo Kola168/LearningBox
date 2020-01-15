@@ -42,7 +42,6 @@ Page({
             this.getMember()
         })
     }),
-
     getMember: co.wrap(function* () {
         this.longToast.toast({
             type: 'loading'

@@ -7,7 +7,6 @@ import {
   co,
   util,
   _,
-  uploadFormId,
   common_util
 } from '../../../utils/common_import'
 
@@ -20,8 +19,7 @@ Page({
     media_type: "copy_book"
   },
   onLoad: co.wrap(function* (options) {
-    this.longToast = new app.WeToast()
-    mta.Page.init()
+    this.longToast = new app.weToast()
     console.log(options)
     this.nickName = options.nickName
     this.avatarUrl = options.avatarUrl
@@ -38,13 +36,6 @@ Page({
     })
     console.log("屏幕宽高", this.data.width, this.data.height)
     this.canvas()
-    let userId = wx.getStorageSync('userId')
-    if (userId == undefined || userId == ''){
-      yield this.loopOpenId()
-    }else{
-      this.user_id = userId
-    }
-
   }),
   canvas: co.wrap(function*() {
     this.setData({
@@ -175,7 +166,6 @@ Page({
   }),
 
   savePhoto: co.wrap(function*() {
-    mta.Event.stat('share_save', { 'zitiepostsave': 'true' })
     let that = this
     wx.saveImageToPhotosAlbum({
       filePath: that.data.prurl,
@@ -196,53 +186,12 @@ Page({
     })
   }),
 
-  loopOpenId: co.wrap(function* () {
-    let loopCount = 0
-    let _this = this
-    if (app.openId) {
-      console.log('openId++++++++++++----', app.openId)
-      _this.getUserId()
-    } else {
-      setTimeout(function () {
-        loopCount++
-        if (loopCount <= 100) {
-          console.log('openId not found loop getting...')
-          _this.loopOpenId()
-        } else {
-          console.log('loop too long, stop')
-        }
-      }, 1000)
-    }
-  }),
-
-  getUserId: co.wrap(function* () {
-    try {
-      const resp = yield request({
-        url: app.apiServer + `/ec/v2/users/user_id`,
-        method: 'GET',
-        dataType: 'json',
-        data: {
-          openid: app.openId
-        }
-      })
-      if (resp.data.code != 0) {
-        throw (resp.data)
-      }
-      console.log('获取user_id', resp.data)
-      this.user_id = resp.data.user_id
-      wx.setStorageSync('userId', this.user_id)
-    } catch (e) {
-      // util.showErr(e)
-    }
-  }),
-
   onShareAppMessage: function (res) {
-    mta.Event.stat("zitie_post_share", {})
     console.log('userId==share===',this.user_id)
     if (res.from === 'button' || res[0].from === 'button') {
       return {
         title: "分享一个好用又方便的字帖应用给你！",
-        path: `/pages/error_book/pages/copy_book/index?share_user_id=${this.user_id}`
+        path: `/pages/package_feature/copy_book/index`
       }
     } else {
       return app.share

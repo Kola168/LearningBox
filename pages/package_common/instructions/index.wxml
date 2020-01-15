@@ -1,8 +1,38 @@
 <!--pages/package_common/instructions/index.wxml-->
 <nav-bar title="使用说明"></nav-bar>
-<image src="../images/arrow_down.png" mode="aspectFit" class="search-tip-img"></image>
+<view class="search-box" bindtap="toSearch">
+  <text class="iconfont icon-search"></text>
+  <text class="search-tip-text">输入关键字</text>
+</view>
 <view class="content-box">
   <view class="content-top-type">
-
+    <view class="content-type-box" data-type="maker" bindtap="checkType">
+      <view class="content-type-name">
+        {{equipmentBrand[equipmentIndex].maker}}
+      </view>
+      <text class="iconfont icon-show-more"></text>
+    </view>
+    <view class="content-type-box" data-type="printerModel" bindtap="checkType">
+      <view class="content-type-name">
+        {{equipmentBrand[equipmentIndex].printerModels[brandIndex].name}}
+      </view>
+      <text class="iconfont icon-show-more"></text>
+    </view>
   </view>
 </view>
+<view class="rest-box">
+  <view wx:for="{{questionList}}" wx:key="questionList" class="content-list" data-index="{{index}}" bindtap="toPreview">
+    <text>{{item.title}}</text>
+    <text class="iconfont icon-next {{pickType?'icon-checked':''}}"></text>
+  </view>
+  <view wx:if="{{pickType}}" class="check-box" bindtap="hidePicker">
+    <view class="picker-box">
+      <view wx:for="{{pickType=='maker'?equipmentBrand:equipmentBrand[equipmentIndex].printerModels}}" wx:key="pickType" class="picker-list" data-index="{{index}}" catchtap="changePick">
+        {{pickType=='maker'?item.maker:item.name}}
+      </view>
+    </view>
+  </view>
+</view>
+
+<import src="/lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />

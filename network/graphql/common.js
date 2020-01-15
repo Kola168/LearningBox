@@ -88,6 +88,39 @@ const graphqlApi = {
       variables: param
     })
   },
+
+  //获取设备厂商及品牌列表
+  printerModels:()=>{
+    return gql.query({
+      query: `query{
+        printerModels{
+          maker
+          printerModels{
+            sn
+            name
+            isSelected
+          }
+        }
+      }`,
+    })
+  },
+
+  //获取选中设备的问题列表
+  instructions:(params)=>{
+    return gql.query({
+      query: `query($isGuesses:Boolean,$keyword:String,$printerModelSn:String){
+         instructions(isGuesses:$isGuesses,keyword:$keyword,printerModelSn:$printerModelSn){
+          sn
+          title
+          content
+          printerModelName
+          printerModelMaker
+        }
+      }`,
+      variables:params
+    })
+  },
+
 }
 
 

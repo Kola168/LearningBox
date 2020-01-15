@@ -43,6 +43,7 @@
   sync_learn: '/pages/package_subject/sync_learn/learn_content/index',
   daily_practice: '/pages/package_preschool/exercise_day/exercises/exercises',
   testimonial: '/pages/package_preschool/exercise_day/certificate/index',
+  copybook:'/pages/package_feature/copy_book/index'
 }
 
 module.exports = {

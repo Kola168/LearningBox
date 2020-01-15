@@ -6,13 +6,14 @@ import {
   co,
   util,
   _,
-  uploadFormId,
   common_util
 } from '../../../utils/common_import'
 
 const showModal = util.promisify(wx.showModal)
 const request = util.promisify(wx.request)
 const requestPayment = util.promisify(wx.requestPayment)
+import wxNav from '../../../utils/nav.js'
+import graphql from '../../../network/graphql/feature'
 
 Page({
   data: {
@@ -21,10 +22,9 @@ Page({
   },
 
   onLoad: co.wrap(function*(options) {
-    this.longToast = new app.WeToast()
-    mta.Page.init()
+    this.longToast = new app.weToast()
     console.log(options)
-    wx.setNavigationBarTitle({
+    this.setData({
       title: options.title,
     })
 
@@ -32,16 +32,13 @@ Page({
       user_share_qrcode: common_util.decodeLongParams(options.user_share_qrcode),
       title: options.title,
       sn: options.sn,
-      choose_grade: options.choose_grade,
-      price: options.price,
-      highScreen: app.sysInfo.screenHeight > 750 ? true : false
+      highScreen: app.isFullScreen
     })
     yield this.getcopybookSets()
   }),
 
   toPay: co.wrap(function*(e) {
     let sn = this.data.sn
-    mta.Event.stat("zitie_pay_button", sn)
     this.setData({
       showConfirmModal: true
     })
@@ -49,25 +46,19 @@ Page({
 
   getcopybookSets: co.wrap(function*(e) {
     this.longToast.toast({
-      img: '/images/loading.gif',
-      title: '请稍候',
-      duration: 0
+      type:'loading'
     })
     try {
-      const resp = yield api.copybooksetsDetail(app.openId, this.data.sn)
-      if (resp.code != 0) {
-        throw (resp)
-      }
+      const resp = yield graphql.getCopyBookDetailList(this.data.sn)
+
       console.log('获取字帖集详情', resp)
       this.setData({
-        copyBooks: resp.res.copy_books,
-        user_paid: resp.res.user_paid,
-        free: resp.res.free
+        copyBooks: resp.category.contents,
       })
       this.longToast.toast()
     } catch (e) {
       this.longToast.toast()
-      util.showErr(e)
+      util.showError(e)
     }
   }),
 
@@ -77,49 +68,10 @@ Page({
     })
   }),
 
-  confirm: co.wrap(function*(e) {
-    let sn = this.data.sn
-    mta.Event.stat("zitie_pay_confirm", sn)
-    this.longToast.toast({
-      img: '/images/loading.gif',
-      title: '请稍候',
-      duration: 0
-    })
-    this.setData({
-      showConfirmModal: false
-    })
-    let brand
-    try {
-      const resp = yield api.payCopybook(app.openId, 'copy_book_set', this.data.sn)
-      if (resp.code != 0) {
-        throw (resp)
-      }
-      brand = resp.res
-      console.log('brand-----', resp.res)
-      console.log('购买成功', resp)
-      this.longToast.toast()
-    } catch (e) {
-      this.longToast.toast()
-      util.showErr(e)
-    }
-    const payment = yield requestPayment({
-      timeStamp: brand.timeStamp,
-      nonceStr: brand.nonceStr,
-      package: brand.package,
-      signType: brand.signType,
-      paySign: brand.paySign
-    })
-    console.log('支付信息=========', payment)
-    this.setData({
-      user_paid: true,
-    })
-  }),
-
   toDetail: co.wrap(function*(e) {
     let id = e.currentTarget.id
     let name = this.data.copyBooks[id].name
     let sn = this.data.copyBooks[id].sn
-    mta.Event.stat("zitie_list_print", sn)
     wx.navigateTo({
       url: `detail?title=${this.data.title}&name=${name}&sn=${sn}&user_share_qrcode=${common_util.encodeLongParams(this.data.user_share_qrcode)}`,
     })

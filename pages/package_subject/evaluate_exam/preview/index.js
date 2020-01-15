@@ -50,6 +50,7 @@ Page({
   checkAnswer() {
     let images = this.data.printAnswer ? this.originalImages : this.answerImages
     this.setData({
+      currentIndex: 1,
       printAnswer: !this.data.printAnswer,
       imgList: images
     })
@@ -116,8 +117,8 @@ Page({
     try {
       let res = yield subjectGql.getPaperDetail(this.sn),
         paper = res.xuekewang.paper
-      this.originalImages = paper.images
-      this.answerImages = paper.answerImages
+      this.originalImages = this.isMember ? paper.images : paper.images.slice(0,1)
+      this.answerImages = this.isMember ? paper.answerImages : paper.answerImages.slice(0,1)
       this.pdf = paper.pdf.nameUrl
       this.answerPdf = paper.answerPdf.nameUrl
       this.setData({

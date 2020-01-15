@@ -13,6 +13,7 @@ import Logger from '../../utils/logger.js'
 const logger = new Logger.getLogger('pages/index/index')
 const event = require('../../lib/event/event')
 const imginit = require('../../utils/imginit')
+import gql from '../../network/graphql_request.js'
 
 Page({
   data: {
@@ -33,6 +34,7 @@ Page({
   onLoad: co.wrap(function* (options) {
     this.longToast = new app.weToast()
     this.query = JSON.parse(options.confirm)
+    this.sn = this.query.sn
     this.info = JSON.parse(options.info)
     console.log('支付页参数', this.info, this.query)
     let url
@@ -43,10 +45,13 @@ Page({
     }
     this.setData({
       url: url,
-      type: options.type
+      type: options.type,
+      info: this.info
     })
+    yield this.payOrder()
 
   }),
+
   //创建支付订单
   payOrder: co.wrap(function* () {
     this.longToast.toast({
@@ -54,10 +59,15 @@ Page({
       title: '请稍后'
     })
     try {
-      var resp = yield commonRequest.createPaymentOrder(this.data.sn, 'course')
-      this.setData({
-        paymentOrder: resp.createPaymentOrder.paymentOrder
+      var resp = yield gql.createCertPaymentOrder({
+        type: 'cert',
+        sn: this.sn
       })
+      this.setData({
+        paymentOrder: resp.createPaymentOrder.paymentOrder,
+        payable: resp.createPaymentOrder.paymentOrder.payable
+      })
+      this.longToast.hide()
     } catch (err) {
       util.showError(err)
       logger.info(err)
@@ -66,8 +76,18 @@ Page({
     }
 
   }),
+
+
   // 提交支付
   submitOrder: co.wrap(function* (e) {
+    this.longToast.toast({
+      type: 'loading',
+      title: '请稍后'
+    })
+    if (this.data.paymentOrder.amountYuan == 0) {
+      this.data.type == 'paper' ? this.toPrint() :  this.toSave()
+      return
+    }
     this.longToast.toast({
       type: 'loading'
     })
@@ -93,7 +113,6 @@ Page({
       mask: true,
     }
     _this.nextTick(wx.showToast.bind(wx, obj)).then(() => {
-
       if (this.data.type == 'paper') {
         this.toPrint()
       } else {
@@ -110,7 +129,7 @@ Page({
   toPrint() {
     wxNav.redirectTo('/pages/print_id/print', {
       url: JSON.stringify(this.query.print_wm_url),
-      sn: '10'
+      sn: this.sn
     })
   },
 
@@ -133,7 +152,7 @@ Page({
     wxNav.redirectTo('/pages/print_id/smart_save', {
       confirm: JSON.stringify(this.query),
       info: JSON.stringify(this.info),
-      url: JSON.stringify(this.data.url),
+      url: JSON.stringify(this.data.url)
     })
   }
 })

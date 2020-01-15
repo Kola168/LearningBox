@@ -1,16 +1,18 @@
+<nav-bar title="{{title}}"></nav-bar>
+
 <view class="bottom-tip" wx:if="{{from_temp}}" bindtap="backToHome">返回首页</view>
-<view class="{{!custom?'top':'right'}}" wx:if="{{!from_temp}}">
+<view class="{{!custom?'top':'right'}}" wx:if="{{!from_temp||!custom}}">
     <view wx:if="{{!custom}}">篇章：{{name}}</view>
     <view>
         <button open-type="share" hover-class="none" class='top-right'>
-      <image src='/images/copybook_share_yellow.png' mode='widthFix'></image>
+      <image src='../resource_images/copybook_share_yellow.png' mode='widthFix'></image>
       <view>发给ta练</view>
     </button>
     </view>
 </view>
 
 <swiper duration="500" current="{{num}}" bindchange="tab_slide" circular="{{circular}}" class="{{multiple_form?'swiper-box':'swiper-box1'}}" wx:if="{{!from_temp}}">
-    <block wx:for="{{images}}" wx:key="{{index}}">
+    <block wx:for="{{images}}" wx:key="images">
         <swiper-item style="overflow-y:scroll;overflow-x:hidden;">
             <image src="{{item}}" class="{{multiple_form?'slide-image':'slide-image1'}}"></image>
         </swiper-item>
@@ -18,7 +20,7 @@
 </swiper>
 
 <swiper duration="500" current="{{num}}" bindchange="tab_slide" circular="{{circular}}" class='swiper-box2' wx:if="{{from_temp}}">
-    <block wx:for="{{images}}" wx:key="{{index}}">
+    <block wx:for="{{images}}" wx:key="images">
         <swiper-item style="overflow-y:scroll;overflow-x:hidden;">
             <image src="{{item}}" class='slide-image2'></image>
         </swiper-item>
@@ -31,18 +33,18 @@
         <text style="color: #999;">{{num+1}}/{{images.length}}</text>
     </view>
     <view class="turn-image">
-        <image class="turn-image-item turn-image-left" src="/images/preview-turn-left.png" mode="widthFix" data-turn="left" catchtap="turnImg"></image>
-        <image class="turn-image-item" src="/images/preview-turn-right.png" mode="widthFix" data-turn="right" catchtap="turnImg"></image>
+        <image class="turn-image-item turn-image-left" src="../resource_images/preview-turn-left.png" mode="widthFix" data-turn="left" catchtap="turnImg"></image>
+        <image class="turn-image-item" src="../resource_images/preview-turn-right.png" mode="widthFix" data-turn="right" catchtap="turnImg"></image>
     </view>
 </view>
 
 <view wx:if="{{multiple_form&&!from_temp}}" class='choose-type'>
-    <view id='1' bindtap='practice' class='choose-type-left' wx:if="{{practiceImages.normal_images.length!=0}}">
-        <image src='{{practiceImages.normal_images[0]}}'></image>
+    <view id='1' bindtap='practice' class='choose-type-left' wx:if="{{normalImages.length!=0}}">
+        <image src='{{normalImages[0]}}'></image>
         <view class="{{tabId==1?'stroke':'normal'}}">练字</view>
     </view>
-    <view id='0' bindtap='practice' class='choose-type-left' wx:if="{{practiceImages.stroke_images.length!=0}}">
-        <image src='{{practiceImages.stroke_images[0]}}'></image>
+    <view id='0' bindtap='practice' class='choose-type-left' wx:if="{{strokeImages.length!=0}}">
+        <image src='{{strokeImages[0]}}'></image>
         <view class="{{tabId==0?'stroke':'normal'}}">练笔顺</view>
     </view>
 </view>
@@ -50,19 +52,22 @@
 <view class="bottom" wx:if="{{!from_temp}}">
     <!--打印-->
     <view class="pay-button2" bindtap="toSave">
-        <image src="/images/save_img.png" mode="widthFix" class="saveimg-icon"></image>
+        <image src="../resource_images/save_img.png" mode="widthFix" class="saveimg-icon"></image>
         <view>保存</view>
     </view>
-    <button bindtap="toConfirm" open-type="{{hasAuthPhoneNum?'':'getPhoneNumber'}}" bindgetphonenumber="{{hasAuthPhoneNum?'':'getPhoneNumber'}}" hover-class='none' class="pay-button">我要打印</button>
+    <view  class="pay-button">
+      我要打印
+      <bottom-button class="bottom-bnutton" text-right="确认" bindrighttap="toConfirm"  get-phone="{{true}}"></bottom-button>
+    </view>
 </view>
 
 <!-- 打印确认框 -->
-<confirm-print bindconfirm="print" modal="{{confirmModal}}"></confirm-print>
+<confirm-print bindconfirm="print" modal="{{confirmModal}}" />
 
 <view class="bottom" wx:if="{{from_temp}}" bindtap='toCopybook'>
-    <image src='/images/copybook_try.png' mode='widthFix' style='width:40rpx;margin-right:15rpx'></image>
+    <image src='../resource_images/copybook_try.png' mode='widthFix' style='width:40rpx;margin-right:15rpx'></image>
     <view>有用，我也试试</view>
 </view>
 
-<import src="../../../../lib/toast/wetoast.wxml" />
+<import src="/lib/toast/wetoast.wxml" />
 <template is="wetoast" data="{{...__wetoast__}}" />

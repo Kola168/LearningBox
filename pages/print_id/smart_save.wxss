@@ -13,14 +13,19 @@ page {
     width: 100%;
     display: flex;
     align-items: center;
-    color: red;
+    color: #FB5130;
     font-size: 24rpx;
     margin: 30rpx 0;
 }
 
 .tips-1 {
-    border: 2rpx solid red;
+    border: 2rpx solid #FB5130;
     margin-right: 10rpx;
+    height:32rpx;
+    font-size: 20rpx;
+    line-height:32rpx;
+    border-radius:4rpx;
+
 }
 
 .image {
@@ -39,6 +44,7 @@ page {
 .print-url>view {
     text-align: left;
     margin-bottom: 30rpx;
+    border-top:2rpx solid#cecece;
 }
 
 .singleImg>image,
