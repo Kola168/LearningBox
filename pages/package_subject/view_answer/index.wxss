@@ -1,0 +1,11 @@
+.back-index {
+  width: 60%;
+  height: 100rpx;
+  line-height: 100rpx;
+  border-radius: 50rpx;
+  background: #FFDC5E;
+  color: #333;
+  font-size: 30rpx;
+  text-align: center;
+  margin: 180rpx auto 0;
+}

@@ -2,7 +2,7 @@
 <view class="report" style="height:{{areaHeight}}px;">
   <swiper class="swpier-box" bindchange="changeImg">
     <swiper-item wx:for="{{imgList}}" wx:key="index">
-      <image class="img-item" src="{{item.nameUrl}}" mode="widthFix"></image>
+      <image class="img-item" src="{{item.nameUrl}}?x-image-process=image/watermark,image_L21pY3JvL0xldmlhdGhhbi9iYWNrZW5kL3dhdGVybWFya2VyLnBuZw==,g_center/resize,w_700" mode="widthFix"></image>
     </swiper-item>
   </swiper>
   <view class="report-btns {{isFullScreen?'is-full-screen':''}}">
@@ -10,7 +10,7 @@
       <image src="../images/more_report.png" mode="widthFix" />
       <view>更多报告</view>
     </view>
-    <view class="print-report">前往打印</view>
+    <view class="print-report" bindtap="toPrint">前往打印</view>
   </view>
 </view>
 <!-- loading -->

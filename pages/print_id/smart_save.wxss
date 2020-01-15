@@ -1,8 +1,68 @@
 /* pages/print_id/smart_save.wxss */
-@import 'smart_preview.wxss';
 
 page {
     position: relative;
+    width: 100%;
+    height: 100%;
+    border-top: 2rpx solid rgba(0, 0, 0, 0.25);
+    box-sizing: border-box;
+    padding: 0 24rpx;
+}
+
+.tips {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    color: #FB5130;
+    font-size: 24rpx;
+    margin: 30rpx 0;
+}
+
+.tips-1 {
+    border: 2rpx solid #FB5130;
+    margin-right: 10rpx;
+    height:32rpx;
+    font-size: 20rpx;
+    line-height:32rpx;
+    border-radius:4rpx;
+
+}
+
+.image {
+    width: 100%;
+    position: relative;
+    font-family: PingFangSC-Regular;
+    font-size: 30rpx;
+    color: #333333;
+    letter-spacing: 0;
+    text-align: center;
+    line-height: 36rpx;
+    margin-bottom: 150rpx;
+}
+
+.singleImg>view,
+.print-url>view {
+    text-align: left;
+    margin-bottom: 30rpx;
+    border-top:2rpx solid#cecece;
+}
+
+.singleImg>image,
+.print-url>image {
+    display: block;
+    width: 40%;
+    box-sizing: border-box;
+    margin: 0 auto;
+    padding: 12rpx;
+    box-shadow: 0 4rpx 16rpx 0 rgba(204, 204, 204, 0.50);
+    box-sizing: border-box;
+    margin-bottom: 40rpx;
+}
+
+.print-url>image {
+    width: 75%;
+    box-shadow: 0 4rpx 16rpx 0 rgba(204, 204, 204, 0.50);
+    border: none;
 }
 
 .bottom {
@@ -29,4 +89,19 @@ page {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.left {
+    font-family: PingFangSC-Regular;
+    font-size: 36rpx;
+    color: #666666;
+}
+
+.right {
+    background: #FFE27A;
+    font-family: PingFangSC-Medium;
+    font-size: 36rpx;
+    color: #333333;
+    letter-spacing: 0;
+    text-align: center;
 }

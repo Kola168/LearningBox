@@ -92,6 +92,9 @@ const getLoopsEvent = co.wrap(function*(data, triggerCallbackFn = function(){}, 
 
           removeTimer(workerId) //关闭定时器
           if (workers && workers.state === 'finished') {
+            if(data.feature_key=='cert_id'){
+              workers.sn=sn
+            }
             triggerCallbackFn({
               data: workers,
               status: 'finished',

@@ -34,6 +34,7 @@ Page({
       title: '请确认6寸照片纸放置正确',
       image: 'https://cdn.gongfudou.com/miniapp/ec/confirm_print.png'
     },
+    saveTip:true,
     isMember: false
   },
   onShareAppMessage: function () {
@@ -43,6 +44,7 @@ Page({
   onLoad: co.wrap(function* (options) {
     this.longToast = new app.weToast()
     //下面的是worker sn
+    console.log('34567890',options)
     this.query = JSON.parse(options.confirm)
     this.info = JSON.parse(options.info)
 
@@ -91,15 +93,6 @@ Page({
       type: e.currentTarget.id
     })
 
-  }),
-  getPhoneNumber: co.wrap(function* (e) {
-    yield app.getPhoneNum(e)
-    wx.setStorageSync("hasAuthPhoneNum", true)
-    this.hasAuthPhoneNum = true
-    this.setData({
-      hasAuthPhoneNum: true
-    })
-    this.toPrint(e)
   }),
   toSavePay: function (e) {
     this.setData({
@@ -219,9 +212,8 @@ Page({
   },
   toPay(e) {
     try {
-      let url = ''
       let type = e.currentTarget.id
-      router.navigateTo('/pages/print_id/pay', {
+      router.redirectTo('/pages/print_id/pay', {
         confirm: JSON.stringify(this.query),
         info: JSON.stringify(this.info),
         type: type
@@ -230,5 +222,10 @@ Page({
       console.log(error)
     }
 
+  },
+  closeTip(){
+    this.setData({
+      saveTip:false
+    })
   }
 })

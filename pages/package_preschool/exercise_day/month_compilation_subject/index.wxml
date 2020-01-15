@@ -18,5 +18,12 @@
   </view>
 </view>
 
+
+
+<!-- 会员开通弹窗 -->
+<showMemberToast id="memberToast" modal="{{modal}}"/>
+
+
+
 <import src="../../../../lib/toast/wetoast.wxml" />
 <template is="wetoast" data="{{...__wetoast__}}" />

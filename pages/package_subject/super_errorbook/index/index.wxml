@@ -33,16 +33,16 @@
         <view>知识图谱</view>
         <image src="../../images/hot_icon.png" mode="widthFix" />
       </view>
-      <view class="header-right" bindtap="toNext" id="atlas" wx:if="{{atlasType!=='none'}}">
+      <view class="header-right" bindtap="toNext" id="atlas" wx:if="{{isMember&&atlasType!=='none'}}">
         <view>查看详情</view>
         <image src="../../images/arrow.png" mode="widthFix" />
       </view>
     </view>
     <block wx:if="{{isMember||(!isMember&&expiresAt)}}">
       <canvas style="width: {{canvasWidth}}px; height: {{canvasWidth}}px;" canvas-id="radar" wx:if="{{atlasType==='radar'}}"></canvas>
-      <block wx:if="{{atlasType==='bar'}}">
+      <view wx:if="{{atlasType==='bar'}}" class="chart-bar-box">
         <chart-bar barData="{{barData}}"></chart-bar>
-      </block>
+      </view>
       <view class="no-atlas" wx:if="{{atlasType==='none'}}">
         <image src="../../images/no_atlas.png" mode="widthFix" />
         <view class="no-atlas-title">你还没有专属知识图谱哦</view>
@@ -53,6 +53,7 @@
           <view>3.进行批改，批改后小白老师会根据您的做题情况制作知识图谱哦</view>
         </view>
       </view>
+      <image wx:else src="../../images/atlas_tip.png" mode="widthFix" class="atlas-tip" />
     </block>
     <image src="https://cdn-h.gongfudou.com/LearningBox/subject/not_subject_member.png" mode="widthFix" bindtap="toNext" id="member" wx:else />
   </view>

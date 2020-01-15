@@ -1,6 +1,5 @@
 {
   "usingComponents": {
-    "audio-player":"../../components/audio",
     "modal":"../../components/modal/device-bind"
   }
 }

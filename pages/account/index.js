@@ -121,6 +121,11 @@ Page({
 	},
 
 	member() {
+		// wx.showToast({
+		// 	title: '暂未开放，敬请期待',
+		// 	icon: 'none',
+		// 	duration: 2000
+		// })
 		wxNav.navigateTo('/pages/package_member/member/index')
 	},
 

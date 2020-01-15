@@ -66,6 +66,9 @@ module.exports = {
       <view class="btn-go" wx:if="{{userLastCourse}}" id="{{userLastCourse.sn}}" data-index="1" bindtap="toCourseDetail">
         继续学习
       </view>
+      <view class="btn-go" wx:else>
+        添加课程
+      </view>
     </view>
   </view>
   <view class="recommend" wx:if="{{selectCategories.length}}">

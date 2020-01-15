@@ -5,9 +5,10 @@ const app = getApp()
 import {
   regeneratorRuntime,
   co,
-  util
+  util,
+  wxNav
 } from '../../../../utils/common_import'
-const request = util.promisify(wx.request)
+const event = require('../../../../lib/event/event')
 import graphql from '../../../../network/graphql/subject'
 import {
   getLogger
@@ -41,8 +42,23 @@ Page({
     this.setData({
       currentTabIndex: index
     })
-    yield this.getSubjectList()
 
+    event.on('Authorize', this, ()=>{
+      this.initData()
+    })
+    
+    if (!app.isScope()) {
+      return wxNav.navigateTo("/pages/authorize/index")
+    }
+    this.initData()
+    
+  }),
+
+  /**
+   * 初始化数据
+   */
+  initData: co.wrap(function * (){
+    yield this.getSubjectList()
     if (this.data.subjectList.length) {
       var subjectIndex = this.data.currentTabIndex
       busFactory.sendRequestIds('subjectSn', this.data.subjectList[subjectIndex].sn)
@@ -50,7 +66,6 @@ Page({
       this.updateConditionData()
     }
   }),
-
 
   touchShowText: function() {
     this.setData({

@@ -53,6 +53,7 @@
   display: flex;
   justify-content: space-around;
   padding-top: 40rpx;
+  height: 340rpx;
   background-color: #6B330B;
 }
 

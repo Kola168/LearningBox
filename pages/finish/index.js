@@ -4,12 +4,13 @@
 const app = getApp()
 const feature_route = require('../../utils/feature_index')
 import {
-  regeneratorRuntime,
-  co,
-  util,
-  storage,
-  wxNav
+	regeneratorRuntime,
+	co,
+	util,
+	storage,
+	wxNav
 } from '../../utils/common_import'
+const imginit = require('../../utils/imginit')
 const chooseImage = util.promisify(wx.chooseImage)
 const showModal = util.promisify(wx.showModal)
 const request = util.promisify(wx.request)
@@ -17,8 +18,11 @@ const getImageInfo = util.promisify(wx.getImageInfo)
 const getNetworkType = util.promisify(wx.getNetworkType)
 // import gql from '../../network/graphql_request'
 // import commonRequest from '../../utils/common_request'
+const downloadFile = util.promisify(wx.downloadFile)
+const getSetting = util.promisify(wx.getSetting)
+const authorize = util.promisify(wx.authorize)
 
-let Loger = (app.apiServer != 'https://epbox.gongfudou.com' || app.deBug) ? console.log : function() {}
+let Loger = (app.apiServer != 'https://epbox.gongfudou.com' || app.deBug) ? console.log : function () {}
 
 Page({
 	data: {
@@ -33,10 +37,12 @@ Page({
 		activeDevice: null,
 		printType: '',
 		showAdvertisement: true,
-		continueText:null,
+		continueText: null,
+		allowCamera: 0,
 	},
 	media_type: '',
 	onLoad: function (options) {
+		console.log(options)
 		this.longToast = new app.weToast()
 		Loger(options.media_type)
 		this.media_type = options.media_type
@@ -57,10 +63,14 @@ Page({
 		if (options.sticker_type) {
 			wx.removeStorageSync(options.sticker_type)
 		}
-		if(options.media_type=='baobeicepin'){
+		if (options.media_type == 'baobeicepin') {
 			this.setData({
-				continueText:'再次测评'
+				continueText: '再次测评'
 			})
+		}
+		if (options.type == 'cert_id') {
+			this.url = decodeURIComponent(options.url)
+			this.getAuth()
 		}
 		this.initExerciseStatus()
 		// this.getAccounts()
@@ -85,17 +95,17 @@ Page({
 
 	},
 
-	initExerciseStatus: co.wrap(function*(){
+	initExerciseStatus: co.wrap(function* () {
 		try {
 			var mediaTypes = ['daily_practice'] //练习相关的media_types
-			var isExercise =  mediaTypes.indexOf(this.media_type) > -1
+			var isExercise = mediaTypes.indexOf(this.media_type) > -1
 			var orderData = storage.get('orderSuccessParams')
 			this.setData({
 				isExercise,
 				exerciseDay: orderData.statistic && orderData.statistic.keepDays
 			})
 			storage.remove('orderSuccessParams')
-		} catch(err) {
+		} catch (err) {
 
 		}
 	}),
@@ -167,5 +177,69 @@ Page({
 		// 	})
 		// }
 	},
-
+	// 保存图片授权
+	getAuth: co.wrap(function* () {
+		try {
+			let setting = yield getSetting()
+			let camera = setting.authSetting['scope.writePhotosAlbum']
+			if (camera === undefined) {
+				this.allowCamera = 0
+				let auth = yield authorize({
+					scope: 'scope.writePhotosAlbum'
+				})
+				this.allowCamera = 2
+			} else if (camera === false) {
+				this.allowCamera = 1
+			} else {
+				this.allowCamera = 2
+			}
+			this.setData({
+				allowCamera: this.allowCamera
+			})
+			console.log(' 0 未授权 1，授权失败， 2 已授权', this.allowCamera)
+		} catch (e) {
+			console.log('获取授权/授权失败', e)
+			this.allowCamera = 1
+			this.setData({
+				allowCamera: this.allowCamera
+			})
+		}
+	}),
+	authBack: function (e) {
+		console.log(e)
+		if (!e.detail.authSetting['scope.writePhotosAlbum']) {
+			return
+		}
+		this.setData({
+			allowCamera: 2
+		})
+		this.savePhoto(e)
+	},
+	//保存图片
+	savePhoto: co.wrap(function* (e) {
+		let id = e.currentTarget.id
+		let url = this.url
+		let data = yield downloadFile({
+			url
+		})
+		wx.saveImageToPhotosAlbum({
+			filePath: data.tempFilePath,
+			success(res) {
+				wx.showModal({
+					title: '提示',
+					content: '保存成功',
+					showCancel: false,
+					confirmColor: '#fae100'
+				})
+			},
+			fail(e) {
+				wx.showModal({
+					title: '保存失败',
+					content: '请稍后重试',
+					showCancel: false,
+					confirmColor: '#fae100',
+				})
+			}
+		})
+	}),
 })

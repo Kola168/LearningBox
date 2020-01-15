@@ -8,7 +8,7 @@
 		 wx:for="{{!isPrintAnswer ? exercise.images : exercise.answerImages}}"
 		 wx:key="nameUrl"
 		>
-			<image class="img-item" src="{{item.nameUrl}}" mode="widthFix" />
+			<image class="img-item" src="{{item.nameUrl}}?x-image-process=image/watermark,image_L21pY3JvL0xldmlhdGhhbi9iYWNrZW5kL3dhdGVybWFya2VyLnBuZw==,g_center/resize,w_700" mode="widthFix" />
 		</swiper-item>
 	</swiper>
 	<view class="precent">{{currentIndex}}/{{!isPrintAnswer ? exercise.images.length : exercise.answerImages.length}}</view>

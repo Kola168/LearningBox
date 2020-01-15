@@ -51,7 +51,7 @@
 }
 
 .exercise-subject {
-  margin: 0 60rpx;
+  margin: 0 46rpx;
   height: calc( 100vh - 476rpx );
   background: #FFFFFF;
   box-shadow: 0 0 34rpx 0 rgba(144,92,116,0.31);
@@ -77,8 +77,8 @@ swiper-item{
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 50rpx auto 0;
-  width: calc( 100% - 44rpx );
+  margin: 50rpx 46rpx 0 46rpx;
+  width: calc( 100% - 92rpx );
 }
 
 .btn-main .btn {

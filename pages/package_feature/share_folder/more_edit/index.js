@@ -366,11 +366,11 @@ Page({
         })
     
         try {
-            const resp = commonRequest.createOrder('normal_id', param)
+            const resp = yield commonRequest.createOrder('normal_id', param)
             this.longToast.hide()
             logger.info(resp)
             router.redirectTo('/pages/finish/index', {
-                type:shareFile,
+                type:'shareFile',
                 media_type:this.data.media_type,
                 state: resp.createOrder.state
               })

@@ -6,6 +6,7 @@
   background: #fff;
   position: relative;
   border-radius: 25rpx;
+  overflow: hidden;
 }
 
 .consumables-bg2 {

@@ -42,13 +42,12 @@ Page({
             this.getMember()
         })
     }),
-
     getMember: co.wrap(function* () {
         this.longToast.toast({
             type: 'loading'
         })
         try {
-            let resp = yield memberGql.hasMember()
+            let resp = yield memberGql.hasMember('ts')
             this.longToast.hide()
             this.preSchool = resp.currentUser.selectedKid.preschoolMember
             this.school = resp.currentUser.selectedKid.schoolAgeMember
@@ -75,6 +74,8 @@ Page({
             }
 
             this.setData({
+                preSchool:this.preSchool,
+                school:this.school,
                 preExpiresAt,
                 schoolExpiresAt
             })

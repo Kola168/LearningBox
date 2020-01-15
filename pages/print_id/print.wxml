@@ -1,6 +1,5 @@
 <!--pages/print_id/print.wxml-->
 <nav-bar background="#fff" title="打印设置"></nav-bar>
-    <view class="has-pay">打印效果预览</view>
     <image class="after-preview" mode='widthFix' bindtap="preview" src="{{url}}">
     </image>
     <view class="wrap-price">
@@ -8,26 +7,17 @@
             <view>打印份数</view>
             <view class="count">
                 <image ontap="tapMin" class="btn-c" mode="widthFix"
-                    src="{{number > 1 ? '../../images/id/decrease_yellow.png' :'../../images/id/decrease_gray.png'}}">
+                    src="{{number > 1 ? '../../images/id/minus.png' :'../../images/id/decrease_circle_gray.png'}}">
                 </image>
                 <text>{{number}}</text>
                 <image ontap="tapPlus" class="btn-c" mode="widthFix"
-                    src="../../images/id/increase_{{number > 49?'gray':'yellow'}}.png"></image>
+                    src="../../images/id/plus.png"></image>
             </view>
         </view>
     </view>
-    <view class="tips after-pay">
-        <view class="tips-1">温馨提示</view>
-        <view>仅手机预览时由红色水印，打印或保存至本地水印消失</view>
-    </view>
-<view class="bottom fs-32">
-    <view class="flex-center right width" bindtap="print">
-        <text>打印证件照</text>
-    </view>
-
-</view>
+    <bottom-button class="bottom" text-right="确认打印" bindrighttap="toConfirm" get-phone="{{true}}"></bottom-button>
 <!-- 打印确认框 -->
-<confirm-print bindconfirm="submit" modal="{{confirmModal}}"></confirm-print>
+<confirm-print bindconfirm="print" modal="{{confirmModal}}"></confirm-print>
 
 <import src="../../lib/toast/wetoast.wxml" />
 <template is="wetoast" data="{{...__wetoast__}}" />

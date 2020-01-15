@@ -1,5 +1,5 @@
 <nav-bar title="语文默写"></nav-bar>
-<view class="intro" wx:if="{{showIntro}}">
+<view class="intro" style="height:{{areaHeight}}px;" wx:if="{{showIntro}}">
   <image src="https://cdn-h.gongfudou.com/LearningBox/feature/momory_write_chinese.png" mode="widthFix" />
   <view class="next" bindtap="startWrite">开始使用</view>
 </view>

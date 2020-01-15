@@ -1,13 +1,6 @@
 "use strict"
 const app = getApp()
 
-import {
-  regeneratorRuntime,
-  co,
-  util,
-  _,
-  common_util
-} from '../../../utils/common_import'
 
 const getUserInfo =util.promisify(wx.getUserInfo)
 import wxNav from '../../../utils/nav.js'
@@ -180,6 +173,5 @@ Page({
       })
     }
   }
-
 
 })

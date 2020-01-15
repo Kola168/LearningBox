@@ -18,17 +18,17 @@ const request = util.promisify(wx.request)
 
 App({
 	weToast: weToast,
-	version: '0.0.1',
+	version: '0.0.2',
 	//线上地址
 	// apiServer: 'https://api.xbxxhz.com',
-	apiWbviewServer: 'https://api.xbxxhz.com',
+	// apiWbviewServer: 'https://api.xbxxhz.com',
 
 	//staging
-	// apiServer: 'https://lb-stg.gongfudou.com',
-	// apiWbviewServer: 'https://lb-stg.gongfudou.com',
+	apiServer: 'https://lb-stg-1.gongfudou.com',
+	apiWbviewServer: 'https://lb-stg-1.gongfudou.com',
 
 	//王析理本地地址
-	apiServer: 'http://epbox.natapp1.cc',
+	// apiServer: 'http://epbox.natapp1.cc',
 	// apiWbviewServer: 'http://epbox.natapp1.cc',
 
 	// 袁小飞接口
