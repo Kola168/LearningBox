@@ -146,13 +146,16 @@ swiper swiper-item {
 
 .course-progress {
   width: 100%;
-  position: relative;
+  display: flex;
+  justify-content: space-between;
+}
+
+progress {
+  margin-right: 20rpx;
+  width: 80%;
 }
 
 .progress-text {
-  position: absolute;
-  right: 0;
-  top: -40rpx;
   font-size: 28rpx;
   color: #333;
 }
@@ -183,7 +186,7 @@ swiper swiper-item {
 
 .recommend-top {
   justify-content: space-between;
-  margin-bottom: 20rpx;
+  margin-bottom: 40rpx;
 }
 
 .top-label {
@@ -224,6 +227,7 @@ swiper swiper-item {
 }
 
 .project-item image {
+  margin-bottom: 12rpx;
   width: 100%;
   border-radius: 12rpx;
 }
