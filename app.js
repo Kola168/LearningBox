@@ -24,8 +24,8 @@ App({
 	// apiWbviewServer: 'https://api.xbxxhz.com',
 
 	//staging
-	apiServer: 'https://lb-stg.gongfudou.com',
-	apiWbviewServer: 'https://lb-stg.gongfudou.com',
+	apiServer: 'https://lb-stg-1.gongfudou.com',
+	apiWbviewServer: 'https://lb-stg-1.gongfudou.com',
 
 	//王析理本地地址
 	// apiServer: 'http://epbox.natapp1.cc',
