@@ -10,6 +10,7 @@ import commonRequest from '../../../../utils/common_request'
 import api from '../../../../network/restful_request.js'
 import Logger from '../../../../utils/logger.js'
 const logger = new Logger.getLogger('pages/index/index')
+import getLoopsEvent from '../../../../utils/worker'
 
 Page({
 
@@ -30,7 +31,6 @@ Page({
     optionsMedium: 'A5打印纸',
     fileIndex: 0,
     isExcel: true,
-    colorModes: 2,
     isColorPrinter: true,
     isDuplex: true,
     startPage: 1,
@@ -49,31 +49,49 @@ Page({
 
   onLoad: co.wrap(function* (options) {
     this.longToast = new app.weToast()
+    this.longToast.toast({
+      type: 'loading'
+    })
     try {
       const MAX_PAGE = 150;
-      const arrayFile = this.data.arrayFile = JSON.parse(decodeURIComponent(options.files))
+      const arrayFile = JSON.parse(decodeURIComponent(options.files))
+      console.log(arrayFile)
       let print_capability = yield commonRequest.getPrinterCapacity('doc_a4')
+      console.log(print_capability)
       if (!print_capability) {
         return
       }
       const page_count = print_capability.page_count;
       this.setData({
-        isExcel: this.isExcelFiles(arrayFile.name),
-        origin_name: arrayFile.name,
-        previewUrl: arrayFile.url,
-        fileTitle: util.resetFiles(arrayFile.name),
-        endPrintPage: page_count,
-        endPage: page_count,
-        endMaxPage: page_count,
-        totalPage: page_count,
-        name: arrayFile.name,
-        mediumCount: print_capability.media_sizes.length, //打印介质的数量
-        colorModes: print_capability.color_modes,
-        media_sizes: print_capability.media_sizes,
-        startPage: 1,
-        startPrintPage: 1,
-        documentPrintNum: arrayFile.number || 1
+        arrayFile,
+        isColorPrinter: print_capability.color,
+        isDuplex: print_capability.duplex,
       })
+
+      getLoopsEvent({
+        feature_key: 'doc_a4',
+        worker_data: {
+          url: arrayFile.url + '.' + this.data.arrayFile.file_type,
+        }
+      }, (resp) => {
+        console.log(resp)
+        if (resp.status == 'finished') {
+          this.longToast.hide()
+          var res = resp.data
+          this.setData({
+            previewUrl: res.converted_url,
+            endPrintPage: res.pages,
+            endMaxPage: res.pages,
+            totalPage: res.pages,
+
+          })
+        }
+      }, (err) => {
+        this.longToast.hide()
+        util.showError(err)
+      })
+
+
       if (parseInt(page_count) > MAX_PAGE) {
         yield showModal({
           title: '提示',
@@ -82,7 +100,6 @@ Page({
           confirmColor: '#fae100',
         })
       }
-      yield this.setStatus();
 
     } catch (e) {
       logger.info(e)
@@ -96,29 +113,6 @@ Page({
     return reg.test(name);
 
   },
-  setStatus: co.wrap(function* () {
-    //设置是否支持多面打印
-    if (this.data.media_sizes[0].duplex) {
-      this.setData({
-        isDuplex: true
-      })
-    } else {
-      this.setData({
-        isDuplex: false
-      })
-    }
-
-    //黑白彩色模式
-    if (this.data.colorModes.length == 1) {
-      this.setData({
-        isColorPrinter: false
-      })
-    } else {
-      this.setData({
-        isColorPrinter: true
-      })
-    }
-  }),
 
   //减少份数
   cutPrintNum: function () {
@@ -266,18 +260,18 @@ Page({
     try {
       let extract = this.data.extract
       let tempObj = {
-        printUrl:this.data.arrayFile.url,
+        printUrl: this.data.arrayFile.url,
         originalUrl: this.data.arrayFile.url,
         filename: this.data.arrayFile.name,
         copies: this.data.documentPrintNum, // 张数
         startPage: this.data.startPage, // 起始页数
         endPage: this.data.endPage, // 终止页数
-        display: this.data.zoomType,
+        // display: this.data.zoomType,
         skipGs: !this.data.checkOpen, //是否检查文件修复
-        color: this.data.colorcheck=='Color'?true:false, // 是否是彩色
+        color: this.data.colorcheck == 'Color' ? true : false, // 是否是彩色
         grayscale: false,
         duplex: this.data.duplexcheck ? true : false, // false单面 true双面
-        media_size: (this.data.medium === 'a4') ? 0 : 3, //纸质
+        singlePageLayoutsCount: (this.data.medium === 'a4') ? 0 : 3, //纸质
         extract: extract //范围类型
       }
       if (extract !== 'all') {
@@ -313,13 +307,37 @@ Page({
       totalPage: endPage
     })
   },
-  preview() {
-    let url = this.data.previewUrl,
-      display = this.data.zoomType,
-      skip_gs = !this.data.checkOpen,
-      extract = this.data.extract
-    commonRequest.previewDocument(url, display, skip_gs, extract)
-  },
+  preview: co.wrap(function*() {
+    let url = this.data.arrayFile.url
+    let  display = this.data.singlePageLayoutsCount
+    let skip_gs = !this.data.checkOpen
+    let extract = this.data.extract || 'all'
+    this.longToast.toast({
+      type:'loading',
+      title: '正在开启预览',
+      duration: 0
+    })
+
+    if (this.data.previewUrl) {
+      wx.downloadFile({
+        url: this.data.previewUrl,
+        success: (res) => {
+          this.longToast.hide()
+          wx.openDocument({
+            filePath: res.tempFilePath
+          })
+        }
+      })
+    } else {
+      commonRequest.previewDocument({
+        feature_key: 'doc_a4',
+        worker_data: {url, display, skip_gs, extract}
+      }, ()=>{
+        this.longToast.hide()
+      })
+    }
+   
+  }),
   operaRepair: function () {
     this.setData({
       checkOpen: !this.data.checkOpen,

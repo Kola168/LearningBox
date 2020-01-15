@@ -53,40 +53,27 @@
       </view>
     </view>
     <view class="home-title">
-      <view>宝贝学习计划</view>
+      <view>宝宝学习计划</view>
       <view bindtap="moreLearingPlan">
         <text>更多</text>
         <image src="/images/doc_item_arrow.png" mode="widthFix"></image>
       </view>
     </view>
-    <scroll-view class="study-plan-wrap" scroll-x>
-      <view class="study-plan">
-        <image src="/images/home/study_plan_none.png" mode="widthFix" class="study-plan-image"></image>
+    <scroll-view class="study-plan-wrap" scroll-x wx:if="{{userPlans.length>0}}">
+      <view class="study-plan" wx:for="{{userPlans}}" wx:key="userPlans">
+        <image src="{{item.planIconUrl}}" mode="widthFix" class="study-plan-image"></image>
         <view class="has-plan">
-          <view>嘿嘿，嘿嘿，黑黑黑~</view>
+          <view>{{item.planName}}</view>
           <view class="progress">
-            <progress percent="30" border-radius="30" stroke-width="10rpx" backgroundColor="#e8e8e8"
+            <progress percent="{{item.currentIndex/item.planSize}}" border-radius="30" stroke-width="10rpx" backgroundColor="#e8e8e8"
               activeColor="#FF7D15" />
-
-            <view>12/14</view>
-          </view>
-        </view>
-      </view>
-      <view class="study-plan">
-        <image src="/images/home/study_plan_none.png" mode="widthFix" class="study-plan-image"></image>
-        <view class="has-plan">
-          <view>嘿嘿，嘿嘿，黑黑黑~</view>
-          <view class="progress">
-            <progress percent="30" border-radius="30" stroke-width="10rpx" backgroundColor="#e8e8e8"
-              activeColor="#FF7D15" />
-
-            <view>12/14</view>
+            <view>{{item.currentIndex}}/{{item.planSize}}</view>
           </view>
         </view>
       </view>
     </scroll-view> 
 
-    <view class="study-plan">
+    <view class="study-plan" wx:if="{{userPlans.length==0}}">
       <image src="/images/home/study_plan_none.png" mode="widthFix" class="study-plan-image"></image>
       <view>
         <view>快去定制宝宝的学习计划吧~</view>

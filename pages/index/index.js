@@ -49,7 +49,8 @@ Page({
       confirmText: '立即绑定',
       image: '/images/home/device_tip.png'
     },
-    beforeSchoolContent: []
+    beforeSchoolContent: [],
+    userPlans: []
   },
 
   //事件处理函数
@@ -170,26 +171,31 @@ Page({
       util.showError(error)
     }
   }),
-  afterUnion: co.wrap(function* () {
-    try {
-      yield this.getUserInfo()
-      yield this.getBanners()
-      // yield this.getUserPlans() //宝贝学习计划
-      yield this.customizeFeatures()
-    } catch (error) {
-      console.log(error)
-    }
-  }),
-
+  //宝贝学习计划
   getUserPlans: co.wrap(function* () {
+    if (this.data.homeType != '学前') {
+      return
+    }
     try {
       let resp = yield preschoolGql.getUserPlans('subscription')
       console.log('resp=====', resp)
+      this.setData({
+        userPlans: resp.userPlans
+      })
     } catch (error) {
       util.showError(error)
     }
   }),
-
+  afterUnion: co.wrap(function* () {
+    try {
+      yield this.getUserInfo()
+      yield this.getBanners()
+      yield this.getUserPlans() //宝贝学习计划
+      yield this.customizeFeatures() //学前内容模块
+    } catch (error) {
+      console.log(error)
+    }
+  }),
   userInfoHandler: co.wrap(function* (e) {
     logger.info('********** userInfoHandler', e)
     if (!e.detail.userInfo || !e.detail.encryptedData) {
