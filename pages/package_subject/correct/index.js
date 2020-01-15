@@ -10,6 +10,7 @@ const event = require('../../../lib/event/event')
 import api from '../../../network/restful_request'
 import gql from '../../../network/graphql_request'
 import subjectGql from '../../../network/graphql/subject'
+const getSystemInfo = util.promisify(wx.getSystemInfo)
 Page({
   data: {
     isMember: false,
@@ -35,32 +36,39 @@ Page({
     }
   },
   onLoad: co.wrap(function* (query) {
-    event.on('Authorize', this, () => {
-      this.setData({
-        isAuth: app.isScope()
+    try {
+      event.on('Authorize', this, () => {
+        this.setData({
+          isAuth: app.isScope()
+        })
+        this.getCorrectPaper()
       })
-      this.getCorrectPaper()
-    })
-    let areaHeight = 0
-    if (app.navBarInfo) {
-      areaHeight = app.sysInfo.screenHeight - app.navBarInfo.topBarHeight
-    } else {
-      areaHeight = app.sysInfo.screenHeight - app.getNavBarInfo().topBarHeight
+      let areaHeight = 0
+      if (app.navBarInfo) {
+        areaHeight = app.sysInfo.screenHeight - app.navBarInfo.topBarHeight
+      } else {
+        let sysInfo = yield getSystemInfo()
+        areaHeight = sysInfo.screenHeight - app.getNavBarInfo().topBarHeight
+      }
+      this.setData({
+        areaHeight,
+        isFullScreen: app.isFullScreen
+      })
+      this.weToast = new app.weToast()
+      let scene = query.scene
+      this.correctId = Number(scene.split('_')[1])
+      this.correctType = scene.split('_')[2] === 'paper' ? 'XuekewangPaper' : 'XuekewangExercise' //批改类型
+      this.singleTopicIds = new Set()
+      let isAuth = app.isScope()
+      if (!isAuth) {
+        return wxNav.navigateTo("/pages/authorize/index")
+      }
+      this.getUserMemberInfo()
+
+    } catch (error) {
+      console.log(error)
     }
-    this.setData({
-      areaHeight,
-      isFullScreen: app.isFullScreen
-    })
-    this.weToast = new app.weToast()
-    let scene = query.scene
-    this.correctId = Number(scene.split('_')[1])
-    this.correctType = scene.split('_')[2] === 'paper' ? 'XuekewangPaper' : 'XuekewangExercise' //批改类型
-    this.singleTopicIds = new Set()
-    let isAuth = app.isScope()
-    if (!isAuth) {
-      return wxNav.navigateTo("/pages/authorize/index")
-    }
-    this.getUserMemberInfo()
+
   }),
 
   getUserMemberInfo: co.wrap(function* () {
@@ -241,10 +249,16 @@ Page({
 
   // 提交答案
   preSubmit: co.wrap(function* () {
-    this.setData({
-      showProgessModal: true,
-      progress: 0
-    })
+    if(this.correctType === 'XuekewangExercise'){
+      this.weToast.toast({
+        type:'loading'
+      })
+    } else {
+      this.setData({
+        showProgessModal: true,
+        progress: 0
+      })
+    }
     try {
       let topicsResult = this.data.topicsResult,
         singleTopicIds = [...this.singleTopicIds],
@@ -258,9 +272,11 @@ Page({
       }
       topicsResult = topicsResult.concat(tempSingleTopicIds)
       let res = yield subjectGql.submitCorrect(topicsResult, this.correctType, this.paperId)
+      
       if (res.submitXuekewangWrongQuestion.state) {
         if (this.correctType === 'XuekewangExercise') {
-          wxNav.navigateTo()
+          this.weToast.hide()
+          return wxNav.redirectTo('../super_errorbook/index/index')
         } else {
           this.workerId = res.submitXuekewangWrongQuestion.workerSn
           this.setData({

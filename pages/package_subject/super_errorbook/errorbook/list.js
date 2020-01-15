@@ -267,7 +267,7 @@ Page({
   handleBtnClick(e) {
     if (!this.data.checkSomeone) return
     if (app.preventMoreTap(e)) return
-    if (!isMember && expiresAt) {
+    if (!this.data.isMember && this.data.expiresAt) {
       this.showModal({
         currentTarget: {
           dataset: {
