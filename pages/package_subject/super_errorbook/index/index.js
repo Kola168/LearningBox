@@ -74,7 +74,7 @@ Page({
       } else if (this.atlasData.title.length > 0) {
         dataObj.atlasType = 'bar'
         let tempArr = []
-        for (let i = 0; i < 2; i++) {
+        for (let i = 0; i < this.atlasData.title.length; i++) {
           tempArr.push({
             title: this.atlasData.title[i],
             rate: this.atlasData.data[i]
