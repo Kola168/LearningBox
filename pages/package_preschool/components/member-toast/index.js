@@ -57,7 +57,7 @@ Component({
 
     /**
      * 校验是否开通会员
-     * @param {*} callback 
+     * @param {*} callback   
      */
     checkAuthMember: function(callback){
       if (!this.data.isPreschoolMember) {

@@ -21,5 +21,6 @@
 -->
 <view class="footer {{isFullScreen?'is-full-screen':''}}" bindtap="btnClick">{{btnText}}</view>
 
+<showMemberToast id="memberToast" modal="{{modal}}"/>
 <import src="/lib/toast/wetoast.wxml" />
 <template is="wetoast" data="{{...__wetoast__}}" />

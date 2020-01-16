@@ -95,6 +95,7 @@
     </view>
 </view>
 
+<showMemberToast id="memberToast" modal="{{modal}}"/>
 <!-- modal -->
 <modal modal="{{modalObj}}" bindconfirm="confirmModal"></modal>
 <import src="/lib/toast/wetoast.wxml" />

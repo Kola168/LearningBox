@@ -10,6 +10,8 @@ const showModal = util.promisify(wx.showModal)
 const event = require('../../../../lib/event/event')
 import gql from '../../../../network/graphql/preschool'
 import gragql from '../../../../network/graphql_request'
+
+// import gragqlmember from '../../components/member-toast/index'
 import Logger from '../../../../utils/logger.js'
 const logger = new Logger.getLogger('pages/package_preschool/growth_plan/checkpoint/plan_checkpoint')
 
@@ -31,7 +33,11 @@ Page({
     btnImgUrl:'',
     autoPrintBtn:false,
     isAndroid: false,
-    isShowBtnCont:true
+    isShowBtnCont:true,
+    modal: {
+      title: '畅享月度合辑',
+      desc: '每日一练，每日涨知识',
+    }
   },
 
   /**

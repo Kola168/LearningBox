@@ -18,5 +18,6 @@
 <view class="auto-print" wx:if="{{autoPrintBtn}}">
     <image bindtap="setTimedPrint" src="https://cdn-h.gongfudou.com/LearningBox/preschool/growth_plan_btn_print.png" />
 </view>
+<showMemberToast id="memberToast" modal="{{modal}}"/>
 <import src="/lib/toast/wetoast.wxml" />
 <template is="wetoast" data="{{...__wetoast__}}" />
