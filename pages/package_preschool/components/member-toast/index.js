@@ -64,8 +64,12 @@ Component({
      * @param {*} callback   
      */
     checkAuthMember: function(callback){
+<<<<<<< HEAD
       console.log(callback,'callbackß')
       if (this.data.isPreschoolMember) {
+=======
+      if (!this.data.isPreschoolMember) {
+>>>>>>> develop
         this.showToast()
       } else {
         callback && callback()

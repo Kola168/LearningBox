@@ -291,7 +291,6 @@ Page({
             const resp = yield commonRequest.createOrder('photo_answer', images)
             console.log(resp)
             router.redirectTo('/pages/finish/index', {
-                type: 'photo_answer',
                 media_type: 'photo_answer',
                 state: resp.createOrder.state
             })

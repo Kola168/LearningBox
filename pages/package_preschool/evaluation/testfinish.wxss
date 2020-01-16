@@ -34,12 +34,12 @@ view {
 .achievement-item {
   margin-top: 40rpx;
   display: flex;
-  align-items: flex;
+  flex-direction:column;
+  align-items:flex-start;
 }
 
 .achievement-name {
-  width: 148rpx;
-  
+  padding:0 14rpx;
   text-align: center;
   line-height: 64rpx;
   background: #E3F4FF;
@@ -50,6 +50,7 @@ view {
   display: flex;
   margin-left: 2rpx;
   align-items: center;
+  margin-top:30rpx;
 }
 
 .achievement-flower-img {
@@ -97,4 +98,11 @@ view {
   position:absolute;
   top:0;
   left:0;
+}
+
+.comment-logo{
+  width:170rpx;
+  position:absolute;
+  right:0;
+  bottom:0;
 }

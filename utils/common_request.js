@@ -1,9 +1,13 @@
+const app = getApp()
 import { regeneratorRuntime, co, util } from './common_import'
 import getLoopsEvent from './worker'
 import graphql from '../network/graphql_config'
 import api from '../network/restful_request'
 import Logger from './logger.js'
 const logger = new Logger.getLogger('common_request')
+import storage from './storage'
+
+
 /**
  * 创建订单
  * @param { String } featureKey required 对应功能的key
@@ -56,7 +60,7 @@ const previewDocument = co.wrap(function*(data, callback) {
       }
     })
   }
-  
+
   getLoopsEvent(data, (result) => {
     if (result.status == 'finished') {
       var converted_url = result.data.converted_url
@@ -66,7 +70,7 @@ const previewDocument = co.wrap(function*(data, callback) {
     callback()
   })
 
-  
+
 })
 
 /**
@@ -118,7 +122,7 @@ const getPrinterCapacity = co.wrap(function*(featureKey, fileUrl) {
     } catch(err){
       util.showError(err)
     }
-    
+
   }
   return capacity
 
@@ -128,7 +132,7 @@ const getPrinterCapacity = co.wrap(function*(featureKey, fileUrl) {
  * 支付统一下单
  * @param { String } sn required 资源/课程...sn
  * @param { String } orderType 订单类型member/course
- * 
+ *
  */
 
 const createPaymentOrder = co.wrap(function*(sn, orderType){
@@ -213,10 +217,38 @@ const createPayment = co.wrap(function*(sn, success=emptyFn, fail=emptyFn){
   }
 })
 
+/**
+ * @param { String } openid
+ * @param { Object } encrypted_info 解密详细信息
+ * @param { String } decr_type 解密方式
+ */const phoneDecrypt =  co.wrap(function* (e) {
+	try {
+		let params = {
+			openid: app.openId,
+			encrypted_info: {
+				encrypted_data: encodeURIComponent(e.detail.encryptedData),
+				iv: encodeURIComponent(e.detail.iv),
+			},
+			decr_type: 'mobile'
+		}
+		const resp = yield api.wechatDecryption(params)
+		if (resp.code == 0) {
+			storage.put("phoneNum", resp.res.sn)
+      return true
+		} else {
+			throw (resp)
+		}
+	} catch (e) {
+    throw (e)
+		return false
+	}
+})
+
 module.exports = {
   createOrder,
   getPrinterCapacity,
   previewDocument,
   createPaymentOrder,
-  createPayment
+	createPayment,
+	phoneDecrypt
 }

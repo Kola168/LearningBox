@@ -25,28 +25,34 @@ Page({
         }
     },
     onLoad: co.wrap(function* (options) {
-        this.longToast = new app.weToast()
-        this.options = options
-        this.userSn = storage.get('userSn')
-        if (!this.userSn) {
-            return router.navigateTo('/pages/authorize/index')
-        }
-        yield this.getFamilyUser()
-        if (this.options.shareGroupSn) {
-            this.setData({
-                shareGroupSn: this.options.shareGroupSn
-            })
-        }
-        logger.info(this.data.shareGroupSn)
-        event.on('Authorize', this, () => {
+        try {
+            this.longToast = new app.weToast()
+            this.options = options
             this.userSn = storage.get('userSn')
-            this.getFamilyUser()
+            if (!this.userSn) {
+                return router.navigateTo('/pages/authorize/index')
+            }
+            yield this.getFamilyUser()
             if (this.options.shareGroupSn) {
                 this.setData({
                     shareGroupSn: this.options.shareGroupSn
                 })
+                yield this.joinGroup()
             }
-        })
+            logger.info(this.data.shareGroupSn)
+            event.on('Authorize', this, () => {
+                this.userSn = storage.get('userSn')
+                this.getFamilyUser()
+                if (this.options.shareGroupSn) {
+                    this.setData({
+                        shareGroupSn: this.options.shareGroupSn
+                    })
+                    this.joinGroup()
+                }
+            })
+        } catch (error) {
+            console.log(error)
+        }
     }),
     kickOutGroupUser: co.wrap(function* (e) {
         this.longToast.toast({
@@ -68,10 +74,10 @@ Page({
         this.joinOrExitGroup(this.groupSn, 'exit')
     },
     joinGroup() {
-        if (!this.groupSn) {
+        if (!this.data.shareGroupSn) {
             return
         }
-        this.joinOrExitGroup(this.groupSn, 'join')
+        this.joinOrExitGroup(this.data.shareGroupSn, 'join')
     },
     joinOrExitGroup: co.wrap(function* (sn, ops) {
         this.longToast.toast({
@@ -86,6 +92,7 @@ Page({
                 shareGroupSn: ''
             })
             this.longToast.hide()
+            yield this.getFamilyUser()
         } catch (error) {
             logger.info(error)
             this.longToast.hide()

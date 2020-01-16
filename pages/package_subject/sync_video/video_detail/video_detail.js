@@ -20,7 +20,6 @@ Page({
 
   onLoad: function (options) {
     var video = JSON.parse(decodeURIComponent(options.video))
-    console.log(video,'==video==')
     this.setData({
       video
     })

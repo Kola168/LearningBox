@@ -50,7 +50,7 @@
 }
 
 .btn {
-  width: 600rpx;
+  width: calc( 100% - 48rpx );
   height: 98rpx;
   line-height: 98rpx;
   border-radius: 49rpx;
@@ -58,6 +58,7 @@
   font-size: 36rpx;
   color: #454545;
   background-color: #FFDC5E;
+  margin: auto;
 }
 
 .subject-list .item-active {

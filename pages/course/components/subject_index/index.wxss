@@ -99,7 +99,7 @@
 .box-entry .left-entry, .right-entry{
   position: relative;
   width: 340rpx;
-  height: 148rpx;
+  height: 168rpx;
   padding: 20rpx 14rpx 0 20rpx;
   border-radius: 20rpx;
   box-sizing: border-box;
