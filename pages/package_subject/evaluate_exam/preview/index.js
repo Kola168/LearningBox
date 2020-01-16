@@ -98,14 +98,14 @@ Page({
     try {
       let res = yield subjectGql.getSubjectMemberInfo()
       this.isMember = res.currentUser.isSchoolAgeMember
-      if (this.sn) {
-        this.getPaperDetail()
-      } else {
-        this.loopGetImages()
-      }
     } catch (e) {
       this.weToast.hide()
       util.showError(e)
+    }
+    if (this.sn) {
+      this.getPaperDetail()
+    } else {
+      this.loopGetImages()
     }
   }),
 
@@ -117,8 +117,8 @@ Page({
     try {
       let res = yield subjectGql.getPaperDetail(this.sn),
         paper = res.xuekewang.paper
-      this.originalImages = this.isMember ? paper.images : paper.images.slice(0,1)
-      this.answerImages = this.isMember ? paper.answerImages : paper.answerImages.slice(0,1)
+      this.originalImages = this.isMember ? paper.images : paper.images.slice(0, 1)
+      this.answerImages = this.isMember ? paper.answerImages : paper.answerImages.slice(0, 1)
       this.pdf = paper.pdf.nameUrl
       this.answerPdf = paper.answerPdf.nameUrl
       this.setData({
