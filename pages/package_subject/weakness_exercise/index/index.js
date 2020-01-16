@@ -59,8 +59,8 @@ Page({
     this.setData({
       navBarHeight,
       checkedPrint: {
-        name: '已打印',
-        sn: 1
+        name: '未打印',
+        sn: 0
       },
       isFullScreen: app.isFullScreen,
       isAndroid: systemInfo.system.indexOf('iOS') > -1 ? false : true,
