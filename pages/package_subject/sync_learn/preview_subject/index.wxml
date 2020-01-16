@@ -1,11 +1,18 @@
-<nav-bar background="#fff" title="同步练习" />
+<nav-bar background="#fff" title="练习" />
 <view class="preview-main">
-	<swiper class="swpier-box" bindchange="changeImg">
+	<swiper class="swpier-box" bindchange="changeImg" wx:if="{{isPrintAnswer}}">
+		<swiper-item
+		 wx:for="{{exercise.answerImages}}"
+		 wx:key="nameUrl"
+		>
+			<image class="img-item" src="{{item.nameUrl}}?x-image-process=image/watermark,image_L21pY3JvL0xldmlhdGhhbi9iYWNrZW5kL3dhdGVybWFya2VyLnBuZw==,g_center/resize,w_700" mode="widthFix" />
+		</swiper-item>
+	</swiper>
+
+	<swiper class="swpier-box" bindchange="changeImg" wx:else>
 		<swiper-item
 		 class=""
-		 current="{{currentIndex - 1}}"
-		 item-id=""
-		 wx:for="{{!isPrintAnswer ? exercise.images : exercise.answerImages}}"
+		 wx:for="{{exercise.images}}"
 		 wx:key="nameUrl"
 		>
 			<image class="img-item" src="{{item.nameUrl}}?x-image-process=image/watermark,image_L21pY3JvL0xldmlhdGhhbi9iYWNrZW5kL3dhdGVybWFya2VyLnBuZw==,g_center/resize,w_700" mode="widthFix" />
@@ -13,7 +20,7 @@
 	</swiper>
 	<view class="precent">{{currentIndex}}/{{!isPrintAnswer ? exercise.images.length : exercise.answerImages.length}}</view>
 	<view class="btn-bottom">
-		<view class="print-answer" bind:tap="checkAnswer">
+		<view class="print-answer" bind:tap="checkAnswer" wx:if="{{!isHidePrintAnswerBtn}}">
 			<image class="check-on" src="{{isPrintAnswer ? '../../images/check_on.png' : '../../images/check_off.png'}}" />
 			<view class="title">打印答案</view>
 		</view>
