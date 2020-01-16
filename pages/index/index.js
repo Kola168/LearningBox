@@ -56,7 +56,8 @@ Page({
     userPlans: [],
     updateSchool,
     commonFeatures: [],
-    gradeParent:null,//小学初中高中
+    gradeParent: null, //小学初中高中
+    recommendCourse:[]
   },
 
   //事件处理函数
@@ -150,7 +151,7 @@ Page({
         this.setData({
           homeType: rootKey,
           commonFeatures: commonFeatures[rootKey],
-          gradeParent:resp.currentUser.selectedKid.stage.parent
+          gradeParent: resp.currentUser.selectedKid.stage.parent
         })
       }
       if (!resp.currentUser.selectedDevice) {
@@ -191,12 +192,28 @@ Page({
       util.showError(error)
     }
   }),
+  // 心选课程推荐
+  getCourse: co.wrap(function* () {
+    if (this.data.homeType != 'subject') {
+      return
+    }
+    try {
+      var respRecommend = yield gql.getCourses('recommendation')
+
+      this.setData({
+        recommendCourse: respRecommend.courses,
+      })
+    } catch (error) {
+      util.showError(error)
+    }
+  }),
   afterUnion: co.wrap(function* () {
     try {
       yield this.getUserInfo()
       yield this.getBanners()
       yield this.getUserPlans() //宝贝学习计划
       yield this.customizeFeatures() //学前内容模块
+      yield this.getCourse() //心选课程
     } catch (error) {
       console.log(error)
     }
