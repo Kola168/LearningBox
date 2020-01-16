@@ -1058,7 +1058,8 @@ Page({
 				let postData = {
 					name: printData.filename,
 					number: 1,
-					url: printData.url
+					url: printData.url,
+					file_type:currentData.file_type
 				}
 				router.navigateTo('/pages/package_feature/share_folder/setting/index', {
 					files: encodeURIComponent(JSON.stringify(postData))
