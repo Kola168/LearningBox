@@ -64,6 +64,7 @@ Page({
     })
     try {
       var resp = yield graphql.getExercisesDetail(this.sn)
+      
       this.setData({
         exercise: resp.xuekewang.exercise
       })
@@ -126,6 +127,10 @@ Page({
     }
 
   }),
+
+  toMember: function(){
+    wxNav.navigateTo('pages/package_member/member/index')
+  },
 
   onHide() {}
 })

@@ -20,7 +20,7 @@
   </view>
   <view class="exercise-content">
     <view wx:for="{{reporterList}}" wx:key="sn"> 
-      <template is="exerciseList" data="{{item, index}}"/>
+      <template is="reportList" data="{{item, index}}"/>
     </view>
   </view>
    <!-- 暂无错题 -->
