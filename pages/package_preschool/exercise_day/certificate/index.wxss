@@ -160,3 +160,7 @@
   height: 52rpx;
   position: relative;
 }
+
+.gray {
+  filter: grayscale(100%)!important;
+}
