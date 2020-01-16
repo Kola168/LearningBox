@@ -73,8 +73,10 @@
               <view class="knowledge-left">
                 <view>知识点:</view>
                 <view class="knowledge-list text-overflow-points">
-                  <text class="list-item" wx:for="{{item.xuekewangQuestion.xuekewangKnowledges}}" wx:for-item="knowItem" wx:key="index">{{knowItem.title}}
-                  </text>
+                  <block wx:if="{{item.xuekewangQuestion.xuekewangKnowledges.length>0}}">
+                    <text class="list-item" wx:for="{{item.xuekewangQuestion.xuekewangKnowledges}}" wx:for-item="knowItem" wx:key="index">{{knowItem.title}}</text>
+                  </block>
+                  <text class="list-item" wx:else>无</text>
                 </view>
               </view>
               <image src="../../images/arrow.png" mode="widthFix" />
