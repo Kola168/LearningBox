@@ -63,18 +63,21 @@ Page({
       this.stopVideo()
       return
     }
-    console.log(this.audioPlaying)
     console.log(this.audioCtx.src)
     let that = this
     let index = e.currentTarget.dataset.index
     that.audioCtx.play()
     that.audioCtx.onPlay(function(){
-      console.log(11111)
+
     })
     that.audioPlaying=true
     this.audioCtx.onEnded(function(){
       that.audioCtx.stop()
       that.audioPlaying=false
+    })
+    this.audioCtx.onError(function(res){
+
+      that.audioCtx.stop()
     })
     this.audioCtx.onStop(function(){
       that.audioPlaying=false
@@ -115,11 +118,12 @@ Page({
     this.data.nowIndex += 1
     this.is_right = false
     this.stopVideo()
-    if(this.data.subjectList[this.data.nowIndex].audioUrl){
-      this.audioCtx.src = this.data.subjectList[this.data.nowIndex].audioUrl
-    }
+
     if (this.data.nowIndex > (this.data.subjectList.length - 1)) {
       return this.toSummary()
+    }
+    if(this.data.subjectList[this.data.nowIndex].audioUrl){
+      this.audioCtx.src = this.data.subjectList[this.data.nowIndex].audioUrl
     }
     this.setData({
       selectIndex: null
