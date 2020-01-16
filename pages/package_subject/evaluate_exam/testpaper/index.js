@@ -84,7 +84,7 @@ Page({
     if (app.preventMoreTap(e)) return
     let index = e.currentTarget.dataset.index,
       currentPaper = this.data.paperList[index],
-      hasReport = currentPaper.isReport,
+      hasReport = Number(currentPaper.isReport),
       name = currentPaper.title,
       id = currentPaper.paperId,
       sn = currentPaper.sn
@@ -127,7 +127,7 @@ Page({
         }
       }
       if (selectedPaperSubject) {
-        this.subjectId = selectedPaperSubject.subjectId
+        this.subjectId = this.subjectId===''?selectedPaperSubject.subjectId:this.subjectId
         this.typeId = selectedPaperSubject.paperTypeId
         for (let i = 0; i < grades.length; i++) {
           if (grades[i].id == selectedPaperSubject.gradeId) {

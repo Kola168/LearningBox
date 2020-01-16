@@ -909,6 +909,7 @@ const graphqlApi = {
             images{
               nameUrl
             }
+            reportSn
             answerPdf{
               nameUrl
             }

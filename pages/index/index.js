@@ -20,8 +20,9 @@ const checkSession = util.promisify(wx.checkSession)
 
 import preschoolGql from '../../network/graphql/preschool.js'
 import {
-  updateSchool,
-  commonFeatures
+  updateSchool, //升学
+  commonFeatures, //智能学习工具
+  helpStudy, //智能辅导
 } from 'config.js'
 
 Page({
@@ -56,7 +57,9 @@ Page({
     userPlans: [],
     updateSchool,
     commonFeatures: [],
-    gradeParent:null,//小学初中高中
+    gradeParent: null, //小学初中高中
+    recommendCourse: [],
+    helpStudy
   },
 
   //事件处理函数
@@ -150,7 +153,7 @@ Page({
         this.setData({
           homeType: rootKey,
           commonFeatures: commonFeatures[rootKey],
-          gradeParent:resp.currentUser.selectedKid.stage.parent
+          gradeParent: resp.currentUser.selectedKid.stage.parent
         })
       }
       if (!resp.currentUser.selectedDevice) {
@@ -191,12 +194,27 @@ Page({
       util.showError(error)
     }
   }),
+  // 心选课程推荐
+  getCourse: co.wrap(function* () {
+    if (this.data.homeType != 'subject') {
+      return
+    }
+    try {
+      var respRecommend = yield gql.getCourses('recommendation')
+      this.setData({
+        recommendCourse: respRecommend.courses,
+      })
+    } catch (error) {
+      util.showError(error)
+    }
+  }),
   afterUnion: co.wrap(function* () {
     try {
       yield this.getUserInfo()
       yield this.getBanners()
       yield this.getUserPlans() //宝贝学习计划
       yield this.customizeFeatures() //学前内容模块
+      yield this.getCourse() //心选课程
     } catch (error) {
       console.log(error)
     }
@@ -303,7 +321,14 @@ Page({
     }
     wxNav.navigateTo(url)
   },
-
+  toCourse(e) {
+    if (e.currentTarget.id) {
+      return wxNav.navigateTo('/pages/package_course/course/course', {
+        sn: e.currentTarget.id
+      })
+    }
+    wxNav.navigateTo('/pages/package_common/heart_course/index')
+  },
   toLearnCenter: co.wrap(function* () {
     wxNav.switchTab('/pages/course/index')
   }),
@@ -383,6 +408,18 @@ Page({
 
   moreLearingPlan: co.wrap(function* (e) {
     wxNav.navigateTo('/pages/package_preschool/growth_plan/list/index')
-  })
+	}),
+	
+	whatTeacher:function(){
+		wxNav.navigateTo('/pages/intro/xbteacher')
+	},
+
+	preLearingWay:function(){
+		wxNav.navigateTo('/pages/intro/printway',{type:'preschool'})
+	},
+
+	subjectLearingWay:function(){
+		wxNav.navigateTo('/pages/intro/printway',{type:'subject'})
+	},
 
 })

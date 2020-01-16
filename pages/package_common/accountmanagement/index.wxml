@@ -3,8 +3,10 @@
 <view class="item-box" bindtap="showModal">
   <image src="../images/account_baidu.png" mode="widthFix" class="icon-img"></image>
   <view class="item-right">
-    <text class="item-text">123123123</text>
+    <text class="item-text">{{baidName}}</text>
     <text class="iconfont icon-next"></text>
   </view>
 </view>
 <showModal id="modal" bindconfirmBut="modelConfirm" bindcalcelBut="modelCancel"/>
+<import src="/lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />

@@ -9,7 +9,9 @@
             </view>
             <view class="button">
                 <view>点击下方按钮激活后立即生效</view>
-                <view bindtap="accessMember">立即激活</view>
+                <view class="relative-style">立即激活
+                  <bottom-button class="bottom-button" text-right="会员激活" bindrighttap="accessMember" must-get="{{true}}"></bottom-button>
+                </view>
             </view>
         </view>
 

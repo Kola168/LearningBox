@@ -106,7 +106,7 @@ swiper-item {
   width: 60rpx;
   height: 60rpx;
   overflow: visible;
-  margin:0 auto;
+  margin: 0 auto;
   margin-bottom: 14rpx;
 }
 
@@ -326,8 +326,15 @@ swiper-item {
   align-items: center;
   margin-top: 40rpx;
   margin-bottom: 40rpx;
+}
+
+.special.scroll {
   white-space: nowrap;
   box-sizing: border-box;
+}
+
+.special.scroll image {
+  margin-right: 20rpx;
 }
 
 .special image {
@@ -335,8 +342,7 @@ swiper-item {
   height: 100rpx;
   border-radius: 20rpx;
   display: inline-block;
-  margin-right:20rpx;
-  margin-bottom:20rpx;
+  margin-bottom: 20rpx;
 }
 
 .recommend-title {

@@ -183,6 +183,7 @@ const graphqlApi = {
           recommendationImageUrl
           sn
           payed
+          iconUrl
         }
       }`,
       variables: {

@@ -1,6 +1,11 @@
 // pages/network/index.js
 import wxNav from '../../../../utils/nav.js'
-var app =getApp()
+var app = getApp()
+
+const event = require('../../../../lib/event/event')
+const util = require('../../../../utils/util')
+
+
 Page({
 
   data: {
@@ -10,7 +15,13 @@ Page({
   onLoad: function(options) {
 		this.longToast = new app.weToast()
   },
-
+	
+	onShow: function() {
+	  if(!app.isScope()){
+			wxNav.navigateTo('/pages/authorize/index')
+		}
+	},
+   
   tobox: function() {
     wxNav.navigateTo('/pages/package_device/network/tips/step1')
   },
