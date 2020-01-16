@@ -1,5 +1,8 @@
 <nav-bar title="查看答案"></nav-bar>
-<view class="back-index" bindtap="backIndex">返回首页</view>
+<view class="container">
+  <view class="back-index" bindtap="backIndex">返回首页</view>
+  <view class="back-index" bindtap="openDocument">重新查看</view>
+</view>
 <!-- loading -->
 <import src="/lib/toast/wetoast.wxml" />
 <template is="wetoast" data="{{...__wetoast__}}" />

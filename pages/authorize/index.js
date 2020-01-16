@@ -76,10 +76,10 @@ Page({
 			if(resp.res.phone){
 				storage.put("phoneNum", resp.res.sn)
 			}
-			event.emit('Authorize', 'Authorize Success')
+			
       app.authToken = resp.res.auth_token
       yield this.afterUnion()
-
+      event.emit('Authorize', 'Authorize Success')
     } catch (e) {
       yield app.login()
       this.longToast.toast()

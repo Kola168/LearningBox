@@ -56,7 +56,7 @@ page {
 
 .item-title {
   height: 82rpx;
-  border-bottom: 1px solid #CECECE;
+  border-bottom: 1px solid #E7E7E7;
   justify-content: space-between;
   padding: 0 30rpx;
 }
@@ -84,11 +84,11 @@ page {
 }
 
 .print {
+  font-size: 36rpx;
   background: #FFE27A;
   color: #333;
   height: 100rpx;
   line-height: 100rpx;
-  font-weight: bold;
   text-align: center;
   position: fixed;
   left: 0;
