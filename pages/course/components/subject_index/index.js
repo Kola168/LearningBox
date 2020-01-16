@@ -43,6 +43,7 @@ Component({
     stageSn: '',
     moreNum: 0,
     moreVideoNum: 0,
+    totalErrorBooksNum: 0, //超级错题本数量
   },
   lifetimes: {
     attached: co.wrap(function*(){
@@ -183,6 +184,7 @@ Component({
         this.areaId = resp.xuekewang.selectedPaperSubject.areaId
 
         this.setData({
+          totalErrorBooksNum: resp.xuekewang.totalErrorBooksNum,
           selectedPaperIndex,
           selectedPaperTypes: resp.xuekewang.selectedPaperTypes,
           printPaperCount: resp.xuekewang.printPaperCount,

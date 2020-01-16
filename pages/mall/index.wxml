@@ -9,7 +9,7 @@
 				<image src='https://cdn-h.gongfudou.com/LearningBox/main/mall/mall_printer.png' mode='widthFix' class='image'></image>
 		</view>
 		<view class="top" bindtap="toBox">
-			<image src='https://cdn.gongfudou.com/miniapp/ec/mall_box_xiaobai.png' mode='widthFix' class='image'></image>
+			<image src='https://cdn-h.gongfudou.com/LearningBox/main/mall/mall_promotion.png' mode='widthFix' class='image'></image>
 	</view>
 		<view class="top" bindtap="toPaper">
 				<image src='https://cdn-h.gongfudou.com/LearningBox/main/mall/mall_printer_consumables.png' mode='widthFix' class='image'></image>

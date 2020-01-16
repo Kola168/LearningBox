@@ -1,8 +1,10 @@
 /* pages/package_preschool/exercise_day/certificate/index.wxss */
 
 .certificate-main {
+  position: relative;
   display: inline-block;
   padding: 0 48rpx 0;
+  width: 100%;
   min-height: 100vh;
   box-sizing: border-box;
   background: #FEEECA;

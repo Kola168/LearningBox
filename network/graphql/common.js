@@ -21,9 +21,8 @@ const graphqlApi = {
                 icon: iconUrl
                 name
               }
-              ...on MemberConfig{
-                icon: image
-                name
+              ...on CertService{
+                icon: singleUrl
               }
             }
           }
@@ -54,6 +53,11 @@ const graphqlApi = {
                 icon: image
                 name
                 paidAmountYuan: priceY
+              }
+              ...on CertService{
+                isPrint
+                icon: singleUrl
+                paidAmountYuan: price
               }
             }
             sn

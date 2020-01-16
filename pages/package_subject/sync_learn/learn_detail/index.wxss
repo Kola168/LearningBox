@@ -18,7 +18,8 @@
 .head-box .learn-name {
   padding-bottom: 40rpx;
   color: #333333;
-  font-size: 36rpx;
+  font-size: 28rpx;
+  font-weight: 500;
 }
 
 .head-box image {
@@ -58,7 +59,7 @@
 .tab-item .tab-line {
   margin:0 auto;
   width: 28rpx;
-  border: 4rpx solid transparent;
+  border: 2rpx solid transparent;
 }
 
 .tab-item .tab-active {
