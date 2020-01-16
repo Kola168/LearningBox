@@ -20,7 +20,6 @@ Component({
   attached: function(){
     var systemInfo = wx.getSystemInfoSync()
     var isAndroid = systemInfo.system.indexOf('iOS') > -1 ? false : true
-    console.log(copyWriter[this.data.memberToast][isAndroid ? 'android' : 'ios'])
     this.setData({
       modal: copyWriter[this.data.memberToast][isAndroid ? 'android' : 'ios'],
       isAndroid: isAndroid,
