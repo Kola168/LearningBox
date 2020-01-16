@@ -20,8 +20,9 @@ const checkSession = util.promisify(wx.checkSession)
 
 import preschoolGql from '../../network/graphql/preschool.js'
 import {
-  updateSchool,
-  commonFeatures
+  updateSchool, //升学
+  commonFeatures, //智能学习工具
+  helpStudy, //智能辅导
 } from 'config.js'
 
 Page({
@@ -57,7 +58,8 @@ Page({
     updateSchool,
     commonFeatures: [],
     gradeParent: null, //小学初中高中
-    recommendCourse: []
+    recommendCourse: [],
+    helpStudy
   },
 
   //事件处理函数

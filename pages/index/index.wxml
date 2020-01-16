@@ -101,11 +101,11 @@
     <view class="home-title">智能辅导</view>
     <view class="subject-aptitude">
       <image src="/images/home/subject_follow.png" mode="widthFix" />
-      <image src="/images/home/subject_learning.png" mode="widthFix" bind:tap="toFunction" id="syncLearn" />
-      <image src="/images/home/subject_test.png" mode="widthFix" bind:tap="toFunction" id="evaluate_exam" />
-      <image src="/images/home/subject_correction.png" mode="widthFix" bind:tap="toFunction" id="errorBook" />
-      <image src="/images/home/subject_train.png" mode="widthFix" bind:tap="toFunction" id="weaknessExercise" />
-      <image src="/images/home/subject_report.png" mode="widthFix" bind:tap="toFunction" id="stageReporter" />
+      <image src="/images/home/subject_learning.png" mode="widthFix" bind:tap="toFunction" id="{{helpStudy[0].id}}" data-url="{{helpStudy[0].url}}" />
+      <image src="/images/home/subject_test.png" mode="widthFix" bind:tap="toFunction" id="{{helpStudy[1].id}}" data-url="{{helpStudy[1].url}}" />
+      <image src="/images/home/subject_correction.png" mode="widthFix" bind:tap="toFunction" id="{{helpStudy[2].id}}" data-url="{{helpStudy[2].url}}" />
+      <image src="/images/home/subject_train.png" mode="widthFix" bind:tap="toFunction" id="{{helpStudy[3].id}}" data-url="{{helpStudy[3].url}}" />
+      <image src="/images/home/subject_report.png" mode="widthFix" bind:tap="toFunction" id="{{helpStudy[4].id}}" data-url="{{helpStudy[4].url}}" />
     </view>
     <view class="tips tips-sub">
       <view>
