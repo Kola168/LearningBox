@@ -1,0 +1,10 @@
+<!--pages/package_common/accountmanagement/index.wxml-->
+<nav-bar title="账号管理"></nav-bar>
+<view class="item-box" bindtap="showModal">
+  <image src="../images/account_baidu.png" mode="widthFix" class="icon-img"></image>
+  <view class="item-right">
+    <text class="item-text">123123123</text>
+    <text class="iconfont icon-next"></text>
+  </view>
+</view>
+<showModal id="modal" bindconfirmBut="modelConfirm" bindcalcelBut="modelCancel"/>

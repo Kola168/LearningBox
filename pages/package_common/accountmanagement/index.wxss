@@ -1,0 +1,31 @@
+/* pages/package_common/accountmanagement/index.wxss */
+@import "../../../common/icon/icon.wxss";
+
+.item-box{
+  width:100%;
+  padding:30rpx 24rpx;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  box-sizing:border-box;
+}
+
+.icon-img{
+  width:48rpx;
+}
+
+.item-right{
+display:flex;
+align-items:center;
+}
+
+.item-text{
+  color:#999;
+  font-size:24rpx;
+}
+
+.icon-next{
+  color:#999;
+  font-size:35rpx;
+  margin-left:10rpx;
+}

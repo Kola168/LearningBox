@@ -173,7 +173,8 @@ Component({
                 }
                 if(!_.isEmpty(newVal)){
                     this.setData({
-                        addImgIcon: newVal
+                        addImgIcon: newVal,
+                        showAdd: true
                     })
                 }
             }
@@ -187,7 +188,7 @@ Component({
                 }
                 if(!_.isEmpty(newVal)){
                     this.setData({
-                        deleteIcon: newVal
+                        deleteIcon: newVal,
                     })
                 }
             }
@@ -205,14 +206,7 @@ Component({
           }
         }
     },
-    observers: {
-      'addIcon, deleteIcon': function() {
-        // 在 numberA 或者 numberB 被设置时，执行这个函数
-        this.setData({
-          showAdd: true
-        })
-      }
-    },
+
     data: {
         TemplateSrc: '', //模板图片链接地址
         photoSrc: '', //组件传递过来的图片链接

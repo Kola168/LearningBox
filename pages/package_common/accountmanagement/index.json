@@ -1,0 +1,5 @@
+{
+  "usingComponents": {
+    "showModal":"../../../components/showModal/index"
+  }
+}
