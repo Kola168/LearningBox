@@ -17,7 +17,7 @@
 <view wx:else class="no-data-box">
   <image src="/images/colleation_none.png" mode="widthFix" class="no-data-img"></image>
   <text class="no-data-text">还没有内容哦</text>
-  <view class="no-data-button">
+  <view class="no-data-button" bindtap="backIndex">
     去逛逛
   </view>
 </view>

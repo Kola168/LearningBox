@@ -148,7 +148,12 @@ const createPaymentOrder = co.wrap(function*(sn, orderType){
               totalLessons
             }
             ...on MemberConfig{
-              
+              sn
+              displayPriceY
+              name
+              priceY
+              afterRechargeDate
+              image
             }
           }
         }

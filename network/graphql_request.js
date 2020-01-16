@@ -522,6 +522,11 @@ const graphqlApi = {
               name
               rootName
               sn
+              parent{
+                sn
+                name
+                rootKey
+              }
             }
             province{
               name

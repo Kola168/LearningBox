@@ -14,7 +14,7 @@ Page({
     expiresAt: null,
     totalErrorBooksNum: 0,
     barData: {},
-    atlasType: 'none'
+    atlasType: ''
   },
   onLoad() {
     this.weToast = new app.weToast()
@@ -63,7 +63,7 @@ Page({
       for (let i = 0; i < rates.length; i++) {
         if (rates[i].questionNum > 0) {
           this.atlasData.title.push(rates[i].subjectName)
-          this.atlasData.data.push(rates[i].scoringRate)
+          this.atlasData.data.push(rates[i].scoringRate === 0 ? 0.01 : this.atlasData.data[i])
         }
       }
       if (this.atlasData.title.length > 2) {

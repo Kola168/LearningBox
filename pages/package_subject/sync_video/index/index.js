@@ -36,7 +36,8 @@ Page({
     let navBarHeight = app.navBarInfo.topBarHeight
     this.setData({
       navBarHeight,
-      currentStageIndex: options.index ? options.index : 0
+      stageSn: options.stageSn || '',
+      currentSubjectIndex: options.index ? options.index : 0
     })
     this.longToast = new app.weToast()
 
@@ -47,17 +48,25 @@ Page({
     if (!app.isScope()) {
       return wxNav.navigateTo("/pages/authorize/index")
     }
-
-    
     this.initData()
+  }),
+
+
+  onShow: co.wrap(function*(){
+    if (this.toViewVideo) {
+      this.toViewVideo = false
+      yield this.initData()
+    }
   }),
 
   /**
    * 初始化数据
    */
   initData: co.wrap(function * (){
-    yield this.getUser()
-    yield this.getStages()
+    if (!this.data.stageSn) {
+      yield this.getUser()
+      yield this.getStages()
+    }
     yield this.getvideoSubject()
     yield this.getvideoList()
   }),
@@ -77,10 +86,11 @@ Page({
   }),
 
   toVideo: function({currentTarget: {dataset: {sn}}}) {
+    this.toViewVideo = true
     wxNav.navigateTo("../video_list/video_list", {
       sn,
-      stageSn: this.data.stage.sn,
-      subjectId: this.data.subjectList[this.data.currentSubjectIndex]
+      stageSn: this.data.stage && this.data.stage.sn || this.data.stageSn,
+      subjectId: this.data.subjectList[this.data.currentSubjectIndex].subjectId
     })
   },
 
@@ -117,7 +127,6 @@ Page({
     })
     try {
       yield graphql.register()
-      yield this.getStages()
     } catch(err){
       util.showError(err)
     } finally {
@@ -136,9 +145,10 @@ Page({
     try {
       var resp = yield graphql.getStages(this.data.stageSn)
       var stages = resp.xuekewangVideoSubject.stages
-
       if (!resp.xuekewang.registered) {
-        return this.register()
+        yield this.register()
+        yield this.getStages()
+        return
       }
       var [stage] = stages.filter((item, index)=>{
         if (item.sn == this.data.stageSn) {
@@ -167,7 +177,12 @@ Page({
       title: '请稍后...'
     })
     try {
-      var resp = yield graphql.getvideoSubject(this.data.stage.sn)
+      var resp = yield graphql.getvideoSubject(this.data.stage && this.data.stage.sn || this.data.stageSn)
+      if (!resp.xuekewang.registered) {
+         yield this.register()
+         yield this.getvideoSubject()
+         return
+      }
       if (resp.xuekewangVideoSubject) {
         this.setData({
           kidVideoCount: resp.xuekewangVideoSubject.subjects[this.data.currentSubjectIndex].kidVideoCount,
@@ -192,7 +207,8 @@ Page({
     })
 
     try {
-      var resp = yield graphql.getvideoList(this.data.stage.sn, this.data.subjectList[this.data.currentSubjectIndex].courseId)
+      var stageSn = this.data.stage && this.data.stage.sn || this.data.stageSn
+      var resp = yield graphql.getvideoList(stageSn, this.data.subjectList[this.data.currentSubjectIndex].courseId)
       this.setData({
         videoList: resp.xuekewangVideos
       })

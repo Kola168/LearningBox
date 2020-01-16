@@ -1,3 +1,5 @@
+<nav-bar title="晒成果"></nav-bar>
+
 <view class='post'>
   <canvas canvas-id="saveCanvas" style="width:{{canvasWidth}}px;height:{{canvasHeight}}px">
   </canvas>
@@ -10,7 +12,7 @@
     <view>晒一晒</view>
   </button>
   <view class="pay-button"  bindtap="savePhoto">
-      <image src="../resource_images/save_img_yellow.png" mode="widthFix" class="saveimg-icon"></image>
+      <image src="../resource_images/save_img.png" mode="widthFix" class="saveimg-icon"></image>
     <view>保存并分享至朋友圈</view>
   </view>
 </view>

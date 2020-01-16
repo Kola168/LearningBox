@@ -8,11 +8,13 @@
 
 .content {
   position: absolute;
-  left: 0;
-  top: 36rpx;
-  padding-left: 174rpx;
-  width: 60%;
+  left: 50%;
+  top: 50%;
+  width: 100%;
   font-size: 24rpx;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  font-weight: 500;
   color: #FFA200;
 }
 

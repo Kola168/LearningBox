@@ -14,7 +14,7 @@
   width: calc( ( 100% - 60rpx ) / 3 );
   height: 230rpx;
   border-radius: 20rpx;
-  box-shadow: 0 0 13rpx #cccccc;
+  box-shadow: 0 2px 8px 0 rgba(204, 204, 204, 0.40);
 	text-align: center;
 }
 
@@ -52,4 +52,3 @@
 .top{
 	margin:60rpx 0 0 0;
 }
-
