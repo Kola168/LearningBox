@@ -1,0 +1,10 @@
+<nav-bar background="#fff" title="小白学习盒子"></nav-bar>
+
+<view class="container">
+	<image src='https://cdn-h.gongfudou.com/LearningBox/main/exit_global.png' class="tip" mode="widthFix"></image>
+
+
+ <navigator open-type="exit" target="miniProgram">
+		<view class="common-button-bg bottom-button">查看全新版本</view>
+	</navigator>
+</view>

@@ -31,7 +31,8 @@ var formatTime = function (time, fmt) {
 var matchCateGroyName = function(typename) {
     var types = {
         Course: '课程',
-        MemberConfig: '会员'
+        MemberConfig: '会员',
+        CertService: '智能证件照',
     }
     return types[typename]
 }

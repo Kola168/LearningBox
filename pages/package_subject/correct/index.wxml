@@ -108,7 +108,7 @@
           <view class="error-tip" wx:if="{{currentTopicType==='multipleSub'&&currentResult<100&&currentResult!=null}}">
             正确程度未达100%，本题自动加入错题本
           </view>
-          <view class="tip-last" wx:if="{{(topicIndex+1)===topicsResult.length}}">
+          <view class="tip-last" wx:if="{{(topicIndex+1)===topicsResult.length&&correctType==='paper'}}">
             <image src="../images/analyze_icon.png" mode="widthFix" />
             <view>同时生成测评报告</view>
           </view>

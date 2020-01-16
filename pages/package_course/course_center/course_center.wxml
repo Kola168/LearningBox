@@ -22,7 +22,7 @@
 				</view>
 				<template is="collectVipInfo" data="{{item, is_android, isMember}}" />
 			</view>
-			<view class="arrow-r" />
+			<!-- <view class="arrow-r" /> -->
 		</view>
 	</view>
 	<view class="empty-main" wx:if="{{is_empty}}">

@@ -15,7 +15,7 @@
         </block>
       </view>
     </image>
-    <view class="form">
+    <view class="form" wx:if="{{stages && stages.length}}">
       <view class="selected-main" bind:tap="openStageForm">
         <view class="name">{{stage.name}}</view>
         <view class="arrow-top"></view>
@@ -27,7 +27,7 @@
       </view>
     </view>
   </view>
-  <view class="video-list">
+  <view class="video-list {{stages.length ? '' : 'near-top'}}">
     <view class="video-item" wx:for="{{videoList}}" wx:key="id" bind:tap="toVideo" data-sn="{{item.id}}">
       <image class="video-cover-icon" src="{{item.img}}">
         <view class="video-in-box">

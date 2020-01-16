@@ -7,8 +7,8 @@
   </swiper>
   <view class="handle-bottom {{isFullScreen?'is-full-screen':''}}">
     <view class="page-over">
-      <image src="/images/doc_preview_turn_left.png" bindtap="pageTurn" id="left" mode="widthFix" />
       <view>{{current+1}}/{{sources.length}}</view>
+      <image src="/images/doc_preview_turn_left.png" bindtap="pageTurn" id="left" mode="widthFix" />
       <image src="/images/doc_preview_turn_right.png" bindtap="pageTurn" id="right" mode="widthFix" />
     </view>
     <view class="bottom-bar">

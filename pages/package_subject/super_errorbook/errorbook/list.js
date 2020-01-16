@@ -267,7 +267,7 @@ Page({
   handleBtnClick(e) {
     if (!this.data.checkSomeone) return
     if (app.preventMoreTap(e)) return
-    if (!isMember && expiresAt) {
+    if (!this.data.isMember && this.data.expiresAt) {
       this.showModal({
         currentTarget: {
           dataset: {
@@ -338,7 +338,8 @@ Page({
     }, (res) => {
       if (res.status === 'finished') {
         wxNav.navigateTo('../../sync_learn/preview_subject/index', {
-          sn: res.data.sn
+          sn: res.data.sn,
+          mediaType: 'errorbook_list'
         })
         this.weToast.hide()
       }

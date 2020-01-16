@@ -111,10 +111,9 @@ Page({
   contentDetail: function() {
     try {
       var orderDetails = this.data.orderDetails
-      if (orderDetails.payable.categoryName == 'aiphoto') {
-        wxNav.navigateTo('/pages/package_course/course/course', {
-          sn: orderDetails.payable.sn
-        })
+      if (orderDetails.payable.categoryName == 'CertService') {
+        var path = orderDetails.payable.isPrint ? '' : ''
+        wxNav.navigateTo(path)
       }
 
       if (orderDetails.payable.categoryName == 'Course') {
