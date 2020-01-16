@@ -101,7 +101,7 @@ Page({
     })
     try {
       let res = yield subjectGql.getSubjectMemberInfo()
-      this.isMember = false
+      this.isMember = res.currentUser.isSchoolAgeMember
     } catch (e) {
       this.weToast.hide()
       util.showError(e)
@@ -121,10 +121,11 @@ Page({
     try {
       let res = yield subjectGql.getPaperDetail(this.sn),
         paper = res.xuekewang.paper
-      this.originalImages = this.isMember ? paper.images : paper.images.slice(0, 1)
+      this.originalImages = this.isMembesr ? paper.images : paper.images.slice(0, 1)
       this.answerImages = this.isMember ? paper.answerImages : paper.answerImages.slice(0, 1)
       this.pdf = paper.pdf.nameUrl
       this.answerPdf = paper.answerPdf.nameUrl
+      this.reportSn = paper.reportSn
       this.setData({
         imgList: this.originalImages
       })
@@ -134,6 +135,15 @@ Page({
       util.showError(e)
     }
   }),
+
+  // 查看报告
+  viewReport() {
+    wxNav.navigateTo('../../report/index', {
+      mediaType: 'xuekewang_paper',
+      from: 'paper',
+      sn: this.reportSn
+    })
+  },
 
   // 第一次生成试卷
   loopGetImages() {

@@ -235,7 +235,8 @@
         "sync_video/video_list/video_list",
         "sync_video/video_detail/video_detail",
         "correct/index",
-        "report/index"
+        "report/index",
+        "view_answer/index"
       ]
     },
     {

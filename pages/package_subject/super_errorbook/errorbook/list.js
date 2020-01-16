@@ -12,7 +12,6 @@ Page({
   data: {
     loadReady: false,
     isMember: true,
-    memberExpired: true,
     navBarHeight: 0,
     noticeHeight: 0,
     showFilter: false,
@@ -62,14 +61,16 @@ Page({
     this.weToast = new app.weToast()
     this.subjectSn = query.sn
     this.markIndexs = new Set()
-    let isIos = yield app.isIos()
+    let isIos = yield app.isIos(),
+    isMember = Boolean(Number(query.isMember)),
+    expiresAt = query.expiresAt
     this.setData({
       navBarHeight: app.navBarInfo ? app.navBarInfo.topBarHeight : app.getNavBarInfo().topBarHeight,
       areaHeight: app.sysInfo.screenHeight,
       dateRange: computedTime.getCurrentDayToDayFn(7),
-      noticeHeight: this.data.memberExpired ? 20 : 0,
-      isMember: Boolean(Number(query.isMember)),
-      expiresAt: query.expiresAt,
+      noticeHeight: (!isMember&&expiresAt) ? 20 : 0,
+      isMember,
+      expiresAt,
       isIos,
       ['modalObj.title']: isIos ? '点击按钮了解错题本功能' : '开通学科会员 小白帮你消灭错题'
     })
@@ -233,16 +234,18 @@ Page({
   showKnowledgeModal(e) {
     let index = e.currentTarget.dataset.index,
       modalKnowledgeList = this.data.errorbookList[index].xuekewangQuestion.xuekewangKnowledges
-    this.setData({
-      modalKnowledgeList
-    })
-    this.showModal({
-      currentTarget: {
-        dataset: {
-          type: 'knowledge'
+    if (modalKnowledgeList.length > 0) {
+      this.setData({
+        modalKnowledgeList
+      })
+      this.showModal({
+        currentTarget: {
+          dataset: {
+            type: 'knowledge'
+          }
         }
-      }
-    })
+      })
+    }
   },
 
   // 显示模态框

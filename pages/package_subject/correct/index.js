@@ -316,7 +316,7 @@ Page({
           progress: 100,
           showProgessModal: false
         }, () => {
-          wxNav.navigateTo('../report/index', {
+          wxNav.redirectTo('../report/index', {
             sn: resp.res.sn,
             from: 'correct',
             mediaType: 'exam_paper_report'

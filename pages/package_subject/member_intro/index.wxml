@@ -6,5 +6,7 @@
   <image src="https://cdn-h.gongfudou.com/LearningBox/subject/subject_member_intro_{{isIos?'ios_':''}}4.png" mode="widthFix" />
   <image src="https://cdn-h.gongfudou.com/LearningBox/subject/subject_member_intro_{{isIos?'ios_':''}}5.png" mode="widthFix" />
   <image src="../images/member_7{{isIos?'_ios':''}}.png" class="free_7" mode="widthFix" />
-  <view class="buy-member {{isFullScreen?'is-full-screen':''}}" bindtap="buyMember">开通{{isIos?'特权':'会员'}}，针对性学情分析</view>
+  <view class="buy-member {{isFullScreen?'is-full-screen':''}}" bindtap="buyMember">
+    {{isIos?'点击了解详情':'开通会员，针对性学情分析'}}
+  </view>
 </view>
