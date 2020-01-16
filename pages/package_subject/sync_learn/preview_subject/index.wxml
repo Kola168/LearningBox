@@ -36,7 +36,7 @@
 	</swiper>
 	<view class="precent">{{currentIndex}}/{{!isPrintAnswer ? util.showLen(exercise.images) : util.showLen(exercise.answerImages)}}</view>
 
-	<image src="../../images/member_preview.png" class="member-card" mode="widthFix" />
+	<image src="../../images/member_preview.png" bind:tap="toMember" class="member-card" mode="widthFix" />
 	<view class="btn-bottom">
 		<view class="print-answer" bind:tap="checkAnswer" wx:if="{{!isHidePrintAnswerBtn}}">
 			<image class="check-on" src="{{isPrintAnswer ? '../../images/check_on.png' : '../../images/check_off.png'}}" />
@@ -47,7 +47,7 @@
 </view>
 
 <!-- 会员开通弹窗 -->
-<showMemberToast id="memberToast" bind:tap="toMember" memberToast="{{memberToast}}"/>
+<showMemberToast id="memberToast"  memberToast="{{memberToast}}"/>
 
 <import src="../../../../lib/toast/wetoast.wxml" />
 <template is="wetoast" data="{{...__wetoast__}}" />
