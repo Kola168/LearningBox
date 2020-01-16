@@ -1,0 +1,82 @@
+/* pages/error_book/pages/print_speed/intro.wxss */
+.title {
+  color: #333;
+  font-size: 48rpx;
+  text-align: center;
+  margin: 30rpx 0 50rpx;
+}
+
+.num-item {
+  display: flex;
+  margin: 0 60rpx 0 30rpx;
+}
+
+.num {
+  width: 30rpx;
+  height: 30rpx;
+  border-radius: 50%;
+  background: #FFE27A;
+  font-size: 22rpx;
+  color: #454545;
+  text-align: center;
+  margin-right: 20rpx;
+}
+
+.num-title {
+  color: #333;
+  font-size: 28rpx;
+  width: 610rpx;
+}
+
+.img {
+  width: 540rpx;
+  margin: 32rpx 0 25rpx 104rpx;
+}
+
+.video {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 12rpx;
+}
+
+.tip {
+  color: #333;
+  font-size: 28rpx;
+}
+
+.bottom-tip {
+  width: 20rpx;
+  margin-top: 5rpx;
+}
+
+.video-bg {
+  width: 540rpx;
+  height: 290rpx;
+  /* background: #bababa; */
+}
+
+.video {
+  width: 100%;
+  height: 100%;
+}
+
+.pink {
+  font-size: 24rpx;
+  color: #FE8D77;
+  position: fixed;
+  bottom: 124rpx;
+  left: 24rpx;
+}
+
+.bottom {
+  background: #FFE27A;
+  width: 100%;
+  height: 100rpx;
+  text-align: center;
+  line-height: 100rpx;
+  font-size: 36rpx;
+  color: #454545;
+  position: fixed;
+  bottom: 0;
+}

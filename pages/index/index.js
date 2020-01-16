@@ -57,7 +57,7 @@ Page({
     updateSchool,
     commonFeatures: [],
     gradeParent: null, //小学初中高中
-    recommendCourse:[]
+    recommendCourse: []
   },
 
   //事件处理函数
@@ -199,7 +199,6 @@ Page({
     }
     try {
       var respRecommend = yield gql.getCourses('recommendation')
-
       this.setData({
         recommendCourse: respRecommend.courses,
       })
@@ -320,7 +319,14 @@ Page({
     }
     wxNav.navigateTo(url)
   },
-
+  toCourse(e) {
+    if (e.currentTarget.id) {
+      return wxNav.navigateTo('/pages/package_course/course/course', {
+        sn: e.currentTarget.id
+      })
+    }
+    wxNav.navigateTo('/pages/package_common/heart_course/index')
+  },
   toLearnCenter: co.wrap(function* () {
     wxNav.switchTab('/pages/course/index')
   }),
