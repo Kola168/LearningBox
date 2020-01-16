@@ -8,7 +8,7 @@
     </view>
     <view class="print_count" wx:if="{{!isShare}}">
         <view>打印份数</view>
-        <image src="../resource_images/name_minus.png" bindtap="decrease"></image>
+        <image src="{{count==1?'../resource_images/name_minus_gray.png':'../resource_images/name_minus.png'}}" bindtap="decrease"></image>
         <view>{{count}}</view>
         <image src="../resource_images/name_plus.png" bindtap="increase"></image>
     </view>

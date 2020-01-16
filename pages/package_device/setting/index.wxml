@@ -28,7 +28,7 @@
             <view class="left-label">盒子编号</view>
             <view class="label-sub" wx:if="{{device.model}}">打印机型号：{{device.model}}</view>
           </view>
-          <view class="item-right">{{device.sn}}</view>
+          <view class="item-right">{{device.serviceSn}}</view>
         </view>
         <view class="setting-item">
           <view class="item-left" bindtap="showModal" id="noaduit">

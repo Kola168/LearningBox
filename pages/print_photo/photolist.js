@@ -110,7 +110,7 @@ Page({
     } catch (e) {
       Loger(e)
     }
-    if (mediaCover != 'showed') {
+    if (mediaCover != 'showed' && this.mediaType!='pic_in7' && this.mediaType!='pic_a4') {
       this.setData({
         showCover: true
       })

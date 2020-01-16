@@ -171,6 +171,16 @@ view {
   left:0;
 }
 
+.created-add-button{
+  width:600rpx;
+  line-height:100rpx;
+  border-radius:50rpx;
+  background: #FFDC5E;
+  font-size: 36rpx;
+  color: #454545;
+  text-align:center;
+}
+
 .noexecuting-title {
   margin-top: 80rpx;
   font-size: 40rpx;

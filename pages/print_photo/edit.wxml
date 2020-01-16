@@ -12,14 +12,16 @@
     {{showMode?'':'虚线外的区域将会被剪裁'}}
   </view>
   <view class="edit-button">
-    <scroll-view class="template-list-box" scroll-x>
-      <view class="template-item-box template-name {{index==templateTypeIndex?'template-type-selected':''}}" wx:for="{{templateList}}" wx:key="templateList" data-index="{{index}}" bindtap="{{templateTypeIndex==index?'':'checkTemplateType'}}">{{item.name}}</view>
-    </scroll-view>
-    <scroll-view class="template-list-box template-limit-height" scroll-x>
-      <view wx:for="{{templateList[templateTypeIndex].templates}}" wx:key="templates" class="template-item-box {{index==templateIndex?'template-item-selected':''}}" data-index="{{index}}" bindtap="{{templateIndex==index?'':'checkTemplate'}}">
-        <image src="{{item.previewImage}}" mode="widthFix" class="template-preview-img"></image>
-      </view>
-    </scroll-view>
+    <block wx:if="{{templateList.length>0}}">
+      <scroll-view class="template-list-box" scroll-x>
+        <view class="template-item-box template-name {{index==templateTypeIndex?'template-type-selected':''}}" wx:for="{{templateList}}" wx:key="templateList" data-index="{{index}}" bindtap="{{templateTypeIndex==index?'':'checkTemplateType'}}">{{item.name}}</view>
+      </scroll-view>
+      <scroll-view class="template-list-box template-limit-height" scroll-x>
+        <view wx:for="{{templateList[templateTypeIndex].templates}}" wx:key="templates" class="template-item-box {{index==templateIndex?'template-item-selected':''}}" data-index="{{index}}" bindtap="{{templateIndex==index?'':'checkTemplate'}}">
+          <image src="{{item.previewImage}}" mode="widthFix" class="template-preview-img"></image>
+        </view>
+      </scroll-view>
+    </block>
     <bottom-button text-right="{{showMode?'编辑完成':'确认修改'}}" bindrighttap="confEdit"></bottom-button>
   </view>
 </view>

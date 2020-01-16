@@ -109,6 +109,9 @@ Page({
           checkCapabilitys: {
             isSettingDuplex: true,
             isSettingColor: true,
+            isSettingOddEven: true, //是否设置奇偶
+            // isSettingSkipGs: true, //是否支持文件修复
+            isSinglePageLayout: true //是否支持缩放
           }
        }))
       })

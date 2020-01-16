@@ -11,7 +11,7 @@ Page({
 		},
 		{
 			name: '照片书',
-			icon: '/images/doc_more_icon.png',
+			icon: '/images/funny_photo_book.png',
 			url: '/pages/package_feature/print_book/index',
 			key: 'photo_book'
 		},

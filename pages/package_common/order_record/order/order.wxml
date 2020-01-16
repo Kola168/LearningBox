@@ -12,7 +12,7 @@
 		</view>
 		<view class="sys-flex flex-m-axis-between f-14 padding-b-15">
 			<view class="nav-title color-666">名称</view>
-			<view class="product-title color-333">{{orderDetails.payable.name}}</view>
+			<view class="product-title color-333">{{orderDetails.payable.categoryName === 'CertService' ? '智能证件照' : orderDetails.payable.name }}</view>
 		</view>
 		<view class="pay-time-area sys-flex flex-m-axis-between f-14" wx:if="{{orderDetails.state == 'paid'}}">
 			<view class="nav-title color-666">支付时间</view>

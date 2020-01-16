@@ -169,7 +169,8 @@ page {
     padding: 24rpx 24rpx 30rpx;
     width: 100%;
     background: #FFFFFF;
-    box-shadow: 0 4rpx 16rpx 0 rgba(124, 204, 204, 0.30);
+		box-shadow: 0 4rpx 16rpx 0 rgba(204, 204, 204, 0.30);
+		/* box-shadow: 0 4rpx 16rpx 0 rgba(124, 204, 204, 0.30); */
     border-radius: 20rpx;
 }
 

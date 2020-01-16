@@ -49,6 +49,8 @@
       您还没有未设置的计划哦
     </view>
   </block>
+  <bottom-button text-right="开启新计划" bindrighttap="createPlan" class="add-button"></bottom-button>
+
 </view>
 
 <view wx:if="{{planTypeCheck=='processing'}}" class="list-box">
@@ -70,6 +72,7 @@
         <text>由于每天的计划量比较大，可能会有一定时间的延迟</text>
       </view>
     </view>
+    <bottom-button text-right="开启新计划" bindrighttap="createPlan" class="add-button"></bottom-button>
   </block>
   <block wx:else>
     <view class="noexecuting-title">
@@ -79,8 +82,10 @@
       从选择七天口算计划开始
     </view>
     <image src="https://cdn-h.gongfudou.com/LearningBox/feature/kousuan_noplan.png" mode="widthFix" class="noexecuting-img"></image>
+    <view bindtap="createPlan" class="created-add-button">
+      开启新计划
+    </view>
   </block>
-  <bottom-button text-right="开启新计划" bindrighttap="createPlan" class="add-button"></bottom-button>
 
 </view>
 

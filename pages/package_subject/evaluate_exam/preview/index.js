@@ -71,7 +71,7 @@ Page({
             attributes: {
               resourceType: 'XuekewangPaper',
               sn: this.sn,
-              originalUrl: this.data.printAnswer ? this.pdf : this.answerPdf,
+              originalUrl: this.data.printAnswer ? this.answerPdf : this.pdf,
             }
           },
           checkCapabilitys: {
