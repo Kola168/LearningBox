@@ -707,7 +707,7 @@ const graphqlApi = {
         createResourceOrder(input: $input){
           state
           statistic{
-            ... on DailyPractice{
+            ... on DailyPracticeSet{
               keepDays
             }
           }
