@@ -383,6 +383,18 @@ Page({
 
   moreLearingPlan: co.wrap(function* (e) {
     wxNav.navigateTo('/pages/package_preschool/growth_plan/list/index')
-  })
+	}),
+	
+	whatTeacher:function(){
+		wxNav.navigateTo('/pages/intro/xbteacher')
+	},
+
+	preLearingWay:function(){
+		wxNav.navigateTo('/pages/intro/printway',{type:'preschool'})
+	},
+
+	subjectLearingWay:function(){
+		wxNav.navigateTo('/pages/intro/printway',{type:'subject'})
+	},
 
 })

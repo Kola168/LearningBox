@@ -1,0 +1,6 @@
+<nav-bar background="#fff" title="小白老师"></nav-bar>
+
+<view wx:for="{{images}}" wx:key="index1">
+	<image src="{{item}}" mode="widthFix" class="intro">
+	</image>
+</view>

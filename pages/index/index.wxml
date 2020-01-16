@@ -76,11 +76,11 @@
         data-name="{{item.name}}" data-has="{{item.hasCategory}}" />
     </view>
     <view class="tips">
-      <view>
+      <view bindtap="preLearingWay">
         <image src="/images/home/icon_book.png" mode="widthFix" />
-        <view>什么是纸质学习法？</view>
+        <view>陪伴式打印学习法？</view>
       </view>
-      <view>
+      <view bindtap="whatTeacher">
         <image src="/images/home/icon_teacher.png" mode="widthFix" />
         <view>小白老师是谁？</view>
       </view>
@@ -108,11 +108,11 @@
       <image src="/images/home/subject_report.png" mode="widthFix" bind:tap="toFunction" id="stageReporter" />
     </view>
     <view class="tips tips-sub">
-      <view>
+      <view bindtap="subjectLearingWay">
         <image src="/images/home/icon_subject_book.png" mode="widthFix" />
-        <view>什么是纸质学习法？</view>
+        <view>个性化打印学习法？</view>
       </view>
-      <view>
+      <view bindtap="whatTeacher">
         <image src="/images/home/icon_subject_teacher.png" mode="widthFix" />
         <view>小白老师是谁？</view>
       </view>

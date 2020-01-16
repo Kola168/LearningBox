@@ -1,0 +1,6 @@
+<nav-bar background="#fff" title="打印学习法"></nav-bar>
+
+<view wx:for="{{images[type]}}" wx:key="index1">
+	<image src="{{item}}" mode="widthFix" class="intro">
+	</image>
+</view>
