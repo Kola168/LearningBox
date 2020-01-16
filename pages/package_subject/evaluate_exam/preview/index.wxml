@@ -19,7 +19,7 @@
 <modal modal="{{modalObj}}">
   <view slot="bottom" class="member-btn" catchtap="confirmModal">
     <image src="../../images/diamond.png" mode="widthFix" />
-    <view>开通会员可免费使用</view>
+    <view>{{isIos?'了解详情':'开通会员可免费使用'}}</view>
   </view>
 </modal>
 <import src="/lib/toast/wetoast.wxml" />

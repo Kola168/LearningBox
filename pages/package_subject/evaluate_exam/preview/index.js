@@ -16,10 +16,11 @@ Page({
     title: '',
     imgList: [],
     isFullScreen: false,
+    isIos: true,
     modalObj: {
       isShow: false,
       slotBottom: true,
-      title: '开通学科会员 可使用海量优质试卷',
+      title: '',
       image: 'https://cdn-h.gongfudou.com/LearningBox/subject/toast_testpaper.png'
     }
   },
@@ -29,10 +30,13 @@ Page({
     this.paperId = query.id
     this.subjectId = query.subjectId
     this.sn = query.sn != 'null' ? query.sn : ''
+    let isIos = yield app.isIos()
     this.setData({
       hasReport: Boolean(Number(query.hasReport)),
       title: query.name,
-      isFullScreen: app.isFullScreen
+      isFullScreen: app.isFullScreen,
+      isIos,
+      ['modalObj.title']: isIos ? '点击按钮使用海量优质试卷' : '开通学科会员 可使用海量优质试卷'
     })
     yield this.getSubjectMemberInfo()
   }),
@@ -97,7 +101,7 @@ Page({
     })
     try {
       let res = yield subjectGql.getSubjectMemberInfo()
-      this.isMember = res.currentUser.isSchoolAgeMember
+      this.isMember = false
     } catch (e) {
       this.weToast.hide()
       util.showError(e)

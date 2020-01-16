@@ -23,7 +23,7 @@ Page({
       isShow: false,
       slotBottom: false,
       slotContent: false,
-      title: '开通学科会员 小白帮你消灭错题',
+      title: '',
       image: 'https://cdn-h.gongfudou.com/LearningBox/subject/toast_super_errorbook.png'
     },
     timeRange: {
@@ -49,6 +49,7 @@ Page({
     typeList: [],
     activeKnowledge: '',
     activeType: '',
+    isIos: true,
     hasChooseDate: false,
     showHandleBar: false,
     checkSomeone: false,
@@ -61,13 +62,16 @@ Page({
     this.weToast = new app.weToast()
     this.subjectSn = query.sn
     this.markIndexs = new Set()
+    let isIos = yield app.isIos()
     this.setData({
       navBarHeight: app.navBarInfo ? app.navBarInfo.topBarHeight : app.getNavBarInfo().topBarHeight,
       areaHeight: app.sysInfo.screenHeight,
       dateRange: computedTime.getCurrentDayToDayFn(7),
       noticeHeight: this.data.memberExpired ? 20 : 0,
       isMember: Boolean(Number(query.isMember)),
-      expiresAt: query.expiresAt
+      expiresAt: query.expiresAt,
+      isIos,
+      ['modalObj.title']: isIos ? '点击按钮了解错题本功能' : '开通学科会员 小白帮你消灭错题'
     })
     yield this.getErrorbookFilters()
   }),

@@ -185,10 +185,6 @@
       ]
     },
     {
-      "root": "pages/package_other",
-      "pages": []
-    },
-    {
       "root": "pages/package_preschool",
       "pages": [
         "record_voice/index/index",
