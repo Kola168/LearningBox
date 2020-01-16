@@ -23,7 +23,7 @@
         <view class="left-entry" data-key="superErrorBook" bind:tap="toErrorBook">
           <view class="entry-title">小白超级错题本</view>
           <view class="sub-main">
-            <view class="sub-text">共错误99道题</view>
+            <view class="sub-text">共错误{{totalErrorBooksNum}}道题</view>
             <view class="sub-label">智能错题本</view>
             <image class="entry-icon" src="../images/super_err_book_icon.png"/>
           </view>

@@ -494,7 +494,7 @@ const graphqlApi = {
           totalPapers
           printPaperCount
           percentage
-         
+          totalErrorBooksNum
         }
       }`
     })
