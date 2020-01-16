@@ -18,6 +18,32 @@ Page({
     activeFilter: {},
     activeArea: {},
     activeGrade: {},
+    activeYear: {
+      id: 0,
+      name: '全部'
+    },
+    years: [{
+      id: 0,
+      name: '全部'
+    }, {
+      id: 2020,
+      name: '2020年'
+    }, {
+      id: 2019,
+      name: '2019年'
+    }, {
+      id: 2018,
+      name: '2018年'
+    }, {
+      id: 2017,
+      name: '2017年'
+    }, {
+      id: 2016,
+      name: '2016年'
+    }, {
+      id: 2015,
+      name: '更早时间'
+    }],
     activeFilterList: [],
     areas: [],
     paperList: [],
@@ -29,7 +55,7 @@ Page({
     this.thematic = query.thematic ? Number(query.thematic) : 0
     this.subjectId = query.id ? Number(query.id) : ''
     this.setData({
-      topBarHeight: app.navBarInfo.topBarHeight + 50
+      topBarHeight: app.navBarInfo.topBarHeight
     })
     yield this.getSubjectAreasAndGrades()
     yield this.getSubjectPaperTypes()
@@ -49,6 +75,9 @@ Page({
     } else if (id === 'grade') {
       dataObj.activeFilter = this.data.activeGrade
       dataObj.activeFilterList = this.data.grades
+    } else if (id === 'year') {
+      dataObj.activeFilter = this.data.activeYear
+      dataObj.activeFilterList = this.data.years
     }
     this.setData(dataObj)
   },
@@ -57,11 +86,14 @@ Page({
     let index = e.currentTarget.dataset.index,
       dataObj = {
         loadReady: false
-      }
+      },
+      key = this.showFilterType + 's'
     if (this.showFilterType === 'area') {
       dataObj.activeArea = this.data.areas[index]
     } else if (this.showFilterType === 'grade') {
       dataObj.activeGrade = this.data.grades[index]
+    } else if (this.showFilterType === 'year') {
+      dataObj.activeYear = this.data.years[index]
     }
     this.setData(dataObj)
     this.resetGetPapers()
@@ -127,7 +159,7 @@ Page({
         }
       }
       if (selectedPaperSubject) {
-        this.subjectId = this.subjectId===''?selectedPaperSubject.subjectId:this.subjectId
+        this.subjectId = this.subjectId === '' ? selectedPaperSubject.subjectId : this.subjectId
         this.typeId = selectedPaperSubject.paperTypeId
         for (let i = 0; i < grades.length; i++) {
           if (grades[i].id == selectedPaperSubject.gradeId) {
@@ -181,7 +213,7 @@ Page({
       type: 'loading'
     })
     try {
-      let res = yield gqlSubject.getSubjectPapers(this.subjectId, this.data.typeId, this.data.activeGrade.id, this.data.activeArea.id, this.page++),
+      let res = yield gqlSubject.getSubjectPapers(this.subjectId, this.data.typeId, this.data.activeGrade.id, this.data.activeArea.id, this.data.activeYear.id, this.page++),
         paperList = res.xuekewang.paperLists
       if (paperList.length < 20) {
         this.isEnd = true
@@ -201,6 +233,9 @@ Page({
   resetGetPapers() {
     this.page = 1
     this.isEnd = false
+    this.setData({
+      paperList: []
+    })
     this.getSubjectPapers()
   },
 

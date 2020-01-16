@@ -358,9 +358,12 @@ Page({
 
   // 时间选择回调
   chooseDate(res) {
+    this.page = 1
+    this.pageEnd = false
     this.setData({
       hasChooseDate: true,
       showDatePicker: false,
+      errorbookList: [],
       dateRange: {
         startDate: res.detail.startDate,
         endDate: res.detail.endDate,

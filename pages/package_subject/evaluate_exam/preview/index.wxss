@@ -30,7 +30,6 @@
   width: 160rpx;
   position: absolute;
   right: 24rpx;
-  bottom: 118rpx;
 }
 
 .btn-bottom {

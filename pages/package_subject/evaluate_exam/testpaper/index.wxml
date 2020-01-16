@@ -1,6 +1,6 @@
 <nav-bar title="测评与考试"></nav-bar>
 <view class="container">
-  <view class="filters">
+  <view class="filters" style="top:{{topBarHeight}}px;">
     <block wx:if="{{showFilter}}">
       <view class="filters-active">
         <view>{{activeFilter.name}}</view>
@@ -16,8 +16,12 @@
         <view class="text-overflow-points">{{activeGrade.name}}</view>
         <image src="../../images/arrow_bottom.png" mode="widthFix" />
       </view>
+      <view class="filters-item" bindtap="showFilter" id="year">
+        <view class="text-overflow-points">{{activeYear.name}}</view>
+        <image src="../../images/arrow_bottom.png" mode="widthFix" />
+      </view>
     </block>
-    <view class="filters-cover" wx:if="{{showFilter}}" bindtap="showFilter" style="top:{{topBarHeight}}px;">
+    <view class="filters-cover" wx:if="{{showFilter}}" bindtap="showFilter" style="top:{{topBarHeight+50}}px;">
       <view class="filters-list">
         <view wx:for="{{activeFilterList}}" wx:key="id" class="list-box {{activeFilter.id==item.id?'filters-active-color':''}}" bindtap="changeFilter" data-index="{{index}}">
           {{item.name}}
