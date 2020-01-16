@@ -15,19 +15,17 @@ Page({
    * 页面的初始数据
    */
   data: {
-    modal: {
-      isShow: true,
-      title: '开通学科会员 海量学习视频免费看',
-      slotContent: false,
-      content: '名师视频同步全国多个教材版本',
-      image: 'https://cdn-h.gongfudou.com/LearningBox/subject/video_member_banner.png',
-      slotBottom: true
-    },
+    memberToast: 'syncVideo',
     videoList: [],
     isSchoolAgeMember: false,
+    isAndroid: false,
   },
 
   onLoad: co.wrap(function * (options) {
+    var systemInfo = wx.getSystemInfoSync()
+    this.setData({
+      isAndroid: systemInfo.system.indexOf('iOS') > -1 ? false : true,
+    })
     this.videoId = options.sn
     this.stageSn = options.stageSn
     this.subjectId = options.subjectId

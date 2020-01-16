@@ -23,7 +23,14 @@
         <view class="left-entry" data-key="superErrorBook" bind:tap="toErrorBook">
           <view class="entry-title">小白超级错题本</view>
           <view class="sub-main">
-            <view class="sub-text">共错误{{totalErrorBooksNum}}道题</view>
+            <view class="sub-text">
+              <block wx:if="{{totalErrorBooksNum}}">
+                共错误{{totalErrorBooksNum}}道题
+              </block>
+              <block wx:else>
+                暂无数据
+              </block>
+            </view>
             <view class="sub-label">智能错题本</view>
             <image class="entry-icon" src="../images/super_err_book_icon.png"/>
           </view>
@@ -31,7 +38,14 @@
         <view class="right-entry" data-key="errorBook" bind:tap="toErrorBook"> 
           <view class="entry-title">其他错题本</view>
           <view class="sub-main">
-            <view class="sub-text">共错误99道题</view>
+            <view class="sub-text">
+              <block wx:if="{{errorBookCount}}">
+                共错误{{errorBookCount}}道题
+              </block>
+              <block wx:else>
+                暂无数据
+              </block>
+            </view>
             <view class="sub-label">拍照整理</view>
             <image class="entry-icon"  src="../images/err_book_icon.png"/>
           </view>
@@ -47,13 +61,27 @@
         <image class="left-entry" src="../images/eaxm_report.png" bind:tap="toExaminationReporter">
           <view class="entry-title">试卷测评报告</view>
           <view class="sub-main">
-            <view class="sub-text">共39份试卷报告</view>
+            <view class="sub-text">
+              <block wx:if="{{totalSubjectNums}}">
+                共{{totalReportNums}}份试卷报告
+              </block>
+              <block wx:else>
+                暂无数据
+              </block>
+            </view>
           </view>
         </image>
         <image class="right-entry" src="../images/stage_report.png" bind:tap="toStageReporter">
           <view class="entry-title">阶段报告</view>
           <view class="sub-main">
-            <view class="sub-text">暂无数据</view>
+            <view class="sub-text">
+              <block wx:if="{{totalSubjectNums}}">
+                共{{totalSubjectNums}}份试卷报告
+              </block>
+              <block wx:else>
+                暂无数据
+              </block>
+            </view>
           </view>
         </image>
       </view>

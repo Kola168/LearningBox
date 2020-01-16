@@ -385,6 +385,7 @@ const graphqlApi = {
             exerciseName
             printCount
             sn
+            isPrint
           }
         }
       }`,
@@ -482,6 +483,9 @@ const graphqlApi = {
   getPaperCates: () => {
     return gql.query({
       query: `query getPaperCates{
+        mistakeCount{
+          misCount
+        }
         xuekewang {
           selectedPaperTypes{
             id
@@ -497,8 +501,13 @@ const graphqlApi = {
           printPaperCount
           percentage
           totalErrorBooksNum
+          totalSubjectNums: totalReportNum(type:XuekewangSubjectReport)
+          totalReportNums: totalReportNum(type:XuekewangSubjectReport)
         }
-      }`
+      }`,
+      // variables: {
+      //   type:
+      // }
     })
   },
 
@@ -613,22 +622,21 @@ const graphqlApi = {
    */
   getKnowledgeExercises: (subjectSn, isPrint = 0) => {
     return gql.query({
-      query: `query getExercises($subjectSn:String, $exerciseType:String, $isPrint: Int){
+      query: `query getExercises($subjectSn:String, $exerciseType:String){
         xuekewang{
-          exercises(subjectSn:$subjectSn, exerciseType: $exerciseType, isPrint: $isPrint){
+          exercises(subjectSn:$subjectSn, exerciseType: $exerciseType){
             sn
             dateTime
             isPrint
             pageSize
             exerciseName
           }
-          exerciseCount(subjectSn:$subjectSn, exerciseType: $exerciseType, isPrint: $isPrint)
+          exerciseCount(subjectSn:$subjectSn, exerciseType: $exerciseType)
         }
       }`,
       variables: {
         subjectSn,
-        exerciseType: 'kpoint',
-        isPrint
+        exerciseType: 'kpoint'
       }
     })
   },
