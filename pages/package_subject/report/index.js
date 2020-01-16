@@ -70,6 +70,8 @@ Page({
         checkCapabilitys: {
           isSettingDuplex: true,
           isSettingColor: true,
+          isSettingOddEven: true, //是否设置奇偶
+          isSinglePageLayout: true //是否支持缩放
         }
       }))
     })

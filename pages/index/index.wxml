@@ -26,67 +26,41 @@
 
 <block wx:if="{{!showAuth}}">
   <!-- 学龄前ui -->
-  <block wx:if="{{homeType!=='学科'}}">
-    <view class="home-title">智能学习工具</view>
+  <block wx:if="{{homeType=='preschool'}}">
+    <view class="home-title" style="margin-bottom:0">智能学习工具</view>
     <view class="tool-wrap">
-      <view class="tool-item" bindtap="toFunction" id="cognitionCard">
-        <image src="/images/home/icon_shizika.png" mode="widthFix"></image>
-        <view>识字卡</view>
-      </view>
-      <view class="tool-item" bindtap="toFunction" id="recordVoice">
-        <image src="/images/home/icon_voice.png" mode="widthFix"></image>
-        <view>童音录制</view>
-      </view>
-      <view class="tool-item" id="baobeicepin" bindtap="toFunction">
-        <image src="/images/home/icon_test.png" mode="widthFix"></image>
-        <view>宝贝测评</view>
-      </view>
-      <view class="tool-item" bindtap="toFunction">
-        <image src="/images/home/icon_miaohong.png" mode="widthFix"></image>
-        <view>幼儿描红</view>
-      </view>
-      <view class="tool-item" bindtap="toFunction" id="exerciseDay">
-        <image src="/images/home/icon_exercise_day.png" mode="widthFix"></image>
-        <view>每日一练</view>
-      </view>
-      <view class="tool-item">
-      </view>
+      <scroll-view class="tool-wrap" scroll-x>
+        <view class="tool-item" bindtap="toFunction" id="{{item.id}}" wx:for="{{commonFeatures}}"
+          wx:key="commonFeatures" data-url="{{item.url}}">
+          <image src="{{item.image}}" mode="widthFix">
+            <image src="{{item.icon}}" mode="widthFix" class="subject-free" wx:if="{{item.icon}}"></image>
+          </image>
+          <view>{{item.name}}</view>
+        </view>
+      </scroll-view>
     </view>
     <view class="home-title">
-      <view>宝贝学习计划</view>
+      <view>宝宝学习计划</view>
       <view bindtap="moreLearingPlan">
         <text>更多</text>
         <image src="/images/doc_item_arrow.png" mode="widthFix"></image>
       </view>
     </view>
-    <scroll-view class="study-plan-wrap" scroll-x>
-      <view class="study-plan">
-        <image src="/images/home/study_plan_none.png" mode="widthFix" class="study-plan-image"></image>
+    <scroll-view class="study-plan-wrap" scroll-x wx:if="{{userPlans.length>0}}">
+      <view class="study-plan" wx:for="{{userPlans}}" wx:key="userPlans">
+        <image src="{{item.planIconUrl}}" mode="widthFix" class="study-plan-image"></image>
         <view class="has-plan">
-          <view>嘿嘿，嘿嘿，黑黑黑~</view>
+          <view>{{item.planName}}</view>
           <view class="progress">
-            <progress percent="30" border-radius="30" stroke-width="10rpx" backgroundColor="#e8e8e8"
-              activeColor="#FF7D15" />
-
-            <view>12/14</view>
+            <progress percent="{{item.currentIndex/item.planSize}}" border-radius="30" stroke-width="10rpx"
+              backgroundColor="#e8e8e8" activeColor="#FF7D15" />
+            <view>{{item.currentIndex}}/{{item.planSize}}</view>
           </view>
         </view>
       </view>
-      <view class="study-plan">
-        <image src="/images/home/study_plan_none.png" mode="widthFix" class="study-plan-image"></image>
-        <view class="has-plan">
-          <view>嘿嘿，嘿嘿，黑黑黑~</view>
-          <view class="progress">
-            <progress percent="30" border-radius="30" stroke-width="10rpx" backgroundColor="#e8e8e8"
-              activeColor="#FF7D15" />
+    </scroll-view>
 
-            <view>12/14</view>
-          </view>
-        </view>
-      </view>
-    </scroll-view> 
-
-    <view class="study-plan">
+    <view class="study-plan" wx:if="{{userPlans.length==0}}">
       <image src="/images/home/study_plan_none.png" mode="widthFix" class="study-plan-image"></image>
       <view>
         <view>快去定制宝宝的学习计划吧~</view>
@@ -94,12 +68,13 @@
           <view>新增计划</view>
         </view>
       </view>
-    </view> 
+    </view>
 
     <view class="content-list" wx:for="{{beforeSchoolContent}}" wx:key="beforeSchoolContent" id="{{item.key}}">
       <view class="home-title">{{item.name}}</view>
-      <image src="{{item.iconUrl}}" class="content-image" mode="widthFix" id="{{item.key}}"  bindtap="toContentList" data-name="{{item.name}}" data-has="{{item.hasCategory}}"/>
-    </view> 
+      <image src="{{item.iconUrl}}" class="content-image" mode="widthFix" id="{{item.key}}" bindtap="toContentList"
+        data-name="{{item.name}}" data-has="{{item.hasCategory}}" />
+    </view>
     <view class="tips">
       <view>
         <image src="/images/home/icon_book.png" mode="widthFix" />
@@ -112,44 +87,25 @@
     </view>
   </block>
   <!-- 学科 ui -->
-  <block wx:if="{{homeType=='学科'}}">
+  <block wx:if="{{homeType=='subject'}}">
     <view class="home-title" style="margin-bottom:0">智能学习工具</view>
     <scroll-view class="tool-wrap" scroll-x>
-      <view class="tool-item" bindtap="toFunction" id="freeResources">
-        <image src="/images/home/icon_free_database.png" mode="widthFix">
-          <image src="/images/home/icon_subject_free.png" mode="widthFix" class="subject-free"></image>
+      <view class="tool-item" bindtap="toFunction" id="{{item.id}}" wx:for="{{commonFeatures}}" wx:key="commonFeatures"
+        data-url="{{item.url}}">
+        <image src="{{item.image}}" mode="widthFix">
+          <image src="{{item.icon}}" mode="widthFix" class="subject-free" wx:if="{{item.icon}}"></image>
         </image>
-        <view>精品资源库</view>
-      </view>
-      <view class="tool-item" bindtap="tokousuan">
-        <image src="/images/home/icon_count.png" mode="widthFix"></image>
-        <view>口算</view>
-      </view>
-      <view class="tool-item" bindtap="toFunction" id="memoryWrite">
-        <image src="/images/home/icon_write.png" mode="widthFix"></image>
-        <view>默写</view>
-      </view>
-      <view class="tool-item">
-        <image src="/images/home/icon_camera_search.png" mode="widthFix" bind:tap="toFunction" id="takePhotoSearchExercise"></image>
-        <view>拍搜</view>
-      </view>
-      <view class="tool-item">
-        <image src="/images/home/icon_word.png" mode="widthFix" bind:tap="toFunction" id="exerciseWords"></image>
-        <view>练好字</view>
-      </view>
-      <view class="tool-item">
-        <image src="/images/home/icon_mistake.png" mode="widthFix" bind:tap="toFunction" id="mistake"></image>
-        <view>错题本</view>
+        <view>{{item.name}}</view>
       </view>
     </scroll-view>
     <view class="home-title">智能辅导</view>
     <view class="subject-aptitude">
-      <image src="/images/home/subject_follow.png" mode="widthFix"  />
-      <image src="/images/home/subject_learning.png" mode="widthFix" bind:tap="toFunction" id="syncLearn"/>
-      <image src="/images/home/subject_test.png" mode="widthFix" bind:tap="toFunction" id="evaluate_exam"/>
-      <image src="/images/home/subject_correction.png" mode="widthFix"  bind:tap="toFunction" id="errorBook" />
-      <image src="/images/home/subject_train.png" mode="widthFix" bind:tap="toFunction" id="weaknessExercise"  />
-      <image src="/images/home/subject_report.png" mode="widthFix" bind:tap="toFunction" id="stageReporter"  />
+      <image src="/images/home/subject_follow.png" mode="widthFix" />
+      <image src="/images/home/subject_learning.png" mode="widthFix" bind:tap="toFunction" id="syncLearn" />
+      <image src="/images/home/subject_test.png" mode="widthFix" bind:tap="toFunction" id="evaluate_exam" />
+      <image src="/images/home/subject_correction.png" mode="widthFix" bind:tap="toFunction" id="errorBook" />
+      <image src="/images/home/subject_train.png" mode="widthFix" bind:tap="toFunction" id="weaknessExercise" />
+      <image src="/images/home/subject_report.png" mode="widthFix" bind:tap="toFunction" id="stageReporter" />
     </view>
     <view class="tips tips-sub">
       <view>
@@ -167,20 +123,11 @@
     </view>
     <view class="home-title">
       <view>升学专题</view>
-      <view>
-        <text>更多</text>
-        <image src="/images/home/icon_right_arrow.png" mode="widthFix"></image>
-      </view>
     </view>
 
-    <view class="subject-class-title">
-      <image src="/images/home/subject_class.png" mode="widthFix" class="subject-class-title" />
-    </view>
-    <view class="special">
-      <image src="http://gfd-i.memeyin.com/e-FlXfVks1do_li3DqrLWVHjr-0IPr" mode="widthFix" />
-
-      <image src="http://gfd-i.memeyin.com/e-FlXfVks1do_li3DqrLWVHjr-0IPr" mode="widthFix" />
-    </view>
+    <scroll-view class="special" scroll-x>
+      <image src="{{item.image}}" mode="widthFix" wx:for="{{updateSchool}}" wx:key="updateSchool" wx:if="{{gradeParent.name==item.name}}" bindtap="toFunction" data-url="{{item.url+gradeParent.sn}}"></image>
+    </scroll-view>
 
     <view class="home-title">
       <view>心选课程</view>
@@ -202,7 +149,7 @@
 
 </block>
 <block wx:if="{{showAuth}}">
-    <image src="https://cdn-h.gongfudou.com/LearningBox/main/login_bg.png" mode="widthFix" class="login-bg"/>
+  <image src="https://cdn-h.gongfudou.com/LearningBox/main/login_bg.png" mode="widthFix" class="login-bg" />
   <button open-type="getUserInfo" bindgetuserinfo="userInfoHandler" form-type='submit' hover-class="none"
     class="auth-button-bottom">
     登录了解更多

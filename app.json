@@ -81,6 +81,7 @@
         "setting/setting",
         "instructions/index",
         "instructions/search",
+        "heart_course/index",
         "accountmanagement/index"
       ]
     },

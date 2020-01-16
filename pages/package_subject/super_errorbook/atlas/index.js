@@ -48,7 +48,7 @@ Page({
         if (rates[i].questionNum > 0) {
           let score = rates[i].scoringRate
           this.atlasData.title.push(rates[i].subjectName)
-          this.atlasData.data.push(score)
+          this.atlasData.data.push(score === 0 ? 0.01 : this.atlasData.data[i])
           if (score >= 85) {
             topSubjects.push(rates[i])
           } else if (score < 85 && score >= 60) {

@@ -84,7 +84,6 @@ Page({
       }
     }, (resp) => {
       if (resp.status == 'finished') {
-        console.log(resp, '出题完成==')
         this.longToast.hide()
         this.getExercises()
       }

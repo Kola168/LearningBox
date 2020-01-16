@@ -12,10 +12,10 @@
 }
 
 .confirm-modal-wrap {
-  width: 80%;
+  width: 82.5%;
   background: #fff;
   color: #333;
-  border-radius: 10rpx;
+  border-radius: 20rpx;
   overflow: hidden;
 }
 

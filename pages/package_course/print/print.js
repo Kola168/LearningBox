@@ -31,7 +31,7 @@ Page({
 
   zoomImg(e) {
     let index = Number(e.currentTarget.id),
-      url = this.data.lessonImgs[index].imgObj.url + '?x-image-process=image/quality,q_100/watermark,image_bWljcm8vRXBib3gvc2h1aXlpbi9zaHVpeWluX25ldy5wbmc=,t_100,g_center'
+      url = this.data.lessonImgs[index].imgObj.url + '?x-image-process=image/watermark,image_L21pY3JvL0xldmlhdGhhbi9iYWNrZW5kL3dhdGVybWFya2VyLnBuZw==,g_center/resize,w_700'
     wx.previewImage({
       urls: [url]
     })

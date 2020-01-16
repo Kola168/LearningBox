@@ -48,12 +48,18 @@
   justify-content: center;
   color: #999;
   font-size: 24rpx;
+  position: relative;
+}
+
+.page-over view {
+  position: absolute;
+  left: 24rpx;
 }
 
 .page-over image {
   width: 50rpx;
   height: 50rpx;
-  padding: 0 12rpx;
+  margin: 0 18rpx;
 }
 
 .bottom-bar {

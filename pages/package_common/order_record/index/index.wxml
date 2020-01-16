@@ -13,7 +13,7 @@
 			<image src="{{utils.fixIcon(item.payable.icon)}}" class="record-icon" mode="widthFix" />
 			<view>
 				<view class="content">
-					<view class="title">{{item.payable.name}}</view>
+					<view class="title">{{item.payable.categoryName == "CertService" ? '智能证件照' : item.payable.name}}</view>
 				</view>
 				<view class="type" wx:if="{{item.payable.categoryName}}">
 					<text class="cates-name">{{utils.matchCateGroyName(item.payable.categoryName)}}</text>

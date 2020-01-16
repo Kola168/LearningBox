@@ -35,7 +35,7 @@
 					</view>
 					<template is="{{active_index ? 'collectInfo' : 'course'}}" data="{{item, is_android}}" />
 				</view>
-				<view class="arrow-r" />
+				<!-- <view class="arrow-r" /> -->
 			</view>
 			<view class="mine-border mine-b-item sys-flex f-12" wx:if="{{item.code}}">
 				<view class="activate-code color-666">兑换码: {{item.code}}</view>
