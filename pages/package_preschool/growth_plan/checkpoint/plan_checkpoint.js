@@ -10,6 +10,7 @@ const showModal = util.promisify(wx.showModal)
 const event = require('../../../../lib/event/event')
 import gql from '../../../../network/graphql/preschool'
 import gragql from '../../../../network/graphql_request'
+import gragqlMember from '../../components/member-toast/index'
 
 // import gragqlmember from '../../components/member-toast/index'
 import Logger from '../../../../utils/logger.js'
@@ -32,12 +33,14 @@ Page({
     shadowOpcityImg: '../../images/growth_plan_lock.png', //透明遮罩层上的图片
     btnImgUrl:'',
     autoPrintBtn:false,
-    isAndroid: false,
+    // isAndroid: false,
     isShowBtnCont:true,
     modal: {
       title: '畅享月度合辑',
       desc: '每日一练，每日涨知识',
-    }
+    },
+    showMemberToast: false, //显示会员弹窗
+    isPreschoolMember:false
   },
 
   /**
@@ -45,11 +48,11 @@ Page({
    */
   onLoad: co.wrap(function* (options) {
     this.longToast = new app.weToast()
-    let systemInfo = wx.getSystemInfoSync()
-    let isAndroid = systemInfo.system.indexOf('iOS') > -1 ? false : true
-    this.setData({
-      isAndroid: isAndroid
-    })
+    // let systemInfo = wx.getSystemInfoSync()
+    // let isAndroid = systemInfo.system.indexOf('iOS') > -1 ? false : true
+    // this.setData({
+    //   isAndroid: isAndroid
+    // })
     try {
       this.options = options
       this.planSn = this.options.planSn
@@ -57,24 +60,40 @@ Page({
       this.subscribe = this.options.subscribe
       logger.info('planSn====', this.planSn)
       this.getDetail(this.planSn)
-      // this.setData({
-      //   isSuscribe:this.data.isSuscribe,
-      //   isMember:this.data.isMember
-      // })
-
-    const respMember = yield gragql.getUserMemberInfo()
-    this.setData({
-      isMember:respMember.currentUser.isPreschoolMember
-    })
-    console.log('thisadatasuscriobe',this.data.isSuscribe)
-      // if(this.data.isSuscribe){
+      const respMember = yield gragql.getUserMemberInfo()
+      this.setData({
+        isMember:respMember.currentUser.isPreschoolMember,
+        isShowBtnCont:true,
+        autoPrintBtn:false
+      })
+      // if(this.subscribe == 'subscript'){
       //   this.setData({
-      //     autoPrintBtn:true
+      //     autoPrintBtn:true,
+      //     isShowBtnCont:false
       //   })
       // }else{
       //   this.toFunc()
       // }
-      this.toFunc()
+      // if(this.subscribe == 'subscript'){
+      //   this.setData({
+      //     autoPrintBtn:true,
+      //     isShowBtnCont:false
+      //   })
+      // }else{
+      //   this.checkMember()
+      // }
+
+    if(this.subscribe == 'subscript'){
+      this.setData({
+        autoPrintBtn:true,
+        isShowBtnCont:false
+      })
+    }else{
+      this.setData({
+        autoPrintBtn:false,
+        isShowBtnCont:true
+      })
+    }
       this.longToast.hide()
     } catch (error) {
       this.longToast.toast()
@@ -82,36 +101,36 @@ Page({
     }
   }),
 
-  toFunc: co.wrap(function *(){
-    this.longToast.toast({
-      type:'loading'
-    })
-    try {
-      if(this.data.isMember){
-        this.btnType='subscribe',
-        this.setData({
-          btnImgUrl:'https://cdn-h.gongfudou.com/LearningBox/preschool/growth_plan_btn_subscribe.png'
-        })
-      }else{
-        this.btnType='buy',
-        this.setData({
-          btnImgUrl:'https://cdn-h.gongfudou.com/LearningBox/preschool/growth_plan_btn_buy.png'
-        })
-      }
-      this.longToast.hide()
-    } catch (error) {
-      this.longToast.toast()
-      util.showError(error)
-    }
-  }),
+  // toFunc: co.wrap(function *(){
+  //   this.longToast.toast({
+  //     type:'loading'
+  //   })
+  //   try {
+  //     if(this.data.isMember){
+  //       this.btnType='subscribe',
+  //       this.setData({
+  //         btnImgUrl:'https://cdn-h.gongfudou.com/LearningBox/preschool/growth_plan_btn_subscribe.png'
+  //       })
+  //     }else{
+  //       this.btnType='buy',
+  //       this.setData({
+  //         btnImgUrl:'https://cdn-h.gongfudou.com/LearningBox/preschool/growth_plan_btn_buy.png'
+  //       })
+  //     }
+  //     this.longToast.hide()
+  //   } catch (error) {
+  //     this.longToast.toast()
+  //     util.showError(error)
+  //   }
+  // }),
 
-  btnClick(){
-    if(this.btnType === 'subscribe'){
-      this.toSubscribe()
-    }else if(this.btnType === 'buy'){
-      this.BuyMember()
-    }
-  },
+  // btnClick(){
+  //   if(this.btnType === 'subscribe'){
+  //     this.toSubscribe()
+  //   }else if(this.btnType === 'buy'){
+  //     this.BuyMember()
+  //   }
+  // },
 
   getDetail: co.wrap(function* (planSn) {
     this.longToast.toast({
@@ -140,14 +159,46 @@ Page({
   }),
 
   /** 购买会员 */
-  BuyMember: co.wrap(function* () {
-    // if(this.data.isAndroid){
-    //   wxNav.navigateTo(`/pages/package_member/member/index`,{
-    //     planSn:this.planSn
+  // BuyMember: co.wrap(function* () {
+    // wxNav.navigateTo(`/pages/package_member/member/index`)
+    // try {
+    //   // 判断会员标示
+    //   var memberToast = this.selectComponent('#memberToast')
+
+    //   memberToast.checkAuthMember(()=>{
+    //     wxNav.navigateTo('../plan_detail', {
+    //       userPlanSn:this.userPlanSn
+    //     })
     //   })
+    // } catch (e) {
+    //   this.longToast.toast()
+    //   util.showError(e)
+    //   console.log(e)
     // }
-    wxNav.navigateTo(`/pages/package_member/member/index`)
+  // }),
+
+  //判断会员
+  checkMember: co.wrap(function *(){
+
+    try{
+      // if(this.data.isMember){
+      //   yield this.toSubscribe()
+      // }else{
+        //判断会员标示
+        var memberToast = this.selectComponent('#memberToast')
+        console.log('memberToast', memberToast)
+
+        memberToast.checkAuthMember(()=>{
+          wxNav.navigateTo('../plan_detail', {
+            userPlanSn:this.userPlanSn
+          })
+        })
+      //}
+    } catch(err){
+      console.log(err)
+    }
   }),
+
 
   /* 去订阅 */
   toSubscribe: co.wrap(function* () {
@@ -167,7 +218,7 @@ Page({
       })
       this.setData({
         isSuscribe:true,
-        isShowBtnCont:true
+        isShowBtnCont:false
       })
       this.toSetAuto()
       this.longToast.hide()
@@ -222,7 +273,8 @@ Page({
           sn:e.currentTarget.dataset.sn,
           userPlanSn: this.userPlanSn,
           name:this.data.checkpoints[e.currentTarget.dataset.index].name,
-          subscribe:this.subscribe
+          subscribe:this.subscribe,
+          planSn:this.planSn
         })
       }else{
         return

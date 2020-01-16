@@ -7,6 +7,7 @@ import {
   util
 } from '../../../../utils/common_import'
 const showModal = util.promisify(wx.showModal)
+const event = require('../../../../lib/event/event')
 import gql from '../../../../network/graphql/preschool'
 import gragql from '../../../../network/graphql_request'
 import Logger from '../../../../utils/logger.js'
@@ -27,7 +28,8 @@ Page({
     isMember: false,
     subscription: false,
     btnText: '',
-    isAndroid: false
+    // isAndroid: false
+    showBtn:false
   },
 
   /**
@@ -36,10 +38,11 @@ Page({
   onLoad: co.wrap(function* (options) {
     this.longToast = new app.weToast()
     // let currentImage=this.data.imgUrls[1].image
-    let systemInfo = wx.getSystemInfoSync()
-    let isAndroid = systemInfo.system.indexOf('iOS') > -1 ? false : true
+    // let systemInfo = wx.getSystemInfoSync()
+    // let isAndroid = systemInfo.system.indexOf('iOS') > -1 ? false : true
 
     this.userPlanSn = this.options.userPlanSn
+    this.planSn = this.options.planSn
     this.sn = this.options.sn
     this.name = this.options.name
     this.subscribe = this.options.subscribe
@@ -52,13 +55,14 @@ Page({
       this.contentImagesLength = resp.content.contentImages.length
       this.data.imgUrls = resp.content.contentImages
       this.setData({
-        isAndroid: isAndroid,
+        // isAndroid: isAndroid,
         currentImage: this.data.currentImage,
         isFullScreen: app.isFullScreen,
         imgUrls: this.data.imgUrls,
         allPage: resp.content.pageCount,
         // currentPage:this.data.currentPage
-        isMember:respMember.currentUser.isPreschoolMember
+        isMember:respMember.currentUser.isPreschoolMember,
+        showBtn:true
       })
 
       if (this.data.allPage == 1) {
@@ -66,19 +70,20 @@ Page({
           showArrow: false
         })
       }
-      console.log('this.data.isSuscribe',this.data.isSuscribe)
       if(this.subscribe == 'noSubscript'){
         this.setData({
-          subscription:false
+          subscription:false,
+          showBtn:true
         })
       }else{
         this.setData({
-          subscription:true
+          subscription:true,
+          showBtn:false
         })
       }
       console.log('this.data.subscription',this.data.subscription)
 
-      this.toFunc()
+      // this.toFunc()
 
     } catch (e) {
       this.longToast.toast()
@@ -86,30 +91,78 @@ Page({
     }
   }),
 
-  toFunc: co.wrap(function* (e) {
-    try {
-      if (this.data.isMember) {
-        this.btnType = 'subscription'
-        this.setData({
-          btnText: '立即订阅'
-        })
-      } else if(this.data.subscription) {
-        this.btnType = 'print'
-        this.setData({
-          btnText: '开始打印'
-        })
-      } else {
-        this.btnType = 'buy'
-        this.setData({
-          btnText: '购买会员'
-        })
-      }
-    } catch (error) {
-      this.longToast.toast()
-      util.showError(error)
+  //判断会员
+  checkMember: co.wrap(function *(){
+    logger.info('member',this.data.isMember)
+    if(this.data.isMember){
+      yield this.toSubscribe()
+    }else{
+      logger.info(3333)
+      //判断会员标示
+      var memberToast = this.selectComponent('#memberToast')
+      console.log(memberToast)
+      memberToast.checkAuthMember(()=>{
+        // wxNav.navigateTo('../plan_detail', {
+        //   userPlanSn:this.userPlanSn
+        // })
+      })
     }
-
   }),
+
+  /* 去订阅 */
+  toSubscribe: co.wrap(function* () {
+    this.longToast.toast({
+      type:'loading'
+    })
+    try {
+      yield gql.joinPlan(this.planSn)
+      // wxNav.navigateBack()
+      event.emit('subscribeList')
+      // yield gql.getPlanContents(this.planSn)
+
+      this.longToast.toast({
+        type:'loading',
+        duration:6000,
+        title:'已订阅！'
+      })
+      this.setData({
+        subscription:true,
+        showBtn:false
+      })
+      this.beginPrint()
+      this.longToast.hide()
+    } catch (e) {
+      this.longToast.toast()
+      util.showError(e)
+    }
+    
+  }),
+
+ 
+  // toFunc: co.wrap(function* (e) {
+  //   try {
+  //     if (this.data.isMember) {
+  //       this.btnType = 'subscription'
+  //       this.setData({
+  //         btnText: '立即订阅'
+  //       })
+  //     } else if(this.data.subscription) {
+  //       this.btnType = 'print'
+  //       this.setData({
+  //         btnText: '开始打印'
+  //       })
+  //     } else {
+  //       this.btnType = 'buy'
+  //       this.setData({
+  //         btnText: '购买会员'
+  //       })
+  //     }
+  //   } catch (error) {
+  //     this.longToast.toast()
+  //     util.showError(error)
+  //   }
+
+  // }),
 
   /**
    * 上一页
@@ -165,16 +218,16 @@ Page({
     }
   },
 
-  btnClick() {
-    if (this.btnType === 'buy') {
-      // wxNav.navigateTo(`/pages/package_member/member/index`,{
-      //   planSn:this.planSn
-      // })
-      wxNav.navigateTo(`/pages/package_member/member/index`)
-    } else {
-      this.beginPrint()
-    }
-  },
+  // btnClick() {
+  //   if (this.btnType === 'buy') {
+  //     // wxNav.navigateTo(`/pages/package_member/member/index`,{
+  //     //   planSn:this.planSn
+  //     // })
+  //     wxNav.navigateTo(`/pages/package_member/member/index`)
+  //   } else {
+  //     this.beginPrint()
+  //   }
+  // },
 
   /**
    * 开始打印

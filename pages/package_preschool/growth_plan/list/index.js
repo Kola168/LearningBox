@@ -32,6 +32,8 @@ Page({
       hasCancel: true
     },
     isMember: false, //是否会员
+    showMemberToast: false, //显示会员弹窗
+    isPreschoolMember:false
   },
 
   /**
@@ -67,6 +69,18 @@ Page({
       util.showError(e)
     }
   }),
+
+  //弹窗
+  showMemberToast:function (){
+    // 判断会员标示
+    if (!this.data.isPreschoolMember) {
+      var memberToast = this.selectComponent('#memberToast')
+      return memberToast.showToast()
+    }
+    this.setData({
+      showMemberToast: true
+    })
+  },
 
   getUserPlans: co.wrap(function* () {
     try {
