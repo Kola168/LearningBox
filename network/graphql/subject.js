@@ -1070,6 +1070,7 @@ const graphqlApi = {
             images{
               id
             }
+            state
             dateTime: createdAt
           }
         }

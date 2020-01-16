@@ -51,20 +51,36 @@ Component({
   lifetimes: {
     attached: co.wrap(function*(){
       this.longToast = new app.weToast(this)
-      yield this.getUser()
-      yield this.getBanners() //获取banner
-      yield this.getLastLearn() // 获取同步练习学习人数
-      yield this.getPaperCates() //获取试卷分类
-      yield this.getSubjectPapers() // 获取试卷列表
+      this.longToast.toast({
+        type: 'loading',
+        title: '请稍后...'
+      })
+      try {
+        yield this.getUser()
+        yield this.getBanners() //获取banner
+        yield this.getLastLearn() // 获取同步练习学习人数
+        yield this.getPaperCates() //获取试卷分类
+        yield this.getSubjectPapers() // 获取试卷列表
+      } catch(err) {
+        
+      } finally {
+        this.longToast.hide()
+      }
     })
   },
   pageLifetimes: {
     show: co.wrap(function *() {
-      yield this.getUser() //获取用户信息
-      yield this.getBanners() //获取banner
-      yield this.getLastLearn() // 获取同步练习学习人数
-      yield this.getPaperCates() //获取试卷分类
-      yield this.getSubjectPapers() // 获取试卷列表
+      try {
+        yield this.getUser() //获取用户信息
+        yield this.getBanners() //获取banner
+        yield this.getLastLearn() // 获取同步练习学习人数
+        yield this.getPaperCates() //获取试卷分类
+        yield this.getSubjectPapers() // 获取试卷列表
+      } catch(err) {
+
+      } finally {
+        this.longToast.hide()
+      }
     })
   },
   methods: {
@@ -72,10 +88,6 @@ Component({
    * 获取用户信息 
    */
     getUser: co.wrap(function * (){
-      this.longToast.toast({
-        type: 'loading',
-        title: '请稍后...'
-      })
       try {
         var resp = yield graphqlAll.getUser()
         if (resp.currentUser && resp.currentUser.selectedKid) {
@@ -86,18 +98,12 @@ Component({
       } catch(err){
         util.showError(err)
       } finally {
-        this.longToast.hide()
       }
     }),
     /**
      * 获取banner
      */
     getBanners: co.wrap(function *(params) {
-      this.longToast.toast({
-        type: 'loading',
-        title: '请稍后...'
-      })
-
       try {
         var resp = yield graphql.getBanners()
         var banners = resp.banners
@@ -107,17 +113,12 @@ Component({
       } catch (err) {
         util.showError(err)
       } finally {
-        this.longToast.hide()
       }
     }),
     /**
      * 获取最后一次学习
      */
     getLastLearn: co.wrap(function* () {
-      this.longToast.toast({
-        type: 'loading',
-        title: '请稍后...'
-      })
 
       try {
         var resp = yield graphql.getLastLearn(this.data.stageSn)
@@ -140,7 +141,6 @@ Component({
       } catch (err) {
         util.showError(err)
       } finally {
-        this.longToast.hide()
       }
     }),
 
@@ -167,10 +167,6 @@ Component({
      * 获取试卷分类列表
      */
     getPaperCates: co.wrap(function *() {
-      this.longToast.toast({
-        type: 'loading',
-        title: '请稍后...'
-      })
       try {
         var resp = yield graphql.getPaperCates()
         var selectedPaperTypes = resp.xuekewang.selectedPaperTypes
@@ -200,7 +196,6 @@ Component({
       } catch(err) {
         util.showError(err)
       } finally {
-        this.longToast.hide()
       }
 
     }),
@@ -209,10 +204,7 @@ Component({
      * 获取试卷列表
      */
     getSubjectPapers: co.wrap(function* () {
-      this.longToast.toast({
-        type: 'loading',
-        title: '请稍后...'
-      })
+      
       try {
         var resp = yield graphql.getSubjectPapers(this.subjectId, this.paperType, this.gradeId, this.areaId, 0, 1, 5)
         this.setData({
