@@ -520,8 +520,7 @@ Page({
 
             const resp = yield gql.createResourceOrder(p)
             router.redirectTo('/pages/finish/index', {
-                type: 'mistake',
-                media_type: 'mistake',
+                media_type: 'error_book',
                 state: resp.createResourceOrder.state
             })
 
