@@ -50,14 +50,16 @@ Page({
         let sysInfo = yield getSystemInfo()
         areaHeight = sysInfo.screenHeight - app.getNavBarInfo().topBarHeight
       }
-      this.setData({
-        areaHeight,
-        isFullScreen: app.isFullScreen
-      })
       this.weToast = new app.weToast()
       let scene = query.scene
       this.correctId = Number(scene.split('_')[1])
       this.correctType = scene.split('_')[2] === 'paper' ? 'XuekewangPaper' : 'XuekewangExercise' //批改类型
+      this.setData({
+        areaHeight,
+        isFullScreen: app.isFullScreen,
+        correctType: this.correctType
+      })
+      
       this.singleTopicIds = new Set()
       let isAuth = app.isScope()
       if (!isAuth) {

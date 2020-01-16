@@ -74,19 +74,21 @@ const graphqlApi = {
   /**
    * 获取试卷类型
    * @param { Number } subjectId
+   * @param { Number } thematic
    */
-  getSubjectPaperTypes: (subjectId) => {
+  getSubjectPaperTypes: (subjectId,thematic) => {
     return gql.query({
-      query: `query ($subjectId: Int!){
+      query: `query ($subjectId: Int!,$thematic: Int!){
         xuekewang {
-          paperTypes(subjectId:$subjectId){
+          paperTypes(subjectId:$subjectId,thematic:$thematic){
             id
             name
           }
         }
       }`,
       variables: {
-        subjectId: subjectId
+        subjectId: subjectId,
+        thematic: thematic
       }
     })
   },
