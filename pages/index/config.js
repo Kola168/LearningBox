@@ -58,9 +58,6 @@ export const commonFeatures = {
         url: '/pages/package_common/free_resources/index/index',
         icon: '/images/home/icon_subject_free.png'
 
-    }, {
-        icon:'/images/home/icon_subject_free.png'
-
     },{
         name: '口算',
         image: '/images/home/icon_count.png',
