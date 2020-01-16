@@ -2,23 +2,29 @@
 import {
   wxNav
 } from '../../../../../utils/common_import'
+import copyWriter from './config'
 Component({
   data: {
-    showMemberToast: false
+    showMemberToast: false,
+    isAndroid: false,
+    modal: {}
   },
 
   properties: {
-    modal: {
-      type: Object,
-      value: {
-        isShow: true,
-        title: '开通学科会员，专项同步练习',
-        slotContent: false,
-        content: '难度划分更贴心，在家也能做练习',
-        image: 'https://cdn-h.gongfudou.com/LearningBox/subject/toast_sync.png',
-        slotBottom: true
-      }
+    memberToast: {
+      type:String,
+      value: ''
     }
+  },
+  
+  attached: function(){
+    var systemInfo = wx.getSystemInfoSync()
+    var isAndroid = systemInfo.system.indexOf('iOS') > -1 ? false : true
+    console.log(copyWriter[this.data.memberToast][isAndroid ? 'android' : 'ios'])
+    this.setData({
+      modal: copyWriter[this.data.memberToast][isAndroid ? 'android' : 'ios'],
+      isAndroid: isAndroid,
+    })
   },
 
   methods: {

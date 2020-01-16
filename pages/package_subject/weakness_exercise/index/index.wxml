@@ -1,7 +1,7 @@
 <nav-bar background="#fff" title="薄弱项练习"/>
 <import src="../../common/template/exercise_list.wxml"/>
 <view class="weakness-main" wx:if="{{!showSubjectCheckbox && !showTimeCheckbox && !showKnowledgeCheckbox}}">
-  <view class="head-remind"  wx:if="{{!isSchoolAgeMember}}">
+  <view class="head-remind"  wx:if="{{!isSchoolAgeMember && isAndroid}}">
     <image src="../../images/diamond.png" mode="widthFix"/>
     <view class="name">
       <block wx:if="{{!isExpires}}">
@@ -76,7 +76,7 @@
   </scroll-view>
 </view>
 
-<member-toast id="memberToast" modal="{{modal}}"/>
+<member-toast id="memberToast" memberToast="{{memberToast}}"/>
 
 <import src="../../../../lib/toast/wetoast.wxml" />
 <template is="wetoast" data="{{...__wetoast__}}" />

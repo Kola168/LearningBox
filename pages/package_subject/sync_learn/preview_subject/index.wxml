@@ -22,7 +22,7 @@
 </view>
 
 <!-- 会员开通弹窗 -->
-<showMemberToast id="memberToast" />
+<showMemberToast id="memberToast" memberToast="{{memberToast}}"/>
 
 <import src="../../../../lib/toast/wetoast.wxml" />
 <template is="wetoast" data="{{...__wetoast__}}" />

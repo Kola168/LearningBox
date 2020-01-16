@@ -383,6 +383,7 @@ const graphqlApi = {
             exerciseName
             printCount
             sn
+            isPrint
           }
         }
       }`,

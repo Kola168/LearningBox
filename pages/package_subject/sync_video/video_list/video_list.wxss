@@ -57,3 +57,26 @@
   color: #FFFFFF;
   background-color: rgba(0, 0, 0, .3);
 }
+
+
+.head-remind {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 48rpx;
+  background-color: #FFF8E0;
+}
+
+.head-remind image {
+  width: 26rpx;
+}
+
+.head-remind .name {
+  font-size: 24rpx;
+  color: #FFA200;
+}
+

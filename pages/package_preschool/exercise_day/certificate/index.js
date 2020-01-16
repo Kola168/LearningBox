@@ -159,6 +159,13 @@ Page({
         content: '请输入宝宝姓名'
       })
     }
+    if (this.data.babyName.length > 5) {
+      this.data.babyName = ''
+      return wx.showModal({
+        title: '提示',
+        content: '宝宝姓名最多5个字'
+      })
+    }
     this.cancelModal()
     yield this.updateKidName()
   }),
