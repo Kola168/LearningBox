@@ -43,8 +43,8 @@ export const commonFeatures = {
     }, {
         name: '幼儿描红',
         image: '/images/home/icon_miaohong.png',
-        id: '',
-        url: ''
+        id: 'copybook',
+        url: 'pages/package_feature/copy_book/index'
     }, {
         name: '每日一练',
         image: '/images/home/icon_exercise_day.png',
@@ -57,7 +57,7 @@ export const commonFeatures = {
         id: 'freeResources',
         url: '/pages/package_common/free_resources/index/index',
         icon:'/images/home/icon_subject_free.png'
-        
+
     },{
         name: '口算',
         image: '/images/home/icon_count.png',
