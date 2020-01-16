@@ -121,7 +121,7 @@ Page({
     try {
       let res = yield subjectGql.getPaperDetail(this.sn),
         paper = res.xuekewang.paper
-      this.originalImages = this.isMembesr ? paper.images : paper.images.slice(0, 1)
+      this.originalImages = this.isMember ? paper.images : paper.images.slice(0, 1)
       this.answerImages = this.isMember ? paper.answerImages : paper.answerImages.slice(0, 1)
       this.pdf = paper.pdf.nameUrl
       this.answerPdf = paper.answerPdf.nameUrl
