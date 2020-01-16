@@ -496,7 +496,7 @@ const graphqlApi = {
           totalPapers
           printPaperCount
           percentage
-         
+          totalErrorBooksNum
         }
       }`
     })
@@ -957,6 +957,9 @@ const graphqlApi = {
             kidVideoCount(sn:$sn,type:$type)
             vidoeTitle
           }
+        }
+        xuekewang{
+          registered
         }
       }`,
       variables: {

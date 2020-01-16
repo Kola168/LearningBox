@@ -16,7 +16,7 @@ Page({
       url: '/pages/package_subject/sync_learn/learn_content/index'
     }, {
       title: '同步视频',
-      desc: '五种难度智能出题',
+      desc: '知识视频名师讲解',
       icon: '../../images/video_icon.png',
       key: 'video',
       url: '/pages/package_subject/sync_video/index/index'

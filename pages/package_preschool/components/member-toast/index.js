@@ -9,7 +9,7 @@ import graphqlAll from '../../../../network/graphql_request'
 Component({
   data: {
     showMemberToast: false,
-    isPreschoolMember: false,
+    isPreschoolMember: false
   },
 
   properties: {
@@ -24,6 +24,10 @@ Component({
 
   pageLifetimes: {
     show: co.wrap(function*(){
+      var systemInfo = wx.getSystemInfoSync()
+      this.setData({
+        isAndroid: systemInfo.system.indexOf('iOS') > -1 ? false : true,
+      })
       yield this.getMember()
     })
   },
@@ -60,7 +64,7 @@ Component({
      * @param {*} callback 
      */
     checkAuthMember: function(callback){
-      if (!this.data.isPreschoolMember) {
+      if (this.data.isPreschoolMember) {
         this.showToast()
       } else {
         callback && callback()

@@ -53,14 +53,13 @@
 
 .notice-card .nav-text {
   position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 70%;
-  height: 100%;
-  line-height: 124rpx;
+  left: 70%;
+  top: 50%;
+  width: 100%;
   color: #FFA200;
   font-size: 24rpx;
-  padding-left: 27%;
+  transform: translate(-50%, -50%);
+  text-align: left;
 }
 
 
@@ -172,6 +171,10 @@
   font-size: 20rpx;
   color: #FFFFFF;
   background-color: rgba(0, 0, 0, .3);
+}
+
+.near-top {
+  padding-top: 300rpx;
 }
 
 

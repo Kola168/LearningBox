@@ -110,7 +110,6 @@ module.exports = {
                 </blcok>
               </view>
               <image src="../images/course_lock.png" wx:if="{{chapterItem.locked}}" class="chapter-lock" />
-              <image src="../images/arrow_right_gray.png" wx:else class="chapter-arrow" />
             </view>
             <view class="item-more" catchtap="unfoldChapterAll" hidden="{{item.unfoldChapterAll || item.courseLessons.length < 5}}" data-index="{{index}}">
               <view>查看更多</view>
