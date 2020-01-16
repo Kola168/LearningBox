@@ -22,10 +22,10 @@
         <view class="search-category-name">{{checkedSubject.subjectName}}</view>
         <view class="arrow-icon"></view>
       </view>
-      <view class="search-item" bind:tap="searchCategory" data-key="print">
+      <!-- <view class="search-item" bind:tap="searchCategory" data-key="print">
         <view class="search-category-name">{{checkedPrint.name}}</view>
         <view class="arrow-icon"></view>
-      </view>
+      </view> -->
     </view>
     <!-- 练习题列表 -->
     <view class="exercise-content">

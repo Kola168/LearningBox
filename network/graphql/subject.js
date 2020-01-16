@@ -622,22 +622,21 @@ const graphqlApi = {
    */
   getKnowledgeExercises: (subjectSn, isPrint = 0) => {
     return gql.query({
-      query: `query getExercises($subjectSn:String, $exerciseType:String, $isPrint: Int){
+      query: `query getExercises($subjectSn:String, $exerciseType:String){
         xuekewang{
-          exercises(subjectSn:$subjectSn, exerciseType: $exerciseType, isPrint: $isPrint){
+          exercises(subjectSn:$subjectSn, exerciseType: $exerciseType){
             sn
             dateTime
             isPrint
             pageSize
             exerciseName
           }
-          exerciseCount(subjectSn:$subjectSn, exerciseType: $exerciseType, isPrint: $isPrint)
+          exerciseCount(subjectSn:$subjectSn, exerciseType: $exerciseType)
         }
       }`,
       variables: {
         subjectSn,
-        exerciseType: 'kpoint',
-        isPrint
+        exerciseType: 'kpoint'
       }
     })
   },
