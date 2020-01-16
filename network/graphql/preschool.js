@@ -55,8 +55,6 @@ const graphqlApi = {
               children{
                 name
                 sn
-                subTitle
-                position
               }
             }
           }
@@ -100,8 +98,6 @@ const graphqlApi = {
             children{
               name
               sn
-              subTitle
-              position
             }
           }
         }

@@ -42,7 +42,7 @@
 .cert-list .cert-item {
   display: inline-block;
   margin-right: 44rpx;
-  display: inline-block;
+  margin-bottom: 20rpx;
   width: calc( ( 100% - 44rpx ) / 2 );
 }
 
