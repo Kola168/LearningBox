@@ -44,7 +44,9 @@ Component({
       observer: function(newval) {
         if(newval){
           this.setData({
-            mustGetPhone: newval
+            mustGetPhone: true,
+            phoneNumGet:'notShown',
+            showPhone:true
           })
         }
       }
@@ -90,6 +92,7 @@ Component({
     textRight: '',
     butHigh:false, //是否全面屏
     showPhone:false,
+    mustGetPhone:false,// 是否强制授权
     phoneNumGet:'showed',
   },
 
@@ -113,6 +116,7 @@ Component({
       this.triggerEvent('lefttap')
     },
     rightTap: function() {
+
       this.triggerEvent('righttap')
     }
   }
