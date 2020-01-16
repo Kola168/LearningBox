@@ -173,7 +173,9 @@
         "copy_book/subject",
         "print_link/index",
         "print_link/typeList",
-        "print_link/desc"
+        "print_link/desc",
+        "print_speed/index",
+				"print_speed/intro"
       ]
     },
     {

@@ -35,6 +35,7 @@ Page({
         name: '文字速印',
         recommend: '输入文字快速印',
         icon: '/images/doc_font_print_icon.png',
+        url: '/pages/package_feature/print_speed/intro',
         key: 'font'
       },
       {

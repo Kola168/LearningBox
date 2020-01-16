@@ -1,0 +1,96 @@
+<nav-bar background="#fff" title="文字速印"></nav-bar>
+<view wx:if="{{first}}" style="width:100%;height:100%">
+  <!-- <view class="top1" bindtap="format"> <i class="iconfont icon-zitijiacu {{formats.bold ? 'ql-active' : ''}}" data-name="bold"></i> <i class="iconfont icon-zitixieti {{formats.italic ? 'ql-active' : ''}}" data-name="italic"></i> <i class="iconfont
+    icon-line-height {{formats.lineHeight ? 'ql-active' : ''}}" data-name="lineHeight" data-value="2"></i> <i class="iconfont icon-zuoduiqi {{formats.align === 'left' ? 'ql-active' : ''}}" data-name="align" data-value="left"></i> <i class="iconfont
+    icon-juzhongduiqi {{formats.align === 'center' ? 'ql-active' : ''}}" data-name="align" data-value="center"></i> <i class="iconfont icon-youduiqi {{formats.align === 'right' ? 'ql-active' : ''}}" data-name="align" data-value="right"></i> <i
+    class="iconfont icon-shanchu" bindtap="clear"></i> </view> -->
+
+  <!-- <view class="pink">小tips：如需更改全文样式，需长按文字点击“全选”</view> -->
+  <!-- <view class="bottom-size"> <view class="bottom-title" >字体大小：</view> <view wx:for="{{size}}" wx:key="{{index}}" id="{{index}}" class="{{tabId==index?'size-item-active':'size-item'}}" bindtap="changeSize" data-name="fontSize"
+    data-value="{{item.value}}">{{item.name}}</view> </view> -->
+
+  <view class="top-tip">实际的打印效果可点击底部按钮进行预览</view>
+  <view class="top-size">
+    <view class="size1">
+      字号：
+    </view>
+    <view class="size1-choose" bindtap="toSelect">
+      <text>{{chooseSize}}</text>
+      <image src='/images/arrow_bottom_trangle.png'></image>
+    </view>
+    <view class="size2">
+      示例：
+    </view>
+    <view class="size-example">
+      <text style="font-size:{{fontSize}}px">文字速印</text>
+    </view>
+  </view>
+  <view class="select_box" wx:if="{{select}}">
+    <view wx:for="{{size}}" wx:key="{{index}}">
+      <view class="select_one" bindtap="mySelect" id="{{index}}">{{item.value}}</view>
+    </view>
+  </view>
+  <editor id="editor" class="ql-container" placeholder="{{placeholder}}" bindstatuschange="onStatusChange" bindready="onEditorReady" bindinput="input"></editor>
+
+  <!-- <view class="pink" wx:if="{{showBottomContent}}">小tips：如需更改全文样式，需长按文字点击“全选”</view> <view class="bottom-size" wx:if="{{showBottomContent}}"> <view class="bottom-title" >字体大小：</view> <view wx:for="{{size}}" wx:key="{{index}}" id="{{index}}"
+    class="{{tabId==index?'size-item-active':'size-item'}}" bindtap="changeSize" data-name="fontSize" data-value="{{item.value}}">{{item.name}}</view> </view> -->
+
+  <view class="bottom-save" bindtap="save">确认编辑</view>
+
+  <!-- <view class="modal-wrap" wx:if="{{showClear}}" catchtap="cancel">
+    <view class="confirm-modal1">
+      <view class="confirm-title">复制的文字已获取成功</view>
+      <view class="confirm-title">是否前往编辑？</view>
+      <view class="button-bottom">
+        <view class="button-cancel" bindtap="cancelDialog">取消</view>
+        <view class="button-confirm" bindtap="confirmDialog">编辑文字</view>
+      </view>
+    </view>
+  </view> -->
+</view>
+
+<view wx:else="wx:else">
+  <view class="document_title">
+    <view class="title-left">打印效果</view>
+    <view bindtap="toPreview" class="title-right">预览</view>
+  </view>
+  <view class="doc_setting">
+    <view class="setting_item">
+      <view class="item_label">打印份数</view>
+      <view class="item_main">
+        <image src="{{documentPrintNum==1?'/images/document_cut.png':'/images/minus_y.png'}}" mode="aspectFit" class="print_num" bindtap="cutPrintNum"></image>
+        <text class="document_print_num">{{documentPrintNum}}</text>
+        <image src="{{documentPrintNum>=30?'/images/document_add_gray.png':'/images/plus_y.png'}}" mode="aspectFit" class="print_num" bindtap="addPrintNum"></image>
+      </view>
+    </view>
+    <view class="setting_item">
+      <view class="item_label">打印范围</view>
+      <view class="item_main">
+        <input id="1" class="page_input" type="number" bindinput="inputstartpage" bindblur="startpagejudge" value="{{startPrintPage}}" />
+        <text class="page_text">至</text>
+        <input id="2" class="page_input" type="number" bindinput="inputendpage" bindblur="endpagejudge" value="{{endPrintPage}}" />
+        <text class="page_text">页</text>
+      </view>
+    </view>
+    <view class="setting_item" wx:if="{{isDuplex}}">
+      <view class="item_label">双面打印</view>
+      <view class="item_main">
+        <view class="color_check_box" data-style="0" bindtap="duplexCheck">
+          <text class="color_type">单面</text>
+          <image src="{{duplexcheck?'/images/icon_circle_not_selected.png':'/images/document_checked.png'}}" mode="widthFix" class="color_check"></image>
+        </view>
+        <view class="color_check_box" data-style="1" bindtap="duplexCheck">
+          <text class="color_type">双面</text>
+          <image src="{{duplexcheck?'/images/document_checked.png':'/images/icon_circle_not_selected.png'}}" mode="widthFix" class="color_check"></image>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class="conf_box-left" bindtap="cancelcheck">返回修改</view>
+  <button class="conf_box-right" bindtap="confcheck" open-type="{{hasAuthPhoneNum?'':'getPhoneNumber'}}" bindgetphonenumber="{{hasAuthPhoneNum?'':'getPhoneNumber'}}">确认打印</button>
+</view>
+
+<!-- 打印确认框 -->
+<confirm-print bindconfirm="print" modal="{{confirmModal}}"></confirm-print>
+<import src="../../../lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />

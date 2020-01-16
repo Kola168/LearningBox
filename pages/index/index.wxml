@@ -101,11 +101,11 @@
     <view class="home-title">智能辅导</view>
     <view class="subject-aptitude">
       <image src="/images/home/subject_follow.png" mode="widthFix" />
-      <image src="/images/home/subject_learning.png" mode="widthFix" bind:tap="toFunction" id="syncLearn" />
-      <image src="/images/home/subject_test.png" mode="widthFix" bind:tap="toFunction" id="evaluate_exam" />
-      <image src="/images/home/subject_correction.png" mode="widthFix" bind:tap="toFunction" id="errorBook" />
-      <image src="/images/home/subject_train.png" mode="widthFix" bind:tap="toFunction" id="weaknessExercise" />
-      <image src="/images/home/subject_report.png" mode="widthFix" bind:tap="toFunction" id="stageReporter" />
+      <image src="/images/home/subject_learning.png" mode="widthFix" bind:tap="toFunction" id="{{helpStudy[0].id}}" data-url="{{helpStudy[0].url}}" />
+      <image src="/images/home/subject_test.png" mode="widthFix" bind:tap="toFunction" id="{{helpStudy[1].id}}" data-url="{{helpStudy[1].url}}" />
+      <image src="/images/home/subject_correction.png" mode="widthFix" bind:tap="toFunction" id="{{helpStudy[2].id}}" data-url="{{helpStudy[2].url}}" />
+      <image src="/images/home/subject_train.png" mode="widthFix" bind:tap="toFunction" id="{{helpStudy[3].id}}" data-url="{{helpStudy[3].url}}" />
+      <image src="/images/home/subject_report.png" mode="widthFix" bind:tap="toFunction" id="{{helpStudy[4].id}}" data-url="{{helpStudy[4].url}}" />
     </view>
     <view class="tips tips-sub">
       <view bindtap="subjectLearingWay">
@@ -121,27 +121,30 @@
       <text>进入学习中心</text>
       <image src="/images/home/to_study_center.png" mode="widthFix" />
     </view>
+
     <view class="home-title">
       <view>升学专题</view>
     </view>
+    <!-- <scroll-view class="special scroll" scroll-x> -->
+    <view class="special">
+      <image src="{{item.image}}" mode="widthFix" wx:for="{{updateSchool}}" wx:key="updateSchool"
+        wx:if="{{gradeParent.name==item.name}}" bindtap="toFunction" data-url="{{item.url+gradeParent.sn}}"></image>
+    </view>
+    <!-- </scroll-view> -->
 
-    <scroll-view class="special" scroll-x>
-      <image src="{{item.image}}" mode="widthFix" wx:for="{{updateSchool}}" wx:key="updateSchool" wx:if="{{gradeParent.name==item.name}}" bindtap="toFunction" data-url="{{item.url+gradeParent.sn}}"></image>
-    </scroll-view>
-
-    <view class="home-title">
+    <view class="home-title" wx:if="{{recommendCourse.length>0}}">
       <view>心选课程</view>
-      <view>
+      <view bindtap="toCourse">
         <text>更多</text>
         <image src="/images/doc_item_arrow.png" mode="widthFix"></image>
       </view>
     </view>
     <scroll-view class="recommend" scroll-x>
-      <block wx:for="{{contentList}}" wx:key="contentList">
-        <view class="other course" bindtap="toCourse" id="{{index}}" data-type="{{index}}">
-          <image src="{{item.url}}" mode="widthFix" />
-          <view class="small-title">{{item.title}}</view>
-          <view class="small-title">{{item.total_lessons}}课时</view>
+      <block wx:for="{{recommendCourse}}" wx:key="recommendCourse">
+        <view class="other course" bindtap="toCourse" id="{{item.sn}}" data-type="{{index}}">
+          <image src="{{item.iconUrl}}" mode="widthFix" />
+          <view class="small-title">{{item.name}}</view>
+          <view class="small-title">{{item.totalLessons}}课时</view>
         </view>
       </block>
     </scroll-view>
