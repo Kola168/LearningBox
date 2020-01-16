@@ -7,11 +7,11 @@ const util = require('../../utils/util')
 
 import storage from '../../utils/storage.js'
 import gql from '../../network/graphql_request'
-
+import commonRequest from '../../utils/common_request'
 let Loger = (app.apiServer != 'https://epbox.gongfudou.com' || app.deBug) ? console.log : function() {}
 
 Component({
-  externalClasses:['extra-class','left-class'],
+  externalClasses: ['extra-class', 'left-class'],
   properties: {
     textLeft: {
       type: String,
@@ -29,44 +29,52 @@ Component({
         })
       }
     },
-    getPhone:{
+    getPhone: {
       type: Boolean,
       observer: function(newval) {
-        if(newval){
+        if (newval) {
           this.setData({
             showPhone: newval
           })
         }
       }
     },
-    mustGet:{
+    mustGet: {
       type: Boolean,
       observer: function(newval) {
-        if(newval){
+        if (newval) {
           this.setData({
-            mustGetPhone: newval
+            mustGetPhone: true,
           })
         }
       }
     }
   },
 
-  attached:function() {
+  attached: function() {
     try {
       let phoneNumGet = storage.get('phoneNumGet')
-      Loger(phoneNumGet)
-      if (phoneNumGet=='showed') {
+      let phoneNum = storage.get('phoneNum')
+      Loger(phoneNumGet,phoneNum)
+      if (phoneNumGet == 'showed'||_.isNotEmpty(phoneNum)) {
         this.setData({
-          phoneNumGet:'showed'
+          phoneNumGet: 'showed'
         })
-      }else{
+      } else {
         this.setData({
-          phoneNumGet:'notShown'
+          phoneNumGet: 'notShown'
+        })
+      }
+      if(this.data.mustGetPhone && _.isEmpty(phoneNum)){
+        this.setData({
+          phoneNumGet: 'notShown',
+          showPhone:true
         })
       }
     } catch (e) {
       this.setData({
-        phoneNumGet:'notShown'
+        phoneNumGet: 'notShown',
+        showPhone:true
       })
       Loger('获取本地缓存失败')
     }
@@ -74,13 +82,13 @@ Component({
       this.setData({
         butHigh: true
       })
-    }else if(app.isFullScreen==undefined){
-      let that=this
-      setTimeout(function(){
+    } else if (app.isFullScreen == undefined) {
+      let that = this
+      setTimeout(function() {
         that.setData({
           butHigh: app.isFullScreen
         })
-      },500)
+      }, 500)
     }
 
   },
@@ -88,23 +96,36 @@ Component({
   data: {
     textLeft: '',
     textRight: '',
-    butHigh:false, //是否全面屏
-    showPhone:false,
-    phoneNumGet:'showed',
+    butHigh: false, //是否全面屏
+    showPhone: false,
+    mustGetPhone: false, // 是否强制授权
+    phoneNumGet: 'showed',
   },
 
   methods: {
 
-    getPhoneNum:co.wrap(function*(e){
+    getPhoneNum: co.wrap(function*(e) {
       console.log(e)
-      if(_.isEmpty(e.detail.iv)||_.isEmpty(e.detail.encryptedData)){
-
-      }else{
-
+      if (_.isEmpty(e.detail.iv) || _.isEmpty(e.detail.encryptedData)) {
+        if(this.data.mustGetPhone){
+          return wx.showModal({
+            title:'提示',
+            content:'该功能必须授权手机号才能正常使用哦！',
+            showCancel: false,
+            confirmColor: '#FFE27A',
+          })
+        }
+      } else {
+        try{
+          let phone=yield commonRequest.phoneDecrypt(e)
+        }catch(e){
+          Loger(e)
+          return util.showError(e)
+        }
       }
-      storage.put('phoneNumGet','showed')
+      storage.put('phoneNumGet', 'showed')
       this.setData({
-        phoneNumGet:'showed'
+        phoneNumGet: 'showed'
       })
       this.triggerEvent('righttap')
     }),
@@ -113,6 +134,7 @@ Component({
       this.triggerEvent('lefttap')
     },
     rightTap: function() {
+
       this.triggerEvent('righttap')
     }
   }
