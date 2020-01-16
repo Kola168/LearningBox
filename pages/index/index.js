@@ -19,7 +19,10 @@ import api from '../../network/restful_request.js'
 const checkSession = util.promisify(wx.checkSession)
 
 import preschoolGql from '../../network/graphql/preschool.js'
-
+import {
+  updateSchool,
+  commonFeatures
+} from 'config.js'
 
 Page({
   mixins: [index, init],
@@ -39,7 +42,7 @@ Page({
     autoplay: true,
     interval: 5000,
     showAuth: false, //登录
-    homeType: '学前',
+    homeType: '',
     selectedKid: null,
     stageRoot: null,
     deviceModal: {
@@ -50,7 +53,10 @@ Page({
       image: '/images/home/device_tip.png'
     },
     beforeSchoolContent: [],
-    userPlans: []
+    userPlans: [],
+    updateSchool,
+    commonFeatures: [],
+    gradeParent:null,//小学初中高中
   },
 
   //事件处理函数
@@ -135,17 +141,16 @@ Page({
       let resp = yield gql.getUser()
       this.setData({
         phone: resp.currentUser.phone,
-        selectedKid: resp.currentUser.selectedKid,
-        stageRoot: resp.currentUser.selectedKid.stageRoot
       })
-      // storage.put("userSn", resp.currentUser.sn)
-      // storage.put("kidStage", resp.currentUser.selectedKid.stageRoot)
-
       if (!resp.currentUser.selectedKid || !resp.currentUser.selectedKid.stageRoot) {
         wxNav.navigateTo('/pages/index/grade')
       } else {
+        let rootKey = resp.currentUser.selectedKid.stageRoot.rootKey
+        let common = commonFeatures[rootKey]
         this.setData({
-          homeType: resp.currentUser.selectedKid.stageRoot.rootName,
+          homeType: rootKey,
+          commonFeatures: commonFeatures[rootKey],
+          gradeParent:resp.currentUser.selectedKid.stage.parent
         })
       }
       if (!resp.currentUser.selectedDevice) {
@@ -159,7 +164,7 @@ Page({
   }),
   //获取学前模块
   customizeFeatures: co.wrap(function* () {
-    if (this.data.homeType != '学前') {
+    if (this.data.homeType != 'preschool') {
       return
     }
     try {
@@ -173,7 +178,7 @@ Page({
   }),
   //宝贝学习计划
   getUserPlans: co.wrap(function* () {
-    if (this.data.homeType != '学前') {
+    if (this.data.homeType != 'preschool') {
       return
     }
     try {
@@ -288,52 +293,7 @@ Page({
 
   // 跳转小功能
   toFunction(e) {
-    let functionId = e.currentTarget.id,
-      url = ''
-    switch (functionId) {
-      case 'cognitionCard':
-        url = '/pages/package_feature/cognition_card/index/index'
-        break;
-      case 'recordVoice':
-        url = '/pages/package_preschool/record_voice/index/index'
-        break;
-      case 'freeResources':
-        url = '/pages/package_common/free_resources/index/index'
-        break;
-      case 'memoryWrite':
-        url = '/pages/package_feature/memory_write/index/index'
-        break;
-      case 'exerciseWords':
-        url = ''
-        break;
-      case 'takePhotoSearchExercise':
-        url = '/pages/package_feature/error_book/photo_anwser_intro'
-        break;
-      case 'syncLearn':
-        url = '/pages/package_subject/sync_learn/index/index'
-        break;
-      case 'evaluate_exam':
-        url = '/pages/package_subject/evaluate_exam/index/index'
-        break;
-      case 'errorBook':
-        url = '/pages/package_subject/super_errorbook/index/index'
-        break;
-      case 'exerciseDay':
-        url = '/pages/package_preschool/exercise_day/exercises/exercises'
-        break;
-      case 'baobeicepin':
-        url = '/pages/package_preschool/evaluation/index'
-        break;
-      case 'weaknessExercise':
-        url = '/pages/package_subject/weakness_exercise/index/index'
-        break;
-      case 'stageReporter':
-        url = '/pages/package_subject/stage_report/index/index'
-        break;
-      case 'mistake':
-        url = '/pages/package_feature/error_book/index'
-        break;
-    }
+    let url = e.currentTarget.dataset.url
     if (!url) {
       return wx.showModal({
         title: '提示',
@@ -403,9 +363,6 @@ Page({
   }),
   toBindDevice: function () {
     wxNav.navigateTo('/pages/package_device/network/index/index')
-  },
-  tokousuan: function () {
-    wxNav.navigateTo('/pages/package_feature/kousuan/index')
   },
   toContentList: function (e) {
     if (!e.currentTarget.dataset.has) {

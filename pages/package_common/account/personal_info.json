@@ -1,6 +1,5 @@
 {
   "usingComponents": {
-    "confirm-print": "../../../components/confirm-print",
     "take-photo-pop":"../../../components/checkimg/index"
   }
 }
