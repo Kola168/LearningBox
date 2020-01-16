@@ -103,7 +103,7 @@ Page({
       type: 'loading'
     })
     try {
-      let res = yield gqlSubject.getSubjectAreasAndGrades(this.subjectId),
+      let res = yield gqlSubject.getSubjectAreasAndGrades(),
         tempAreas = res.xuekewang.areas,
         areas = [],
         grades = res.xuekewang.grades,

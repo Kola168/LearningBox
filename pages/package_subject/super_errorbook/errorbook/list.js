@@ -338,7 +338,8 @@ Page({
     }, (res) => {
       if (res.status === 'finished') {
         wxNav.navigateTo('../../sync_learn/preview_subject/index', {
-          sn: res.data.sn
+          sn: res.data.sn,
+          mediaType: 'errorbook_list'
         })
         this.weToast.hide()
       }
