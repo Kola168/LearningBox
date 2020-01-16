@@ -159,7 +159,10 @@ Page({
         content: '请输入宝宝姓名'
       })
     }
-    if (this.data.babyName.length > 5) {
+
+    var fontLen = this.data.babyName.match(/[\u4e00-\u9fa5]/g)
+    var len = this.data.babyName.match(/[^\u4e00-\u9fa5]/g)
+    if (fontLen + (len / 2) > 5) {
       this.data.babyName = ''
       return wx.showModal({
         title: '提示',
