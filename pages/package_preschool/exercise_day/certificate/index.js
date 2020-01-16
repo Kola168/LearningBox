@@ -160,9 +160,9 @@ Page({
       })
     }
 
-    var fontLen = this.data.babyName.match(/[\u4e00-\u9fa5]/g)
-    var len = this.data.babyName.match(/[^\u4e00-\u9fa5]/g)
-    if (fontLen + (len / 2) > 5) {
+    var font = this.data.babyName.match(/[\u4e00-\u9fa5]/g)
+    var letter = this.data.babyName.match(/[^\u4e00-\u9fa5]/g)
+    if (font.length + (letter.length / 2) > 5) {
       this.data.babyName = ''
       return wx.showModal({
         title: '提示',
