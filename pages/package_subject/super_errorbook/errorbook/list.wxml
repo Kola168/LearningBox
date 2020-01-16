@@ -51,11 +51,11 @@
           </view>
         </view>
       </view>
-      <view class="list-content" style="padding-top:{{noticeHeight+50}}px;">
-        <view class="content-title">
+      <view class="list-content" style="padding-top:{{noticeHeight+100}}px;">
+        <view class="content-title" style="top:{{navBarHeight+noticeHeight+50}}px;">
           <view class="title-left">共{{totalCount}}道错题</view>
           <view class="title-select" wx:if="{{!showHandleBar}}" bindtap="showHandleBar">
-            <image src="../../images/select_icon.png" mode="widthFix" />
+            <image src="../../images/select_icon.png" class="select-img" mode="widthFix" />
             <view>选择</view>
           </view>
           <view class="select-btn" wx:if="{{showHandleBar}}" bindtap="showHandleBar">完成</view>
