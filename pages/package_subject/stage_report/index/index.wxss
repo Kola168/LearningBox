@@ -2,7 +2,7 @@
 
 .nav-card {
   position: relative;
-  margin: 60rpx auto;
+  margin: 60rpx auto 0;
   width: 700rpx;
 }
 

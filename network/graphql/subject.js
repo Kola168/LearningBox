@@ -483,6 +483,9 @@ const graphqlApi = {
   getPaperCates: () => {
     return gql.query({
       query: `query getPaperCates{
+        mistakeCount{
+          misCount
+        }
         xuekewang {
           selectedPaperTypes{
             id
@@ -498,8 +501,13 @@ const graphqlApi = {
           printPaperCount
           percentage
           totalErrorBooksNum
+          totalSubjectNums: totalReportNum(type:XuekewangSubjectReport)
+          totalReportNums: totalReportNum(type:XuekewangSubjectReport)
         }
-      }`
+      }`,
+      // variables: {
+      //   type:
+      // }
     })
   },
 
