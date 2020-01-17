@@ -236,6 +236,15 @@ App({
     } catch (e) {
       return false
     }
-  })
+  }),
 
+  // 是否是ios
+  isIos:co.wrap(function* (){
+    if(this.sysInfo){
+      return this.sysInfo.system.toLowerCase().indexOf('ios') > -1
+    } else {
+      const res = yield getSystemInfo()
+      return res.system.toLowerCase().indexOf('ios') > -1
+    }
+  }) 
 })

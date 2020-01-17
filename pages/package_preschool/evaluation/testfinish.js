@@ -16,8 +16,7 @@ Page({
 
   data: {
     achievementArr: [],
-    fullMarks: 4, //满分
-    scale: 2, //正确题数与分数的比例
+    fullMarks: 6, //满分
     recommendTest: [], ///推荐题目
     kidpercent:90,
   },

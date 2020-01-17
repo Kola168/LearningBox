@@ -64,7 +64,7 @@ Component({
      * @param {*} callback 
      */
     checkAuthMember: function(callback){
-      if (this.data.isPreschoolMember) {
+      if (!this.data.isPreschoolMember) {
         this.showToast()
       } else {
         callback && callback()

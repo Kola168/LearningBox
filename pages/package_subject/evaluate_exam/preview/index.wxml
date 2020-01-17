@@ -6,7 +6,7 @@
     </swiper-item>
   </swiper>
   <view class="precent">{{currentIndex}}/{{imgList.length}}</view>
-  <image src="../../images/look_report.png" wx:if="{{hasReport}}" class="look-report" mode="widthFix" />
+  <image src="../../images/look_report.png" wx:if="{{hasReport}}" class="look-report" mode="widthFix" bindtap="viewReport" />
   <view class="btn-bottom {{isFullScreen?'is-full-screen':''}}">
     <view class="print-answer" bindtap="checkAnswer">
       <image class="check-on" src="../../images/check_{{printAnswer?'on':'off'}}.png"></image>
@@ -19,7 +19,7 @@
 <modal modal="{{modalObj}}">
   <view slot="bottom" class="member-btn" catchtap="confirmModal">
     <image src="../../images/diamond.png" mode="widthFix" />
-    <view>开通会员可免费使用</view>
+    <view>{{isIos?'了解详情':'开通会员可免费使用'}}</view>
   </view>
 </modal>
 <import src="/lib/toast/wetoast.wxml" />

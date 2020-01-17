@@ -24,6 +24,8 @@
 		 class="subject-item"
 		 wx:if="{{defautExercise}}"
 		 data-sn="{{defautExercise.sn}}"
+		 data-state="{{defautExercise.isPrint}}"
+		 data-key="default"
 		 bind:tap="toExerciseDetail"
 		>
 			<image class="nav-cicon" src="../../images/pdf.png">
@@ -49,6 +51,8 @@
 		 wx:for="{{exerciseList}}"
 		 wx:key="sn"
 		 data-sn="{{item.sn}}"
+		 data-state="{{item.isPrint}}"
+		 data-key="ai"
 		 bind:tap="toExerciseDetail"
 		>
 			<image class="nav-cicon" src="../../images/pdf.png">
@@ -66,7 +70,7 @@
 	</view>
 
 	<!-- 会员开通弹窗 -->
-	<showMemberToast id="memberToast" />
+	<showMemberToast id="memberToast" memberToast="{{memberToast}}"/>
 
 	<!-- 智能出题弹窗 -->
 	<view class="subject-toast" wx:if="{{showAiToast}}" bind:tap="cancelSet">

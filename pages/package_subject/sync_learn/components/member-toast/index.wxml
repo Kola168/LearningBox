@@ -2,8 +2,8 @@
 <view class="member-toast" wx:if="{{showMemberToast}}" bind:tap="hideToast">
   <toast-modal modal="{{modal}}">
     <view class="btn-sure" catchtap="toMember" slot="bottom">
-      <image src="../../../images/diamond.png" />
-      <view class="content">开通会员可免费使用</view>
+      <image src="../../../images/diamond.png" wx:if="{{isAndroid}}"/>
+      <view class="content">{{isAndroid ? '开通会员可免费使用' : '了解详情'}}</view>
     </view>
   </toast-modal>
 </view>

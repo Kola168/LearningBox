@@ -16,7 +16,6 @@ Page({
     name: ''
   },
   onLoad(query) {
-    this.mediaType = query.mediaType
     this.weToast = new app.weToast()
     let isFullScreen = app.isFullScreen
     this.mediaType = query.mediaType
