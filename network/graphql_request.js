@@ -501,6 +501,9 @@ const graphqlApi = {
 			  	isSchoolAgeMember
           phone
           sn
+          currentGroup{
+            currentUserIsCreator
+          }
           selectedDevice{
             sn
             name

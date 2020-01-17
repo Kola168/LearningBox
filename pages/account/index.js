@@ -16,7 +16,8 @@ Page({
 	data: {
 		kidInfo: null,
 		activeDevice: null,
-		features
+		features,
+		currentUserIsCreator:false
 	},
 	onLoad: function (options) {
 		this.longToast = new app.weToast()
@@ -57,7 +58,8 @@ Page({
 			console.log(resp)
 			this.setData({
 				kidInfo: resp.currentUser.selectedKid,
-				activeDevice: resp.currentUser.selectedDevice
+				activeDevice: resp.currentUser.selectedDevice,
+				currentUserIsCreator:resp.currentUser.currentGroup.currentUserIsCreator
 			})
 			this.longToast.hide()
 		} catch (e) {
