@@ -67,18 +67,15 @@ Page({
     let id = e.currentTarget.id,
       dataObj = {
         showFilter: !this.data.showFilter
-      }
-    this.showFilterType = id ? id : this.showFilterType
-    if (id === 'area') {
-      dataObj.activeFilter = this.data.activeArea
-      dataObj.activeFilterList = this.data.areas
-    } else if (id === 'grade') {
-      dataObj.activeFilter = this.data.activeGrade
-      dataObj.activeFilterList = this.data.grades
-    } else if (id === 'year') {
-      dataObj.activeFilter = this.data.activeYear
-      dataObj.activeFilterList = this.data.years
+      },
+      upId = id.slice(0, 1).toUpperCase() + id.slice(1)
+    if (!id) {
+      this.setData(dataObj)
+      return
     }
+    this.showFilterType = id ? id : this.showFilterType
+    dataObj.activeFilter = this.data['active' + upId]
+    dataObj.activeFilterList = this.data[id + 's']
     this.setData(dataObj)
   },
   // 切换过滤
@@ -87,14 +84,8 @@ Page({
       dataObj = {
         loadReady: false
       },
-      key = this.showFilterType + 's'
-    if (this.showFilterType === 'area') {
-      dataObj.activeArea = this.data.areas[index]
-    } else if (this.showFilterType === 'grade') {
-      dataObj.activeGrade = this.data.grades[index]
-    } else if (this.showFilterType === 'year') {
-      dataObj.activeYear = this.data.years[index]
-    }
+      upFilterType = this.showFilterType.slice(0, 1).toUpperCase() + this.showFilterType.slice(1)
+    dataObj['active' + upFilterType] = this.data[this.showFilterType + 's'][index]
     this.setData(dataObj)
     this.resetGetPapers()
   },

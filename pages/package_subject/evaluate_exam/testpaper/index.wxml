@@ -9,15 +9,15 @@
     </block>
     <block wx:else>
       <view class="filters-item" bindtap="showFilter" id="area">
-        <view class="text-overflow-points">{{activeArea.name}}</view>
+        <view class="text-overflow-points">{{activeArea.name==='全部'?'省份':activeArea.name}}</view>
         <image src="../../images/arrow_bottom.png" mode="widthFix" />
       </view>
       <view class="filters-item" bindtap="showFilter" id="grade">
-        <view class="text-overflow-points">{{activeGrade.name}}</view>
+        <view class="text-overflow-points">{{activeGrade.name==='全部'?'年级':activeGrade.name}}</view>
         <image src="../../images/arrow_bottom.png" mode="widthFix" />
       </view>
       <view class="filters-item" bindtap="showFilter" id="year">
-        <view class="text-overflow-points">{{activeYear.name}}</view>
+        <view class="text-overflow-points">{{activeYear.name==='全部'?'年份':activeYear.name}}</view>
         <image src="../../images/arrow_bottom.png" mode="widthFix" />
       </view>
     </block>
