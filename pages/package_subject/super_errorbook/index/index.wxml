@@ -22,7 +22,7 @@
       </view>
       <view class="left-main">
         <view class="main-title">薄弱项习题</view>
-        <view class="main-sub text-overflow-points">精准提分从超级错题本开始</view>
+        <view class="main-sub text-overflow-points">根据错题本推荐你的专属练习</view>
       </view>
     </view>
     <view class="item-right">使用</view>

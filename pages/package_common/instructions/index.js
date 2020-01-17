@@ -45,7 +45,7 @@ Page({
   checkType: function(e) {
     let type = e.currentTarget.dataset.type
     if (type == this.data.pickType) {
-      this.hidePicker()
+      return this.hidePicker()
     }
     this.setData({
       pickType: type

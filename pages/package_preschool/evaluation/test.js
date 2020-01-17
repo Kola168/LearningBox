@@ -30,6 +30,10 @@ Page({
     this.getTestList()
   },
 
+  onUnload:function(){
+    clearInterval(this.interval)
+  },
+
   getTestList: co.wrap(function*() {
     this.longToast.toast({
       type: 'loading'
@@ -116,6 +120,8 @@ Page({
     let that = this
     this.interval = setInterval(function() {
       that.data.remainingTime--
+      console.log(that.data.remainingTime)
+      console.log(that.interval)
       if (that.data.remainingTime < 0) {
         that.initQuestion()
         that.data.remainingTime = that.originalRemainingTime

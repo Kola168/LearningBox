@@ -56,15 +56,15 @@ Component({
       let phoneNumGet = storage.get('phoneNumGet')
       let phoneNum = storage.get('phoneNum')
       Loger(phoneNumGet,phoneNum)
-      if (phoneNumGet == 'showed'||_.isNotEmpty(phoneNum)) {
-        this.setData({
-          phoneNumGet: 'showed'
-        })
-      } else {
-        this.setData({
-          phoneNumGet: 'notShown'
-        })
-      }
+      // if (phoneNumGet == 'showed'||_.isNotEmpty(phoneNum)) {
+      //   this.setData({
+      //     phoneNumGet: 'showed'
+      //   })
+      // } else {
+      //   this.setData({
+      //     phoneNumGet: 'notShown'
+      //   })
+      // }
       if(this.data.mustGetPhone && _.isEmpty(phoneNum)){
         this.setData({
           phoneNumGet: 'notShown',

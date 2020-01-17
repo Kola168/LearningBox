@@ -240,7 +240,7 @@ Page({
 				title: '正在提交',
 				duration: 0
 			})
-			var urls = this.data.files.map(file => util.removeKeysToNewObj(file, ['isSetting', 'colorCheck']))
+			var urls = this.data.files.map(file => util.removeKeysToNewObj(file, ['isSetting', 'colorCheck', 'pageCount', 'previewUrl']))
 			const resp = yield commonRequest.createOrder('doc_a4', urls)
 			router.navigateTo('/pages/finish/index',
 				{
