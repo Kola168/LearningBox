@@ -58,7 +58,6 @@ Page({
     startPrintPage: 1,
     showBottomContent: true,
     isDuplex: true,
-    hasAuthPhoneNum: false,
     confirmModal: {
       isShow: false,
       title: '请正确放置A4打印纸',
@@ -70,16 +69,8 @@ Page({
     this.longToast = new app.weToast()
     // this.getClipboard()
     let media_type = 'words2doc'
-    this.setData({
-      mediumRecommend: media_type
-    })
   },
   onShow: function () {
-    let hasAuthPhoneNum = Boolean(wx.getStorageSync('hasAuthPhoneNum'))
-    this.hasAuthPhoneNum = hasAuthPhoneNum
-    this.setData({
-      hasAuthPhoneNum: app.hasPhoneNum || hasAuthPhoneNum
-    })
   },
   setting: co.wrap(function* (e) {
     console.log('e.currentTarget.id', e)
@@ -314,9 +305,6 @@ Page({
 
   //确认按钮提交
   confcheck() {
-    if (!this.hasAuthPhoneNum && !app.hasPhoneNum) {
-      return
-    }
     let hideConfirmPrintBox = Boolean(wx.getStorageSync("hideConfirmPrintBox"))
     if (hideConfirmPrintBox) {
       this.print()
@@ -326,15 +314,6 @@ Page({
       })
     }
   },
-  getPhoneNumber: co.wrap(function* (e) {
-    yield app.getPhoneNum(e)
-    wx.setStorageSync("hasAuthPhoneNum", true)
-    this.hasAuthPhoneNum = true
-    this.setData({
-      hasAuthPhoneNum: true
-    })
-    this.confcheck(e)
-  }),
 
   print: co.wrap(function* (e) {
     this.longToast.toast({

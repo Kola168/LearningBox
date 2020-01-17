@@ -23,7 +23,7 @@ page {
 	align-items: center;
 	position: fixed;
 	left:24rpx;
-	top:70rpx;
+	top:198rpx;
   /* margin: 36rpx 0 46rpx 24rpx; */
 }
 
@@ -726,6 +726,7 @@ page {
 }
 
 .conf_box-right {
+  position: relative;
   color: #454545;
   width: 50%;
   background: #ffe27a;
@@ -735,6 +736,12 @@ page {
   right: 0;
   bottom: 0;
   border-top: 3rpx solid #cecece;
+}
+.conf_box-right button{
+  position: absolute;
+  left:0;
+  right:0;
+  background: transparent;
 }
 
 .consumables-icon {

@@ -87,7 +87,9 @@
     </view>
   </view>
   <view class="conf_box-left" bindtap="cancelcheck">返回修改</view>
-  <button class="conf_box-right" bindtap="confcheck" open-type="{{hasAuthPhoneNum?'':'getPhoneNumber'}}" bindgetphonenumber="{{hasAuthPhoneNum?'':'getPhoneNumber'}}">确认打印</button>
+  <button class="conf_box-right" bindtap="confcheck">确认打印
+    <confirm-print bindconfirm="print" modal="{{confirmModal}}">88</confirm-print>
+  </button>
 </view>
 
 <!-- 打印确认框 -->

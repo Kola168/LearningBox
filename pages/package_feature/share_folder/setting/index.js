@@ -67,7 +67,6 @@ Page({
         isColorPrinter: print_capability.color,
         isDuplex: print_capability.duplex,
       })
-
       getLoopsEvent({
         feature_key: 'doc_a4',
         worker_data: {

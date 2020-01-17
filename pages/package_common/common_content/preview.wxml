@@ -47,13 +47,6 @@
             </view>
         </view>
         <view class="right">
-            <view class="right-first">适配耗材
-                <consumables class="modify" bind:myevent="onMyEvent" supply_types="{{supply_types}}"
-                    consumables-icon="consumables-icon" medium_recommend="{{mediumRecommend}}" find="library">
-                </consumables>
-
-            </view>
-
             <button bindtap="toConfirm" class="print-button">
                 打印
             </button>
