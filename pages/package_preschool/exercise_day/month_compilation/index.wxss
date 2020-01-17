@@ -30,6 +30,7 @@
 }
 
 .year-name {
+  margin-right: 15rpx;
   display: inline-block;
 }
 
