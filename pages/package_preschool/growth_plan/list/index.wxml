@@ -72,7 +72,7 @@
                     <text class="item-none-desc">暂未已完成计划哦～</text>
                 </view>
             </block>
-            <view class="item-cont" wx:for="{{completeList}}" wx:key="index" data-planSn="{{item.planSn}}" data-userPlanSn="{{item.sn}}" bindtap="toProgress"  data-subscript="finished">
+            <view class="item-cont" wx:for="{{completeList}}" wx:key="index" data-planSn="{{item.planSn}}" data-userPlanSn="{{item.sn}}" bindtap="toCheck"  data-subscript="finished">
                 <view class="item-left">
                     <image class="item-img" src="{{item.planIconUrl}}"></image>
                 </view>
@@ -85,7 +85,7 @@
                     <view class="item-right-bottom">
                         <view class="bottom-left"></view>
                         <view class="bottom-right">
-                            <view class="btn-primary" bindtap="toSubscribe">订阅</view>
+                            <view class="btn-primary"  catchtap="handleSubscribe" id="{{index}}" data-planSn="{{item.sn}}" data-userPlanSn="" data-subscript='finished'>取消订阅</view>
                         </view>
                     </view>
                 </view>
@@ -95,7 +95,7 @@
     </view>
 </view>
 
-<!-- modal -->
+<showMemberToast id="memberToast" modal="{{modal}}"/>
 <modal modal="{{modalObj}}" bindconfirm="confirmModal"></modal>
 <import src="/lib/toast/wetoast.wxml" />
 <template is="wetoast" data="{{...__wetoast__}}" />
