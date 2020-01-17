@@ -10,10 +10,12 @@ const graphqlApi = {
       query: `query getPracticeContentToday{
         dailyPractice{
           practiceContentToday:contentToday{
-            sn
-            name
-            practiceAnswerImages
-            practiceQuestionImages
+            ... on DailyPractice {
+              sn
+              name
+              practiceAnswerImages
+              practiceQuestionImages
+            }
           }
           hasNewTestimonial
         }
@@ -46,12 +48,14 @@ const graphqlApi = {
       query: `query getMonthCompilations{
         dailyPractice{
           practiceCategories:categories{
-            name
-            sn
-            subTitle
-            children{
+            ... on DailyPracticeCategory {
               name
               sn
+              subTitle
+              children{
+                name
+                sn
+              }
             }
           }
         }
@@ -66,8 +70,10 @@ const graphqlApi = {
     return gql.query({
       query: `query getMonthExercises($sn: String!){
         content(sn: $sn){
-          sn
-          practiceQuestionImages
+          ... on DailyPractice {
+            sn
+            practiceQuestionImages
+          }
         }
       }`,
       variables: {
@@ -84,13 +90,15 @@ const graphqlApi = {
     return gql.query({
       query: `query getPracticeCategory($sn: String!){
         category(sn: $sn){
-          sn
-          name
-          subTitle
-          image
-          children{
-            name
+          ... on DailyPracticeCategory {
             sn
+            name
+            subTitle
+            image
+            children{
+              name
+              sn
+            }
           }
         }
       }`,
@@ -109,11 +117,13 @@ const graphqlApi = {
       query: `query getPracticeDayCategory($sn: String!){
         category(sn: $sn){
           contents{
-            sn
-            name
-            practiceQuestionImages
-            haveLearned
-            pageCount
+            ... on DailyPractice {
+              sn
+              name
+              practiceQuestionImages
+              haveLearned
+              pageCount
+            }
           }
         }
       }`,
