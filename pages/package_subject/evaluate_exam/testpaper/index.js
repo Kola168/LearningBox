@@ -53,7 +53,7 @@ Page({
     this.weToast = new app.weToast()
     this.thematic = 0
     this.thematic = query.thematic ? Number(query.thematic) : 0
-    this.subjectId = query.id ? Number(query.id) : ''
+    this.subjectId = Number(query.id)
     this.setData({
       topBarHeight: app.navBarInfo.topBarHeight
     })
@@ -150,7 +150,6 @@ Page({
         }
       }
       if (selectedPaperSubject) {
-        this.subjectId = this.subjectId === '' ? selectedPaperSubject.subjectId : this.subjectId
         this.typeId = selectedPaperSubject.paperTypeId
         for (let i = 0; i < grades.length; i++) {
           if (grades[i].id == selectedPaperSubject.gradeId) {

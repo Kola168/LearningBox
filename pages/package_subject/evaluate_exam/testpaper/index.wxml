@@ -44,7 +44,7 @@
           <view class="item-printed" wx:if="{{item.isPrint}}">已打印</view>
         </view>
         <view class="item-text">
-          <view class="text-title text-overflow-points">{{item.title}}</view>
+          <view class="text-title">{{item.title}}</view>
           <view class="text-count">
             <image class="count-logo" src="/images/doc_print_icon.png" mode="widthFix" />
             <view>{{item.printCount}}位同学已学习</view>
