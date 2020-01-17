@@ -71,7 +71,7 @@ Page({
       this.printSn = resp.dailyPractice.practiceContentToday && resp.dailyPractice.practiceContentToday.sn
       if (resp.dailyPractice.practiceContentToday) {
         this.setData({
-          hasNewTestimonial:  resp.dailyPractice.practiceContentToday.hasNewTestimonial,
+          hasNewTestimonial:  resp.dailyPractice.hasNewTestimonial,
           practiceContentToday: resp.dailyPractice.practiceContentToday,
           practiceQuestionImages: resp.dailyPractice.practiceContentToday.practiceQuestionImages
         })

@@ -66,7 +66,7 @@ Page({
       var resp = yield graphql.getExercisesDetail(this.sn)
       
       this.setData({
-        exercise: resp.xuekewang.exercise
+        exercise: resp.xuekewang && this.resetExerciseData(resp.xuekewang.exercise)
       })
       this.longToast.hide()
     } catch (err) {
@@ -74,6 +74,13 @@ Page({
       util.showError(err)
     }
   }),
+
+  resetExerciseData: function(exercise){
+    var isSchoolAgeMember = this.data.isSchoolAgeMember
+    exercise.answerImages = !isSchoolAgeMember ? exercise.answerImages.slice(0,1) : exercise.answerImages
+    exercise.images = !isSchoolAgeMember ? exercise.images.slice(0,1) : exercise.images
+    return exercise
+  },
 
   /**
    * @methods 确认

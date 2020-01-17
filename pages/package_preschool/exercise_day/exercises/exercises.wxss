@@ -66,6 +66,7 @@ swiper {
 swiper-item{
   width: 100%;
   height: calc( 100vh - 476rpx );
+  border-radius: 50rpx;
 }
 
 .swiper-img {

@@ -37,7 +37,7 @@
         <view class="create-date">{{item.dateTime}}</view>
       </view>
     </view>
-    <view class="btn btn-print" bind:tap="toPrint" wx:if="{{item.state !='finished'}}" data-sn="{{item.sn}}">打印练习</view>
-    <view class="btn btn-state"  wx:else >正在生成...</view>
+    <view class="btn btn-print" bind:tap="toPrint" wx:if="{{item.state =='finished'}}" data-state="{{item.state}}" data-sn="{{item.sn}}">打印练习</view>
+    <view class="btn btn-state" data-state="{{item.state}}"  wx:else >正在生成...</view>
   </view>
 </template>

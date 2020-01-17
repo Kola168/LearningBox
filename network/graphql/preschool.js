@@ -52,8 +52,6 @@ const graphqlApi = {
             children{
               name
               sn
-              subTitle
-              position
             }
           }
         }
@@ -93,8 +91,6 @@ const graphqlApi = {
           children{
             name
             sn
-            subTitle
-            position
           }
         }
       }`,
@@ -282,55 +278,6 @@ const graphqlApi = {
       }`,
       variables: {
         planSn
-      }
-    })
-  },
-
-  /**
-   * 获取每日一练月份集合
-   * @param {String} 年份分类sn
-   */
-  getPracticeCategory: (sn) => {
-    return gql.query({
-      query: `query getPracticeCategory($sn: String!){
-        category(sn: $sn){
-          sn
-          name
-          subTitle
-          image
-          children{
-            name
-            sn
-            subTitle
-            position
-          }
-        }
-      }`,
-      variables: {
-        sn
-      }
-    })
-  },
-
-    /**
-   * 获取每日一练天数集合
-   * @param {String} 月份分类sn
-   */
-  getPracticeDayCategory: (sn) => {
-    return gql.query({
-      query: `query getPracticeDayCategory($sn: String!){
-        category(sn: $sn){
-          contents{
-            sn
-            name
-            practiceQuestionImages
-            haveLearned
-            pageCount
-          }
-        }
-      }`,
-      variables: {
-        sn
       }
     })
   },
