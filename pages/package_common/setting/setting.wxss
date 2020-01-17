@@ -265,3 +265,9 @@
   color: #454545;
   border-radius: 0 0 30rpx 0;
 }
+
+.range-normal-layout {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}

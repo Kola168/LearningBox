@@ -49,8 +49,10 @@ swiper {
 swiper-item{
   width: 100%;
   height: calc( 100vh - 448rpx );
+  border-radius: 50rpx;
 }
 
 .swiper-img {
   width: 100%;
+  border-radius: 20rpx 20rpx 0 0;
 }
