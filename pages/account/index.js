@@ -16,7 +16,9 @@ Page({
 	data: {
 		kidInfo: null,
 		activeDevice: null,
-		features
+		features,
+		isSubjectMember:false,
+		isPreschoolMember:false
 	},
 	onLoad: function (options) {
 		this.longToast = new app.weToast()
@@ -57,7 +59,9 @@ Page({
 			console.log(resp)
 			this.setData({
 				kidInfo: resp.currentUser.selectedKid,
-				activeDevice: resp.currentUser.selectedDevice
+				activeDevice: resp.currentUser.selectedDevice,
+				isSubjectMember:resp.currentUser.isSchoolAgeMember,
+				isPreschoolMember:resp.currentUser.isPreschoolMember
 			})
 			this.longToast.hide()
 		} catch (e) {
@@ -131,13 +135,12 @@ Page({
 
 	toRules: function() {
     wx.downloadFile({
-      url: 'https://cdn.gongfudou.com/wps3rd/954d6cd0-7309-11e9-909b-111c9c8398c0.pdf',
+      url: 'https://cdn-h.gongfudou.com/LearningBox/main/privacy_agreement.pdf',
       success: function(res) {
         const filePath = res.tempFilePath
         wx.openDocument({
           filePath: filePath,
           success: function(res) {
-            console.log('打开文档成功')
           }
         })
       }
