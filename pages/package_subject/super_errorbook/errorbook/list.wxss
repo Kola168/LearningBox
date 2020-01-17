@@ -191,7 +191,9 @@
 }
 
 .list-content {
-  padding: 0 24rpx 140rpx;
+  padding-left: 24rpx;
+  padding-right: 24rpx;
+  padding-bottom: 70px;
 }
 
 .content-title {
@@ -239,7 +241,8 @@
 
 .item-top>view {
   padding: 0 24rpx;
-  overflow: hidden;
+  overflow-x: hidden;
+  max-height: 400rpx;
 }
 
 view.top-marker {

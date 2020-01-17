@@ -62,13 +62,13 @@ Page({
     this.subjectSn = query.sn
     this.markIndexs = new Set()
     let isIos = yield app.isIos(),
-    isMember = Boolean(Number(query.isMember)),
-    expiresAt = query.expiresAt
+      isMember = Boolean(Number(query.isMember)),
+      expiresAt = query.expiresAt
     this.setData({
       navBarHeight: app.navBarInfo ? app.navBarInfo.topBarHeight : app.getNavBarInfo().topBarHeight,
       areaHeight: app.sysInfo.screenHeight,
       dateRange: computedTime.getCurrentDayToDayFn(7),
-      noticeHeight: (!isMember&&expiresAt) ? 20 : 0,
+      noticeHeight: (!isMember && expiresAt) ? 20 : 0,
       isMember,
       expiresAt,
       isIos,
@@ -153,9 +153,10 @@ Page({
         showDatePicker: true
       })
     } else {
+      let showFilter = this.data.showFilter
       this.setData({
-        showFilter: true,
-        filterType: id,
+        showFilter: !showFilter,
+        filterType: showFilter ? '' : id,
         activeFilterList: this.data[id + 'List']
       })
     }
@@ -358,9 +359,12 @@ Page({
 
   // 时间选择回调
   chooseDate(res) {
+    this.page = 1
+    this.pageEnd = false
     this.setData({
       hasChooseDate: true,
       showDatePicker: false,
+      errorbookList: [],
       dateRange: {
         startDate: res.detail.startDate,
         endDate: res.detail.endDate,

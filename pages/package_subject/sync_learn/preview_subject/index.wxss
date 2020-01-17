@@ -1,6 +1,7 @@
 /* pages/package_subject/sync_learn/preview_subject/index.wxss */
 
 .preview-main {
+  margin-bottom: 130rpx;
   width: 100%;
 }
 
@@ -63,4 +64,9 @@
   text-align: center;
   color: #333333;
   background-color: #FFDC5E;
+}
+
+.member-card {
+  width: 40%;
+  margin: 20rpx auto;
 }

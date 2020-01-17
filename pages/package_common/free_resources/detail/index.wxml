@@ -2,7 +2,7 @@
 <view class="container" style="height:{{windowHeight}}px;" wx:if="{{!showPrintSetting}}">
   <swiper class="swiper" bindchange="swpierChange" current="{{current}}">
     <swiper-item class="swiper-item" wx:for="{{sources}}" wx:key="index">
-      <image src="{{item.nameUrl}}?x-image-process=image/watermark,image_L21pY3JvL0xldmlhdGhhbi9iYWNrZW5kL3dhdGVybWFya2VyLnBuZw==,g_center/resize,w_700" mode="widthFix" />
+      <image src="{{item.nameUrl}}?x-image-process=image/watermark,image_L21pY3JvL0xldmlhdGhhbi9iYWNrZW5kL3dhdGVybWFya2VyLnBuZw==,g_center,t_50/resize,w_700" mode="widthFix" />
     </swiper-item>
   </swiper>
   <view class="handle-bottom {{isFullScreen?'is-full-screen':''}}">

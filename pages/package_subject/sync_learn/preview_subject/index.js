@@ -12,6 +12,7 @@ Page({
 
   data: {
     isPrintAnswer: false,
+    isHidePrintAnswerBtn: false, //是否隐藏打印答案按钮
     currentIndex: 1,
     exercise: null,
     memberToast: "syncLearn",
@@ -22,6 +23,9 @@ Page({
     this.sn = options.sn
     this.isAiExercise = options.isAi || false
     this.mediaType = options.mediaType
+    this.setData({
+      isHidePrintAnswerBtn: options.isHidePrintAnswerBtn || false
+    })
     yield this.getMember()
     yield this.getExercisesDetail()
   }),
@@ -60,6 +64,7 @@ Page({
     })
     try {
       var resp = yield graphql.getExercisesDetail(this.sn)
+      
       this.setData({
         exercise: resp.xuekewang.exercise
       })
@@ -122,6 +127,10 @@ Page({
     }
 
   }),
+
+  toMember: function(){
+    wxNav.navigateTo('pages/package_member/member/index')
+  },
 
   onHide() {}
 })

@@ -1,11 +1,12 @@
 /* 版本选择 */
 
 .filters {
-  position: relative;
+  position: fixed;
   width: 100%;
   display: flex;
   z-index: 1000;
-  border-bottom: 20rpx solid #f7f7f7;
+  border-bottom: 10px solid #f7f7f7;
+  background: #fff;
 }
 
 .filters-item {
@@ -121,6 +122,10 @@
   display: flex;
 }
 
+.papers {
+  padding-top: 60px;
+}
+
 .list-item {
   padding: 38rpx 0;
 }
@@ -161,7 +166,7 @@
 }
 
 .item-text {
-  width: calc(100% - 118rpx);
+  width: calc(100% - 142rpx);
   justify-content: space-between;
   flex-direction: column;
   color: #333;
