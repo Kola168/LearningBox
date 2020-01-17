@@ -8,6 +8,7 @@ const util = require('../../../utils/util')
 import wxNav from '../../../utils/nav.js'
 import api from '../../../network/restful_request'
 import gql from '../../../network/graphql/preschool'
+const downloadFile=util.promisify(wx.downloadFile)
 
 let Loger = (app.apiServer != 'https://epbox.gongfudou.com' || app.deBug) ? console.log : function() {}
 
@@ -25,9 +26,12 @@ Page({
   onLoad: function(options) {
     this.longToast = new app.weToast()
     this.sn = options.sn
+
     this.getTestList()
-    this.audioCtx = wx.createInnerAudioContext()
-    this.audioCtx.obeyMuteSwitch = false
+  },
+
+  onUnload:function(){
+    clearInterval(this.interval)
   },
 
   getTestList: co.wrap(function*() {
@@ -39,6 +43,9 @@ Page({
       this.setData({
         subjectList: resp.examination.questions
       })
+      if(this.data.subjectList[this.data.nowIndex].audioUrl){
+        this.initAudio()
+      }
       this.longToast.toast()
       this.startAnswer()
     } catch (e) {
@@ -48,18 +55,64 @@ Page({
     }
   }),
 
-  playVideo: function(e) {
+  onHide:function(){
+    this.stopVideo()
+  },
+
+  audioPlaying:false,
+
+  initAudio:function(){
     let that = this
-    let index = e.currentTarget.dataset.index
+    this.longToast.toast({
+      type: 'loading'
+    })
+    if(that.audioCtx){
+      that.audioCtx.destroy()
+    }
+    this.audioCtx = wx.createInnerAudioContext()
     this.audioCtx.src = this.data.subjectList[this.data.nowIndex].audioUrl
-    this.audioCtx.onCanplay(function() {
-      that.audioCtx.play()
+    this.audioCtx.obeyMuteSwitch = false
+    wx.setInnerAudioOption({
+      obeyMuteSwitch: false
+    })
+    that.audioCtx.onCanplay(function(){
+      that.longToast.toast()
       that.audioCtx.offCanplay()
     })
+
+    this.audioCtx.onEnded(function(){
+      console.log(111111)
+      that.audioCtx.stop()
+      that.audioPlaying=false
+    })
+    this.audioCtx.onError(function(res){
+      console.log(res)
+      that.audioCtx.stop()
+    })
+    this.audioCtx.onTimeUpdate(function(){
+      console.log(that.audioCtx.duration,that.audioCtx.currentTime)
+    })
+    this.audioCtx.onStop(function(){
+      console.log(2222222)
+      that.audioPlaying=false
+    })
+  },
+  playVideo: function(e) {
+    try{
+      if(this.audioPlaying){
+        this.stopVideo()
+        return
+      }
+      console.log(this.audioCtx.src)
+      this.audioPlaying=true
+      this.audioCtx.play()
+    }catch(e){
+      console.log(e)
+    }
   },
 
   stopVideo: function() {
-    this.audioCtx.pause()
+    this.audioCtx.stop()
   },
 
   //问题回答倒计时
@@ -67,6 +120,8 @@ Page({
     let that = this
     this.interval = setInterval(function() {
       that.data.remainingTime--
+      console.log(that.data.remainingTime)
+      console.log(that.interval)
       if (that.data.remainingTime < 0) {
         that.initQuestion()
         that.data.remainingTime = that.originalRemainingTime
@@ -78,7 +133,7 @@ Page({
     }, 1000)
   },
 
-  initQuestion: function() {
+  initQuestion: co.wrap(function*() {
 
     let param = this.data.subjectList[_.clone(this.data.nowIndex)]
     this.answerList.push({
@@ -89,13 +144,17 @@ Page({
     this.data.nowIndex += 1
     this.is_right = false
     this.stopVideo()
+
     if (this.data.nowIndex > (this.data.subjectList.length - 1)) {
       return this.toSummary()
+    }
+    if(this.data.subjectList[this.data.nowIndex].audioUrl){
+      this.initAudio()
     }
     this.setData({
       selectIndex: null
     })
-  },
+  }),
 
   selectAnswer: function(e) {
     let index = e.currentTarget.dataset.index

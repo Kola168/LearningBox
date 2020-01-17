@@ -14,11 +14,13 @@ Page({
     isPrintAnswer: false,
     currentIndex: 1,
     exercise: null,
+    memberToast: "syncLearn",
   },
 
   onLoad: co.wrap(function *(options) {
     this.longToast = new app.weToast()
     this.sn = options.sn
+    this.isAiExercise = options.isAi || false
     this.mediaType = options.mediaType
     yield this.getMember()
     yield this.getExercisesDetail()
@@ -72,7 +74,7 @@ Page({
    * @methods 确认
    */
   confirm: co.wrap(function* (e) {
-    if (!this.data.isSchoolAgeMember) {
+    if (!this.data.isSchoolAgeMember && !this.data.exercise.isPrint && !this.isAiExercise) {
       var member = this.selectComponent('#memberToast')
       return member.showToast()
     }
@@ -109,6 +111,9 @@ Page({
           checkCapabilitys: {
             isSettingDuplex: true,
             isSettingColor: true,
+            isSettingOddEven: true, //是否设置奇偶
+            // isSettingSkipGs: true, //是否支持文件修复
+            isSinglePageLayout: true //是否支持缩放
           }
        }))
       })

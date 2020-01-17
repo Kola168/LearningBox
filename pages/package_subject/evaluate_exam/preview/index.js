@@ -16,10 +16,11 @@ Page({
     title: '',
     imgList: [],
     isFullScreen: false,
+    isIos: true,
     modalObj: {
       isShow: false,
       slotBottom: true,
-      title: '开通学科会员 可使用海量优质试卷',
+      title: '',
       image: 'https://cdn-h.gongfudou.com/LearningBox/subject/toast_testpaper.png'
     }
   },
@@ -29,10 +30,13 @@ Page({
     this.paperId = query.id
     this.subjectId = query.subjectId
     this.sn = query.sn != 'null' ? query.sn : ''
+    let isIos = yield app.isIos()
     this.setData({
       hasReport: Boolean(Number(query.hasReport)),
       title: query.name,
-      isFullScreen: app.isFullScreen
+      isFullScreen: app.isFullScreen,
+      isIos,
+      ['modalObj.title']: isIos ? '点击按钮使用海量优质试卷' : '开通学科会员 可使用海量优质试卷'
     })
     yield this.getSubjectMemberInfo()
   }),
@@ -71,7 +75,7 @@ Page({
             attributes: {
               resourceType: 'XuekewangPaper',
               sn: this.sn,
-              originalUrl: this.data.printAnswer ? this.pdf : this.answerPdf,
+              originalUrl: this.data.printAnswer ? this.answerPdf : this.pdf,
             }
           },
           checkCapabilitys: {
@@ -98,14 +102,14 @@ Page({
     try {
       let res = yield subjectGql.getSubjectMemberInfo()
       this.isMember = res.currentUser.isSchoolAgeMember
-      if (this.sn) {
-        this.getPaperDetail()
-      } else {
-        this.loopGetImages()
-      }
     } catch (e) {
       this.weToast.hide()
       util.showError(e)
+    }
+    if (this.sn) {
+      this.getPaperDetail()
+    } else {
+      this.loopGetImages()
     }
   }),
 
@@ -117,10 +121,11 @@ Page({
     try {
       let res = yield subjectGql.getPaperDetail(this.sn),
         paper = res.xuekewang.paper
-      this.originalImages = this.isMember ? paper.images : paper.images.slice(0,1)
-      this.answerImages = this.isMember ? paper.answerImages : paper.answerImages.slice(0,1)
+      this.originalImages = this.isMember ? paper.images : paper.images.slice(0, 1)
+      this.answerImages = this.isMember ? paper.answerImages : paper.answerImages.slice(0, 1)
       this.pdf = paper.pdf.nameUrl
       this.answerPdf = paper.answerPdf.nameUrl
+      this.reportSn = paper.reportSn
       this.setData({
         imgList: this.originalImages
       })
@@ -130,6 +135,15 @@ Page({
       util.showError(e)
     }
   }),
+
+  // 查看报告
+  viewReport() {
+    wxNav.navigateTo('../../report/index', {
+      mediaType: 'xuekewang_paper',
+      from: 'paper',
+      sn: this.reportSn
+    })
+  },
 
   // 第一次生成试卷
   loopGetImages() {

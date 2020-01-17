@@ -183,6 +183,7 @@ const graphqlApi = {
           recommendationImageUrl
           sn
           payed
+          iconUrl
         }
       }`,
       variables: {
@@ -522,6 +523,11 @@ const graphqlApi = {
               name
               rootName
               sn
+              parent{
+                sn
+                name
+                rootKey
+              }
             }
             province{
               name

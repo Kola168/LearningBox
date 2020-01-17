@@ -74,19 +74,21 @@ const graphqlApi = {
   /**
    * 获取试卷类型
    * @param { Number } subjectId
+   * @param { Number } thematic
    */
-  getSubjectPaperTypes: (subjectId) => {
+  getSubjectPaperTypes: (subjectId,thematic) => {
     return gql.query({
-      query: `query ($subjectId: Int!){
+      query: `query ($subjectId: Int!,$thematic: Int!){
         xuekewang {
-          paperTypes(subjectId:$subjectId){
+          paperTypes(subjectId:$subjectId,thematic:$thematic){
             id
             name
           }
         }
       }`,
       variables: {
-        subjectId: subjectId
+        subjectId: subjectId,
+        thematic: thematic
       }
     })
   },
@@ -383,6 +385,7 @@ const graphqlApi = {
             exerciseName
             printCount
             sn
+            isPrint
           }
         }
       }`,
@@ -480,6 +483,9 @@ const graphqlApi = {
   getPaperCates: () => {
     return gql.query({
       query: `query getPaperCates{
+        mistakeCount{
+          misCount
+        }
         xuekewang {
           selectedPaperTypes{
             id
@@ -494,9 +500,14 @@ const graphqlApi = {
           totalPapers
           printPaperCount
           percentage
-         
+          totalErrorBooksNum
+          totalSubjectNums: totalReportNum(type:XuekewangSubjectReport)
+          totalReportNums: totalReportNum(type:XuekewangSubjectReport)
         }
-      }`
+      }`,
+      // variables: {
+      //   type:
+      // }
     })
   },
 
@@ -611,22 +622,21 @@ const graphqlApi = {
    */
   getKnowledgeExercises: (subjectSn, isPrint = 0) => {
     return gql.query({
-      query: `query getExercises($subjectSn:String, $exerciseType:String, $isPrint: Int){
+      query: `query getExercises($subjectSn:String, $exerciseType:String){
         xuekewang{
-          exercises(subjectSn:$subjectSn, exerciseType: $exerciseType, isPrint: $isPrint){
+          exercises(subjectSn:$subjectSn, exerciseType: $exerciseType){
             sn
             dateTime
             isPrint
             pageSize
             exerciseName
           }
-          exerciseCount(subjectSn:$subjectSn, exerciseType: $exerciseType, isPrint: $isPrint)
+          exerciseCount(subjectSn:$subjectSn, exerciseType: $exerciseType)
         }
       }`,
       variables: {
         subjectSn,
-        exerciseType: 'kpoint',
-        isPrint
+        exerciseType: 'kpoint'
       }
     })
   },
@@ -899,6 +909,7 @@ const graphqlApi = {
             images{
               nameUrl
             }
+            reportSn
             answerPdf{
               nameUrl
             }
@@ -955,6 +966,9 @@ const graphqlApi = {
             kidVideoCount(sn:$sn,type:$type)
             vidoeTitle
           }
+        }
+        xuekewang{
+          registered
         }
       }`,
       variables: {
@@ -1083,6 +1097,25 @@ const graphqlApi = {
       }`,
       variables: {
         input
+      }
+    })
+  },
+
+  /**
+   * 获取答案
+   * @param {String} answeId 
+   * @param {String} type 
+   */
+  getSubjectAnswer: (id, type) => {
+    return gql.query({
+      query: `query previewAnswer($id: String,$type: ReportTypeEnum!){
+        xuekewang {
+          previewAnswer(id:$id,type:$type)
+        }
+      }`,
+      variables: {
+        id,
+        type
       }
     })
   },

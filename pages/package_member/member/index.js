@@ -75,7 +75,13 @@ Page({
             const resp = yield api.printMemberCode()
             if (resp.code != 0) {
                 throw (resp)
-            }
+						}
+						wx.showModal({
+							title: '提示',
+							content: '请查看打印出来的会员详情',
+							showCancel: false,
+							confirmColor: '#ffdc5e'
+					})
             this.longToast.hide()
         } catch (error) {
             util.showError(error)

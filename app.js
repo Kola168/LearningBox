@@ -15,6 +15,7 @@ import {
 const getSystemInfo = util.promisify(wx.getSystemInfo)
 const login = util.promisify(wx.login)
 const request = util.promisify(wx.request)
+const checkSession = util.promisify(wx.checkSession)
 
 App({
 	weToast: weToast,
@@ -225,6 +226,25 @@ App({
 	isScope:function(){
 		const authToken = storage.get('authToken')
 		return authToken ? true : false
-	}
+	},
 
+	//检测session是否过期
+	checkSession: co.wrap(function*() {
+    try {
+      yield checkSession()
+      return true
+    } catch (e) {
+      return false
+    }
+  }),
+
+  // 是否是ios
+  isIos:co.wrap(function* (){
+    if(this.sysInfo){
+      return this.sysInfo.system.toLowerCase().indexOf('ios') > -1
+    } else {
+      const res = yield getSystemInfo()
+      return res.system.toLowerCase().indexOf('ios') > -1
+    }
+  }) 
 })

@@ -25,7 +25,9 @@ Page({
   },
   onLoad: co.wrap(function* (query) {
     this.weToast = new app.weToast()
-    this.subjectId = Number(query.id)
+    this.thematic = 0
+    this.thematic = query.thematic ? Number(query.thematic) : 0
+    this.subjectId = query.id ? Number(query.id) : ''
     this.setData({
       topBarHeight: app.navBarInfo.topBarHeight + 50
     })
@@ -82,7 +84,7 @@ Page({
     if (app.preventMoreTap(e)) return
     let index = e.currentTarget.dataset.index,
       currentPaper = this.data.paperList[index],
-      hasReport = currentPaper.isReport,
+      hasReport = Number(currentPaper.isReport),
       name = currentPaper.title,
       id = currentPaper.paperId,
       sn = currentPaper.sn
@@ -101,11 +103,12 @@ Page({
       type: 'loading'
     })
     try {
-      let res = yield gqlSubject.getSubjectAreasAndGrades(this.subjectId),
+      let res = yield gqlSubject.getSubjectAreasAndGrades(),
         tempAreas = res.xuekewang.areas,
         areas = [],
         grades = res.xuekewang.grades,
         selectedPaperSubject = res.xuekewang.selectedPaperSubject
+
       let activeArea = [],
         activeGrade = grades[0]
       for (let i = 0; i < tempAreas.length; i++) {
@@ -124,6 +127,7 @@ Page({
         }
       }
       if (selectedPaperSubject) {
+        this.subjectId = this.subjectId===''?selectedPaperSubject.subjectId:this.subjectId
         this.typeId = selectedPaperSubject.paperTypeId
         for (let i = 0; i < grades.length; i++) {
           if (grades[i].id == selectedPaperSubject.gradeId) {
@@ -151,7 +155,7 @@ Page({
       type: 'loading'
     })
     try {
-      let res = yield gqlSubject.getSubjectPaperTypes(this.subjectId),
+      let res = yield gqlSubject.getSubjectPaperTypes(this.subjectId, this.thematic),
         paperTypes = res.xuekewang.paperTypes,
         tabId = 'tab_0'
       for (let k = 0; k < paperTypes.length; k++) {
@@ -184,7 +188,7 @@ Page({
       }
       this.setData({
         loadReady: true,
-        paperList: res.xuekewang.paperLists
+        paperList: this.data.paperList.concat(res.xuekewang.paperLists)
       })
       this.weToast.hide()
     } catch (error) {

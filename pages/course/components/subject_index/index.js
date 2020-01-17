@@ -43,6 +43,10 @@ Component({
     stageSn: '',
     moreNum: 0,
     moreVideoNum: 0,
+    errorBookCount: 0, //其他错题本数量
+    totalErrorBooksNum: 0, //超级错题本数量
+    totalReportNums: 0, //错误试卷数量
+    totalSubjectNums: 0,
   },
   lifetimes: {
     attached: co.wrap(function*(){
@@ -183,6 +187,10 @@ Component({
         this.areaId = resp.xuekewang.selectedPaperSubject.areaId
 
         this.setData({
+          errorBookCount: resp.mistakeCount.misCount,
+          totalSubjectNums: resp.xuekewang.totalSubjectNums,
+          totalReportNums: resp.xuekewang.totalReportNums,
+          totalErrorBooksNum: resp.xuekewang.totalErrorBooksNum,
           selectedPaperIndex,
           selectedPaperTypes: resp.xuekewang.selectedPaperTypes,
           printPaperCount: resp.xuekewang.printPaperCount,

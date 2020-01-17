@@ -25,28 +25,29 @@
   <view class='word'>{{num}}/50</view>
 </view>
 <view class='practice'>
-    <view class="practice-font">
-        <view class="font-item" bindtap="chooseFont" id="kt">
-            <image src="../resource_images/document_{{fontType==='kt'?'':'un'}}checked.png" />
-            <view>楷体</view>
+    <view class="practice-font {{checkFont?'practice-no-radius':''}}" bindtap="showFontList">
+      <text>{{fontList[fontTypeIndex].name}}</text>
+      <text class="iconfont icon-show-more {{checkFont?'rotate-icon':''}}"></text>
+      <view wx:if="{{checkFont}}" class="practice-list">
+        <view wx:for="{{fontList}}" wx:key="fontList" data-index="{{index}}" bindtap="chooseFont" class="practice-list-item {{fontTypeIndex==index?'practice-checked':''}}">
+          {{item.name}}
         </view>
-        <view class="font-item" bindtap="chooseFont" id="lmsxxk">
-            <image src="../resource_images/document_{{fontType==='lmsxxk'?'':'un'}}checked.png" />
-            <view>黎明手写楷体</view>
-        </view>
+      </view>
     </view>
     <view class="practice-type">
-        <view bindtap='toDetail' id='stroke' hidden="{{fontType==='lmsxxk'}}">练笔顺</view>
+        <view bindtap='toDetail' id='stroke' hidden="{{fontList[fontTypeIndex].type!='kt'}}">练笔顺</view>
         <view bindtap='toDetail' id='normal'>练字</view>
     </view>
 </view>
 <view class='line1'></view>
-<view class='title'>字帖集</view>
+<view class='title'>
+  <text>字帖集</text>
+  <view class="title-right" bindtap='toCommonSense'>
+    <text class="title-icon">?</text>
+    书写基本常识
+  </view>
+</view>
 <view class='detail'>
-    <view bindtap='toCommonSense'>
-        <image src='../resource_images/copybook_common_sense.png' class='url'></image>
-        <text>书写基本常识</text>
-    </view>
     <view wx:for="{{copybookSets}}" wx:key="copybookSets" id="{{index}}" bindtap='toList'>
         <image src='{{item.image}}' class='url'></image>
         <text>{{item.name}}</text>

@@ -11,6 +11,7 @@ import graphql from '../../../../network/graphql/subject'
 Page({
 
   data: {
+    memberToast: 'syncLearn',
     isSchoolAgeMember: false,
     currentIndex: 0,
     showMemberToast: false, //显示会员弹窗
@@ -84,7 +85,6 @@ Page({
       }
     }, (resp) => {
       if (resp.status == 'finished') {
-        console.log(resp, '出题完成==')
         this.longToast.hide()
         this.getExercises()
       }
@@ -207,13 +207,21 @@ Page({
   toExerciseDetail: function ({
     currentTarget: {
       dataset: {
-        sn
+        sn,
+        state,
+        key
       }
     }
   }) {
+     // 判断会员标示
+     if (!this.data.isSchoolAgeMember && !state && key == 'default') {
+      var memberToast = this.selectComponent('#memberToast')
+      return memberToast.showToast()
+    }
     wxNav.navigateTo('/pages/package_subject/sync_learn/preview_subject/index', {
       sn,
-      mediaType: 'sync_learn'
+      mediaType: 'sync_learn',
+      isAi: key == 'ai' ? true : false
     })
   }
 })

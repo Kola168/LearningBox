@@ -108,7 +108,7 @@
           <view class="error-tip" wx:if="{{currentTopicType==='multipleSub'&&currentResult<100&&currentResult!=null}}">
             正确程度未达100%，本题自动加入错题本
           </view>
-          <view class="tip-last" wx:if="{{(topicIndex+1)===topicsResult.length}}">
+          <view class="tip-last" wx:if="{{(topicIndex+1)===topicsResult.length&&correctType==='paper'}}">
             <image src="../images/analyze_icon.png" mode="widthFix" />
             <view>同时生成测评报告</view>
           </view>
@@ -120,9 +120,9 @@
     </view>
   </view>
   <view class="not-subject-member flex align-center" wx:else>
-    <image src="https://cdn-h.gongfudou.com/LearningBox/subject/correct_member_toast.png" mode="widthFix" />
-    <view class="member-text">开通学科会员，解锁线上批改试卷功能</view>
-    <view class="to-know" bindtap="toMemberIntro">立即了解</view>
+    <image src="https://cdn-h.gongfudou.com/LearningBox/subject/correct_member_toast{{isIos?'_ios':''}}.png" mode="widthFix" />
+    <view class="member-text">{{isIos?'点击按钮解锁线上批改试卷功能':'开通学科会员，解锁线上批改试卷功能'}}</view>
+    <view class="to-know" bindtap="toMemberIntro">{{isIos?'了解详情':'立即了解'}}</view>
   </view>
 </view>
 <view class="modal" wx:if="{{showProgessModal}}">

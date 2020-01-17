@@ -44,6 +44,15 @@ page{
   /* margin-bottom:80rpx; */
 }
 
+.tips-image{
+	margin-top:56rpx;
+	width:570rpx;
+}
+
+.tips-image image{
+  width: 100%;
+}
+
 .step-img{
 	width:700rpx;
 	margin-top:60rpx;

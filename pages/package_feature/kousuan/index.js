@@ -153,6 +153,10 @@ Page({
     })
   },
 
+  linkTeacher:function(){
+    wxNav.navigateTo('/pages/package_feature/kousuan/teacher')
+  },
+
   toPlan:function(){
     wxNav.navigateTo('/pages/package_feature/kousuan/learningplan')
   }

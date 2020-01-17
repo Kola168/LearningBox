@@ -9,7 +9,7 @@
       {{item.category_name}}
     </view>
     <view class="achievement-flower-box">
-      <image wx:for="{{fullMarks}}" wx:for-index="imgIndex" wx:for-item="imgItem" wx:key="fullMarks" src="{{(imgIndex<(item.grade*(fullMarks/item.num)))?'../images/evaluation_testfinish_flower_red.png':'../images/evaluation_testfinish_flower_gray.png'}}"
+      <image wx:for="{{fullMarks}}" wx:for-index="imgIndex" wx:for-item="imgItem" wx:key="fullMarks" src="{{((imgIndex<(item.grade*(fullMarks/item.num)))||(item.grade==0 && imgIndex==0))?'../images/evaluation_testfinish_flower_red.png':'../images/evaluation_testfinish_flower_gray.png'}}"
         mode="widthFix" class="achievement-flower-img"></image>
     </view>
   </view>
@@ -23,6 +23,7 @@
     </block>
     <block wx:else>再打印试试其他题吧</block>
   </text>
+  <image src="../images/evaluation_testfinish_logo.png" mode="widthFix" class="comment-logo"></image>
 </view>
 <view class="bottom-button" bindtap="toprint">
   专题训练

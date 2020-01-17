@@ -1,0 +1,23 @@
+<nav-bar background="#fff" title="文字速印"></nav-bar>
+<view class="title">
+    <view>长篇消息怎么打？</view>
+    <view>文字速印来帮你！</view>
+</view>
+<view class="num-item">
+    <view class="num">1</view>
+    <view class="num-title">长按文字后选择"复制"</view>
+</view>
+<image src="https://cdn.gongfudou.com/miniapp/ec/speed_intro.png" mode="widthFix" class="img"></image>
+<view class="num-item">
+    <view class="num">2</view>
+    <view class="num-title">跳转到小程序首页，选择文字速印功能会自动识别已复制的文字，预览效果即可打印</view>
+</view>
+<view class="video">
+    <view class="tip">点击下方视频可快速了解</view>
+    <image src="/images/arrow_bottom_trangle.png" class="bottom-tip" mode="widthFix"></image>
+    <view class="video-bg">
+        <video src="https://cdn.gongfudou.com/miniapp/ec/wenzisuyin1.mp4" class='video'></video>
+    </view>
+</view>
+<view class="pink">*表情等特殊符号将被过滤</view>
+<view class="bottom" bindtap="toIndex">快去使用</view>

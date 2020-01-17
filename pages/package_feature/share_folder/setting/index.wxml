@@ -1,8 +1,8 @@
 <nav-bar background="#fff" title="打印设置"></nav-bar>
 <view class="document_title">
     <view class="title_text">
-        <view class="text_name">{{fileTitle.name}}</view>
-        <view class="text_suffix">.{{fileTitle.suffix}}</view>
+        <view class="text_name">{{arrayFile.name}}</view>
+        <!-- <view class="text_suffix">.{{fileTitle.suffix}}</view> -->
     </view>
     <view class="title_preview" bindtap="preview">预览</view>
 </view>
@@ -12,7 +12,7 @@
         <view class="item_main">
             <image src="{{documentPrintNum==1?'../../images/document_cut.png':'../../images/minus_y.png'}}" mode="aspectFit" class="print_num" bindtap="cutPrintNum"></image>
             <text class="document_print_num">{{documentPrintNum}}</text>
-            <image src="{{documentPrintNum>=50?'../../images/document_add_gray.png':'../../images/doc_plus_y.png'}}" mode="aspectFit" class="print_num" bindtap="addPrintNum"></image>
+            <image src="{{documentPrintNum>=50?'../../images/document_add_gray.png':'../../images/plus_y.png'}}" mode="aspectFit" class="print_num" bindtap="addPrintNum"></image>
         </view>
     </view>
     <view class="setting_range_item">

@@ -7,9 +7,11 @@
   <view class="line"></view>
   <text class="bg-gray">3</text>
 </view>
-<view class="tips-title">
+<!-- <view class="tips-title">
   待指示灯非红灯常亮后长按盒子背后开关5秒至黄灯闪烁
-</view>
+</view> -->
+<view class="tips-image">
+	<image src="https://cdn-h.gongfudou.com/LearningBox/device/ap/device_step2_tip.png" mode="widthFix"></image></view>
 <view class="confirm-setting">
 	<image src="{{checked ? '../../images/icon_checked.png':'../../images/icon_not_checked.png'}}" mode="widthFix" class="check-img" bindtap="confirmLight"></image>
 	<text class="confirm-text" confirm-text>此时指示灯黄灯闪烁</text>

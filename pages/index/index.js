@@ -19,7 +19,11 @@ import api from '../../network/restful_request.js'
 const checkSession = util.promisify(wx.checkSession)
 
 import preschoolGql from '../../network/graphql/preschool.js'
-
+import {
+  updateSchool, //升学
+  commonFeatures, //智能学习工具
+  helpStudy, //智能辅导
+} from 'config.js'
 
 Page({
   mixins: [index, init],
@@ -39,7 +43,7 @@ Page({
     autoplay: true,
     interval: 5000,
     showAuth: false, //登录
-    homeType: '学前',
+    homeType: '',
     selectedKid: null,
     stageRoot: null,
     deviceModal: {
@@ -49,7 +53,13 @@ Page({
       confirmText: '立即绑定',
       image: '/images/home/device_tip.png'
     },
-    beforeSchoolContent: []
+    beforeSchoolContent: [],
+    userPlans: [],
+    updateSchool,
+    commonFeatures: [],
+    gradeParent: null, //小学初中高中
+    recommendCourse: [],
+    helpStudy
   },
 
   //事件处理函数
@@ -134,17 +144,16 @@ Page({
       let resp = yield gql.getUser()
       this.setData({
         phone: resp.currentUser.phone,
-        selectedKid: resp.currentUser.selectedKid,
-        stageRoot: resp.currentUser.selectedKid.stageRoot
       })
-      // storage.put("userSn", resp.currentUser.sn)
-      // storage.put("kidStage", resp.currentUser.selectedKid.stageRoot)
-
       if (!resp.currentUser.selectedKid || !resp.currentUser.selectedKid.stageRoot) {
         wxNav.navigateTo('/pages/index/grade')
       } else {
+        let rootKey = resp.currentUser.selectedKid.stageRoot.rootKey
+        let common = commonFeatures[rootKey]
         this.setData({
-          homeType: resp.currentUser.selectedKid.stageRoot.rootName,
+          homeType: rootKey,
+          commonFeatures: commonFeatures[rootKey],
+          gradeParent: resp.currentUser.selectedKid.stage.parent
         })
       }
       if (!resp.currentUser.selectedDevice) {
@@ -158,7 +167,7 @@ Page({
   }),
   //获取学前模块
   customizeFeatures: co.wrap(function* () {
-    if (this.data.homeType != '学前') {
+    if (this.data.homeType != 'preschool') {
       return
     }
     try {
@@ -170,26 +179,46 @@ Page({
       util.showError(error)
     }
   }),
-  afterUnion: co.wrap(function* () {
-    try {
-      yield this.getUserInfo()
-      yield this.getBanners()
-      // yield this.getUserPlans() //宝贝学习计划
-      yield this.customizeFeatures()
-    } catch (error) {
-      console.log(error)
-    }
-  }),
-
+  //宝贝学习计划
   getUserPlans: co.wrap(function* () {
+    if (this.data.homeType != 'preschool') {
+      return
+    }
     try {
       let resp = yield preschoolGql.getUserPlans('subscription')
       console.log('resp=====', resp)
+      this.setData({
+        userPlans: resp.userPlans
+      })
     } catch (error) {
       util.showError(error)
     }
   }),
-
+  // 心选课程推荐
+  getCourse: co.wrap(function* () {
+    if (this.data.homeType != 'subject') {
+      return
+    }
+    try {
+      var respRecommend = yield gql.getCourses('recommendation')
+      this.setData({
+        recommendCourse: respRecommend.courses,
+      })
+    } catch (error) {
+      util.showError(error)
+    }
+  }),
+  afterUnion: co.wrap(function* () {
+    try {
+      yield this.getUserInfo()
+      yield this.getBanners()
+      yield this.getUserPlans() //宝贝学习计划
+      yield this.customizeFeatures() //学前内容模块
+      yield this.getCourse() //心选课程
+    } catch (error) {
+      console.log(error)
+    }
+  }),
   userInfoHandler: co.wrap(function* (e) {
     logger.info('********** userInfoHandler', e)
     if (!e.detail.userInfo || !e.detail.encryptedData) {
@@ -282,52 +311,7 @@ Page({
 
   // 跳转小功能
   toFunction(e) {
-    let functionId = e.currentTarget.id,
-      url = ''
-    switch (functionId) {
-      case 'cognitionCard':
-        url = '/pages/package_feature/cognition_card/index/index'
-        break;
-      case 'recordVoice':
-        url = '/pages/package_preschool/record_voice/index/index'
-        break;
-      case 'freeResources':
-        url = '/pages/package_common/free_resources/index/index'
-        break;
-      case 'memoryWrite':
-        url = '/pages/package_feature/memory_write/index/index'
-        break;
-      case 'exerciseWords':
-        url = ''
-        break;
-      case 'takePhotoSearchExercise':
-        url = '/pages/package_feature/error_book/photo_anwser_intro'
-        break;
-      case 'syncLearn':
-        url = '/pages/package_subject/sync_learn/index/index'
-        break;
-      case 'evaluate_exam':
-        url = '/pages/package_subject/evaluate_exam/index/index'
-        break;
-      case 'errorBook':
-        url = '/pages/package_subject/super_errorbook/index/index'
-        break;
-      case 'exerciseDay':
-        url = '/pages/package_preschool/exercise_day/exercises/exercises'
-        break;
-      case 'baobeicepin':
-        url = '/pages/package_preschool/evaluation/index'
-        break;
-      case 'weaknessExercise':
-        url = '/pages/package_subject/weakness_exercise/index/index'
-        break;
-      case 'stageReporter':
-        url = '/pages/package_subject/stage_report/index/index'
-        break;
-      case 'mistake':
-        url = '/pages/package_feature/error_book/index'
-        break;
-    }
+    let url = e.currentTarget.dataset.url
     if (!url) {
       return wx.showModal({
         title: '提示',
@@ -337,7 +321,14 @@ Page({
     }
     wxNav.navigateTo(url)
   },
-
+  toCourse(e) {
+    if (e.currentTarget.id) {
+      return wxNav.navigateTo('/pages/package_course/course/course', {
+        sn: e.currentTarget.id
+      })
+    }
+    wxNav.navigateTo('/pages/package_common/heart_course/index')
+  },
   toLearnCenter: co.wrap(function* () {
     wxNav.switchTab('/pages/course/index')
   }),
@@ -398,9 +389,6 @@ Page({
   toBindDevice: function () {
     wxNav.navigateTo('/pages/package_device/network/index/index')
   },
-  tokousuan: function () {
-    wxNav.navigateTo('/pages/package_feature/kousuan/index')
-  },
   toContentList: function (e) {
     if (!e.currentTarget.dataset.has) {
       return
@@ -420,6 +408,18 @@ Page({
 
   moreLearingPlan: co.wrap(function* (e) {
     wxNav.navigateTo('/pages/package_preschool/growth_plan/list/index')
-  })
+	}),
+	
+	whatTeacher:function(){
+		wxNav.navigateTo('/pages/intro/xbteacher')
+	},
+
+	preLearingWay:function(){
+		wxNav.navigateTo('/pages/intro/printway',{type:'preschool'})
+	},
+
+	subjectLearingWay:function(){
+		wxNav.navigateTo('/pages/intro/printway',{type:'subject'})
+	},
 
 })

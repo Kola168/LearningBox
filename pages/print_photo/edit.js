@@ -124,7 +124,7 @@ Page({
         paperSize: {
           width: Number(templateInfo.width),
           height: Number(templateInfo.height),
-          minLeftHeight: 610,
+          minLeftHeight: 510,
           sider: 220,
         },
         templateInfo: {

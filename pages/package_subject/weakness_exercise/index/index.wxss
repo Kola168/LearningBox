@@ -36,11 +36,11 @@
 
 .content {
   position: absolute;
-  left: 0;
-  top: 36rpx;
-  padding-left: 174rpx;
+  left: 50%;
+  top: 50%;
   width: 60%;
   font-size: 24rpx;
+  transform: translate(-50%,-50%);
   color: #FFA200;
 }
 

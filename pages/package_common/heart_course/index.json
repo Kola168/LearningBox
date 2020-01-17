@@ -1,0 +1,5 @@
+{
+  "usingComponents": {
+    "preSchool-index": "../../course/components/preSchool_index/index"
+  }
+}
