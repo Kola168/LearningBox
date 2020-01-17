@@ -241,7 +241,8 @@
 
 .item-top>view {
   padding: 0 24rpx;
-  overflow: hidden;
+  overflow-x: hidden;
+  max-height: 400rpx;
 }
 
 view.top-marker {
