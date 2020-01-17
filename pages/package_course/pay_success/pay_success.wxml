@@ -5,14 +5,16 @@
 		<view class="f-18 color-333 margin-b-60">支付成功</view>
 	</view>
 	<view class="btn-container sys-flex flex-m-axis-between">
-		<navigator
-		 open-type="{{item.type ? item.type : 'navigate'}}"
+		<view
 		 class="btn {{item.externalClasses}}"
-		 url="{{item.url}}"
+		 data-url="{{item.url}}"
+		 data-params="{{item.params}}"
+		 data-key="{{item.type}}"
 		 wx:for="{{btnList}}"
 		 wx:key="*this"
+		 bind:tap="routerUrl"
 		>{{item.name}}
-		</navigator>
+		</view>
 	</view>
 	<!-- <consumable></consumable> -->
 </view>
