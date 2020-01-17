@@ -422,9 +422,11 @@ const graphqlApi = {
       query: `query getCourseSubject($key: String!){
         feature(key: $key) {
           categories {
+           ... on CourseCategory{
             courseIntroductionImage
             name
             sn
+           }
           }
 
         }
