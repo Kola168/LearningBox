@@ -128,7 +128,7 @@
     <!-- <scroll-view class="special scroll" scroll-x> -->
     <view class="special">
       <image src="{{item.image}}" mode="widthFix" wx:for="{{updateSchool}}" wx:key="updateSchool"
-        wx:if="{{gradeParent.name==item.name}}" bindtap="toFunction" data-url="{{item.url+gradeParent.sn}}"></image>
+        wx:if="{{gradeParent.name==item.name}}" bindtap="toUpdateSchool" id="{{item.id}}"></image>
     </view>
     <!-- </scroll-view> -->
 

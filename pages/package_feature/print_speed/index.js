@@ -77,10 +77,10 @@ Page({
     let url = this.data.url
     console.log('请求参数', app.openId, url)
     //获取打印能力
-    let print_capability = yield commonRequest.getPrinterCapability(url)
+    let print_capability = yield commonRequest.getPrinterCapacity('doc_a4')
     console.log('获取打印能力成功', print_capability)
     this.setData({
-      isDuplex: print_capability.media_sizes[0].duplex ? true : false
+      isDuplex: resp.duplex
     })
   }),
 

@@ -1,26 +1,32 @@
 export const updateSchool = [{
     image: 'https://cdn-h.gongfudou.com/LearningBox/main/home/home_primary_topic.png',
-    url: 'pages/package_subject/evaluate_exam/testpaper/index?thematic=1',
+    url: 'pages/package_subject/evaluate_exam/index/index',
+    id:'thematic',
     name: '小学'
 }, {
     image: 'https://cdn-h.gongfudou.com/LearningBox/main/home/home_primary_video.png',
-    url: 'pages/package_subject/sync_video/index/index?stageSn=',
+    url: 'pages/package_subject/sync_video/index/index',
+    id:'examinationVideo',
     name: '小学'
 }, {
     image: 'https://cdn-h.gongfudou.com/LearningBox/main/home/home_junior_topic.png',
-    url: 'pages/package_subject/evaluate_exam/testpaper/index?thematic=1',
+    url: 'pages/package_subject/evaluate_exam/index/index',
+    id:'thematic',
     name: '初中'
 }, {
     image: 'https://cdn-h.gongfudou.com/LearningBox/main/home/home_junior_video.png',
-    url: 'pages/package_subject/sync_video/index/index?stageSn=',
+    url: 'pages/package_subject/sync_video/index/index',
+    id:'examinationVideo',
     name: '初中'
 }, {
     image: 'https://cdn-h.gongfudou.com/LearningBox/main/home/home_senior_topic.png',
-    url: 'pages/package_subject/evaluate_exam/testpaper/index?thematic=1',
+    url: 'pages/package_subject/evaluate_exam/index/index',
+    id:'thematic',
     name: '高中'
 }, {
     image: 'https://cdn-h.gongfudou.com/LearningBox/main/home/home_senior_video.png',
-    url: 'pages/package_subject/sync_video/index/index?stageSn=',
+    url: 'pages/package_subject/sync_video/index/index',
+    id:'examinationVideo',
     name: '高中'
 }, ];
 
