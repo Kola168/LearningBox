@@ -2,7 +2,7 @@
 <view class="preview-main">
   <swiper class="swpier-box" bindchange="changeImg">
     <swiper-item current="{{currentIndex - 1}}" wx:for="{{imgList}}" wx:key="*this">
-      <image class="img-item" src="{{item.nameUrl}}?x-image-process=image/watermark,image_L21pY3JvL0xldmlhdGhhbi9iYWNrZW5kL3dhdGVybWFya2VyLnBuZw==,g_center/resize,w_700" mode="widthFix"></image>
+      <image class="img-item" src="{{item.nameUrl}}?x-image-process=image/watermark,image_L21pY3JvL0xldmlhdGhhbi9iYWNrZW5kL3dhdGVybWFya2VyLnBuZw==,g_center,t_50/resize,w_700" mode="widthFix"></image>
     </swiper-item>
   </swiper>
   <view class="precent">{{currentIndex}}/{{imgList.length}}</view>
@@ -12,7 +12,7 @@
       <image class="check-on" src="../../images/check_{{printAnswer?'on':'off'}}.png"></image>
       <view class="title">打印答案</view>
     </view>
-    <view bindtap="prePrint" class="confirm-print">确认打印</view>
+    <view bindtap="prePrint" class="confirm-print">{{printAnswer?'打印题目(带解析)':'打印题目'}}</view>
   </view>
 </view>
 <!-- modal -->

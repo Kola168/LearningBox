@@ -21,7 +21,7 @@
 		 wx:for="{{util.showImages(isSchoolAgeMember, exercise.answerImages)}}"
 		 wx:key="nameUrl"
 		>
-			<image class="img-item" src="{{item.nameUrl}}?x-image-process=image/watermark,image_L21pY3JvL0xldmlhdGhhbi9iYWNrZW5kL3dhdGVybWFya2VyLnBuZw==,g_center/resize,w_700" mode="widthFix" />
+			<image class="img-item" src="{{item.nameUrl}}?x-image-process=image/watermark,image_L21pY3JvL0xldmlhdGhhbi9iYWNrZW5kL3dhdGVybWFya2VyLnBuZw==,g_center,t_50/resize,w_700" mode="widthFix" />
 		</swiper-item>
 	</swiper>
 
@@ -31,7 +31,7 @@
 		 wx:for="{{util.showImages(isSchoolAgeMember, exercise.images)}}"
 		 wx:key="nameUrl"
 		>
-			<image class="img-item" src="{{item.nameUrl}}?x-image-process=image/watermark,image_L21pY3JvL0xldmlhdGhhbi9iYWNrZW5kL3dhdGVybWFya2VyLnBuZw==,g_center/resize,w_700" mode="widthFix" />
+			<image class="img-item" src="{{item.nameUrl}}?x-image-process=image/watermark,image_L21pY3JvL0xldmlhdGhhbi9iYWNrZW5kL3dhdGVybWFya2VyLnBuZw==,g_center,t_50/resize,w_700" mode="widthFix" />
 		</swiper-item>
 	</swiper>
 	<view class="precent">{{currentIndex}}/{{!isPrintAnswer ? util.showLen(exercise.images) : util.showLen(exercise.answerImages)}}</view>
