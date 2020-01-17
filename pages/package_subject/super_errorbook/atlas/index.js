@@ -93,12 +93,14 @@ Page({
   drawRadar() {
     let canvasWidth = this.data.canvasWidth,
       center = Math.ceil(canvasWidth / 2),
+      maxVal = Math.max(...this.atlasData.data),
       _this = this
     const radar = new RadarChart({
       id: 'radar',
       colors: ['#4D98EC'],
       radius: center - 60,
       gridNumber: 5,
+      maxRate: maxVal / 100,
       origin: {
         x: center,
         y: center

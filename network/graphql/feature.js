@@ -11,10 +11,12 @@ const graphqlApi = {
       query: `query ($key: String!){
         feature(key: $key){
           categories {
-            image,
-            name,
-            sn,
-            writeType
+            ...on GuessWriteCategory {
+              image
+              name
+              sn
+              writeType
+            }
           }
         }
       }`,
@@ -59,15 +61,19 @@ const graphqlApi = {
     return gql.query({
       query: `query ($sn: String!){
         category(sn:$sn) {
-          sn
-          name
-          children{
+          ...on GuessWriteCategory{
             sn
             name
-            printCount
-            questions{
-              answer
-              title
+            children{
+              ... on GuessWriteCategory{
+                sn
+                name
+                printCount
+                questions{
+                  answer
+                  title
+                }
+              }
             }
           }
         }
@@ -197,8 +203,8 @@ const graphqlApi = {
    */
   getMistakes: (params) => {
     return gql.query({
-      query: `query($course: String,$printCount: Int,$startAt: String,$endAt: String,$answer: MistakeAnswerEnum) {
-        mistakeCourse(course:$course,printCount:$printCount,startAt:$startAt,endAt:$endAt,answer:$answer){
+      query: `query($course: String,$printCount: Int,$startAt: String,$endAt: String,$answer: MistakeAnswerEnum,$level: String) {
+        mistakeCourse(course:$course,printCount:$printCount,startAt:$startAt,endAt:$endAt,answer:$answer,level:$level){
           created_at:createDay
           content:mistakes{
             answer_urls:answerUrls

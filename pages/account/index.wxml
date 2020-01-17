@@ -1,6 +1,6 @@
 <!--pages/account/index.wxml-->
 <nav-bar background="#fff" title="个人中心"></nav-bar>
-<view class="user-info" bindtap="toNext" id="setInfo">
+<view class="user-info"bindtap="{{currentUserIsCreator?'toNext':''}}" id="setInfo">
 	<view>
 		<image src="{{kidInfo.avatar?kidInfo.avatar:'/images/account_avatar_big.png'}}" mode="widthFix" class="avatar">
 		</image>
@@ -15,9 +15,11 @@
 		</view>
 	</view>
 
-	<image src="../../images/doc_item_arrow.png" mode="widthFix" class="after"
+	<block wx:if="{{currentUserIsCreator}}">
+		<image src="../../images/doc_item_arrow.png" mode="widthFix" class="after"
 		wx:if="{{kidInfo.name && kidInfo.stage && kidInfo.avatar}}"></image>
-	<image src="../../images/tip_add_kid_info.png" mode="widthFix" class="after-tip" wx:else></image>
+<image src="../../images/tip_add_kid_info.png" mode="widthFix" class="after-tip" wx:else></image>
+</block>
 </view>
 <image src="/images/account_member_center.png" bindtap="member" mode="widthFix" class="member" />
 <view class="has-device" wx:if="{{activeDevice}}" bindtap="toNext" id="deviceList">

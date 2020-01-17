@@ -38,7 +38,7 @@ Page({
             this.longToast = new app.weToast()
             // 本地照片
             this.setData({
-                url: this.idPrint.url.replace('http://', 'https://'),
+                url: decodeURIComponent(this.idPrint.preview_url).replace('http://', 'https://'),
                 preview_url: decodeURIComponent(this.idPrint.preview_url).replace('http://', 'https://'),
                 imageURL: this.idPrint.imageURL,
                 mode: this.idPrint.mode,

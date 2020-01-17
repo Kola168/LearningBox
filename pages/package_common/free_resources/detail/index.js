@@ -8,7 +8,7 @@ import {
   storage
 } from '../../../../utils/common_import'
 const event = require('../../../../lib/event/event')
-import graphql from '../../../../network/graphql_request'
+import graphql from '../../../../network/graphql/common.js'
 // const PRINT_LIMIT = 30
 Page({
   data: {

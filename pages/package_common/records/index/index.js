@@ -9,7 +9,7 @@ import {
 } from '../../../../utils/common_import'
 import graphql from '../../../../network/graphql_request'
 import deviceGraphql from '../../../../network/graphql/device'
-
+import event from '../../../../lib/event/event'
 
 Page({
   data: {
@@ -30,14 +30,30 @@ Page({
     }
   },
   onLoad: co.wrap(function* (options) {
-    this.weToast = new app.weToast()
+    try {
+      this.weToast = new app.weToast()
     this.page = 1
-    let navBarHeight = app.navBarInfo.topBarHeight
+    this.sn = options.sn ? options.sn : ''
+    let navBarHeight = (app.navBarInfo && app.navBarInfo.topBarHeight > 0) ? app.navBarInfo.topBarHeight : app.getNavBarInfo().topBarHeight
     this.setData({
       navBarHeight
     })
-    this.getDeviceList()
+    if (app.isScope()) {
+      this.getDeviceList()
+    }
+    } catch (error) {
+      console.log(error)
+    }
+    
+    event.on('Authorize', this, () => {
+      this.getDeviceList()
+    })
   }),
+  onShow() {
+    if (!app.isScope()) {
+      wxNav.navigateTo('/pages/authorize/index')
+    }
+  },
   showDeviceList() {
     if (this.data.devices.length === 1) return
     this.setData({
@@ -52,9 +68,17 @@ Page({
     try {
       let res = yield deviceGraphql.getDeviceList(),
         devices = res.currentUser.devices,
-        activeDevice = res.currentUser.selectedDevice,
+        activeDevice = null,
         userSn = res.currentUser.sn
-
+      if(this.sn){
+        for(let i=0;i<devices.length;i++){
+          if(devices[i].sn==this.sn){
+            activeDevice = devices[i]
+          }
+        }
+      } else {
+        activeDevice = res.currentUser.selectedDevice
+      }
       this.setData({
         devices,
         activeDevice,
@@ -82,7 +106,7 @@ Page({
     this.hideDeviceFilter()
     this.getPrinterRecords()
   },
-  hideDeviceFilter(){
+  hideDeviceFilter() {
     this.setData({
       showDeviceList: false
     })
@@ -205,5 +229,8 @@ Page({
   onReachBottom() {
     if (this.data.showRemind) return
     this.getPrinterRecords()
+  },
+  onUnload(){
+    event.remove('Authorize', this)
   }
 })

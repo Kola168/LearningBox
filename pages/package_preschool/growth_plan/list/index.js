@@ -101,9 +101,7 @@ Page({
 
   getUserPlans: co.wrap(function* () {
     try {
-      console.log(8888)
       let tab = this.currentTab
-      console.log('tabatab',tab)
       const resp = yield gql.getUserPlans(tab)
       logger.info('resp====',resp)
       let dataKey = ''
@@ -173,14 +171,22 @@ Page({
   }),
 
 
+  /* 切换Nav */
+  toChangeNav: function () {
+    this.setData({
+      tabToContent: 1
+    })
+  },
 
   /*** 取消订阅 ***/
   handleSubscribe: co.wrap(function* (e) {
     try {
+      this.subscribe = e.currentTarget.dataset.subscript 
       this.cancelIndex = e.currentTarget.id
       this.setData({
         ['modalObj.isShow']: true
       })
+      console.log('0000',this.subscribe)
     } catch (e) {
       this.longToast.toast()
       util.showError(e)
@@ -188,15 +194,16 @@ Page({
   }),
 
   /*** 订阅弹出框 ***/
-  confirmModal: co.wrap(function *(cancelIndex) {
-    // let index = this.cancelIndex
-    let cancelSn = this.data.subscriptList[this.cancelIndex].sn
-    try {
+  confirmModal: co.wrap(function *(cancelIndex, subscribe) {
+    if(this.subscribe == 'subscript'){
+      let cancelSn = this.data.subscriptList[this.cancelIndex].sn
       const res = yield gql.deleteUserPlanInput(cancelSn)
       this.getUserPlans()
-    } catch (e) {
-      this.longToast.toast()
-      util.showError(e)
+    }
+    else if(this.subscribe == 'finished'){
+      let cancelSn = this.data.completeList[this.cancelIndex].sn
+      const res = yield gql.deleteUserPlanInput(cancelSn)
+      this.getUserPlans()
     }
     
   }),

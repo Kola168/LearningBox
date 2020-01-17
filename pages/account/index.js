@@ -18,7 +18,8 @@ Page({
 		activeDevice: null,
 		features,
 		isSubjectMember:false,
-		isPreschoolMember:false
+		isPreschoolMember:false,
+		currentUserIsCreator:false
 	},
 	onLoad: function (options) {
 		this.longToast = new app.weToast()
@@ -61,7 +62,8 @@ Page({
 				kidInfo: resp.currentUser.selectedKid,
 				activeDevice: resp.currentUser.selectedDevice,
 				isSubjectMember:resp.currentUser.isSchoolAgeMember,
-				isPreschoolMember:resp.currentUser.isPreschoolMember
+				isPreschoolMember:resp.currentUser.isPreschoolMember,
+				currentUserIsCreator:resp.currentUser.currentGroup.currentUserIsCreator
 			})
 			this.longToast.hide()
 		} catch (e) {

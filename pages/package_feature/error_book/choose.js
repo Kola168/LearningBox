@@ -30,15 +30,15 @@ Page({
                 // 'isSelected': false,
             },
             {
-                "content": "0",
+                "content": 0,
                 // 'isSelected': false,
             },
             {
-                "content": "1",
+                "content": 1,
                 // 'isSelected': false,
             },
             {
-                "content": "2",
+                "content": 2,
                 // 'isSelected': false,
             },
             {
@@ -158,7 +158,6 @@ Page({
     confirm: co.wrap(function* () {
 
         let params = {
-            'openid': app.openId,
             'course': this.data.course,
         }
         //时间
@@ -171,7 +170,7 @@ Page({
                 let b = a - 1000 * 60 * 60 * 24 * 7
                 let c = new Date(b)
                 logger.info(c)
-                params.start_at = c
+                params.startAt = c
             }
             if (this.data.time[this.data.timeId].content == "一月内") {
                 let a = new Date()
@@ -179,7 +178,7 @@ Page({
                 let b = a - 1000 * 60 * 60 * 24 * 30
                 let c = new Date(b)
                 logger.info(c)
-                params.start_at = c
+                params.startAt = c
             }
             if (this.data.time[this.data.timeId].content != "一月内" && this.data.time[this.data.timeId].content != "一周内") {
                 let a = this.data.date1
@@ -208,16 +207,16 @@ Page({
                         message: '请输入正确日期'
                     })
                 } else {
-                    params.start_at = c
-                    params.end_at = h
+                    params.startAt = c
+                    params.endAt = h
                 }
             }
         }
         //次数
         if (this.data.num[this.data.numId].content != "全部") {
-            params.print_count = this.data.num[this.data.numId].content
+            params.printCount = this.data.num[this.data.numId].content
             if (this.data.num[this.data.numId].content == "3次及以上") {
-                params.print_count = "3"
+                params.printCount = 3
             }
         }
         //程度
@@ -226,7 +225,7 @@ Page({
         }
         //解析
         if (this.data.anwser[this.data.anwserId].content== "全部") {
-            params.answer = 'all'
+            // params.answer = ''
         }
         if (this.data.anwser[this.data.anwserId].content== "有") {
             params.answer = 'has_answer'
@@ -240,36 +239,28 @@ Page({
         })
 
         try {
-            const resp = yield featureGql.getMistakes()
-            // const resp = yield request({
-            //     url: app.apiServer + `/ec/v2/mistakes?openid=${app.openId}`,
-            //     method: 'GET',
-            //     dataType: 'json',
-            //     data: params
-            // })
-            // if (resp.data.code != 0) {
-            //     throw (resp.data)
-            // }
+          const resp = yield featureGql.getMistakes(params)
+           
             // logger.info('筛选列表====', resp.data)
-            // this.setData({
-            //     array: resp.data.mistakes
-            // })
-            // var con = []
-            // for (let i = 0; i < this.data.array.length; i++) {
-            //   for (let j = 0; j < this.data.array[i].content.length; j++) {
-            //     con.push(this.data.array[i].content[j])
-            //     logger.info("con", con)
-            //     // this.data.array[i].content[j].checked = true
-            //     this.setData({
-            //       middlearr: con,
-            //     })
-            //   }
-            // }
-            // if (this.data.array.length == 0) {
-            //   this.setData({
-            //     middlearr: []
-            //   })
-            // }
+            this.setData({
+              array: resp.mistakeCourse
+            })
+            var con = []
+            for (let i = 0; i < this.data.array.length; i++) {
+              for (let j = 0; j < this.data.array[i].content.length; j++) {
+                con.push(this.data.array[i].content[j])
+                logger.info("con", con)
+                // this.data.array[i].content[j].checked = true
+                this.setData({
+                  middlearr: con,
+                })
+              }
+            }
+            if (this.data.array.length == 0) {
+              this.setData({
+                middlearr: []
+              })
+            }
             this.longToast.hide()
         } catch (e) {
             this.longToast.hide()
