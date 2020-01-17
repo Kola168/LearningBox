@@ -176,7 +176,7 @@ page {
 .bottom .print-button {
     position: relative;
     font-family: PingFangSC-Medium;
-    width: 228rpx;
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;

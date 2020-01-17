@@ -28,6 +28,12 @@ Page({
     }
   },
   complete: co.wrap(function* () {
+    if(this.data.name.trim().length>5){
+     return wx.showModal({
+       title:'温馨提示',
+       content:'最多输入5个字哦'
+     })
+    }
     this.longToast.toast({
       type: "loading",
       duration: 0

@@ -210,10 +210,10 @@ Page({
     this.data.endPrintPage = e.detail.value
   },
   endpagejudge(e) {
-    if (parseInt(e.detail.value) < parseInt(this.data.startPrintPage) || parseInt(e.detail.value) > this.data.detail.preview_urls.length) {
+    if (parseInt(e.detail.value) < parseInt(this.data.startPrintPage) || parseInt(e.detail.value) > this.data.detail.contentImages.length) {
       console.log('结束页===', parseInt(e.detail.value), typeof (e.detail.value))
       this.setData({
-        endPrintPage: this.data.detail.preview_urls.length,
+        endPrintPage: this.data.detail.contentImages.length,
       })
       wx.showModal({
         content: '请输入正确的结束页',
@@ -318,9 +318,8 @@ Page({
 
         console.log(resp)
         router.redirectTo('/pages/finish/index', {
-          type: 'photo_answer',
-          media_type: 'photo_answer',
-          state: resp.createOrder.state
+          media_type: 'preschool_content',
+          state: resp.createResourceOrder.state
         })
         this.longToast.hide()
       } catch (e) {

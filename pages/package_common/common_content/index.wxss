@@ -15,7 +15,7 @@ page {
 
 .content-wrap {
     width: 100%;
-    margin-bottom: 50rpx;
+    margin-bottom: 20rpx;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
@@ -30,6 +30,7 @@ page {
     width: calc((100% - 60rpx) / 3);
     border-radius: 20rpx;
     text-align: center;
+    margin-bottom: 30rpx;
 }
 
 .content-item image {

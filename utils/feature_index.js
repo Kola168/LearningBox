@@ -47,7 +47,10 @@
   xuekewang_paper:'/pages/package_subject/evaluate_exam/testpaper/index',
   errorbook_list:'/pages/package_subject/super_errorbook/errorbook/index',
   error_book:'/pages/package_feature/error_book/index',
-  photo_answer:'/pages/package_feature/error_book/photo_anwser_intro'
+  photo_answer:'/pages/package_feature/error_book/photo_anwser_intro',
+  preschool_content:'/pages/package_common/common_content/index',
+  word_pdf:'/pages/package_feature/print_speed/intro',
+  shareFile:'/pages/package_feature/share_folder/index'
 }
 
 module.exports = {

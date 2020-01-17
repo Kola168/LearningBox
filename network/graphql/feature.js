@@ -197,8 +197,8 @@ const graphqlApi = {
    */
   getMistakes: (params) => {
     return gql.query({
-      query: `query($course: String,$printCount: Int,$startAt: String,$endAt: String,$answer: MistakeAnswerEnum) {
-        mistakeCourse(course:$course,printCount:$printCount,startAt:$startAt,endAt:$endAt,answer:$answer){
+      query: `query($course: String,$printCount: Int,$startAt: String,$endAt: String,$answer: MistakeAnswerEnum,$level: String) {
+        mistakeCourse(course:$course,printCount:$printCount,startAt:$startAt,endAt:$endAt,answer:$answer,level:$level){
           created_at:createDay
           content:mistakes{
             answer_urls:answerUrls
