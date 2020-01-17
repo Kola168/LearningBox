@@ -52,7 +52,7 @@
         <view class="has-plan">
           <view>{{item.planName}}</view>
           <view class="progress">
-            <progress percent="{{item.currentIndex/item.planSize}}" border-radius="30" stroke-width="10rpx"
+            <progress percent="{{item.currentIndex/item.planSize*100}}" border-radius="30" stroke-width="10rpx"
               backgroundColor="#e8e8e8" activeColor="#FF7D15" />
             <view>{{item.currentIndex}}/{{item.planSize}}</view>
           </view>
@@ -128,7 +128,7 @@
     <!-- <scroll-view class="special scroll" scroll-x> -->
     <view class="special">
       <image src="{{item.image}}" mode="widthFix" wx:for="{{updateSchool}}" wx:key="updateSchool"
-        wx:if="{{gradeParent.name==item.name}}" bindtap="toFunction" data-url="{{item.url+gradeParent.sn}}"></image>
+        wx:if="{{gradeParent.name==item.name}}" bindtap="toUpdateSchool" id="{{item.id}}"></image>
     </view>
     <!-- </scroll-view> -->
 

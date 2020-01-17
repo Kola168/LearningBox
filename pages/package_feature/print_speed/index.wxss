@@ -23,7 +23,7 @@ page {
 	align-items: center;
 	position: fixed;
 	left:24rpx;
-	top:70rpx;
+	top:198rpx;
   /* margin: 36rpx 0 46rpx 24rpx; */
 }
 
@@ -726,6 +726,7 @@ page {
 }
 
 .conf_box-right {
+  position: relative;
   color: #454545;
   width: 50%;
   background: #ffe27a;
@@ -744,4 +745,14 @@ page {
   bottom: 160rpx;
   right: 30rpx;
   z-index: 10000;
+}
+
+.bottom-button-box{
+  position: absolute;
+  top:0;
+  left:0;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  z-index:1000
 }

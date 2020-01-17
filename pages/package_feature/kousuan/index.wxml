@@ -39,7 +39,7 @@
       </view>
       <text class="iconfont icon-next"></text>
     </view>
-    <image src="../resource_images/kousuan_bottom_ad.png" mode="widthFix" class="bottom-ad"></image>
+    <image src="../resource_images/kousuan_bottom_ad.png" mode="widthFix" class="bottom-ad" bindtap="linkTeacher"></image>
   </view>
 </view>
 <import src="/lib/toast/wetoast.wxml" />

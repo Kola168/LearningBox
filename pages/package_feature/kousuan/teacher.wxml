@@ -1,0 +1,7 @@
+<!--pages/package_feature/kousuan/teacher.wxml-->
+<nav-bar title="名师教你练计算"></nav-bar>
+<view class="wrap">
+    <block wx:for="{{urls}}" wx:key="urls">
+        <image class="img-style" mode="widthFix" src="{{item}}"></image>
+    </block>
+</view>

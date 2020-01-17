@@ -25,7 +25,7 @@
 	 <text class="common-text" bindtap="checkProtocol">同意会员</text>
 	 <text class="agree-text" bindtap="toProtocol">服务协议</text>
 </view>
-<view class="{{stage=='preschool'?'open-preschool':'open-subject'}}">立即开通
+<view class="{{payableType=='preschool'?'open-preschool':'open-subject'}}">立即开通
 <bottom-button class="bottom-button" text-right="会员激活" bindrighttap="openeMemebership" must-get="{{true}}"></bottom-button>
 </view>
 <view class="tip-bottom">

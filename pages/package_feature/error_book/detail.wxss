@@ -94,7 +94,7 @@ page {
   position: absolute;
   top: 0;
   right: 0;
-  background: #53BB29;
+  background:rgba(83,187,41,0.5);
   font-family: PingFangSC-Regular;
   font-size: 24rpx;
   color: #FFFFFF;

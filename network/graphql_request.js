@@ -422,9 +422,11 @@ const graphqlApi = {
       query: `query getCourseSubject($key: String!){
         feature(key: $key) {
           categories {
+           ... on CourseCategory{
             courseIntroductionImage
             name
             sn
+           }
           }
 
         }
@@ -501,6 +503,9 @@ const graphqlApi = {
 			  	isSchoolAgeMember
           phone
           sn
+          currentGroup{
+            currentUserIsCreator
+          }
           selectedDevice{
             sn
             name
@@ -713,7 +718,7 @@ const graphqlApi = {
         createResourceOrder(input: $input){
           state
           statistic{
-            ... on DailyPractice{
+            ... on DailyPracticeSet{
               keepDays
             }
           }
@@ -734,16 +739,20 @@ const graphqlApi = {
       query: `query ($key: String!){
         feature(key: $key){
           categories {
-            image
-            name
-            sn
+            ... on KidCategory {
+              image
+              name
+              sn
+            }
           }
           contents{
-            name
-            iconUrl
-            sn
-            pageCount
-            printerOrdersCount
+            ... on KidContent {
+              name
+              iconUrl
+              sn
+              pageCount
+              printerOrdersCount
+            }
           }
         }
       }`,
@@ -761,13 +770,17 @@ const graphqlApi = {
     return gql.query({
       query: `query getRecordList($sn: String!){
         category(sn: $sn){
+         ... on KidCategory{
           contents{
-            name
-            iconUrl
-            sn
-            printerOrdersCount
-            pageCount
+            ... on KidContent {
+              name
+              iconUrl
+              sn
+              printerOrdersCount
+              pageCount
+            }
           }
+         }
         }
       }`,
       variables: {
@@ -783,20 +796,22 @@ const graphqlApi = {
     return gql.query({
       query: `query getRecordSource($sn: String!){
         content(sn: $sn){
-          name
-          iconUrl
-          sn
-          contentImages{
-            nameUrl
-          }
-          audioContentImage
-          audioUrl
-          contentCollected
-          userAudio{
+          ... on KidContent {
+            name
+            iconUrl
+            sn
+            contentImages{
+              nameUrl
+            }
+            audioContentImage
             audioUrl
-            qrCodeUrl
+            contentCollected
+            userAudio{
+              audioUrl
+              qrCodeUrl
+            }
+            pageCount
           }
-          pageCount
         }
       }`,
       variables: {

@@ -116,7 +116,7 @@ Page({
         })
       } else {
         //请升级到最新的微信版本
-        yield showModal({
+         wx.showModal({
           title: '微信版本过低',
           content: '请升级到最新的微信版本',
           confirmColor: '#2086ee',

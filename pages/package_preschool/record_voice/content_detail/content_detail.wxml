@@ -50,7 +50,7 @@
 		</view>
 		<view class="bottom-main">
 			<view class="collect" bind:tap="collect">
-				<image  src="../../images/collect_{{collection ? 'orange' : 'gray'}}.png"/>
+				<image  src="{{collection ? '/images/doc_collect_orange.png' : '../../images/collect_gray.png'}}"/>
 				<view>{{collection ? '已收藏' : '收藏'}}</view>
 			</view>
 			<button class="share" open-type="{{userAuthorize ? 'share' : ''}}" bindtap="{{userAuthorize ? '' : 'authCheck'}}">

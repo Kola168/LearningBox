@@ -8,7 +8,7 @@
     <image class="video-cover-icon" src="{{item.img}}">
       <image class="btn-player" src="https://cdn-h.gongfudou.com/LearningBox/subject/btn_player.png" />
       <view class="video-in-box">
-        <view class="progress">{{item.isPlay}}</view>
+        <view class="progress">{{item.isPlay ? '已播放' : ''}}</view>
         <view class="video-num">{{item.payCount}}次播放</view>
       </view>
     </image>

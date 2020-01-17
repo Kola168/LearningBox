@@ -20,7 +20,18 @@ Page({
     num: 0,
     content: '',
     mediumRecommend: '',
-    fontType: 'kt',
+    fontTypeIndex: 0,
+    fontList:[{
+      name:'楷体',
+      type:'kt'
+    },{
+      name:'黎明手写楷体',
+      type:'lmsxk'
+    },{
+      name:'黎明速写行楷',
+      type:'lmsxxk'
+    }],
+    checkFont:false,
     iosModal: false,
     text: '当日智能字帖生成次数已经用完，升级会员可以畅享使用',
     user_share_qrcode:'https://cdn-h.gongfudou.com/Leviathan/backend/attachment/attachment/59601d4ad98c41e4b10b204c30150b04.png'
@@ -70,11 +81,17 @@ Page({
     })
   },
 
+  showFontList:function(){
+    this.setData({
+      checkFont:!this.data.checkFont
+    })
+  },
+
   // 选择字体
   chooseFont(e) {
-    let fontType = e.currentTarget.id
+    let index = e.currentTarget.dataset.index
     this.setData({
-      fontType
+      fontTypeIndex:index
     })
   },
 
@@ -106,8 +123,8 @@ Page({
         version:true,
         feature_key: 'custom_copybook'
       }
-      if(this.data.fontType=='lmsxxk'){
-        params.font = this.data.fontType
+      if(this.data.fontList[this.data.fontTypeIndex].type!='kt'){
+        params.font = this.data.fontList[this.data.fontTypeIndex].type
       }
       console.log(params)
       const resp = yield api.processes(params)
