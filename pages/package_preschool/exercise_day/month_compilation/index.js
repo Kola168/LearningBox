@@ -85,7 +85,7 @@ Page({
       var arr = [], itemArr = []
       monthData && monthData.forEach((item, index)=>{
         itemArr.push(item)
-        if ((index + 1)  % 2 == 0) {
+        if ((index + 1)  % 2 == 0 || index == monthData.length -1) {
           arr.push(itemArr)
           itemArr = []
         }
