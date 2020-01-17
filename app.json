@@ -54,9 +54,9 @@
     "pages/account/collection/index",
     "pages/print_id/pay",
     "pages/print_id/print",
-		"pages/print_id/smart_save",
-		"pages/intro/xbteacher",
-		"pages/intro/printway"
+    "pages/print_id/smart_save",
+    "pages/intro/xbteacher",
+    "pages/intro/printway"
   ],
   "subPackages": [
     {
@@ -175,7 +175,8 @@
         "print_link/typeList",
         "print_link/desc",
         "print_speed/index",
-				"print_speed/intro"
+        "print_speed/intro",
+        "kousuan/teacher"
       ]
     },
     {
