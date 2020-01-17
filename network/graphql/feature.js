@@ -93,8 +93,10 @@ const graphqlApi = {
            rootName
            sn
            kousuanCategories{
-             name
-             sn
+             ... on KousuanCategory{
+               name
+               sn
+             }
            }
           }
         }
@@ -107,10 +109,12 @@ const graphqlApi = {
     return gql.query({
       query: `query($sn: String!){
         category(sn:$sn){
-          children{
-            name
-            image
-            sn
+          ... on KousuanCategory{
+            children{
+              name
+              image
+              sn
+            }
           }
         }
       }`,
@@ -125,11 +129,13 @@ const graphqlApi = {
     return gql.query({
       query: `query($sn: String!){
         category(sn:$sn){
-          children{
-            name
-            image
-            sn
-            quesionNumber
+          ... on KousuanCategory{
+            children{
+              name
+              image
+              sn
+              quesionNumber
+            }
           }
         }
       }`,
@@ -144,14 +150,18 @@ const graphqlApi = {
     return gql.query({
       query: `query($sn: String!){
         category(sn:$sn){
-          children{
-            name
-            image
-            sn
+          ... on KousuanCategory{
             children{
               name
               image
               sn
+              ... on KousuanCategory{
+                children{
+                  name
+                  image
+                  sn
+                }
+              }
             }
           }
         }
