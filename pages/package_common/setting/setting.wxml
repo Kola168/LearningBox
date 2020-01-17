@@ -29,7 +29,7 @@
 	</view>
 
   <!-- 设置打印范围 -->
-	<view class="setting-range-item">
+	<view class="setting-range-item {{setting.checkCapabilitys.isSettingOddEven ? '' : 'range-normal-layout'}}">
 		<view class="item-label">打印范围（共{{ totalPage }}页）</view>
 		<view class="range-main">
 			<view class="range-options" wx:if="{{setting.checkCapabilitys.isSettingOddEven}}">
