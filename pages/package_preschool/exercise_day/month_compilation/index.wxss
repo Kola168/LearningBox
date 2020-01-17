@@ -86,14 +86,12 @@
 
 .month-num {
   font-size: 116rpx;
-  height: 188rpx;
   font-weight: 500;
-  line-height: 188rpx;
 }
 
 .month-unit {
+  align-self: center;
   font-size: 30rpx;
-  padding-top: 97rpx;
-  height: 188rpx;
+  padding-top: 27rpx;
   box-sizing: border-box;
 }
