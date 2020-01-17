@@ -52,7 +52,7 @@
         <view class="has-plan">
           <view>{{item.planName}}</view>
           <view class="progress">
-            <progress percent="{{item.currentIndex/item.planSize}}" border-radius="30" stroke-width="10rpx"
+            <progress percent="{{item.currentIndex/item.planSize*100}}" border-radius="30" stroke-width="10rpx"
               backgroundColor="#e8e8e8" activeColor="#FF7D15" />
             <view>{{item.currentIndex}}/{{item.planSize}}</view>
           </view>
