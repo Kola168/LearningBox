@@ -70,8 +70,7 @@ Page({
     // this.getClipboard()
     let media_type = 'words2doc'
   },
-  onShow: function () {
-  },
+  onShow: function () {},
   setting: co.wrap(function* (e) {
     console.log('e.currentTarget.id', e)
     let url = this.data.url
@@ -176,22 +175,27 @@ Page({
     })
     try {
       console.log("ssssss", htmlContent, this.data.chooseSize + 'px')
-      const resp = yield api.wordsPreview(htmlContent, this.data.chooseSize + 'px')
+      const resp = yield api.processes({
+        is_async: false,
+        feature_key: 'word_pdf',
+        html: htmlContent,
+        font_size: this.data.chooseSize + 'px'
+      })
       if (resp.code != 0) {
         throw (resp)
       }
       console.log('保存修改', resp)
       this.setData({
         first: false,
-        pages: resp.pages,
-        url: resp.converted_url,
-        endPrintPage: resp.pages,
+        pages: resp.res.pages,
+        url: resp.res.url,
+        endPrintPage: resp.res.pages,
       })
       this.longToast.hide()
       this.setting()
     } catch (e) {
       this.longToast.hide()
-      util.showErr(e)
+      util.showError(e)
     }
   }),
 
@@ -322,34 +326,24 @@ Page({
     let urls = [];
     let that = this
     urls.push({
-      "url": that.data.url,
-      "number": that.data.documentPrintNum,
-      "start_page": that.data.startPrintPage,
-      "end_page": parseInt(that.data.endPrintPage),
+      "originalUrl": that.data.url,
+      "printUrl": that.data.url,
+      "copies": that.data.documentPrintNum,
+      "startPage": that.data.startPrintPage,
+      "endPage": parseInt(that.data.endPrintPage),
       'duplex': that.data.duplexcheck,
     })
-    console.log(urls)
-
-    let params = {
-      openid: app.openId,
-      media_type: 'words2doc',
-      urls: urls,
-    }
-    console.log('打印参数', params)
     try {
-      const resp = yield request({
-        url: app.apiServer + `/ec/v2/orders`,
-        method: 'POST',
-        dataType: 'json',
-        data: params
+      let orderSn = yield commonRequest.createOrder('word_pdf', urls)
+
+      wxNav.navigateTo(`/pages/finish/index`, {
+        media_type: 'word_pdf',
+        state: orderSn.createOrder.state
       })
-      if (resp.data.code != 0) {
-        throw (resp.data)
-      }
-      console.log('打印成功', resp.data)
-      wx.redirectTo({
-        url: `/pages/finish/index?type=words2doc&&state=${resp.data.order.state}`
-      })
+      // this.setData({
+      //   first: true
+      // })
+
       this.longToast.hide()
     } catch (e) {
       this.longToast.hide()

@@ -737,12 +737,6 @@ page {
   bottom: 0;
   border-top: 3rpx solid #cecece;
 }
-.conf_box-right button{
-  position: absolute;
-  left:0;
-  right:0;
-  background: transparent;
-}
 
 .consumables-icon {
   width: 100rpx;
@@ -751,4 +745,14 @@ page {
   bottom: 160rpx;
   right: 30rpx;
   z-index: 10000;
+}
+
+.bottom-button-box{
+  position: absolute;
+  top:0;
+  left:0;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  z-index:1000
 }

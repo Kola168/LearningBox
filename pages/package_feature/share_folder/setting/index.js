@@ -265,7 +265,6 @@ Page({
         copies: this.data.documentPrintNum, // 张数
         startPage: this.data.startPage, // 起始页数
         endPage: this.data.endPage, // 终止页数
-        // display: this.data.zoomType,
         skipGs: !this.data.checkOpen, //是否检查文件修复
         color: this.data.colorcheck == 'Color' ? true : false, // 是否是彩色
         grayscale: false,
@@ -285,7 +284,7 @@ Page({
       })
       const resp = yield commonRequest.createOrder('doc_a4', files)
       router.navigateTo('/pages/finish/index', {
-        type: shareFile,
+        media_type: 'shareFile',
         state: resp.createOrder.state
       })
       this.longToast.hide()
