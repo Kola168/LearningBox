@@ -116,3 +116,14 @@ view {
 .icon-checked{
   transform:rotate(-180deg)
 }
+
+.list-checked{
+  background:#FFDC5E;
+}
+
+.no-list-tip{
+  font-size:28rpx;
+  color:#666;
+  margin-top:200rpx;
+  text-align:center;
+}

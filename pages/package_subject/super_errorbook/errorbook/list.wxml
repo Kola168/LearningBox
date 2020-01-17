@@ -1,7 +1,7 @@
 <nav-bar title="超级错题本"></nav-bar>
 <view class="container" wx:if="{{loadReady}}" style="background:{{isMember?'#f7f7f7':'#fff'}};min-height:{{areaHeight-navBarHeight}}px;">
   <block wx:if="{{isMember||(!isMember&&expiresAt)}}">
-    <view class="empty" wx:if="{{errorbookList.length===0}}">
+    <!-- <view class="empty" wx:if="{{errorbookList.length===0}}">
       <image src="../../images/no_errorbook.png" mode="widthFix" />
       <view class="empty-tip">您还没有录入错题哦！</view>
       <view class="empty-content">
@@ -10,8 +10,8 @@
         <view>2.扫描打印出的试卷上方二维码</view>
         <view>3.进行批改，批改后题会自动录入此处哦</view>
       </view>
-    </view>
-    <block wx:else>
+    </view> -->
+    <!-- <block wx:else> -->
       <view class="tab-bar" style="top:{{navBarHeight}}px;">
         <view class="bar-tip" bindtap="buyMember" wx:if="{{!isMember&&expiresAt&&!isIos}}">
           <image src="../../images/diamond.png" mode="widthFix" />
@@ -44,14 +44,14 @@
           </view>
         </view>
       </view>
-      <view class="filter" style="top:{{navBarHeight+noticeHeight+50}}px;" catchtouchmove="true" wx:if="{{showFilter}}" bindtap="hideFilter">
+      <view class="filter" style="top:{{navBarHeight+noticeHeight+50}}px;" wx:if="{{showFilter}}" bindtap="hideFilter">
         <view class="filter-box">
           <view class="filter-item {{item.key===activeFilter?'bar-item-active':''}}" catchtap="checkFilter" wx:for="{{activeFilterList}}" wx:key="index" data-key="{{item.key}}">
             {{item.key}}{{item.docCount?'('+item.docCount+')':''}}
           </view>
         </view>
       </view>
-      <view class="list-content" style="padding-top:{{noticeHeight+100}}px;">
+      <view class="list-content" wx:if="{{errorbookList.length>0}}" style="padding-top:{{noticeHeight+100}}px;{{showFilter?'height:'+(areaHeight-navBarHeight-noticeHeight-170)+'px;overflow:hidden;':''}}">
         <view class="content-title" style="top:{{navBarHeight+noticeHeight+50}}px;">
           <view class="title-left">共{{totalCount}}道错题</view>
           <view class="title-select" wx:if="{{!showHandleBar}}" bindtap="showHandleBar">
@@ -74,7 +74,8 @@
                 <view>知识点:</view>
                 <view class="knowledge-list text-overflow-points">
                   <block wx:if="{{item.xuekewangQuestion.xuekewangKnowledges.length>0}}">
-                    <text class="list-item" wx:for="{{item.xuekewangQuestion.xuekewangKnowledges}}" wx:for-item="knowItem" wx:key="index">{{knowItem.title}}</text>
+                    <text class="list-item" wx:for="{{item.xuekewangQuestion.xuekewangKnowledges}}" wx:for-item="knowItem" wx:key="index">{{knowItem.title}}
+                    </text>
                   </block>
                   <text class="list-item" wx:else>无</text>
                 </view>
@@ -88,6 +89,16 @@
           </view>
         </view>
       </view>
+      <view class="empty" wx:else>
+        <image src="../../images/no_errorbook.png" mode="widthFix" />
+        <view class="empty-tip">您还没有录入错题哦！</view>
+        <view class="empty-content">
+          <view>如何录入错题？</view>
+          <view>1.打印同步练习或试卷</view>
+          <view>2.扫描打印出的试卷上方二维码</view>
+          <view>3.进行批改，批改后题会自动录入此处哦</view>
+        </view>
+      </view>
       <view class="handle-btns {{showHandleBar?'handle-btns-active':''}}">
         <view bindtap="handleBtnClick" class="{{checkSomeone?'':'forbid-btn'}}" id="mark">
           标记为{{markLearnFlag?'未':'已'}}学会
@@ -99,7 +110,7 @@
           打印原题
         </view>
       </view>
-    </block>
+    <!-- </block> -->
   </block>
   <block wx:else>
     <view class="not-member-tip" wx:if="{{!isIos}}">

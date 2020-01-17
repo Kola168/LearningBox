@@ -30,12 +30,12 @@
 }
 
 .year-name {
+  margin-right: 15rpx;
   display: inline-block;
 }
 
 .arrow-icon {
   display: inline-block;
-  margin-top: 10rpx;
   width: 0;
   height: 0;
   border-top: 10rpx solid white;
@@ -51,8 +51,8 @@
 .month-line {
   position: relative;
   display: flex;
-  justify-content: space-around;
-  padding-top: 40rpx;
+  justify-content: space-between;
+  padding: 40rpx 40rpx 0;
   height: 340rpx;
   background-color: #6B330B;
 }
@@ -71,6 +71,11 @@
   width: 274rpx;
   position: relative;
 }
+
+.month-start {
+  justify-content: flex-start;
+}
+
 
 .month-item .month-name {
   display: flex;

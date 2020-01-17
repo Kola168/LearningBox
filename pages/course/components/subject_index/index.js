@@ -206,7 +206,7 @@ Component({
     getSubjectPapers: co.wrap(function* () {
       
       try {
-        var resp = yield graphql.getSubjectPapers(this.subjectId, this.paperType, this.gradeId, this.areaId,  1)
+        var resp = yield graphql.getSubjectPapers(this.subjectId, this.paperType, this.gradeId, this.areaId, 0, 1, 5)
         this.setData({
           paperLists: resp.xuekewang.paperLists
         })

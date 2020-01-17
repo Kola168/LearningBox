@@ -12,11 +12,16 @@
         </view>
     </view>
 </view>
+<!--
 <view class="footer" bindtap="btnClick" wx:if="{{isShowBtnCont}}">
     <image src="{{btnImgUrl}}"></image>
+</view>-->
+<view class="footer" bindtap="checkMember" wx:if="{{isShowBtnCont}}">
+<image src="https://cdn-h.gongfudou.com/LearningBox/preschool/growth_plan_btn_subscribe.png"></image>
 </view>
 <view class="auto-print" wx:if="{{autoPrintBtn}}">
     <image bindtap="setTimedPrint" src="https://cdn-h.gongfudou.com/LearningBox/preschool/growth_plan_btn_print.png" />
 </view>
+<showMemberToast id="memberToast" modal="{{modal}}"/>
 <import src="/lib/toast/wetoast.wxml" />
 <template is="wetoast" data="{{...__wetoast__}}" />
