@@ -30,7 +30,7 @@
 
 .cert-list {
   margin-top: 260rpx;
-  padding: 100rpx 48rpx 30rpx;
+  padding: 80rpx 48rpx 30rpx;
   width: 100%;
   box-sizing: border-box;
   min-height: 200rpx;
@@ -39,14 +39,21 @@
   box-shadow: 0 0 17px 0 rgba(144,92,116,0.31);
 }
 
-.cert-list .cert-item {
+.cert-list .cert-header {
+  margin-bottom: 20rpx;
+  text-align: center;
+  color: #333333;
+  font-size: 28rpx;
+}
+
+.cert-content .cert-item {
   display: inline-block;
   margin-right: 44rpx;
-  margin-bottom: 20rpx;
+  margin-bottom: 30rpx;
   width: calc( ( 100% - 44rpx ) / 2 );
 }
 
-.cert-list .cert-item:nth-child(even) {
+.cert-content .cert-item:nth-child(even) {
   margin-right: 0;
 }
 

@@ -5,12 +5,18 @@
     <view class="cert-num">宝宝已获得{{certOwnerNum}}张奖状</view>
   </image>
   <view class="cert-list">
-    <view class="cert-item" wx:for="{{testimonials}}" wx:key="subTitle">
-      <view class="cert-name">{{item.title}}</view>
-      <view class="learn-day">{{item.subTitle}}</view>
-      <image src="{{item.imageUrl}}" class="{{item.isGet ? '' : 'gray'}}"></image>
-        <view class="btn {{item.isGet ? 'btn-print' : ''}}" bind:tap="{{item.isGet ? 'toPrint' : ''}}" data-item="{{item}}">{{item.isGet ? '打印奖状' : '未获得'}}</view>
-        <!-- <bottom-button class="bottom-but" wx:if="{{item.isGet}}" bindrighttap="toPrint" textRight='1' get-phone="{{true}}"></bottom-button> -->
+    <view class="cert-header">
+      <view>坚持每日一练，培养宝宝“持续性学习”好习惯</view>
+      <view>努力获得更多奖状吧</view>
+    </view>
+    <view class="cert-content">
+      <view class="cert-item" wx:for="{{testimonials}}" wx:key="subTitle">
+        <view class="cert-name">{{item.title}}</view>
+        <view class="learn-day">{{item.subTitle}}</view>
+        <image src="{{item.imageUrl}}" class="{{item.isGet ? '' : 'gray'}}"></image>
+          <view class="btn {{item.isGet ? 'btn-print' : ''}}" bind:tap="{{item.isGet ? 'toPrint' : ''}}" data-item="{{item}}">{{item.isGet ? '打印奖状' : '未获得'}}</view>
+          <!-- <bottom-button class="bottom-but" wx:if="{{item.isGet}}" bindrighttap="toPrint" textRight='1' get-phone="{{true}}"></bottom-button> -->
+      </view>
     </view>
   </view>
 </view>
