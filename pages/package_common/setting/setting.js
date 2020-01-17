@@ -67,6 +67,7 @@ Page({
             name  *文档名称*
           }
           btn: {
+            isNoGetNumber: false 可选 是否不需要获取手机号
             isBack: true,  *是否返回上一页*
             btnContent: '确认设置', *按钮文案*
           }
@@ -145,6 +146,7 @@ Page({
         isPreview: settingData.isPreview || false,
         name: settingData.file.name,
         btn: {
+          isNoGetNumber: settingData.btn && settingData.btn.isNoGetNumber ? true : false,
           isBack: settingData.btn && settingData.btn.isBack || false, //判断设置页是否需要返回保存setting
           btnContent: settingData.btn && settingData.btn.btnContent || settingData.btn && settingData.btn.isBack ? '确认设置' : '确认打印' //打印按钮文案
         },

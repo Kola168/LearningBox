@@ -118,7 +118,7 @@
 		</view>
 	</view>
 </view>
-<bottom-button class="conf-box" text-right="确认设置" bindrighttap="confCheck" get-phone="{{true}}"></bottom-button>
+<view class="conf-box" bind:tap="confCheck">确认设置</view>
 <view class="confirm-main" wx:if="{{showConfirm}}" catchtap="cancelRepair">
 	<view class="confirm-modal">
 		<view class="confirm-title">确认使用文件修复吗？</view>

@@ -398,6 +398,7 @@ Page({
   toPrint: function({currentTarget: {dataset: {sn}}}){
     wxNav.navigateTo('../../sync_learn/preview_subject/index', {
       sn,
+      isHidePrintAnswerBtn: true,
       mediaType: 'weakness_exercise'
     })
   },
