@@ -11,10 +11,12 @@ const graphqlApi = {
       query: `query ($key: String!){
         feature(key: $key){
           categories {
-            image,
-            name,
-            sn,
-            writeType
+            ...on GuessWriteCategory {
+              image
+              name
+              sn
+              writeType
+            }
           }
         }
       }`,
@@ -59,15 +61,19 @@ const graphqlApi = {
     return gql.query({
       query: `query ($sn: String!){
         category(sn:$sn) {
-          sn
-          name
-          children{
+          ...on GuessWriteCategory{
             sn
             name
-            printCount
-            questions{
-              answer
-              title
+            children{
+              ... on GuessWriteCategory{
+                sn
+                name
+                printCount
+                questions{
+                  answer
+                  title
+                }
+              }
             }
           }
         }

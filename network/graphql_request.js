@@ -941,31 +941,6 @@ const graphqlApi = {
   },
 
   /**
-   * 获取免费资源库
-   * @param { String } key feature_key
-   */
-  getFreeSources: (key) => {
-    return gql.query({
-      query: `query ($key: String!){
-        feature(key: $key){
-          categories{
-            name
-            children{
-              name
-              subTitle
-              image
-              sn
-            }
-          }
-        }
-      }`,
-      variables: {
-        key: key
-      }
-    })
-  },
-
-  /**
    *获取banner图
    * @param {*} type course/home
    * @returns
@@ -985,70 +960,6 @@ const graphqlApi = {
     })
   },
 
-  /**
-   * 免费资源库内容类型
-   * @param { string } sn 资源sn
-   */
-  getFreeSourcesContentType: (sn) => {
-    return gql.query({
-      query: `query ($sn: String!){
-        category(sn: $sn){
-          children{
-            name
-            sn
-          }
-        }
-      }`,
-      variables: {
-        sn: sn
-      }
-    })
-  },
-
-  /**
-   * 免费资源库内容
-   * @param { string } sn 资源sn
-   */
-  getFreeSourcesContents: (sn) => {
-    return gql.query({
-      query: `query ($sn: String!){
-        category(sn: $sn){
-          contents {
-            iconUrl
-            pageCount
-            printerOrdersCount
-            sn
-            name
-          }
-        }
-      }`,
-      variables: {
-        sn: sn
-      }
-    })
-  },
-
-  /**
-   * 免费资源库详情
-   * @param { string } sn 资源sn
-   */
-  getFreeSourcesDetail: (sn) => {
-    return gql.query({
-      query: `query ($sn: String!){
-        content(sn: $sn){
-          contentImages{
-            nameUrl
-          }
-          pageCount
-          name
-          featureKey
-        }
-      }`,
-      variables: {
-        sn: sn
-      }
-    })
-  },
 
   /**
    * 上传录音音频
