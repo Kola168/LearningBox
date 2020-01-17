@@ -1,5 +1,12 @@
+@import "../../../common/icon/icon.wxss";
 page {
+  width:100%;
   padding-bottom: 100rpx;
+  box-sizing:border-box;
+}
+
+view{
+  box-sizing:border-box;
 }
 
 .top {
@@ -116,6 +123,56 @@ page {
   display: flex;
 }
 
+.practice-font{
+  width:340rpx;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  background: #F1F1F1;
+  font-size: 28rpx;
+  color: #666666;
+  padding:10rpx 16rpx;
+  border-radius:10rpx;
+  position:relative;
+}
+
+.practice-no-radius{
+  border-bottom-left-radius:0;
+  border-bottom-right-radius:0;
+}
+
+.icon-show-more{
+  font-size:34rpx;
+  transition:0.1s;
+}
+
+.rotate-icon{
+  transform:rotate(-180deg);
+}
+
+.practice-list{
+  width:100%;
+  position:absolute;
+  top:60rpx;
+  left:0;
+  background:#fff;
+  border-bottom-left-radius:10rpx;
+  border-bottom-right-radius:10rpx;
+  border:1rpx solid #F1F1F1;
+}
+
+.practice-list-item{
+  width:100%;
+  font-size: 28rpx;
+  color: #666666;
+  padding:10rpx 16rpx;
+}
+
+.practice-checked{
+  background: #F1F1F1;
+  color:#333;
+}
+
 .practice {
   justify-content: space-between;
   padding: 20rpx 24rpx 0;
@@ -149,8 +206,13 @@ page {
 }
 
 .title {
+  width:100%;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
   font-size: 30rpx;
   padding-left: 24rpx;
+  box-sizing:border-box;
 }
 
 .detail {
@@ -225,4 +287,23 @@ page {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.title-right{
+  font-size: 30rpx;
+  color: #666666;
+  display:flex;
+  align-items:center;
+  margin-right:22rpx;
+}
+
+.title-icon{
+  width:40rpx;
+  line-height:40rpx;
+  border-radius:20rpx;
+  background:#ffdc5e;
+  color:#333;
+  text-align:center;
+  font-weight:500;
+  margin-right:8rpx;
 }
