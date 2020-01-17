@@ -7,6 +7,8 @@
 .record-voice-main image {
   width: 100%;
   margin-bottom: 98rpx;
+  padding-top: 50rpx;
+  background:#fbe8e2; 
 }
 
 .record-voice-main .btn {

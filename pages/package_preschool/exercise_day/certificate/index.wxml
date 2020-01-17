@@ -8,7 +8,7 @@
     <view class="cert-item" wx:for="{{testimonials}}" wx:key="subTitle">
       <view class="cert-name">{{item.title}}</view>
       <view class="learn-day">{{item.subTitle}}</view>
-      <image src="{{item.imageUrl}}"></image>
+      <image src="{{item.imageUrl}}" class="{{item.isGet ? '' : 'gray'}}"></image>
         <view class="btn {{item.isGet ? 'btn-print' : ''}}" bind:tap="{{item.isGet ? 'toPrint' : ''}}" data-item="{{item}}">{{item.isGet ? '打印奖状' : '未获得'}}</view>
         <!-- <bottom-button class="bottom-but" wx:if="{{item.isGet}}" bindrighttap="toPrint" textRight='1' get-phone="{{true}}"></bottom-button> -->
     </view>
