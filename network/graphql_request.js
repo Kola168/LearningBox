@@ -778,6 +778,7 @@ const graphqlApi = {
               sn
               printerOrdersCount
               pageCount
+              audioContentImage
             }
           }
          }
