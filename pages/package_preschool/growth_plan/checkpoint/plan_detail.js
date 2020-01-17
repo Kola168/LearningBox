@@ -93,18 +93,15 @@ Page({
 
   //判断会员
   checkMember: co.wrap(function *(){
-    logger.info('member',this.data.isMember)
     if(this.data.isMember){
       yield this.toSubscribe()
     }else{
-      logger.info(3333)
       //判断会员标示
       var memberToast = this.selectComponent('#memberToast')
-      console.log(memberToast)
       memberToast.checkAuthMember(()=>{
-        // wxNav.navigateTo('../plan_detail', {
-        //   userPlanSn:this.userPlanSn
-        // })
+        wxNav.navigateTo('./plan_detail', {
+          userPlanSn:this.userPlanSn
+        })
       })
     }
   }),

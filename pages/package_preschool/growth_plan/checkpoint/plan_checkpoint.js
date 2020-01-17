@@ -48,11 +48,6 @@ Page({
    */
   onLoad: co.wrap(function* (options) {
     this.longToast = new app.weToast()
-    // let systemInfo = wx.getSystemInfoSync()
-    // let isAndroid = systemInfo.system.indexOf('iOS') > -1 ? false : true
-    // this.setData({
-    //   isAndroid: isAndroid
-    // })
     try {
       this.options = options
       this.planSn = this.options.planSn
@@ -66,24 +61,8 @@ Page({
         isShowBtnCont:true,
         autoPrintBtn:false
       })
-      // if(this.subscribe == 'subscript'){
-      //   this.setData({
-      //     autoPrintBtn:true,
-      //     isShowBtnCont:false
-      //   })
-      // }else{
-      //   this.toFunc()
-      // }
-      // if(this.subscribe == 'subscript'){
-      //   this.setData({
-      //     autoPrintBtn:true,
-      //     isShowBtnCont:false
-      //   })
-      // }else{
-      //   this.checkMember()
-      // }
 
-    if(this.subscribe == 'subscript'){
+    if(this.subscribe == 'subscript' || this.subscribe == 'finished'){
       this.setData({
         autoPrintBtn:true,
         isShowBtnCont:false
@@ -100,37 +79,6 @@ Page({
       util.showError(error)
     }
   }),
-
-  // toFunc: co.wrap(function *(){
-  //   this.longToast.toast({
-  //     type:'loading'
-  //   })
-  //   try {
-  //     if(this.data.isMember){
-  //       this.btnType='subscribe',
-  //       this.setData({
-  //         btnImgUrl:'https://cdn-h.gongfudou.com/LearningBox/preschool/growth_plan_btn_subscribe.png'
-  //       })
-  //     }else{
-  //       this.btnType='buy',
-  //       this.setData({
-  //         btnImgUrl:'https://cdn-h.gongfudou.com/LearningBox/preschool/growth_plan_btn_buy.png'
-  //       })
-  //     }
-  //     this.longToast.hide()
-  //   } catch (error) {
-  //     this.longToast.toast()
-  //     util.showError(error)
-  //   }
-  // }),
-
-  // btnClick(){
-  //   if(this.btnType === 'subscribe'){
-  //     this.toSubscribe()
-  //   }else if(this.btnType === 'buy'){
-  //     this.BuyMember()
-  //   }
-  // },
 
   getDetail: co.wrap(function* (planSn) {
     this.longToast.toast({
@@ -158,42 +106,21 @@ Page({
     }
   }),
 
-  /** 购买会员 */
-  // BuyMember: co.wrap(function* () {
-    // wxNav.navigateTo(`/pages/package_member/member/index`)
-    // try {
-    //   // 判断会员标示
-    //   var memberToast = this.selectComponent('#memberToast')
-
-    //   memberToast.checkAuthMember(()=>{
-    //     wxNav.navigateTo('../plan_detail', {
-    //       userPlanSn:this.userPlanSn
-    //     })
-    //   })
-    // } catch (e) {
-    //   this.longToast.toast()
-    //   util.showError(e)
-    //   console.log(e)
-    // }
-  // }),
-
   //判断会员
   checkMember: co.wrap(function *(){
 
     try{
-      // if(this.data.isMember){
-      //   yield this.toSubscribe()
-      // }else{
+      if(this.data.isMember){
+        yield this.toSubscribe()
+      }else{
         //判断会员标示
         var memberToast = this.selectComponent('#memberToast')
-        console.log('memberToast', memberToast)
-
         memberToast.checkAuthMember(()=>{
-          wxNav.navigateTo('../plan_detail', {
+          wxNav.navigateTo('./plan_checkpoint', {
             userPlanSn:this.userPlanSn
           })
         })
-      //}
+      }
     } catch(err){
       console.log(err)
     }

@@ -70,21 +70,40 @@ Page({
     }
   }),
 
+  /* 已完成 列表判断是否为会员 */
+  toCheck: co.wrap(function *(e) {
+    this.longToast.toast({
+      type:'loading'
+    })
+    try {
+      if(this.data.isMember){
+        this.toProgress(e)
+      }else{
+        this.showMemberToast()
+      }
+      this.longToast.hide()
+    } catch (e) {
+      this.longToast.toast()
+      util.showError(e)
+    }
+  }),
+
   //弹窗
   showMemberToast:function (){
-    // 判断会员标示
-    if (!this.data.isPreschoolMember) {
-      var memberToast = this.selectComponent('#memberToast')
-      return memberToast.showToast()
-    }
-    this.setData({
-      showMemberToast: true
+    //判断会员标示
+    var memberToast = this.selectComponent('#memberToast')
+    memberToast.checkAuthMember(()=>{
+      wxNav.navigateTo('./../list/index', {
+        userPlanSn:this.userPlanSn
+      })
     })
   },
 
   getUserPlans: co.wrap(function* () {
     try {
+      console.log(8888)
       let tab = this.currentTab
+      console.log('tabatab',tab)
       const resp = yield gql.getUserPlans(tab)
       logger.info('resp====',resp)
       let dataKey = ''
@@ -104,18 +123,12 @@ Page({
     }
   }),
 
-  /* 切换Nav */
-  toChangeNav: function () {
-    this.setData({
-      tabToContent: 1
-    })
-  },
-
   /* 去订阅 */
   toSubscribe: co.wrap(function *(e){
+    // var userPlanSn = e.currentTarget.dataset.userPlanSn
     try {
       var idx = e.currentTarget.id
-      logger.info('idx', idx)
+      this.subscribe = e.currentTarget.dataset.subscript
       let sn = this.data.lists[idx].sn
       if(this.data.isMember){
         this.toSubscribeDetail(sn)
@@ -123,6 +136,7 @@ Page({
         this.toProgress(e)
       }
     } catch (e) {
+      console.log(e,'llll')
       this.longToast.toast()
       util.showError(e)
     }
@@ -130,13 +144,15 @@ Page({
 
   toSubscribeDetail: co.wrap(function* (sn) {
     try {
+        // let respUserPlans = yield gql.getUserPlans
+        // logger.info('=====', resp)
         yield gql.joinPlan(sn)
-        let resp = yield gql.getPlans()
-        logger.info('=====', resp)
-        this.setData({
-          lists: resp.plans
+          let resp = yield gql.getPlans()
+          this.setData({
+            lists: resp.plans
         })
     } catch (e) {
+      console.log('ooo',e)
       this.longToast.toast()
       util.showError(e)
     }
@@ -155,6 +171,8 @@ Page({
       }
     )
   }),
+
+
 
   /*** 取消订阅 ***/
   handleSubscribe: co.wrap(function* (e) {
