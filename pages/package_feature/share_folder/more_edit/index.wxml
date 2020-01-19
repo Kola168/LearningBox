@@ -20,7 +20,7 @@
     <view class="setting-title">打印份数</view>
     <view class="set-num">
         <image class="decrease-number" mode="widthFix"
-            src="{{print_count >= 2 ? '../../images/minus_g.png' : '../../images/document_cut.png' }}"
+            src="{{print_count >= 2 ? '../../images/minus_y.png' : '../../images/document_cut.png' }}"
             bindtap="decrease" />
         <view class="print-number">{{print_count}}</view>
         <image class="increase-number" mode="widthFix"
