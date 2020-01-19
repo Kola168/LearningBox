@@ -44,7 +44,6 @@ page {
 .print-url>view {
     text-align: left;
     margin-bottom: 30rpx;
-    border-top:2rpx solid#cecece;
 }
 
 .singleImg>image,

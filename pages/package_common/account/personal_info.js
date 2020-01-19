@@ -178,13 +178,13 @@ Page({
     }
   }),
   uploadImage: co.wrap(function* (e) {
-    if (!e.detail.tempFilePaths[0]) {
+    if (!e.detail.tempFiles[0].path) {
       return util.showError({
         title: '照片加载失败',
         content: '请重新选择重试'
       })
     }
-    this.path = e.detail.tempFilePaths[0]
+    this.path =  e.detail.tempFiles[0].path
     router.navigateTo('/pages/package_common/account/avatar_edit', {
       url: this.path
     })
