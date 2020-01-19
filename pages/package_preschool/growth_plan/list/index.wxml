@@ -28,11 +28,20 @@
                     </view>
                     <view class="item-right-bottom">
                         <view class="bottom-left">
+                            
+                            <view class="progress">
+                                <progress percent="{{item.currentIndex/item.planSize*100}}" border-radius="30" stroke-width="10rpx"
+                                backgroundColor="#e8e8e8" activeColor="#FF7D15" />
+                                <view>{{item.currentIndex}}/{{item.planSize}}</view>
+                            </view>
+
+<!--
                             <view class="progress-cont">
-                                <view class="progress" style="width:{{item.planSize}}%;"></view>
-                                <view class="progress-on" style="width:{{item.currentIndex}}%;"></view>
+                                <view class="progress" style="width:{{item.planSize*100}};"></view>
+                                <view class="progress-on" style="width:{{item.currentIndex*100}};"></view>
                             </view>
                             <text class="progress-num">{{item.currentIndex}}/{{item.planSize}}</text>
+                        -->
                         </view>
                         <view class="bottom-right bottom-right-no">
                             <view class="btn-default" id="{{index}}" catchtap="handleSubscribe" data-planSn="{{item.planSn}}" data-userPlanSn="{{item.sn}}" bindtap="toProgress" data-subscript="subscript">取消订阅</view>
