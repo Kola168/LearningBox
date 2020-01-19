@@ -20,6 +20,7 @@ const graphqlApi = {
             }
           }
           paymentOrders(sn: $sn){
+						amountYuan
             payable{
               ...on MemberConfig{
                 displayPriceY
