@@ -241,7 +241,7 @@ Page({
        wxNav.navigateTo(`pages/finish/sourcefinish`, {
            media_type:'copybook',
            state:resp.createResourceOrder.state,
-           infoArr:resp.createResourceOrder.statistic,
+           day:resp.createResourceOrder.statistic.fields[1].value,
            continueText:'继续打印'  //继续打印的文案可不传
         })
     } catch (e) {

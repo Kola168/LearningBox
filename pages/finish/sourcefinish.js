@@ -62,6 +62,11 @@ Page({
         studyUnit:options.studyUnit
       })
     }
+    this.setData({
+      save:options.save,
+      studyDay:options.day,
+      continueText:options.continueText||'继续打印'
+    })
     if(_.isNotEmpty(options.infoArr)){
       if(options.infoArr[0]){
         this.setData({
@@ -76,11 +81,7 @@ Page({
         })
       }
     }
-    this.setData({
-      save:options.save,
-      studyDay:options.day,
-      continueText:options.continueText||'继续打印'
-    })
+
     this.setData({
       state: options.state
     })
