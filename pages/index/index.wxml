@@ -1,5 +1,5 @@
 <!--index.wxml-->
-<nav-bar background="#fff" title="小白智慧打印"></nav-bar>
+<nav-bar background="#fff" title="小白盒子"></nav-bar>
 <button open-type="getUserInfo" bindgetuserinfo="userInfoHandler" form-type='submit' hover-class="none"
   class="auth-button" wx:if="{{showAuth}}"></button>
 
