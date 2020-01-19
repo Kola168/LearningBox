@@ -25,7 +25,7 @@ App({
 	// apiWbviewServer: 'https://api.xbxxhz.com',
 
 	//staging
-	// apiServer: 'https://lb-stg-1.gongfudou.com',
+	apiServer: 'https://lb-stg-1.gongfudou.com',
 	apiWbviewServer: 'https://lb-stg-1.gongfudou.com',
 
 	//王析理本地地址
@@ -39,7 +39,7 @@ App({
 	// apiServer: 'http://jran.nat300.top',
 
 	// 测试接口季慧新
-	apiServer: 'http://jhx.nat300.top',
+	// apiServer: 'http://jhx.nat300.top',
 
 	// 测试接口张伟
 	// apiServer: 'https://bboo.utools.club',
