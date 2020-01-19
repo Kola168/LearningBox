@@ -29,6 +29,7 @@ Page({
     activeDevice: null,
     showAdvertisement: true,
     studyDay: 0,
+    dayUnit:'天',
     save:false,
     studyNum:null,
     studyUnit:null,
@@ -41,6 +42,10 @@ Page({
     //    state:resp.createOrder.state
     //    day:1   //学习天数
     //可选
+    //    infoArr:[{
+    //      label:'',单位
+    //      value:''值
+    //    }]  //传过来的天数及其他信息数组
     //    save:true    //是否保存朋友圈，没这功能不用传这字段
     //    studyNum:1  //学习的单位数量
     //    studyUnit:Unit  //单位
@@ -62,6 +67,21 @@ Page({
       studyDay:options.day,
       continueText:options.continueText||'继续打印'
     })
+    if(_.isNotEmpty(options.infoArr)){
+      if(options.infoArr[0]){
+        this.setData({
+          studyDay:options.infoArr[0].value,
+          dayUnit:options.infoArr[0].label,
+        })
+      }
+      if(options.infoArr[1]){
+        this.setData({
+          studyNum:options.infoArr[1].value,
+          studyUnit:options.infoArr[1].label,
+        })
+      }
+    }
+
     this.setData({
       state: options.state
     })
@@ -101,7 +121,7 @@ Page({
         context.setFontSize(70)
         context.fillText(this.data.studyDay, 342, 250)
         context.setFontSize(28)
-        context.fillText('天', 405, 285)
+        context.fillText(this.data.dayUnit, 405, 285)
       }
 
       context.draw(false, function() {

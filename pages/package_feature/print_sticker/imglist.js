@@ -87,7 +87,7 @@ Page({
 
   getStorageImages: function() {
     try {
-      let galleryImages = storage.get(this.mediaType)
+      let galleryImages = storage.get(`${this.mediaType}${this.data.type}`)
       Loger(galleryImages)
       if (galleryImages) {
         this.setData({
@@ -105,7 +105,7 @@ Page({
   setStorage: function() {
     //图片存储至本地
     try {
-      storage.put(this.mediaType, {
+      storage.put(`${this.mediaType}${this.data.type}`, {
         imgArr: this.data.imgArr
       })
     } catch (e) {
@@ -256,7 +256,7 @@ Page({
         urls:_.pluck(this.data.imgArr[this.data.direction].imgs,'url')
       }
       const resp = yield api.processes(params)
-      storage.remove(this.mediaType)
+      storage.remove(`${this.mediaType}${this.data.type}`)
       wxNav.navigateTo('/pages/package_feature/print_sticker/preview',{
         type:this.mediaType,
         sn:resp.res.sn,
