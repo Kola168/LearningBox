@@ -453,7 +453,7 @@ const graphqlApi = {
               studyUsers
             }
           }
-          
+
         }
       }`,
       variables: {
@@ -1239,8 +1239,8 @@ const graphqlApi = {
     return gql.query({
       query: `query($key: String!) {
         feature(key: $key) {
-          ...on TemplateCategory{
-            categories {
+          categories {
+            ...on TemplateCategory{
               name
               sn
               isHorizontal
