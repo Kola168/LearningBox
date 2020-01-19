@@ -417,9 +417,14 @@ Page({
   addPlan: co.wrap(function* (e) {
     wxNav.navigateTo('/pages/package_preschool/growth_plan/list/index')
   }),
-
   moreLearingPlan: co.wrap(function* (e) {
     wxNav.navigateTo('/pages/package_preschool/growth_plan/list/index')
-  })
+  }),
+  planDtail(e) {
+    wxNav.navigateTo('/pages/package_preschool/growth_plan/checkpoint/plan_checkpoint', {
+      planSn: e.currentTarget.id,
+    })
+
+  }
 
 })

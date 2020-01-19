@@ -47,7 +47,7 @@
       </view>
     </view>
     <scroll-view class="study-plan-wrap" scroll-x wx:if="{{userPlans.length>0}}">
-      <view class="study-plan" wx:for="{{userPlans}}" wx:key="userPlans">
+      <view class="study-plan" wx:for="{{userPlans}}" wx:key="userPlans" bindtap="planDtail" id="{{item.planSn}}">
         <image src="{{item.planIconUrl}}" mode="widthFix" class="study-plan-image"></image>
         <view class="has-plan">
           <view>{{item.planName}}</view>
