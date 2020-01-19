@@ -12,18 +12,27 @@ Page({
     subjects: [],
     printPaperCount: 0,
     percentage: 0,
-    loadReady: true
+    loadReady: true,
+    title: '测评与考试',
+    isThematic: false
   },
   onLoad(query) {
     this.weToast = new app.weToast()
-    this.thematic = query.thematic ? query.thematic : 0
+    this.thematic = 0
+    if (query.thematic) {
+      this.thematic = query.thematic
+      this.setData({
+        title: '升学专题',
+        isThematic: true
+      })
+    }
     this.getSubjects()
   },
   getSubjects: co.wrap(function* () {
     this.weToast.toast({
       type: 'loading'
     })
-    
+
     try {
       let res = yield gqlSubject.getSubjects()
       if (!res.xuekewang.registered) {

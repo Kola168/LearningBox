@@ -7,13 +7,13 @@
     </view>
     <image src="/images/doc_item_arrow.png" mode="widthFix" />
   </view>
-  <view class="write-item">
+  <!-- <view class="write-item">
     <view class="item-left">
       <image src="../../images/szcx_icon.png" mode="widthFix" />
       <view>生字抄写</view>
     </view>
     <image src="/images/doc_item_arrow.png" mode="widthFix" />
-  </view>
+  </view> -->
 </view>
 <!-- loading -->
 <import src="/lib/toast/wetoast.wxml" />
