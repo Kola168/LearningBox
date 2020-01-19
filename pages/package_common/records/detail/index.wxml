@@ -8,6 +8,7 @@
           }
           break;
         case 'printing':
+        case 'sent':
           return {
             state: 'warning',
             text: '正在打印'
