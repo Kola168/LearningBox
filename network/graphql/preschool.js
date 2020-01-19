@@ -53,8 +53,10 @@ const graphqlApi = {
               sn
               subTitle
               children{
-                name
-                sn
+                ... on DailyPracticeCategory {
+                  name
+                  sn
+                }
               }
             }
           }
@@ -96,8 +98,10 @@ const graphqlApi = {
             subTitle
             image
             children{
-              name
-              sn
+              ... on DailyPracticeCategory {
+                name
+                sn
+              }
             }
           }
         }
