@@ -12,7 +12,7 @@
   <view class="day-box">
     <view class="text-box">
       <view class="text-tyle">
-        <text>{{studyDay}}</text><text class="text-unit">天</text>
+        <text>{{studyDay}}</text><text class="text-unit">{{dayUnit}}</text>
       </view>
       <block wx:if="{{studyNum!=null && studyUnit!=null}}">
         <view class="text-line"></view>

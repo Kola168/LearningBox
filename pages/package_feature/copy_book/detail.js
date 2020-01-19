@@ -240,10 +240,8 @@ Page({
       this.longToast.toast()
        wxNav.navigateTo(`pages/finish/sourcefinish`, {
            media_type:'copybook',
-           state:resp.createOrder.state,
-           day:1,   //学习天数
-           studyNum:1,  //学习的单位数量
-           studyUnit:Unit,  //单位
+           state:resp.createResourceOrder.state,
+           day:resp.createResourceOrder.statistic.fields[1].value,
            continueText:'继续打印'  //继续打印的文案可不传
         })
     } catch (e) {

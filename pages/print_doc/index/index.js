@@ -53,7 +53,7 @@ Page({
         recommend: '复制链接快速打',
         icon: '/images/doc_official_icon.png',
         key: 'weChatArticle',
-        // url: '/pages/print_doc/print_wx/print_wx'
+        url: '/pages/package_feature/print_link/index'
       },
       {
         name: '电子发票',
