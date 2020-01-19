@@ -8,7 +8,7 @@ export const features= [{
     }, {
       name: '购买记录',
       image: '/images/account_order.png',
-			url: '',
+			url: '/pages/package_common/order_record/index/index',
 			key:'buyRecord'
     }, {
       name: '我的收藏',
