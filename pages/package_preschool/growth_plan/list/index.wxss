@@ -88,7 +88,7 @@
     overflow: hidden;
 } */
 .item-right-bottom{
-    margin-top: 10rpx;
+    margin-top: 15rpx;
     display: flex;
     justify-content: space-between;
     width: 100%;
@@ -129,7 +129,7 @@
     background: #FFDC5E;
     color: #333333;
     border-radius: 40rpx;
-    padding: 10rpx 45rpx;
+    padding: 10rpx 35rpx;
 }
 .item-right-bottom .btn-default{
     font-size: 24rpx;

@@ -422,9 +422,11 @@ const graphqlApi = {
       query: `query getCourseSubject($key: String!){
         feature(key: $key) {
           categories {
+           ... on CourseCategory{
             courseIntroductionImage
             name
             sn
+           }
           }
 
         }
@@ -440,15 +442,18 @@ const graphqlApi = {
       query: `query getSubjectContent($sn: String!){
         category(sn: $sn) {
           image
-          courses{
-            sn
-            mainImageUrl
-            desc
-            payed
-            priceYuan
-            totalLessons
-            studyUsers
+          ... on CourseCategory {
+            courses{
+              sn
+              mainImageUrl
+              desc
+              payed
+              priceYuan
+              totalLessons
+              studyUsers
+            }
           }
+          
         }
       }`,
       variables: {
@@ -501,6 +506,9 @@ const graphqlApi = {
 			  	isSchoolAgeMember
           phone
           sn
+          currentGroup{
+            currentUserIsCreator
+          }
           selectedDevice{
             sn
             name
@@ -713,7 +721,7 @@ const graphqlApi = {
         createResourceOrder(input: $input){
           state
           statistic{
-            ... on DailyPractice{
+            ... on DailyPracticeSet{
               keepDays
             }
           }
@@ -734,16 +742,20 @@ const graphqlApi = {
       query: `query ($key: String!){
         feature(key: $key){
           categories {
-            image
-            name
-            sn
+            ... on KidCategory {
+              image
+              name
+              sn
+            }
           }
           contents{
-            name
-            iconUrl
-            sn
-            pageCount
-            printerOrdersCount
+            ... on KidContent {
+              name
+              iconUrl
+              sn
+              pageCount
+              printerOrdersCount
+            }
           }
         }
       }`,
@@ -761,13 +773,18 @@ const graphqlApi = {
     return gql.query({
       query: `query getRecordList($sn: String!){
         category(sn: $sn){
+         ... on KidCategory{
           contents{
-            name
-            iconUrl
-            sn
-            printerOrdersCount
-            pageCount
+            ... on KidContent {
+              name
+              iconUrl
+              sn
+              printerOrdersCount
+              pageCount
+              audioContentImage
+            }
           }
+         }
         }
       }`,
       variables: {
@@ -783,20 +800,22 @@ const graphqlApi = {
     return gql.query({
       query: `query getRecordSource($sn: String!){
         content(sn: $sn){
-          name
-          iconUrl
-          sn
-          contentImages{
-            nameUrl
-          }
-          audioContentImage
-          audioUrl
-          contentCollected
-          userAudio{
+          ... on KidContent {
+            name
+            iconUrl
+            sn
+            contentImages{
+              nameUrl
+            }
+            audioContentImage
             audioUrl
-            qrCodeUrl
+            contentCollected
+            userAudio{
+              audioUrl
+              qrCodeUrl
+            }
+            pageCount
           }
-          pageCount
         }
       }`,
       variables: {
@@ -941,31 +960,6 @@ const graphqlApi = {
   },
 
   /**
-   * 获取免费资源库
-   * @param { String } key feature_key
-   */
-  getFreeSources: (key) => {
-    return gql.query({
-      query: `query ($key: String!){
-        feature(key: $key){
-          categories{
-            name
-            children{
-              name
-              subTitle
-              image
-              sn
-            }
-          }
-        }
-      }`,
-      variables: {
-        key: key
-      }
-    })
-  },
-
-  /**
    *获取banner图
    * @param {*} type course/home
    * @returns
@@ -985,70 +979,6 @@ const graphqlApi = {
     })
   },
 
-  /**
-   * 免费资源库内容类型
-   * @param { string } sn 资源sn
-   */
-  getFreeSourcesContentType: (sn) => {
-    return gql.query({
-      query: `query ($sn: String!){
-        category(sn: $sn){
-          children{
-            name
-            sn
-          }
-        }
-      }`,
-      variables: {
-        sn: sn
-      }
-    })
-  },
-
-  /**
-   * 免费资源库内容
-   * @param { string } sn 资源sn
-   */
-  getFreeSourcesContents: (sn) => {
-    return gql.query({
-      query: `query ($sn: String!){
-        category(sn: $sn){
-          contents {
-            iconUrl
-            pageCount
-            printerOrdersCount
-            sn
-            name
-          }
-        }
-      }`,
-      variables: {
-        sn: sn
-      }
-    })
-  },
-
-  /**
-   * 免费资源库详情
-   * @param { string } sn 资源sn
-   */
-  getFreeSourcesDetail: (sn) => {
-    return gql.query({
-      query: `query ($sn: String!){
-        content(sn: $sn){
-          contentImages{
-            nameUrl
-          }
-          pageCount
-          name
-          featureKey
-        }
-      }`,
-      variables: {
-        sn: sn
-      }
-    })
-  },
 
   /**
    * 上传录音音频

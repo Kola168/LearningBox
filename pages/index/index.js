@@ -321,6 +321,18 @@ Page({
     }
     wxNav.navigateTo(url)
   },
+  toUpdateSchool(e) {
+    if (e.currentTarget.id == 'thematic') {
+      return wxNav.navigateTo('pages/package_subject/evaluate_exam/index/index', {
+        thematic: 1
+      })
+    }
+    if (e.currentTarget.id == 'examinationVideo') {
+      wxNav.navigateTo('pages/package_subject/sync_video/index/index', {
+        stageSn: this.data.gradeParent.sn
+      })
+    }
+  },
   toCourse(e) {
     if (e.currentTarget.id) {
       return wxNav.navigateTo('/pages/package_course/course/course', {

@@ -102,7 +102,7 @@ Page({
 			var orderData = storage.get('orderSuccessParams')
 			this.setData({
 				isExercise,
-				exerciseDay: orderData.statistic && orderData.statistic.keepDays
+				exerciseDay: orderData && orderData.keepDays
 			})
 			storage.remove('orderSuccessParams')
 		} catch (err) {

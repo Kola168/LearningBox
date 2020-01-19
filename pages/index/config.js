@@ -1,26 +1,32 @@
 export const updateSchool = [{
     image: 'https://cdn-h.gongfudou.com/LearningBox/main/home/home_primary_topic.png',
-    url: 'pages/package_subject/evaluate_exam/testpaper/index?thematic=1',
+    url: 'pages/package_subject/evaluate_exam/index/index',
+    id:'thematic',
     name: '小学'
 }, {
     image: 'https://cdn-h.gongfudou.com/LearningBox/main/home/home_primary_video.png',
-    url: 'pages/package_subject/sync_video/index/index?stageSn=',
+    url: 'pages/package_subject/sync_video/index/index',
+    id:'examinationVideo',
     name: '小学'
 }, {
     image: 'https://cdn-h.gongfudou.com/LearningBox/main/home/home_junior_topic.png',
-    url: 'pages/package_subject/evaluate_exam/testpaper/index?thematic=1',
+    url: 'pages/package_subject/evaluate_exam/index/index',
+    id:'thematic',
     name: '初中'
 }, {
     image: 'https://cdn-h.gongfudou.com/LearningBox/main/home/home_junior_video.png',
-    url: 'pages/package_subject/sync_video/index/index?stageSn=',
+    url: 'pages/package_subject/sync_video/index/index',
+    id:'examinationVideo',
     name: '初中'
 }, {
     image: 'https://cdn-h.gongfudou.com/LearningBox/main/home/home_senior_topic.png',
-    url: 'pages/package_subject/evaluate_exam/testpaper/index?thematic=1',
+    url: 'pages/package_subject/evaluate_exam/index/index',
+    id:'thematic',
     name: '高中'
 }, {
     image: 'https://cdn-h.gongfudou.com/LearningBox/main/home/home_senior_video.png',
-    url: 'pages/package_subject/sync_video/index/index?stageSn=',
+    url: 'pages/package_subject/sync_video/index/index',
+    id:'examinationVideo',
     name: '高中'
 }, ];
 
@@ -58,9 +64,6 @@ export const commonFeatures = {
         url: '/pages/package_common/free_resources/index/index',
         icon: '/images/home/icon_subject_free.png'
 
-    }, {
-        icon:'/images/home/icon_subject_free.png'
-
     },{
         name: '口算',
         image: '/images/home/icon_count.png',
@@ -91,17 +94,36 @@ export const commonFeatures = {
 
 export const helpStudy = [{
     id: 'syncLearn',
-    url: '/pages/package_subject/sync_learn/index/index'
+    // url: '/pages/package_subject/sync_learn/index/index'
 },{
     id: 'evaluate_exam',
-    url: '/pages/package_subject/evaluate_exam/index/index'
+    // url: '/pages/package_subject/evaluate_exam/index/index'
 },{
     id: 'errorBook',
-    url: '/pages/package_subject/super_errorbook/index/index'
+    // url: '/pages/package_subject/super_errorbook/index/index'
 },{
     id: 'weaknessExercise',
-    url: '/pages/package_subject/weakness_exercise/index/index'
+    // url: '/pages/package_subject/weakness_exercise/index/index'
 },{
     id: 'stageReporter',
-    url: '/pages/package_subject/stage_report/index/index'
+    // url: '/pages/package_subject/stage_report/index/index'
 },]
+
+
+// export const helpStudy = [{
+// 	id: 'syncLearn',
+// 	url: '/pages/package_subject/sync_learn/index/index'
+// },{
+// 	id: 'evaluate_exam',
+// 	url: '/pages/package_subject/evaluate_exam/index/index'
+// },{
+// 	id: 'errorBook',
+// 	url: '/pages/package_subject/super_errorbook/index/index'
+// },{
+// 	id: 'weaknessExercise',
+// 	url: '/pages/package_subject/weakness_exercise/index/index'
+// },{
+// 	id: 'stageReporter',
+// 	url: '/pages/package_subject/stage_report/index/index'
+// },]
+

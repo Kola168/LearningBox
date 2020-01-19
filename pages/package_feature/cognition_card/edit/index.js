@@ -45,7 +45,7 @@ Page({
   onLoad: co.wrap(function*(query) {
     let navBarHeight = app.navBarInfo.navBarHeight
     this.setData({
-      areaHeight: app.sysInfo.safeArea.height - navBarHeight
+      areaHeight: app.sysInfo.screenHeight - navBarHeight
     })
     let type = query.type
     this.templateSn = query.sn
@@ -78,7 +78,7 @@ Page({
           stepView: true
         })
       }
-    }
+    }    
   }),
   onShow: function() {
 

@@ -14,14 +14,16 @@ Page({
     percentage: 0,
     loadReady: true
   },
-  onLoad() {
+  onLoad(query) {
     this.weToast = new app.weToast()
+    this.thematic = query.thematic ? query.thematic : 0
     this.getSubjects()
   },
   getSubjects: co.wrap(function* () {
     this.weToast.toast({
       type: 'loading'
     })
+    
     try {
       let res = yield gqlSubject.getSubjects()
       if (!res.xuekewang.registered) {
@@ -55,8 +57,12 @@ Page({
   }),
   toSubject(e) {
     if (app.preventMoreTap(e)) return
-    wxNav.navigateTo('../testpaper/index', {
+    let params = {
       id: e.currentTarget.dataset.id
-    })
+    }
+    if (this.thematic) {
+      params.thematic = this.thematic
+    }
+    wxNav.navigateTo('../testpaper/index', params)
   }
 })

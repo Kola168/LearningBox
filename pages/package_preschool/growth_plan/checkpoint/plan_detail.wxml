@@ -3,7 +3,7 @@
 <swiper class="detail-images" indicator-dots="{{indicatorDots}}" autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">
     <block wx:for="{{imgUrls}}" wx:key="index" id="{{index}}">
         <swiper-item class="detail-item">
-            <image src="{{item.nameUrl}}" class="slide-image" mode="widthFix" />
+            <image src="{{item.nameUrl}}" class="slide-image" />
         </swiper-item>
     </block>
 </swiper>
@@ -19,7 +19,10 @@
 
 <!-- <view class="footer {{isFullScreen?'is-full-screen':''}}" bindtap="beginPrint">开始打印</view>
 -->
-<view class="footer {{isFullScreen?'is-full-screen':''}}" bindtap="btnClick">{{btnText}}</view>
+<!--<view class="footer {{isFullScreen?'is-full-screen':''}}" bindtap="btnClick">{{btnText}}</view>-->
+<view class="footer {{isFullScreen?'is-full-screen':''}}" wx:if="{{showBtn}}" bindtap="checkMember">立即订阅</view>
+<view class="footer {{isFullScreen?'is-full-screen':''}}" wx:else="" bindtap="beginPrint">立即打印</view>
 
+<showMemberToast id="memberToast" modal="{{modal}}"/>
 <import src="/lib/toast/wetoast.wxml" />
 <template is="wetoast" data="{{...__wetoast__}}" />

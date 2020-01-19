@@ -121,6 +121,110 @@ const graphqlApi = {
     })
   },
 
+  /**
+   * 获取免费资源库
+   * @param { String } key feature_key
+   */
+  getFreeSources: (key) => {
+    return gql.query({
+      query: `query ($key: String!){
+        feature(key: $key){
+          categories{
+            ...on ResourceCategory {
+              name
+              children{
+                ...on ResourceCategory {
+                  name
+                  subTitle
+                  image
+                  sn
+                }
+              }
+            }
+          }
+        }
+      }`,
+      variables: {
+        key: key
+      }
+    })
+  },
+
+  /**
+   * 免费资源库内容类型
+   * @param { string } sn 资源sn
+   */
+  getFreeSourcesContentType: (sn) => {
+    return gql.query({
+      query: `query ($sn: String!){
+        category(sn: $sn){
+          ...on ResourceCategory {
+            children{
+              ...on ResourceCategory {
+                name
+                sn
+              }
+            }
+          }
+        }
+      }`,
+      variables: {
+        sn: sn
+      }
+    })
+  },
+
+  /**
+   * 免费资源库内容
+   * @param { string } sn 资源sn
+   */
+  getFreeSourcesContents: (sn) => {
+    return gql.query({
+      query: `query ($sn: String!){
+        category(sn: $sn){
+          ...on ResourceCategory {
+            contents {
+              ...on ResourceContent {
+                iconUrl
+                pageCount
+                printerOrdersCount
+                sn
+                name
+              } 
+            }
+          }
+        }
+      }`,
+      variables: {
+        sn: sn
+      }
+    })
+  },
+
+  /**
+   * 免费资源库详情
+   * @param { string } sn 资源sn
+   */
+  getFreeSourcesDetail: (sn) => {
+    return gql.query({
+      query: `query ($sn: String!){
+        content(sn: $sn){
+          ...on ResourceContent {
+            contentImages{
+              nameUrl
+            }
+            pageCount
+            name
+            featureKey
+          }
+        }
+      }`,
+      variables: {
+        sn: sn
+      }
+    })
+  },
+
 }
 
 

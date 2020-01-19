@@ -125,7 +125,7 @@
       <view class="subject-list" wx:else>
         <image class="subject-item" src="{{navIcon[index]}}" wx:for="{{videoSubject}}" wx:key="subjectId" data-index="{{index}}" bind:tap="toVideoSubject">
           <view class="last-learn-title" wx:if="{{item.vidoeTitle !=null}}">{{item.vidoeTitle}}</view>
-          <view class="learn-num" wx:if="{{item.currentUserNum !=null}}">{{item.currentUserNum}}位同学正在学</view>
+          <view class="learn-num" wx:if="{{item.currentUserNum !=null}}">{{item.currentUserNum}}位同学正在看</view>
         </image>
         <image class="subject-item" src="../images/more_subject_icon.png" data-index="3" bind:tap="toVideoSubject">
           <view class="last-learn-title"></view>
@@ -160,7 +160,7 @@
         </view>
         <view class="empty-box"  wx:if="{{!paperLists.length}}">暂无数据</view>
       </view>
-      <image class="btn-more" src="../images/btn_more.png" wx:if="{{paperLists.length}}" mode="widthFix" bindtap="toMore"/>
+      <image class="btn-more" src="../images/btn_more.png"  mode="widthFix" bindtap="toMore"/>
     </view>
   </view>
 </view>

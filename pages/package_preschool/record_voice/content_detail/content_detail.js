@@ -224,9 +224,12 @@ Page({
 
 			var _this = this
 			var params = {
+				resourceOrderType: 'KidRecord',
         resourceAttribute: {
           resourceType: 'Content',
-					sn: this.sn,
+					sn: _this.sn,
+					printUrl: _this.data.content.audioContentImage,
+					originalUrl: _this.data.content.audioContentImage,
 					duplex: _this.data.duplexCheck,
 					copies: _this.data.documentPrintNum,
 					startPage: _this.data.startPrintPage,

@@ -207,8 +207,10 @@ const createPayment = co.wrap(function*(sn, success=emptyFn, fail=emptyFn){
         success(res)
       },
       fail(error){
-        logger.info(error)
-        fail(error)
+        logger.info(error.errMsg)
+        fail({
+          message: error.errMsg
+        })
       }
     })
   } catch (error) {

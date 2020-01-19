@@ -19,7 +19,8 @@ Page({
     kidInfo: null,
     location: [],
     locationIndex: [0, 0, 0],
-    locationName: ''
+    locationName: '',
+    currentUserIsCreator:true
   },
   onLoad: co.wrap(function* (options) {
     this.longToast = new app.weToast()
@@ -93,6 +94,7 @@ Page({
       let resp = yield gql.getUser()
       this.setData({
         kidInfo: resp.currentUser.selectedKid,
+        currentUserIsCreator:resp.currentUser.currentGroup.currentUserIsCreator
       })
       this.longToast.hide()
     } catch (e) {
