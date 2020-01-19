@@ -10,6 +10,9 @@ import api from '../../network/restful_request.js'
 import router from '../../utils/nav'
 import Logger from '../../utils/logger.js'
 const logger = new Logger.getLogger('pages/index/index')
+import {
+  wxNav
+} from '../../utils/common_import.js'
 
 
 const showModal = util.promisify(wx.showModal)
@@ -104,12 +107,14 @@ Page({
   toPrint() {
     wxNav.redirectTo('/pages/print_id/print', {
       url: JSON.stringify(this.query.print_wm_url),
-      sn: this.query.orderSn
+      sn: this.query.orderSn,
+      hasPay:true
     })
   },
   toSave() {
     wxNav.redirectTo('/pages/print_id/smart_save', {
-      params: JSON.stringify(this.query)
+      params: JSON.stringify(this.query),
+       hasPay:true
     })
   },
   closeTip() {
