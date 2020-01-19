@@ -366,7 +366,7 @@ Page({
         })
     
         try {
-            const resp = yield commonRequest.createOrder('normal_id', param)
+            const resp = yield commonRequest.createOrder(this.image.media_type, param)
             this.longToast.hide()
             logger.info(resp)
             router.redirectTo('/pages/finish/index', {
