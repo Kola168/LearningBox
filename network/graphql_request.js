@@ -1035,15 +1035,17 @@ const graphqlApi = {
           }
         }
         content(sn: $sn){
-          name
-          iconUrl
-          sn
-          contentImages{
-            nameUrl
+          ... on KidContent {
+            name
+            iconUrl
+            sn
+            contentImages{
+              nameUrl
+            }
+            audioContentImage
+            audioUrl
+            contentCollected
           }
-          audioContentImage
-          audioUrl
-          contentCollected
         }
       }`,
       variables: {
