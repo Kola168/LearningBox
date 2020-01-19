@@ -16,12 +16,10 @@ const imginit = require('../../utils/imginit')
 import gql from '../../network/graphql_request.js'
 
 Page({
+  url:'',
+  type:'',
+  info:'',
   data: {
-    kidInfo: null,
-    memberTipUrl: '',
-    checked: false,
-    expiration: '',
-    price: '',
     modalObj: {
       isShow: false,
       hasCancel: false,
@@ -33,10 +31,8 @@ Page({
 
   onLoad: co.wrap(function* (options) {
     this.longToast = new app.weToast()
-    this.query = JSON.parse(options.confirm)
-    this.sn = this.query.sn
-    this.info = JSON.parse(options.info)
-    console.log('支付页参数', this.info, this.query)
+    this.query = JSON.parse(options.params)
+    console.log('支付页参数', this.query)
     let url
     if (options.type == 'paper') {
       url = imginit.addProcess(this.query.print_wm_url, '/rotate,90')
@@ -46,10 +42,20 @@ Page({
     this.setData({
       url: url,
       type: options.type,
-      info: this.info
+      info: this.query
     })
-    yield this.payOrder()
-
+    if (this.query.orderSn && this.query.price) {
+      this.setData({
+        paymentOrder:{
+          amountYuan:this.query.price,
+          sn:this.query.orderSn
+        },
+        discountInfo:this.query.discountInfo
+      })
+    } else {
+      this.sn = this.query.sn
+      yield this.payOrder()
+    }
   }),
 
   //创建支付订单
@@ -85,7 +91,7 @@ Page({
       title: '请稍后'
     })
     if (this.data.paymentOrder.amountYuan == 0) {
-      this.data.type == 'paper' ? this.toPrint() :  this.toSave()
+      this.data.type == 'paper' ? this.toPrint() : this.toSave()
       return
     }
     this.longToast.toast({
@@ -126,33 +132,7 @@ Page({
       setTimeout(resolve, 1500)
     })
   },
-  toPrint() {
-    wxNav.redirectTo('/pages/print_id/print', {
-      url: JSON.stringify(this.query.print_wm_url),
-      sn: this.sn
-    })
-  },
-
-  getMemberPaymentOrder: co.wrap(function* () {
-    this.longToast.toast({
-      type: 'loading'
-    })
-    try {
-      // let resp = yield memberGql.getMemberPaymentOrder(),
-      this.longToast.hide()
-    } catch (e) {
-      this.longToast.hide()
-      util.showError(e)
-    }
-  }),
   onShareAppMessage() {
 
   },
-  toSave() {
-    wxNav.redirectTo('/pages/print_id/smart_save', {
-      confirm: JSON.stringify(this.query),
-      info: JSON.stringify(this.info),
-      url: JSON.stringify(this.data.url)
-    })
-  }
 })

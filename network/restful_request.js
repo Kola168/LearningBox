@@ -103,6 +103,7 @@ const api = {
   copyConvert: (params) => request.post(`reprographics/point_edit`, params, {
     baseURL: `${app.apiServer}/api/v1/`
   }),
+  // 合成
   processes: (params) => request.post(`processes`, params, {
     baseURL: `${app.apiServer}/api/v1/`
   }),

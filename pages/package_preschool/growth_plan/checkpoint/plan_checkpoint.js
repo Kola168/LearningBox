@@ -25,16 +25,16 @@ Page({
     checkpoints: '',
     isShow: false, //是否显示锁图
     isMember: false, //是否会员
-    isSuscribe: true, //是否订阅
-    isShowPrint: true, //自动打印按钮是否显示
+    isSuscribe: false, //是否订阅
+    isShowPrint: false, //自动打印按钮是否显示
     isShadowOpcity: false, //是否显示透明层
-    isShowBottomBtn: true, //是否显示底部按钮
+    isShowBottomBtn: false, //是否显示底部按钮
     checkpointBg: 'https://cdn-h.gongfudou.com/LearningBox/preschool/growth_plan_step_bg.png', //背景图
     shadowOpcityImg: '../../images/growth_plan_lock.png', //透明遮罩层上的图片
     btnImgUrl:'',
     autoPrintBtn:false,
     // isAndroid: false,
-    isShowBtnCont:true,
+    isShowBtnCont:false,
     modal: {
       title: '畅享月度合辑',
       desc: '每日一练，每日涨知识',
@@ -121,8 +121,9 @@ Page({
           })
         })
       }
-    } catch(err){
-      console.log(err)
+    } catch(e){
+      this.longToast.toast()
+      util.showError(e)
     }
   }),
 

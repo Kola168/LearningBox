@@ -52,7 +52,8 @@
   photo_answer:'/pages/package_feature/error_book/photo_anwser_intro',
   preschool_content:'/pages/package_common/common_content/index',
   word_pdf:'/pages/package_feature/print_speed/intro',
-  shareFile:'/pages/package_feature/share_folder/index'
+  shareFile:'/pages/package_feature/share_folder/index',
+  qdnl:'/pages/package_preschool/growth_plan/list/index'
 }
 
 module.exports = {

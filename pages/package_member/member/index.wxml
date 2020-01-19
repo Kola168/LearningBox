@@ -11,7 +11,7 @@
     <view bindtap="printMemberCode" class="view"  wx:if="{{system=='ios'}}">
         立即打印
     </view>
-    <image class="image" src="../images/member_free_tip_button.png" mode="widthFix" bindtap="">
+    <image class="image" src="{{system=='ios'?'../images/member_free_tip_button_ios.png':'../images/member_free_tip_button.png'}}" mode="widthFix" bindtap="">
         <button open-type="contact"></button>
     </image>
     <view class="access-member" bindtap="toNext"> 
