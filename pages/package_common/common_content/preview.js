@@ -307,8 +307,8 @@ Page({
           resourceType: 'Content',
           sn: this.data.detail.sn,
           copies: that.data.documentPrintNum,
-          startPage: that.data.startPrintPage,
-          endPage: that.data.endPrintPage,
+          startPage: Number(that.data.startPrintPage),
+          endPage: Number(that.data.endPrintPage),
           duplex: that.data.duplexcheck,
           color:true,
           // categorySns:this.options.categorySns
