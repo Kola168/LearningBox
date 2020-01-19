@@ -178,6 +178,8 @@ const graphqlApi = {
           name
           studyUsers
           totalLessons
+          finishedLessons
+          purchasedAt
           mainImageUrl
           priceYuan
           recommendationImageUrl

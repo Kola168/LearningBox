@@ -11,7 +11,7 @@
   <view class="card-list">
     <view class="card-item" wx:for="{{exerciseContent}}" wx:key="sn" bind:tap="toExerciseDetail" data-sn="{{item.sn}}">
       <image class="" src="{{item.practiceQuestionImages[0]}}" >
-        <view class="card-tag" wx:if="{{item.haveLearned}}">已学习</view>
+        <view class="card-tag">{{item.haveLearned ? '已学习' : '待学习'}}</view>
       </image>
       <view class="card-month-title">{{item.name}}</view>
     </view>
