@@ -18,6 +18,7 @@
   _visa_jp: '/pages/print_id/index',
   _visa_kor: '/pages/print_id/index',
   _visa_tha: '/pages/print_id/index',
+  normal_id:'/pages/print_id/index',
   pic_in6: '/pages/print_photo/mediachoose',
   pic_in5: '/pages/print_photo/mediachoose',
   lomo: '/pages/print_photo/mediachoose',
