@@ -68,7 +68,10 @@ Page({
     })
     try {
       var resp = yield graphql.getMonthCompilations()
-      var currentMonth = resp.dailyPractice.practiceCategories && this.resetMonthData(resp.dailyPractice.practiceCategories[0].children)
+      var currentMonth 
+      if (resp.dailyPractice.practiceCategories && resp.dailyPractice.practiceCategories[0]) {
+        currentMonth = this.resetMonthData(resp.dailyPractice.practiceCategories[0].children)
+      }
       this.setData({
         currentMonth,
         cateGorys: resp.dailyPractice.practiceCategories

@@ -21,11 +21,11 @@
         <view>分享</view>
         <button open-type="share" hover-class="none"></button>
       </view>
-      <view class="bar-btns">
-        <view class="btns-consumable">适配耗材</view>
-        <view class="btns-print" bindtap="toSetting">
+      <view class="bar-btns" bindtap="toSetting">
+        <!-- <view class="btns-consumable">适配耗材</view>
+        <view class="btns-print" bindtap="toSetting"> -->
           打印
-        </view>
+        <!-- </view> -->
       </view>
     </view>
   </view>
