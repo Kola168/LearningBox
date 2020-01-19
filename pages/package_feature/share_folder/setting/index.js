@@ -11,7 +11,7 @@ import api from '../../../../network/restful_request.js'
 import Logger from '../../../../utils/logger.js'
 const logger = new Logger.getLogger('pages/index/index')
 import getLoopsEvent from '../../../../utils/worker'
-
+import router from '../../../../utils/nav'
 Page({
 
   data: {
