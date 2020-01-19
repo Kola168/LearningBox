@@ -19,14 +19,14 @@ const checkSession = util.promisify(wx.checkSession)
 
 App({
 	weToast: weToast,
-	version: '0.0.2',
+	version: '0.0.3',
 	//线上地址
-	apiServer: 'https://api.xbxxhz.com',
-	apiWbviewServer: 'https://api.xbxxhz.com',
+	// apiServer: 'https://api.xbxxhz.com',
+	// apiWbviewServer: 'https://api.xbxxhz.com',
 
 	//staging
-	// apiServer: 'https://lb-stg-1.gongfudou.com',
-	// apiWbviewServer: 'https://lb-stg-1.gongfudou.com',
+	apiServer: 'https://lb-stg-1.gongfudou.com',
+	apiWbviewServer: 'https://lb-stg-1.gongfudou.com',
 
 	//王析理本地地址
 	// apiServer: 'http://epbox.natapp1.cc',

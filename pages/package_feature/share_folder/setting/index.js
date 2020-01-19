@@ -11,7 +11,7 @@ import api from '../../../../network/restful_request.js'
 import Logger from '../../../../utils/logger.js'
 const logger = new Logger.getLogger('pages/index/index')
 import getLoopsEvent from '../../../../utils/worker'
-
+import router from '../../../../utils/nav'
 Page({
 
   data: {
@@ -263,8 +263,8 @@ Page({
         originalUrl: this.data.arrayFile.url,
         filename: this.data.arrayFile.name,
         copies: this.data.documentPrintNum, // 张数
-        startPage: this.data.startPage, // 起始页数
-        endPage: this.data.endPage, // 终止页数
+        startPage:  Number(this.data.startPage), // 起始页数
+        endPage:  Number(this.data.endPage), // 终止页数
         skipGs: !this.data.checkOpen, //是否检查文件修复
         color: this.data.colorcheck == 'Color' ? true : false, // 是否是彩色
         grayscale: false,

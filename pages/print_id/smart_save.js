@@ -40,13 +40,15 @@ Page({
 
     this.query = JSON.parse(options.params)
     this.sn = this.query.sn
-    logger.info('预览页参数',this.query)
+    logger.info('预览页参数', this.query)
     this.setData({
       singleImg: this.query.wm_url,
       print_wm_url: this.query.print_wm_url ? imginit.addProcess(this.query.print_wm_url, '/rotate,90') : ''
     })
     logger.info('预览页参数', this.query)
-    this.getWorkerSn()
+    if (options.hasPay != 'true') {
+      this.getWorkerSn()
+    }
     this.getAuth()
   }),
   getWorkerSn: co.wrap(function* () {
@@ -63,9 +65,9 @@ Page({
         return
       } else if (resp.certService.url) {
         this.longToast.hide()
-        let url = resp.certService.url!=''?imginit.addProcess(resp.certService.url, '/rotate,90'):''
+        let url = resp.certService.url != '' ? imginit.addProcess(resp.certService.url, '/rotate,90') : ''
         this.setData({
-          print_wm_url:url,
+          print_wm_url: url,
           singleImg: resp.certService.singleUrl
         })
       }
@@ -74,44 +76,44 @@ Page({
       this.longToast.hide()
     }
   }),
-  
+
   getAuth: co.wrap(function* () {
     try {
-        let setting = yield getSetting()
-        let camera = setting.authSetting['scope.writePhotosAlbum']
-        if (camera === undefined) {
-            this.allowCamera = 0
-            let auth = yield authorize({
-                scope: 'scope.writePhotosAlbum'
-            })
-            this.allowCamera = 2
-        } else if (camera === false) {
-            this.allowCamera = 1
-        } else {
-            this.allowCamera = 2
-        }
-        this.setData({
-            allowCamera: this.allowCamera
+      let setting = yield getSetting()
+      let camera = setting.authSetting['scope.writePhotosAlbum']
+      if (camera === undefined) {
+        this.allowCamera = 0
+        let auth = yield authorize({
+          scope: 'scope.writePhotosAlbum'
         })
-        console.log(' 0 未授权 1，授权失败， 2 已授权', this.allowCamera)
-    } catch (e) {
-        console.log('获取授权/授权失败', e)
+        this.allowCamera = 2
+      } else if (camera === false) {
         this.allowCamera = 1
-        this.setData({
-            allowCamera: this.allowCamera
-        })
+      } else {
+        this.allowCamera = 2
+      }
+      this.setData({
+        allowCamera: this.allowCamera
+      })
+      console.log(' 0 未授权 1，授权失败， 2 已授权', this.allowCamera)
+    } catch (e) {
+      console.log('获取授权/授权失败', e)
+      this.allowCamera = 1
+      this.setData({
+        allowCamera: this.allowCamera
+      })
     }
-}),
-authBack: function (e) {
+  }),
+  authBack: function (e) {
     console.log(e)
     if (!e.detail.authSetting['scope.writePhotosAlbum']) {
-        return
+      return
     }
     this.setData({
-        allowCamera: 2
+      allowCamera: 2
     })
     this.savePhoto(e)
-},
+  },
   //保存图片
   savePhoto: co.wrap(function* (e) {
     let id = e.currentTarget.id
