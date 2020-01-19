@@ -94,17 +94,36 @@ export const commonFeatures = {
 
 export const helpStudy = [{
     id: 'syncLearn',
-    url: '/pages/package_subject/sync_learn/index/index'
+    // url: '/pages/package_subject/sync_learn/index/index'
 },{
     id: 'evaluate_exam',
-    url: '/pages/package_subject/evaluate_exam/index/index'
+    // url: '/pages/package_subject/evaluate_exam/index/index'
 },{
     id: 'errorBook',
-    url: '/pages/package_subject/super_errorbook/index/index'
+    // url: '/pages/package_subject/super_errorbook/index/index'
 },{
     id: 'weaknessExercise',
-    url: '/pages/package_subject/weakness_exercise/index/index'
+    // url: '/pages/package_subject/weakness_exercise/index/index'
 },{
     id: 'stageReporter',
-    url: '/pages/package_subject/stage_report/index/index'
+    // url: '/pages/package_subject/stage_report/index/index'
 },]
+
+
+// export const helpStudy = [{
+// 	id: 'syncLearn',
+// 	url: '/pages/package_subject/sync_learn/index/index'
+// },{
+// 	id: 'evaluate_exam',
+// 	url: '/pages/package_subject/evaluate_exam/index/index'
+// },{
+// 	id: 'errorBook',
+// 	url: '/pages/package_subject/super_errorbook/index/index'
+// },{
+// 	id: 'weaknessExercise',
+// 	url: '/pages/package_subject/weakness_exercise/index/index'
+// },{
+// 	id: 'stageReporter',
+// 	url: '/pages/package_subject/stage_report/index/index'
+// },]
+

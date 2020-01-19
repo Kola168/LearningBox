@@ -117,20 +117,19 @@
         <view>小白老师是谁？</view>
       </view>
     </view>
-    <view class="study-center" bind:tap="toLearnCenter">
+    <!-- <view class="study-center" bind:tap="toLearnCenter">
       <text>进入学习中心</text>
       <image src="/images/home/to_study_center.png" mode="widthFix" />
-    </view>
+    </view> -->
 
-    <view class="home-title">
+    <!-- <view class="home-title">
       <view>升学专题</view>
     </view>
-    <!-- <scroll-view class="special scroll" scroll-x> -->
-    <view class="special">
+		
+		<view class="special">
       <image src="{{item.image}}" mode="widthFix" wx:for="{{updateSchool}}" wx:key="updateSchool"
         wx:if="{{gradeParent.name==item.name}}" bindtap="toUpdateSchool" id="{{item.id}}"></image>
     </view>
-    <!-- </scroll-view> -->
 
     <view class="home-title" wx:if="{{recommendCourse.length>0}}">
       <view>心选课程</view>
@@ -147,7 +146,7 @@
           <view class="small-title">{{item.totalLessons}}课时</view>
         </view>
       </block>
-    </scroll-view>
+    </scroll-view> -->
   </block>
 
 </block>
