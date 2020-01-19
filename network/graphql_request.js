@@ -122,10 +122,12 @@ const graphqlApi = {
     return gql.query({
       query: `query ($sn: String!){
         category(sn: $sn){
-          templates {
-            previewImage,
-            sn,
-            name
+          ...on TemplateCategory {
+            templates {
+              previewImage,
+              sn,
+              name
+            }
           }
         }
       }`,
