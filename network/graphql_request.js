@@ -442,15 +442,18 @@ const graphqlApi = {
       query: `query getSubjectContent($sn: String!){
         category(sn: $sn) {
           image
-          courses{
-            sn
-            mainImageUrl
-            desc
-            payed
-            priceYuan
-            totalLessons
-            studyUsers
+          ... on CourseCategory {
+            courses{
+              sn
+              mainImageUrl
+              desc
+              payed
+              priceYuan
+              totalLessons
+              studyUsers
+            }
           }
+          
         }
       }`,
       variables: {
@@ -778,6 +781,7 @@ const graphqlApi = {
               sn
               printerOrdersCount
               pageCount
+              audioContentImage
             }
           }
          }

@@ -26,8 +26,6 @@ Page({
    * 获取用户信息
    */
   getUserInfo: co.wrap(function*() {
-		let userSn = storage.get('userSn')
-		this.userSn = userSn
 		if(app.isScope()){
 			try {
 				let resp = yield gql.getUser()
