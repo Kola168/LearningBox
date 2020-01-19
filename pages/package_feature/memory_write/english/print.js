@@ -123,6 +123,7 @@ Page({
         featureKey: 'guess_write',
         resourceOrderType: 'GuessWrite',
         resourceAttribute: {
+          printUrl: this.previewPdfUrl,
           originalUrl: this.previewPdfUrl,
           copies: this.data.printCount,
           categorySns: this.sns,
@@ -136,6 +137,7 @@ Page({
         media_type: 'memory_write',
         avatarUrl: encodeURIComponent(JSON.stringify(userData.userInfo.avatarUrl)),
         nickName: userData.userInfo.nickName,
+        infoArr: encodeURIComponent(JSON.stringify(resp.createResourceOrder.statistic.fields))
       })
     } catch (error) {
       this.weToast.hide()

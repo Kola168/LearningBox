@@ -726,6 +726,12 @@ const graphqlApi = {
             ... on DailyPracticeSet{
               keepDays
             }
+            ... on NormalStatistic{
+              fields{
+                label
+                value
+              }
+            }
           }
         }
       }`,

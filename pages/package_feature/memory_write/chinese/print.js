@@ -128,11 +128,8 @@ Page({
         type: 'chinese_memory_write',
         state: resp.createResourceOrder.state,
         media_type: 'memory_write',
-        avatarUrl: encodeURIComponent(JSON.stringify(userData.userInfo.avatarUrl)),
         nickName: userData.userInfo.nickName,
-        // count:resp.statistics.day_count,
-        // printed_count:resp.statistics.print_count,
-        // user_share_qrcode:encodeURIComponent(JSON.stringify(resp.qrcode))
+        infoArr: encodeURIComponent(JSON.stringify(resp.createResourceOrder.statistic.fields))
       })
     } catch (error) {
       this.weToast.hide()
