@@ -1,6 +1,7 @@
 .right-radio>view,
 .item-right,
 .item-left,
+.not-admin-item,
 .setting-item,
 .setting-tab,
 .device-base,
@@ -110,6 +111,7 @@
   padding: 0 24rpx 24rpx;
 }
 
+.not-admin-item,
 .setting-item {
   justify-content: space-between;
   height: 100rpx;
@@ -117,6 +119,10 @@
 
 .setting-item:not(:last-child) {
   border-bottom: 2rpx solid #E7E7E7;
+}
+
+.not-admin-item {
+  padding: 0 24rpx;
 }
 
 .left-label {

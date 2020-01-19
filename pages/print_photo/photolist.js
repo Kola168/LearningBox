@@ -260,6 +260,7 @@ Page({
         that.setData({
           showProcess: false
         })
+        this.setStorage()
         if (this.smallImgDelete) {
           that.setData({
             showProcess: true,

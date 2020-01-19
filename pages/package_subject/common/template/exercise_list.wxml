@@ -1,6 +1,8 @@
 <template name="exerciseList">
   <view class="exercise-item">
-    <image class="content-icon" src="../../images/pdf.png"></image>
+    <image class="content-icon" src="../../images/pdf.png">
+      <view class="print-icon" wx:if="{{item.isPrint}}">已打印</view>
+    </image>
     <view class="exercise-in-content">
       <view class="main-content">
         <view class="name">{{item.exerciseName}}</view>
@@ -13,6 +15,29 @@
         <view class="create-date">{{item.dateTime}}</view>
       </view>
     </view>
-    <view class="btn-print" bind:tap="toPrint" data-sn="{{item.sn}}">打印练习</view>
+    <view class="btn btn-print" bind:tap="toPrint" data-sn="{{item.sn}}">打印练习</view>
+  </view>
+</template>
+
+
+<template name="reportList">
+  <view class="exercise-item">
+    <image class="content-icon" src="../../images/pdf.png">
+      <view class="print-icon" wx:if="{{item.isPrint}}">已打印</view>
+    </image>
+    <view class="exercise-in-content">
+      <view class="main-content">
+        <view class="name">{{item.exerciseName}}</view>
+        <view class="exercise-activity-icon" wx:if="{{index == 0}}">最新</view>
+      </view>
+      <view class="effect-content">
+        <image src="/images/doc_discover_pages.png" />
+        <view class="page-count">共{{item.pageSize || item.images.length}}页</view>
+        <image src="../../images/time_icon.png" />
+        <view class="create-date">{{item.dateTime}}</view>
+      </view>
+    </view>
+    <view class="btn btn-print" bind:tap="toPrint" wx:if="{{item.state =='finished'}}" data-state="{{item.state}}" data-sn="{{item.sn}}">打印练习</view>
+    <view class="btn btn-state" data-state="{{item.state}}"  wx:else >正在生成...</view>
   </view>
 </template>

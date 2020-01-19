@@ -159,6 +159,16 @@ Page({
         content: '请输入宝宝姓名'
       })
     }
+
+    var font = this.data.babyName.match(/[\u4e00-\u9fa5]/g)
+    var letter = this.data.babyName.match(/[^\u4e00-\u9fa5]/g)
+    if (font.length + (letter.length / 2) > 5) {
+      this.data.babyName = ''
+      return wx.showModal({
+        title: '提示',
+        content: '宝宝姓名最多5个字'
+      })
+    }
     this.cancelModal()
     yield this.updateKidName()
   }),

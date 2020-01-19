@@ -99,12 +99,14 @@ const graphqlApi = {
    * @param { Number } paperType 试卷类型
    * @param { Number } areaId 地区id
    * @param { Number } pageIndex 分页
+   * @param { Number } pageSize 分页
+   * @param { Number } year 年份
    */
-  getSubjectPapers: (subjectId, paperType, gradeId, areaId, pageIndex) => {
+  getSubjectPapers: (subjectId, paperType, gradeId, areaId, year = 0, pageIndex = 1,pageSize = 20) => {
     return gql.query({
-      query: `query ($subjectId: Int!,$paperType: Int!,$areaId: Int!,$gradeId: Int!,$pageIndex: Int!,$pageSize: Int!){
+      query: `query ($subjectId: Int!,$paperType: Int!,$areaId: Int!,$gradeId: Int!,$pageIndex: Int!,$year: Int!,$pageSize: Int!){
         xuekewang {
-          paperLists(subjectId:$subjectId,paperType:$paperType,areaId:$areaId,gradeId:$gradeId,pageIndex:$pageIndex,pageSize:$pageSize){
+          paperLists(subjectId:$subjectId,paperType:$paperType,areaId:$areaId,gradeId:$gradeId,pageIndex:$pageIndex,year:$year,pageSize:$pageSize){
             paperId
             isPrint
             isReport
@@ -119,8 +121,9 @@ const graphqlApi = {
         paperType: paperType,
         areaId: areaId,
         gradeId: gradeId,
-        pageSize: 20,
-        pageIndex: pageIndex
+        pageSize: pageSize,
+        pageIndex: pageIndex,
+        year: year
       }
     })
   },
@@ -385,6 +388,7 @@ const graphqlApi = {
             exerciseName
             printCount
             sn
+            isPrint
           }
         }
       }`,
@@ -482,6 +486,9 @@ const graphqlApi = {
   getPaperCates: () => {
     return gql.query({
       query: `query getPaperCates{
+        mistakeCount{
+          misCount
+        }
         xuekewang {
           selectedPaperTypes{
             id
@@ -497,8 +504,13 @@ const graphqlApi = {
           printPaperCount
           percentage
           totalErrorBooksNum
+          totalSubjectNums: totalReportNum(type:XuekewangSubjectReport)
+          totalReportNums: totalReportNum(type:XuekewangSubjectReport)
         }
-      }`
+      }`,
+      // variables: {
+      //   type:
+      // }
     })
   },
 
@@ -613,22 +625,21 @@ const graphqlApi = {
    */
   getKnowledgeExercises: (subjectSn, isPrint = 0) => {
     return gql.query({
-      query: `query getExercises($subjectSn:String, $exerciseType:String, $isPrint: Int){
+      query: `query getExercises($subjectSn:String, $exerciseType:String){
         xuekewang{
-          exercises(subjectSn:$subjectSn, exerciseType: $exerciseType, isPrint: $isPrint){
+          exercises(subjectSn:$subjectSn, exerciseType: $exerciseType){
             sn
             dateTime
             isPrint
             pageSize
             exerciseName
           }
-          exerciseCount(subjectSn:$subjectSn, exerciseType: $exerciseType, isPrint: $isPrint)
+          exerciseCount(subjectSn:$subjectSn, exerciseType: $exerciseType)
         }
       }`,
       variables: {
         subjectSn,
-        exerciseType: 'kpoint',
-        isPrint
+        exerciseType: 'kpoint'
       }
     })
   },
@@ -901,6 +912,7 @@ const graphqlApi = {
             images{
               nameUrl
             }
+            reportSn
             answerPdf{
               nameUrl
             }
@@ -1058,6 +1070,7 @@ const graphqlApi = {
             images{
               id
             }
+            state
             dateTime: createdAt
           }
         }

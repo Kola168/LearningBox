@@ -11,6 +11,7 @@ Page({
     featureKey: null,
     allCheck: true,
     count: 0,
+    stage: '',
     loadReady: false,
     isFullScreen: false,
     confirmModal: {
@@ -20,18 +21,21 @@ Page({
     }
   },
 
-  onLoad(query) {
+  onLoad: co.wrap(function*(query) {
     this.sn = query.sn
     this.longToast = new app.weToast()
-    this.getLessonDetail()
+    var user = yield this.getUserInfo()
+    yield this.getLessonDetail()
+
     this.setData({
+      stage: user.selectedKid.stageRoot.rootKey,
       isFullScreen: app.isFullScreen,
     })
-  },
+  }),
 
   zoomImg(e) {
     let index = Number(e.currentTarget.id),
-      url = this.data.lessonImgs[index].imgObj.url + '?x-image-process=image/watermark,image_L21pY3JvL0xldmlhdGhhbi9iYWNrZW5kL3dhdGVybWFya2VyLnBuZw==,g_center/resize,w_700'
+      url = this.data.lessonImgs[index].imgObj.url + '?x-image-process=image/watermark,image_L21pY3JvL0xldmlhdGhhbi9iYWNrZW5kL3dhdGVybWFya2VyLnBuZw==,g_center,t_50/resize,w_700'
     wx.previewImage({
       urls: [url]
     })
@@ -87,6 +91,21 @@ Page({
     }
   },
 
+   /**
+   * 获取用户信息
+   */
+  getUserInfo: co.wrap(function*() {
+		if(app.isScope()){
+			try {
+				let resp = yield graphql.getUser()
+				return resp.currentUser
+			} catch (e) {
+				// util.showError(e)
+			}
+		}
+    
+  }),
+
   print: co.wrap(function*() {
     this.longToast.toast({
       type: 'loading',
@@ -115,7 +134,7 @@ Page({
       this.longToast.hide()
       router.redirectTo('/pages/finish/index', {
         type: 'course',
-        media_type: 'course',
+        media_type: this.data.stage ==  'preschool' ? 'preschool_course' : 'subject_course',
         state: resp.createResourceOrder.state
       })
     } catch (error) {

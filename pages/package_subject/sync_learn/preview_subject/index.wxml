@@ -1,19 +1,29 @@
-<nav-bar background="#fff" title="同步练习" />
+<nav-bar background="#fff" title="练习" />
 <view class="preview-main">
-	<swiper class="swpier-box" bindchange="changeImg">
+	<swiper class="swpier-box" bindchange="changeImg" wx:if="{{isPrintAnswer && exercise && exercise.answerImages}}">
 		<swiper-item
-		 class=""
-		 current="{{currentIndex - 1}}"
-		 item-id=""
-		 wx:for="{{!isPrintAnswer ? exercise.images : exercise.answerImages}}"
+		 wx:for="{{exercise.answerImages}}"
 		 wx:key="nameUrl"
 		>
-			<image class="img-item" src="{{item.nameUrl}}?x-image-process=image/watermark,image_L21pY3JvL0xldmlhdGhhbi9iYWNrZW5kL3dhdGVybWFya2VyLnBuZw==,g_center/resize,w_700" mode="widthFix" />
+			<image class="img-item" src="{{item.nameUrl}}?x-image-process=image/watermark,image_L21pY3JvL0xldmlhdGhhbi9iYWNrZW5kL3dhdGVybWFya2VyLnBuZw==,g_center,t_50/resize,w_700" mode="widthFix" />
 		</swiper-item>
 	</swiper>
+
+	<swiper class="swpier-box" bindchange="changeImg" wx:else>
+		<block wx:if="{{exercise && exercise.images}}">
+				<swiper-item
+				class=""
+				wx:for="{{exercise.images}}"
+				wx:key="nameUrl"
+				>
+					<image class="img-item" src="{{item.nameUrl}}?x-image-process=image/watermark,image_L21pY3JvL0xldmlhdGhhbi9iYWNrZW5kL3dhdGVybWFya2VyLnBuZw==,g_center/resize,w_700" mode="widthFix" />
+				</swiper-item>
+		</block>
+	</swiper>
 	<view class="precent">{{currentIndex}}/{{!isPrintAnswer ? exercise.images.length : exercise.answerImages.length}}</view>
+	<image src="../../images/member_preview.png" bind:tap="toMember" wx:if="{{!isSchoolAgeMember}}" class="member-card" mode="widthFix" />
 	<view class="btn-bottom">
-		<view class="print-answer" bind:tap="checkAnswer">
+		<view class="print-answer" bind:tap="checkAnswer" wx:if="{{!isHidePrintAnswerBtn}}">
 			<image class="check-on" src="{{isPrintAnswer ? '../../images/check_on.png' : '../../images/check_off.png'}}" />
 			<view class="title">打印答案</view>
 		</view>
@@ -22,7 +32,7 @@
 </view>
 
 <!-- 会员开通弹窗 -->
-<showMemberToast id="memberToast" />
+<showMemberToast id="memberToast"  memberToast="{{memberToast}}"/>
 
 <import src="../../../../lib/toast/wetoast.wxml" />
 <template is="wetoast" data="{{...__wetoast__}}" />

@@ -1,0 +1,19 @@
+/* pages/package_feature/kousuan/teacher.wxss */
+page{
+}
+
+.wrap{
+  display:flex;
+  flex-direction:column;
+}
+
+.img-style{
+  width:100%;
+}
+
+.bottom-but{
+  width:100%;
+  position:fixed;
+  bottom:0;
+  left:0;
+}

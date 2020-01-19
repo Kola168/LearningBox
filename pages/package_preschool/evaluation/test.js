@@ -8,6 +8,7 @@ const util = require('../../../utils/util')
 import wxNav from '../../../utils/nav.js'
 import api from '../../../network/restful_request'
 import gql from '../../../network/graphql/preschool'
+const downloadFile=util.promisify(wx.downloadFile)
 
 let Loger = (app.apiServer != 'https://epbox.gongfudou.com' || app.deBug) ? console.log : function() {}
 
@@ -25,9 +26,12 @@ Page({
   onLoad: function(options) {
     this.longToast = new app.weToast()
     this.sn = options.sn
-    this.audioCtx = wx.createInnerAudioContext()
-    this.audioCtx.obeyMuteSwitch = false
+
     this.getTestList()
+  },
+
+  onUnload:function(){
+    clearInterval(this.interval)
   },
 
   getTestList: co.wrap(function*() {
@@ -40,7 +44,7 @@ Page({
         subjectList: resp.examination.questions
       })
       if(this.data.subjectList[this.data.nowIndex].audioUrl){
-        this.audioCtx.src = this.data.subjectList[this.data.nowIndex].audioUrl
+        this.initAudio()
       }
       this.longToast.toast()
       this.startAnswer()
@@ -57,34 +61,54 @@ Page({
 
   audioPlaying:false,
 
-  playVideo: function(e) {
-    try{
-    if(this.audioPlaying){
-      this.stopVideo()
-      return
-    }
-    console.log(this.audioCtx.src)
+  initAudio:function(){
     let that = this
-    let index = e.currentTarget.dataset.index
-    that.audioCtx.play()
-    that.audioCtx.onPlay(function(){
-
+    this.longToast.toast({
+      type: 'loading'
     })
-    that.audioPlaying=true
+    if(that.audioCtx){
+      that.audioCtx.destroy()
+    }
+    this.audioCtx = wx.createInnerAudioContext()
+    this.audioCtx.src = this.data.subjectList[this.data.nowIndex].audioUrl
+    this.audioCtx.obeyMuteSwitch = false
+    wx.setInnerAudioOption({
+      obeyMuteSwitch: false
+    })
+    that.audioCtx.onCanplay(function(){
+      that.longToast.toast()
+      that.audioCtx.offCanplay()
+    })
+
     this.audioCtx.onEnded(function(){
+      console.log(111111)
       that.audioCtx.stop()
       that.audioPlaying=false
     })
     this.audioCtx.onError(function(res){
-
+      console.log(res)
       that.audioCtx.stop()
     })
+    this.audioCtx.onTimeUpdate(function(){
+      console.log(that.audioCtx.duration,that.audioCtx.currentTime)
+    })
     this.audioCtx.onStop(function(){
+      console.log(2222222)
       that.audioPlaying=false
     })
-  }catch(e){
-    console.log(e)
-  }
+  },
+  playVideo: function(e) {
+    try{
+      if(this.audioPlaying){
+        this.stopVideo()
+        return
+      }
+      console.log(this.audioCtx.src)
+      this.audioPlaying=true
+      this.audioCtx.play()
+    }catch(e){
+      console.log(e)
+    }
   },
 
   stopVideo: function() {
@@ -96,6 +120,8 @@ Page({
     let that = this
     this.interval = setInterval(function() {
       that.data.remainingTime--
+      console.log(that.data.remainingTime)
+      console.log(that.interval)
       if (that.data.remainingTime < 0) {
         that.initQuestion()
         that.data.remainingTime = that.originalRemainingTime
@@ -107,7 +133,7 @@ Page({
     }, 1000)
   },
 
-  initQuestion: function() {
+  initQuestion: co.wrap(function*() {
 
     let param = this.data.subjectList[_.clone(this.data.nowIndex)]
     this.answerList.push({
@@ -123,12 +149,12 @@ Page({
       return this.toSummary()
     }
     if(this.data.subjectList[this.data.nowIndex].audioUrl){
-      this.audioCtx.src = this.data.subjectList[this.data.nowIndex].audioUrl
+      this.initAudio()
     }
     this.setData({
       selectIndex: null
     })
-  },
+  }),
 
   selectAnswer: function(e) {
     let index = e.currentTarget.dataset.index

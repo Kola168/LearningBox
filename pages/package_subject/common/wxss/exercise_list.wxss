@@ -11,9 +11,24 @@
 }
 
 .exercise-content .content-icon {
+  position: relative;
   margin-right: 36rpx;
   width: 60rpx;
   height: 72rpx;
+}
+
+.print-icon {
+  position: absolute;
+  width: 100%;
+  height: 28rpx;
+  line-height: 28rpx;
+  text-align: center;
+  font-size: 16rpx;
+  color: #FFA200;
+  bottom: 0;
+  left: 0;
+  background: #FFF8E0;
+  border-radius: 0 0 4rpx 4rpx;
 }
 
 .exercise-in-content {
@@ -61,13 +76,21 @@
   height: 26rpx;
 }
 
-.btn-print {
+.btn {
   width: 136rpx;
   height: 52rpx;
   line-height: 52rpx;
   text-align: center;
   font-size: 24rpx;
-  color: #333333;
-  background: #FFDC5E;
   border-radius: 26rpx;
+}
+
+.btn-print {
+  background: #FFDC5E;
+  color: #333333;
+}
+
+.btn-state {
+  background: #FFDC5E;
+  color: #333333;
 }

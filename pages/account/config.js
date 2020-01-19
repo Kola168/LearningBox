@@ -8,7 +8,7 @@ export const features= [{
     }, {
       name: '购买记录',
       image: '/images/account_order.png',
-			url: '',
+			url: '/pages/package_common/order_record/index/index',
 			key:'buyRecord'
     }, {
       name: '我的收藏',
@@ -21,7 +21,7 @@ export const features= [{
     features: [{
       name: '使用说明',
       image: '/images/account_use_info.png',
-			url: '',
+			url: 'pages/package_common/instructions/index',
 			key:'usage'
     }, {
       name: '意见反馈',
@@ -40,7 +40,7 @@ export const features= [{
     features: [{
       name: '账号管理',
       image: '/images/account_manage.png',
-			url: '',
+			url: 'pages/package_common/accountmanagement/index',
 			key:'moreService'
     }, {
       name: '纸质化学习方法',

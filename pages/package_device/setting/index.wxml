@@ -155,15 +155,15 @@
         </view>
       </view>
     </block>
-    <view class="setting-box border-bottom" wx:if="{{!device.isAdmin}}">
-      <view class="setting-item">
+    <view class="not-admin-boxs" wx:if="{{!device.isAdmin}}">
+      <view class="not-admin-item border-bottom">
         <view class="item-left flex-column">
           <view class="left-label">盒子编号</view>
           <view class="label-sub">打印机型号：{{device.model}}</view>
         </view>
         <view class="item-right">{{device.sn}}</view>
       </view>
-      <view class="setting-item">
+      <view class="not-admin-item">
           <view class="item-left">
             <view class="left-label">解除绑定</view>
           </view>

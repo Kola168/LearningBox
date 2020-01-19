@@ -5,8 +5,7 @@
 .color-item,
 .bottom-bar,
 .handle-bar,
-.bar-btn,
-.bar-btns {
+.bar-btn {
   display: flex;
 }
 
@@ -70,7 +69,7 @@
 }
 
 .bar-btn {
-  width: 18%;
+  width: 25%;
   justify-content: center;
   font-size: 24rpx;
   color: #666;
@@ -93,26 +92,34 @@
 
 .bar-btns {
   width: 64%;
+  /* width: 50%; */
+  height: 76rpx;
+  line-height: 76rpx;
+  text-align: center;
+  font-size: 32rpx;
+  color: #333;
+  background: #FFDC5E;
+  border-radius: 38rpx;
 }
 
-.bar-btns>view {
+/* .bar-btns>view {
   width: 50%;
   height: 76rpx;
   line-height: 76rpx;
   text-align: center;
   font-size: 32rpx;
   color: #333;
-}
+} */
 
-.btns-consumable {
+/* .btns-consumable {
   background: #FFA200;
   border-top-left-radius: 38rpx;
   border-bottom-left-radius: 38rpx;
-}
+} */
 
-.btns-print {
+/* .btns-print {
   background: #FFDC5E;
   border-top-right-radius: 38rpx;
   border-bottom-right-radius: 38rpx;
   position:relative;
-}
+} */

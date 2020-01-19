@@ -25,10 +25,9 @@ Page({
 		this.longToast = new app.weToast()
 		this.paymentOrderSn = query.payment_order_sn
 		this.getMemberPaymentOrder()
-		let stage = storage.get("kidStage")
 		this.setData({
-			stage: stage,
-			memberTipUrl: stage.rootKey === 'preschool' ? '../images/member_order_preschool_tip.png' : '../images/member_order_subject_tip.png',
+			payableType:query.payable_type,
+			memberTipUrl: query.payable_type === 'preschool' ? '../images/member_order_preschool_tip.png' : '../images/member_order_subject_tip.png',
 		})
 	}),
 
@@ -43,7 +42,7 @@ Page({
 			this.setData({
 				kidInfo: resp.currentUser.selectedKid,
 				expiration: tempData.afterRechargeDate,
-				price: tempData.priceY.toFixed(2)
+				price:  resp.currentUser.paymentOrders[0].amountYuan
 			})
 		} catch (e) {
 			this.longToast.toast()
@@ -55,10 +54,6 @@ Page({
 		this.setData({
 			checked: !this.data.checked
 		})
-	},
-
-	toProtocol() {
-
 	},
 
 	openeMemebership(e) {
@@ -90,4 +85,18 @@ Page({
 			})
 		}
 	},
+
+	toProtocol(){
+		wx.downloadFile({
+      url: 'https://cdn-h.gongfudou.com/LearningBox/main/member_agreement.pdf',
+      success: function(res) {
+        const filePath = res.tempFilePath
+        wx.openDocument({
+          filePath: filePath,
+          success: function(res) {
+          }
+        })
+      }
+    })
+	}
 })

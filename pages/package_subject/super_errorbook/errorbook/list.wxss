@@ -191,17 +191,27 @@
 }
 
 .list-content {
-  padding: 0 24rpx 140rpx;
+  padding-left: 24rpx;
+  padding-right: 24rpx;
+  padding-bottom: 70px;
 }
 
 .content-title {
   justify-content: space-between;
   font-size: 30rpx;
   color: #666;
-  padding: 36rpx 0 30rpx;
+  height: 100rpx;
+  align-items: center;
+  position: fixed;
+  left: 0;
+  width: 100%;
+  box-sizing: border-box;
+  background: #f7f7f7;
+  padding: 0 24rpx;
+  z-index: 600;
 }
 
-.title-select image {
+.select-img {
   width: 28rpx;
   margin-right: 10rpx;
 }
@@ -231,7 +241,8 @@
 
 .item-top>view {
   padding: 0 24rpx;
-  overflow: hidden;
+  overflow-x: hidden;
+  max-height: 400rpx;
 }
 
 view.top-marker {

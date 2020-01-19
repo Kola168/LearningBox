@@ -102,7 +102,7 @@ Page({
 			var orderData = storage.get('orderSuccessParams')
 			this.setData({
 				isExercise,
-				exerciseDay: orderData.statistic && orderData.statistic.keepDays
+				exerciseDay: orderData && orderData.keepDays
 			})
 			storage.remove('orderSuccessParams')
 		} catch (err) {
@@ -143,7 +143,16 @@ Page({
 	// 	}
 	// }),
 	backToHome: function () {
-		wxNav.switchTab('/pages/index/index')
+		if (this.printType == 'course') {
+			if (this.media_type == 'preschool_course') {
+				wxNav.switchTab('/pages/course/index')
+			} else {
+				wxNav.navigateTo('/pages/package_common/heart_course/index')
+			}
+		} else {
+			wxNav.switchTab('/pages/index/index')
+		}
+
 	},
 
 	continuePrint: function () {

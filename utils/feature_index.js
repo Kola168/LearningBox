@@ -2,7 +2,8 @@
   literacy_card: '/pages/package_feature/cognition_card/index/index',
   free_resource: '/pages/package_common/free_resources/detail/index',
   pic2doc: '/pages/print_photo_doc/index',
-  course: '/pages/course/index',
+  preschool_course: '/pages/course/index',
+  subject_course: '/pages/package_common/heart_course/index',
   kid_record: '/pages/package_preschool/record_voice/index/index',
   doc_a4: '/pages/print_doc/index/index',
   id_card: '/pages/print_doc/duplicate/index',
@@ -19,11 +20,11 @@
   _visa_kor: '/pages/print_id/index',
   _visa_tha: '/pages/print_id/index',
   normal_id:'/pages/print_id/index',
-  pic_in6: '/pages/print_photo/mediachoose',
-  pic_in5: '/pages/print_photo/mediachoose',
-  lomo: '/pages/print_photo/mediachoose',
-  pic_in7: '/pages/print_photo/mediachoose',
-  pic_a4: '/pages/print_photo/mediachoose',
+  pic_in6: '/pages/print_photo/photolist',
+  pic_in5: '/pages/print_photo/photolist',
+  lomo: '/pages/print_photo/photolist',
+  pic_in7: '/pages/print_photo/photolist',
+  pic_a4: '/pages/print_photo/photolist',
   balloon:'/pages/package_feature/print_balloon/index',
   photo_book:'/pages/package_feature/print_book/index',
   diy_calendar:'/pages/package_feature/print_calendar/index',
@@ -51,7 +52,9 @@
   photo_answer:'/pages/package_feature/error_book/photo_anwser_intro',
   preschool_content:'/pages/package_common/common_content/index',
   word_pdf:'/pages/package_feature/print_speed/intro',
-  shareFile:'/pages/package_feature/share_folder/index'
+  shareFile:'/pages/package_feature/share_folder/index',
+  qdnl:'/pages/package_preschool/growth_plan/list/index',
+  reprography: '/pages/print_doc/duplicate_preview/duplicate_preview',
 }
 
 module.exports = {

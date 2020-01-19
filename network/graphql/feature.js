@@ -11,10 +11,12 @@ const graphqlApi = {
       query: `query ($key: String!){
         feature(key: $key){
           categories {
-            image,
-            name,
-            sn,
-            writeType
+            ...on GuessWriteCategory {
+              image
+              name
+              sn
+              writeType
+            }
           }
         }
       }`,
@@ -59,15 +61,19 @@ const graphqlApi = {
     return gql.query({
       query: `query ($sn: String!){
         category(sn:$sn) {
-          sn
-          name
-          children{
+          ...on GuessWriteCategory{
             sn
             name
-            printCount
-            questions{
-              answer
-              title
+            children{
+              ... on GuessWriteCategory{
+                sn
+                name
+                printCount
+                questions{
+                  answer
+                  title
+                }
+              }
             }
           }
         }
@@ -93,8 +99,10 @@ const graphqlApi = {
            rootName
            sn
            kousuanCategories{
-             name
-             sn
+             ... on KousuanCategory{
+               name
+               sn
+             }
            }
           }
         }
@@ -107,10 +115,12 @@ const graphqlApi = {
     return gql.query({
       query: `query($sn: String!){
         category(sn:$sn){
-          children{
-            name
-            image
-            sn
+          ... on KousuanCategory{
+            children{
+              name
+              image
+              sn
+            }
           }
         }
       }`,
@@ -125,11 +135,13 @@ const graphqlApi = {
     return gql.query({
       query: `query($sn: String!){
         category(sn:$sn){
-          children{
-            name
-            image
-            sn
-            quesionNumber
+          ... on KousuanCategory{
+            children{
+              name
+              image
+              sn
+              quesionNumber
+            }
           }
         }
       }`,
@@ -144,14 +156,18 @@ const graphqlApi = {
     return gql.query({
       query: `query($sn: String!){
         category(sn:$sn){
-          children{
-            name
-            image
-            sn
+          ... on KousuanCategory{
             children{
               name
               image
               sn
+              ... on KousuanCategory{
+                children{
+                  name
+                  image
+                  sn
+                }
+              }
             }
           }
         }

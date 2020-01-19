@@ -53,7 +53,7 @@ Page({
         recommend: '复制链接快速打',
         icon: '/images/doc_official_icon.png',
         key: 'weChatArticle',
-        // url: '/pages/print_doc/print_wx/print_wx'
+        url: '/pages/package_feature/print_link/index'
       },
       {
         name: '电子发票',
@@ -116,7 +116,7 @@ Page({
         })
       } else {
         //请升级到最新的微信版本
-        yield showModal({
+         wx.showModal({
           title: '微信版本过低',
           content: '请升级到最新的微信版本',
           confirmColor: '#2086ee',

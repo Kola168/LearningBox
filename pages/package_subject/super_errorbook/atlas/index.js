@@ -48,7 +48,7 @@ Page({
         if (rates[i].questionNum > 0) {
           let score = rates[i].scoringRate
           this.atlasData.title.push(rates[i].subjectName)
-          this.atlasData.data.push(score === 0 ? 0.01 : this.atlasData.data[i])
+          this.atlasData.data.push(score === 0 ? 0.01 : score)
           if (score >= 85) {
             topSubjects.push(rates[i])
           } else if (score < 85 && score >= 60) {
@@ -72,7 +72,7 @@ Page({
       } else if (this.atlasData.title.length > 0) {
         dataObj.atlasType = 'bar'
         let tempArr = []
-        for (let i = 0; i < 2; i++) {
+        for (let i = 0; i < this.atlasData.title.length; i++) {
           tempArr.push({
             title: this.atlasData.title[i],
             rate: this.atlasData.data[i]
@@ -93,12 +93,14 @@ Page({
   drawRadar() {
     let canvasWidth = this.data.canvasWidth,
       center = Math.ceil(canvasWidth / 2),
+      maxVal = Math.max(...this.atlasData.data),
       _this = this
     const radar = new RadarChart({
       id: 'radar',
       colors: ['#4D98EC'],
       radius: center - 60,
       gridNumber: 5,
+      maxRate: maxVal / 100,
       origin: {
         x: center,
         y: center

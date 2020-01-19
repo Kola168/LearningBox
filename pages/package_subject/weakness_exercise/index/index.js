@@ -17,14 +17,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-    modal: {
-      isShow: true,
-      title: '开通学科会员，专项同步练习',
-      slotContent: false,
-      content: '专享错题薄弱同类练习题推送',
-      image: 'https://cdn-h.gongfudou.com/LearningBox/subject/weakness_member_banner.png',
-      slotBottom: true
-    },
+    memberToast: 'weaknessExercise',
     showSubjectForm: false, //是否显示科目状态表单
     showPrintForm: false, //是否显示打印状态表单
     showSubjectCheckbox: false, //是否选择科目
@@ -53,6 +46,7 @@ Page({
     checkedSubject: null,
     isExerciseEmpty: false,
     isSchoolAgeMember: false,
+    isAndroid: false,
   },
 
   /**
@@ -61,13 +55,15 @@ Page({
   onLoad: co.wrap(function *(options) {
     this.longToast = new app.weToast()
     let navBarHeight = app.navBarInfo.topBarHeight
+    let systemInfo = wx.getSystemInfoSync()
     this.setData({
       navBarHeight,
       checkedPrint: {
-        name: '已打印',
-        sn: 1
+        name: '未打印',
+        sn: 0
       },
-      isFullScreen: app.isFullScreen
+      isFullScreen: app.isFullScreen,
+      isAndroid: systemInfo.system.indexOf('iOS') > -1 ? false : true,
     })
     
     event.on('Authorize', this, ()=>{
@@ -402,6 +398,7 @@ Page({
   toPrint: function({currentTarget: {dataset: {sn}}}){
     wxNav.navigateTo('../../sync_learn/preview_subject/index', {
       sn,
+      isHidePrintAnswerBtn: true,
       mediaType: 'weakness_exercise'
     })
   },

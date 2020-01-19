@@ -32,6 +32,8 @@ Page({
       hasCancel: true
     },
     isMember: false, //是否会员
+    showMemberToast: false, //显示会员弹窗
+    isPreschoolMember:false
   },
 
   /**
@@ -68,6 +70,35 @@ Page({
     }
   }),
 
+  /* 已完成 列表判断是否为会员 */
+  toCheck: co.wrap(function *(e) {
+    this.longToast.toast({
+      type:'loading'
+    })
+    try {
+      if(this.data.isMember){
+        this.toProgress(e)
+      }else{
+        this.showMemberToast()
+      }
+      this.longToast.hide()
+    } catch (e) {
+      this.longToast.toast()
+      util.showError(e)
+    }
+  }),
+
+  //弹窗
+  showMemberToast:function (){
+    //判断会员标示
+    var memberToast = this.selectComponent('#memberToast')
+    memberToast.checkAuthMember(()=>{
+      wxNav.navigateTo('./../list/index', {
+        userPlanSn:this.userPlanSn
+      })
+    })
+  },
+
   getUserPlans: co.wrap(function* () {
     try {
       let tab = this.currentTab
@@ -90,18 +121,12 @@ Page({
     }
   }),
 
-  /* 切换Nav */
-  toChangeNav: function () {
-    this.setData({
-      tabToContent: 1
-    })
-  },
-
   /* 去订阅 */
   toSubscribe: co.wrap(function *(e){
+    // var userPlanSn = e.currentTarget.dataset.userPlanSn
     try {
       var idx = e.currentTarget.id
-      logger.info('idx', idx)
+      this.subscribe = e.currentTarget.dataset.subscript
       let sn = this.data.lists[idx].sn
       if(this.data.isMember){
         this.toSubscribeDetail(sn)
@@ -109,6 +134,7 @@ Page({
         this.toProgress(e)
       }
     } catch (e) {
+      console.log(e,'llll')
       this.longToast.toast()
       util.showError(e)
     }
@@ -116,13 +142,15 @@ Page({
 
   toSubscribeDetail: co.wrap(function* (sn) {
     try {
+        // let respUserPlans = yield gql.getUserPlans
+        // logger.info('=====', resp)
         yield gql.joinPlan(sn)
-        let resp = yield gql.getPlans()
-        logger.info('=====', resp)
-        this.setData({
-          lists: resp.plans
+          let resp = yield gql.getPlans()
+          this.setData({
+            lists: resp.plans
         })
     } catch (e) {
+      console.log('ooo',e)
       this.longToast.toast()
       util.showError(e)
     }
@@ -142,13 +170,23 @@ Page({
     )
   }),
 
+
+  /* 切换Nav */
+  toChangeNav: function () {
+    this.setData({
+      tabToContent: 1
+    })
+  },
+
   /*** 取消订阅 ***/
   handleSubscribe: co.wrap(function* (e) {
     try {
+      this.subscribe = e.currentTarget.dataset.subscript 
       this.cancelIndex = e.currentTarget.id
       this.setData({
         ['modalObj.isShow']: true
       })
+      console.log('0000',this.subscribe)
     } catch (e) {
       this.longToast.toast()
       util.showError(e)
@@ -156,15 +194,16 @@ Page({
   }),
 
   /*** 订阅弹出框 ***/
-  confirmModal: co.wrap(function *(cancelIndex) {
-    // let index = this.cancelIndex
-    let cancelSn = this.data.subscriptList[this.cancelIndex].sn
-    try {
+  confirmModal: co.wrap(function *(cancelIndex, subscribe) {
+    if(this.subscribe == 'subscript'){
+      let cancelSn = this.data.subscriptList[this.cancelIndex].sn
       const res = yield gql.deleteUserPlanInput(cancelSn)
       this.getUserPlans()
-    } catch (e) {
-      this.longToast.toast()
-      util.showError(e)
+    }
+    else if(this.subscribe == 'finished'){
+      let cancelSn = this.data.completeList[this.cancelIndex].sn
+      const res = yield gql.deleteUserPlanInput(cancelSn)
+      this.getUserPlans()
     }
     
   }),

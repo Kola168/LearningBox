@@ -219,3 +219,18 @@ page {
     margin-top: 16rpx;
     margin-bottom: 6rpx;
 }
+
+.member-tip{
+	display: flex;
+	margin-left: 12rpx;
+	margin-top: 16rpx;
+}
+
+.member-tip .preschool-member{
+	width: 150rpx;
+	margin-left: 12rpx;
+}
+
+.member-tip .subject-member{
+	width: 130rpx;
+}

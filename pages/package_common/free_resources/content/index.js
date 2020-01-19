@@ -1,7 +1,7 @@
 "use strict"
 const app = getApp()
 import { regeneratorRuntime, co, util, wxNav } from '../../../../utils/common_import'
-import graphql from '../../../../network/graphql_request'
+import graphql from '../../../../network/graphql/common.js'
 Page({
   data: {
     tabId: 'tab_0',

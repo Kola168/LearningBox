@@ -12,16 +12,27 @@ Page({
     subjects: [],
     printPaperCount: 0,
     percentage: 0,
-    loadReady: true
+    loadReady: true,
+    title: '测评与考试',
+    isThematic: false
   },
-  onLoad() {
+  onLoad(query) {
     this.weToast = new app.weToast()
+    this.thematic = 0
+    if (query.thematic) {
+      this.thematic = query.thematic
+      this.setData({
+        title: '升学专题',
+        isThematic: true
+      })
+    }
     this.getSubjects()
   },
   getSubjects: co.wrap(function* () {
     this.weToast.toast({
       type: 'loading'
     })
+
     try {
       let res = yield gqlSubject.getSubjects()
       if (!res.xuekewang.registered) {
@@ -55,8 +66,12 @@ Page({
   }),
   toSubject(e) {
     if (app.preventMoreTap(e)) return
-    wxNav.navigateTo('../testpaper/index', {
+    let params = {
       id: e.currentTarget.dataset.id
-    })
+    }
+    if (this.thematic) {
+      params.thematic = this.thematic
+    }
+    wxNav.navigateTo('../testpaper/index', params)
   }
 })

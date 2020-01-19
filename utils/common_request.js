@@ -1,3 +1,4 @@
+const app = getApp()
 import { regeneratorRuntime, co, util } from './common_import'
 import getLoopsEvent from './worker'
 import graphql from '../network/graphql_config'
@@ -59,7 +60,7 @@ const previewDocument = co.wrap(function*(data, callback) {
       }
     })
   }
-  
+
   getLoopsEvent(data, (result) => {
     if (result.status == 'finished') {
       var converted_url = result.data.converted_url
@@ -69,7 +70,7 @@ const previewDocument = co.wrap(function*(data, callback) {
     callback()
   })
 
-  
+
 })
 
 /**
@@ -121,7 +122,7 @@ const getPrinterCapacity = co.wrap(function*(featureKey, fileUrl) {
     } catch(err){
       util.showError(err)
     }
-    
+
   }
   return capacity
 
@@ -131,7 +132,7 @@ const getPrinterCapacity = co.wrap(function*(featureKey, fileUrl) {
  * 支付统一下单
  * @param { String } sn required 资源/课程...sn
  * @param { String } orderType 订单类型member/course
- * 
+ *
  */
 
 const createPaymentOrder = co.wrap(function*(sn, orderType){
@@ -206,8 +207,10 @@ const createPayment = co.wrap(function*(sn, success=emptyFn, fail=emptyFn){
         success(res)
       },
       fail(error){
-        logger.info(error)
-        fail(error)
+        logger.info(error.errMsg)
+        fail({
+          message: error.errMsg
+        })
       }
     })
   } catch (error) {
@@ -217,7 +220,7 @@ const createPayment = co.wrap(function*(sn, success=emptyFn, fail=emptyFn){
 })
 
 /**
- * @param { String } openid 
+ * @param { String } openid
  * @param { Object } encrypted_info 解密详细信息
  * @param { String } decr_type 解密方式
  */const phoneDecrypt =  co.wrap(function* (e) {
@@ -233,12 +236,13 @@ const createPayment = co.wrap(function*(sn, success=emptyFn, fail=emptyFn){
 		const resp = yield api.wechatDecryption(params)
 		if (resp.code == 0) {
 			storage.put("phoneNum", resp.res.sn)
+      return true
 		} else {
 			throw (resp)
 		}
 	} catch (e) {
-		util.showErr(e)
-		console.log(e)
+    throw (e)
+		return false
 	}
 })
 

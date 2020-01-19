@@ -1,6 +1,6 @@
 <nav-bar title="测评与考试"></nav-bar>
 <view class="container">
-  <view class="filters">
+  <view class="filters" style="top:{{topBarHeight}}px;">
     <block wx:if="{{showFilter}}">
       <view class="filters-active">
         <view>{{activeFilter.name}}</view>
@@ -9,15 +9,19 @@
     </block>
     <block wx:else>
       <view class="filters-item" bindtap="showFilter" id="area">
-        <view class="text-overflow-points">{{activeArea.name}}</view>
+        <view class="text-overflow-points">{{activeArea.name==='全部'?'省份':activeArea.name}}</view>
         <image src="../../images/arrow_bottom.png" mode="widthFix" />
       </view>
       <view class="filters-item" bindtap="showFilter" id="grade">
-        <view class="text-overflow-points">{{activeGrade.name}}</view>
+        <view class="text-overflow-points">{{activeGrade.name==='全部'?'年级':activeGrade.name}}</view>
+        <image src="../../images/arrow_bottom.png" mode="widthFix" />
+      </view>
+      <view class="filters-item" bindtap="showFilter" id="year">
+        <view class="text-overflow-points">{{activeYear.name==='全部'?'年份':activeYear.name}}</view>
         <image src="../../images/arrow_bottom.png" mode="widthFix" />
       </view>
     </block>
-    <view class="filters-cover" wx:if="{{showFilter}}" bindtap="showFilter" style="top:{{topBarHeight}}px;">
+    <view class="filters-cover" wx:if="{{showFilter}}" bindtap="showFilter" style="top:{{topBarHeight+50}}px;">
       <view class="filters-list">
         <view wx:for="{{activeFilterList}}" wx:key="id" class="list-box {{activeFilter.id==item.id?'filters-active-color':''}}" bindtap="changeFilter" data-index="{{index}}">
           {{item.name}}
@@ -40,7 +44,7 @@
           <view class="item-printed" wx:if="{{item.isPrint}}">已打印</view>
         </view>
         <view class="item-text">
-          <view class="text-title text-overflow-points">{{item.title}}</view>
+          <view class="text-title">{{item.title}}</view>
           <view class="text-count">
             <image class="count-logo" src="/images/doc_print_icon.png" mode="widthFix" />
             <view>{{item.printCount}}位同学已学习</view>

@@ -1,52 +1,56 @@
 <!--pages/account/index.wxml-->
 <nav-bar background="#fff" title="个人中心"></nav-bar>
-<view class="user-info" bindtap="{{currentUserIsCreator?'toNext':''}}" id="setInfo">
-    <view>
-        <image src="{{kidInfo.avatar?kidInfo.avatar:'/images/account_avatar_big.png'}}" mode="widthFix" class="avatar">
-        </image>
-        <view class="info">
-            <!-- <view class="name">{{userInfo.nickName}}</view> -->
-            <view class="name">{{kidInfo.name?kidInfo.name:'未填写'}}</view>
-            <view class="grade">{{kidInfo.stage.name?kidInfo.stage.name:'未填写'}}</view>
-        </view>
-    </view>
-    <block wx:if="{{currentUserIsCreator}}">
-        <image src="../../images/doc_item_arrow.png" mode="widthFix" class="after"
-        wx:if="{{kidInfo.name && kidInfo.stage && kidInfo.avatar}}"></image>
-    <image src="../../images/tip_add_kid_info.png" mode="widthFix" class="after-tip" wx:else></image>
-    </block>
-   
+<view class="user-info"bindtap="{{currentUserIsCreator?'toNext':''}}" id="setInfo">
+	<view>
+		<image src="{{kidInfo.avatar?kidInfo.avatar:'/images/account_avatar_big.png'}}" mode="widthFix" class="avatar">
+		</image>
+		<view class="info">
+			<!-- <view class="name">{{userInfo.nickName}}</view> -->
+			<view class="name">{{kidInfo.name?kidInfo.name:'未填写'}}</view>
+			<view class="grade">{{kidInfo.stage.name?kidInfo.stage.name:'未填写'}}</view>
+		</view>
+		<view class="member-tip">
+			<image src="{{isSubjectMember?'/images/account_subject_member_tip.png':'/images/account_subject_not_member_tip.png'}}" mode="widthFix" class="subject-member"></image>
+			<image src="{{isPreschoolMember?'/images/account_preschool_member_tip.png':'/images/account_preschool_not_member_tip.png'}}" mode="widthFix" class="preschool-member"></image>
+		</view>
+	</view>
+
+	<block wx:if="{{currentUserIsCreator}}">
+		<image src="../../images/doc_item_arrow.png" mode="widthFix" class="after"
+		wx:if="{{kidInfo.name && kidInfo.stage && kidInfo.avatar}}"></image>
+<image src="../../images/tip_add_kid_info.png" mode="widthFix" class="after-tip" wx:else></image>
+</block>
 </view>
 <image src="/images/account_member_center.png" bindtap="member" mode="widthFix" class="member" />
 <view class="has-device" wx:if="{{activeDevice}}" bindtap="toNext" id="deviceList">
-    <view class="device-img">
-        <image src="/images/{{activeDevice.model==='3115'?'L3115':'EP400'}}.png" mode="widthFix" />
-    </view>
-    <view class="device-info">
-        <view class="info-main">
-            <view class="info-name">当前设备：{{activeDevice.name}}</view>
-            <view class="info-status {{activeDevice.onlineState==='online'?'info-status-active':''}}">
-                <view class="status-flag {{activeDevice.onlineState==='online'?'online-status':''}}"></view>
-                <view>{{activeDevice.onlineState==='online'?'在线':'离线'}}</view>
-            </view>
-        </view>
-        <image class="info-arrow" src="/images/doc_item_arrow.png" />
-    </view>
+	<view class="device-img">
+		<image src="/images/{{activeDevice.model==='3115'?'L3115':'EP400'}}.png" mode="widthFix" />
+	</view>
+	<view class="device-info">
+		<view class="info-main">
+			<view class="info-name">当前设备：{{activeDevice.name}}</view>
+			<view class="info-status {{activeDevice.onlineState==='online'?'info-status-active':''}}">
+				<view class="status-flag {{activeDevice.onlineState==='online'?'online-status':''}}"></view>
+				<view>{{activeDevice.onlineState==='online'?'在线':'离线'}}</view>
+			</view>
+		</view>
+		<image class="info-arrow" src="/images/doc_item_arrow.png" />
+	</view>
 </view>
 <view class="no-device" wx:else bindtap="toNext" id="addDevice">
-    <image src="/images/account_add_device.png" mode="widthFix" />
-    <view>请先添加设备</view>
+	<image src="/images/account_add_device.png" mode="widthFix" />
+	<view>请先添加设备</view>
 </view>
 <view class="content-wrap" wx:for="{{features}}" wx:key="features">
-    <view class="title">{{item.title}}</view>
-    <view class="content">
-        <view wx:for="{{item.features}}" wx:key="feature" wx:for-item="data" >
-					<view class="content-item" bindtap="clickFeature" id="{{data.url}}" data-key="{{data.key}}">
-            <image src="{{data.image}}" mode="widthFix" />
-						<view>{{data.name}}</view>
-					</view>
-        </view>
-    </view>
+	<view class="title">{{item.title}}</view>
+	<view class="content">
+		<view wx:for="{{item.features}}" wx:key="feature" wx:for-item="data">
+			<view class="content-item" bindtap="clickFeature" id="{{data.url}}" data-key="{{data.key}}">
+				<image src="{{data.image}}" mode="widthFix" />
+				<view>{{data.name}}</view>
+			</view>
+		</view>
+	</view>
 </view>
 <view class="phone-number">商务合作：89894940</view>
 <view class="article" bindtap="toRules">《隐私条款》</view>

@@ -54,7 +54,9 @@
     "pages/account/collection/index",
     "pages/print_id/pay",
     "pages/print_id/print",
-    "pages/print_id/smart_save"
+    "pages/print_id/smart_save",
+    "pages/intro/xbteacher",
+    "pages/intro/printway"
   ],
   "subPackages": [
     {
@@ -173,7 +175,8 @@
         "print_link/typeList",
         "print_link/desc",
         "print_speed/index",
-				"print_speed/intro"
+        "print_speed/intro",
+        "kousuan/teacher"
       ]
     },
     {
@@ -186,10 +189,6 @@
         "group/index",
         "member/detail"
       ]
-    },
-    {
-      "root": "pages/package_other",
-      "pages": []
     },
     {
       "root": "pages/package_preschool",
@@ -242,7 +241,8 @@
         "sync_video/video_list/video_list",
         "sync_video/video_detail/video_detail",
         "correct/index",
-        "report/index"
+        "report/index",
+        "view_answer/index"
       ]
     },
     {

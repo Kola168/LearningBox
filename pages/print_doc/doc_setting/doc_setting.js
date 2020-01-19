@@ -9,9 +9,10 @@ import { getLogger } from '../../../utils/logger'
 const logger = new getLogger('pages/print_doc/doc_setting/doc_setting')
 import router from '../../../utils/nav'
 import event from '../../../lib/event/event'
+import getLoopsEvent from '../../../utils/worker'
 Page({
-
   data: {
+    isLongPress: false,
     fileTitle: null,
     documentPrintNum: 1,
     startPrintPage: 1,
@@ -53,11 +54,21 @@ Page({
   },
 
   onLoad: co.wrap(function*(options) {
-    this.longToast = new app.weToast()
     try {
-      let query = JSON.parse(decodeURIComponent(options.postData))
-
-      this.query = query
+      this.longToast = new app.weToast()
+    let query = options.pressUrl?options:JSON.parse(decodeURIComponent(options.postData))
+    this.query = query
+    
+    if(query.pressUrl) {
+      if(app.isScope()){
+        this.handleLongPress()
+      } else {
+        event.on('Authorize',this,()=>{
+          this.handleLongPress()
+        })
+      }
+    } else {
+      yield this.setStatus()
       let tempData = {
         fileTitle: util.resetFiles(query.name),
         fileIndex: query.fileIndex,
@@ -96,16 +107,13 @@ Page({
         tempData.endPage = query.pageCount
         tempData.extract = 'all'
       }
-
       this.setData({
         ...tempData,
         isFullScreen: app.isFullScreen
       })
-    } catch (e) {
-      logger.info(e)
-      util.showError(e)
     }
-    if (parseInt(this.query.pageCount) > 150) {
+    
+    if (this.query.pageCount&&parseInt(this.query.pageCount) > 150) {
       yield showModal({
         title: '提示',
         content: '此文档的打印页数超过150张',
@@ -113,7 +121,57 @@ Page({
         confirmColor: '#fae100',
       })
     }
-    yield this.setStatus()
+    } catch (error) {
+      console.log(error)
+    }
+    
+  }),
+
+  onShow(){
+    if(!app.isScope()){
+      router.navigateTo('/pages/authorize/index')
+    }
+  },
+
+  /**
+   * @methods 处理长按打印
+   */
+  handleLongPress:co.wrap(function*(){
+    this.originalUrl = this.query.pressUrl
+    let tempData = {
+      isLongPress : true,
+      fileTitle : util.resetFiles(this.query.name)
+    }
+    this.longToast.toast({
+      type:'loading'
+    })
+    let capacity = yield commonRequest.getPrinterCapacity('doc_a4')
+    tempData.duplex = capacity.duplex
+    tempData.grayscale = capacity.grayscale
+    tempData.color = capacity.color
+    getLoopsEvent({
+      feature_key: 'doc_a4',
+      worker_data: {
+        url: this.originalUrl
+      }
+    }, (resp) => {
+      if (resp.status == 'finished') {
+        this.longToast.hide()
+        let res = resp.data
+        tempData.totalPage = res.pages
+        tempData.endMaxPage = res.pages
+        tempData.pageCount = res.pages
+        tempData.url = res.converted_url
+        tempData.previewUrl = res.converted_url
+        this.setData({
+          ...tempData,
+          isFullScreen: app.isFullScreen
+        })
+      }
+    }, (err) => {
+      this.longToast.hide()
+      util.showError(err)
+    })
   }),
 
   /**
@@ -275,7 +333,7 @@ Page({
         confirmText: "确认",
         showCancel: false
       })
-      
+ 
     }
 
     if (parseInt(this.data.endPage) < parseInt(this.data.startPage) || parseInt(this.data.endPage) > parseInt(this.data.totalPage)) {
@@ -308,9 +366,47 @@ Page({
       postData.startPage = 0
       postData.endPage = 0
     }
-    event.emit('setPreData', postData)
-    router.navigateBack()
+    if(this.data.isLongPress) {
+      this.print(postData)
+    } else {
+      event.emit('setPreData', postData)
+      router.navigateBack()
+    }
   },
+
+  /**
+   * @methods 确认打印 
+   */
+  print:co.wrap(function*(postData){
+    this.longToast.toast({
+      type:'loading'
+    })
+    try {
+      let params = [{
+        originalUrl: this.originalUrl, 
+        printUrl: this.data.url, 
+        copies: postData.copies,
+        grayscale: this.data.grayscale,
+        startPage: postData.startPage,
+        endPage: postData.endPage,
+        filename: this.data.name,
+        singlePageLayoutsCount: postData.singlePageLayoutsCount,
+        extract: postData.extract,
+        skipGs: postData.skipGs,
+        duplex: postData.duplex,
+      }]
+      const resp = yield commonRequest.createOrder('doc_a4', params)
+      this.longToast.hide()
+      router.redirectTo('/pages/finish/index',
+				{
+					media_type: 'doc_a4',
+					state: resp.createOrder.state
+			})
+    } catch (error) {
+      this.longToast.hide()
+      util.showError(error)
+    }
+  }),
 
   /**
    * @methods 选择缩印模式
@@ -318,12 +414,12 @@ Page({
    */
   chooseZoomType(e) {
     let singlePageLayoutsCount = Number(e.currentTarget.id)
-    let endPage = Math.ceil(this.data.endMaxPage / singlePageLayoutsCount)
+    // let endPage = Math.ceil(this.data.endMaxPage / singlePageLayoutsCount)
     this.setData({
       singlePageLayoutsCount: singlePageLayoutsCount,
-      endPrintPage: endPage,
-      endPage: endPage,
-      totalPage: endPage
+      // endPrintPage: endPage,
+      // endPage: endPage,
+      // totalPage: endPage
     })
   },
 
@@ -404,5 +500,9 @@ Page({
       totalPage: endPage
     })
   },
+
+  onUnload(){
+    event.remove('Authorize', this)
+  }
 
 })

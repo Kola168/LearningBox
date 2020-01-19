@@ -8,7 +8,8 @@ import {
   storage
 } from '../../../../utils/common_import'
 const event = require('../../../../lib/event/event')
-import graphql from '../../../../network/graphql_request'
+import graphqlRequest from '../../../../network/graphql_request'
+import graphql from '../../../../network/graphql/common.js'
 // const PRINT_LIMIT = 30
 Page({
   data: {
@@ -117,7 +118,7 @@ Page({
     })
     try {
       let action = this.data.isCollect ? 'destroy' : 'create'
-      yield graphql.collect(this.sn, 'content', action)
+      yield graphqlRequest.collect(this.sn, 'content', action)
       this.weToast.hide()
       let tipText = this.data.isCollect ? '取消收藏成功' : '收藏成功'
       wx.showToast({

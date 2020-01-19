@@ -5,7 +5,7 @@
   height: 670rpx;
   background: #fff;
   position: relative;
-  border-radius: 25rpx;
+  border-radius: 40rpx;
   overflow: hidden;
 }
 
@@ -57,7 +57,7 @@
   position: absolute;
   top: 0;
   right: 0;
-  width: 80rpx;
+  width: 70rpx;
 }
 
 .content1 {
