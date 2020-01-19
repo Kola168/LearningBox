@@ -25,6 +25,9 @@ Page({
   stopPulldown: false,
 
   loadList: co.wrap(function*() {
+    if(this.stopPulldown){
+      return
+    }
     this.longToast.toast({
       type: 'loading'
     })
@@ -49,6 +52,11 @@ Page({
       util.showError(e)
     }
   }),
+
+  toContent:function(e){
+    let index = e.currentTarget.setData.index
+    wxNav.navigateTo(this.data.collectionList[index].redirectPath)
+  },
 
   backIndex:function(){
     wxNav.switchTab('/pages/index/index')

@@ -77,10 +77,10 @@ const graphqlApi = {
     return gql.query({
       query: `query($type:CollectionTypeEnum!,$page: Int = 1){
         collections(type:$type,page:$page){
-          ... on Content{
+          ... on CollectionContent{
             name
             iconUrl
-
+            redirectPath
           }
         }
       }`,
