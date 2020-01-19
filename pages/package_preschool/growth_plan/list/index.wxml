@@ -28,7 +28,6 @@
                     </view>
                     <view class="item-right-bottom">
                         <view class="bottom-left">
-                            
                             <view class="progress">
                                 <progress percent="{{item.currentIndex/item.planSize*100}}" border-radius="30" stroke-width="10rpx"
                                 backgroundColor="#e8e8e8" activeColor="#FF7D15" />

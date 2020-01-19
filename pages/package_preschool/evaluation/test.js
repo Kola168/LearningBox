@@ -26,7 +26,11 @@ Page({
   onLoad: function(options) {
     this.longToast = new app.weToast()
     this.sn = options.sn
-
+    this.audioCtx = wx.createInnerAudioContext()
+    this.audioCtx.obeyMuteSwitch = false
+    wx.setInnerAudioOption({
+      obeyMuteSwitch: false
+    })
     this.getTestList()
   },
 
@@ -66,15 +70,9 @@ Page({
     this.longToast.toast({
       type: 'loading'
     })
-    if(that.audioCtx){
-      that.audioCtx.destroy()
-    }
-    this.audioCtx = wx.createInnerAudioContext()
+
     this.audioCtx.src = this.data.subjectList[this.data.nowIndex].audioUrl
-    this.audioCtx.obeyMuteSwitch = false
-    wx.setInnerAudioOption({
-      obeyMuteSwitch: false
-    })
+    this.audioCtx.autoplay=true
     that.audioCtx.onCanplay(function(){
       that.longToast.toast()
       that.audioCtx.offCanplay()
@@ -82,7 +80,6 @@ Page({
 
     this.audioCtx.onEnded(function(){
       console.log(111111)
-      that.audioCtx.stop()
       that.audioPlaying=false
     })
     this.audioCtx.onError(function(res){

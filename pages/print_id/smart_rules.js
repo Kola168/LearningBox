@@ -35,7 +35,7 @@ Page({
             type: 'loading',
             duration: 0
         })
-        this.path = e.detail.tempFilePaths[0]
+        this.path = e.detail.tempFiles[0].path
         try {
             this.imageURL = yield upload.uploadFile(this.path)
             yield this.confirm()

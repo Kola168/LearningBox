@@ -54,7 +54,7 @@ Page({
   }),
 
   toContent:function(e){
-    let index = e.currentTarget.setData.index
+    let index = e.currentTarget.dataset.index
     wxNav.navigateTo(this.data.collectionList[index].redirectPath)
   },
 
