@@ -22,6 +22,8 @@
   color: #FFA200;
   font-size: 24rpx;
   font-weight: bold;
+  width: 100%;
+  text-align: center;
 }
 .subject-item,
 .subjects {

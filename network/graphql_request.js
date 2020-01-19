@@ -928,7 +928,7 @@ const graphqlApi = {
     })
   },
   /**
-   * 
+   *
    *获取家庭信息
    * @returns
    */
@@ -946,7 +946,7 @@ const graphqlApi = {
               stage{
                 name
               rootName
-              sn 
+              sn
               }
             }
             users{
@@ -1137,22 +1137,24 @@ const graphqlApi = {
       query: `query($key: String!) {
         feature(key: $key) {
           categories {
-            name
-            sn
-            isHorizontal
-            templates {
-              previewImage
+            ...on TemplateCategory{
               name
-              imageUrl
               sn
-              positionInfo {
-                width
-                areaHeight
-                areaWidth
-                areaX
-                areaY
-                height
-                width
+              isHorizontal
+              templates {
+                previewImage
+                name
+                imageUrl
+                sn
+                positionInfo {
+                  width
+                  areaHeight
+                  areaWidth
+                  areaX
+                  areaY
+                  height
+                  width
+                }
               }
             }
           }
@@ -1169,21 +1171,23 @@ const graphqlApi = {
     return gql.query({
       query: `query($sn: String!) {
         category(sn: $sn) {
-          name
-          sn
-          templates {
-            previewImage
+          ...on TemplateCategory{
             name
-            imageUrl
             sn
-            positionInfo {
-              width
-              areaHeight
-              areaWidth
-              areaX
-              areaY
-              height
-              width
+            templates {
+              previewImage
+              name
+              imageUrl
+              sn
+              positionInfo {
+                width
+                areaHeight
+                areaWidth
+                areaX
+                areaY
+                height
+                width
+              }
             }
           }
         }
@@ -1200,25 +1204,27 @@ const graphqlApi = {
       query: `query($key: String!) {
         feature(key: $key) {
           categories {
-            name
-            sn
-            isHorizontal
-            attrsInfo
-            isHidden
-            templates {
-              previewImage
+            ...on TemplateCategory{
               name
-              imageUrl
-              uploadable
               sn
-              positionInfo {
-                width
-                areaHeight
-                areaWidth
-                areaX
-                areaY
-                height
-                width
+              isHorizontal
+              attrsInfo
+              isHidden
+              templates {
+                previewImage
+                name
+                imageUrl
+                uploadable
+                sn
+                positionInfo {
+                  width
+                  areaHeight
+                  areaWidth
+                  areaX
+                  areaY
+                  height
+                  width
+                }
               }
             }
           }
@@ -1235,23 +1241,25 @@ const graphqlApi = {
     return gql.query({
       query: `query($key: String!) {
         feature(key: $key) {
-          categories {
-            name
-            sn
-            isHorizontal
-            templates {
-              previewImage
+          ...on TemplateCategory{
+            categories {
               name
-              imageUrl
               sn
-              calendarInfos {
-                width
-                areaHeight
-                areaWidth
-                areaX
-                areaY
-                height
-                width
+              isHorizontal
+              templates {
+                previewImage
+                name
+                imageUrl
+                sn
+                calendarInfos {
+                  width
+                  areaHeight
+                  areaWidth
+                  areaX
+                  areaY
+                  height
+                  width
+                }
               }
             }
           }
