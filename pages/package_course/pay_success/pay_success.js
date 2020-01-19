@@ -50,6 +50,6 @@ Page({
       redirect: wxNav.redirectTo
     }
     var router = typeMapping[key]
-    router(url, params)
+    key == 'switchTab' ? router(url) : router(url, params)
   } 
 })

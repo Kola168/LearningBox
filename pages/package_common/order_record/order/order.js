@@ -112,14 +112,16 @@ Page({
     try {
       var orderDetails = this.data.orderDetails
       if (orderDetails.payable.categoryName == 'CertService') {
-        wxNav.navigateTo('pages/print_id/smart_rules', {
+        wxNav.navigateTo('pages/print_id/smart_rules', JSON.stringify({
           print_wm_url: orderDetails.payable.url,
           wm_url: orderDetails.payable.singleUrl,
           sn: orderDetails.sn,
-          size: orderDetails.payable.size || '',
-          name: orderDetails.payable.name || '',
+          discountInfo: orderDetails.payable.discountInfo,
+          price: orderDetails.amountYuan,
+          size: orderDetails.payable.size,
+          name: orderDetails.payable.name,
           hasPay: orderDetails.state == 'paid' ? true : false
-        })
+        }))
       }
 
       if (orderDetails.payable.categoryName == 'Course') {

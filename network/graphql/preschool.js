@@ -132,6 +132,21 @@ const graphqlApi = {
       }
     })
   },
+
+  /**
+   * 更新最新的奖状状态
+   */
+  updateNewsCerts: () => {
+    return gql.mutate({
+      mutation: `mutation {
+        updateUserTestimonials(input:{}){
+          state
+        }
+      }`
+    })
+  },
+
+
 	getPlans: () => {
     return gql.query({
       query: `query {
