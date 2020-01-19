@@ -148,12 +148,9 @@ swiper swiper-item {
   width: 100%;
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 
-progress {
-  margin-right: 20rpx;
-  width: 80%;
-}
 
 .progress-text {
   font-size: 28rpx;
@@ -335,4 +332,21 @@ progress {
   color: #4FB526;
   margin-left: 16rpx;
   font-size: 32rpx;
+}
+
+.progress {
+  position: relative;
+  height: 13rpx;
+  background: #EAEAEA;
+  border-radius: 20rpx;
+  margin-right: 20rpx;
+}
+
+.progress .wrap-progress {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  border-radius: 20rpx;
+  background-image: linear-gradient(-90deg, #FFE27A 0%, #FF7D15 100%);
 }
