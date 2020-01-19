@@ -142,7 +142,7 @@ Page({
           copies: this.data.count, //数量
           printUrl: this.data.img_url, //图片编辑后url
           originalUrl: this.data.preUrl, //图片原始url
-          grayscale: this.data.color == 'Mono' ? true : false, //色彩
+          color: this.data.color == 'Mono' ? false : true, //色彩
         }]
         const resp = yield commonRequest.createOrder('reprography', param)
         this.longToast.toast()

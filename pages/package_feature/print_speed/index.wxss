@@ -12,18 +12,18 @@ page {
   font-size: 12px;
   color: #ff9a55;
   text-align: center;
-	line-height: 48rpx;
-	position: fixed;
-	left:0;
-	top:128rpx;
+  line-height: 48rpx;
+  position: fixed;
+  left: 0;
+  top: 128rpx;
 }
 
 .top-size {
   display: flex;
-	align-items: center;
-	position: fixed;
-	left:24rpx;
-	top:198rpx;
+  align-items: center;
+  position: fixed;
+  left: 24rpx;
+  top: 198rpx;
   /* margin: 36rpx 0 46rpx 24rpx; */
 }
 
@@ -68,8 +68,8 @@ page {
   background-color: #f1f1f1;
   width: 140rpx;
   position: absolute;
-  top: 268px;
-  left: 120rpx;
+  top: 250rpx;
+  left: 110rpx;
   z-index: 1;
   overflow: hidden;
   text-align: center;
@@ -107,8 +107,8 @@ page {
   padding: 18rpx 20rpx;
   border-radius: 10rpx;
   position: fixed;
-	left: 25rpx;
-	top:288rpx;
+  left: 25rpx;
+  top: 288rpx;
 }
 
 /* .bottom-size {
@@ -274,7 +274,8 @@ page {
   height: 100%;
 }
 
-.wrap, .wrap-fun {
+.wrap,
+.wrap-fun {
   position: relative;
   width: 100%;
   height: calc(100% - 100rpx);
@@ -287,7 +288,8 @@ page {
   position: relative;
 }
 
-.wrap>image, .wrap-fun>image {
+.wrap>image,
+.wrap-fun>image {
   width: 750rpx;
 }
 
@@ -351,7 +353,8 @@ page {
   margin-right: 10rpx;
 }
 
-.bottom .print-button, .bottom .pay-button {
+.bottom .print-button,
+.bottom .pay-button {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -585,7 +588,8 @@ page {
   text-align: center;
   border-radius: 25rpx;
   line-height: 50rpx;
-  /* margin-right: 20rpx; *//* text-overflow: ellipsis;
+  /* margin-right: 20rpx; */
+  /* text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap; */
 }
@@ -747,12 +751,12 @@ page {
   z-index: 10000;
 }
 
-.bottom-button-box{
+.bottom-button-box {
   position: absolute;
-  top:0;
-  left:0;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   background: transparent;
-  z-index:1000
+  z-index: 1000
 }

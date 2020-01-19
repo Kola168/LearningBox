@@ -80,7 +80,7 @@ Page({
 					originalUrl: doc.url,
 					filename: doc.filename,
 					grayscale: this.initPms.grayscale,
-					colorCheck: currentFile.color ? true : false,
+					colorCheck: this.initPms.color ? true : false,
 					color: this.initPms.color,
 					duplex: this.initPms.duplex,
 					copies: 1, //份数

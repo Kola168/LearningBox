@@ -132,6 +132,17 @@ Page({
       setTimeout(resolve, 1500)
     })
   },
+  toPrint() {
+    wxNav.redirectTo('/pages/print_id/print', {
+      url: JSON.stringify(this.query.print_wm_url),
+      sn: this.sn
+    })
+  },
+  toSave() {
+    wxNav.redirectTo('/pages/print_id/smart_save', {
+      params: JSON.stringify(this.query)
+    })
+  },
   onShareAppMessage() {
 
   },
