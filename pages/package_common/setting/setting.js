@@ -414,12 +414,12 @@ Page({
    */
   chooseZoomType(e) {
     let singlePageLayoutsCount = Number(e.currentTarget.id)
-    let endPage = Math.ceil(this.data.endMaxPage / singlePageLayoutsCount)
+    // let endPage = Math.ceil(this.data.endMaxPage / singlePageLayoutsCount)
     this.setData({
       singlePageLayoutsCount: singlePageLayoutsCount,
-      endPrintPage: endPage,
-      endPage: endPage,
-      totalPage: endPage
+      // endPrintPage: endPage,
+      // endPage: endPage,
+      // totalPage: endPage
     })
   },
 
