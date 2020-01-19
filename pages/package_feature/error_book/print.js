@@ -521,7 +521,7 @@ Page({
 
     try {
 
-      const resp = yield gql.createResourceOrder(p)
+      const resp = yield gql.createCommonResourceOrder(p)
       router.redirectTo('/pages/finish/index', {
         media_type: 'error_book',
         state: resp.createResourceOrder.state

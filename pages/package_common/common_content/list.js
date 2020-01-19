@@ -119,7 +119,8 @@ Page({
   toNextPage(e) {
     router.navigateTo('/pages/package_common/common_content/preview', {
       sn: e.currentTarget.id,
-      name: e.currentTarget.dataset.name
+      name: e.currentTarget.dataset.name,
+      // categorySns:this.data.typeList[this.data.tabId].sn
     })
   },
   onShareAppMessage: function (res) {
