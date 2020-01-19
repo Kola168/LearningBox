@@ -38,15 +38,14 @@ Page({
       return router.navigateTo('/pages/authorize/index')
     }
 
-    this.query = JSON.parse(options.confirm)
-    this.info = JSON.parse(options.info)
+    this.query = JSON.parse(options.params)
     this.sn = this.query.sn
-    logger.info('预览页参数', this.info, this.query)
+    logger.info('预览页参数',this.query)
     this.setData({
       singleImg: this.query.wm_url,
       print_wm_url: this.query.print_wm_url ? imginit.addProcess(this.query.print_wm_url, '/rotate,90') : ''
     })
-    logger.info('预览页参数', this.info, this.query)
+    logger.info('预览页参数', this.query)
     this.getWorkerSn()
     this.getAuth()
   }),

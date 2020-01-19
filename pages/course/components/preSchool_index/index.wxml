@@ -52,7 +52,10 @@ module.exports = {
       <block wx:if="{{userLastCourse}}">
         <view class="course-name">{{userLastCourse.name}}</view>
         <view class="course-progress">
-          <progress percent="{{userLastCourse.finished/userLastCourse.total * 100}}" color="#4FB526" border-radius="3" stroke-width="6" />
+          <view class="progress" style="width:{{totalWidth}}px">
+            <view class="wrap-progress"  style="width:{{currentWidth}}px"></view>
+          </view>
+          <!-- <progress percent="{{userLastCourse.finished/userLastCourse.total * 100}}" color="#4FB526" border-radius="3" stroke-width="6" /> -->
           <view class="progress-text">
             {{userLastCourse.finished}}/{{userLastCourse.total}}
           </view>

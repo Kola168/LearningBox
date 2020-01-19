@@ -24,7 +24,7 @@
             <view>微信支付</view>
         </view>
     </view>
-    <view class="pay-way member" wx:if="{{payable.CertService.discountInfo==''}}">
+    <view class="pay-way member" wx:if="{{payable.CertService.discountInfo!=''||discountInfo!=''}}">
         <view>会员专享</view>
         <view>
             <image mode='aspactFill' src="../../images/id/member_free.png" class="free-image">

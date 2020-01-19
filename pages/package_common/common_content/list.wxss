@@ -139,4 +139,25 @@ page {
     text-overflow: ellipsis;
     white-space: nowrap;
   }
+
+  .item-none{
+    margin-top:230rpx;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.item-none image{
+    width:240rpx;
+    height:144rpx;
+}
+
+.item-none text{
+    font-size: 32rpx;
+    color: #666666;
+    margin:36rpx 0rpx 60rpx;
+}
+
+
   

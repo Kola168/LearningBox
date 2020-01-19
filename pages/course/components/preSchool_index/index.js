@@ -22,6 +22,7 @@ Component({
     isMember: false,
     __wetoast__: null,
     auth: false,
+    currentWidth: 0,
   },
 
   lifetimes: {
@@ -70,7 +71,7 @@ Component({
   methods: {
     init: co.wrap(function *() {
       if (app.isScope()) {
-        this.getLastCourseInfo()
+        yield this.getLastCourseInfo()
         this.setData({
           auth: true
         })
@@ -83,16 +84,29 @@ Component({
             let lastActiveDeviceId = this.activeDevice.device_id,
               currentActiveDeviceId = app.activeDevice.device_id
             if (lastActiveDeviceId != currentActiveDeviceId) {
-              this.getCourseIndex()
+              yield this.getCourseIndex()
               this.activeDevice = app.activeDevice
             }
           } else {
-            this.getCourseIndex()
+            yield this.getCourseIndex()
             this.activeDevice = app.activeDevice
           }
         }
+        this.initProgress()
       }
     }),
+
+    initProgress: function() {
+      var sysInfo = wx.getSystemInfoSync()
+      var totalWidth = sysInfo.screenWidth * 0.78
+      var scale = this.data.userLastCourse.finished / this.data.userLastCourse.total
+      var currentWidth = totalWidth * scale
+      this.setData({
+        currentWidth,
+        totalWidth
+      })
+    },
+
     formatCount(count) {
       if (count < 10000) {
         return count

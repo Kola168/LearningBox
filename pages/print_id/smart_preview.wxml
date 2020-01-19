@@ -19,10 +19,10 @@
 </view>
 
 <view class="bottom">
-    <view class="left {{!print_wm_url?'only':''}}" bindtap='toPay' id="digital">
+    <view class="left {{!print_wm_url?'only':''}}" bindtap="{{hasPay?'toSave':'toPay'}}" id="digital">
         <text>保存电子版</text>
     </view>
-    <view class="right" bindtap="toPay" id="paper" wx:if="{{print_wm_url}}">
+    <view class="right" bindtap="{{hasPay?'toPrint':'toPay'}}" id="paper" wx:if="{{print_wm_url}}">
         打印证件照
     </view>
 </view>

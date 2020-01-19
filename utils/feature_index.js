@@ -2,7 +2,8 @@
   literacy_card: '/pages/package_feature/cognition_card/index/index',
   free_resource: '/pages/package_common/free_resources/detail/index',
   pic2doc: '/pages/print_photo_doc/index',
-  course: '/pages/course/index',
+  preschool_course: '/pages/course/index',
+  subject_course: '/pages/package_common/heart_course/index',
   kid_record: '/pages/package_preschool/record_voice/index/index',
   doc_a4: '/pages/print_doc/index/index',
   id_card: '/pages/print_doc/duplicate/index',
@@ -51,7 +52,8 @@
   photo_answer:'/pages/package_feature/error_book/photo_anwser_intro',
   preschool_content:'/pages/package_common/common_content/index',
   word_pdf:'/pages/package_feature/print_speed/intro',
-  shareFile:'/pages/package_feature/share_folder/index'
+  shareFile:'/pages/package_feature/share_folder/index',
+  qdnl:'/pages/package_preschool/growth_plan/list/index'
 }
 
 module.exports = {

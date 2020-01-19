@@ -321,14 +321,15 @@ Page({
 				return
 			}
 
-			this.longToast.toast({
-				type:'loading',
-				title: '正在跳转'
-			})
+			
 
 			if (currentFile.pageCount) {
 				return this.resetNavData(currentFile, currentFile.pageCount)
 			}
+			this.longToast.toast({
+				type:'loading',
+				title: '正在跳转'
+			})
 
 			getLoopsEvent({
 				feature_key: 'doc_a4',
