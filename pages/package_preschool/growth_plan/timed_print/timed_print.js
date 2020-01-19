@@ -168,22 +168,23 @@ Page({
           timing: this.data.currentTime
         }
       })
+      console.log('resp.joinSubscription.state',resp.joinSubscription)
       if (resp.joinSubscription.state) {
-        wx.showToast({
+        this.longToast.toast({
           title: '自动打印创建成功',
           duration: 2000,
           icon: false,
           mask: true
         })
       } else {
-        wx.showToast({
+        this.longToast.toast({
           title: '自动打印创建失败',
           duration: 2000,
           icon: false,
           mask: true
         })
       }
-      wxNav.navigateBack()
+      // wxNav.navigateBack()
       this.longToast.hide()
 
     } catch (e) {
