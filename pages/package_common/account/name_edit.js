@@ -28,11 +28,17 @@ Page({
     }
   },
   complete: co.wrap(function* () {
-    if(this.data.name.trim().length>5){
-     return wx.showModal({
-       title:'温馨提示',
-       content:'最多输入5个字哦'
-     })
+    if (this.data.name.trim().length == 0) {
+      return wx.showModal({
+        title: '温馨提示',
+        content: '您还没有输入内容哦'
+      })
+    }
+    if (this.data.name.trim().length > 5) {
+      return wx.showModal({
+        title: '温馨提示',
+        content: '最多输入5个字哦'
+      })
     }
     this.longToast.toast({
       type: "loading",

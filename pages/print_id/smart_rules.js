@@ -60,13 +60,19 @@ Page({
                 feature_key: 'cert_id',
                 worker_data: params
             }, (resp) => {
-                console.log('34567******890',resp)
+                console.log('34567******890', resp)
                 if (resp.status == 'finished') {
                     this.longToast.hide()
-                    let confirm = JSON.stringify(resp.data)
+                    let params = {
+                        // is_print:resp.data.is_print,
+                        print_wm_url: resp.data.print_wm_url,//合成的打印图，没有传’‘
+                        wm_url: resp.data.wm_url,//合成的单张图
+                        sn: resp.data.sn, //worker sn
+                        name: this.data.spec.name,  
+                        size: this.data.spec.size
+                    }
                     router.redirectTo('/pages/print_id/smart_preview', {
-                        confirm: confirm,
-                        info: JSON.stringify(this.data.spec)
+                        params:JSON.stringify(params)
                     })
                 }
             }, () => {
