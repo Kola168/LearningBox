@@ -57,7 +57,7 @@ Page({
 				name: '公众号文章',
 				icon: '/images/doc_official_icon.png',
 				key: 'weChatArticle',
-				url: ''
+				url: '/pages/package_feature/print_link/index'
 			},
 			{
 				name: '复印',
