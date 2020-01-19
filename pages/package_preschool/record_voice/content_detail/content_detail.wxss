@@ -20,7 +20,7 @@ page {
 
 .wrap-fun {
   height: calc(100% - 340rpx);
-  margin-bottom: 130rpx;
+  /* margin-bottom: 130rpx; */
   position: relative;
 }
 
@@ -192,7 +192,7 @@ page {
 
 .swiper-box {
   width: 100%;
-  height: 100%;
+  height: 80%;
 }
 
 .watermark {
@@ -515,16 +515,10 @@ page {
   background: #fff;
   line-height: 98rpx;
   text-align: center;
-  position: fixed;
-  left: 0;
-  bottom: 0;
   border-top: 3rpx solid #cecece;
 }
 
 .conf-box-right {
-  position: fixed;
-  right: 0;
-  bottom: 0;
   padding: 0!important;
   width: 50%;
   background: #FFDC5E;
@@ -698,7 +692,16 @@ page {
 
 .wrap-main {
   width: 100%;
+  /* position: fixed; */
+  /* bottom: 0; */
+  /* left: 0; */
+}
+
+.bottom-setting-main {
+  display: flex;
   position: fixed;
   bottom: 0;
   left: 0;
+  width: 100%;
+  height: 98rpx;
 }
