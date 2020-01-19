@@ -42,7 +42,7 @@ Page({
 			this.setData({
 				kidInfo: resp.currentUser.selectedKid,
 				expiration: tempData.afterRechargeDate,
-				price: tempData.priceY.toFixed(2)
+				price:  resp.currentUser.paymentOrders[0].amountYuan
 			})
 		} catch (e) {
 			this.longToast.toast()
