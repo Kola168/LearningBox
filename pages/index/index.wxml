@@ -1,5 +1,5 @@
 <!--index.wxml-->
-<nav-bar background="#fff" title="小白智慧打印"></nav-bar>
+<nav-bar background="#fff" title="小白盒子"></nav-bar>
 <button open-type="getUserInfo" bindgetuserinfo="userInfoHandler" form-type='submit' hover-class="none"
   class="auth-button" wx:if="{{showAuth}}"></button>
 
@@ -47,7 +47,7 @@
       </view>
     </view>
     <scroll-view class="study-plan-wrap" scroll-x wx:if="{{userPlans.length>0}}">
-      <view class="study-plan" wx:for="{{userPlans}}" wx:key="userPlans">
+      <view class="study-plan" wx:for="{{userPlans}}" wx:key="userPlans" bindtap="planDtail" id="{{item.planSn}}">
         <image src="{{item.planIconUrl}}" mode="widthFix" class="study-plan-image"></image>
         <view class="has-plan">
           <view>{{item.planName}}</view>

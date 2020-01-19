@@ -143,7 +143,16 @@ Page({
 	// 	}
 	// }),
 	backToHome: function () {
-		wxNav.switchTab('/pages/index/index')
+		if (this.printType == 'course') {
+			if (this.media_type == 'preschool_course') {
+				wxNav.switchTab('/pages/course/index')
+			} else {
+				wxNav.navigateTo('/pages/package_common/heart_course/index')
+			}
+		} else {
+			wxNav.switchTab('/pages/index/index')
+		}
+
 	},
 
 	continuePrint: function () {

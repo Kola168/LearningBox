@@ -141,6 +141,7 @@ Page({
    * 跳转宝宝奖状
    */
   toBabyCertificate: co.wrap(function *() {
+    yield graphql.updateNewsCerts()
     wxNav.navigateTo('../certificate/index')
   }),
 })

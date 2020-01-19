@@ -24,6 +24,12 @@
         </view>
     </view>
 </block>
+<block wx:if="{{!playList.length}}">
+    <view class="item-none">
+        <image mode="widthFix" src="https://cdn-h.gongfudou.com/LearningBox/preschool/growth_plan_none.png" mode="widthFix"></image>
+        <text>暂无内容</text>
+    </view>
+</block>
 
 <import src="../../../lib/toast/wetoast.wxml" />
 <template is="wetoast" data="{{...__wetoast__}}" />

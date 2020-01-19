@@ -29,7 +29,7 @@ Page({
     subscription: false,
     btnText: '',
     // isAndroid: false
-    showBtn:false
+    showBtn: true
   },
 
   /**
@@ -37,10 +37,6 @@ Page({
    */
   onLoad: co.wrap(function* (options) {
     this.longToast = new app.weToast()
-    // let currentImage=this.data.imgUrls[1].image
-    // let systemInfo = wx.getSystemInfoSync()
-    // let isAndroid = systemInfo.system.indexOf('iOS') > -1 ? false : true
-
     this.userPlanSn = this.options.userPlanSn
     this.planSn = this.options.planSn
     this.sn = this.options.sn
@@ -49,20 +45,18 @@ Page({
 
     try {
       const respMember = yield gragql.getUserMemberInfo()
-      console.log('232333',respMember)
       const resp = yield gql.getPreviewContent(this.sn)
       this.featureKey = resp.content.featureKey
       this.contentImagesLength = resp.content.contentImages.length
       this.data.imgUrls = resp.content.contentImages
       this.setData({
-        // isAndroid: isAndroid,
         currentImage: this.data.currentImage,
         isFullScreen: app.isFullScreen,
         imgUrls: this.data.imgUrls,
         allPage: resp.content.pageCount,
         // currentPage:this.data.currentPage
-        isMember:respMember.currentUser.isPreschoolMember,
-        showBtn:true
+        isMember: respMember.currentUser.isPreschoolMember,
+        showBtn: true
       })
 
       if (this.data.allPage == 1) {
@@ -70,21 +64,22 @@ Page({
           showArrow: false
         })
       }
-      if(this.subscribe == 'noSubscript'){
+      if (this.subscribe == 'noSubscript') {
         this.setData({
-          subscription:false,
-          showBtn:true
+          subscription: false,
+          showBtn: true
         })
-      }else{
+      } else if (this.subscribe == 'subscript' || this.subscribe == 'finished') {
         this.setData({
-          subscription:true,
-          showBtn:false
+          subscription: true,
+          showBtn: false
+        })
+      } else {
+        this.setData({
+          showBtn: true
         })
       }
-      console.log('this.data.subscription',this.data.subscription)
-
-      // this.toFunc()
-
+      // this.longToast.hide()
     } catch (e) {
       this.longToast.toast()
       util.showError(e)
@@ -92,15 +87,15 @@ Page({
   }),
 
   //判断会员
-  checkMember: co.wrap(function *(){
-    if(this.data.isMember){
+  checkMember: co.wrap(function* () {
+    if (this.data.isMember) {
       yield this.toSubscribe()
-    }else{
+    } else {
       //判断会员标示
       var memberToast = this.selectComponent('#memberToast')
-      memberToast.checkAuthMember(()=>{
+      memberToast.checkAuthMember(() => {
         wxNav.navigateTo('./plan_detail', {
-          userPlanSn:this.userPlanSn
+          userPlanSn: this.userPlanSn
         })
       })
     }
@@ -109,7 +104,7 @@ Page({
   /* 去订阅 */
   toSubscribe: co.wrap(function* () {
     this.longToast.toast({
-      type:'loading'
+      type: 'loading'
     })
     try {
       yield gql.joinPlan(this.planSn)
@@ -118,13 +113,13 @@ Page({
       // yield gql.getPlanContents(this.planSn)
 
       this.longToast.toast({
-        type:'loading',
-        duration:6000,
-        title:'已订阅！'
+        type: 'loading',
+        duration: 6000,
+        title: '已订阅！'
       })
       this.setData({
-        subscription:true,
-        showBtn:false
+        subscription: true,
+        showBtn: false
       })
       this.beginPrint()
       this.longToast.hide()
@@ -132,34 +127,8 @@ Page({
       this.longToast.toast()
       util.showError(e)
     }
-    
+
   }),
-
- 
-  // toFunc: co.wrap(function* (e) {
-  //   try {
-  //     if (this.data.isMember) {
-  //       this.btnType = 'subscription'
-  //       this.setData({
-  //         btnText: '立即订阅'
-  //       })
-  //     } else if(this.data.subscription) {
-  //       this.btnType = 'print'
-  //       this.setData({
-  //         btnText: '开始打印'
-  //       })
-  //     } else {
-  //       this.btnType = 'buy'
-  //       this.setData({
-  //         btnText: '购买会员'
-  //       })
-  //     }
-  //   } catch (error) {
-  //     this.longToast.toast()
-  //     util.showError(error)
-  //   }
-
-  // }),
 
   /**
    * 上一页
@@ -238,7 +207,8 @@ Page({
         orderPms: {
           printType: 'RESOURCE',
           pageCount: this.contentImagesLength,
-          featureKey: this.featureKey,
+          // featureKey: this.featureKey,
+          featureKey: 'qdnl',
           resourceOrderType: 'Plan',
           resourceAttribute: {
             userPlanSn: this.userPlanSn,
