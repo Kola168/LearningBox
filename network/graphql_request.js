@@ -122,10 +122,12 @@ const graphqlApi = {
     return gql.query({
       query: `query ($sn: String!){
         category(sn: $sn){
-          templates {
-            previewImage,
-            sn,
-            name
+          ...on TemplateCategory {
+            templates {
+              previewImage,
+              sn,
+              name
+            }
           }
         }
       }`,
@@ -734,6 +736,21 @@ const graphqlApi = {
             }
           }
         }
+      }`,
+      variables: {
+        input: pms
+      }
+    })
+  },
+  /**
+   * 创建资源订单
+   */
+  createCommonResourceOrder: (pms) => {
+    return gql.mutate({
+      mutation: `mutation createResourceOrder($input: CreateResourceOrderInput!) {
+        createResourceOrder(input: $input){
+          state
+          }
       }`,
       variables: {
         input: pms
@@ -1931,10 +1948,12 @@ const graphqlApi = {
       query: `query($sn:String!,$page:String!) {
         customizeContents(sn:$sn,page:$page){
           sn
-          print_count:printerOrdersCount
           title:name
           icon_url:iconUrl
           total_page:pageCount
+          ...on ResourceContent{
+            print_count:printerOrdersCount
+          }
           }
         }`,
       variables: {
@@ -1953,18 +1972,20 @@ const graphqlApi = {
   customizeContent: (sn) => {
     return gql.query({
       query: `query($sn:String!) {
-        content(sn:$sn){
-          sn
-          contentCollected
-          contentImages{
-            id
-            nameUrl
-          }
-          featureKey
-          fileUrl
-          name
-          pageCount
-          }
+          content(sn:$sn){
+            sn
+            contentImages{
+              id
+              nameUrl
+            }
+            featureKey
+            name
+            pageCount
+            ...on ResourceContent{
+              contentCollected
+              fileUrl
+            }
+            }
         }`,
       variables: {
         sn: sn

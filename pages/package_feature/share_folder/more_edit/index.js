@@ -358,6 +358,7 @@ Page({
             printUrl: this.data.convertImg.pre_convert_url || '', // 编辑后可打印的连接
             copies: this.data.print_count, // 打印份数
             grayscale: false, // 是否使用灰度打印
+            color:true
         }
         // if (!this.checkImagesIsValid(images)) return;
         this.longToast.toast({
@@ -366,7 +367,7 @@ Page({
         })
     
         try {
-            const resp = yield commonRequest.createOrder('normal_id', param)
+            const resp = yield commonRequest.createOrder(this.feature_key, param)
             this.longToast.hide()
             logger.info(resp)
             router.redirectTo('/pages/finish/index', {

@@ -93,7 +93,7 @@ Page({
         var path = util.isHuaweiCloud(image.url) ? 'more_edit' : 'more_edit_ali'
         router.navigateTo(`/pages/package_feature/share_folder/${path}/index`,{
             image:encodeURIComponent(JSON.stringify(query)),
-            feature_key: this.feature_key
+            feature_key: this.data.print_size.key,
         })
     },
     /**

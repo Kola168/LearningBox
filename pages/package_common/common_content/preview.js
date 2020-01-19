@@ -36,7 +36,7 @@ Page({
   },
   onLoad: co.wrap(function* (options) {
     this.setData({
-      naem: options.name
+      name: options.name
     })
     this.options = options
     console.log(options)
@@ -156,7 +156,8 @@ Page({
     // 	})
     // }
     this.setData({
-      showSetting: true
+      showSetting: true,
+      name: '打印设置'
     })
   }),
   //增加份数
@@ -308,13 +309,15 @@ Page({
           copies: that.data.documentPrintNum,
           startPage: that.data.startPrintPage,
           endPage: that.data.endPrintPage,
-          duplex: that.data.duplexcheck
+          duplex: that.data.duplexcheck,
+          color:true,
+          // categorySns:this.options.categorySns
         }
       }
 
       try {
 
-        const resp = yield gql.createResourceOrder(p)
+        const resp = yield gql.createCommonResourceOrder(p)
 
         console.log(resp)
         router.redirectTo('/pages/finish/index', {

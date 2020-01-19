@@ -234,7 +234,7 @@ Page({
     }),
     uploadImage: co.wrap(function* (e) {
         logger.info(e)
-        this.path = e.detail.tempFilePaths[0]
+        this.path = e.detail.tempFiles[0].path
         try {
             const imgInfo = yield getImageInfo({
                 src: this.path

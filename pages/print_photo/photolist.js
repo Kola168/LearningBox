@@ -387,12 +387,16 @@ Page({
 
       })
       let resp = yield commonRequest.createOrder(this.mediaType, imgs)
+
       wxNav.navigateTo(`pages/finish/index`, {
         media_type: this.mediaType,
         state:resp.createOrder.state
       })
       this.longToast.toast()
       storage.remove(this.mediaType)
+      this.setData({
+        photoList:[]
+      })
     }catch(e){
       Loger(e)
       this.longToast.toast()

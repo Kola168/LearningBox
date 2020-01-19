@@ -47,6 +47,7 @@ page {
     display: flex;
     margin-bottom: 60rpx;
     height: 200rpx;
+    position: relative;
 }
 
 .pay-title image {
