@@ -1,7 +1,7 @@
 <!--pages/account/collection/index.wxml-->
 <nav-bar title="我的收藏"></nav-bar>
 <block  wx:if="{{collectionList.length>0}}">
-  <view wx:for="{{collectionList}}" wx:key="collectionList" data-index="{{index}}" class="item-list-box">
+  <view wx:for="{{collectionList}}" wx:key="collectionList" data-index="{{index}}" bindtap="toContent" class="item-list-box">
     <image src="{{item.iconUrl}}" mode="aspectFit" class="list-img"></image>
     <view class="list-content">
       <view class="list-content-name">

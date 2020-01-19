@@ -246,5 +246,5 @@ App({
       const res = yield getSystemInfo()
       return res.system.toLowerCase().indexOf('ios') > -1
     }
-  }) 
+  })
 })
