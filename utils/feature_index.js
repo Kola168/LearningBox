@@ -54,7 +54,7 @@
   word_pdf:'/pages/package_feature/print_speed/intro',
   shareFile:'/pages/package_feature/share_folder/index',
   qdnl:'/pages/package_preschool/growth_plan/list/index',
-  reprography: '/pages/print_doc/duplicate_preview/duplicate_preview',
+  reprography: '/pages/print_doc/duplicate/duplicate',
 }
 
 module.exports = {
