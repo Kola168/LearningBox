@@ -82,7 +82,6 @@ Page({
 
     this.audioCtx.onEnded(function(){
       console.log(111111)
-      that.audioCtx.stop()
       that.audioPlaying=false
     })
     this.audioCtx.onError(function(res){
