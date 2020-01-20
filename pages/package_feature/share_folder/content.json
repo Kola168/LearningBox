@@ -1,7 +1,7 @@
 {
   "usingComponents": {
     "w-progress-modal": "../../../components/progress-modal/index",
-    "ios-tip": "../../../components/confirm-print/index",
+    "ios-tip": "../../../../../components/confStorageModal/index",
     "take-photo-pop":"../../../components/checkimg/index"
   },
   "navigationBarTitleText": "共享文件夹",
