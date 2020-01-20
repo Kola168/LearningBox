@@ -13,17 +13,13 @@ Page({
     subjects: []
   },
   onLoad(query) {
-    this.isMember = Number(query.isMember)
-    this.expiresAt = query.expiresAt
     this.weToast = new app.weToast()
     this.getSubjectsErrorbook()
   },
   toErrorbookList(e) {
     let sn = e.currentTarget.id
     wxNav.navigateTo('../errorbook/list', {
-      sn,
-      isMember: this.isMember ? 1 : 0,
-      expiresAt: this.expiresAt
+      sn
     })
   },
   getSubjectsErrorbook: co.wrap(function* () {

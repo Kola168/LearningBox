@@ -1,7 +1,87 @@
 <nav-bar title="超级错题本"></nav-bar>
-<view class="container" wx:if="{{loadReady}}" style="background:{{isMember?'#f7f7f7':'#fff'}};min-height:{{areaHeight-navBarHeight}}px;">
+<view class="container" wx:if="{{loadReady}}" style="background:{{isMember||(!isMember&&expiresAt)?'#f7f7f7':'#fff'}};min-height:{{areaHeight-navBarHeight}}px;">
   <block wx:if="{{isMember||(!isMember&&expiresAt)}}">
-    <!-- <view class="empty" wx:if="{{errorbookList.length===0}}">
+    <view class="tab-bar" style="top:{{navBarHeight}}px;">
+      <view class="bar-tip" bindtap="buyMember" wx:if="{{!isMember&&expiresAt&&!isIos}}">
+        <image src="../../images/diamond.png" mode="widthFix" />
+        <view>会员已过期错题整理不能断哦！点击立即开通</view>
+      </view>
+      <view class="bar-box">
+        <view class="bar-item {{filterType==='knowledge'?'bar-item-active':''}}" bindtap="showFilter" id="knowledge">
+          <view class="text-overflow-points">{{activeKnowledge!==''?activeKnowledge:'知识点'}}</view>
+          <image src="../../images/arrow_{{filterType==='knowledge'?'top':'bottom'}}.png" mode="widthFix" />
+        </view>
+        <view class="bar-item {{filterType==='type'?'bar-item-active':''}}" bindtap="showFilter" id="type">
+          <view class="text-overflow-points">{{activeType!==''?activeType:'题型'}}</view>
+          <image src="../../images/arrow_{{filterType==='type'?'top':'bottom'}}.png" mode="widthFix" />
+        </view>
+        <view class="bar-item {{filterType==='learnCase'?'bar-item-active':''}}" bindtap="showFilter" id="learnCase">
+          <view class="text-overflow-points">
+            {{activeLearnCase!==''?activeLearnCase:'学会情况'}}
+          </view>
+          <image src="../../images/arrow_{{filterType==='learnCase'?'top':'bottom'}}.png" mode="widthFix" />
+        </view>
+        <view class="bar-item bar-date-item" bindtap="showFilter" id="date">
+          <view class="date-item-box">
+            <image src="../../images/date_icon.png" mode="widthFix" />
+            <view wx:if="{{hasChooseDate}}">
+              {{dateRange.displayStartAt}}-{{dateRange.displayEndAt}}
+            </view>
+            <view wx:else>七天内</view>
+            <image src="../../images/arrow.png" mode="widthFix" />
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="filter" style="top:{{navBarHeight+noticeHeight+50}}px;" wx:if="{{showFilter}}" bindtap="hideFilter">
+      <view class="filter-box">
+        <view class="filter-item {{item.key===activeFilter?'bar-item-active':''}}" catchtap="checkFilter" wx:for="{{activeFilterList}}" wx:key="index" data-key="{{item.key}}">
+          {{item.key}}{{item.docCount?'('+item.docCount+')':''}}
+        </view>
+      </view>
+    </view>
+    <view class="list-content" wx:if="{{errorbookList.length>0}}" style="padding-top:{{noticeHeight+100}}px;{{showFilter?'height:'+(areaHeight-navBarHeight-noticeHeight-170)+'px;overflow:hidden;':''}}">
+      <view class="content-title" style="top:{{navBarHeight+noticeHeight+50}}px;">
+        <view class="title-left">共{{totalCount}}道错题</view>
+        <view class="title-select" wx:if="{{!showHandleBar}}" bindtap="showHandleBar">
+          <image src="../../images/select_icon.png" class="select-img" mode="widthFix" />
+          <view>选择</view>
+        </view>
+        <view class="select-btn" wx:if="{{showHandleBar}}" bindtap="showHandleBar">完成</view>
+      </view>
+      <block wx:for="{{errorbookList}}" wx:key="index">
+      <view class="content-item" wx:for="{{errorbookList}}" wx:key="sn">
+        <view class="item-top">
+          <image wx:if="{{showHandleBar}}" bindtap="checkItem" data-index="{{index}}" src="../../images/check_{{item.isCheck||checkAll?'yes':'no'}}.png" mode="widthFix" />
+          <view bindtap="toDetail" data-id="{{item.xuekewangQuestion.quesId}}">
+            <rich-text nodes="{{item.xuekewangQuestion.quesBody}}"></rich-text>
+          </view>
+          <view class="top-marker" wx:if="{{item.deletedAt}}">我已学会</view>
+        </view>
+        <view class="item-bottom">
+          <view class="item-knowledge" bindtap="showKnowledgeModal" data-index="{{index}}">
+            <view class="knowledge-left">
+              <view>知识点:</view>
+              <view class="knowledge-list text-overflow-points">
+                <block wx:if="{{item.xuekewangQuestion.xuekewangKnowledges.length>0}}">
+                  <text class="list-item" wx:for="{{item.xuekewangQuestion.xuekewangKnowledges}}" wx:for-item="knowItem" wx:key="index">{{knowItem.title}}
+                  </text>
+                </block>
+                <text class="list-item" wx:else>无</text>
+              </view>
+            </view>
+            <image src="../../images/arrow.png" mode="widthFix" />
+          </view>
+          <view class="item-type">
+            <view class="type-text">{{item.xuekewangQuestion.typeName}}</view>
+            <view class="item-date">{{item.updatedAt}}</view>
+          </view>
+        </view>
+      </view>
+      </block>
+      
+    </view>
+    <view class="empty" wx:else>
       <image src="../../images/no_errorbook.png" mode="widthFix" />
       <view class="empty-tip">您还没有录入错题哦！</view>
       <view class="empty-content">
@@ -10,107 +90,18 @@
         <view>2.扫描打印出的试卷上方二维码</view>
         <view>3.进行批改，批改后题会自动录入此处哦</view>
       </view>
-    </view> -->
-    <!-- <block wx:else> -->
-      <view class="tab-bar" style="top:{{navBarHeight}}px;">
-        <view class="bar-tip" bindtap="buyMember" wx:if="{{!isMember&&expiresAt&&!isIos}}">
-          <image src="../../images/diamond.png" mode="widthFix" />
-          <view>会员已过期错题整理不能断哦！点击立即开通</view>
-        </view>
-        <view class="bar-box">
-          <view class="bar-item {{filterType==='knowledge'?'bar-item-active':''}}" bindtap="showFilter" id="knowledge">
-            <view class="text-overflow-points">{{activeKnowledge!==''?activeKnowledge:'知识点'}}</view>
-            <image src="../../images/arrow_{{filterType==='knowledge'?'top':'bottom'}}.png" mode="widthFix" />
-          </view>
-          <view class="bar-item {{filterType==='type'?'bar-item-active':''}}" bindtap="showFilter" id="type">
-            <view class="text-overflow-points">{{activeType!==''?activeType:'题型'}}</view>
-            <image src="../../images/arrow_{{filterType==='type'?'top':'bottom'}}.png" mode="widthFix" />
-          </view>
-          <view class="bar-item {{filterType==='learnCase'?'bar-item-active':''}}" bindtap="showFilter" id="learnCase">
-            <view class="text-overflow-points">
-              {{activeLearnCase!==''?activeLearnCase:'学会情况'}}
-            </view>
-            <image src="../../images/arrow_{{filterType==='learnCase'?'top':'bottom'}}.png" mode="widthFix" />
-          </view>
-          <view class="bar-item bar-date-item" bindtap="showFilter" id="date">
-            <view class="date-item-box">
-              <image src="../../images/date_icon.png" mode="widthFix" />
-              <view wx:if="{{hasChooseDate}}">
-                {{dateRange.displayStartAt}}-{{dateRange.displayEndAt}}
-              </view>
-              <view wx:else>七天内</view>
-              <image src="../../images/arrow.png" mode="widthFix" />
-            </view>
-          </view>
-        </view>
+    </view>
+    <view class="handle-btns {{showHandleBar?'handle-btns-active':''}}">
+      <view bindtap="handleBtnClick" class="{{checkSomeone?'':'forbid-btn'}}" id="mark">
+        标记为{{markLearnFlag?'未':'已'}}学会
       </view>
-      <view class="filter" style="top:{{navBarHeight+noticeHeight+50}}px;" wx:if="{{showFilter}}" bindtap="hideFilter">
-        <view class="filter-box">
-          <view class="filter-item {{item.key===activeFilter?'bar-item-active':''}}" catchtap="checkFilter" wx:for="{{activeFilterList}}" wx:key="index" data-key="{{item.key}}">
-            {{item.key}}{{item.docCount?'('+item.docCount+')':''}}
-          </view>
-        </view>
+      <view bindtap="handleBtnClick" class="{{checkSomeone?'':'forbid-btn'}}" id="parallel">
+        打印平行题
       </view>
-      <view class="list-content" wx:if="{{errorbookList.length>0}}" style="padding-top:{{noticeHeight+100}}px;{{showFilter?'height:'+(areaHeight-navBarHeight-noticeHeight-170)+'px;overflow:hidden;':''}}">
-        <view class="content-title" style="top:{{navBarHeight+noticeHeight+50}}px;">
-          <view class="title-left">共{{totalCount}}道错题</view>
-          <view class="title-select" wx:if="{{!showHandleBar}}" bindtap="showHandleBar">
-            <image src="../../images/select_icon.png" class="select-img" mode="widthFix" />
-            <view>选择</view>
-          </view>
-          <view class="select-btn" wx:if="{{showHandleBar}}" bindtap="showHandleBar">完成</view>
-        </view>
-        <view class="content-item" wx:for="{{errorbookList}}" wx:key="sn">
-          <view class="item-top">
-            <image wx:if="{{showHandleBar}}" bindtap="checkItem" data-index="{{index}}" src="../../images/check_{{item.isCheck||checkAll?'yes':'no'}}.png" mode="widthFix" />
-            <view bindtap="toDetail" data-id="{{item.xuekewangQuestion.quesId}}">
-              <rich-text nodes="{{item.xuekewangQuestion.quesBody}}"></rich-text>
-            </view>
-            <view class="top-marker" wx:if="{{item.deletedAt}}">我已学会</view>
-          </view>
-          <view class="item-bottom">
-            <view class="item-knowledge" bindtap="showKnowledgeModal" data-index="{{index}}">
-              <view class="knowledge-left">
-                <view>知识点:</view>
-                <view class="knowledge-list text-overflow-points">
-                  <block wx:if="{{item.xuekewangQuestion.xuekewangKnowledges.length>0}}">
-                    <text class="list-item" wx:for="{{item.xuekewangQuestion.xuekewangKnowledges}}" wx:for-item="knowItem" wx:key="index">{{knowItem.title}}
-                    </text>
-                  </block>
-                  <text class="list-item" wx:else>无</text>
-                </view>
-              </view>
-              <image src="../../images/arrow.png" mode="widthFix" />
-            </view>
-            <view class="item-type">
-              <view class="type-text">{{item.xuekewangQuestion.typeName}}</view>
-              <view class="item-date">{{item.updatedAt}}</view>
-            </view>
-          </view>
-        </view>
+      <view bindtap="handleBtnClick" class="{{checkSomeone?'':'forbid-btn'}}" id="origin">
+        打印原题
       </view>
-      <view class="empty" wx:else>
-        <image src="../../images/no_errorbook.png" mode="widthFix" />
-        <view class="empty-tip">您还没有录入错题哦！</view>
-        <view class="empty-content">
-          <view>如何录入错题？</view>
-          <view>1.打印同步练习或试卷</view>
-          <view>2.扫描打印出的试卷上方二维码</view>
-          <view>3.进行批改，批改后题会自动录入此处哦</view>
-        </view>
-      </view>
-      <view class="handle-btns {{showHandleBar?'handle-btns-active':''}}">
-        <view bindtap="handleBtnClick" class="{{checkSomeone?'':'forbid-btn'}}" id="mark">
-          标记为{{markLearnFlag?'未':'已'}}学会
-        </view>
-        <view bindtap="handleBtnClick" class="{{checkSomeone?'':'forbid-btn'}}" id="parallel">
-          打印平行题
-        </view>
-        <view bindtap="handleBtnClick" class="{{checkSomeone?'':'forbid-btn'}}" id="origin">
-          打印原题
-        </view>
-      </view>
-    <!-- </block> -->
+    </view>
   </block>
   <block wx:else>
     <view class="not-member-tip" wx:if="{{!isIos}}">

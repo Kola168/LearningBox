@@ -61,20 +61,40 @@ Page({
     this.weToast = new app.weToast()
     this.subjectSn = query.sn
     this.markIndexs = new Set()
-    let isIos = yield app.isIos(),
-      isMember = Boolean(Number(query.isMember)),
-      expiresAt = query.expiresAt
+    let isIos = yield app.isIos()
     this.setData({
       navBarHeight: app.navBarInfo ? app.navBarInfo.topBarHeight : app.getNavBarInfo().topBarHeight,
       areaHeight: app.sysInfo.screenHeight,
       dateRange: computedTime.getCurrentDayToDayFn(7),
-      noticeHeight: (!isMember && expiresAt) ? 20 : 0,
-      isMember,
-      expiresAt,
       isIos,
       ['modalObj.title']: isIos ? '点击按钮了解错题本功能' : '开通学科会员 小白帮你消灭错题'
     })
-    yield this.getErrorbookFilters()
+    
+    this.getSubjectMemberInfo()
+  }),
+
+  getSubjectMemberInfo: co.wrap(function* () {
+    this.weToast.toast({
+      type: 'loading'
+    })
+    try {
+      let res = yield graphql.getSubjectMemberInfo(),
+        subjectMember = res.currentUser.selectedKid.schoolAgeMember
+      this.weToast.hide()
+      let isMember = res.currentUser.isSchoolAgeMember,
+        expiresAt = subjectMember ? subjectMember.expiresAt : ''
+      this.setData({
+        isMember,
+        expiresAt,
+        noticeHeight: (!isMember && expiresAt) ? 20 : 0,
+      })
+      if (isMember || (!isMember && expiresAt)) {
+        yield this.getErrorbookFilters()
+      }
+    } catch (e) {
+      this.weToast.hide()
+      util.showError(e)
+    }
   }),
 
   // 获取过滤选项
