@@ -133,9 +133,6 @@ Page({
     })
     try {
       var resp = yield commonRequest.getPrinterCapacity('doc_a4')
-      if (resp.data.code != 0) {
-        throw (resp.data)
-      }
       console.log('获取打印能力成功', resp.data)
       this.longToast.toast()
       this.setData({
@@ -232,7 +229,7 @@ Page({
   //选择颜色
   colorCheck(e) {
     this.setData({
-      colorcheck: e.currentTarget.dataset.style
+      colorcheck: e.currentTarget.dataset.style == 'Color' ? true : false
     })
   },
 
@@ -310,7 +307,7 @@ Page({
           startPage: Number(that.data.startPrintPage),
           endPage: Number(that.data.endPrintPage),
           duplex: that.data.duplexcheck,
-          color:true,
+          color: true,
           // categorySns:this.options.categorySns
         }
       }
