@@ -279,24 +279,6 @@ Page({
       })
 
       let that = this
-      // let resourceable = {}
-      // resourceable.type = 'ec_content'
-      // resourceable.sn = that.id
-      // resourceable.category_sn = that.sn
-
-      // let setting = {}
-      // setting.duplex = that.data.duplexcheck
-      // setting.color = that.data.colorcheck
-      // setting.number = that.data.documentPrintNum
-      // if (that.data.type != '_learning') {
-      //   setting.start_page = that.data.startPrintPage
-      //   setting.end_page = that.data.endPrintPage
-      // }
-
-      // let params = {
-      //   resourceable: resourceable,
-      //   setting: setting,
-      // }
       let p = {
         featureKey: this.data.detail.featureKey,
         resourceOrderType: 'Resource',
@@ -311,7 +293,6 @@ Page({
           // categorySns:this.options.categorySns
         }
       }
-
       try {
 
         const resp = yield gql.createCommonResourceOrder(p)
