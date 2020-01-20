@@ -51,6 +51,7 @@ Page({
       this.userPlanSn = this.options.userPlanSn
       const respMember = yield gragql.getUserMemberInfo()
       const resp = yield gql.getPlan(this.planSn)
+      // this.sn= resp.plan.sn
       this.setData({ 
         isMember:respMember.currentUser.isPreschoolMember,
         checkpoints: resp.plan.planShowContents,
