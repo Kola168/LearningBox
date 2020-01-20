@@ -54,9 +54,18 @@ Page({
         this.setData({
           recommendTest:wrongList
         })
+        if((wrongList.length/this.answerList.length)<0.5){
+          this.setData({
+            kidpercent:_.random(50,70)
+          })
+        }else{
+          this.setData({
+            kidpercent:_.random(70,95)
+          })
+        }
       }else{
         this.setData({
-          kidpercent:_.random(90,100)
+          kidpercent:_.random(95,99)
         })
       }
     } catch (e) {
