@@ -1,0 +1,23 @@
+function addProcess(imgUrl, process) {
+		if (!process) {
+				process = ''
+		}
+		if (imgUrl.indexOf('?x-image-process=image') < 0) {
+				imgUrl += '?x-image-process=image'
+		}
+
+		if (process.indexOf('/resize') >= 0) {
+				process += '/marker,u_plus'
+		}
+		imgUrl +=process
+		return imgUrl
+}
+
+function compress(imuUrl){
+	return addProcess(imuUrl,'/resize,w_200,limit_0/quality,Q_85/format,jpg')
+}
+
+module.exports = {
+	compress:compress,
+  addProcess:addProcess
+}
