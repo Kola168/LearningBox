@@ -3,13 +3,6 @@ page {
   min-height: 100%;
 }
 
-.content-empty {
-  font-size: 30rpx;
-  color: #666;
-  text-align: center;
-  padding-top: 40rpx;
-}
-
 .option-on {
   color: #FFA200;
 }
@@ -94,4 +87,16 @@ page {
   left: 0;
   bottom: 0;
   width: 100%;
+}
+
+.content-empty {
+  font-size: 28rpx;
+  color: #666;
+  padding-top: 160rpx;
+  text-align: center;
+}
+
+.content-empty image {
+  width: 240rpx;
+  margin: 0 auto 32rpx;
 }

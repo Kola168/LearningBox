@@ -21,8 +21,8 @@
         <image src="../../images/arrow_bottom.png" mode="widthFix" />
       </view>
     </block>
-    <view class="filters-cover" wx:if="{{showFilter}}" bindtap="showFilter" style="top:{{topBarHeight+50}}px;">
-      <view class="filters-list">
+    <view class="filters-cover" bindtap="showFilter" style="top:{{showFilter?(topBarHeight+50)+'px':'-100%'}};">
+      <view class="filters-list {{showFilter?'filters-list_active':''}}">
         <view wx:for="{{activeFilterList}}" wx:key="id" class="list-box {{activeFilter.id==item.id?'filters-active-color':''}}" bindtap="changeFilter" data-index="{{index}}">
           {{item.name}}
         </view>

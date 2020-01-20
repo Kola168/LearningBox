@@ -40,6 +40,11 @@ Page({
       yield this.getFilters()
       if (this.materials.length > 0) {
         this.getWriteList()
+      } else {
+        this.setData({
+          isEmpty: true,
+          loadReady: true
+        })
       }
     }
   }),
@@ -51,6 +56,11 @@ Page({
     yield this.getFilters()
     if (this.materials.length > 0) {
       this.getWriteList()
+    } else {
+      this.setData({
+        isEmpty: true,
+        loadReady: true
+      })
     }
   }),
   ctrlSelector(e) {
@@ -168,7 +178,8 @@ Page({
       this.weToast.hide()
       if (isEmpty) {
         this.setData({
-          isEmpty
+          isEmpty,
+          loadReady: true
         })
         return
       } else {

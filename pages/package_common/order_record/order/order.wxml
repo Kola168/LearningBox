@@ -56,7 +56,7 @@
 			<view>保存证件照</view>
 		</button>
 	</block> -->
-	<block wx:if="{{orderDetails.categoryName!='MemberConfig'}}">
+	<block wx:if="{{orderDetails.payable.categoryName!='MemberConfig'}}">
 		<view class="btn-content f-18 color-333" bind:tap="contentDetail">查看详情</view>
 	</block>
 	<import src="../../../../lib/toast/wetoast.wxml" />

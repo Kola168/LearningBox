@@ -12,7 +12,7 @@
 </view>
 <!-- 带缩略图 -->
 <block wx:for="{{playList}}" wx:key="playList">
-    <view class="item-3" bindtap='toNextPage' id="{{item.sn}}" data-name="{{item.title}}" data-name="{{item.name}}">
+    <view class="item-3" bindtap='toNextPage' id="{{item.sn}}" data-name="{{item.title}}">
         <image src='{{item.icon_url}}' class='url-3' mode="aspectFill"></image>
         <view class='title-3'>{{item.title}}</view>
         <view class='print print-3'>

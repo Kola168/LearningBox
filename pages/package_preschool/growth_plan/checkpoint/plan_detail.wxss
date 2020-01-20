@@ -8,7 +8,7 @@
 }
 .detail-item, .detail-images image{
     width:100%;
-    height:980rpx;
+    /* height:980rpx; */
 }
 .detail-item{
     /* display: inline-block; */

@@ -6,8 +6,9 @@
   </image>
   <view class="cert-list">
     <view class="cert-header">
-      <view>坚持每日一练，培养宝宝“持续性学习”好习惯</view>
-      <view>努力获得更多奖状吧</view>
+      <image src="../../images/exercise_name.png" mode="widthFix"/>
+      <!-- <view>坚持每日一练，培养宝宝“持续性学习”好习惯</view> -->
+      <!-- <view>努力获得更多奖状吧</view> -->
     </view>
     <view class="cert-content">
       <view class="cert-item" wx:for="{{testimonials}}" wx:key="subTitle">

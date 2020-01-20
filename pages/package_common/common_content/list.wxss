@@ -11,10 +11,11 @@ page {
 
 .tabs {
     position: fixed;
-    top: 176rpx;
+    top: 128rpx;
     left: 0;
     height: 70rpx;
     width: 100%;
+    padding-top:30rpx;
     display: flex;
     align-items: center;
     font-size: 32rpx;
@@ -22,6 +23,7 @@ page {
     justify-content: space-between;
     box-sizing: border-box;
     z-index: 100;
+    background: #fff;
 }
 
 
@@ -129,11 +131,10 @@ page {
 
 .title-3 {
     color: #333;
-    margin-top: 42rpx;
+    margin: 0;
+    margin-top: 10rpx;
     font-size: 28rpx;
     width: 200rpx;
-    margin: 0;
-    margin: 0 auto;
     text-align: left;
     overflow: hidden;
     text-overflow: ellipsis;

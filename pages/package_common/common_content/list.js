@@ -108,7 +108,7 @@ Page({
         return
       }
       this.setData({
-        playList: resp.customizeContents
+        playList: this.data.playList.concat(resp.customizeContents)
       })
       this.page++
     } catch (error) {
@@ -119,7 +119,8 @@ Page({
   toNextPage(e) {
     router.navigateTo('/pages/package_common/common_content/preview', {
       sn: e.currentTarget.id,
-      name: e.currentTarget.dataset.name
+      name: e.currentTarget.dataset.name,
+      // categorySns:this.data.typeList[this.data.tabId].sn
     })
   },
   onShareAppMessage: function (res) {
@@ -133,6 +134,14 @@ Page({
 		} else {
 			return app.share
 		}
+  },
+  onReachBottom: function () {
+    console.log('分页加载')
+    console.log('this.pageEnd', this.pageEnd)
+    if (this.pageEnd) {
+      return
+    }
+    this.getFeatureList()
   },
   onUnload() {
     event.remove('Authorize', this)

@@ -1,2 +1,1 @@
-<nav-bar background="#fff" title="小白学习盒子"></nav-bar>
 <web-view src="{{url}}"></web-view>

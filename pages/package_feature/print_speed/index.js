@@ -359,7 +359,16 @@ Page({
   },
 
   toPreview: co.wrap(function* (e) {
-    yield commonRequest.previewDocument(this.data.url)
+    // yield commonRequest.previewDocument(this.data.url)
+    wx.downloadFile({
+      url: this.data.url,
+      success: (res) => {
+        this.longToast.hide()
+        wx.openDocument({
+          filePath: res.tempFilePath
+        })
+      }
+    })
   }),
 
   onUnload: function () {
