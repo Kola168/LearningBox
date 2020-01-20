@@ -1,5 +1,5 @@
-<view class="confirm-modal" wx:if="{{modal.isShow}}" bindtap="hideModal" catchtouchmove>
-  <view class="confirm-modal-wrap" catchtap="tapModal">
+<view class="confirm-modal" style="top:{{modal.isShow?0:'100%'}};" bindtap="hideModal" catchtouchmove>
+  <view class="confirm-modal-wrap {{modal.isShow?'confirm-modal-wrap_active':''}}" catchtap="tapModal">
     <view class="confirm-modal-title" wx:if="{{modal.title}}">{{modal.title}}</view>
     <view class="confirm-modal-content">
       <block wx:if="{{modal.slotContent}}">

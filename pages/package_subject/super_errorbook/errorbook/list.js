@@ -69,7 +69,7 @@ Page({
       isIos,
       ['modalObj.title']: isIos ? '点击按钮了解错题本功能' : '开通学科会员 小白帮你消灭错题'
     })
-    
+
     this.getSubjectMemberInfo()
   }),
 
@@ -146,6 +146,7 @@ Page({
 
   // 选择题目
   checkItem(e) {
+    if (!this.data.showHandleBar) return
     if ([...this.markIndexs].length === 10) {
       return wx.showToast({
         title: '一次最多选择 10 道题'

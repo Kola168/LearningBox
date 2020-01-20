@@ -33,8 +33,8 @@
         </view>
       </view>
     </view>
-    <view class="filter" style="top:{{navBarHeight+noticeHeight+50}}px;" wx:if="{{showFilter}}" bindtap="hideFilter">
-      <view class="filter-box">
+    <view class="filter" style="top:{{showFilter?(navBarHeight+noticeHeight+50)+'px':'-100%'}};" bindtap="hideFilter">
+      <view class="filter-box {{showFilter?'filter-box_active':''}}">
         <view class="filter-item {{item.key===activeFilter?'bar-item-active':''}}" catchtap="checkFilter" wx:for="{{activeFilterList}}" wx:key="index" data-key="{{item.key}}">
           {{item.key}}{{item.docCount?'('+item.docCount+')':''}}
         </view>
@@ -52,7 +52,7 @@
       <block wx:for="{{errorbookList}}" wx:key="index">
       <view class="content-item" wx:for="{{errorbookList}}" wx:key="sn">
         <view class="item-top">
-          <image wx:if="{{showHandleBar}}" bindtap="checkItem" data-index="{{index}}" src="../../images/check_{{item.isCheck||checkAll?'yes':'no'}}.png" mode="widthFix" />
+          <image bindtap="checkItem" data-index="{{index}}" src="../../images/check_{{item.isCheck||checkAll?'yes':'no'}}.png" mode="widthFix" class="{{showHandleBar?'show-img-check':''}}" />
           <view bindtap="toDetail" data-id="{{item.xuekewangQuestion.quesId}}">
             <rich-text nodes="{{item.xuekewangQuestion.quesBody}}"></rich-text>
           </view>
