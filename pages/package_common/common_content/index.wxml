@@ -13,7 +13,7 @@
 <view class="title" wx:if="{{planList.length>0}}">宝宝成长计划</view>
 <block wx:for="{{planList}}" wx:key="planList">
     <view class="plan-item" bindtap="joinPlan" id="{{item.sn}}" data-name="{{item.name}}">
-        <image src="{{item.iconUrl}}" mode="center"/>
+        <image src="{{item.iconUrl}}" mode="widthFix"/>
         <view class="plan-right">
             <view class="plan-title">{{item.name}}</view>
             <view>{{item.subTitle}}</view>
