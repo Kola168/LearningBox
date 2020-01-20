@@ -1,3 +1,4 @@
+<wxs src="../../../../utils/compressConfig.wxs" module="handleImg"></wxs>
 <nav-bar title="免费资源库"></nav-bar>
 <view class="container">
   <scroll-view scroll-x="{{true}}" class="tab" scroll-with-animation scroll-into-view="{{tabId}}">
@@ -10,7 +11,7 @@
   <view class="tab-content">
     <view class="content-item" wx:for="{{typeContents}}" wx:key="sn" data-sn="{{item.sn}}" bindtap="toNext">
       <view class="item-img">
-        <image src="{{item.iconUrl}}" mode="widthFix" />
+        <image src="{{handleImg.compress(item.iconUrl)}}" mode="widthFix" />
       </view>
       <view class="item-text">
         <view class="text-title text-overflow-points">{{item.name}}</view>
