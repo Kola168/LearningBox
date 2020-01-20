@@ -16,7 +16,8 @@ Page({
       type = e.currentTarget.dataset.type,
       pageKey = type === 'en' ? 'english' : 'chinese'
     wxNav.navigateTo(`../${pageKey}/index`, {
-      sn: sn
+      sn: sn,
+      infoArr:[{label:'dd',value:111}]
     })
   },
   getCategory: co.wrap(function*() {

@@ -125,9 +125,10 @@ Page({
       let resp = yield graphql.createResourceOrder(params)
       this.weToast.hide()
       wxNav.navigateTo('/pages/finish/sourcefinish', {
-        type: 'chinese_memory_write',
+        type: 'memory_write',
         state: resp.createResourceOrder.state,
-        media_type: 'memory_write',
+        media_type: 'chinese_memory_write',
+        avatarUrl: encodeURIComponent(JSON.stringify(userData.userInfo.avatarUrl)),
         nickName: userData.userInfo.nickName,
         infoArr: encodeURIComponent(JSON.stringify(resp.createResourceOrder.statistic.fields))
       })

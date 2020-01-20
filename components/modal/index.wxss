@@ -1,6 +1,6 @@
 .confirm-modal {
   position: fixed;
-  top: 0;
+  top: 100%;
   left: 0;
   width: 100%;
   height: 100%;
@@ -17,6 +17,12 @@
   color: #333;
   border-radius: 20rpx;
   overflow: hidden;
+  transition: all .5s;
+  transform: translateY(-40rpx);
+}
+
+.confirm-modal-wrap_active {
+  transform: translateY(0);
 }
 
 .confirm-modal-title {
