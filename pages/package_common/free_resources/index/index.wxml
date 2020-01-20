@@ -1,3 +1,4 @@
+<wxs src="../../../../utils/compressConfig.wxs" module="handleImg"></wxs>
 <nav-bar title="免费资源库"></nav-bar>
 <view class="container" style="min-height:{{minHeight}}px;">
   <!-- 左 -->
@@ -16,7 +17,7 @@
         <view class="box-item" style="height:{{rightItemHeight}}px;" wx:for="{{item.children}}" wx:for-item="childItem" wx:key="sn">
           <view class="list-item" bindtap="toNext" data-sn="{{childItem.sn}}">
             <view class="item-img">
-              <image src="{{childItem.image}}" lazy-load mode="widthFix" />
+              <image src="{{handleImg.compress(childItem.image)}}" lazy-load mode="widthFix" />
             </view>
             <view class="item-text">
               <view class="text-title text-overflow-points">{{childItem.name}}</view>

@@ -98,12 +98,10 @@ Page({
     let sns = []
     if (e.currentTarget.id) {
       sns.push(e.currentTarget.id)
-      type = 'pdf'
     } else {
       this.weToast.toast({
         type: 'loading'
       })
-      type = 'html'
       let writeList = this.data.writeList
       for (let i = 0; i < writeList.length; i++) {
         if (writeList[i].isCheck) {

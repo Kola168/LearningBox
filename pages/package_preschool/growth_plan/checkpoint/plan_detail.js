@@ -26,7 +26,7 @@ Page({
     isFullScreen: false, //iphoneX底部button兼容性
     showArrow: true, //预览图片左右箭头
     isMember: false,
-    subscription: false,
+    isSuscribe: false,
     btnText: '',
     // isAndroid: false
     showBtn: true
@@ -37,15 +37,16 @@ Page({
    */
   onLoad: co.wrap(function* (options) {
     this.longToast = new app.weToast()
-    this.userPlanSn = this.options.userPlanSn
+    // this.userPlanSn = this.options.userPlanSn
     this.planSn = this.options.planSn
     this.sn = this.options.sn
     this.name = this.options.name
-    this.subscribe = this.options.subscribe
+    // this.subscribe = this.options.subscribe
 
     try {
       const respMember = yield gragql.getUserMemberInfo()
       const resp = yield gql.getPreviewContent(this.sn)
+      console.log(resp,'plandetail resp')
       this.featureKey = resp.content.featureKey
       this.contentImagesLength = resp.content.contentImages.length
       this.data.imgUrls = resp.content.contentImages
@@ -54,9 +55,8 @@ Page({
         isFullScreen: app.isFullScreen,
         imgUrls: this.data.imgUrls,
         allPage: resp.content.pageCount,
-        // currentPage:this.data.currentPage
         isMember: respMember.currentUser.isPreschoolMember,
-        showBtn: true
+        isSuscribe: resp.content.plan.subscription
       })
 
       if (this.data.allPage == 1) {
@@ -64,41 +64,35 @@ Page({
           showArrow: false
         })
       }
-      if (this.subscribe == 'noSubscript') {
-        this.setData({
-          subscription: false,
-          showBtn: true
-        })
-      } else if (this.subscribe == 'subscript' || this.subscribe == 'finished') {
-        this.setData({
-          subscription: true,
-          showBtn: false
-        })
+      if (this.data.isMember) {
+        if(this.data.isSuscribe){
+          this.setData({
+              showBtn:false
+            })
+          }else{
+            this.setData({
+              showBtn:true
+            })
+          }
       } else {
-        this.setData({
-          showBtn: true
-        })
+        this.checkMember()
       }
-      // this.longToast.hide()
+
     } catch (e) {
       this.longToast.toast()
       util.showError(e)
     }
   }),
 
-  //判断会员
+  //弹出会员
   checkMember: co.wrap(function* () {
-    if (this.data.isMember) {
-      yield this.toSubscribe()
-    } else {
-      //判断会员标示
-      var memberToast = this.selectComponent('#memberToast')
-      memberToast.checkAuthMember(() => {
-        wxNav.navigateTo('./plan_detail', {
-          userPlanSn: this.userPlanSn
-        })
+    //判断会员标示
+    var memberToast = this.selectComponent('#memberToast')
+    memberToast.checkAuthMember(() => {
+      wxNav.navigateTo('./plan_detail', {
+        userPlanSn: this.userPlanSn
       })
-    }
+    })
   }),
 
   /* 去订阅 */
@@ -108,20 +102,16 @@ Page({
     })
     try {
       yield gql.joinPlan(this.planSn)
-      // wxNav.navigateBack()
       event.emit('subscribeList')
-      // yield gql.getPlanContents(this.planSn)
-
       this.longToast.toast({
         type: 'loading',
         duration: 6000,
         title: '已订阅！'
       })
       this.setData({
-        subscription: true,
+        isSuscribe: true,
         showBtn: false
       })
-      this.beginPrint()
       this.longToast.hide()
     } catch (e) {
       this.longToast.toast()
@@ -183,17 +173,6 @@ Page({
       util.showError(e)
     }
   },
-
-  // btnClick() {
-  //   if (this.btnType === 'buy') {
-  //     // wxNav.navigateTo(`/pages/package_member/member/index`,{
-  //     //   planSn:this.planSn
-  //     // })
-  //     wxNav.navigateTo(`/pages/package_member/member/index`)
-  //   } else {
-  //     this.beginPrint()
-  //   }
-  // },
 
   /**
    * 开始打印

@@ -59,6 +59,10 @@
   justify-content: space-between;
 }
 
+.list-item {
+  height: 120px;
+}
+
 .item-title {
   font-size: 28rpx;
   color: #666;

@@ -13,17 +13,14 @@ page {
   color: #ff9a55;
   text-align: center;
   line-height: 48rpx;
-  position: fixed;
-  left: 0;
-  top: 128rpx;
+  margin-bottom:30rpx;
 }
 
 .top-size {
   display: flex;
+  margin-left: 24rpx;
   align-items: center;
-  position: fixed;
-  left: 24rpx;
-  top: 198rpx;
+  margin-bottom:30rpx;
   /* margin: 36rpx 0 46rpx 24rpx; */
 }
 
@@ -67,9 +64,7 @@ page {
 .select_box {
   background-color: #f1f1f1;
   width: 140rpx;
-  position: absolute;
-  top: 250rpx;
-  left: 110rpx;
+  margin-left: 110rpx;
   z-index: 1;
   overflow: hidden;
   text-align: center;
@@ -97,6 +92,7 @@ page {
 }
 
 .ql-container {
+  margin-top:30rpx;
   box-sizing: border-box;
   /* margin: 30rpx 24rpx; */
   width: 700rpx;
@@ -106,9 +102,7 @@ page {
   font-size: 28rpx;
   padding: 18rpx 20rpx;
   border-radius: 10rpx;
-  position: fixed;
-  left: 25rpx;
-  top: 288rpx;
+  margin-left: 25rpx;
 }
 
 /* .bottom-size {
