@@ -100,7 +100,7 @@
   position: relative;
   width: 340rpx;
   height: 168rpx;
-  padding: 20rpx 14rpx 0 20rpx;
+  padding: 20rpx 0 0 20rpx;
   border-radius: 20rpx;
   box-sizing: border-box;
   box-shadow: 0 2px 8px 0 rgba(204,204,204,0.30);
