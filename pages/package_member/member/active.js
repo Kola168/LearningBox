@@ -16,9 +16,9 @@ const event = require('../../../lib/event/event')
 Page({
     data: {
         availableMember: false,
-        success:false,
-        device:null,
-        kid:null,
+        success: false,
+        device: null,
+        kid: null,
         modalObj: {
             isShow: false,
             hasCancel: false,
@@ -41,7 +41,7 @@ Page({
             this.getDevice()
         })
     }),
-    
+
     accessMember: co.wrap(function* () {
         this.longToast.toast({
             type: "loading",
@@ -49,7 +49,7 @@ Page({
         })
         try {
             const resp = yield api.accessMember()
-            if (resp.data.code != 0) {
+            if (resp.code != 0) {
                 throw (resp)
             }
             this.setData({
@@ -62,6 +62,12 @@ Page({
         }
 
     }),
+    hideModal() {
+        this.setData({
+            success: false
+        })
+        routerwx.navigateBack()
+    },
     closeModal() {
         this.setData({
             success: false
@@ -74,13 +80,13 @@ Page({
         try {
 
             let resp = yield memberGql.getDevice({
-                format:'ts'
+                format: 'ts'
             })
             this.longToast.hide()
             this.setData({
                 device: resp.currentUser.selectedDevice
             })
-            if (this.data.device == null||this.data.device.lmAvailableMember == null) {
+            if (this.data.device == null || this.data.device.lmAvailableMember == null) {
                 return
             }
             this.setData({
