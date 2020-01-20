@@ -32,7 +32,7 @@ Page({
 	},
 
 	endInput: function (e) {
-		console.log('endValue e=====', e.detail.value)
+		console.log('endValue e==========', e.detail.value)
 		this.setData({
 			passWord: e.detail.value
 		})
