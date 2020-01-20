@@ -40,9 +40,9 @@ Page({
       scene.split('&').forEach(str => {
         params[`${str.split('=')[0]}`] =  str.split('=')[1]
       })
-      // console.log(params,'params==')
       this.sn = params.content
       this.userId = params.user
+    
       this.longToast = new app.weToast()
       this.initViewInfo()
       this.initRecorderManager()
@@ -540,10 +540,12 @@ Page({
   onHide: function () {
     this.recorderManager.pause() //暂停录音
     this.destroyAudioCtx()
+    this.clearPlayers()
   },
 
   onUnload: function() {
     this.recorderManager.pause() //暂停录音
     this.destroyAudioCtx()
+    this.clearPlayers()
   }
 })
