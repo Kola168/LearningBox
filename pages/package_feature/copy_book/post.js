@@ -190,7 +190,7 @@ Page({
     console.log('userId==share===',this.user_id)
     if (res.from === 'button' || res[0].from === 'button') {
       return {
-        title: "分享一个好用又方便的字帖应用给你！",
+        title: "我已经开始练字了，你也赶快参加吧",
         path: `/pages/package_feature/copy_book/index`
       }
     } else {
