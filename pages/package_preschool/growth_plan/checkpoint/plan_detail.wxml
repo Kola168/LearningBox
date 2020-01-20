@@ -16,7 +16,7 @@
         </view>
     </view>
 </view>
-<view class="footer {{isFullScreen?'is-full-screen':''}}" wx:if="{{showBtn}}" bindtap="checkMember">立即订阅</view>
+<view class="footer {{isFullScreen?'is-full-screen':''}}" wx:if="{{showBtn}}" bindtap="toSubscribe">立即订阅</view>
 <view class="footer {{isFullScreen?'is-full-screen':''}}" wx:else="" bindtap="beginPrint">立即打印</view>
 
 <showMemberToast id="memberToast" modal="{{modal}}"/>

@@ -278,7 +278,15 @@ const graphqlApi = {
     return gql.query({
       query: `query ($planSn: String!){
         plan(sn: $planSn) {
+          sn
+          name
           subscription
+          planShowContents{
+            sn
+            iconUrl
+            isShow
+            name
+          }
         }
       }`,
       variables: {
@@ -292,21 +300,30 @@ const graphqlApi = {
    * 宝贝成长计划 预览
    * 
    */
-  getPreviewContent: (planSn) => {
+
+
+  getPreviewContent: (sn) => {
     return gql.query({
-      query: `query ($planSn: String!){
-        content(sn: $planSn) {
-          featureKey
-          iconUrl
-          pageCount
-          sn
-          contentImages{
-            nameUrl
-          }
+      query: `query ($sn: String!){
+        content(sn: $sn){
+            ... on PlanContent {
+              sn
+              name
+              plan{
+                subscription
+                userPlanSn
+              } 
+              featureKey
+              iconUrl
+              pageCount
+              contentImages{
+                nameUrl
+              }        
+            }
         }
       }`,
       variables: {
-        planSn
+        sn
       }
     })
   },
