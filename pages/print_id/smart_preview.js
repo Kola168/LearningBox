@@ -114,7 +114,7 @@ Page({
   toSave() {
     wxNav.redirectTo('/pages/print_id/smart_save', {
       params: JSON.stringify(this.query),
-       hasPay:true
+      hasPay:true
     })
   },
   closeTip() {
