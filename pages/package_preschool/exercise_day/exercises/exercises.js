@@ -16,12 +16,15 @@ Page({
     practiceQuestionImages: [],
     practiceContentToday: null,
     hasNewTestimonial: false,
+    imgW: 0,
+    imgH: 0,
   },
 
   onLoad: co.wrap(function * (options) {
     this.longtoast = new app.weToast()
     this.sn = options && options.sn || ''
     var isUse = storage.get('isUse')
+    this.initImgSize()
     this.setData({
       isUse:!!isUse
     })
@@ -34,6 +37,26 @@ Page({
       }
     }
   }),
+
+  initImgSize: function(){
+    var system = wx.getSystemInfoSync()
+    var screenHeight = system.screenHeight
+    var screenWidth = system.screenWidth
+    var maxHeight = screenHeight * 0.65
+    var margin = 23 * 2
+    var a4Ratio = 210 / 297 
+    var imgW = (screenWidth - margin)
+    var imgH = imgW / a4Ratio 
+    if (imgH > maxHeight) {
+      imgH = maxHeight
+      imgW = imgH * a4Ratio
+    }
+
+    this.setData({
+      imgW,
+      imgH
+    })
+  },
 
   /**
    * 获取指定日期的每日一练题目
@@ -143,5 +166,5 @@ Page({
   toBabyCertificate: co.wrap(function *() {
     yield graphql.updateNewsCerts()
     wxNav.navigateTo('../certificate/index')
-  }),
+  })
 })

@@ -262,7 +262,7 @@ Page({
         }
       } else if (app.isScope()) {
         return {
-          title: '这个课程好棒啊 快来看看吧',
+          title: '这个课程好棒啊，快来看看吧',
           path: `/pages/package_course/course/course?sn=${this.sn}`
         }
       } else {
