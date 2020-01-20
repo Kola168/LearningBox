@@ -113,6 +113,7 @@
         </view>
     </view>
     <view class="conf_box-left" bindtap="cancelcheck">取消</view>
+    
     <button class="conf_box-right">确认
         <bottom-button class="bottom-button-box" text-right="立即打印" bindrighttap="confcheck" get-phone="{{true}}"></bottom-button>
     </button>
