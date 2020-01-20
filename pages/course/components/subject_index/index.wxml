@@ -93,7 +93,7 @@
       <image class="desc-icon" src="../images/theme_banner.png">
         <view class="desc-content">
           <block wx:if="{{!currentTabSyncIndex}}">
-            已学习10个章节，超越45%的同学
+            精选同步资源，轻松辅导孩子
           </block>
           <block wx:else>
             共观看{{previewVideoSum}}个视频
@@ -136,7 +136,13 @@
   </view>
   <!-- 考试与测评 -->
   <view class="nav-content">
-    <view class="nav-title">考试与测评</view>
+    <view class="nav-box">
+      <view class="left-nav-title">考试与测评</view>
+      <view class="nav-right-content" bindtap="toMore">
+        <view>更多</view>
+        <view class="arrow-right"></view>
+      </view>
+    </view>
     <view class="nav-m-content">
       <image class="desc-icon" src="../images/theme_banner.png">
         <view class="desc-content">小白老师共有{{totalPapers}}套试卷，你完成了{{printPaperCount}}套，超越{{percentage}}%的同学</view>
@@ -160,7 +166,7 @@
         </view>
         <view class="empty-box"  wx:if="{{!paperLists.length}}">暂无数据</view>
       </view>
-      <image class="btn-more" src="../images/btn_more.png"  mode="widthFix" bindtap="toMore"/>
+      <!-- <image class="btn-more" src="../images/btn_more.png"  mode="widthFix" /> -->
     </view>
   </view>
 </view>
