@@ -8,9 +8,9 @@
     <view class="new-tag" wx:if="{{hasNewTestimonial}}">new</view>
   </view>
   <view class="exercise-subject">
-    <swiper>
-      <swiper-item class="" item-id=""  wx:for="{{practiceQuestionImages}}" wx:for-item="src" wx:key="*this">
-        <image class="swiper-img" src="{{foo.compress(src)}}" mode="widthFix"/>
+    <swiper  style="width:{{imgW}}px;height:{{imgH}}px;">
+      <swiper-item class="" style="width:{{imgW}}px;height:{{imgH}}px;" item-id=""  wx:for="{{practiceQuestionImages}}" wx:for-item="src" wx:key="*this">
+        <image class="swiper-img" src="{{foo.compress(src)}}" style="width:{{imgW}}px;height:{{imgH}}px;"/>
       </swiper-item>
     </swiper>
   </view>
