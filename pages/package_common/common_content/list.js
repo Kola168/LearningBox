@@ -108,7 +108,7 @@ Page({
         return
       }
       this.setData({
-        playList: resp.customizeContents
+        playList: this.data.playList.concat(resp.customizeContents)
       })
       this.page++
     } catch (error) {
@@ -134,6 +134,14 @@ Page({
 		} else {
 			return app.share
 		}
+  },
+  onReachBottom: function () {
+    console.log('分页加载')
+    console.log('this.pageEnd', this.pageEnd)
+    if (this.pageEnd) {
+      return
+    }
+    this.getFeatureList()
   },
   onUnload() {
     event.remove('Authorize', this)

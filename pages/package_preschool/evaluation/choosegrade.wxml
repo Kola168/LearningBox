@@ -25,16 +25,17 @@
   <view class="text-content-box">
     <view class="content-top-box">
       <view class="content-title">
-        {{item.categoryName}}
+        <!--{{item.categoryName}}  -->
+        {{item.name}}
       </view>
       <text wx:if="{{item.children && item.children.length>0}}" class="iconfont icon-next"></text>
     </view>
-
+<!--
     <view class="content-desc-box">
       <view class="content-desc">
         {{item.name}}
       </view>
-        <!--
+
       <block wx:if="{{!item.children || item.children.length==0}}">
         <view wx:if="{{!item.state}}" class="content-no-test">
           暂未测试
@@ -44,9 +45,9 @@
           <view>已超越{{item.state}}宝宝</view>
         </view>
       </block>
-        -->
-    </view>
 
+    </view>
+  -->
   </view>
 </view>
 <import src="/lib/toast/wetoast.wxml" />

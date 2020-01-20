@@ -133,8 +133,7 @@ Page({
   },
   toNext(e) {
     let id = e.currentTarget.id,
-      url = '',
-      params = {}
+      url = ''
     switch (id) {
       case "member":
         url = '../../member_intro/index'
@@ -144,13 +143,11 @@ Page({
         break;
       case "errorbook":
         url = '../errorbook/index'
-        params.isMember = this.data.isMember ? 1 : 0
-        params.expiresAt = this.data.expiresAt
         break;
       case "weekness":
         url = '../../weakness_exercise/index/index'
         break;
     }
-    wxNav.navigateTo(url, params)
+    wxNav.navigateTo(url)
   }
 })

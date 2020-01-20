@@ -12,6 +12,6 @@ Page({
   },
 
   chooseGrade:function(){
-    wxNav.navigateTo('/pages/package_preschool/evaluation/choosegrade')
+    wxNav.navigateTo(`/pages/package_preschool/evaluation/choosegrade`)
   },
 })

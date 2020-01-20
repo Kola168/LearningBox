@@ -18,8 +18,8 @@
     <view class="type-middle type-item">
       <view class="item-title">良好学科</view>
       <view class="item-subjects">
-        <block wx:if="{{moddleSubjects.length>0}}">
-          <text wx:for="{{moddleSubjects}}" data-id="{{item.subjectId}}" bindtap="toKnowledgeList">{{item.subjectName}}</text>
+        <block wx:if="{{middleSubjects.length>0}}">
+          <text wx:for="{{middleSubjects}}" data-id="{{item.subjectId}}" bindtap="toKnowledgeList">{{item.subjectName}}</text>
         </block>
         <text wx:else>暂无</text>
       </view>

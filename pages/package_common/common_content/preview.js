@@ -133,9 +133,6 @@ Page({
     })
     try {
       var resp = yield commonRequest.getPrinterCapacity('doc_a4')
-      if (resp.data.code != 0) {
-        throw (resp.data)
-      }
       console.log('获取打印能力成功', resp.data)
       this.longToast.toast()
       this.setData({
@@ -232,7 +229,7 @@ Page({
   //选择颜色
   colorCheck(e) {
     this.setData({
-      colorcheck: e.currentTarget.dataset.style
+      colorcheck: e.currentTarget.dataset.style == 'Color' ? true : false
     })
   },
 
@@ -282,24 +279,6 @@ Page({
       })
 
       let that = this
-      // let resourceable = {}
-      // resourceable.type = 'ec_content'
-      // resourceable.sn = that.id
-      // resourceable.category_sn = that.sn
-
-      // let setting = {}
-      // setting.duplex = that.data.duplexcheck
-      // setting.color = that.data.colorcheck
-      // setting.number = that.data.documentPrintNum
-      // if (that.data.type != '_learning') {
-      //   setting.start_page = that.data.startPrintPage
-      //   setting.end_page = that.data.endPrintPage
-      // }
-
-      // let params = {
-      //   resourceable: resourceable,
-      //   setting: setting,
-      // }
       let p = {
         featureKey: this.data.detail.featureKey,
         resourceOrderType: 'Resource',
@@ -310,11 +289,10 @@ Page({
           startPage: Number(that.data.startPrintPage),
           endPage: Number(that.data.endPrintPage),
           duplex: that.data.duplexcheck,
-          color:true,
+          color: true,
           // categorySns:this.options.categorySns
         }
       }
-
       try {
 
         const resp = yield gql.createCommonResourceOrder(p)

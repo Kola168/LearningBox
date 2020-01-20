@@ -17,17 +17,17 @@ Page({
 		kidInfo: null,
 		activeDevice: null,
 		features,
-		isSubjectMember:false,
-		isPreschoolMember:false,
-		currentUserIsCreator:false
+		isSubjectMember: false,
+		isPreschoolMember: false,
+		currentUserIsCreator: false
 	},
+
 	onLoad: function (options) {
 		this.longToast = new app.weToast()
 		event.on('Authorize', this, () => {
 			this.userSn = storage.get('userSn')
 			this.getUserInfo()
 		})
-
 	},
 	onShow: co.wrap(function* () {
 		let userSn = storage.get('userSn')
@@ -61,9 +61,10 @@ Page({
 			this.setData({
 				kidInfo: resp.currentUser.selectedKid,
 				activeDevice: resp.currentUser.selectedDevice,
-				isSubjectMember:resp.currentUser.isSchoolAgeMember,
-				isPreschoolMember:resp.currentUser.isPreschoolMember,
-				currentUserIsCreator:resp.currentUser.currentGroup.currentUserIsCreator
+				isSubjectMember: resp.currentUser.isSchoolAgeMember,
+				isPreschoolMember: resp.currentUser.isPreschoolMember,
+				currentUserIsCreator: resp.currentUser.currentGroup.currentUserIsCreator,
+			  rootKey:((resp.currentUser.selectedKid.stageRoot.rootKey == 'preschool') ? 'preschool' : 'subject')
 			})
 			this.longToast.hide()
 		} catch (e) {
@@ -105,13 +106,20 @@ Page({
 	}),
 
 	clickFeature: co.wrap(function* (e) {
+		console.log(e)
 		let userSn = storage.get('userSn')
 		this.userSn = userSn
 		if (!this.userSn) {
 			return wxNav.navigateTo('/pages/authorize/index')
 		}
 		if (e.currentTarget.id != '') {
-			wxNav.navigateTo(e.currentTarget.id)
+			if(e.currentTarget.dataset.key=='paperLeraning'){
+				wxNav.navigateTo(e.currentTarget.id, {
+					type:this.data.rootKey
+				})
+			}else{
+				wxNav.navigateTo(e.currentTarget.id)
+			}
 		} else {
 			wx.showToast({
 				title: '暂未开放，敬请期待',
@@ -135,17 +143,17 @@ Page({
 		wxNav.navigateTo('/pages/package_member/member/index')
 	},
 
-	toRules: function() {
-    wx.downloadFile({
-      url: 'https://cdn-h.gongfudou.com/LearningBox/main/privacy_agreement.pdf',
-      success: function(res) {
-        const filePath = res.tempFilePath
-        wx.openDocument({
-          filePath: filePath,
-          success: function(res) {
-          }
-        })
-      }
-    })
-  },
+	toRules: function () {
+		wx.downloadFile({
+			url: 'https://cdn-h.gongfudou.com/LearningBox/main/privacy_agreement.pdf',
+			success: function (res) {
+				const filePath = res.tempFilePath
+				wx.openDocument({
+					filePath: filePath,
+					success: function (res) {
+					}
+				})
+			}
+		})
+	},
 })

@@ -45,7 +45,7 @@ Page({
     //    infoArr:[{
     //      label:'',单位
     //      value:''值
-    //    }]  //传过来的天数及其他信息数组
+    //    }]  //传过来的天数及其他信息数组  需要加密
     //    save:true    //是否保存朋友圈，没这功能不用传这字段
     //    studyNum:1  //学习的单位数量
     //    studyUnit:Unit  //单位
@@ -68,16 +68,17 @@ Page({
       continueText:options.continueText||'继续打印'
     })
     if(_.isNotEmpty(options.infoArr)){
-      if(options.infoArr[0]){
+      let statistic=JSON.parse(decodeURIComponent(options.infoArr))
+      if(statistic[0]){
         this.setData({
-          studyDay:options.infoArr[0].value,
-          dayUnit:options.infoArr[0].label,
+          studyDay:statistic[0].value,
+          dayUnit:statistic[0].label,
         })
       }
       if(options.infoArr[1]){
         this.setData({
-          studyNum:options.infoArr[1].value,
-          studyUnit:options.infoArr[1].label,
+          studyNum:statistic[1].value,
+          studyUnit:statistic[1].label,
         })
       }
     }
