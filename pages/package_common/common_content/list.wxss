@@ -11,10 +11,11 @@ page {
 
 .tabs {
     position: fixed;
-    top: 176rpx;
+    top: 128rpx;
     left: 0;
     height: 70rpx;
     width: 100%;
+    padding-top:30rpx;
     display: flex;
     align-items: center;
     font-size: 32rpx;
@@ -22,6 +23,7 @@ page {
     justify-content: space-between;
     box-sizing: border-box;
     z-index: 100;
+    background: #fff;
 }
 
 

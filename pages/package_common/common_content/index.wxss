@@ -33,6 +33,19 @@ page {
     margin-bottom: 30rpx;
 }
 
+.content-item view{
+    color: #333;
+    margin-top: 42rpx;
+    font-size: 28rpx;
+    width: 200rpx;
+    margin: 0;
+    margin: 0 auto;
+    text-align: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
 .content-item image {
     width: 100%;
     margin-bottom: 14rpx;
