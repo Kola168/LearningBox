@@ -16,54 +16,50 @@
 				</swiper-item>
 			</block>
 		</swiper>
-		<!-- <view wx:if="{{detail.preview_urls.length==0}}" class="study-none">
-            <image src="https://cdn.gongfudou.com/miniapp/ec/study_detail_none.png" mode="widthFix"></image>
-        </view> -->
-		<!--翻页-->
-	</view>
-	<view class="wrap-main {{isFullScreen ? 'is-full-screen' : ''}}">
-		<view class="action-box">
-			<view class="user-info" bind:tap="{{!kidInfo ? 'toEditAvatar' : ''}}">
-				<view class="user-text">{{kidInfo.name ? kidInfo.name : '朗读者：未填写宝宝昵称 >'}} </view>
-			</view>
-			<view class="turn">
-				<view class="turn-content">
-					<text>{{num+1}}/{{content.contentImages.length}}</text>
+		<view class="wrap-main {{isFullScreen ? 'is-full-screen' : ''}}">
+				<view class="action-box">
+					<view class="user-info" bind:tap="{{!kidInfo ? 'toEditAvatar' : ''}}">
+						<view class="user-text">{{kidInfo.name ? kidInfo.name : '朗读者：未填写宝宝昵称 >'}} </view>
+					</view>
+					<view class="turn">
+						<view class="turn-content">
+							<text>{{num+1}}/{{content.contentImages.length}}</text>
+						</view>
+						<view class="turn-image">
+							<image
+							class="turn-image-item turn-image-left"
+							src="../../images/record_turn_left.png"
+							mode="widthFix"
+							data-turn="left"
+							catchtap="turnImg"
+							/>
+							<image
+							class="turn-image-item"
+							src="../../images/record_turn_right.png"
+							mode="widthFix"
+							data-turn="right"
+							catchtap="turnImg"
+							/>
+						</view>
+					</view>
 				</view>
-				<view class="turn-image">
-					<image
-					class="turn-image-item turn-image-left"
-					src="../../images/record_turn_left.png"
-					mode="widthFix"
-					data-turn="left"
-					catchtap="turnImg"
-					/>
-					<image
-					class="turn-image-item"
-					src="../../images/record_turn_right.png"
-					mode="widthFix"
-					data-turn="right"
-					catchtap="turnImg"
-					/>
-				</view>
-			</view>
 		</view>
-		<view class="bottom-main">
-			<view class="collect" bind:tap="collect">
-				<image  src="{{collection ? '/images/doc_collect_orange.png' : '../../images/collect_gray.png'}}"/>
-				<view>{{collection ? '已收藏' : '收藏'}}</view>
-			</view>
-			<button class="share" open-type="{{userAuthorize ? 'share' : ''}}" bindtap="{{userAuthorize ? '' : 'authCheck'}}">
-				<image  src="../../images/share_btn.png"/>
-				<view>分享</view>
-			</button>
-			<view class="btn-main">
-				<view class="btn consumables" bindtap="openConsumable">适配耗材</view>
-				<view class="btn btn-print" bind:tap="toConfirm">
-				打印
-				<bottom-button class="bottom-button-box" text-right="确认打印" bindrighttap="toConfirm" get-phone="{{true}}"></bottom-button>
+	</view>
+	<view class="bottom-main {{isFullScreen ? 'is-full-screen' : ''}}">
+		<view class="collect" bind:tap="collect">
+			<image  src="{{collection ? '/images/doc_collect_orange.png' : '../../images/collect_gray.png'}}"/>
+			<view>{{collection ? '已收藏' : '收藏'}}</view>
+		</view>
+		<button class="share" open-type="{{userAuthorize ? 'share' : ''}}" bindtap="{{userAuthorize ? '' : 'authCheck'}}">
+			<image  src="../../images/share_btn.png"/>
+			<view>分享</view>
+		</button>
+		<view class="btn-main">
+			<view class="btn consumables" bindtap="openConsumable">适配耗材</view>
+			<view class="btn btn-print" bind:tap="toConfirm">
+			打印
+			<bottom-button class="bottom-button-box" text-right="确认打印" bindrighttap="toConfirm" get-phone="{{true}}"></bottom-button>
 
-				</view>
 			</view>
 		</view>
 	</view>
@@ -150,12 +146,14 @@
 			</view>
 		</view>
 	</view>
-	<view class="conf-box-left {{isFullScreen ? 'is-full-screen' : ''}}" bindtap="cancelCheck">取消</view>
-	<button
-	 class="conf-box-right {{isFullScreen ? 'is-full-screen' : ''}}"
-	 bindtap="confCheck"
-	>确认
-	</button>
+	<view class="bottom-setting-main {{isFullScreen ? 'is-full-screen' : ''}}">
+			<view class="conf-box-left" bindtap="cancelCheck">取消</view>
+			<button
+			class="conf-box-right"
+			bindtap="confCheck"
+			>确认
+			</button>
+	</view>
 </view>
 
 <!-- 打印确认框 -->

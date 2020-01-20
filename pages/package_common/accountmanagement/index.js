@@ -33,16 +33,11 @@ Page({
       this.setData({
         baidName: resp.token.baiduTokenName,
       })
+
       this.longToast.toast()
     } catch (e) {
       this.longToast.toast()
-      this.selectComponent("#modal").showModal({
-        title: '绑定账号',
-        content: '你还没有绑定百度账号哦',
-        cancelText: '取消',
-        confirmText: '去绑定',
-        confirmBg: '#FFDC5E;'
-      })
+
     }
   }),
 

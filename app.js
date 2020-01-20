@@ -19,7 +19,7 @@ const checkSession = util.promisify(wx.checkSession)
 
 App({
 	weToast: weToast,
-	version: '0.0.2',
+	version: '0.0.3',
 	//线上地址
 	// apiServer: 'https://api.xbxxhz.com',
 	// apiWbviewServer: 'https://api.xbxxhz.com',

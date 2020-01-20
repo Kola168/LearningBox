@@ -258,7 +258,7 @@ function clearFile(array) {
   let tempArray = _(array).clone()
   for (var i = 0; i < tempArray.length; i++) {
     if (tempArray[i].name.match(/\.(doc|docx|ppt|pptx|pdf|xls|xlsx)$/i)) {
-      if (((tempArray[i].size) / 1024 / 1024) > 50) {
+      if (((tempArray[i].size) / 1024 / 1024) > 20) {
         deleteItem(array, tempArray[i])
       }
     } else {

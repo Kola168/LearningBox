@@ -122,10 +122,12 @@ const graphqlApi = {
     return gql.query({
       query: `query ($sn: String!){
         category(sn: $sn){
-          templates {
-            previewImage,
-            sn,
-            name
+          ...on TemplateCategory {
+            templates {
+              previewImage,
+              sn,
+              name
+            }
           }
         }
       }`,
@@ -1033,15 +1035,17 @@ const graphqlApi = {
           }
         }
         content(sn: $sn){
-          name
-          iconUrl
-          sn
-          contentImages{
-            nameUrl
+          ... on KidContent {
+            name
+            iconUrl
+            sn
+            contentImages{
+              nameUrl
+            }
+            audioContentImage
+            audioUrl
+            contentCollected
           }
-          audioContentImage
-          audioUrl
-          contentCollected
         }
       }`,
       variables: {
