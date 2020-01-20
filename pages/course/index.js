@@ -50,6 +50,18 @@ Page({
       stage: null
     })
   },
+
+  onShareAppMessage () {
+    var share = this.data.stage == 'preschool' ? {
+      title: '小白老师邀你一起体验这款学习神器',
+      path: '/pages/index/index'
+    } : {
+      title: '海量精品学习资料全免费！还不快看看',
+      path: '/pages/index/index'
+    }
+    return share
+  },
+
   onPullDownRefreash: function () {
   },
 })

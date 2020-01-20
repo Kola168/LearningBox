@@ -133,6 +133,12 @@ Page({
       sn: item.sn,
     })
 
-  })
+  }),
+
+  onShareAppMessage () {
+    return {
+      title: '小白老师喊你来学习啦，快来吧'
+    }
+  }
 
 })

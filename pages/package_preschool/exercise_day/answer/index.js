@@ -16,7 +16,9 @@ Page({
    */
   data: {
     practiceContentToday: null,
-    practiceAnswerImages: []
+    practiceAnswerImages: [],
+    imgW: 0,
+    imgH: 0,
   },
 
   /**
@@ -24,10 +26,31 @@ Page({
    */
   onLoad: function (options) {
     this.longtoast = new app.weToast()
+    this.initImgSize()
     this.getPracticeContentToday()
   },
   onShow: function () {
 
+  },
+
+  initImgSize: function(){
+    var system = wx.getSystemInfoSync()
+    var screenHeight = system.screenHeight
+    var screenWidth = system.screenWidth
+    var maxHeight = screenHeight * 0.65
+    var margin = 23 * 2
+    var a4Ratio = 210 / 297 
+    var imgW = (screenWidth - margin)
+    var imgH = imgW / a4Ratio 
+    if (imgH > maxHeight) {
+      imgH = maxHeight
+      imgW = imgH * a4Ratio
+    }
+
+    this.setData({
+      imgW,
+      imgH
+    })
   },
 
   /**

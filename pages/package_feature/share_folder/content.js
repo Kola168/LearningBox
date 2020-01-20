@@ -210,6 +210,7 @@ Page({
 
 	//加入文件夹
 	enterFile: co.wrap(function* () {
+    console.log('890-[')
 		this.longToast.toast({
 			type: 'loading',
 			duration: 0
@@ -439,6 +440,7 @@ Page({
 			duration: 0
 		})
 		try {
+      //TODO:
 			const resp = yield api.exitFolderShare(app.openId, this.sn)
 			if (resp.code != 0) {
 				throw (resp)
@@ -491,70 +493,62 @@ Page({
 		this.uploadBaidu()
 	},
 
-	firstUploadBaidu: function () {
-		let firstUploadBaidu = wx.getStorageSync('firstUserBaidu')
-		if (firstUploadBaidu) {
-			this.setData({
-				firstUploadBaidu: true
-			})
-		} else {
-			this.setData({
-				firstUploadBaidu: false
-			})
-		}
-	},
+  firstUploadBaidu: function () {
+    let firstUploadBaidu = wx.getStorageSync('firstCreatorBaidu')
+    if (firstUploadBaidu) {
+        this.setData({
+            firstUploadBaidu: true
+        })
+    } else {
+        this.setData({
+            firstUploadBaidu: false
+        })
+    }
+},
 
-	uploadBaidu: co.wrap(function* () {
-		this.firstUploadBaidu()
-		if (this.data.memberIds.length == 0) {
-			return
-		}
-		try {
-			let resp = yield api.checkBaiduAuth(app.openId)
-			logger.info(resp)
-			if (resp.code == 0) {
-				this.longToast.toast({
-					type: 'loading',
-					duration: 0
-				})
-				try {
-					const resp = yield api.uploadBaidu(app.openId, this.data.memberIds)
-					if (resp.code != 0) {
-						throw (resp)
-					}
-					this.longToast.toast()
-					logger.info('上传百度云', resp.data)
-					wx.showToast({
-						title: '百度云的存储路径是：我的硬件数据/小白智慧打印',
-						icon: 'none',
-						mask: true,
-						duration: 2000
-					})
-					let that = this
-					setTimeout(function () {
-						for (var i = 0; i < that.data.documentList.length; i++) {
-							that.data.documentList[i].choose = false
-							that.deleteOneId(that.data.memberIds, that.data.documentList[i].sn)
-						}
-						that.setData({
-							documentList: that.data.documentList,
-							showBaidu: false,
-							memberIds: []
-						})
-					}, 2000)
-				} catch (e) {
-					this.longToast.toast()
-					util.showError(e)
-				}
-			} else {
-				wx.navigateTo({
-					url: `../../../print_doc/start_intro?type=baiduPrint`
-				})
-			}
-		} catch (error) {
-			util.showError(error)
-		}
-	}),
+uploadBaidu: co.wrap(function* () {
+    this.firstUploadBaidu()
+    if (this.data.memberIds.length == 0) {
+        return
+    }
+    try {
+        let resp = yield gql.checkBaiduAuth()
+        logger.info(resp)
+        if (resp.token.baiduTokenName != null) {
+            let params={
+                sn:this.sn,
+                documentSns:this.data.memberIds
+            }
+            this.longToast.toast({
+                type: 'loading',
+                duration: 0
+            })
+            try {
+                const resp = yield gql.uploadBaidu(params)
+                this.longToast.toast()
+                logger.info('上传百度云', resp)
+                wx.showToast({
+                    title: '百度云的存储路径是：我的硬件数据/小白智慧打印',
+                    icon: 'none',
+                    mask: true,
+                    duration: 2000
+                })
+                setTimeout(function () {
+                    router.navigateBack()
+                }, 2000)
+            } catch (e) {
+                this.longToast.hide()
+                util.showError(e)
+            }
+        } else {
+            router.navigateTo('/pages/print_doc/start_intro/start_intro', {
+                type: 'baiduPrint'
+            })
+        }
+    } catch (error) {
+        util.showError(error)
+    }
+}),
 
 	toBaidu: co.wrap(function* () {
 		this.setData({

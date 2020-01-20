@@ -23,7 +23,7 @@
 <view class="connect-psd-list">
   <image src="../../images/network_connect_password.png" mode="widthFix" class="connect-lock-icon"></image>
   <view class="connect-psd-name">
-    <input class="psd-style" value="{{passWord}}" placeholder="请输入密码" placeholder-class="holder-color" bindinput="inputprintNum" bindblur="endInput" bindconfirm="endInput"/>
+    <input class="psd-style" value="{{passWord}}" placeholder="请输入密码" placeholder-class="holder-color" bindinput="inputprintNum" bindblur="endInput" bindconfirm="endInput" adjust-position="false"/>
   </view>
 </view>
 <view class="connect-tips">

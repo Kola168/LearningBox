@@ -17,7 +17,8 @@ Page({
     windowHeight: 0,
     current: 0,
     sources: [],
-    title: ''
+    title: '',
+    isShare: false
   },
 
   onLoad(query) {
@@ -26,6 +27,7 @@ Page({
     let isFullScreen = app.isFullScreen
     this.setData({
       isFullScreen,
+      isShare: query.from ? true : false,
       windowHeight: app.sysInfo.screenHeight - app.navBarInfo.topBarHeight - (isFullScreen ? 30 : 0)
     })
     event.on('Authorize', this, () => {
@@ -40,6 +42,9 @@ Page({
     } else {
       this.getFreeSourcesDetail()
     }
+  },
+  toFreeSource(){
+    wxNav.redirectTo('/pages/package_common/free_resources/index/index')
   },
   getFreeSourcesDetail: co.wrap(function* () {
     this.weToast.toast({
@@ -136,8 +141,8 @@ Page({
   onShareAppMessage(res) {
     if (res.from === 'button' || res[0].from === 'button') {
       return {
-        title: this.data.title,
-        path: `/pages/package_common/free_resources/index/index?sn=${this.sn}`
+        title: this.data.title + '——海量精品学习资料全免费！还不快看看',
+        path: `/pages/package_common/free_resources/detail/index?sn=${this.sn}&from=share`
       }
     } else {
       return app.share

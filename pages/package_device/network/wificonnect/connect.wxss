@@ -89,5 +89,5 @@ view {
   text-align:center;
   font-size:36rpx;
   color:#333;
-  margin-top:80rpx;
+  margin-top:86rpx;
 }
