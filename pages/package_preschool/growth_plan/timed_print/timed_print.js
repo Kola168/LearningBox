@@ -53,7 +53,8 @@ Page({
     this.userPlanSn = options.userPlanSn
     try {
       let resp = yield gql.getUserPlan(this.userPlanSn)
-      this.sn= resp.userPlan.sn
+      console.log(resp,'5555555')
+      // this.sn= resp.userPlan.sn
       this.subscription = resp.userPlan.subscription
       if (resp.userPlan.subscription) {
         this.setData({
@@ -162,8 +163,8 @@ Page({
     // })
     try {
       const respSubscript = yield gql.joinSubscription({
-        // sn: this.userPlanSn,
-        sn:this.sn,
+        sn: this.userPlanSn,
+        // sn:this.sn,
         subscriptionResource: 'user_plan',
         // subscriptionResource: 'timed_task',
         subscription: {
