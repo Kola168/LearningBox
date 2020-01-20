@@ -104,7 +104,7 @@ Page({
     let avatar = this.data.avatarUrl
     ctx.drawImage(avatar, w * 0.42, h * 0.1, this.data.width * 0.15, this.data.width * 0.15)
 
-    let avatar_bg = "/images/avatar_bg_white.png"
+    let avatar_bg = "../resource_images/avatar_bg_white.png"
     ctx.drawImage(avatar_bg, w * 0.42, h * 0.1, this.data.width * 0.15, this.data.width * 0.15)
 
     //昵称
