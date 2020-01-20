@@ -1,5 +1,4 @@
 <nav-bar background="#fff" title="每日一练" />
-<wxs src="../../../../utils/compressConfig.wxs" module="foo"></wxs>
 <view class="main-box" wx:if="{{isUse}}">
   <view class="exercise-app">
     <image class="compilation-month" src="../../images/btn_month_compilation.png"  bind:tap="toMonthCompilation"/>
@@ -10,7 +9,7 @@
   <view class="exercise-subject">
     <swiper  style="width:{{imgW}}px;height:{{imgH}}px;">
       <swiper-item class="" style="width:{{imgW}}px;height:{{imgH}}px;" item-id=""  wx:for="{{practiceQuestionImages}}" wx:for-item="src" wx:key="*this">
-        <image class="swiper-img" src="{{foo.compress(src)}}" style="width:{{imgW}}px;height:{{imgH}}px;"/>
+        <image class="swiper-img" src="{{src}}" style="width:{{imgW}}px;height:{{imgH}}px;"/>
       </swiper-item>
     </swiper>
   </view>
