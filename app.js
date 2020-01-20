@@ -57,6 +57,7 @@ App({
 	deBug: false, //线上环境log调试
 	refreshing: false,  //这个变量切勿占用，刷新token用
 	userRequestFinish:false,//用户信息请求完毕
+	rootKey:'', //默认学前，不得用作任何页面判断，如若使用，当前页面必须强制赋值
 
 	onLaunch: co.wrap(function* () {
 		yield this.getSystemInfo()
