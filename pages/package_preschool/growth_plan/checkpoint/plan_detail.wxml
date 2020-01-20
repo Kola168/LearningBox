@@ -16,10 +16,6 @@
         </view>
     </view>
 </view>
-
-<!-- <view class="footer {{isFullScreen?'is-full-screen':''}}" bindtap="beginPrint">开始打印</view>
--->
-<!--<view class="footer {{isFullScreen?'is-full-screen':''}}" bindtap="btnClick">{{btnText}}</view>-->
 <view class="footer {{isFullScreen?'is-full-screen':''}}" wx:if="{{showBtn}}" bindtap="checkMember">立即订阅</view>
 <view class="footer {{isFullScreen?'is-full-screen':''}}" wx:else="" bindtap="beginPrint">立即打印</view>
 
