@@ -1,5 +1,7 @@
 <!--pages/print_photo/edit.wxml-->
 <nav-bar title="照片编辑"></nav-bar>
+<wxs src="../../utils/compressConfig.wxs" module="foo" />
+
 <view class="container-box {{showMode?'bg-white':''}}">
   <view class="top-tips">
     <image src="{{showMode?'/images/icon-smile.png':'/images/print_photo_edit_face.png'}}" mode="widthFix" class="tips-face-icon"></image>
@@ -18,7 +20,7 @@
       </scroll-view>
       <scroll-view class="template-list-box template-limit-height" scroll-x>
         <view wx:for="{{templateList[templateTypeIndex].templates}}" wx:key="templates" class="template-item-box {{index==templateIndex?'template-item-selected':''}}" data-index="{{index}}" bindtap="{{templateIndex==index?'':'checkTemplate'}}">
-          <image src="{{item.previewImage}}" mode="widthFix" class="template-preview-img"></image>
+          <image src="{{foo.compress(item.previewImage)}}" mode="widthFix" class="template-preview-img"></image>
         </view>
       </scroll-view>
     </block>

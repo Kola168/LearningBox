@@ -2,6 +2,7 @@
 
 .answer-main {
   padding: 70rpx 0 60rpx;
+  height: 100vh;
   background-color: #FEEECA;
 }
 
@@ -49,7 +50,7 @@ swiper {
 swiper-item{
   width: 100%;
   height: calc( 100vh - 448rpx );
-  border-radius: 50rpx;
+  border-radius: 20rpx;
 }
 
 .swiper-img {

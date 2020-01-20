@@ -718,7 +718,7 @@ Page({
 	uploadImage: co.wrap(function* (imgs) {
 		let newImages = yield this.checkImgSize(imgs) //检测文件格式
 		yield this.initProgressStatus(newImages) //初始化进度条
-		const imageList = yield this.syncLoadFiles(newImages, imgs) //并行上传
+		const imageList = yield this.syncLoadFiles(newImages, imgs,'image') //并行上传
 		logger.info( '====imageList====',imageList)
 		let _this = this
 		imageList && imageList.forEach(img => {
@@ -792,7 +792,7 @@ Page({
 			}
 		})
 	},
-	upLoadFiles: function (paths, getProgress, uploadKey, isFile = false, isFolder = true) {
+	upLoadImages:  function (paths, getProgress, uploadKey, isFile = false, isFolder = true) {
 		try {
 			const newPaths = !isFile && typeof paths === 'object' ? paths.path : paths; //区分选择文件上传和普通上传的格式区分
 			return new Promise((resolve, reject) => {
@@ -813,6 +813,28 @@ Page({
 			logger.info(err)
 		}
 	},
+	upLoadFiles: function (paths, getProgress, uploadKey, isFile = true, isFolder = true) {
+		try {
+			const newPaths = !isFile && typeof paths === 'object' ? paths.path : paths; //区分选择文件上传和普通上传的格式区分
+			return new Promise((resolve, reject) => {
+				upload.uploadDocs([newPaths], (url,name)=> {
+					logger.info('===url====', url)
+					if (url !== '') { //上传完成
+						resolve({
+							url: url
+						})
+					} else if (app.cancelUpload) { //手动停止
+						resolve(false)
+					} else { // 上传异常
+						resolve(false)
+					}
+				// }, getProgress, isFile, uploadKey, isFolder)
+			}, getProgress, true)
+			})
+		} catch (err) {
+			logger.info(err)
+		}
+	},
 	// 并行上传图片、文件 | 过滤处理
 	syncLoadFiles: co.wrap(function* (newFiles, originFiles, type = 'image', isFile) {
 		let _this = this;
@@ -823,7 +845,13 @@ Page({
 				let newCloneFiles = _(newFiles).clone()
 				if (newCloneFiles.length && this.data.showupLoad) {
 					newCloneFiles.forEach(co.wrap(function* (currentFile) {
-						let newLoadFile = yield _this.upLoadFiles(currentFile, _this.loadProgress, _this.sn, isFile) //图片上传
+            let newLoadFile
+						if(type == 'image'){
+							newLoadFile = yield _this.upLoadImages(currentFile, _this.loadProgress, _this.sn, isFile) //图片上传	
+            }else{
+							newLoadFile = yield _this.upLoadFiles(currentFile, _this.loadProgress, _this.sn, isFile) //文档上传	
+						}
+						
 						yield _this.resetProgress(newCloneFiles) //清除重置进度数
 						yield _this.updateProgressStatus(originFiles, newCloneFiles) //上传完成后处理
 						if (newLoadFile) { //是否成功上传数据
@@ -866,7 +894,6 @@ Page({
 						fileType: 'image'
 					}
 				} else { //文件类型切换格式
-
 					const name = currentFile.name.substr(0, currentFile.name.lastIndexOf('.'))
 					const types = currentFile.name.substr(currentFile.name.lastIndexOf('.') + 1, currentFile.name.length).toLowerCase()
 					logger.info(name, 'name', type, 'type')

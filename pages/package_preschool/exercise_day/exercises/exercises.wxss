@@ -1,4 +1,7 @@
 /* pages/package_preschool/exercise_day/exercises/exercises.wxss */
+page {
+  overflow: hidden;
+}
 
 .main-box {
   width: 100%;
@@ -66,7 +69,7 @@ swiper {
 swiper-item{
   width: 100%;
   height: calc( 100vh - 476rpx );
-  border-radius: 50rpx;
+  border-radius: 20rpx;
 }
 
 .swiper-img {

@@ -39,7 +39,11 @@
       <view class="print {{checkCount===0?'unable':''}} {{isFullScreen?'is-full-screen':''}}" bindtap="toPrint">我要打印</view>
     </view>
   </block>
-  <view wx:else class="content-empty">暂无内容</view>
+  
+  <view wx:else class="content-empty">
+    <image src="../../images/empty.png" mode="widthFix" />
+      <view>暂无内容</view>
+  </view>
 </view>
 <!-- loading -->
 <import src="/lib/toast/wetoast.wxml" />

@@ -95,16 +95,13 @@ Page({
   },
 
   toPrint(e) {
-    let sns = [],
-      type = ''
+    let sns = []
     if (e.currentTarget.id) {
       sns.push(e.currentTarget.id)
-      type = 'pdf'
     } else {
       this.weToast.toast({
         type: 'loading'
       })
-      type = 'html'
       let writeList = this.data.writeList
       for (let i = 0; i < writeList.length; i++) {
         if (writeList[i].isCheck) {
@@ -143,7 +140,8 @@ Page({
       let categorys = this.data.currentGrade.guessWriteCategories
       if (categorys.length === 0) {
         this.setData({
-          isEmpty: true
+          isEmpty: true,
+          loadReady: true
         })
         this.weToast.hide()
         return
@@ -153,7 +151,8 @@ Page({
         isEmpty = writeList.length >= 0 ? false : true
       if (isEmpty) {
         this.setData({
-          isEmpty
+          isEmpty,
+          loadReady: true
         })
         return
       } else {

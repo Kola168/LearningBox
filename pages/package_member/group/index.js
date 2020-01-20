@@ -129,7 +129,7 @@ Page({
             console.log(res.target)
         }
         return {
-            title: '黑呵呵呵额呵呵',
+            title: '快来加入我的家庭吧',
             path: `/pages/package_member/group/index?shareGroupSn=${this.groupSn}`,
             // imageUrl: '/images/share_image.jpg'
         }

@@ -1,3 +1,4 @@
+var app = getApp()
 export const features= [{
     title: '记录与收藏',
     features: [{
@@ -43,9 +44,9 @@ export const features= [{
 			url: 'pages/package_common/accountmanagement/index',
 			key:'moreService'
     }, {
-      name: '纸质化学习方法',
+      name: '陪伴式打印学习方法',
       image: '/images/account_paper.png',
-			url: '',
+			url: '/pages/intro/printway',
 			key:'paperLeraning'
     }, {
       name: '我的家庭',

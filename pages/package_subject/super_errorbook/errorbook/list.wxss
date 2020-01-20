@@ -167,6 +167,7 @@
 /* 选择弹出层 */
 .filter {
   position: fixed;
+  top: -100%;
   background: rgba(0, 0, 0, 0.6);
   z-index: 1000;
   height: 100%;
@@ -176,8 +177,13 @@
 .filter-box {
   background: #fff;
   padding: 0 24rpx;
-  max-height: 420rpx;
+  max-height: 0;
   overflow: scroll;
+  transition: all .4s;
+}
+
+.filter-box_active {
+  max-height: 400rpx;
 }
 
 .filter-item {
@@ -264,6 +270,12 @@ view.top-marker {
   position: absolute;
   left: 24rpx;
   top: 24rpx;
+  opacity: 0;
+  transition: all .3s;
+}
+
+image.show-img-check {
+  opacity: 1;
 }
 
 .item-bottom {

@@ -15,11 +15,13 @@ module.exports = {
   formatPrice:formatPrice
 }
 </wxs>
+<wxs src="../../../../utils/compressConfig.wxs" module="foo"></wxs>
+
 <nav-bar background="#fff" title="学习" />
 <view class="swiper-main">
   <swiper class="swiper"  bindchange="changeDots" autoplay="{{autoplay}}" interval="{{interval}}" circular>
     <swiper-item wx:for="{{banners}}" wx:key="url" class="swpier-i" id="{{index}}" bindtap="swiperClick">
-      <image src="{{item.url}}" class="slide-img" mode="widthFix" />
+      <image src="{{foo.compress(item.url)}}" class="slide-img" mode="widthFix" />
     </swiper-item>
   </swiper>
   <view class="dots-main">
@@ -103,7 +105,7 @@ module.exports = {
     </view>
     <view class="recommend-item" wx:for="{{recommendCourse}}" wx:key="sn" id="{{item.sn}}" bindtap="toCourseDetail">
       <view class="course-cover">
-        <image src="{{item.recommendationImageUrl}}" mode="widthFix" />
+        <image src="{{foo.compress(item.recommendationImageUrl)}}" mode="widthFix" />
       </view>
       <view class="recommend-bottom">
         <view class="bottom-text {{isAndroid ? '' : 'desc-ios' }}">

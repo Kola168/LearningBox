@@ -28,14 +28,16 @@ Page({
   onLoad: co.wrap(function* (options) {
     try {
       this.longToast = new app.weToast()
-      console.log('打印页参数', options)
+      console.log('打印页参数', options,options.hasPay)
       let url = JSON.parse(options.url)
       url = imginit.addProcess(url, '/rotate,90')
       this.setData({
         url,
         sn: options.sn
       })
-      yield this.getWorkerSn()
+      if(options.hasPay!='true'){
+        yield this.getWorkerSn()
+      }
     } catch (error) {
       console.log(error)
     }
@@ -78,7 +80,7 @@ Page({
         })
       }
     } catch (e) {
-      util.showError(error)
+      util.showError(e)
     }
   }),
   toConfirm() {
