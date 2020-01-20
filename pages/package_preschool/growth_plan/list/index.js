@@ -165,7 +165,7 @@ Page({
       `/pages/package_preschool/growth_plan/checkpoint/plan_checkpoint`,{
         planSn,
         userPlanSn,
-        subscribe
+        // subscribe
       }
     )
   }),

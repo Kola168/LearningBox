@@ -11,8 +11,6 @@ const event = require('../../../../lib/event/event')
 import gql from '../../../../network/graphql/preschool'
 import gragql from '../../../../network/graphql_request'
 import gragqlMember from '../../components/member-toast/index'
-
-// import gragqlmember from '../../components/member-toast/index'
 import Logger from '../../../../utils/logger.js'
 const logger = new Logger.getLogger('pages/package_preschool/growth_plan/checkpoint/plan_checkpoint')
 
@@ -33,7 +31,6 @@ Page({
     shadowOpcityImg: '../../images/growth_plan_lock.png', //透明遮罩层上的图片
     btnImgUrl:'',
     autoPrintBtn:false,
-    // isAndroid: false,
     isShowBtnCont:false,
     modal: {
       title: '畅享月度合辑',
@@ -52,27 +49,30 @@ Page({
       this.options = options
       this.planSn = this.options.planSn
       this.userPlanSn = this.options.userPlanSn
-      this.subscribe = this.options.subscribe
-      logger.info('planSn====', this.planSn)
-      this.getDetail(this.planSn)
       const respMember = yield gragql.getUserMemberInfo()
-      this.setData({
+      const resp = yield gql.getPlan(this.planSn)
+      this.setData({ 
         isMember:respMember.currentUser.isPreschoolMember,
-        isShowBtnCont:true,
-        autoPrintBtn:false
+        checkpoints: resp.plan.planShowContents,
+        isSuscribe:resp.plan.subscription
       })
-
-    if(this.subscribe == 'subscript' || this.subscribe == 'finished'){
-      this.setData({
-        autoPrintBtn:true,
-        isShowBtnCont:false
-      })
-    }else{
-      this.setData({
-        autoPrintBtn:false,
-        isShowBtnCont:true
-      })
-    }
+      //修改
+      if(this.data.isMember){
+        if(this.data.isSuscribe){
+          this.setData({
+              autoPrintBtn:true,
+              isShowBtnCont:false
+            })
+          }else{
+            this.setData({
+              autoPrintBtn:false,
+              isShowBtnCont:true
+            })
+          }
+      }else{
+        this.checkMember()
+      }
+      //修改
       this.longToast.hide()
     } catch (error) {
       this.longToast.toast()
@@ -80,47 +80,15 @@ Page({
     }
   }),
 
-  getDetail: co.wrap(function* (planSn) {
-    this.longToast.toast({
-      type:'loading'
-    })
-    try {
-      const resp = yield gql.getPlanContents(planSn)
-      this.setData({
-        checkpoints: resp.planContents
-      })
-      console.log('resp',resp.planContents)
-      if (this.subscribe == 'noSubscript') {
-        this.setData({
-          isSuscribe: false
-        })
-      }else{
-        this.setData({
-          isSuscribe: true
-        })
-      }
-      this.longToast.hide()
-    } catch (e) {
-      this.longToast.toast()
-      util.showError(e)
-    }
-  }),
-
-  //判断会员
+  //弹框会员
   checkMember: co.wrap(function *(){
-
     try{
-      if(this.data.isMember){
-        yield this.toSubscribe()
-      }else{
-        //判断会员标示
-        var memberToast = this.selectComponent('#memberToast')
-        memberToast.checkAuthMember(()=>{
-          wxNav.navigateTo('./plan_checkpoint', {
-            userPlanSn:this.userPlanSn
-          })
+      var memberToast = this.selectComponent('#memberToast')
+      memberToast.checkAuthMember(()=>{
+        wxNav.navigateTo('./plan_checkpoint', {
+          userPlanSn:this.userPlanSn
         })
-      }
+      })
     } catch(e){
       this.longToast.toast()
       util.showError(e)
@@ -135,10 +103,7 @@ Page({
     })
     try {
       yield gql.joinPlan(this.planSn)
-      // wxNav.navigateBack()
       event.emit('subscribeList')
-      // yield gql.getPlanContents(this.planSn)
-
       this.longToast.toast({
         type:'loading',
         duration:6000,
@@ -163,7 +128,6 @@ Page({
     })
     try {
       this.setData({
-        // isSuscribe:true,
         autoPrintBtn:true,
         isShowBtnCont:false
       })

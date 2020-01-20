@@ -1,4 +1,5 @@
 <!--index.wxml-->
+<wxs src='../../utils/compressConfig.wxs' module="foo"></wxs>
 <nav-bar background="#fff" title="小白盒子"></nav-bar>
 <button open-type="getUserInfo" bindgetuserinfo="userInfoHandler" form-type='submit' hover-class="none"
   class="auth-button" wx:if="{{showAuth}}"></button>
@@ -48,7 +49,7 @@
     </view>
     <scroll-view class="study-plan-wrap" scroll-x wx:if="{{userPlans.length>0}}">
       <view class="study-plan" wx:for="{{userPlans}}" wx:key="userPlans" bindtap="planDtail" id="{{item.planSn}}">
-        <image src="{{item.planIconUrl}}" mode="widthFix" class="study-plan-image"></image>
+        <image src="{{foo.compress(item.planIconUrl)}}" mode="widthFix" class="study-plan-image"></image>
         <view class="has-plan">
           <view>{{item.planName}}</view>
           <view class="progress">
@@ -72,7 +73,7 @@
 
     <view class="content-list" wx:for="{{beforeSchoolContent}}" wx:key="beforeSchoolContent" id="{{item.key}}">
       <view class="home-title">{{item.name}}</view>
-      <image src="{{item.iconUrl}}" class="content-image" mode="widthFix" id="{{item.key}}" bindtap="toContentList"
+      <image src="{{foo.compress(item.iconUrl)}}" class="content-image" mode="widthFix" id="{{item.key}}" bindtap="toContentList"
         data-name="{{item.name}}" data-has="{{item.hasCategory}}" />
     </view>
     <view class="tips">

@@ -2,6 +2,6 @@
   "disableScroll": true,
   "enablePullDownRefresh": false,
   "usingComponents": {
-    "confirm-print": "../../components/confirm-print"
+    "confirm-print": "../../components/confStorageModal/index"
   }
 }

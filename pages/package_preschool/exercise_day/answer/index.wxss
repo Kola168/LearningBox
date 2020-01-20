@@ -2,6 +2,7 @@
 
 .answer-main {
   padding: 70rpx 0 60rpx;
+  height: 100vh;
   background-color: #FEEECA;
 }
 

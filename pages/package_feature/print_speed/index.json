@@ -1,6 +1,6 @@
 {
-  "navigationBarTitleText": "文字速印",
+  "disableScroll":true,
   "usingComponents": {
-    "confirm-print": "../../../components/confirm-print"
+    "confirm-print": "../../../components/confStorageModal/index"
   }
 }

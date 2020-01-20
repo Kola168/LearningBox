@@ -161,7 +161,6 @@ Page({
       yield this.updateKidName()
     } catch(err) {
       util.showError(err)
-      console.log(err,'err')
     }
   }),
 
