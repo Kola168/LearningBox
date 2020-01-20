@@ -1,4 +1,7 @@
 /* pages/package_preschool/exercise_day/exercises/exercises.wxss */
+page {
+  overflow: hidden;
+}
 
 .main-box {
   width: 100%;

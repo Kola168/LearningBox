@@ -3,7 +3,7 @@
 .certificate-main {
   position: relative;
   display: inline-block;
-  padding: 0 48rpx 0;
+  padding: 0 48rpx 20rpx;
   width: 100%;
   min-height: 100vh;
   box-sizing: border-box;
