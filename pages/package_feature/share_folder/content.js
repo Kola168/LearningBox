@@ -796,9 +796,9 @@ Page({
 		try {
 			const newPaths = !isFile && typeof paths === 'object' ? paths.path : paths; //区分选择文件上传和普通上传的格式区分
 			return new Promise((resolve, reject) => {
-				upload.uploadFiles([newPaths], (index, url) => {
+				upload.uploadDocs([newPaths], (url,name)=> {
 					logger.info('===url====', url)
-					if (index !== '' && url !== '') { //上传完成
+					if (url !== '') { //上传完成
 						resolve({
 							url: url
 						})
@@ -807,7 +807,8 @@ Page({
 					} else { // 上传异常
 						resolve(false)
 					}
-				}, getProgress, isFile, uploadKey, isFolder)
+				// }, getProgress, isFile, uploadKey, isFolder)
+			}, getProgress, true)
 			})
 		} catch (err) {
 			logger.info(err)
@@ -866,7 +867,6 @@ Page({
 						fileType: 'image'
 					}
 				} else { //文件类型切换格式
-
 					const name = currentFile.name.substr(0, currentFile.name.lastIndexOf('.'))
 					const types = currentFile.name.substr(currentFile.name.lastIndexOf('.') + 1, currentFile.name.length).toLowerCase()
 					logger.info(name, 'name', type, 'type')

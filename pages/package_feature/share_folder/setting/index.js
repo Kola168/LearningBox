@@ -70,7 +70,7 @@ Page({
       getLoopsEvent({
         feature_key: 'doc_a4',
         worker_data: {
-          url: arrayFile.url + '.' + this.data.arrayFile.file_type,
+          url: arrayFile.url
         }
       }, (resp) => {
         console.log(resp)

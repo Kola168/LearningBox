@@ -125,9 +125,7 @@ Page({
         wxNav.navigateTo('pages/print_id/smart_preview',{
           params
         } )
-      }
-
-      if (orderDetails.payable.categoryName == 'Course') {
+      }else if (orderDetails.payable.categoryName == 'Course') {
         wxNav.navigateTo('/pages/package_course/course/course', {
           sn: orderDetails.payable.sn
         })

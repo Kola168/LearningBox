@@ -144,7 +144,7 @@ Page({
       })
     } catch (e) {
       this.longToast.toast()
-      util.showErr(e)
+      util.showError(e)
     }
   }),
   toConfirm: co.wrap(function* (e) {
@@ -327,42 +327,15 @@ Page({
         this.longToast.hide()
       } catch (e) {
         this.longToast.hide()
-        util.showErr(e)
+        util.showError(e)
       }
-      // const resp = yield request({
-      // 	url: app.apiServer + `/boxapi/v2/orders`,
-      // 	method: 'POST',
-      // 	dataType: 'json',
-      // 	data: params
-      // })
-      // if (resp.data.code == 0) {
-      // 	this.longToast.toast()
-      // 	console.log('打印成功', resp.data)
-      // 	wx.redirectTo({
-      // 		url: `../finish/index?media_type=${this.data.media_type}&&state=${resp.data.order.state}&&type=${this.data.type}`
-      // 	})
-      // } else if (resp.data.code == 1) {
-      // 	this.longToast.toast()
-      // 	const res = yield showModal({
-      // 		title: '提示',
-      // 		content: resp.data.message,
-      // 		showCancel: false,
-      // 		confirmColor: '#fae100',
-      // 	})
-      // 	if (res.confirm) {
-      // 		wx.navigateBack()
-      // 	}
-      // } else {
-      // 	throw (resp.data)
-      // }
-
     } catch (e) {
       this.longToast.toast()
-      util.showErr(e)
+      util.showError(e)
     }
   }),
 
-  onShareAppMessage: function () {
+  onShareAppMese: function () {
 
   },
   onUnload() {
