@@ -26,7 +26,7 @@
     <image class="back-no" src="../images/active_bg_no.png" mode="widthFix"></image>
     <view class="back-no-content">当前暂无可激活的会员，请前往会员中心开通</view>
 </block>
-<view class="modal" wx:if="{{success&&availableMember}}">
+<view class="modal" wx:if="{{success&&availableMember}}" bindtap="hideModal">
     <image class="modal-image" src="https://cdn-h.gongfudou.com/LearningBox/member/member_modal_image.jpg"
         mode="widthFix"></image>
     <view class="modal-content">

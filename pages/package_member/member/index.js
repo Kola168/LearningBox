@@ -42,7 +42,6 @@ Page({
             return wxNav.navigateTo('/pages/authorize/index')
         }
         yield this.getDevice()
-
         event.on('Authorize', this, () => {
             this.userSn = storage.get('userSn')
             this.getDevice()
@@ -75,13 +74,13 @@ Page({
             const resp = yield api.printMemberCode()
             if (resp.code != 0) {
                 throw (resp)
-						}
-						wx.showModal({
-							title: '提示',
-							content: '请查看打印出来的会员详情',
-							showCancel: false,
-							confirmColor: '#ffdc5e'
-					})
+            }
+            wx.showModal({
+                title: '提示',
+                content: '请查看打印出来的会员详情',
+                showCancel: false,
+                confirmColor: '#ffdc5e'
+            })
             this.longToast.hide()
         } catch (error) {
             util.showError(error)
@@ -96,7 +95,7 @@ Page({
         })
         try {
             const resp = yield api.accessMember()
-            if (resp.data.code != 0) {
+            if (resp.code != 0) {
                 throw (resp)
             }
             let modalObj = {
@@ -127,10 +126,10 @@ Page({
             this.setData({
                 device: resp.currentUser.selectedDevice
             })
-            if (this.data.device == null||this.data.device.lmAvailableMember == null) {
+            if (this.data.device == null || this.data.device.lmAvailableMember == null) {
                 return
             }
-        
+
             this.setData({
                 availableMember: this.data.device.lmAvailableMember.time != null && this.data.device.lmAvailableMember.time != 0 ? true : false,
                 availableMemberModal: this.data.device.lmAvailableMember.time != null && this.data.device.lmAvailableMember.time != 0 ? true : false
