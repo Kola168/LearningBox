@@ -30,6 +30,7 @@
       </view>
     </view>
   </view>
+  <view class="more" wx:if="{{isShare}}" bindtap="toFreeSource">查看更多</view>
 </view>
 <!-- loading -->
 <import src="/lib/toast/wetoast.wxml" />

@@ -22,6 +22,24 @@
   align-items: center;
 }
 
+.container {
+  position: relative;
+}
+
+.more {
+  position: absolute;
+  left: 0;
+  top: 40rpx;
+  font-size: 30rpx;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  height: 62rpx;
+  line-height: 62rpx;
+  padding: 0 24rpx;
+  border-top-right-radius: 31rpx;
+  border-bottom-right-radius:31rpx;
+}
+
 .swiper {
   height: 80%;
 }
@@ -36,7 +54,7 @@
 
 .handle-bottom {
   height: 20%;
-  position: absolute;
+  position: fixed;
   left: 0;
   bottom: 0;
   width: 100%;
