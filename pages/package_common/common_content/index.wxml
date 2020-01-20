@@ -1,10 +1,12 @@
 <!--pages/package_common/common_content/index.wxml-->
+<wxs src='../../../utils/compressConfig.wxs' module="foo"></wxs>
 <nav-bar background="#fff" title="{{name}}"></nav-bar>
 <block wx:for="{{allList}}" wx:key="allList">
     <view class="title">{{item.name}}</view>
     <view class="content-wrap">
-        <view class="content-item" wx:for="{{item.children}}" wx:for-item="data" wx:key="children" id="{{data.sn}}" bindtap="toNextPage" data-name="{{data.name}}">
-            <image src="{{data.previewUrl}}" mode="widthFix" />
+        <view class="content-item" wx:for="{{item.children}}" wx:for-item="data" wx:key="children" id="{{data.sn}}"
+            bindtap="toNextPage" data-name="{{data.name}}">
+            <image src="{{foo.compress(data.previewUrl)}}" mode="widthFix" />
             <view>{{data.name}}</view>
         </view>
     </view>
@@ -13,15 +15,15 @@
 <view class="title" wx:if="{{planList.length>0}}">宝宝成长计划</view>
 <block wx:for="{{planList}}" wx:key="planList">
     <view class="plan-item" bindtap="joinPlan" id="{{item.sn}}" data-name="{{item.name}}">
-        <image src="{{item.iconUrl}}" mode="widthFix"/>
+        <image src="{{foo.compress(item.iconUrl)}}" mode="widthFix" />
         <view class="plan-right">
             <view class="plan-title">{{item.name}}</view>
             <view>{{item.subTitle}}</view>
             <view class="play-sort">{{item.categoryName}}</view>
-            <view class="button-subscription" wx:if="{{item.subscription==false}}" >订阅</view>
+            <view class="button-subscription" wx:if="{{item.subscription==false}}">订阅</view>
         </view>
     </view>
-    
+
 </block>
 
 <import src="../../../lib/toast/wetoast.wxml" />
