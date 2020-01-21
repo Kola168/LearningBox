@@ -28,11 +28,11 @@ button:not([size='mini']) {
   background: #fffae9;
   text-align: center;
   line-height: 48rpx;
-  position: fixed;
+  /* position: fixed; */
   /* 自定义导航栏64px */
-  top: 176rpx;
+  /* top: 176rpx; */
   /* top:0; */
-  left: 0;
+  /* left: 0; */
   font-size: 24rpx;
   color: #ff9a55;
   z-index: 100;
@@ -44,10 +44,10 @@ button:not([size='mini']) {
   font-size: 32rpx;
   padding: 0 124rpx;
   /* margin: 74rpx 0 20rpx; */
-  position: fixed;
-  left: 0;
+  /* position: fixed; */
+  /* left: 0; */
   /* top:48rpx; */
-  top: 224rpx;
+  /* top: 224rpx; */
   width: 100%;
   box-sizing: border-box;
   z-index: 100;
