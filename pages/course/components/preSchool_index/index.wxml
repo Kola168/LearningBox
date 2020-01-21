@@ -105,7 +105,7 @@ module.exports = {
     </view>
     <view class="recommend-item" wx:for="{{recommendCourse}}" wx:key="sn" id="{{item.sn}}" bindtap="toCourseDetail">
       <view class="course-cover">
-        <image src="{{foo.compress(item.recommendationImageUrl)}}" mode="widthFix" />
+        <image src="{{item.recommendationImageUrl}}" mode="widthFix" />
       </view>
       <view class="recommend-bottom">
         <view class="bottom-text {{isAndroid ? '' : 'desc-ios' }}">
