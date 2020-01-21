@@ -25,7 +25,6 @@ const showModal = util.promisify(wx.showModal)
 const MAXSIZE = 20000000;
 const PAGE_COUNT = 20;
 import commonRequest from '../../../utils/common_request.js'
-import chooseImgWay from '../../../utils/showActionImg';
 Page({
 	data: {
 		file_name: '11',
@@ -163,9 +162,9 @@ Page({
 	}),
 
 	backToHome: function () {
-		wx.redirectTo({
-			url: `/pages/error_book/pages/share_folder/index?tabId=1`,
-		})
+	  router.redirectTo('/pages/package_feature/share_folder/index',{
+      tabId:1
+    })
 	},
 
 	showShare: function (e) {
@@ -440,11 +439,9 @@ Page({
 			duration: 0
 		})
 		try {
-      //TODO:
-			const resp = yield api.exitFolderShare(app.openId, this.sn)
-			if (resp.code != 0) {
-				throw (resp)
-			}
+      const resp = yield gql.deleteShareFolder({
+        sn:this.sn
+      })
 			this.longToast.toast()
 			logger.info('退出分享成功', resp.data)
 			wx.showToast({
@@ -456,10 +453,10 @@ Page({
 			var that = this
 			setTimeout(function () {
 				if (that.data.role == 'user') {
-					logger.info("22222");
-					wx.redirectTo({
-						url: `/pages/error_book/pages/share_folder/index?tabId=1`,
-					})
+          logger.info("22222");
+          router.redirectTo('/pages/package_feature/share_folder/index',{
+            tabId:1
+          })
 				} else {
 					logger.info("11111");
 				}
