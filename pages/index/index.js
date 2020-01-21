@@ -29,7 +29,12 @@ Page({
   mixins: [index, init],
   data: {
     userInfo: {},
-    bannerUrls: [],
+    bannerUrls: [{
+      name: '什么是陪伴式打印法',
+      imageUrl: 'https://cdn-h.gongfudou.com/LearningBox/main/home_banner.png',
+      path: "pages/intro/printway?type=preschool"
+
+    }],
     contentList: [{
       title: '家庭早教',
       url: 'http://gfd-i.memeyin.com/e-FlXfVks1do_li3DqrLWVHjr-0IPr'
@@ -419,21 +424,25 @@ Page({
   }),
   moreLearingPlan: co.wrap(function* (e) {
     wxNav.navigateTo('/pages/package_preschool/growth_plan/list/index')
-	}),
-	
-	whatTeacher:function(){
-		wxNav.navigateTo('/pages/intro/xbteacher')
-	},
+  }),
 
-	preLearingWay:function(){
-		wxNav.navigateTo('/pages/intro/printway',{type:'preschool'})
-	},
+  whatTeacher: function () {
+    wxNav.navigateTo('/pages/intro/xbteacher')
+  },
 
-	subjectLearingWay:function(){
-		wxNav.navigateTo('/pages/intro/printway',{type:'subject'})
-	},
-	
-	planDtail(e) {
+  preLearingWay: function () {
+    wxNav.navigateTo('/pages/intro/printway', {
+      type: 'preschool'
+    })
+  },
+
+  subjectLearingWay: function () {
+    wxNav.navigateTo('/pages/intro/printway', {
+      type: 'subject'
+    })
+  },
+
+  planDtail(e) {
     wxNav.navigateTo('/pages/package_preschool/growth_plan/checkpoint/plan_checkpoint', {
       planSn: e.currentTarget.id,
     })

@@ -128,7 +128,12 @@ Page({
     let restCount = this.data.limitPhoto - this.data.photoList.length
     let count = restCount > 9 ? 9 : restCount
     if (restCount <= 0) {
-      return
+      return  wx.showModal({
+          title: '提示',
+          content: '最多只能上传18张照片哦~',
+          showCancel: false,
+          confirmColor: '#FFE27A'
+        })
     }
     this.setData({
       chooseCount: count
@@ -444,6 +449,9 @@ Page({
 
   onUnload: function() {
     event.remove('setPreData', this)
+    storage.put(this.mediaType, {
+      photoList: this.data.photoList
+    })
   },
 
   //计算最后添加照片的高度

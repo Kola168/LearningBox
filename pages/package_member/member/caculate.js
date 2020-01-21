@@ -90,9 +90,9 @@ Page({
                 prepage.getMember()
                 wxNav.navigateBack()
             }, 1500)
-        }, (e) => {
+        }, (isCancel,e) => {
             this.longToast.hide()
-            if (e.errMsg.indexOf('cancel') < 0) {
+            if (!isCancel) {
                 util.showError(e)
             }
         })

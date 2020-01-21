@@ -36,6 +36,7 @@
 
 .arrow-icon {
   display: inline-block;
+  padding-top: -10rpx;
   width: 0;
   height: 0;
   border-top: 10rpx solid white;

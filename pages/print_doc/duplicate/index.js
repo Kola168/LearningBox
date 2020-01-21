@@ -38,6 +38,8 @@ Page({
     })
   },
   onShareAppMessage() {
-    return app.share
+    return {
+      title: '小白老师邀你一起体验这款学习神器'
+    }
   }
 })

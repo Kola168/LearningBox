@@ -62,7 +62,8 @@ Page({
       isShow: false,
       title: '请正确放置A4打印纸',
       image: 'https://cdn.gongfudou.com/miniapp/ec/confirm_print_a4_new.png'
-    }
+    },
+    duplexcheck:false
   },
 
   onLoad: function (options) {
@@ -332,6 +333,7 @@ Page({
       "startPage": that.data.startPrintPage,
       "endPage": parseInt(that.data.endPrintPage),
       'duplex': that.data.duplexcheck,
+      'color':true
     })
     try {
       let orderSn = yield commonRequest.createOrder('word_pdf', urls)
@@ -347,7 +349,7 @@ Page({
       this.longToast.hide()
     } catch (e) {
       this.longToast.hide()
-      util.showErr(e)
+      util.showError(e)
     }
   }),
 

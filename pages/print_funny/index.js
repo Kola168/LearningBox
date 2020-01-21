@@ -54,7 +54,7 @@ Page({
 				url: '/pages/print_photo_doc/index',
 			},
 			{
-				name: '公众号文章',
+				name: '链接打印',
 				icon: '/images/doc_official_icon.png',
 				key: 'weChatArticle',
 				url: '/pages/package_feature/print_link/index'

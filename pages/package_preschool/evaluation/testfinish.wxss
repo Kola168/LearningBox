@@ -44,6 +44,7 @@ view {
   line-height: 64rpx;
   background: #E3F4FF;
   border-radius: 10rpx;
+  color:#0680cc;
 }
 
 .achievement-flower-box {

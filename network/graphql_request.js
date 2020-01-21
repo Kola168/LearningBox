@@ -1429,6 +1429,24 @@ const graphqlApi = {
     })
   },
   /**
+   * 退出共享文件夹
+   *
+   * @param {*} input
+   * @returns
+   */
+  deleteShareFolder: (input) => {
+    return gql.mutate({
+      mutation: `mutation ($input:DeleteShareFolderInput!){
+        deleteShareFolder (input:$input){
+            state
+          }
+        }`,
+      variables: {
+        input
+      }
+    })
+  },
+  /**
    * 获取文件夹文件列表
    *
    * @param {*} sn

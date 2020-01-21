@@ -1,6 +1,7 @@
 <nav-bar background="#fff" title="{{title}}" />
 <view wx:if="{{!showSetting}}" class='top'>
 	<view class="wrap-fun">
+		
 		<swiper
 		 class="swiper-box"
 		 duration="500"
@@ -8,6 +9,9 @@
 		 bindchange="tabSlide"
 		 circular="{{circular}}"
 		>
+			<view class="user-info" bind:tap="{{!kidInfo ? 'toEditAvatar' : ''}}">
+				<view class="user-text">{{kidInfo.name ? kidInfo.name : '朗读者：未填写宝宝昵称 >'}} </view>
+			</view>
 			<block wx:for="{{content.audioContentImage}}" wx:key="*this">
 				<swiper-item style="overflow-y:scroll;overflow-x:hidden;">
 					<image style="width:100%" mode="widthFix" src="{{item}}">
@@ -16,11 +20,8 @@
 				</swiper-item>
 			</block>
 		</swiper>
-		<view class="wrap-main {{isFullScreen ? 'is-full-screen' : ''}}">
+		<view class="wrap-main">
 				<view class="action-box">
-					<view class="user-info" bind:tap="{{!kidInfo ? 'toEditAvatar' : ''}}">
-						<view class="user-text">{{kidInfo.name ? kidInfo.name : '朗读者：未填写宝宝昵称 >'}} </view>
-					</view>
 					<view class="turn">
 						<view class="turn-content">
 							<text>{{num+1}}/{{content.contentImages.length}}</text>
@@ -55,11 +56,10 @@
 			<view>分享</view>
 		</button>
 		<view class="btn-main">
-			<view class="btn consumables" bindtap="openConsumable">适配耗材</view>
+			<!-- <view class="btn consumables" bindtap="openConsumable">适配耗材</view> -->
 			<view class="btn btn-print" bind:tap="toConfirm">
 			打印
-			<bottom-button class="bottom-button-box" text-right="确认打印" bindrighttap="toConfirm" get-phone="{{true}}"></bottom-button>
-
+				<bottom-button class="bottom-button-box" text-right="确认打印" bindrighttap="toConfirm" get-phone="{{true}}"></bottom-button>
 			</view>
 		</view>
 	</view>

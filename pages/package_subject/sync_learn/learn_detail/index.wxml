@@ -15,7 +15,7 @@
 		 data-index="{{index}}"
 		 bind:tap="chooseDiff"
 		>
-			<view class="tab-name">{{item.name}}</view>
+			<view class="tab-name {{currentIndex == index ? 'tab-active' : ''}}">{{item.name}}</view>
 			<view class="tab-line {{currentIndex == index ? 'tab-active' : ''}}" />
 		</view>
 	</view>

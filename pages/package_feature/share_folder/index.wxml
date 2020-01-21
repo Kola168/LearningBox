@@ -12,7 +12,7 @@
     </view>
 </view>
 
-<view wx:if="{{tabId==0}}" style="padding-bottom:100rpx;margin-top:150rpx;">
+<view wx:if="{{tabId==0}}" style="padding-bottom:100rpx">
     <view class="intro-center" wx:if="{{fileList.length==0}}">
         <image src="https://cdn-h.gongfudou.com/LearningBox/feature/create_folder_bg.png" mode="widthFix" class="intro-bg"></image>
         <view class="intro-text">重要资料同步云端 随身而行</view>
@@ -42,7 +42,7 @@
     <view class="{{fileList.length==20?'bottom-button-gray':'bottom-button'}}" bindtap="newFile">新建文件夹</view>
 </view>
 
-<view wx:if="{{tabId==1}}" style="padding-bottom:100rpx;margin-top:150rpx;">
+<view wx:if="{{tabId==1}}" style="padding-bottom:100rpx">
     <view class="intro-center" wx:if="{{shareFileList.length==0}}">
         <image src="https://cdn-h.gongfudou.com/LearningBox/feature/share_folder_bg.png" mode="widthFix" class="intro-bg-share"></image>
         <view class="intro-text">暂时没有好友分享的文件夹</view>
