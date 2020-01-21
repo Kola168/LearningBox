@@ -14,13 +14,13 @@
 </swiper>
 <!-- 常规打印 -->
 <view class="print-nomal">
-  <image src="/images/home/print_photo.png" mode="widthFix" id="photo" bindtap="toNomalPrint">
+  <image class="red" src="/images/home/print_photo.png" mode="widthFix" id="photo" bindtap="toNomalPrint">
     <view>照片打印</view>
   </image>
-  <image src="/images/home/print_doc.png" mode="widthFix" id="doc" bindtap="toNomalPrint">
+  <image class="blue" src="/images/home/print_doc.png" mode="widthFix" id="doc" bindtap="toNomalPrint">
     <view>文档打印</view>
   </image>
-  <image src="/images/home/print_more.png" mode="widthFix" id="more" bindtap="toNomalPrint">
+  <image class="yellow" src="/images/home/print_more.png" mode="widthFix" id="more" bindtap="toNomalPrint">
     <view>更多打印</view>
   </image>
 </view>
@@ -31,7 +31,7 @@
     <view class="home-title" style="margin-bottom:0">智能学习工具</view>
     <view class="tool-wrap">
       <scroll-view class="tool-wrap" scroll-x>
-        <view class="tool-item" bindtap="toFunction" id="{{item.id}}" wx:for="{{commonFeatures}}"
+        <view class="tool-item tool-item-pre" bindtap="toFunction" id="{{item.id}}" wx:for="{{commonFeatures}}"
           wx:key="commonFeatures" data-url="{{item.url}}">
           <image src="{{item.image}}" mode="widthFix">
             <image src="{{item.icon}}" mode="widthFix" class="subject-free" wx:if="{{item.icon}}"></image>

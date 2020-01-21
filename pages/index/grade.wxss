@@ -51,7 +51,7 @@ page {
 
 .active-grade {
     background: #FFDC5E;
-    border: none
+    border: 2rpx solid #E7E7E7;
 }
 
 .bottom {

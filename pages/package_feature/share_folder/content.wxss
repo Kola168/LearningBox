@@ -4,9 +4,9 @@
   background: #fffae9;
   text-align: center;
   line-height: 48rpx;
-  position: fixed;
-  top: 128rpx;
-  left: 0;
+  /* position: fixed;
+  top: 176rpx;
+  left: 0; */
   font-size: 24rpx;
 	color: #ff9a55;
 	z-index:99999;
@@ -29,7 +29,7 @@
 .top {
   display: flex;
   justify-content: space-between;
-  padding: 70rpx 26rpx 0;
+  padding: 30rpx 26rpx 0;
 }
 
 .top1 {

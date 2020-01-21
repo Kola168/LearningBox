@@ -25,7 +25,6 @@ const showModal = util.promisify(wx.showModal)
 const MAXSIZE = 20000000;
 const PAGE_COUNT = 20;
 import commonRequest from '../../../utils/common_request.js'
-import chooseImgWay from '../../../utils/showActionImg';
 Page({
 	data: {
 		file_name: '11',
@@ -163,8 +162,8 @@ Page({
 	}),
 
 	backToHome: function () {
-		wx.redirectTo({
-			url: `/pages/error_book/pages/share_folder/index?tabId=1`,
+		router.redirectTo('/pages/package_feature/share_folder/index', {
+			tabId: 1
 		})
 	},
 
@@ -210,7 +209,7 @@ Page({
 
 	//加入文件夹
 	enterFile: co.wrap(function* () {
-    console.log('890-[')
+		console.log('890-[')
 		this.longToast.toast({
 			type: 'loading',
 			duration: 0
@@ -440,11 +439,9 @@ Page({
 			duration: 0
 		})
 		try {
-      //TODO:
-			const resp = yield api.exitFolderShare(app.openId, this.sn)
-			if (resp.code != 0) {
-				throw (resp)
-			}
+			const resp = yield gql.deleteShareFolder({
+				sn: this.sn
+			})
 			this.longToast.toast()
 			logger.info('退出分享成功', resp.data)
 			wx.showToast({
@@ -457,8 +454,8 @@ Page({
 			setTimeout(function () {
 				if (that.data.role == 'user') {
 					logger.info("22222");
-					wx.redirectTo({
-						url: `/pages/error_book/pages/share_folder/index?tabId=1`,
+					router.redirectTo('/pages/package_feature/share_folder/index', {
+						tabId: 1
 					})
 				} else {
 					logger.info("11111");
@@ -482,7 +479,7 @@ Page({
 			exitSaveModal: {
 				title: `转存百度网盘须知`,
 				content: `由于文件存在安全问题转存至百度网盘的时间会有延迟，可40分钟后进入网盘查看`,
-				role: `转存路径：我的硬件数据/小白盒子`,
+				role: `转存路径：我的硬件数据/小白学习盒子`,
 				confirm: `确认`
 			}
 		})
@@ -493,62 +490,62 @@ Page({
 		this.uploadBaidu()
 	},
 
-  firstUploadBaidu: function () {
-    let firstUploadBaidu = wx.getStorageSync('firstCreatorBaidu')
-    if (firstUploadBaidu) {
-        this.setData({
-            firstUploadBaidu: true
-        })
-    } else {
-        this.setData({
-            firstUploadBaidu: false
-        })
-    }
-},
+	firstUploadBaidu: function () {
+		let firstUploadBaidu = wx.getStorageSync('firstCreatorBaidu')
+		if (firstUploadBaidu) {
+			this.setData({
+				firstUploadBaidu: true
+			})
+		} else {
+			this.setData({
+				firstUploadBaidu: false
+			})
+		}
+	},
 
-uploadBaidu: co.wrap(function* () {
-    this.firstUploadBaidu()
-    if (this.data.memberIds.length == 0) {
-        return
-    }
-    try {
-        let resp = yield gql.checkBaiduAuth()
-        logger.info(resp)
-        if (resp.token.baiduTokenName != null) {
-            let params={
-                sn:this.sn,
-                documentSns:this.data.memberIds
-            }
-            this.longToast.toast({
-                type: 'loading',
-                duration: 0
-            })
-            try {
-                const resp = yield gql.uploadBaidu(params)
-                this.longToast.toast()
-                logger.info('上传百度云', resp)
-                wx.showToast({
-                    title: '百度云的存储路径是：我的硬件数据/小白智慧打印',
-                    icon: 'none',
-                    mask: true,
-                    duration: 2000
-                })
-                setTimeout(function () {
-                    router.navigateBack()
-                }, 2000)
-            } catch (e) {
-                this.longToast.hide()
-                util.showError(e)
-            }
-        } else {
-            router.navigateTo('/pages/print_doc/start_intro/start_intro', {
-                type: 'baiduPrint'
-            })
-        }
-    } catch (error) {
-        util.showError(error)
-    }
-}),
+	uploadBaidu: co.wrap(function* () {
+		this.firstUploadBaidu()
+		if (this.data.memberIds.length == 0) {
+			return
+		}
+		try {
+			let resp = yield gql.checkBaiduAuth()
+			logger.info(resp)
+			if (resp.token.baiduTokenName != null) {
+				let params = {
+					sn: this.sn,
+					documentSns: this.data.memberIds
+				}
+				this.longToast.toast({
+					type: 'loading',
+					duration: 0
+				})
+				try {
+					const resp = yield gql.uploadBaidu(params)
+					this.longToast.toast()
+					logger.info('上传百度云', resp)
+					wx.showToast({
+						title: '百度云的存储路径是：我的硬件数据/小白智慧打印',
+						icon: 'none',
+						mask: true,
+						duration: 2000
+					})
+					setTimeout(function () {
+						router.navigateBack()
+					}, 2000)
+				} catch (e) {
+					this.longToast.hide()
+					util.showError(e)
+				}
+			} else {
+				router.navigateTo('/pages/print_doc/start_intro/start_intro', {
+					type: 'baiduPrint'
+				})
+			}
+		} catch (error) {
+			util.showError(error)
+		}
+	}),
 
 	toBaidu: co.wrap(function* () {
 		this.setData({
@@ -673,7 +670,7 @@ uploadBaidu: co.wrap(function* () {
 		this.uploadDocuments(filesList)
 	}),
 	baiduImage: co.wrap(function* (e) {
-		logger.info('选择百度图片',e)
+		logger.info('选择百度图片', e)
 		let paths = e.detail
 		let urls = []
 		let that = this
@@ -712,8 +709,8 @@ uploadBaidu: co.wrap(function* () {
 	uploadImage: co.wrap(function* (imgs) {
 		let newImages = yield this.checkImgSize(imgs) //检测文件格式
 		yield this.initProgressStatus(newImages) //初始化进度条
-		const imageList = yield this.syncLoadFiles(newImages, imgs,'image') //并行上传
-		logger.info( '====imageList====',imageList)
+		const imageList = yield this.syncLoadFiles(newImages, imgs, 'image') //并行上传
+		logger.info('====imageList====', imageList)
 		let _this = this
 		imageList && imageList.forEach(img => {
 			_this.setData({
@@ -786,7 +783,7 @@ uploadBaidu: co.wrap(function* () {
 			}
 		})
 	},
-	upLoadImages:  function (paths, getProgress, uploadKey, isFile = false, isFolder = true) {
+	upLoadImages: function (paths, getProgress, uploadKey, isFile = false, isFolder = true) {
 		try {
 			const newPaths = !isFile && typeof paths === 'object' ? paths.path : paths; //区分选择文件上传和普通上传的格式区分
 			return new Promise((resolve, reject) => {
@@ -811,7 +808,7 @@ uploadBaidu: co.wrap(function* () {
 		try {
 			const newPaths = !isFile && typeof paths === 'object' ? paths.path : paths; //区分选择文件上传和普通上传的格式区分
 			return new Promise((resolve, reject) => {
-				upload.uploadDocs([newPaths], (url,name)=> {
+				upload.uploadDocs([newPaths], (url, name) => {
 					logger.info('===url====', url)
 					if (url !== '') { //上传完成
 						resolve({
@@ -822,8 +819,8 @@ uploadBaidu: co.wrap(function* () {
 					} else { // 上传异常
 						resolve(false)
 					}
-				// }, getProgress, isFile, uploadKey, isFolder)
-			}, getProgress, true)
+					// }, getProgress, isFile, uploadKey, isFolder)
+				}, getProgress, true)
 			})
 		} catch (err) {
 			logger.info(err)
@@ -839,13 +836,13 @@ uploadBaidu: co.wrap(function* () {
 				let newCloneFiles = _(newFiles).clone()
 				if (newCloneFiles.length && this.data.showupLoad) {
 					newCloneFiles.forEach(co.wrap(function* (currentFile) {
-            let newLoadFile
-						if(type == 'image'){
+						let newLoadFile
+						if (type == 'image') {
 							newLoadFile = yield _this.upLoadImages(currentFile, _this.loadProgress, _this.sn, isFile) //图片上传	
-            }else{
+						} else {
 							newLoadFile = yield _this.upLoadFiles(currentFile, _this.loadProgress, _this.sn, isFile) //文档上传	
 						}
-						
+
 						yield _this.resetProgress(newCloneFiles) //清除重置进度数
 						yield _this.updateProgressStatus(originFiles, newCloneFiles) //上传完成后处理
 						if (newLoadFile) { //是否成功上传数据
@@ -1080,7 +1077,7 @@ uploadBaidu: co.wrap(function* () {
 					name: printData.filename,
 					number: 1,
 					url: printData.url,
-					file_type:currentData.file_type
+					file_type: currentData.file_type
 				}
 				router.navigateTo('/pages/package_feature/share_folder/setting/index', {
 					files: encodeURIComponent(JSON.stringify(postData))
