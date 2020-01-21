@@ -49,10 +49,12 @@ Page({
     this.setData({
       isFullScreen: app.isFullScreen
     })
-    this.planSn = this.options.planSn
-    this.userPlanSn = this.options.userPlanSn
+    this.planSn = options.planSn
+    this.userPlanSn = options.userPlanSn
     try {
       let resp = yield gql.getUserPlan(this.userPlanSn)
+      console.log(resp,'5555555')
+      // this.sn= resp.userPlan.sn
       this.subscription = resp.userPlan.subscription
       if (resp.userPlan.subscription) {
         this.setData({
@@ -73,12 +75,12 @@ Page({
       type:'loading'
     })
     try {
-      let resp = yield graphql.getUser()
-      if (resp.currentUser.selectedKid.name == '未命名') {
-        resp.currentUser.selectedKid.name = '请填写真实昵称'
+      let respGrah = yield graphql.getUser()
+      if (respGrah.currentUser.selectedKid.name == '未命名') {
+        respGrah.currentUser.selectedKid.name = '请填写真实昵称'
       }
       this.setData({
-        name: resp.currentUser.selectedKid.name
+        name: respGrah.currentUser.selectedKid.name
       })
       this.longToast.hide()
     } catch (e) {
@@ -153,14 +155,18 @@ Page({
    * 定时打印设置后的确认
    */
   confirmTimedSetting: co.wrap(function* () {
+
+    console.log('1111111111this.userPlan',this.sn)
     // wxNav.navigateTo('/pages/package_preschool/growth_plan/checkpoint/plan_checkpoint')
     // this.longToast.toast({
     //   type:'loading'
     // })
     try {
-      const resp = yield gql.joinSubscription({
+      const respSubscript = yield gql.joinSubscription({
         sn: this.userPlanSn,
+        // sn:this.sn,
         subscriptionResource: 'user_plan',
+        // subscriptionResource: 'timed_task',
         subscription: {
           copies: this.data.printNumber,
           enable: this.data.isShowDetail,
@@ -168,8 +174,8 @@ Page({
           timing: this.data.currentTime
         }
       })
-      console.log('resp.joinSubscription.state',resp.joinSubscription)
-      if (resp.joinSubscription.state) {
+      console.log('respSubscript.joinSubscription.state',respSubscript.joinSubscription)
+      if (respSubscript.joinSubscription.state) {
         this.longToast.toast({
           title: '自动打印创建成功',
           duration: 2000,

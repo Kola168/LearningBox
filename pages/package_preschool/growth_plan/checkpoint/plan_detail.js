@@ -28,7 +28,6 @@ Page({
     isMember: false,
     isSuscribe: false,
     btnText: '',
-    // isAndroid: false
     showBtn: true
   },
 
@@ -37,16 +36,18 @@ Page({
    */
   onLoad: co.wrap(function* (options) {
     this.longToast = new app.weToast()
-    // this.userPlanSn = this.options.userPlanSn
-    this.planSn = this.options.planSn
-    this.sn = this.options.sn
-    this.name = this.options.name
-    // this.subscribe = this.options.subscribe
-
+    // this.userPlanSn = options.userPlanSn
+    this.planSn = options.planSn
+    this.sn = options.sn
+    // this.name = options.name
+// console.log('this.userPlanSn',this.userPlanSn)
     try {
       const respMember = yield gragql.getUserMemberInfo()
       const resp = yield gql.getPreviewContent(this.sn)
-      console.log(resp,'plandetail resp')
+      this.sn= resp.content.sn
+      // this.userPlanSn= resp.content.plan.userPlanSn
+      console.log(this.sn,'2020this.snthis.snthis.snthis.sn')
+      // console.log(this.userPlanSn,'2020this.userPlanSnthis.userPlanSnthis.userPlanSnthis.userPlanSn')
       this.featureKey = resp.content.featureKey
       this.contentImagesLength = resp.content.contentImages.length
       this.data.imgUrls = resp.content.contentImages
@@ -178,6 +179,10 @@ Page({
    * 开始打印
    */
   beginPrint: co.wrap(function* (userPlanSn) {
+
+    const resp = yield gql.getPreviewContent(this.sn)
+    this.userPlanSn= resp.content.plan.userPlanSn
+    console.log(this.userPlanSn,'5555556666')
     wxNav.navigateTo('/pages/package_common/setting/setting', {
       settingData: encodeURIComponent(JSON.stringify({
         file: {

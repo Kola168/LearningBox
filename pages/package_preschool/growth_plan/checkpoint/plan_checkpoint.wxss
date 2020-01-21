@@ -105,3 +105,6 @@ page{
     width:174rpx;
     height:68rpx;
 }
+.checkpoint-name{
+    
+}

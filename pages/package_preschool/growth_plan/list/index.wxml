@@ -1,4 +1,5 @@
 <!--pages/package_preschool/list/index.wxml-->
+<wxs src="../../../../utils/compressConfig.wxs" module="foo"></wxs>
 <nav-bar title="宝贝成长计划"></nav-bar>
 <view class="list-block">
     <view class="tabs">
@@ -18,7 +19,7 @@
             </block>
             <view class="item-cont" wx:for="{{subscriptList}}" wx:key="index" data-planSn="{{item.planSn}}" bindtap="toProgress" data-userPlanSn="{{item.sn}}" data-subscript="subscript">
                 <view class="item-left">
-                    <image class="item-img" src="{{item.planIconUrl}}"></image>
+                    <image class="item-img" src="{{foo.compress(item.planIconUrl)}}"></image>
                 </view>
                 <view class="item-right">
                     <view class="item-right-top">
@@ -46,7 +47,7 @@
         <view class="item-cont-block" wx:if="{{tabToContent==1}}">
             <view class="item-cont" wx:for="{{lists}}" wx:key="{{index}}" data-planSn="{{item.sn}}" data-userPlanSn="" bindtap="toProgress" data-subscript='noSubscript'>
                 <view class="item-left">
-                    <image class="item-img" src="{{item.iconUrl}}"></image>
+                    <image class="item-img" src="{{foo.compress(item.iconUrl)}}"></image>
                 </view>
                 <view class="item-right">
                     <view class="item-right-top">
@@ -74,7 +75,7 @@
             </block>
             <view class="item-cont" wx:for="{{completeList}}" wx:key="index" data-planSn="{{item.planSn}}" data-userPlanSn="{{item.sn}}" bindtap="toCheck"  data-subscript="finished">
                 <view class="item-left">
-                    <image class="item-img" src="{{item.planIconUrl}}"></image>
+                    <image class="item-img" src="{{foo.compress(item.planIconUrl)}}"></image>
                 </view>
                 <view class="item-right">
                     <view class="item-right-top">
