@@ -72,9 +72,9 @@ Page({
 				setTimeout(() => {
 					wxNav.switchTab('/pages/account/index')
 				}, 1500)
-			}, (e) => {
+			}, (isCancel,e) => {
 				this.longToast.hide()
-				if(e.errMsg.indexOf('cancel')<0){
+				if(!isCancel){
 					util.showError(e)
 				}
 			})

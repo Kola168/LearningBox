@@ -75,9 +75,11 @@ Page({
       commonRequest.createPayment(this.data.paymentOrder.sn, ()=>{
         this.longToast.hide()
         this.paySuccess()
-      },(err)=>{
+      },(isCancel,err)=>{
         this.longToast.hide()
-        util.showError(err)
+        if(!isCancel){
+          util.showError(err)
+        }
       })
     } catch (err) {
       logger.info(err)
