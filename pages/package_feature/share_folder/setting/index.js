@@ -297,12 +297,12 @@ Page({
   // 选择缩印模式
   chooseZoomType(e) {
     let zoomType = Number(e.currentTarget.id)
-    let endPage = Math.ceil(this.data.endMaxPage / zoomType)
+    // let endPage = Math.ceil(this.data.endMaxPage / zoomType)
     this.setData({
       zoomType: zoomType,
-      endPrintPage: endPage,
-      endPage: endPage,
-      totalPage: endPage
+      // endPrintPage: endPage,
+      // endPage: endPage,
+      // totalPage: endPage
     })
   },
   preview: co.wrap(function*() {

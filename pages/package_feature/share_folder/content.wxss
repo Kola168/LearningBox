@@ -5,7 +5,7 @@
   text-align: center;
   line-height: 48rpx;
   position: fixed;
-  top: 128rpx;
+  top: 176rpx;
   left: 0;
   font-size: 24rpx;
 	color: #ff9a55;
@@ -29,7 +29,7 @@
 .top {
   display: flex;
   justify-content: space-between;
-  padding: 70rpx 26rpx 0;
+  padding: 118rpx 26rpx 0;
 }
 
 .top1 {

@@ -30,7 +30,7 @@ button:not([size='mini']) {
   line-height: 48rpx;
   position: fixed;
   /* 自定义导航栏64px */
-  top: 128rpx;
+  top: 176rpx;
   /* top:0; */
   left: 0;
   font-size: 24rpx;
@@ -47,7 +47,7 @@ button:not([size='mini']) {
   position: fixed;
   left: 0;
   /* top:48rpx; */
-  top: 176rpx;
+  top: 224rpx;
   width: 100%;
   box-sizing: border-box;
   z-index: 100;
