@@ -36,18 +36,15 @@ Page({
    */
   onLoad: co.wrap(function* (options) {
     this.longToast = new app.weToast()
-    // this.userPlanSn = options.userPlanSn
+    this.userPlanSn = options.userPlanSn
     this.planSn = options.planSn
     this.sn = options.sn
-    // this.name = options.name
-// console.log('this.userPlanSn',this.userPlanSn)
+    this.name = options.name
+console.log('this.sn',this.sn)
     try {
       const respMember = yield gragql.getUserMemberInfo()
       const resp = yield gql.getPreviewContent(this.sn)
-      this.sn= resp.content.sn
-      // this.userPlanSn= resp.content.plan.userPlanSn
-      console.log(this.sn,'2020this.snthis.snthis.snthis.sn')
-      // console.log(this.userPlanSn,'2020this.userPlanSnthis.userPlanSnthis.userPlanSnthis.userPlanSn')
+      this.userPlanSn= resp.content.plan.userPlanSn
       this.featureKey = resp.content.featureKey
       this.contentImagesLength = resp.content.contentImages.length
       this.data.imgUrls = resp.content.contentImages
@@ -65,19 +62,23 @@ Page({
           showArrow: false
         })
       }
-      if (this.data.isMember) {
-        if(this.data.isSuscribe){
+      if(this.data.isSuscribe){
+        this.setData({
+          showBtn:false
+        })
+      }else{
+        if (this.data.isMember) {
           this.setData({
-              showBtn:false
-            })
-          }else{
-            this.setData({
-              showBtn:true
-            })
-          }
-      } else {
-        this.checkMember()
+            showBtn:true
+          })
+        }else{
+          this.checkMember()
+          this.setData({
+            showBtn:true
+          })
+        }
       }
+
 
     } catch (e) {
       this.longToast.toast()
@@ -102,23 +103,26 @@ Page({
       type: 'loading'
     })
     try {
-      yield gql.joinPlan(this.planSn)
-      event.emit('subscribeList')
-      this.longToast.toast({
-        type: 'loading',
-        duration: 6000,
-        title: '已订阅！'
-      })
-      this.setData({
-        isSuscribe: true,
-        showBtn: false
-      })
+      if(this.data.isMember){
+        yield gql.joinPlan(this.planSn)
+        event.emit('subscribeList')
+        this.longToast.toast({
+          type: 'loading',
+          duration: 6000,
+          title: '已订阅！'
+        })
+        this.setData({
+          isSuscribe: true,
+          showBtn: false
+        })
+      }else{
+        this.checkMember()
+      }
       this.longToast.hide()
     } catch (e) {
       this.longToast.toast()
       util.showError(e)
     }
-
   }),
 
   /**
@@ -182,7 +186,7 @@ Page({
 
     const resp = yield gql.getPreviewContent(this.sn)
     this.userPlanSn= resp.content.plan.userPlanSn
-    console.log(this.userPlanSn,'5555556666')
+    this.sn= resp.content.sn
     wxNav.navigateTo('/pages/package_common/setting/setting', {
       settingData: encodeURIComponent(JSON.stringify({
         file: {
@@ -191,8 +195,8 @@ Page({
         orderPms: {
           printType: 'RESOURCE',
           pageCount: this.contentImagesLength,
-          // featureKey: this.featureKey,
-          featureKey: 'qdnl',
+          featureKey: this.featureKey,
+          mediaType:'plan',
           resourceOrderType: 'Plan',
           resourceAttribute: {
             userPlanSn: this.userPlanSn,

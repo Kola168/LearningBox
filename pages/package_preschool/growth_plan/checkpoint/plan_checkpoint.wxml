@@ -6,7 +6,7 @@
         <image class="checkpoint-img-bg" src="{{checkpointBg}}"></image>
         <view class="checkpoint-cont">
             <image src="{{foo.compress(item.iconUrl)}}"></image>
-            <text class="checkpoint-name">{{item.name}}</text>
+            <view class="checkpoint-name">{{item.name}}</view>
         </view>
         <view class="shadow-opcity-bg" wx:if="{{!item.isShow}}">
             <view class="lock-icon"><image src="{{shadowOpcityImg}}"></image></view>

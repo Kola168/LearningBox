@@ -128,10 +128,14 @@ Page({
       var idx = e.currentTarget.id
       this.subscribe = e.currentTarget.dataset.subscript
       let sn = this.data.lists[idx].sn
-      if(this.data.isMember){
-        this.toSubscribeDetail(sn)
-      }else{
+      if(this.data.isSuscribe){
         this.toProgress(e)
+      }else{
+        if(this.data.isMember){
+          this.toSubscribeDetail(sn)
+        }else{
+          this.toProgress(e)
+        }
       }
     } catch (e) {
       console.log(e,'llll')

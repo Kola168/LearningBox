@@ -50,11 +50,8 @@ Page({
       isFullScreen: app.isFullScreen
     })
     this.planSn = options.planSn
-    this.userPlanSn = options.userPlanSn
     try {
-      let resp = yield gql.getUserPlan(this.userPlanSn)
-      console.log(resp,'5555555')
-      // this.sn= resp.userPlan.sn
+      let resp = yield gql.getUserPlan(this.planSn)
       this.subscription = resp.userPlan.subscription
       if (resp.userPlan.subscription) {
         this.setData({
@@ -155,18 +152,13 @@ Page({
    * 定时打印设置后的确认
    */
   confirmTimedSetting: co.wrap(function* () {
-
-    console.log('1111111111this.userPlan',this.sn)
-    // wxNav.navigateTo('/pages/package_preschool/growth_plan/checkpoint/plan_checkpoint')
     // this.longToast.toast({
     //   type:'loading'
     // })
     try {
       const respSubscript = yield gql.joinSubscription({
-        sn: this.userPlanSn,
-        // sn:this.sn,
+        sn: this.planSn,
         subscriptionResource: 'user_plan',
-        // subscriptionResource: 'timed_task',
         subscription: {
           copies: this.data.printNumber,
           enable: this.data.isShowDetail,
@@ -174,7 +166,6 @@ Page({
           timing: this.data.currentTime
         }
       })
-      console.log('respSubscript.joinSubscription.state',respSubscript.joinSubscription)
       if (respSubscript.joinSubscription.state) {
         this.longToast.toast({
           title: '自动打印创建成功',
@@ -190,7 +181,6 @@ Page({
           mask: true
         })
       }
-      // wxNav.navigateBack()
       this.longToast.hide()
 
     } catch (e) {

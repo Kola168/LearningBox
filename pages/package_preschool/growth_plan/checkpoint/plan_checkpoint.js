@@ -46,35 +46,42 @@ Page({
   onLoad: co.wrap(function* (options) {
     this.longToast = new app.weToast()
     try {
-      this.options = options
-      this.planSn = this.options.planSn
-      this.userPlanSn = this.options.userPlanSn
+      this.planSn = options.planSn
+      // this.userPlanSn = this.options.userPlanSn
+      
+      //修改
+      this.longToast.hide()
+    } catch (error) {
+      this.longToast.toast()
+      util.showError(error)
+    }
+  }),
+
+  onShow: co.wrap(function *(){
+    try {
       const respMember = yield gragql.getUserMemberInfo()
       const resp = yield gql.getPlan(this.planSn)
-      // this.sn= resp.plan.sn
       this.setData({ 
         isMember:respMember.currentUser.isPreschoolMember,
         checkpoints: resp.plan.planShowContents,
         isSuscribe:resp.plan.subscription
       })
-      //修改
-      if(this.data.isMember){
-        if(this.data.isSuscribe){
+      if(this.data.isSuscribe){
           this.setData({
-              autoPrintBtn:true,
-              isShowBtnCont:false
-            })
-          }else{
-            this.setData({
-              autoPrintBtn:false,
-              isShowBtnCont:true
-            })
-          }
+            autoPrintBtn:true,
+            isShowBtnCont:false
+          })
       }else{
-        this.checkMember()
+        if(this.data.isMember){
+          this.setData({
+            autoPrintBtn:false,
+            isShowBtnCont:true
+          })
+        }else{
+          this.checkMember()
+          this.toSubscribe()
+        }
       }
-      //修改
-      this.longToast.hide()
     } catch (error) {
       this.longToast.toast()
       util.showError(error)
@@ -103,18 +110,22 @@ Page({
       type:'loading'
     })
     try {
-      yield gql.joinPlan(this.planSn)
-      event.emit('subscribeList')
-      this.longToast.toast({
-        type:'loading',
-        duration:6000,
-        title:'已订阅！'
-      })
-      this.setData({
-        isSuscribe:true,
-        isShowBtnCont:false
-      })
-      this.toSetAuto()
+      if(this.data.isMember){
+        yield gql.joinPlan(this.planSn)
+        event.emit('subscribeList')
+        this.longToast.toast({
+          type:'loading',
+          duration:6000,
+          title:'已订阅！'
+        })
+        this.setData({
+          isSuscribe:true,
+          isShowBtnCont:false
+        })
+        this.toSetAuto()
+      }else{
+        this.checkMember()
+      }
       this.longToast.hide()
     } catch (e) {
       this.longToast.toast()
@@ -146,7 +157,7 @@ Page({
     })
     try {
       wxNav.navigateTo(`/pages/package_preschool/growth_plan/timed_print/timed_print`,{
-        userPlanSn:this.userPlanSn
+        planSn:this.planSn
       })
 
       this.longToast.hide()

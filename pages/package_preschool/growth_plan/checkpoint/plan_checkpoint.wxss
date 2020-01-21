@@ -50,13 +50,15 @@ page{
     height:142rpx;
     border:4rpx solid #fff;
 }
-.checkpoint-cont text{
+.checkpoint-cont .checkpoint-name{
+    white-space: nowrap;
     width:214rpx;
     font-size: 28rpx;
     color: #744E3A;
     line-height:60rpx;
     font-weight:500;
     text-overflow: ellipsis;
+    overflow: hidden;
 }
 .checkpoint-step-1 .shadow-opcity-bg, .checkpoint-step-2 .shadow-opcity-bg{
     opacity: 0.55;
@@ -104,7 +106,4 @@ page{
 .auto-print image{
     width:174rpx;
     height:68rpx;
-}
-.checkpoint-name{
-    
 }
