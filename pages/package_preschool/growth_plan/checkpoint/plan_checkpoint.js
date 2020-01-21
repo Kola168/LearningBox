@@ -24,20 +24,18 @@ Page({
     isShow: false, //是否显示锁图
     isMember: false, //是否会员
     isSuscribe: false, //是否订阅
-    isShowPrint: false, //自动打印按钮是否显示
     isShadowOpcity: false, //是否显示透明层
     isShowBottomBtn: false, //是否显示底部按钮
     checkpointBg: 'https://cdn-h.gongfudou.com/LearningBox/preschool/growth_plan_step_bg.png', //背景图
     shadowOpcityImg: '../../images/growth_plan_lock.png', //透明遮罩层上的图片
     btnImgUrl:'',
-    autoPrintBtn:false,
-    isShowBtnCont:false,
     modal: {
       title: '畅享月度合辑',
       desc: '每日一练，每日涨知识',
     },
     showMemberToast: false, //显示会员弹窗
-    isPreschoolMember:false
+    isPreschoolMember:false,
+    userPlanSn: null
   },
 
   /**
@@ -45,64 +43,32 @@ Page({
    */
   onLoad: co.wrap(function* (options) {
     this.longToast = new app.weToast()
-    try {
       this.planSn = options.planSn
-      // this.userPlanSn = this.options.userPlanSn
-      
-      //修改
-      this.longToast.hide()
-    } catch (error) {
-      this.longToast.toast()
-      util.showError(error)
-    }
+    this.getPlanDetail()
+    event.on('getPlan',this,()=>{
+      this.getPlanDetail()
+    })
   }),
-
-  onShow: co.wrap(function *(){
+  getPlanDetail:co.wrap(function*(){
     try {
       const respMember = yield gragql.getUserMemberInfo()
       const resp = yield gql.getPlan(this.planSn)
+      let isMember = respMember.currentUser.isPreschoolMember
       this.setData({ 
-        isMember:respMember.currentUser.isPreschoolMember,
+        isMember: isMember,
         checkpoints: resp.plan.planShowContents,
-        isSuscribe:resp.plan.subscription
+        isSuscribe: resp.plan.subscription,
+        userPlanSn: resp.plan.userPlanSn
       })
-      if(this.data.isSuscribe){
-          this.setData({
-            autoPrintBtn:true,
-            isShowBtnCont:false
-          })
-      }else{
-        if(this.data.isMember){
-          this.setData({
-            autoPrintBtn:false,
-            isShowBtnCont:true
-          })
-        }else{
-          this.checkMember()
-          this.toSubscribe()
-        }
+      if(isMember){
+        let memberToast = this.selectComponent('#memberToast')
+        memberToast.checkAuthMember()
       }
     } catch (error) {
       this.longToast.toast()
       util.showError(error)
     }
   }),
-
-  //弹框会员
-  checkMember: co.wrap(function *(){
-    try{
-      var memberToast = this.selectComponent('#memberToast')
-      memberToast.checkAuthMember(()=>{
-        wxNav.navigateTo('./plan_checkpoint', {
-          userPlanSn:this.userPlanSn
-        })
-      })
-    } catch(e){
-      this.longToast.toast()
-      util.showError(e)
-    }
-  }),
-
 
   /* 去订阅 */
   toSubscribe: co.wrap(function* () {
@@ -111,22 +77,23 @@ Page({
     })
     try {
       if(this.data.isMember){
-        yield gql.joinPlan(this.planSn)
+        let res = yield gql.joinPlan(this.planSn)
+        this.longToast.hide()
         event.emit('subscribeList')
-        this.longToast.toast({
-          type:'loading',
-          duration:6000,
-          title:'已订阅！'
-        })
+        // this.longToast.toast({
+        //   type:'loading',
+        //   duration:6000,
+        //   title:'已订阅！'
+        // })
         this.setData({
           isSuscribe:true,
-          isShowBtnCont:false
+          userPlanSn:res.joinPlan.userPlan.sn
         })
-        this.toSetAuto()
       }else{
-        this.checkMember()
+        this.longToast.hide()
+        let memberToast = this.selectComponent('#memberToast')
+        memberToast.checkAuthMember()
       }
-      this.longToast.hide()
     } catch (e) {
       this.longToast.toast()
       util.showError(e)
@@ -134,38 +101,38 @@ Page({
     
   }),
 
-  toSetAuto:co.wrap(function *(){
-    this.longToast.toast({
-      type:'loading'
-    })
-    try {
-      this.setData({
-        autoPrintBtn:true,
-        isShowBtnCont:false
-      })
-      this.longToast.hide()
-    } catch (e) {
-      this.longToast.toast()
-      util.showError(e) 
-    }
-  }),
+  // toSetAuto:co.wrap(function *(){
+  //   this.longToast.toast({
+  //     type:'loading'
+  //   })
+  //   try {
+  //     this.setData({
+  //       autoPrintBtn:true,
+  //       isShowBtnCont:false
+  //     })
+  //     this.longToast.hide()
+  //   } catch (e) {
+  //     this.longToast.toast()
+  //     util.showError(e) 
+  //   }
+  // }),
 
   /** 自动打印 */
   setTimedPrint: co.wrap(function* () {
-    this.longToast.toast({
-      type:'loading'
-    })
-    try {
+    // this.longToast.toast({
+    //   type:'loading'
+    // })
+    // try {
       wxNav.navigateTo(`/pages/package_preschool/growth_plan/timed_print/timed_print`,{
-        planSn:this.planSn
+        planSn:this.data.userPlanSn
       })
 
-      this.longToast.hide()
-    } catch (error) {
-      this.longToast.toast()
-      util.showError(error)
-    }
-    this.longToast.hide()
+    //   this.longToast.hide()
+    // } catch (error) {
+    //   this.longToast.toast()
+    //   util.showError(error)
+    // }
+    // this.longToast.hide()
   }),
 
   /**打印详情 */
@@ -175,7 +142,7 @@ Page({
       if(clickable){
         wxNav.navigateTo(`/pages/package_preschool/growth_plan/checkpoint/plan_detail`, {
           sn:e.currentTarget.dataset.sn,
-          userPlanSn: this.userPlanSn,
+          userPlanSn: this.data.userPlanSn,
           name:this.data.checkpoints[e.currentTarget.dataset.index].name,
           subscribe:this.subscribe,
           planSn:this.planSn
@@ -188,5 +155,7 @@ Page({
       util.showError(encodeURIComponent)
     }
   }),
-
+  onUnload(){
+    event.remove('getPlan',this)
+  }
 })

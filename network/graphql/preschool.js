@@ -222,6 +222,9 @@ const graphqlApi = {
       mutation: `mutation ($input: JoinPlanInput!){
         joinPlan(input: $input) {
           state
+          userPlan{
+            sn
+          }
         }
       }`,
       variables: {
@@ -278,6 +281,7 @@ const graphqlApi = {
     return gql.query({
       query: `query ($planSn: String!){
         plan(sn: $planSn) {
+          userPlanSn
           sn
           name
           subscription

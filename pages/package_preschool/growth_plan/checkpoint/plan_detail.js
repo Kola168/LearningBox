@@ -6,7 +6,7 @@ import {
   wxNav,
   util
 } from '../../../../utils/common_import'
-const showModal = util.promisify(wx.showModal)
+// const showModal = util.promisify(wx.showModal)
 const event = require('../../../../lib/event/event')
 import gql from '../../../../network/graphql/preschool'
 import gragql from '../../../../network/graphql_request'
@@ -20,8 +20,8 @@ Page({
    */
   data: {
     imgUrls: [],
-    currentPage: 1,
-    allPage: 3,
+    current: 0,
+    // allPage: 3,
     currentImage: '',
     isFullScreen: false, //iphoneX底部button兼容性
     showArrow: true, //预览图片左右箭头
@@ -40,45 +40,19 @@ Page({
     this.planSn = options.planSn
     this.sn = options.sn
     this.name = options.name
-console.log('this.sn',this.sn)
     try {
       const respMember = yield gragql.getUserMemberInfo()
       const resp = yield gql.getPreviewContent(this.sn)
       this.userPlanSn= resp.content.plan.userPlanSn
       this.featureKey = resp.content.featureKey
-      this.contentImagesLength = resp.content.contentImages.length
-      this.data.imgUrls = resp.content.contentImages
+      this.contentImagesLength=resp.content.pageCount
       this.setData({
-        currentImage: this.data.currentImage,
         isFullScreen: app.isFullScreen,
-        imgUrls: this.data.imgUrls,
-        allPage: resp.content.pageCount,
+        imgUrls: resp.content.contentImages,
         isMember: respMember.currentUser.isPreschoolMember,
-        isSuscribe: resp.content.plan.subscription
+        isSuscribe: resp.content.plan.subscription,
+        name: options.name
       })
-
-      if (this.data.allPage == 1) {
-        this.setData({
-          showArrow: false
-        })
-      }
-      if(this.data.isSuscribe){
-        this.setData({
-          showBtn:false
-        })
-      }else{
-        if (this.data.isMember) {
-          this.setData({
-            showBtn:true
-          })
-        }else{
-          this.checkMember()
-          this.setData({
-            showBtn:true
-          })
-        }
-      }
-
 
     } catch (e) {
       this.longToast.toast()
@@ -105,80 +79,53 @@ console.log('this.sn',this.sn)
     try {
       if(this.data.isMember){
         yield gql.joinPlan(this.planSn)
-        event.emit('subscribeList')
-        this.longToast.toast({
-          type: 'loading',
-          duration: 6000,
-          title: '已订阅！'
-        })
+        this.longToast.hide()
         this.setData({
-          isSuscribe: true,
-          showBtn: false
+          isSuscribe: true
         })
+        wx.showToast({
+          title:'订阅成功',
+          icon:'none'
+        })
+        event.emit('getPlan')
       }else{
+        this.longToast.hide()
         this.checkMember()
       }
-      this.longToast.hide()
     } catch (e) {
       this.longToast.toast()
       util.showError(e)
     }
   }),
 
-  /**
-   * 上一页
-   */
-  prePage: function () {
-    try {
-      this.data.currentImage = this.data.imgUrls[0].image
-      let index = this.data.imgUrls.length
-      let currentPage = this.data.currentPage
-      if (this.data.currentPage > 1) {
-        this.setData({
-          allPage: index,
-          currentPage: currentPage - 1
-        })
-        if (this.data.allPage == 1) {
-          this.setData({
-            showArrow: false
-          })
-        }
-      } else {
-        console.log('已经第一张啦 ！')
-      }
-    } catch (e) {
-      this.longToast.toast()
-      util.showError(e)
+  swpierChange(e) {
+    if (e.detail.source === 'touch') {
+      this.setData({
+        current: e.detail.current
+      })
     }
   },
 
-  /**
-   * 下一页
-   */
-  nextPage: function () {
-    try {
-      let index = this.data.imgUrls.length
-      let currentPage = this.data.currentPage
-      if (this.data.currentPage < index) {
+   // 翻页
+   pageTurn(e) {
+    let direction = e.currentTarget.id,
+      current = this.data.current
+      console.log(e)
+    if (direction === 'left') {
+      if (current !== 0) {
         this.setData({
-          allPage: index,
-          currentPage: currentPage + 1,
-          currentImage: this.data.imgUrls[currentPage].image
+          current: current - 1
         })
-        if (this.data.allPage == 1) {
-          this.setData({
-            showArrow: false
-          })
-        }
-      } else {
-        console.log('已经最后一张啦 ！')
       }
-    } catch (e) {
-      this.longToast.toast()
-      util.showError(e)
+    } else {
+      let sourcesLen = this.data.imgUrls.length
+      if (current < sourcesLen - 1) {
+        this.setData({
+          current: current + 1
+        })
+      }
     }
   },
-
   /**
    * 开始打印
    */

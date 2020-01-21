@@ -5,7 +5,7 @@
     <view class="{{index % 2 == 0 ? 'checkpoint-step-1' : 'checkpoint-step-2'}}" bindtap="toPrintDetail" wx:for="{{checkpoints}}" wx:key="index" data-index="{{index}}" data-sn="{{item.sn}}">
         <image class="checkpoint-img-bg" src="{{checkpointBg}}"></image>
         <view class="checkpoint-cont">
-            <image src="{{foo.compress(item.iconUrl)}}"></image>
+            <image src="{{foo.compress(item.iconUrl)}}/rotate,270"></image>
             <view class="checkpoint-name">{{item.name}}</view>
         </view>
         <view class="shadow-opcity-bg" wx:if="{{!item.isShow}}">
@@ -13,12 +13,13 @@
         </view>
     </view>
 </view>
-<view class="footer" bindtap="toSubscribe" wx:if="{{isShowBtnCont}}">
+<view class="footer" bindtap="toSubscribe" wx:if="{{!isSuscribe}}">
 <image src="https://cdn-h.gongfudou.com/LearningBox/preschool/growth_plan_btn_subscribe.png"></image>
 </view>
-<view class="auto-print" wx:if="{{autoPrintBtn}}">
+<view class="auto-print" wx:if="{{userPlanSn}}">
     <image bindtap="setTimedPrint" src="https://cdn-h.gongfudou.com/LearningBox/preschool/growth_plan_btn_print.png" />
 </view>
+<!-- 会员开通弹窗 -->
 <showMemberToast id="memberToast" modal="{{modal}}"/>
 <import src="/lib/toast/wetoast.wxml" />
 <template is="wetoast" data="{{...__wetoast__}}" />

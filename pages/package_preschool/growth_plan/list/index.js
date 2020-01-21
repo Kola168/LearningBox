@@ -23,7 +23,6 @@ Page({
     subscriptList: [],
     completeList: [],
     isSuscribe: false,
-    // subscription: false,
     tabToContent: 1,
     modalObj: {
       isShow: false, //是否显示
@@ -57,8 +56,6 @@ Page({
         isMember:respMember.currentUser.isPreschoolMember
       })
       const resp = yield gql.getPlans()
-      // this.data.lists = resp.plans
-      // const respUserPlans = yield gql.getUserPlans()
       this.setData({
         lists: resp.plans
       })
@@ -123,7 +120,6 @@ Page({
 
   /* 去订阅 */
   toSubscribe: co.wrap(function *(e){
-    // var userPlanSn = e.currentTarget.dataset.userPlanSn
     try {
       var idx = e.currentTarget.id
       this.subscribe = e.currentTarget.dataset.subscript
@@ -138,7 +134,6 @@ Page({
         }
       }
     } catch (e) {
-      console.log(e,'llll')
       this.longToast.toast()
       util.showError(e)
     }
@@ -146,8 +141,6 @@ Page({
 
   toSubscribeDetail: co.wrap(function* (sn) {
     try {
-        // let respUserPlans = yield gql.getUserPlans
-        // logger.info('=====', resp)
         yield gql.joinPlan(sn)
           let resp = yield gql.getPlans()
           this.setData({
@@ -168,8 +161,7 @@ Page({
     wxNav.navigateTo(
       `/pages/package_preschool/growth_plan/checkpoint/plan_checkpoint`,{
         planSn,
-        userPlanSn,
-        // subscribe
+        userPlanSn
       }
     )
   }),

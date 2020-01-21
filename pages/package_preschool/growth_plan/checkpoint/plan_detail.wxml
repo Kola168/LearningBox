@@ -1,6 +1,6 @@
 <!--pages/package_preschool/growth_plan/checkpoint/plan_detail.wxml-->
-<nav-bar title="计划详情"></nav-bar>
-<swiper class="detail-images" indicator-dots="{{indicatorDots}}" autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">
+<nav-bar title="{{name}}"></nav-bar>
+<swiper class="detail-images" bindchange="swpierChange" current="{{current}}">
     <block wx:for="{{imgUrls}}" wx:key="index" id="{{index}}">
         <swiper-item class="detail-item">
             <image src="{{item.nameUrl}}" class="slide-image" mode="widthFix" />
@@ -9,15 +9,15 @@
 </swiper>
 <view class="fixed-bottom">
     <view class="turn-page">
-        <view><text class="page-num">{{currentPage}}/{{allPage}}</text></view>
-        <view class="turn-img" wx:if="{{showArrow}}">
-            <image bindtap="prePage" src="../../../../images/doc_preview_turn_left.png" />
-            <image bindtap="nextPage" src="../../../../images/doc_preview_turn_right.png" />
+        <view><text class="page-num">{{current+1}}/{{imgUrls.length}}</text></view>
+        <view class="turn-img" wx:if="{{imgUrls.length>1}}">
+            <image bindtap="pageTurn" id="left" src="../../../../images/doc_preview_turn_left.png" />
+            <image bindtap="pageTurn" id="right" src="../../../../images/doc_preview_turn_right.png" />
         </view>
     </view>
 </view>
-<view class="footer {{isFullScreen?'is-full-screen':''}}" wx:if="{{showBtn}}" bindtap="toSubscribe">立即订阅</view>
-<view class="footer {{isFullScreen?'is-full-screen':''}}" wx:else="" bindtap="beginPrint">立即打印</view>
+<view class="footer {{isFullScreen?'is-full-screen':''}}" wx:if="{{!isSuscribe}}" bindtap="toSubscribe">立即订阅</view>
+<view class="footer {{isFullScreen?'is-full-screen':''}}" wx:else bindtap="beginPrint">立即打印</view>
 
 <showMemberToast id="memberToast" modal="{{modal}}"/>
 <import src="/lib/toast/wetoast.wxml" />

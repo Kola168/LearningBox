@@ -53,7 +53,7 @@
   preschool_content:'/pages/package_common/common_content/index',
   word_pdf:'/pages/package_feature/print_speed/intro',
   shareFile:'/pages/package_feature/share_folder/index',
-  plan:'/pages/package_preschool/growth_plan/list/index',
+  plan:'/pages/package_preschool/growth_plan/checkpoint/plan_checkpoint',
   reprography: '/pages/print_doc/duplicate/index',
 }
 
