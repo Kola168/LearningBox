@@ -444,6 +444,9 @@ Page({
 
   onUnload: function() {
     event.remove('setPreData', this)
+    storage.put(this.mediaType, {
+      photoList: this.data.photoList
+    })
   },
 
   //计算最后添加照片的高度
