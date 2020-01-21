@@ -93,9 +93,11 @@ Page({
       var payment = yield commonRequest.createPayment(orderPms.sn, (res)=>{
         this.longToast.hide()
         this.getOrderInfo(this.order_sn) // 更新当前状态
-      }, (err)=>{
+      }, (isCancel,err)=>{
         this.longToast.hide()
-        util.showError(err)
+        if(!isCancel){
+          util.showError(err)
+        }
       })
     } catch(err) {
       this.longToast.hide()
