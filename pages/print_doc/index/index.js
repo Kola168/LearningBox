@@ -49,7 +49,7 @@ Page({
         }
       },
       {
-        name: '公众号文章',
+        name: '链接打印',
         recommend: '复制链接快速打',
         icon: '/images/doc_official_icon.png',
         key: 'weChatArticle',
@@ -64,7 +64,7 @@ Page({
       }
     ]
   },
-  
+
   /**
    * @methods 入口方法
    */

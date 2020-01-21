@@ -98,6 +98,7 @@ view {
   justify-content:center;
   align-items:center;
   border:4rpx solid #d6efff;
+  overflow:hidden;
   border-radius:20rpx;
   margin-top:28rpx;
   margin-bottom:20rpx;
@@ -119,13 +120,14 @@ view {
   flex-direction:column;
   align-items:center;
   margin-top:20rpx;
-  border-radius:20rpx;
+
 }
 
 .content-options-img{
   width:268rpx;
   margin-bottom:5rpx;
   box-sizing:border-box;
+  border-radius:20rpx;
 }
 
 .content-options-selected{

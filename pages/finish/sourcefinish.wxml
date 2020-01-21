@@ -1,6 +1,6 @@
 <!--pages/finish/sourcefinish.wxml-->
 <nav-bar background="#fff" title="提交成功"></nav-bar>
-
+<!--
 <view class='top-tip'>
   点击此处回复“服务”，关注公众号可及时获取打印状态
   <form report-submit="{{true}}" class="guanzhu">
@@ -8,6 +8,8 @@
   </form>
   <image src='/images/arrow-right-gray.png' class='top-right'></image>
 </view>
+
+-->
 <image class="image" mode="widthFix" src="https://cdn-h.gongfudou.com/LearningBox/main/finish_course_date.jpg">
   <view class="day-box">
     <view class="text-box">
