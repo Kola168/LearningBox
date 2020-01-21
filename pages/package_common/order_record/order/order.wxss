@@ -14,7 +14,6 @@
 .order-main .icon-status {
   margin-right: 12rpx;
   width: 28rpx;
-  height: 28rpx;
   vertical-align: top;
 }
 
@@ -37,7 +36,8 @@
 }
 
 .pay-price .price {
-  font-weight: 400;
+  font-weight: 500;
+  color: #333333;
 }
 
 .pay-status {

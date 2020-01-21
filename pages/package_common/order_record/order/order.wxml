@@ -2,7 +2,7 @@
 <nav-bar background="#fff" title="购买记录"/>
 <view class="order-main">
 	<view class="order-status sys-flex flex-m-axis-center flex-cross-axis-center" wx:if="{{orderStatus}}">
-		<image class="icon-status" src="{{orderStatus.icon}}" wx:if="{{orderStatus.icon}}" />
+		<image class="icon-status" mode="widthFix" src="{{orderStatus.icon}}" wx:if="{{orderStatus.icon}}" />
 		<view class="f-16 {{orderStatus.className}}">{{orderStatus.name}}</view>
 	</view>
 	<view class="order-info">
@@ -36,7 +36,7 @@
 	</view>
 	<view class="pay-price sys-flex flex-m-axis-between .flex-cross-axis-center" wx:if="{{orderDetails.state == 'paid' || orderDetails.state == 'init'}}">
 		<view class="unpay-title f-14">{{orderDetails.state === 'paid' ? '支付金额' : '待支付金额'}}</view>
-		<view class="price f-18 color-333">￥{{orderDetails.amountYuan}}</view>
+		<view class="price f-18">￥{{orderDetails.amountYuan}}</view>
 	</view>
 	<view class="pay-status sys-flex" wx:if="{{orderDetails.state === 'init'}}">
 		<image src="../../images/icon_timeout.png" />

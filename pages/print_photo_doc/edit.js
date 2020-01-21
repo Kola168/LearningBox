@@ -65,11 +65,10 @@ Page({
     this.setData({
       currentCount:this.postData.length
     })
-    this.initEdit()
-    this.getColor()
+    yield this.initEdit()
   }),
 
-  initEdit:function(){
+  initEdit: co.wrap(function *(){
     try{
       this.setData({
         isSingle: this.postData[0].isSingle,
@@ -93,8 +92,7 @@ Page({
     }catch(e){
       console.log(e)
     }
-
-  },
+  }),
 
   // 检查入参 是否是有效数据
   checkImgOptions: function(index) {
@@ -115,13 +113,15 @@ Page({
       media_type: galleryImages.media_type,
     }
   },
+
   // 初始化数据
-  initData: function(options, flag) {
+  initData: co.wrap(function *(options, flag) {
     if (!options) {
       return
     }
     this.longToast.toast({
-      type: 'loading'
+      type: 'loading',
+      title: '请稍后...'
     })
     var refreshIndex = !flag ? Number(options.index) : this.data.refreshIndex
     this.setData({
@@ -150,12 +150,15 @@ Page({
         }
       ]
     })
+    yield this.selectTap() // 图形绘制
+  }),
 
-    this.selectTap() // 图形绘制
-  },
   getColor: co.wrap(function*() {
+    this.longToast.toast({
+      type: 'loading'
+    })
     try {
-      let res = common_request.getPrinterCapacity()
+      let res = common_request.getPrinterCapacity('doc_a4')
       if (res.code == 1001) {
         this.removeColorCapability()
       } else if (rescode != 0) {
@@ -167,10 +170,12 @@ Page({
         }
       }
     } catch (e) {
-      this.longToast.toast()
       util.showErr(e)
+    } finally {
+      this.longToast.toast()
     }
   }),
+
   removeColorCapability: function() {
     this.data.selectColors.splice(2, 1)
     this.data.selectColors[1] = {
@@ -183,6 +188,7 @@ Page({
       selectColors: this.data.selectColors
     })
   },
+
   getImgStorage: function(media_type) {
     try {
       let galleryImages = storage.get(media_type || this.options.media_type)
@@ -191,6 +197,7 @@ Page({
       logger.info(err)
     }
   },
+
   // 删除当前张
   deleteCurrentImage: function() {
     try {
@@ -213,6 +220,7 @@ Page({
 
     }
   },
+
   // 移除选中项和同步上一个页面数据
   removeCurrentImage: function(index) {
     let galleryImages = this.getImgStorage()
@@ -225,6 +233,7 @@ Page({
       images: images //同步上一个页面列表显示数据
     })
   },
+
   // 数据缓存
   setImgStorage: function(media_type, galleryImages) {
     storage.put(media_type, {
@@ -233,6 +242,7 @@ Page({
       allCount: galleryImages.images.length
     })
   },
+
   // 预览下一张
   setNextPreview: function() {
     let index = this.data.index
@@ -248,10 +258,16 @@ Page({
     }
     this.initData(this.options, true)
   },
-  selectTap(e) {
+
+  selectTap: co.wrap(function *(e) {
+    this.longToast.toast({
+      type: 'loading',
+      title: '加载中...'
+    })
     let that = this
     let tempFilePath = this.options.url
     let mode = this.options.mode
+    that.loadEnd = false
     wx.getImageInfo({
       src: tempFilePath,
       success(res) {
@@ -288,15 +304,34 @@ Page({
           mode: mode,
           sizeType: ['original'],
           maxLength: 2000, //限制最大像素为2500像素)
+          callback: ()=>{
+            that.getColor()
+            that.loadEnd = true
+            that.longToast.hide()
+          }
         })
         that.ctx = ctx
       },
-      fail(err) {
-        console.log(err)
+
+      fail: (err) =>{
+        wx.showModal({
+          title: '提示',
+          content: err,
+          showCancel: false
+        })
+        this.longToast.hide()
       }
     })
-  },
+  }),
+
   cropImage() {
+    if (!this.loadEnd) {
+      return wx.showModal({
+        title: '提示',
+        content: '等待图片加载完成',
+        showCancel: false
+      })
+    }
     let mode = this.options.mode,
       tempFilePath = this.options.url
     this.ctx.cropImage((res) => {
@@ -310,9 +345,11 @@ Page({
       }
     })
   },
+
   showExamModal() {
     modal.showModal()
   },
+
   chooseColor({
     currentTarget: {
       dataset: {
@@ -342,6 +379,7 @@ Page({
       selectColors
     })
   },
+
   // 处理图片的编辑
   utilsPic(params) {
     const [colors] = this.data.selectColors.filter(item => item.checked && item.key == 'Grays')
@@ -351,6 +389,7 @@ Page({
       this.getPic(params.data, params.origin_url)
     }
   },
+
   // 获取编辑需要的sn
   getBlackEnhanceSn: co.wrap(function*(res, url) {
     try {
@@ -402,6 +441,7 @@ Page({
       logger.info(err);
     }
   }),
+
   requestAnimationPercent() {
     var timer = setInterval(() => {
       if (this.data.percent > 30) {
@@ -412,6 +452,7 @@ Page({
       })
     }, 500)
   },
+
   // 取消绘制黑白增加图片
   cancelDraw() {
     var _this = this
@@ -420,6 +461,7 @@ Page({
     })
     _this.timer && clearInterval(_this.timer)
   },
+
   //非规则矩形裁切做透视变换
   getPic: co.wrap(function*(res, imgUrl) {
     this.longToast.toast({
@@ -453,6 +495,7 @@ Page({
       util.showErr(e)
     }
   }),
+
   // 同步上一个页面的数据
   setPrePageData(resp) {
     const [colors] = this.data.selectColors.filter(item => item.checked && item.key != 'Grays')
@@ -471,11 +514,13 @@ Page({
       this.data.refreshIndex = this.data.refreshIndex + 1
     }
   },
+
   getPrePages: function(index) {
     let pages = getCurrentPages()
     let prevPage = pages[pages.length - 2]
     return prevPage
   },
+  
   //上传图片
   uploadImage: co.wrap(function*(tempUlr) {
     this.longToast.toast({

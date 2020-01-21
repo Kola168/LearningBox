@@ -187,6 +187,10 @@ Component({
         return true
       }
     }),
+
+    joinCourse: co.wrap(function*(){
+      wxNav.navigateTo('/pages/package_course/course_center/course_center')
+    }),
   
     // 获取推荐 || banner
     getCourseIndex: co.wrap(function* () {

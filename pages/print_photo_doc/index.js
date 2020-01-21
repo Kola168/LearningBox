@@ -328,7 +328,7 @@ const chooseCtx = {
       })
     } else {
       let image = {
-        url: imginit.addProcess(localUrl, noRotate),
+          url: imginit.addProcess(localUrl, noRotate),
           localUrl: localUrl,
           count: 1,
           width: imageInfo.width,
@@ -530,12 +530,13 @@ const chooseCtx = {
     try{
       let images = this.data.images
       let newImages = []
+      console.log(images,'==images===')
       images.forEach((data, index) => {
         let newImage = {
           originalUrl: data.localUrl, //原图
           copies: data.count,
         }
-        if (data.editImg) {
+        if (data.afterEditUrl) {
           newImage.printUrl = data.url //编辑之后的图
         }else{
           newImage.printUrl=imginit.mediaResize(data.localUrl, this.media_type)

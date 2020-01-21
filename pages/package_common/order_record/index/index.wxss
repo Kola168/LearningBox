@@ -53,7 +53,7 @@ page {
     justify-content: space-between;
     width: 100%;
     padding: 50rpx 30rpx;
-    border-bottom: 2rpx solid #cecece;
+    border-bottom: 2rpx solid #E7E7E7;
     box-sizing: border-box;
     color: #333;
     font-size: 28rpx;
