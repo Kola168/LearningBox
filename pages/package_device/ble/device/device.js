@@ -321,7 +321,7 @@ Page({
 		// })
 		try {
 			console.log('11111111111')
-			let res = yield graphql.bindDevice(deviceUploadInfo)
+			let res = yield graphql.bindBleDevice(deviceUploadInfo)
 			console.log('22222222')
 			console.log('上报盒子信息返回的======', res)
 			let sn = res.bindDevice.device.sn

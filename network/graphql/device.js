@@ -16,6 +16,22 @@ const graphqlApi = {
     })
   },
 
+  bindBleDevice: (deviceInfo) => {
+    return gql.mutate({
+      mutation: `mutation bindDevice($input: BindDeviceInput!){
+        bindDevice(input:$input){
+          device {
+						onlineState
+						sn
+					}
+        }
+      }`,
+      variables: {
+        input: deviceInfo
+      }
+    })
+  },
+
   /**
    * 更新打印机设置
    * @param { String } sn required 设备编号
