@@ -54,7 +54,7 @@ Page({
         this.setData({
           recommendTest:wrongList
         })
-        if((wrongList.length/this.answerList.length)<0.5){
+        if((wrongList.length/this.answerList.length)>0.5){
           this.setData({
             kidpercent:_.random(50,70)
           })
