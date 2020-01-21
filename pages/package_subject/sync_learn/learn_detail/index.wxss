@@ -34,6 +34,7 @@
   top: 28rpx;
   width: 60%;
   font-size: 24rpx;
+  font-weight: 500;
   color: #FFA200;
 }
 
