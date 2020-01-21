@@ -252,26 +252,6 @@ const graphqlApi = {
     })
   },
 
-  /**
-   * 宝贝成长计划 闯关
-   * 
-   */
-  getPlanContents: (planSn) => {
-    return gql.query({
-      query: `query ($planSn: String!){
-        planContents(sn: $planSn) {
-          name
-          iconUrl
-          sn
-          isShow
-        }
-      }`,
-      variables: {
-        planSn
-      }
-    })
-  },
-
 
   /**
    * 宝贝成长计划 订阅标识

@@ -21,7 +21,7 @@
 }
 .fixed-bottom{
     position: fixed;
-    bottom: 105rpx;
+    bottom: 145rpx;
     width:100%;
 }
 .turn-page view{
