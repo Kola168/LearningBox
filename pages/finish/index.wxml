@@ -1,6 +1,6 @@
 <!-- pages/finish/index.wxml -->
 <nav-bar background="#fff" title="提交成功"></nav-bar>
-
+<!--
 <view class='top-tip'>
   点击此处回复“服务”，关注公众号可及时获取打印状态
   <form report-submit="{{true}}" class="guanzhu">
@@ -8,6 +8,7 @@
   </form>
   <image src='/images/arrow-right-gray.png' class='top-right'></image>
 </view>
+-->
 <block wx:if="{{state!='verifying'}}">
   <!-- 是否练习相关 -->
   <image class="baby-exercise" wx:if="{{isExercise}}" mode="widthFix"

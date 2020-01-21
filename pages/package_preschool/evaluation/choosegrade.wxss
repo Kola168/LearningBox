@@ -65,6 +65,7 @@ view {
 
 .text-paper-img {
   width: 140rpx;
+  border-radius:20rpx;
 }
 
 .text-content-box {

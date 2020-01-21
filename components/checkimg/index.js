@@ -135,6 +135,7 @@ Component({
       this.triggerEvent('choosedDoc', res)
     }),
     chooseImg: co.wrap(function*(type) {
+      this.showPop()
       let sizeType = []
       // if (this.data.original) {
       //   sizeType.push('original')
@@ -159,7 +160,7 @@ Component({
           sourceType: [type]
         })
       }
-      this.showPop()
+
       imageUrl.choosePath = type
       this.triggerEvent('chooseImg', imageUrl)
     }),
