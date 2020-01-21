@@ -127,6 +127,11 @@ Page({
     } catch (err) {
       logger.info('err', err)
     }
-
   }),
+  
+  onShareAppMessage() {
+    return {
+      title: '小白老师邀你一起体验这款学习神器'
+    }
+  }
 })
