@@ -44,12 +44,11 @@ Page({
   onLoad: co.wrap(function* (options) {
     this.longToast = new app.weToast()
       this.planSn = options.planSn
-    this.getPlanDetail()
     event.on('getPlan',this,()=>{
       this.getPlanDetail()
     })
   }),
-  getPlanDetail:co.wrap(function*(){
+  onShow:co.wrap(function*(){
     try {
       const respMember = yield gragql.getUserMemberInfo()
       const resp = yield gql.getPlan(this.planSn)
@@ -101,38 +100,11 @@ Page({
     
   }),
 
-  // toSetAuto:co.wrap(function *(){
-  //   this.longToast.toast({
-  //     type:'loading'
-  //   })
-  //   try {
-  //     this.setData({
-  //       autoPrintBtn:true,
-  //       isShowBtnCont:false
-  //     })
-  //     this.longToast.hide()
-  //   } catch (e) {
-  //     this.longToast.toast()
-  //     util.showError(e) 
-  //   }
-  // }),
-
   /** 自动打印 */
   setTimedPrint: co.wrap(function* () {
-    // this.longToast.toast({
-    //   type:'loading'
-    // })
-    // try {
       wxNav.navigateTo(`/pages/package_preschool/growth_plan/timed_print/timed_print`,{
         planSn:this.data.userPlanSn
       })
-
-    //   this.longToast.hide()
-    // } catch (error) {
-    //   this.longToast.toast()
-    //   util.showError(error)
-    // }
-    // this.longToast.hide()
   }),
 
   /**打印详情 */
