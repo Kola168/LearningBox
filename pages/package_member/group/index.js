@@ -92,7 +92,12 @@ Page({
                 shareGroupSn: ''
             })
             this.longToast.hide()
-            yield this.getFamilyUser()
+            if(ops=='join'){
+                yield this.getFamilyUser()
+            }else{
+                router.switchTab('/pages/account/index')
+            }
+         
         } catch (error) {
             logger.info(error)
             this.longToast.hide()
