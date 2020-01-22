@@ -15,7 +15,7 @@ page {
     left: 0;
     height: 70rpx;
     width: 100%;
-    padding-top:30rpx;
+    padding-top: 30rpx;
     display: flex;
     align-items: center;
     font-size: 32rpx;
@@ -26,6 +26,10 @@ page {
     background: #fff;
 }
 
+.tabs.butHigh {
+    top: 88px;
+    /* height:118rpx */
+}
 
 .type {
     width: calc(100% - 60rpx);
@@ -139,26 +143,23 @@ page {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-  }
+}
 
-  .item-none{
-    margin-top:230rpx;
+.item-none {
+    margin-top: 230rpx;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
 
-.item-none image{
-    width:240rpx;
-    height:144rpx;
+.item-none image {
+    width: 240rpx;
+    height: 144rpx;
 }
 
-.item-none text{
+.item-none text {
     font-size: 32rpx;
     color: #666666;
-    margin:36rpx 0rpx 60rpx;
+    margin: 36rpx 0rpx 60rpx;
 }
-
-
-  

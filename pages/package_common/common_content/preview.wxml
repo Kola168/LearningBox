@@ -6,8 +6,8 @@
             wx:if="{{detail.contentImages.length>0}}">
             <block wx:for="{{detail.contentImages}}" wx:key="contentImages">
                 <swiper-item style="overflow-y:scroll;overflow-x:hidden;">
-                    <image style="width:100%" mode="widthFix" src="{{item.nameUrl}}">
-                        <image src='https://cdn.gongfudou.com/miniapp/ec/shuiyin_new.png' class='watermark'></image>
+                    <image style="width:100%" mode="widthFix" src="{{item.nameUrl}}?x-image-process=image/resize,p_50/watermark,image_L21pY3JvL0xldmlhdGhhbi9iYWNrZW5kL3dhdGVybWFya2VyLnBuZw==,g_center">
+                        <!-- <image src='https://cdn.gongfudou.com/miniapp/ec/shuiyin_new.png' class='watermark'></image> -->
                     </image>
                 </swiper-item>
             </block>
@@ -16,7 +16,7 @@
             <image src="https://cdn.gongfudou.com/miniapp/ec/study_detail_none.png" mode="widthFix"></image>
         </view>
         <!--翻页-->
-        <view class="turn" wx:if="{{detail.contentImages.length>0}}">
+        <view class="turn {{butHigh?'butHigh':''}}" wx:if="{{detail.contentImages.length>0}}">
             <view class="turn-content">
                 <text style="color: #999;">{{num+1}}/{{detail.contentImages.length}}</text>
             </view>
@@ -29,7 +29,7 @@
         </view>
     </view>
 
-    <view class="bottom">
+    <view class="bottom {{butHigh?'butHigh':''}}">
         <view class="left">
             <view class="collect">
                 <view bindtap="collect">

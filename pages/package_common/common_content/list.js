@@ -16,7 +16,8 @@ Page({
   data: {
     typeList: [],
     tabId: -1,
-    playList: []
+    playList: [],
+    butHigh:false
   },
   onLoad: co.wrap(function* (options) {
     this.setData({
@@ -37,6 +38,19 @@ Page({
       this.userSn = storage.get('userSn')
       this.getFeatureTab()
     })
+    if (app.isFullScreen) {
+      this.setData({
+        butHigh: true
+      })
+    } else if (app.isFullScreen == undefined) {
+      let that = this
+      setTimeout(function() {
+        that.setData({
+          butHigh: app.isFullScreen
+        })
+      }, 500)
+    }
+
   }),
   onShow: function () {
 
