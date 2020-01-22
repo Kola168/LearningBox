@@ -19,7 +19,7 @@
 </view>
 <view class="bottom">
     <button class="left"  bindtap="savePhoto" open-type="{{allowCamera==1?'openSetting':''}}"  bindopensetting="{{allowCamera==1 ?'authBack' : ''}}" id="single" hover-class="none">
-        <view>保存证单张</view>
+        <view>保存单张</view>
       </button>
 
       <button class="left" bindtap="savePhoto" open-type="{{allowCamera==1?'openSetting':''}}"  bindopensetting="{{allowCamera==1 ?'authBack' : ''}}" id="full" hover-class="none" wx:if="{{print_wm_url}}">
