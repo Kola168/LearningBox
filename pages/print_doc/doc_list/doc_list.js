@@ -82,7 +82,8 @@ Page({
 					grayscale: this.initPms.grayscale,
 					colorCheck: this.initPms.color ? true : false,
 					color: this.initPms.color,
-					duplex: this.initPms.duplex,
+					isDuplex: this.initPms.duplex,
+					duplex: false,
 					copies: 1, //份数
 					isSetting: false,
 					singlePageLayoutsCount: 1
@@ -135,7 +136,8 @@ Page({
 					grayscale: _this.initPms.grayscale || false,
 					colorCheck:  _this.initPms.color ? true : false,
 					color: _this.initPms.color || false,
-          duplex: _this.initPms.duplex || false,
+					isDuplex: _this.initPms.duplex,
+          duplex: false,
           copies: 1,
           isSetting: false,
           skipGs: true,
@@ -240,7 +242,7 @@ Page({
 				title: '正在提交',
 				duration: 0
 			})
-			var urls = this.data.files.map(file => util.removeKeysToNewObj(file, ['isSetting', 'colorCheck', 'pageCount', 'previewUrl']))
+			var urls = this.data.files.map(file => util.removeKeysToNewObj(file, ['isSetting', 'colorCheck', 'pageCount', 'previewUrl', 'isDuplex']))
 			const resp = yield commonRequest.createOrder('doc_a4', urls)
 			router.navigateTo('/pages/finish/index',
 				{
@@ -368,7 +370,7 @@ Page({
 				fileIndex: this.currentFileIndex,
 				color: currentFile.color|| false,
 				grayscale: currentFile.grayscale || false,
-				duplex: currentFile.duplex || false,
+				duplex: currentFile.isDuplex || false,
 				colorCheck: currentFile.color ? true : false,
 				duplexCheck: false,
 				previewUrl: currentFile.previewUrl,
@@ -376,7 +378,9 @@ Page({
 				url: currentFile.originalUrl,
 				skipGs: true
 			}
+
 			if (currentFile.isSetting) {
+				postData.duplexCheck = currentFile.duplex
 				postData.startPage = currentFile.startPage
 				postData.colorCheck = currentFile.colorCheck
 				postData.endPage = currentFile.endPage
