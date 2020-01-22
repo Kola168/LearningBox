@@ -269,7 +269,7 @@ Page({
         color: this.data.colorcheck == 'Color' ? true : false, // 是否是彩色
         grayscale: false,
         duplex: this.data.duplexcheck ? true : false, // false单面 true双面
-        singlePageLayoutsCount: (this.data.medium === 'a4') ? 0 : 3, //纸质
+        singlePageLayoutsCount: this.data.zoomType, //纸质
         extract: extract //范围类型
       }
       if (extract !== 'all') {
@@ -305,9 +305,10 @@ Page({
       // totalPage: endPage
     })
   },
+
   preview: co.wrap(function*() {
     let url = this.data.arrayFile.url
-    let  display = this.data.singlePageLayoutsCount
+    let  display = this.data.zoomType
     let skip_gs = !this.data.checkOpen
     let extract = this.data.extract || 'all'
     this.longToast.toast({

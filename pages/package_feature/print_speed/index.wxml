@@ -35,7 +35,7 @@
   <!-- <view class="pink" wx:if="{{showBottomContent}}">小tips：如需更改全文样式，需长按文字点击“全选”</view> <view class="bottom-size" wx:if="{{showBottomContent}}"> <view class="bottom-title" >字体大小：</view> <view wx:for="{{size}}" wx:key="{{index}}" id="{{index}}"
     class="{{tabId==index?'size-item-active':'size-item'}}" bindtap="changeSize" data-name="fontSize" data-value="{{item.value}}">{{item.name}}</view> </view> -->
 
-  <view class="bottom-save" bindtap="save">确认编辑</view>
+  <view class="bottom-save {{butHigh?'butHigh':''}}" bindtap="save">确认编辑</view>
 
   <!-- <view class="modal-wrap" wx:if="{{showClear}}" catchtap="cancel">
     <view class="confirm-modal1">
@@ -86,8 +86,8 @@
       </view>
     </view>
   </view>
-  <view class="conf_box-left" bindtap="cancelcheck">返回修改</view>
-  <button class="conf_box-right">
+  <view class="conf_box-left {{butHigh?'butHigh':''}}" bindtap="cancelcheck">返回修改</view>
+  <button class="conf_box-right {{butHigh?'butHigh':''}}">
     确认打印
     <bottom-button class="bottom-button-box" text-right="立即打印" bindrighttap="confcheck" get-phone="{{true}}"></bottom-button>
   </button>

@@ -736,6 +736,11 @@ page {
   border-top: 3rpx solid #cecece;
 }
 
+.conf_box-left.butHigh,
+.conf_box-right.butHigh{
+  bottom: 40rpx;
+}
+
 .consumables-icon {
   width: 100rpx;
   height: 104rpx;
@@ -753,4 +758,9 @@ page {
   height: 100%;
   background: transparent;
   z-index: 1000
+}
+
+.bottom-button-box.butHigh,
+.bottom-save.butHigh{
+  bottom: 40rpx;
 }
