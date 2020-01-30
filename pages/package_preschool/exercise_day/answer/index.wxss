@@ -9,6 +9,7 @@
 .answer-box {
   display: flex;
   flex-direction: column;
+  align-items: center;
   justify-content: center;
   margin: 0rpx 48rpx  0rpx;
   height: calc( 100vh - 448rpx );
