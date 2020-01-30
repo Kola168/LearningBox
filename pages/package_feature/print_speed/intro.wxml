@@ -19,5 +19,5 @@
         <video src="https://cdn.gongfudou.com/miniapp/ec/wenzisuyin1.mp4" class='video'></video>
     </view>
 </view>
-<view class="pink">*表情等特殊符号将被过滤</view>
-<view class="bottom" bindtap="toIndex">快去使用</view>
+<view class="pink {{butHigh?'butHigh':''}}">*表情等特殊符号将被过滤</view>
+<view class="bottom {{butHigh?'butHigh':''}}" bindtap="toIndex">快去使用</view>

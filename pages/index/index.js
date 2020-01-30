@@ -408,7 +408,11 @@ Page({
   },
   toContentList: function (e) {
     if (!e.currentTarget.dataset.has) {
-      return
+      return wx.showToast({
+        title: '暂未开放',
+        icon: 'none',
+        duration: 3000
+      })
     }
     wxNav.navigateTo('/pages/package_common/common_content/index', {
       key: e.currentTarget.id,

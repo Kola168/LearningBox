@@ -92,7 +92,17 @@ Page({
                 shareGroupSn: ''
             })
             this.longToast.hide()
-            yield this.getFamilyUser()
+            if (ops == 'join') {
+                wx.showToast({
+                    title: '恭喜你，成为家庭的一员',
+                    icon: 'none',
+                    duration: 3000
+                })
+                yield this.getFamilyUser()
+            } else {
+                router.switchTab('/pages/account/index')
+            }
+
         } catch (error) {
             logger.info(error)
             this.longToast.hide()

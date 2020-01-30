@@ -69,6 +69,10 @@
   left: 24rpx;
 }
 
+.pink.butHigh{
+  bottom: 164rpx;
+}
+
 .bottom {
   background: #FFE27A;
   width: 100%;
@@ -79,4 +83,8 @@
   color: #454545;
   position: fixed;
   bottom: 0;
+}
+
+.bottom.butHigh{
+  bottom: 40rpx;
 }

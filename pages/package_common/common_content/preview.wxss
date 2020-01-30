@@ -59,6 +59,10 @@ page {
     background-color: #fff;
 }
 
+.turn.butHigh {
+    bottom: 130rpx;
+}
+
 .turn-image {
     display: -webkit-flex;
     margin-right: 306rpx;
@@ -95,6 +99,10 @@ page {
     padding-left: 50rpx;
     padding-right: 24rpx;
     box-sizing: border-box;
+}
+
+.bottom.butHigh{
+    bottom: 30rpx; 
 }
 
 .bottom-image {

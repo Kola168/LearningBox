@@ -1,7 +1,7 @@
 <!--pages/package_common/common_content/list.wxml-->
 <wxs src='../../../utils/compressConfig.wxs' module="foo"></wxs>
 <nav-bar background="#fff" title="{{name}}"></nav-bar>
-<view class="tabs">
+<view class="tabs {{butHigh?'butHigh':''}}">
     <scroll-view scroll-x="true" class="type" scroll-with-animation scroll-into-view="{{'_'+tabId}}">
         <text wx:for="{{typeList}}" wx:key="typeList" id="{{'_'+index}}"
             class="tab-item {{tabId == index ? 'activeType' : ''}}" bindtap="changeTab">{{item.name}}<text
@@ -27,7 +27,8 @@
 </block>
 <block wx:if="{{!playList.length}}">
     <view class="item-none">
-        <image mode="widthFix" src="https://cdn-h.gongfudou.com/LearningBox/preschool/growth_plan_none.png" mode="widthFix"></image>
+        <image mode="widthFix" src="https://cdn-h.gongfudou.com/LearningBox/preschool/growth_plan_none.png"
+            mode="widthFix"></image>
         <text>暂无内容</text>
     </view>
 </block>
