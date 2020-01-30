@@ -44,11 +44,15 @@ Page({
   onLoad: co.wrap(function* (options) {
     this.longToast = new app.weToast()
       this.planSn = options.planSn
+      this.getPlanDetail()
     event.on('getPlan',this,()=>{
       this.getPlanDetail()
     })
   }),
-  onShow:co.wrap(function*(){
+  getPlanDetail:co.wrap(function*(){
+    this.longToast.toast({
+      type:'loading'
+    })
     try {
       const respMember = yield gragql.getUserMemberInfo()
       const resp = yield gql.getPlan(this.planSn)
@@ -63,6 +67,7 @@ Page({
         let memberToast = this.selectComponent('#memberToast')
         memberToast.checkAuthMember()
       }
+      this.longToast.hide()
     } catch (error) {
       this.longToast.toast()
       util.showError(error)
@@ -109,6 +114,9 @@ Page({
 
   /**打印详情 */
   toPrintDetail: co.wrap(function* (e) {
+    this.longToast.toast({
+      type:'loading'
+    })
     try {
       let clickable = this.data.checkpoints[e.currentTarget.dataset.index].isShow
       if(clickable){
@@ -122,6 +130,7 @@ Page({
       }else{
         return
       }
+      this.longToast.hide()
     } catch (e) {
       this.longToast.toast()
       util.showError(encodeURIComponent)
