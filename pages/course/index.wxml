@@ -1,7 +1,6 @@
-
 <view class="main">
-  <!-- <preSchool-index wx:if="{{stage =='preschool'}}"/>
-	<subject-index wx:if="{{stage =='subject'}}"/> -->
-	<preSchool-index/>
+  <preSchool-index wx:if="{{stage =='preschool'}}"/>
+	<subject-index wx:if="{{stage =='subject'}}"/>
+	<!-- <preSchool-index/> -->
 </view>
 
