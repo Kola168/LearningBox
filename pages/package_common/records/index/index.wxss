@@ -116,7 +116,7 @@
 }
 
 .main-left {
-  width: 60%;
+  width: 62%;
   color: #333;
   font-size: 20rpx;
   flex-direction: column;
@@ -127,11 +127,17 @@
   font-size: 28rpx;
 }
 
+.type-name {
+  max-width: calc(100% - 84rpx);
+}
+
 .type-user {
   font-size: 20rpx;
   border-radius: 4rpx;
   margin-left: 10rpx;
-  padding: 4rpx 6rpx;
+  padding: 4rpx 0;
+  width: 74rpx;
+  text-align: center;
 }
 
 .type-user-admin {
@@ -149,7 +155,7 @@
 }
 
 .main-right {
-  width: 40%;
+  width: 38%;
 }
 
 .main-right-column {

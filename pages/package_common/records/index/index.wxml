@@ -69,8 +69,8 @@
       <view class="item-main flex">
         <view class="main-left flex">
           <view class="left-type flex-align-center">
-            <view>{{item.name}}</view>
-            <view class="type-user type-user-admin">{{item.adminCreate?'管理员':'使用者'}}</view>
+            <view class="type-name text-overflow-points">{{item.name}}</view>
+            <view class="type-user {{item.adminCreate?'type-user-admin':'type-user-use'}}">{{item.adminCreate?'管理员':'使用者'}}</view>
           </view>
           <view class="left-count">打印数量：{{item.copies}}份</view>
           <view class="left-data">{{item.createdAt}}</view>
