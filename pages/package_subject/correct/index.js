@@ -51,7 +51,8 @@ Page({
       areaHeight = sysInfo.screenHeight - app.getNavBarInfo().topBarHeight
     }
     this.weToast = new app.weToast()
-    let scene = query.scene
+		let scene = query.scene
+		console.log('scene====',scene)
     this.correctId = Number(scene.split('_')[1])
     this.correctType = scene.split('_')[2] === 'paper' ? 'XuekewangPaper' : 'XuekewangExercise' //批改类型
     this.setData({
