@@ -300,8 +300,8 @@ swiper swiper-item {
 }
 
 .original-price {
-  font-size: 24rpx;
-  color: #666;
+  font-size: 44rpx;
+  color: #FF4241;
   margin-right: 20rpx;
 }
 
