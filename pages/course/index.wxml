@@ -4,3 +4,6 @@
 	<!-- <preSchool-index/> -->
 </view>
 
+
+<import src="/lib/toast/wetoast.wxml" />
+<template is="wetoast" data="{{...__wetoast__}}" />
