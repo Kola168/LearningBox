@@ -22,7 +22,8 @@ Page({
     showShareModel: false, //分享弹窗
     popWindow: false, //底部弹窗
     fileList: [],
-    shareFileList: []
+    shareFileList: [],
+    navBarHeight:0
   },
 
   onLoad: function (options) {
@@ -32,6 +33,10 @@ Page({
     })
     this.page = 1
     this.pageEnd = false
+    let navBarHeight = (app.navBarInfo && app.navBarInfo.topBarHeight > 0) ? app.navBarInfo.topBarHeight : app.getNavBarInfo().topBarHeight
+        this.setData({
+          navBarHeight
+        })
     this.firstShare()
     if (this.data.tabId == 0) {
       this.getFoldersList()

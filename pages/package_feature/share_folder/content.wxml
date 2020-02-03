@@ -1,5 +1,5 @@
 <nav-bar background="#fff" title="{{file_name}}"></nav-bar>
-<view class="top-tip" wx:if="{{role=='creator'}}">不可上传或传播违法内容，一经发现依法处理</view>
+<view class="top-tip" wx:if="{{role=='creator'}}" style="top:{{navBarHeight}}px">不可上传或传播违法内容，一经发现依法处理</view>
 <view class="hideDevice {{ballScroll?'overflowHidden':'overflowScroll'}}">
   <view class="{{role=='user'?'top1':'top'}}">
     <view class="top-left">
