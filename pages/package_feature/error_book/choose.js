@@ -89,7 +89,8 @@ Page({
         custom: true,
         date1: "开始时间",
         date2: "结束时间",
-        hasAnswer:'all'
+        hasAnswer:'all',
+        butHigh:false
     },
     onLoad: function (options) {
         this.longToast = new app.weToast()
@@ -97,6 +98,18 @@ Page({
         this.setData({
             course: options.course
         })
+        if (app.isFullScreen) {
+            this.setData({
+              butHigh: true
+            })
+          } else if (app.isFullScreen == undefined) {
+            let that = this
+            setTimeout(function() {
+              that.setData({
+                butHigh: app.isFullScreen
+              })
+            }, 500)
+          }
     },
     bindDateChange1: function (e) {
         logger.info(e)

@@ -48,17 +48,17 @@
     <view class='border'></view>
     <view class='title'>错题原因</view>
 </view>
-<view class='con'>
+<view class='con' style="margin-bottom:30rpx">
     <view wx:for="{{reason}}" wx:key="reason" id='{{index}}'>
         <view class="content {{reasonId==index?'active-tab':''}}" bindtap='chooseReason' id='{{index}}'>
             {{item}}
         </view>
     </view>
 </view>
-<form class='btn' report-submit="{{true}}" bindsubmit="save" data-type="error_book_entry" wx:if="{{!reEdit}}">
+<form class="btn {{butHigh?'is-full-screen':''}}" report-submit="{{true}}" bindsubmit="save" data-type="error_book_entry" wx:if="{{!reEdit}}">
     <button hover-class="none" form-type='submit'>保存</button>
 </form>
-<view class="btn" wx:if="{{reEdit}}">
+<view class="btn {{butHigh?'is-full-screen':''}}" wx:if="{{reEdit}}">
     <form class='btn-left' report-submit="{{true}}" bindsubmit="save" data-type="error_book_entry">
         <button hover-class="none" form-type='submit'>
             <image src='../images/error_book_save_update.png' mode="widthFix"></image>

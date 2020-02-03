@@ -1,5 +1,5 @@
 <nav-bar background="#fff" title="错题本"></nav-bar>
-<view class='top'>
+<view class='top' style="top:{{navBarHeight}}px">
   <view class='top1'>
     <view class="top_icon" bindtap='choose'>
       <image src='../images/error-choose.png' class="error_icon" mode="widthFix"></image>
@@ -82,7 +82,7 @@
 
 
 
-<view class="btn">
+<view class="btn {{butHigh?'is-full-screen':''}}">
   <view>
     <view class="top_icon" wx:if="{{firstPrint||isDelete}}">
       <image src='../images/error-selected.png' class="error_icon" mode="widthFix" bindtap='chooseAll'

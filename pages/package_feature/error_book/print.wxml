@@ -65,7 +65,8 @@
             </view>
         </view>
     </view>
-<view class="bottom">
+<!-- <view class="bottom {{butHigh?'is-full-screen':''}}"> -->
+    <view class="bottom">
     <button open-type="{{allowCamera==1?'openSetting':''}}" bindopensetting="authBack" hover-class="none" class="left"
         bindtap="save">
         <image mode="widthFix" src="../images/error_book_save.png"></image>

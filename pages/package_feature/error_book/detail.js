@@ -33,7 +33,9 @@ Page({
         allNum: '',
         //选择题目数
         printNum: '',
-        answer: 'all'
+        answer: 'all',
+        butHigh:false,
+        navBarHeight:0
     },
     onLoad: co.wrap(function* (options) {
         logger.info("options", options)
@@ -43,6 +45,22 @@ Page({
                 course: options.course,
             })
         }
+        if (app.isFullScreen) {
+            this.setData({
+              butHigh: true
+            })
+          } else if (app.isFullScreen == undefined) {
+            let that = this
+            setTimeout(function() {
+              that.setData({
+                butHigh: app.isFullScreen
+              })
+            }, 500)
+          }
+          let navBarHeight = (app.navBarInfo && app.navBarInfo.topBarHeight > 0) ? app.navBarInfo.topBarHeight : app.getNavBarInfo().topBarHeight
+          this.setData({
+            navBarHeight
+          })
         this.getMistakes()
 
     }),
