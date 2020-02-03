@@ -17,7 +17,7 @@ Page({
     typeList: [],
     tabId: -1,
     playList: [],
-    butHigh:false
+    navBarHeight:0
   },
   onLoad: co.wrap(function* (options) {
     this.setData({
@@ -38,19 +38,10 @@ Page({
       this.userSn = storage.get('userSn')
       this.getFeatureTab()
     })
-    if (app.isFullScreen) {
-      this.setData({
-        butHigh: true
-      })
-    } else if (app.isFullScreen == undefined) {
-      let that = this
-      setTimeout(function() {
-        that.setData({
-          butHigh: app.isFullScreen
-        })
-      }, 500)
-    }
-
+    let navBarHeight = (app.navBarInfo && app.navBarInfo.topBarHeight > 0) ? app.navBarInfo.topBarHeight : app.getNavBarInfo().topBarHeight
+    this.setData({
+      navBarHeight
+    })
   }),
   onShow: function () {
 
@@ -139,15 +130,15 @@ Page({
   },
   onShareAppMessage: function (res) {
     console.log('paly preview res====', res, res[0])
-		res = res[0]
-		if (res.from === 'button') {
-			return {
-				title: this.title,
-				path: `/pages/package_common/common_content/preview?sn=${this.options.sn}&userSn=${this.userSn}&name=${this.data.name}&type_id=${this.type_id}`
-			}
-		} else {
-			return app.share
-		}
+    res = res[0]
+    if (res.from === 'button') {
+      return {
+        title: this.title,
+        path: `/pages/package_common/common_content/preview?sn=${this.options.sn}&userSn=${this.userSn}&name=${this.data.name}&type_id=${this.type_id}`
+      }
+    } else {
+      return app.share
+    }
   },
   onReachBottom: function () {
     console.log('分页加载')

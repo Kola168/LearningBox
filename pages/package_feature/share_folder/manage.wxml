@@ -1,5 +1,5 @@
 <nav-bar background="#fff" title="共享文件夹"></nav-bar>
-<view class="top-tip">不可上传或传播违法内容，一经发现依法处理</view>
+<view class="top-tip" style="top:{{navBarHeight}}px">不可上传或传播违法内容，一经发现依法处理</view>
 <view class="top">
   <view class="top-left">
     <view class="text-share">{{file_name}}</view>
