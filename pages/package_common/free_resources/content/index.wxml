@@ -1,5 +1,5 @@
 <wxs src="../../../../utils/compressConfig.wxs" module="handleImg"></wxs>
-<nav-bar title="免费资源库"></nav-bar>
+<nav-bar title="精品资源库"></nav-bar>
 <view class="container">
   <scroll-view scroll-x="{{true}}" class="tab" scroll-with-animation scroll-into-view="{{tabId}}">
     <view class="tab-box">

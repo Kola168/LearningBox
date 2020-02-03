@@ -70,7 +70,7 @@
 
 .item-img {
   width: 100%;
-  height: calc(100% - 81rpx);
+  height: calc(100% - 69rpx);
   border-radius: 8rpx;
   overflow: hidden;
 }
