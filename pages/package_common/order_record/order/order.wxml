@@ -64,7 +64,7 @@
 </view>
 
 <view class="course-empty" wx:if="{{isEmpty}}">
-  <image  src="../../images/no_look_icon.png" mode="widthFix"/>
+  <image  src="../../images/search_empty.png" mode="widthFix"/>
   <view class="name">抱歉，该课程暂时无法查阅</view>
   <view class="btn" bind:tap="toRecommendCourse">更多课程推荐</view>
 </view>

@@ -1,6 +1,6 @@
 <!--index.wxml-->
 <wxs src='../../utils/compressConfig.wxs' module="foo"></wxs>
-<nav-bar background="#fff" title="小白盒子"></nav-bar>
+<nav-bar searchObj="{{searchObj}}" title="小白盒子"></nav-bar>
 <button open-type="getUserInfo" bindgetuserinfo="userInfoHandler" form-type='submit' hover-class="none"
   class="auth-button" wx:if="{{showAuth}}"></button>
 

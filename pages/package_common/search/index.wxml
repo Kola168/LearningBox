@@ -19,15 +19,15 @@
     formatResultType:formatResultType
   }
 </wxs>
-<nav-bar background="#ffe27a" title="搜索"></nav-bar>
+<nav-bar title="搜索"></nav-bar>
 <view class="container">
   <view class='search-box'>
     <view class='box-left'>
       <view class='left-image'>
         <view class='left-icon'>
-          <image src='/images/icon-search.png' mode='widthFix' class='icon-search'></image>
+          <image src='/images/custom_nav_search.png' mode='widthFix' class='icon-search'></image>
           <view class='icon-can' bindtap='deleteContent'>
-            <image src='/images/wx_close.png' mode='widthFix' class='icon-cancel' wx:if="{{keyword!=''}}"></image>
+            <image src='../images/search_close.png' mode='widthFix' class='icon-cancel' wx:if="{{keyword!=''}}"></image>
           </view>
         </view>
         <input class='search-input' focus="{{inputFocus}}" confirm-type="search" placeholder-style='font-size:24rpx;' placeholder='请输入要搜索的关键字' bindinput='input' value='{{keyword}}' bindconfirm="search"></input>

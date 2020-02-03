@@ -234,6 +234,49 @@ const graphqlApi = {
     })
   },
 
+    /**
+   * 搜索
+   * @param { String } keyword 关键词
+   */
+  getSearchResult: (keyword) => {
+    return gql.query({
+      query: `query($keyword: String!){
+        search(keyword: $keyword){
+          systemConfig{
+            searchClue
+            searchHotTags
+          }
+          currentUser{
+            name
+            resources{
+              ...on CourseElk{
+                redirectPath
+                iconUrl
+                name
+                sn
+              }
+              ...on FeatureElk{
+                redirectPath
+                iconUrl
+                name
+                key
+              }
+              ...on CategoryElk{
+                redirectPath
+                iconUrl
+                name
+                sn
+                desc
+              }
+            }
+          }        
+        }
+  		}`,
+      variables: {
+        keyword: keyword
+      }
+    })
+  },
 }
 
 
