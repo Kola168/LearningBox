@@ -17,7 +17,7 @@
         <image mode='widthFix' bindtap="" src='{{print_wm_url}}'></image>
     </view>
 </view>
-<view class="bottom">
+<view class="bottom {{butHigh?'is-full-screen':''}}">
     <button class="left"  bindtap="savePhoto" open-type="{{allowCamera==1?'openSetting':''}}"  bindopensetting="{{allowCamera==1 ?'authBack' : ''}}" id="single" hover-class="none">
         <view>保存单张</view>
       </button>

@@ -21,21 +21,34 @@ Page({
     confirmModal: {
       isShow: false,
       title: '请确认6寸照片纸放置正确',
-      image: 'https://cdn.gongfudou.com/miniapp/ec/confirm_print.png'
+      image: 'https://cdn.gongfudou.com/miniapp/ec/confirm_print.png',
+      butHigh: false
     }
   },
 
   onLoad: co.wrap(function* (options) {
     try {
       this.longToast = new app.weToast()
-      console.log('打印页参数', options,options.hasPay)
+      console.log('打印页参数', options, options.hasPay)
       let url = JSON.parse(options.url)
       url = imginit.addProcess(url, '/rotate,90')
       this.setData({
         url,
         sn: options.sn
       })
-      if(options.hasPay!='true'){
+      if (app.isFullScreen) {
+        this.setData({
+          butHigh: true
+        })
+      } else if (app.isFullScreen == undefined) {
+        let that = this
+        setTimeout(function () {
+          that.setData({
+            butHigh: app.isFullScreen
+          })
+        }, 500)
+      }
+      if (options.hasPay != 'true') {
         yield this.getWorkerSn()
       }
     } catch (error) {

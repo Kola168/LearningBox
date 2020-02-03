@@ -23,7 +23,7 @@
             </view>
         </view>
     </view>
-    <view class='bottom flex-center' bindtap="changeImage">
+    <view class="bottom flex-center {{butHigh?'is-full-screen':''}}" bindtap="changeImage">
             <text class='fs-32'>选择照片</text>
         </view>
 </view>

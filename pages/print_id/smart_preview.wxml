@@ -18,7 +18,7 @@
 
 </view>
 
-<view class="bottom">
+<view class="bottom {{butHigh?'is-full-screen':''}}">
     <view class="left {{!print_wm_url?'only':''}}" bindtap="{{hasPay?'toSave':'toPay'}}" id="digital">
         <text>保存电子版</text>
     </view>
@@ -26,7 +26,7 @@
         打印证件照
     </view>
 </view>
-<image class="save-tip" mode='widthFix' bindtap="" src='../../images/id/id_save_tip.png' bindtap="closeTip" wx:if="{{saveTip}}"></image>
+<image class="save-tip" mode='widthFix' bindtap="" src='../../images/id/id_save_tip.png' bindtap="closeTip" wx:if="{{saveTip}}" style="bottom:{{butHigh?'162':'102'}}rpx"></image>
 
 <import src="../../lib/toast/wetoast.wxml" />
 <template is="wetoast" data="{{...__wetoast__}}" />

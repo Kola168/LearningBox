@@ -19,7 +19,8 @@ Page({
         rule: {
             format: 'JPEG',
         },
-        popWindow: false
+        popWindow: false,
+        butHigh:false
     },
     onShareAppMessage: function () {
         return app.share
@@ -29,6 +30,18 @@ Page({
         this.setData({
             spec: JSON.parse(options.item)
         })
+        if (app.isFullScreen) {
+            this.setData({
+              butHigh: true
+            })
+          } else if (app.isFullScreen == undefined) {
+            let that = this
+            setTimeout(function() {
+              that.setData({
+                butHigh: app.isFullScreen
+              })
+            }, 500)
+          }
     },
     uploadImage: co.wrap(function* (e) {
         this.longToast.toast({
