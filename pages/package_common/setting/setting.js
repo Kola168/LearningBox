@@ -571,7 +571,10 @@ Page({
         featureKey: this.data.setting.orderPms.featureKey,
         params
       })
-
+       // 触发闯关列表解锁
+      if(this.data.setting.orderPms.mediaType=='plan'){
+        event.emit('getPlan')
+      }
       // 存下订单完成页渲染数据
       resp && storage.put('orderSuccessParams', resp.statistic)
 

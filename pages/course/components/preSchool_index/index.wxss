@@ -209,8 +209,7 @@ swiper swiper-item {
 }
 
 .top-more image {
-  width: 24rpx;
-  height: 24rpx;
+  width: 12rpx;
   margin-left: 4rpx;
 }
 

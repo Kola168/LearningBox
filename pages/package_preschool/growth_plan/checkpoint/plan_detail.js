@@ -40,6 +40,9 @@ Page({
     this.planSn = options.planSn
     this.sn = options.sn
     this.name = options.name
+    this.longToast.toast({
+      type:'loading'
+    })
     try {
       const respMember = yield gragql.getUserMemberInfo()
       const resp = yield gql.getPreviewContent(this.sn)
@@ -53,7 +56,7 @@ Page({
         isSuscribe: resp.content.plan.subscription,
         name: options.name
       })
-
+      this.longToast.hide()
     } catch (e) {
       this.longToast.toast()
       util.showError(e)
@@ -130,7 +133,9 @@ Page({
    * 开始打印
    */
   beginPrint: co.wrap(function* (userPlanSn) {
-
+    this.longToast.toast({
+      type:'loading'
+    })
     const resp = yield gql.getPreviewContent(this.sn)
     this.userPlanSn= resp.content.plan.userPlanSn
     this.sn= resp.content.sn
@@ -155,5 +160,6 @@ Page({
         }
       }))
     })
+    this.longToast.hide()
   }),
 })

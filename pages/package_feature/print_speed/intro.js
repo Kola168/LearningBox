@@ -1,12 +1,25 @@
 // pages/error_book/pages/print_speed/intro.js
 const event = require('../../../lib/event/event')
+const app = getApp()
 
 Page({
     data: {
-
+      butHigh:false
     },
     onLoad: function(options) {
       this.setStorage()
+      if (app.isFullScreen) {
+        this.setData({
+          butHigh: true
+        })
+      } else if (app.isFullScreen == undefined) {
+        let that = this
+        setTimeout(function() {
+          that.setData({
+            butHigh: app.isFullScreen
+          })
+        }, 500)
+      }
     },
 
   setStorage: function () {

@@ -83,7 +83,7 @@ module.exports = {
       </view>
       <view class="top-more" bindtap="toSelectProjectList">
         <view>更多</view>
-        <image src="/images/doc_item_arrow.png" />
+        <image src="/images/doc_item_arrow.png" mode="widthFix"/>
       </view>
     </view>
     <scroll-view class="select-project" scroll-x>
@@ -100,7 +100,7 @@ module.exports = {
       </view>
       <view class="top-more" bindtap="toCourseCenter">
         <view>更多</view>
-        <image src="/images/doc_item_arrow.png" />
+        <image src="/images/doc_item_arrow.png" mode="widthFix" />
       </view>
     </view>
     <view class="recommend-item" wx:for="{{recommendCourse}}" wx:key="sn" id="{{item.sn}}" bindtap="toCourseDetail">

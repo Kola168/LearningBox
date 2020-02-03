@@ -4,7 +4,7 @@
 		<view class="text-name">{{setting.name}}</view>
 		<!-- <view class="text-suffix">.{{fileTitle.suffix}}</view> -->
 	</view>
-	<view class="title-preview" bindtap="preview" wx:if="{{isPreview}}">预览</view>
+	<view class="title-preview" bindtap="preview" wx:if="{{setting.isPreview}}">预览</view>
 </view>
 
 <!-- 设置打印数量 -->
