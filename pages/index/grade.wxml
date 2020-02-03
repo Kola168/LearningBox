@@ -18,7 +18,7 @@
     </view>
 </block>
 
-<view class="bottom" bindtap="complete">完成</view>
+<view class="bottom {{butHigh?'is-full-screen':''}}" bindtap="complete">完成</view>
 <!-- loading -->
 <import src="/lib/toast/wetoast.wxml" />
 <template is="wetoast" data="{{...__wetoast__}}" />

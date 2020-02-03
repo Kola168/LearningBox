@@ -14,7 +14,8 @@ Page({
     answerUrls: [],
     hasResult: true,
     loadReady: false,
-    hideTip: true
+    hideTip: true,
+    butHigh:false
   },
   onLoad(query) {
     this.longToast = new app.weToast()
@@ -24,6 +25,18 @@ Page({
       type: query.type, //photo_answer拍搜,error_book_search已保存错题搜索 before_add_error_book保存错题钱搜索
       hideTip: hideErrorBookTip
     })
+    if (app.isFullScreen) {
+      this.setData({
+        butHigh: true
+      })
+    } else if (app.isFullScreen == undefined) {
+      let that = this
+      setTimeout(function () {
+        that.setData({
+          butHigh: app.isFullScreen
+        })
+      }, 500)
+    }
     if (query.type === 'error_book_search') {
       this.mistakeId = query.id
       this.course = query.course

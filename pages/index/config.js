@@ -62,7 +62,7 @@ export const commonFeatures = {
         image: '/images/home/icon_free_database.png',
         id: 'freeResources',
         url: '/pages/package_common/free_resources/index/index',
-        icon: '/images/home/icon_subject_free.png'
+        // icon: '/images/home/icon_subject_free.png'
 
     },{
         name: '口算',
