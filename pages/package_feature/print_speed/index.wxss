@@ -759,8 +759,3 @@ page {
   background: transparent;
   z-index: 1000
 }
-
-.bottom-button-box.butHigh,
-.bottom-save.butHigh{
-  bottom: 40rpx;
-}
