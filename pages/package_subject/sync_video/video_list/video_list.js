@@ -62,12 +62,13 @@ Page({
     try {
       var resp = yield graphql.getvideoDetailList(+this.videoId, this.page, 10)
       var videoList = resp.xuekewangVideoList
-      if (videoList && videoList.length >= 10) {
+      if (videoList && videoList.length > 0) {
         this.page++
+        this.setData({
+          videoList: this.data.videoList.concat(videoList)
+        })
       }
-      this.setData({
-        videoList: this.data.videoList.concat(videoList)
-      })
+      
 
     } catch(err) {
       util.showError(err)
