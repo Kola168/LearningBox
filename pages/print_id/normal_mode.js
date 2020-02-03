@@ -25,7 +25,8 @@ Page({
             isShow: false,
             title: '请确认6寸照片纸放置正确',
             image: 'https://cdn.gongfudou.com/miniapp/ec/confirm_print.png'
-        }
+        },
+        butHigh:false
     },
     // 分享事件
     onShareAppMessage: function () {
@@ -36,6 +37,18 @@ Page({
             this.idPrint = JSON.parse(query.idPrint)
             logger.info('证件照确认打印页参数', this.idPrint)
             this.longToast = new app.weToast()
+            if (app.isFullScreen) {
+                this.setData({
+                  butHigh: true
+                })
+              } else if (app.isFullScreen == undefined) {
+                let that = this
+                setTimeout(function() {
+                  that.setData({
+                    butHigh: app.isFullScreen
+                  })
+                }, 500)
+              }
             // 本地照片
             this.setData({
                 url: decodeURIComponent(this.idPrint.preview_url).replace('http://', 'https://'),

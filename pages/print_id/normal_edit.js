@@ -64,7 +64,8 @@ Page({
         source: '',
         realScale: 0,
         realRotate: 0,
-        name: ''
+        name: '',
+        butHigh:false
     },
 
     // 分享事件
@@ -84,6 +85,18 @@ Page({
                 this.changeSize(query.media_type)
                 this.media_type = query.media_type
             }
+            if (app.isFullScreen) {
+                this.setData({
+                  butHigh: true
+                })
+              } else if (app.isFullScreen == undefined) {
+                let that = this
+                setTimeout(function() {
+                  that.setData({
+                    butHigh: app.isFullScreen
+                  })
+                }, 500)
+              }
             // 初始化编辑区域
             yield this.initArea()
         } catch (e) {
