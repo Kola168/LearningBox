@@ -13,6 +13,7 @@ const RIGHT_BAR_HEIGHT = 40;
 const LEFT_ITEM_HEIGHT = 52
 Page({
   data: {
+    loadReady: false,
     minHeight: 0,
     //右侧每3个子类的高度（固定）
     rightItemHeight: 140,
@@ -58,7 +59,8 @@ Page({
         }
         this.setData({
           allData,
-          currentLeftSelect: allData[0].id
+          currentLeftSelect: allData[0].id,
+          loadReady: true
         })
         this.eachRightItemToTop = this.getEachRightItemToTop()
       } else {

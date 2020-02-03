@@ -39,6 +39,13 @@
   margin-left:30rpx;
 }
 
+.content-end {
+  color: #999;
+  font-size: 24rpx;
+  text-align: center;
+  margin-bottom: 60rpx;
+}
+
 .item-title {
   width: 100%;
   height: 40px;
@@ -65,7 +72,8 @@
 
 .item-title {
   font-size: 28rpx;
-  color: #666;
+  color: #FFA200;
+  font-weight: bold;
 }
 
 .item-img {
