@@ -14,7 +14,7 @@
 <swiper duration="500" current="{{num}}" bindchange="tab_slide" circular="{{circular}}" class="{{multiple_form?'swiper-box':'swiper-box1'}}" wx:if="{{!from_temp}}">
     <block wx:for="{{images}}" wx:key="images">
         <swiper-item style="overflow-y:scroll;overflow-x:hidden;">
-            <image src="{{foo.addProcess(item,'/watermark,image_L21pY3JvL0xldmlhdGhhbi9iYWNrZW5kL3dhdGVybWFya2VyLnBuZw==,g_center,t_50')}}" class="{{multiple_form?'slide-image':'slide-image1'}}"></image>
+            <image src="{{foo.addProcess(item,'/resize,w_1240,limit_0/watermark,image_L21pY3JvL0xldmlhdGhhbi9iYWNrZW5kL3dhdGVybWFya2VyLnBuZw==,g_center,t_50')}}" class="{{multiple_form?'slide-image':'slide-image1'}}"></image>
         </swiper-item>
     </block>
 </swiper>
@@ -22,7 +22,7 @@
 <swiper duration="500" current="{{num}}" bindchange="tab_slide" circular="{{circular}}" class='swiper-box2' wx:if="{{from_temp}}">
     <block wx:for="{{images}}" wx:key="images">
         <swiper-item style="overflow-y:scroll;overflow-x:hidden;">
-            <image src="{{foo.addProcess(item,'/watermark,image_L21pY3JvL0xldmlhdGhhbi9iYWNrZW5kL3dhdGVybWFya2VyLnBuZw==,g_center,t_50')}}" class='slide-image2'></image>
+            <image src="{{foo.addProcess(item,'/resize,w_1240,limit_0/watermark,image_L21pY3JvL0xldmlhdGhhbi9iYWNrZW5kL3dhdGVybWFya2VyLnBuZw==,g_center,t_50')}}" class='slide-image2'></image>
         </swiper-item>
     </block>
 </swiper>

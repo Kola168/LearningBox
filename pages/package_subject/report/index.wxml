@@ -2,7 +2,7 @@
 <view class="report" style="height:{{areaHeight}}px;">
   <swiper class="swpier-box" bindchange="changeImg">
     <swiper-item wx:for="{{imgList}}" wx:key="index">
-      <image class="img-item" src="{{item.nameUrl}}?x-image-process=image/watermark,image_L21pY3JvL0xldmlhdGhhbi9iYWNrZW5kL3dhdGVybWFya2VyLnBuZw==,g_center,t_50/resize,w_700" mode="widthFix"></image>
+      <image class="img-item" src="{{item.nameUrl}}?x-image-process=image/resize,w_1240,limit_0/watermark,image_L21pY3JvL0xldmlhdGhhbi9iYWNrZW5kL3dhdGVybWFya2VyLnBuZw==,g_center,t_50/resize,w_700" mode="widthFix"></image>
     </swiper-item>
   </swiper>
   <view class="report-btns {{isFullScreen?'is-full-screen':''}}">
