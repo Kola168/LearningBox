@@ -43,7 +43,6 @@
   color: #999;
   font-size: 24rpx;
   text-align: center;
-  margin-bottom: 60rpx;
 }
 
 .item-title {
@@ -78,7 +77,8 @@
 
 .item-img {
   width: 100%;
-  height: calc(100% - 69rpx);
+  height: 0;
+  padding-bottom: 100%;
   border-radius: 8rpx;
   overflow: hidden;
 }
@@ -90,7 +90,7 @@
 .text-title {
   font-size: 28rpx;
   color: #333;
-  margin: 10rpx 0 6rpx;
+  margin: 16rpx 0 6rpx;
 }
 
 .text-desc {

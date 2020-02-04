@@ -9,10 +9,6 @@ import {
 
 import Logger from '../../utils/logger.js'
 const logger = new Logger.getLogger('pages/index/index')
-// page mixins
-require('../../utils/mixin.js')
-// import index from "../../mixins/index.js"
-// import init from "../../mixins/init.js"
 import gql from '../../network/graphql_request.js'
 import gqlDevice from '../../network/graphql/device'
 import api from '../../network/restful_request.js'
@@ -26,7 +22,6 @@ import {
 } from 'config.js'
 
 Page({
-  // mixins: [index, init],
   data: {
     searchObj: {
       isSearch: false,
