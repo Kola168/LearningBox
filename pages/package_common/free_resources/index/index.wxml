@@ -27,7 +27,7 @@
         </view>
       </view>
     </view>
-    <view class="content-end">已经到底了哦～</view>
+    <view class="content-end" style="padding-bottom:{{minHeight-180}}px;">已经到底了哦～</view>
   </scroll-view>
 </view>
 <!-- loading -->
