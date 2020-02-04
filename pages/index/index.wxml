@@ -142,7 +142,7 @@
     <scroll-view class="recommend" scroll-x>
       <block wx:for="{{recommendCourse}}" wx:key="recommendCourse">
         <view class="other course" bindtap="toCourse" id="{{item.sn}}" data-type="{{index}}">
-          <image src="{{item.iconUrl}}" mode="widthFix" />
+          <image src="{{item.recommendationImageUrl}}" mode="widthFix" />
           <view class="small-title">{{item.name}}</view>
           <view class="small-title">{{item.totalLessons}}课时</view>
         </view>
