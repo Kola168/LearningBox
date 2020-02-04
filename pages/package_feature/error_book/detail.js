@@ -81,11 +81,11 @@ Page({
         try {
             const resp = yield featureGql.getMistakes(params)
             logger.info('错题本列表====', resp)
-            if (resp.mistakeCourse.length == 0) {
-                this.setData({
-                    noEntry: true
-                })
-            }
+            // if (resp.mistakeCourse.length == 0) {
+            //     this.setData({
+            //         noEntry: true
+            //     })
+            // }
             this.setData({
                 array: resp.mistakeCourse,
                 middlearr: [],
