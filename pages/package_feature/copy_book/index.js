@@ -118,7 +118,7 @@ Page({
 
       let params = {
         is_async:false,
-        type: type,
+        copybook_type: type,
         content: content,
         version:true,
         feature_key: 'custom_copybook'
