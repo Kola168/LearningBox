@@ -17,7 +17,14 @@ Page({
     searchResult: [],
     notResult: false,
     inputFocus: true,
-    searchClue: ''
+    searchClue: '',
+    modalObj: {
+      isShow: true,
+      hasCancel: false,
+      content: '请您先切换该学段哦!',
+      confirmText: '立即切换学段',
+      image: '/images/home/device_tip.png'
+    },
   },
   onLoad: co.wrap(function* () {
     this.weToast = new app.weToast()
@@ -79,6 +86,10 @@ Page({
     } else if (type === 'course') {
       url = `/pages/package_course/course/course`
       params.sn = typeItem.sn
+    } else if (type === 'category') {
+      url = typeItem.redirectPath
+      params.sn = typeItem.sn
+      params.title = typeItem.name
     }
     wxNav.navigateTo(url, params)
   },
@@ -195,6 +206,9 @@ Page({
       util.showError(error)
     }
   }),
+  changeStage(){
+
+  },
   toFeedback() {
     wxNav.navigateTo('../feedback/index', {
       type: "search"

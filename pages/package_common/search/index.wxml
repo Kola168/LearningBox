@@ -46,7 +46,7 @@
             <view class="main-content" wx:if="{{item.name==='course'}}">
               {{typeItem.studyUsers}}人已学习
             </view>
-            <view class="main-content" wx:if="{{item.name==='category'}}">
+            <view class="main-content" wx:if="{{item.name==='category'&&typeItem.desc}}">
               {{typeItem.desc}}
             </view>
           </view>
@@ -91,3 +91,5 @@
 <!-- loading -->
 <import src="/lib/toast/wetoast.wxml" />
 <template is="wetoast" data="{{...__wetoast__}}" />
+
+<modal modal="{{modalObj}}" bindconfirm="changeStage"></modal>
