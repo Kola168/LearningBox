@@ -13,7 +13,7 @@
   width: 584rpx;
   height: 60rpx;
   display: flex;
-  background: #eaeaea;
+  background: #F4F4F3;
   border-radius: 42rpx;
 }
 
@@ -29,6 +29,7 @@
   margin-left: 25rpx;
   margin-right: 34rpx;
   font-size: 24rpx;
+  background: #F4F4F3;
 }
 
 .icon-search {
@@ -60,7 +61,7 @@
 }
 
 .search {
-  color: #ffc35b;
+  color: #FFA200;
   font-size: 36rpx;
 }
 
@@ -160,6 +161,7 @@
 
 .type-item image {
   width: 120rpx;
+  height: 100%;
 }
 
 .item-main {
