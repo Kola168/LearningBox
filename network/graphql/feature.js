@@ -88,22 +88,12 @@ const graphqlApi = {
   getGradeList: () => {
     return gql.query({
       query: `query{
-        userStages{
-          currentStage{
-             name
-             sn
-          }
-          siblings{
+        primarySchoolStages{
            name
            sn
-           rootName
+          kousuanCategories{
+           name
            sn
-           kousuanCategories{
-             ... on KousuanCategory{
-               name
-               sn
-             }
-           }
           }
         }
       }`

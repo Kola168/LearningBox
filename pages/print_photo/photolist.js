@@ -380,7 +380,8 @@ Page({
           imgs[index]={
             originalUrl:value.localUrl,
             printUrl:value.url,
-            copies:value.number
+            copies:value.number,
+            imageEdit:true,
           }
         }else{
           imgs[index]={

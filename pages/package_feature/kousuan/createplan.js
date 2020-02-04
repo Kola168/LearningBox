@@ -45,8 +45,8 @@ Page({
       })
       let resp=yield graphql.getGradeList()
       this.setData({
-        textBookList:resp.userStages.siblings,
-        gradeIndex:_.findIndex(resp.userStages.siblings,resp.userStages.currentStage)
+        textBookList:resp.primarySchoolStages,
+        gradeIndex:0
       })
       this.getPointsList()
       this.longToast.toast()

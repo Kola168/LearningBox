@@ -15,7 +15,7 @@
 .print-modal-wrap {
   width: 80%;
   background: #fff;
-  border-radius: 10rpx;
+  border-radius: 20rpx;
   overflow: hidden;
 }
 
