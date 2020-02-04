@@ -427,26 +427,30 @@ Page({
    * 预览文档
    */
   preview: co.wrap(function* () {
-    let url = this.data.setting.orderPms.attributes.url
-    let display = this.data.singlePageLayoutsCount
-    let skip_gs = !this.data.skipGs
-    let extract = this.data.extract || 'all'
-    this.longToast.toast({
-      type: 'loading',
-      title: '正在开启预览',
-      duration: 0
-    })
-    commonRequest.previewDocument({
-      feature_key: this.query.featureKey,
-      worker_data: {
-        url,
-        display,
-        skip_gs,
-        extract
-      }
-    }, () => {
-      this.longToast.hide()
-    })
+    try {
+      let url = this.data.setting.orderPms.attributes.url
+      let display = this.data.singlePageLayoutsCount
+      let skip_gs = !this.data.skipGs
+      let extract = this.data.extract || 'all'
+      this.longToast.toast({
+        type: 'loading',
+        title: '正在开启预览',
+        duration: 0
+      })
+      commonRequest.previewDocument({
+        feature_key: this.data.setting.orderPms.featureKey,
+        worker_data: {
+          url,
+          display,
+          skip_gs,
+          extract
+        }
+      }, () => {
+        this.longToast.hide()
+      })
+    } catch(err) {
+      console.log(err)
+    }
   }),
 
   /**

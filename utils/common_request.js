@@ -208,15 +208,14 @@ const createPayment = co.wrap(function*(sn, success=emptyFn, fail=emptyFn){
       },
       fail(error){
         logger.info(error.errMsg)
-        let isCancel = error.errMsg.indexOf('cancel')>-1
-        fail(isCancel,{
+        fail({
           message: error.errMsg
         })
       }
     })
   } catch (error) {
     logger.info(error)
-    fail(false,error)
+    fail(error)
   }
 })
 

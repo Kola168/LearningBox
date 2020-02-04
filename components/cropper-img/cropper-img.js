@@ -84,13 +84,9 @@ var componentsData = {
      */
     startCropper: function (options) {
       var _this = this
-      var src = options.src
-      var mode = options.mode
-      var callback = options.callback || function () {}
-      var adjustPoints = options.pointData
-      var maxLength = options.maxLength
-      var sizeType = options.sizeType.slice(-1)
-      var cropperData = _this.data.cropperData
+      var src = _this.src = options.src
+      
+      _this.options = options
 
       if (!src) {
         return utils.showToast({
@@ -98,35 +94,63 @@ var componentsData = {
           icon: 'none'
         })
       }
+      console.log('getImageInfo')
       utils.getImageInfo({
         src
       }).then(res => {
-        var w = _this.imgWidth = res.width
-        var h = _this.imgHeight = res.height
-        var size = cropperUtils.getAdjustMaxSize(w, h, maxLength)
-
-        cropperData = Object.assign({
-          ...cropperData, //原始数据
-          original: sizeType.indexOf('original') > -1 ? true : false,
-          maxLength: maxLength || cropperData.maxLength, // 设置最大长度
-          mode: mode || cropperData.mode, // 设置绘制模式 矩形 & 不规则
-          adjustPoints: adjustPoints, //自动校正后的坐标点
-          sizeType: sizeType, //图片是否压缩 & 原图
-          imageInfo: {
-            path: src,
-            width: size.width,
-            height: size.height
-          },
-          cropCallback: callback, //设置裁剪完成回调
-        })
-        console.log(cropperData,'cropperData')
-        _this.setData({
-          cropperData
-        }, () => {
-          _this.loadEntry(mode)
+        _this.utilsImgRes(res)
+      }).catch(err=>{
+        utils.getImageInfo({
+          src
+        }).then(res => {
+          _this.utilsImgRes(res)
+        }).catch(err=>{
+          wx.showModal({
+            title: '提示',
+            content: err.errMsg,
+            showCancel: false
+          })
         })
       })
     },
+
+    utilsImgRes: function(res){
+     try {
+      var _this = this
+      var options = _this.options
+      var mode = options.mode
+      var callback = options.callback || function () {}
+      var adjustPoints = options.pointData
+      var maxLength = options.maxLength
+      var sizeType = options.sizeType.slice(-1)
+      var cropperData = _this.data.cropperData
+      var w = _this.imgWidth = res.width
+      var h = _this.imgHeight = res.height
+      var size = cropperUtils.getAdjustMaxSize(w, h, maxLength)
+
+      cropperData = Object.assign({
+        ...cropperData, //原始数据
+        original: sizeType.indexOf('original') > -1 ? true : false,
+        maxLength: maxLength || cropperData.maxLength, // 设置最大长度
+        mode: mode || cropperData.mode, // 设置绘制模式 矩形 & 不规则
+        adjustPoints: adjustPoints, //自动校正后的坐标点
+        sizeType: sizeType, //图片是否压缩 & 原图
+        imageInfo: {
+          path: _this.src,
+          width: size.width,
+          height: size.height
+        },
+        cropCallback: callback, //设置裁剪完成回调
+      })
+      _this.setData({
+        cropperData
+      }, () => {
+        _this.loadEntry(mode)
+      })
+     } catch (err) {
+     }
+    },
+
     clearCanvas: function () {
 
     },

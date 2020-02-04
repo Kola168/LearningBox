@@ -8,6 +8,7 @@ import {
   wxNav,
   storage
 } from '../../utils/common_import'
+const getImageInfo = util.promisify(wx.getImageInfo)
 const imginit = require('../../utils/imginit')
 import common_request from '../../utils/common_request'
 import modal from '../../components/confirm-reinforce-modal/event'
@@ -265,63 +266,77 @@ Page({
       title: '加载中...'
     })
     let that = this
-    let tempFilePath = this.options.url
-    let mode = this.options.mode
+    let tempFilePath = that.options.url
     that.loadEnd = false
-    wx.getImageInfo({
-      src: tempFilePath,
-      success(res) {
-        let imageInfo = res
-        let showText
-        if (imageInfo.width < 100 || imageInfo.height < 100) {
-          showText = '图片尺寸过小，请重新选择'
-        }
-        if (showText) {
-          return wx.showModal({
-            title: '提示',
-            content: showText,
-            showCancel: false,
-            confirmColor: '#2086ee',
-            success: (res) => {
-              if (res.confirm) {
-                wxNav.navigateBack()
-              }
-            }
-          })
-        }
-        //旋转矫正
-        let width = imageInfo.width
-        let height = imageInfo.height
-        that.editScale = 1
-        let editPath = tempFilePath
-        if (width > 1500 || height > 1500) {
-          editPath = imginit.addProcess(editPath, `/resize,w_1500,h_1500`)
-          that.editScale = 1500 / (width > height ? width : height)
-        }
-        var ctx = that.selectComponent('#cropper')
-        ctx.startCropper({
-          src: editPath,
-          mode: mode,
-          sizeType: ['original'],
-          maxLength: 2000, //限制最大像素为2500像素)
-          callback: ()=>{
-            that.getColor()
-            that.loadEnd = true
-            that.longToast.hide()
-          }
+    try {
+      var res = yield getImageInfo({
+        src: tempFilePath
+      })
+      that.utilsImg(res)
+    } catch (err) { 
+      try {
+        var resCopy= yield getImageInfo({
+          src: tempFilePath
         })
-        that.ctx = ctx
-      },
-
-      fail: (err) =>{
+        that.utilsImg(resCopy)
+      } catch(err) {
+        this.longToast.hide()
         wx.showModal({
           title: '提示',
-          content: err,
+          content: err.errMsg,
           showCancel: false
         })
-        this.longToast.hide()
       }
-    })
+    }
+  }),
+
+  utilsImg: co.wrap(function*(res){
+    try {
+      let tempFilePath = this.options.url
+      let mode = this.options.mode
+      let imageInfo = res
+      let showText
+      if (imageInfo.width < 100 || imageInfo.height < 100) {
+        showText = '图片尺寸过小，请重新选择'
+      }
+      if (showText) {
+        return wx.showModal({
+          title: '提示',
+          content: showText,
+          showCancel: false,
+          confirmColor: '#2086ee',
+          success: (res) => {
+            if (res.confirm) {
+              wxNav.navigateBack()
+            }
+          }
+        })
+      }
+      //旋转矫正
+      let width = imageInfo.width
+      let height = imageInfo.height
+      this.editScale = 1
+      let editPath = tempFilePath
+      if (width > 1500 || height > 1500) {
+        editPath = imginit.addProcess(editPath, `/resize,w_1500,h_1500`)
+        this.editScale = 1500 / (width > height ? width : height)
+      }
+      var ctx = this.selectComponent('#cropper')
+      ctx.startCropper({
+        src: editPath,
+        mode: mode,
+        sizeType: ['original'],
+        maxLength: 2000, //限制最大像素为2500像素)
+        callback: ()=>{
+          this.getColor()
+          this.loadEnd = true
+          this.longToast.hide()
+        }
+      })
+      this.ctx = ctx
+    } catch (err) {
+      console.log(err)
+    }
   }),
 
   cropImage() {
