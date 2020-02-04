@@ -259,7 +259,7 @@ Page({
     try {
       let extract = this.data.extract
       let tempObj = {
-        printUrl: this.data.arrayFile.url,
+        // printUrl: this.data.arrayFile.url,
         originalUrl: this.data.arrayFile.url,
         filename: this.data.arrayFile.name,
         copies: this.data.documentPrintNum, // 张数
