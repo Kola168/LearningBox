@@ -41,7 +41,7 @@
   </view>
   <view class="empty" wx:else>
     <image src="../images/bg-no-photo.png" mode="widthFix" />
-    <view>没有找到</view>
+    <view>没有找到结果</view>
     <button hover-class="none" bindtap="handleLeftBtn" wx:if="{{type==='photo_answer'}}">重新拍摄</button>
   </view>
 

@@ -1,6 +1,6 @@
 .question {
   padding: 0 24rpx;
-  border-bottom: 20rpx solid #F7F7F7;
+  border-bottom: 20rpx solid #f7f7f7;
 }
 
 .question-label {
@@ -18,7 +18,7 @@
   top: 15%;
   height: 70%;
   width: 6rpx;
-  background: #FFC35B;
+  background: #ffc35b;
 }
 
 .question-img {
@@ -31,7 +31,7 @@
 }
 
 .answer-label {
-  color: #666666;
+  color: #666;
   font-size: 36rpx;
   position: relative;
   display: inline-block;
@@ -39,8 +39,7 @@
   line-height: 100rpx;
 }
 
-.answer-label:after,
-.answer-label:before {
+.answer-label:after, .answer-label:before {
   content: '';
   height: 2rpx;
   width: 70rpx;
@@ -57,20 +56,19 @@
   right: -100rpx;
 }
 
-.question image,
-.answer image {
+.question image, .answer image {
   width: 100%;
   height: auto;
 }
 
 .item-title {
-  color: #5BC223;
+  color: #5bc223;
   font-size: 30rpx;
   font-weight: bold;
 }
 
 .item-content {
-  color: #333333;
+  color: #333;
   font-size: 28rpx;
   margin: 30rpx 0 40rpx;
 }
@@ -92,7 +90,7 @@
   justify-content: center;
   background: #fff;
   color: #666;
-  border-top: 2rpx solid #CECECE;
+  border-top: 2rpx solid #cecece;
 }
 
 .two-btns .btn-item {
@@ -105,9 +103,9 @@
 }
 
 .preview-btn {
-  background: #FFE27A;
+  background: #ffdc5e;
   color: #333;
-  border-top: 2rpx solid #FFE27A;
+  border-top: 2rpx solid FFDC5E;
   font-size: 36rpx;
 }
 
@@ -122,15 +120,16 @@
   position: absolute;
   left: 0;
   top: -50rpx;
-  color: #FFB008;
+  font-family: PingFangSC-Regular;
   font-size: 24rpx;
+  color: #ffa200;
+  letter-spacing: 0.52px;
   display: flex;
   align-items: center;
   height: 50rpx;
-  background: #FFF6D8;
+  background: #fff8e0;
   padding: 0 3%;
   justify-content: space-between;
-  font-weight: bold;
 }
 
 .btn-tip image {
@@ -152,19 +151,25 @@
 }
 
 .empty view {
+  font-family: PingFangSC-Regular;
   font-size: 32rpx;
-  color: #666666;
-  margin: 36rpx 0 60rpx;
+  color: #666;
+  letter-spacing: 0;
+  text-align: center;
+  margin: 36.8rpx 0 60rpx;
 }
 
 .empty button {
+  font-family: PingFangSC-Regular;
   font-size: 36rpx;
-  color: #A5A5A5;
+  color: #333;
+  letter-spacing: 0;
+  text-align: center;
   height: 80rpx;
-  line-height: 76rpx;
+  line-height: 80rpx;
   border-radius: 40rpx;
   padding: 0 60rpx;
-  border: 2rpx solid #CECECE;
+  background: #ffdc5e;
 }
 
 .add-errorbook {

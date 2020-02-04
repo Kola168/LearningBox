@@ -9,7 +9,7 @@ image {
 }
 
 button {
-    background: #FFE27A!important;
+    background: #FFDC5E!important;
     font-size: 32rpx;
     color: #333;
     height: 80rpx;
