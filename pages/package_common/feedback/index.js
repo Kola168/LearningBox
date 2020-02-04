@@ -124,7 +124,7 @@ Page({
 				content: resp.content
 			})
 		
-			logger.info('意见反馈', resp.data)
+			logger.info('意见反馈', resp)
 			this.longToast.toast()
 			setTimeout(() => {
 				wxNav.navigateBack()
