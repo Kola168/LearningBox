@@ -91,6 +91,7 @@ page {
     position: relative;
     width: 200rpx;
     height: 200rpx;
+    border-radius:20rpx;
 }
 
 .print {
