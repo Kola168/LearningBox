@@ -145,6 +145,7 @@ Page({
    */
   openForm: function({currentTarget: {dataset: {key}}}){
     this.setData({
+      isUserSheetForm: true,
       [key]: true
     })
   }, 
