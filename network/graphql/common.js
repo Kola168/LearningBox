@@ -234,46 +234,80 @@ const graphqlApi = {
     })
   },
 
-    /**
+  /**
+   * 搜索页配置
+   */
+  getSearchConfig: () => {
+    return gql.query({
+      query: `query {
+        systemConfig {
+          searchClue
+          searchHotTags
+        }
+        currentUser {
+          userSearchRecords {
+            content
+            sn
+          }
+        }        
+  		}`
+    })
+  },
+
+  /**
    * 搜索
    * @param { String } keyword 关键词
    */
   getSearchResult: (keyword) => {
     return gql.query({
       query: `query($keyword: String!){
-        search(keyword: $keyword){
-          systemConfig{
-            searchClue
-            searchHotTags
-          }
-          currentUser{
-            name
-            resources{
-              ...on CourseElk{
-                redirectPath
-                iconUrl
-                name
-                sn
-              }
-              ...on FeatureElk{
-                redirectPath
-                iconUrl
-                name
-                key
-              }
-              ...on CategoryElk{
-                redirectPath
-                iconUrl
-                name
-                sn
-                desc
-              }
+        search(keyword:$keyword) {
+          name
+          resources {
+            ...on CourseElk {
+              iconUrl
+              name
+              redirectPath
+              sn
+              studyUsers
             }
-          }        
-        }
+            ...on FeatureElk {
+              iconUrl
+              name
+              redirectPath
+              key
+            }
+            ...on CategoryElk {
+              iconUrl
+              name
+              redirectPath
+              sn
+              desc
+            }
+          }
+        }       
   		}`,
       variables: {
         keyword: keyword
+      }
+    })
+  },
+
+  /**
+   * 删除历史记录
+   * @param { String } sn 关键词
+   */
+  deleteHistorySearch: (sn) => {
+    return gql.mutate({
+      mutation: `mutation ($input: DeleteUserSearchRecordInput!){
+        deleteUserSearchRecord(input:$input){
+          state
+        }
+      }`,
+      variables: {
+        input: {
+          sn
+        }
       }
     })
   },

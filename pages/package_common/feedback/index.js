@@ -46,8 +46,16 @@ Page({
 	},
 
 
-	onLoad: function (options) {
-		this.longToast = new app.weToast()
+	onLoad: function (query) {
+    this.longToast = new app.weToast()
+    if(query && query.type) {
+      this.as_type = query.type
+      if(query.type === 'search'){
+        this.setData({
+          tabId: 4
+        })
+      }
+    }
 	},
 
 	//分享

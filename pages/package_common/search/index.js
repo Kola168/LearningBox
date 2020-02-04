@@ -12,81 +12,65 @@ import graphql from '../../../network/graphql/common'
 Page({
   data: {
     keyword: '',
-    historySearchs: [],
-    hotTags: [],
+    userSearchRecords: [],
+    searchHotTags: [],
     searchResult: [],
     notResult: false,
-    inputFocus: true
+    inputFocus: true,
+    searchClue: '',
+    modalObj: {
+      isShow: true,
+      hasCancel: false,
+      content: '请您先切换该学段哦!',
+      confirmText: '立即切换学段',
+      image: '/images/home/device_tip.png'
+    },
   },
   onLoad: co.wrap(function* () {
-    try {
-      this.weToast = new app.weToast()
-      this.getSearchResult()
-    } catch (error) {
-      console.log(error)
-    }
-
-    // try {
-    //   let hotTags = yield this.getSearchResult()
-    //   let historySearchs = yield this.getHistorySearch()
-    //   this.setData({
-    //     hotTags,
-    //     historySearchs
-    //   })
-    //   this.weToast.hide()
-    // } catch (error) {
-    //   this.weToast.hide()
-    //   util.showError(error)
-    // }
+    this.weToast = new app.weToast()
+    this.getHistoryConfig()
   }),
-  // getSearchResult: co.wrap(function*() {
-  //   try {
-  //     let res = yield graphql.getSearchResult()
-  //     return res.hotTags.tags
-  //   } catch (error) {
-  //     util.showError(error)
-  //   }
-  // }),
-  // getHistorySearch: co.wrap(function*() {
-  //   try {
-  //     let res = yield graphql.getHistorySearch()
-  //     return res.userSearchRecords
-  //   } catch (error) {
-  //     util.showError(error)
-  //   }
-  // }),
+  getHistoryConfig: co.wrap(function* () {
+    this.weToast.toast({
+      type: 'loading'
+    })
+    try {
+      let res = yield graphql.getSearchConfig()
+      this.weToast.hide()
+      this.setData({
+        userSearchRecords: res.currentUser.userSearchRecords,
+        searchClue: res.systemConfig.searchClue,
+        searchHotTags: res.systemConfig.searchHotTags
+      })
+    } catch (error) {
+      this.weToast.hide()
+      util.showError(error)
+    }
+  }),
   // 获取搜索结果
   getSearchResult: co.wrap(function* (e) {
-    try {
-      let keyword = this.data.keyword
-      if (e && e.currentTarget.dataset.keyword) {
-        keyword = e.currentTarget.dataset.keyword
-        this.setData({
-          keyword,
-          inputFocus: false
-        })
-      }
-      console.log('keyword', keyword)
-      this.weToast.toast({
-        type: 'loading'
+    let keyword = this.data.keyword
+    if (e && e.currentTarget.dataset.keyword) {
+      keyword = e.currentTarget.dataset.keyword
+      this.setData({
+        keyword,
+        inputFocus: false
       })
-      try {
-        // let keys = ["ec_contents", "features", "courses","kfb_categories"]
-        let res = yield graphql.getSearchResult(keyword)
-        console.log(res, 'ppppp')
-        // this.setData({
-        //   searchResult: res.searchResult,
-        //   notResult: res.searchResult.length === 0
-        // })
-        this.weToast.hide()
-      } catch (error) {
-        this.weToast.hide()
-        util.showError(error)
-      }
-    } catch (error) {
-      console.log(error)
     }
-
+    this.weToast.toast({
+      type: 'loading'
+    })
+    try {
+      let res = yield graphql.getSearchResult(keyword)
+      this.setData({
+        searchResult: res.search,
+        notResult: res.search.length === 0
+      })
+      this.weToast.hide()
+    } catch (error) {
+      this.weToast.hide()
+      util.showError(error)
+    }
   }),
   toSearchDetail(e) {
     let index = e.currentTarget.dataset.index,
@@ -94,86 +78,87 @@ Page({
       tapItem = this.data.searchResult[index],
       typeItem = tapItem.resources[typeIndex],
       type = tapItem.name,
-      url = ''
-    if (type === 'ec_contents') {
-      url = `/pages/library/play_preview?title=${typeItem.name}&id=${typeItem.sn}&sn=${typeItem.categorySn}&type=_fun`
-    } else if (type === 'features') {
-      url = typeItem.miniappPath
-    } else if (type === 'courses') {
-      url = `/pages/learning/course/course?sn=${typeItem.sn}`
-    } else if (type === 'kfb_categories') {
-      return this.handleJumpKfbCategories(typeItem)
+      url = '',
+      params = {}
+    if (type === 'feature') {
+      url = typeItem.redirectPath
+      params.key = typeItem.key
+    } else if (type === 'course') {
+      url = `/pages/package_course/course/course`
+      params.sn = typeItem.sn
+    } else if (type === 'category') {
+      url = typeItem.redirectPath
+      params.sn = typeItem.sn
+      params.title = typeItem.name
     }
-    wx.navigateTo({
-      url: url
-    })
+    wxNav.navigateTo(url, params)
   },
 
-  handleJumpKfbCategories: co.wrap(function* (item) {
-    console.log('path', item.path)
-    try {
-      let path = item.path
-      switch (item.pathTypeKey) {
-        //其他小程序
-        case 'appid':
-          let appid = path.split("-")
-          let id = appid[0]
-          path = decodeURIComponent(appid[1])
-          wx.navigateToMiniProgram({
-            appId: id,
-            path: path
-          })
-          break
-          //webview
-        case 'web':
-          wx.navigateTo({
-            url: `/pages/webview/index?url=${path}`
-          })
-          break
-          //内部功能
-        case 'miniprogram_path':
-          wx.navigateTo({
-            url: path
-          })
-          break
-          //多级分类（自有资源大于等于3级）
-        case 'multi_category':
-          wx.navigateTo({
-            url: path + `?sn=${item.sn}`
-          })
-          break
-          // 第三方资源列表(包括试卷等),试卷到试卷的首页再获取sn
-        case 'thrid_party_resources':
-          wx.navigateTo({
-            url: path + `?sn=${path.substr(24)}`
-          })
-          break
-          //小程序tab页
-        case 'miniprogram_tab':
-          wx.switchTab({
-            url: path
-          })
-          break
-          //自由资源详情，需带上级id
-        case 'multi_category_detail':
-          wx.navigateTo({
-            url: path + `?title=${item.name}&sn=${item.categorySn}&id=${item.sn}&type=_fun`
-          })
-          break
-          //第三方资源详情，需带上级id
-        case 'thrid_party_resources_detail':
-          wx.navigateTo({
-            url: path + `?sn=${item.sn}&parent_sn=${item.categorySn}`
-          })
-          break
-      }
-    } catch (e) {
-      console.log(e)
-    }
-  }),
+  // handleJumpKfbCategories: co.wrap(function* (item) {
+  //   console.log('path', item.path)
+  //   try {
+  //     let path = item.path
+  //     switch (item.pathTypeKey) {
+  //       //其他小程序
+  //       case 'appid':
+  //         let appid = path.split("-")
+  //         let id = appid[0]
+  //         path = decodeURIComponent(appid[1])
+  //         wx.navigateToMiniProgram({
+  //           appId: id,
+  //           path: path
+  //         })
+  //         break
+  //         //webview
+  //       case 'web':
+  //         wx.navigateTo({
+  //           url: `/pages/webview/index?url=${path}`
+  //         })
+  //         break
+  //         //内部功能
+  //       case 'miniprogram_path':
+  //         wx.navigateTo({
+  //           url: path
+  //         })
+  //         break
+  //         //多级分类（自有资源大于等于3级）
+  //       case 'multi_category':
+  //         wx.navigateTo({
+  //           url: path + `?sn=${item.sn}`
+  //         })
+  //         break
+  //         // 第三方资源列表(包括试卷等),试卷到试卷的首页再获取sn
+  //       case 'thrid_party_resources':
+  //         wx.navigateTo({
+  //           url: path + `?sn=${path.substr(24)}`
+  //         })
+  //         break
+  //         //小程序tab页
+  //       case 'miniprogram_tab':
+  //         wx.switchTab({
+  //           url: path
+  //         })
+  //         break
+  //         //自由资源详情，需带上级id
+  //       case 'multi_category_detail':
+  //         wx.navigateTo({
+  //           url: path + `?title=${item.name}&sn=${item.categorySn}&id=${item.sn}&type=_fun`
+  //         })
+  //         break
+  //         //第三方资源详情，需带上级id
+  //       case 'thrid_party_resources_detail':
+  //         wx.navigateTo({
+  //           url: path + `?sn=${item.sn}&parent_sn=${item.categorySn}`
+  //         })
+  //         break
+  //     }
+  //   } catch (e) {
+  //     console.log(e)
+  //   }
+  // }),
 
   back() {
-    wx.navigateBack()
+    wxNav.navigateBack()
   },
 
   input(e) {
@@ -199,34 +184,34 @@ Page({
   },
   deleteHistoryTag: co.wrap(function* (e) {
     let index = e.currentTarget.id,
-      historySearchs = this.data.historySearchs,
+      userSearchRecords = this.data.userSearchRecords,
       sn = null
     if (index === 'all') {
-      historySearchs = []
+      userSearchRecords = []
     } else {
       sn = e.currentTarget.dataset.sn
-      historySearchs.splice(index, 1)
+      userSearchRecords.splice(index, 1)
     }
-    wx.showLoading({
-      title: "请稍等",
-      mask: true
+    this.weToast.toast({
+      type: 'loading'
     })
     try {
-      let res = yield graphql.deleteHistorySearch(sn)
-      wx.hideLoading()
+      yield graphql.deleteHistorySearch(sn)
+      this.weToast.hide()
+      this.setData({
+        userSearchRecords
+      })
     } catch (error) {
-      console.log(error)
-      wx.hideLoading()
+      this.weToast.hide()
       util.showError(error)
     }
-
-    this.setData({
-      historySearchs
-    })
   }),
+  changeStage(){
+
+  },
   toFeedback() {
-    wx.redirectTo({
-      url: '/pages/account/feedback?type=search'
+    wxNav.navigateTo('../feedback/index', {
+      type: "search"
     })
   }
 })
