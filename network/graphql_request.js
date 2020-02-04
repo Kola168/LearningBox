@@ -454,9 +454,6 @@ const graphqlApi = {
   getUser: () => {
     return gql.query({
       query: `query{
-        systemConfig{
-          searchClue
-        } 
         currentUser{
 					isPreschoolMember
 			  	isSchoolAgeMember
