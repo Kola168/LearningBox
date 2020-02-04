@@ -29,7 +29,7 @@ Page({
   // mixins: [index, init],
   data: {
     searchObj: {
-      isSearch: true,
+      isSearch: false,
       url: '/pages/package_common/search/index',
       placeText: ''
     },
@@ -164,7 +164,7 @@ Page({
           homeType: rootKey,
           commonFeatures: commonFeatures[rootKey],
           gradeParent: resp.currentUser.selectedKid.stage.parent,
-          ['searchObj.placeText']: resp.systemConfig.searchClue || '搜索应用、课程、内容'
+          // ['searchObj.placeText']: resp.systemConfig.searchClue || '搜索应用、课程、内容'
         })
       }
       if (!resp.currentUser.selectedDevice) {
