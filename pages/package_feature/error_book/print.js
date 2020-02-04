@@ -69,7 +69,8 @@ Page({
       isShow: false,
       title: '请正确放置A4打印纸',
       image: 'https://cdn.gongfudou.com/miniapp/ec/confirm_print_a4_new.png'
-    }
+    },
+    butHigh:false
   },
   /**
    * 生命周期函数--监听页面加载
@@ -82,6 +83,18 @@ Page({
     _this.ids = options.ids && JSON.parse(options.ids)
     _this.sns = options.sns && JSON.parse(options.sns)
     _this.longToast = new app.weToast()
+    if (app.isFullScreen) {
+      this.setData({
+        butHigh: true
+      })
+    } else if (app.isFullScreen == undefined) {
+      let that = this
+      setTimeout(function() {
+        that.setData({
+          butHigh: app.isFullScreen
+        })
+      }, 500)
+    }
     _this.initArea()
     _this.initColors()
     yield _this.getTemplates()

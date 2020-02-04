@@ -37,7 +37,7 @@ page {
     letter-spacing: 0;
     text-align: center;
     line-height: 36rpx;
-    margin-bottom: 150rpx;
+    margin-bottom: 200rpx;
 }
 
 .singleImg>view,

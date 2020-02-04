@@ -59,7 +59,7 @@
   top: 78rpx;
   right: 0;
   width: 80%;
-  max-height: 160rpx;
+  max-height: 200rpx;
   color: #333333;
   font-size: 28rpx;
   background-color: #FFF;

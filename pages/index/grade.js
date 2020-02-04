@@ -18,11 +18,24 @@ Page({
    */
   data: {
     activeGrade: '',
-    stages: []
+    stages: [],
+    butHigh:false
   },
   onLoad: co.wrap(function* (options) {
     this.longToast = new app.weToast()
     yield this.getAllstages()
+    if (app.isFullScreen) {
+      this.setData({
+        butHigh: true
+      })
+    } else if (app.isFullScreen == undefined) {
+      let that = this
+      setTimeout(function () {
+        that.setData({
+          butHigh: app.isFullScreen
+        })
+      }, 500)
+    }
     if (options.grade) {
       this.setData({
         activeGrade: options.grade

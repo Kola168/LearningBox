@@ -19,7 +19,8 @@ Page({
     data: {
         selectText: '全选',
         memberIds: [], //选中文件sn
-        exitSaveModal: null
+        exitSaveModal: null,
+        navBarHeight:0
     },
     onLoad: function (options) {
         logger.info(options)
@@ -29,6 +30,10 @@ Page({
         this.setData({
             file_name: options.file_name,
             // documentList: common_util.decodeLongParams(options.documentList)
+        })
+        let navBarHeight = (app.navBarInfo && app.navBarInfo.topBarHeight > 0) ? app.navBarInfo.topBarHeight : app.getNavBarInfo().topBarHeight
+        this.setData({
+          navBarHeight
         })
         this.sn = options.sn
         this.firstUploadBaidu()

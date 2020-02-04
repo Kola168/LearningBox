@@ -39,7 +39,8 @@ Page({
             isShow: false,
             title: '请正确放置A4打印纸',
             image: 'https://cdn.gongfudou.com/miniapp/ec/confirm_print_a4_new.png'
-        }
+        },
+        butHigh:false
     },
 
     onLoad: co.wrap(function* (options) {
@@ -48,6 +49,18 @@ Page({
         this.setData({
             urls: urls
         })
+        if (app.isFullScreen) {
+            this.setData({
+              butHigh: true
+            })
+          } else if (app.isFullScreen == undefined) {
+            let that = this
+            setTimeout(function () {
+              that.setData({
+                butHigh: app.isFullScreen
+              })
+            }, 500)
+          }
         this.getPrinterCapability()
         this.setData({
             startPrintPage: 1,

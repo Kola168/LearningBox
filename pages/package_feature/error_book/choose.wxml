@@ -55,7 +55,7 @@
   </view>
   
 
-<view class='btn' bindtap='confirm'>
+<view class="btn {{butHigh?'is-full-screen':''}}" bindtap='confirm'>
   <button hover-class="none">确定</button>
 </view>
 

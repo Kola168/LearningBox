@@ -52,7 +52,8 @@ Page({
 		documentList: [],
 		exitSaveModal: null, //转存百度云提示
 		iosModal: false,
-		text: '文件存储数量已用完，升级会员后存储数量不限'
+    text: '文件存储数量已用完，升级会员后存储数量不限',
+    navBarHeight:0
 
 	},
 
@@ -73,7 +74,11 @@ Page({
 			this.role = options.role
 			this.users_count = options.users_count
 			this.shareUserSn = options.userSn ? options.userSn : ''
-			this.share = options.share ? options.share : ''
+      this.share = options.share ? options.share : ''
+      let navBarHeight = (app.navBarInfo && app.navBarInfo.topBarHeight > 0) ? app.navBarInfo.topBarHeight : app.getNavBarInfo().topBarHeight
+        this.setData({
+          navBarHeight
+        })
 			if (this.share) {
 				this.setData({
 					backHome: true

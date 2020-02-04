@@ -24,15 +24,14 @@ button:not([size='mini']) {
 
 .top-tip {
   width: 100%;
-  height: 48rpx;
+  height: 24px;
   background: #fffae9;
   text-align: center;
-  line-height: 48rpx;
-  /* position: fixed; */
-  /* 自定义导航栏64px */
-  /* top: 176rpx; */
-  /* top:0; */
-  /* left: 0; */
+  line-height: 24px;
+  position: fixed;
+  top: 176rpx;
+  top:0;
+  left: 0;
   font-size: 24rpx;
   color: #ff9a55;
   z-index: 100;
@@ -43,11 +42,8 @@ button:not([size='mini']) {
   justify-content: space-between;
   font-size: 32rpx;
   padding: 0 124rpx;
-  /* margin: 74rpx 0 20rpx; */
-  /* position: fixed; */
-  /* left: 0; */
-  /* top:48rpx; */
-  /* top: 224rpx; */
+  position: fixed;
+  left: 0;
   width: 100%;
   box-sizing: border-box;
   z-index: 100;

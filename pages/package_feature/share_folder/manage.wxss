@@ -14,7 +14,7 @@
 .top {
   display: flex;
   justify-content: space-between;
-  padding: 118rpx 26rpx 0;
+  padding: 80rpx 26rpx 0;
 }
 
 .top-left {

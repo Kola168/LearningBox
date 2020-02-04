@@ -67,21 +67,6 @@ page {
     font-size: 32rpx;
 }
 
-.bottom view {
-    position: relative;
-    width: 100%;
-    display: flex;
-    display: -webkit-flex;
-    align-items: center;
-    justify-content: center;
-    background: #FFE27A;
-    font-family: PingFangSC-Regular;
-    font-size: 36rpx;
-    color: #454545;
-    letter-spacing: 0;
-    text-align: center;
-}
-
 .bottom-phone {
     position: absolute;
     width: 100%;

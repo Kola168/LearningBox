@@ -39,7 +39,8 @@ Page({
     },
     saveTip: true,
     isMember: false,
-    hasPay: false
+    hasPay: false,
+    butHigh:false
   },
   onShareAppMessage: function () {
     return app.share
@@ -50,6 +51,18 @@ Page({
     this.query = JSON.parse(options.params)
 
     logger.info('预览页参数', this.query)
+    if (app.isFullScreen) {
+      this.setData({
+        butHigh: true
+      })
+    } else if (app.isFullScreen == undefined) {
+      let that = this
+      setTimeout(function() {
+        that.setData({
+          butHigh: app.isFullScreen
+        })
+      }, 500)
+    }
     this.setData({
       singleImg: this.query.wm_url,
       print_wm_url: this.query.print_wm_url ? imginit.addProcess(this.query.print_wm_url, '/rotate,90') : ''

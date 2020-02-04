@@ -19,7 +19,7 @@
     </view> -->
     <image animation="{{animationData}}" class="user-img" mode="widthFix" src="{{localImgPath}}" binderror="imageLoadError" bindload="initDesign" style="width:{{imgInfo.width}}px; height:{{imgInfo.height}}px;left:{{userImgPosition.x}}px;top:{{userImgPosition.y}}px;transform:scale3d({{realScale}},{{realScale}},1) rotate({{realRotate}}deg)"></image>
 </view>
-<form report-submit="true" bindsubmit="next" class="bottom-btn">
+<form report-submit="true" bindsubmit="next" class="bottom-btn {{butHigh?'is-full-screen':''}}">
     <button class="btn-print" formType="submit">下一步</button>
 </form>
 <take-photo-pop id="checkComponent" bindchooseImg="uploadImage" bindbaidutap="baiduprint" imgNum="{{1}}"></take-photo-pop>

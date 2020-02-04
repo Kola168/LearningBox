@@ -14,10 +14,8 @@
     </view>
 </view>
 
+<!-- <bottom-button class="bottom {{butHigh?'is-full-screen':''}}" text-right="确认打印" bindrighttap="toConfirm" get-phone="{{true}}"></bottom-button> -->
 <bottom-button class="bottom" text-right="确认打印" bindrighttap="toConfirm" get-phone="{{true}}"></bottom-button>
-
-
-
 <!-- 打印确认框 -->
 <confirm-print bindconfirm="print" modal="{{confirmModal}}"></confirm-print>
 

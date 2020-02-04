@@ -1,7 +1,7 @@
 <!--pages/package_common/common_content/list.wxml-->
 <wxs src='../../../utils/compressConfig.wxs' module="foo"></wxs>
 <nav-bar background="#fff" title="{{name}}"></nav-bar>
-<view class="tabs {{butHigh?'butHigh':''}}">
+<view class="tabs {{butHigh?'butHigh':''}}" style="top:{{navBarHeight}}px">
     <scroll-view scroll-x="true" class="type" scroll-with-animation scroll-into-view="{{'_'+tabId}}">
         <text wx:for="{{typeList}}" wx:key="typeList" id="{{'_'+index}}"
             class="tab-item {{tabId == index ? 'activeType' : ''}}" bindtap="changeTab">{{item.name}}<text

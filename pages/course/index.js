@@ -13,7 +13,7 @@ Page({
     stage: null
   },
   onLoad: co.wrap(function *() {
-
+    this.longToast = new app.weToast()
   }),
   onShow: co.wrap(function*() {
     var user = yield this.getUserInfo()
@@ -27,14 +27,20 @@ Page({
    */
   getUserInfo: co.wrap(function*() {
 		if(app.isScope()){
+      this.longToast.toast({
+        type: 'loading',
+        title: '请稍后'
+      })
 			try {
-				let resp = yield gql.getUser()
+        let resp = yield gql.getUser()
 				storage.put("userSn", resp.currentUser.sn)
 				storage.put("kidStage", resp.currentUser.selectedKid.stageRoot.rootKey)
 				return resp.currentUser
 			} catch (e) {
 				// util.showError(e)
-			}
+			} finally {
+        this.longToast.hide()
+      }
 		}
     
   }),

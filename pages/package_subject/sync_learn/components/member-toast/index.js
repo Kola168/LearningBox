@@ -40,7 +40,7 @@ Component({
     },
 
     toMember: function () {
-      wxNav.navigateTo('pages/package_member/member/index')
+      wxNav.redirectTo('pages/package_member/member/index')
       this.hideToast()
     }
   }

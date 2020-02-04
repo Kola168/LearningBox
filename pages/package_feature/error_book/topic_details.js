@@ -26,11 +26,24 @@ Page({
         type: '',
         answer_urls: [],
         iosModal: false,
-        text: '当日错题本使用次数已经用完，升级会员可以畅享使用'
+        text: '当日错题本使用次数已经用完，升级会员可以畅享使用',
+        butHigh:false
     },
     onLoad: co.wrap(function* (options) {
         this.longToast = new app.weToast()
         logger.info('保存页参数', options)
+        if (app.isFullScreen) {
+            this.setData({
+              butHigh: true
+            })
+          } else if (app.isFullScreen == undefined) {
+            let that = this
+            setTimeout(function() {
+              that.setData({
+                butHigh: app.isFullScreen
+              })
+            }, 500)
+          }
         if (options.url) {
             this.data.urls.push(options.url)
         }

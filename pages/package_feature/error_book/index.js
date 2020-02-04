@@ -56,7 +56,8 @@ Page({
         from_temp: false,
         mediumRecommend: '',
         showIntrol: '',
-        from_temp: false
+        from_temp: false,
+        butHigh:false
     },
     onShow: co.wrap(function* () {
         let authToken = storage.get('authToken')
@@ -81,6 +82,18 @@ Page({
             })
             this.getAuth()
         })
+        if (app.isFullScreen) {
+            this.setData({
+              butHigh: true
+            })
+          } else if (app.isFullScreen == undefined) {
+            let that = this
+            setTimeout(function () {
+              that.setData({
+                butHigh: app.isFullScreen
+              })
+            }, 500)
+          }
         let errorBook = wx.getStorageSync('errorBook')
         logger.info('错题本', errorBook)
 
