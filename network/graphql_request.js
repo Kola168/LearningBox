@@ -1,57 +1,6 @@
 import gql from './graphql_config'
 
 const graphqlApi = {
-  /**
-   * 搜索
-   * @param { String } keyword 关键词
-   * @param { Array } keys 请求数据分类
-   */
-  getSearchResult: (keyword, keys) => {
-    return gql.query({
-      query: `query searchResult($keyword: String!,$keys: [String!]){
-        searchResult:searchUnion(keyword: $keyword,keys: $keys){
-						name
-						resources{
-              ...on Course{
-                sn
-                name
-                desc
-                iconUrl
-                studyUsers
-              }
-              ...on Content{
-                name
-                iconUrl
-                printCount
-                totalPage
-                categorySn
-                sn
-                categories
-              }
-              ...on Feature{
-                sn
-                name
-                iconUrl
-                miniappPath
-              }
-              ...on KfbCategory{
-                categorySn
-                sn
-                name
-                iconUrl
-                path
-                pathTypeKey
-                subTitle
-              }
-            }
-  			}
-  		}`,
-      variables: {
-        keyword: keyword,
-        keys: keys
-      }
-    })
-  },
 
   /**
    * 获取百度网盘是否授权
@@ -549,7 +498,7 @@ const graphqlApi = {
             }
             city{
               name
-            }
+            }         
           }
         }
       }`

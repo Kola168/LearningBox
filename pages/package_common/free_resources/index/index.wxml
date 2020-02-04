@@ -1,6 +1,6 @@
 <wxs src="../../../../utils/compressConfig.wxs" module="handleImg"></wxs>
 <nav-bar title="免费资源库"></nav-bar>
-<view class="container" style="min-height:{{minHeight}}px;">
+<view class="container" style="min-height:{{minHeight}}px;" wx:if="{{loadReady}}">
   <!-- 左 -->
   <scroll-view class='resources-type' scroll-with-animation="true" scroll-y="true" style="height:{{minHeight}}px" scroll-top="{{leftToTop}}">
     <view style="padding-bottom: 50rpx;">
@@ -27,6 +27,7 @@
         </view>
       </view>
     </view>
+    <view class="content-end">已经到底了哦～</view>
   </scroll-view>
 </view>
 <!-- loading -->

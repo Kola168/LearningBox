@@ -1,8 +1,13 @@
 "use strict"
 
 const app = getApp()
-import { regeneratorRuntime, co, util, wxNav } from '../../../utils/common_import'
-import graphql from '../../../network/graphql_request'
+import {
+  regeneratorRuntime,
+  co,
+  util,
+  wxNav
+} from '../../../utils/common_import'
+import graphql from '../../../network/graphql/common'
 
 Page({
   data: {
@@ -13,64 +18,75 @@ Page({
     notResult: false,
     inputFocus: true
   },
-  onLoad: co.wrap(function*() {
-    this.weToast = new app.weToast()
+  onLoad: co.wrap(function* () {
     try {
-      let hotTags = yield this.getHotSearch()
-      let historySearchs = yield this.getHistorySearch()
-      this.setData({
-        hotTags,
-        historySearchs
-      })
-      wx.hideLoading()
+      this.weToast = new app.weToast()
+      this.getSearchResult()
     } catch (error) {
-      wx.hideLoading()
-      util.showError(error)
+      console.log(error)
     }
 
+    // try {
+    //   let hotTags = yield this.getSearchResult()
+    //   let historySearchs = yield this.getHistorySearch()
+    //   this.setData({
+    //     hotTags,
+    //     historySearchs
+    //   })
+    //   this.weToast.hide()
+    // } catch (error) {
+    //   this.weToast.hide()
+    //   util.showError(error)
+    // }
   }),
-  getHotSearch: co.wrap(function*() {
-    try {
-      let res = yield graphql.getHotSearch()
-      return res.hotTags.tags
-    } catch (error) {
-      util.showError(error)
-    }
-  }),
-  getHistorySearch: co.wrap(function*() {
-    try {
-      let res = yield graphql.getHistorySearch()
-      return res.userSearchRecords
-    } catch (error) {
-      util.showError(error)
-    }
-  }),
+  // getSearchResult: co.wrap(function*() {
+  //   try {
+  //     let res = yield graphql.getSearchResult()
+  //     return res.hotTags.tags
+  //   } catch (error) {
+  //     util.showError(error)
+  //   }
+  // }),
+  // getHistorySearch: co.wrap(function*() {
+  //   try {
+  //     let res = yield graphql.getHistorySearch()
+  //     return res.userSearchRecords
+  //   } catch (error) {
+  //     util.showError(error)
+  //   }
+  // }),
   // 获取搜索结果
-  search: co.wrap(function*(e) {
-    let keyword = this.data.keyword
-    if (e.currentTarget.dataset.keyword) {
-      keyword = e.currentTarget.dataset.keyword
-      this.setData({
-        keyword,
-        inputFocus: false
-      })
-    }
-    wx.showLoading({
-      title: '请稍等',
-      mask: true
-    })
+  getSearchResult: co.wrap(function* (e) {
     try {
-      let keys = ["ec_contents", "features", "courses","kfb_categories"]
-      let res = yield graphql.getSearchResult(keyword,keys)
-      this.setData({
-        searchResult: res.searchResult,
-        notResult: res.searchResult.length === 0
+      let keyword = this.data.keyword
+      if (e && e.currentTarget.dataset.keyword) {
+        keyword = e.currentTarget.dataset.keyword
+        this.setData({
+          keyword,
+          inputFocus: false
+        })
+      }
+      console.log('keyword', keyword)
+      this.weToast.toast({
+        type: 'loading'
       })
-      wx.hideLoading()
+      try {
+        // let keys = ["ec_contents", "features", "courses","kfb_categories"]
+        let res = yield graphql.getSearchResult(keyword)
+        console.log(res, 'ppppp')
+        // this.setData({
+        //   searchResult: res.searchResult,
+        //   notResult: res.searchResult.length === 0
+        // })
+        this.weToast.hide()
+      } catch (error) {
+        this.weToast.hide()
+        util.showError(error)
+      }
     } catch (error) {
-      wx.hideLoading()
-      util.showError(error)
+      console.log(error)
     }
+
   }),
   toSearchDetail(e) {
     let index = e.currentTarget.dataset.index,
@@ -93,8 +109,8 @@ Page({
     })
   },
 
-  handleJumpKfbCategories: co.wrap(function*(item) {
-    console.log('path',item.path)
+  handleJumpKfbCategories: co.wrap(function* (item) {
+    console.log('path', item.path)
     try {
       let path = item.path
       switch (item.pathTypeKey) {
@@ -108,7 +124,7 @@ Page({
             path: path
           })
           break
-        //webview
+          //webview
         case 'web':
           wx.navigateTo({
             url: `/pages/webview/index?url=${path}`
@@ -181,7 +197,7 @@ Page({
       inputFocus: true
     })
   },
-  deleteHistoryTag: co.wrap(function*(e) {
+  deleteHistoryTag: co.wrap(function* (e) {
     let index = e.currentTarget.id,
       historySearchs = this.data.historySearchs,
       sn = null

@@ -11,8 +11,8 @@ import Logger from '../../utils/logger.js'
 const logger = new Logger.getLogger('pages/index/index')
 // page mixins
 require('../../utils/mixin.js')
-import index from "../../mixins/index.js"
-import init from "../../mixins/init.js"
+// import index from "../../mixins/index.js"
+// import init from "../../mixins/init.js"
 import gql from '../../network/graphql_request.js'
 import gqlDevice from '../../network/graphql/device'
 import api from '../../network/restful_request.js'
@@ -26,8 +26,13 @@ import {
 } from 'config.js'
 
 Page({
-  mixins: [index, init],
+  // mixins: [index, init],
   data: {
+    searchObj: {
+      isSearch: false,
+      url: '/pages/package_common/search/index',
+      placeText: ''
+    },
     userInfo: {},
     bannerUrls: [{
       name: '什么是陪伴式打印法',
@@ -158,7 +163,8 @@ Page({
         this.setData({
           homeType: rootKey,
           commonFeatures: commonFeatures[rootKey],
-          gradeParent: resp.currentUser.selectedKid.stage.parent
+          gradeParent: resp.currentUser.selectedKid.stage.parent,
+          // ['searchObj.placeText']: resp.systemConfig.searchClue || '搜索应用、课程、内容'
         })
       }
       if (!resp.currentUser.selectedDevice) {
